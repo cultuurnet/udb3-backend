@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -42,7 +42,7 @@ final class GetNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_handles_getting_a_news_article_with_jsonld_if_no_accept_header_is_given(): void
     {
-        $articleId = new Uuid('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
+        $articleId = new UUID('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
 
         $newsArticle = new NewsArticle(
             $articleId,
@@ -89,7 +89,7 @@ final class GetNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_handles_getting_a_news_article_with_an_image(): void
     {
-        $articleId = new Uuid('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
+        $articleId = new UUID('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
 
         $newsArticle = (new NewsArticle(
             $articleId,
@@ -145,7 +145,7 @@ final class GetNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_handles_getting_a_news_article_with_jsonld_if_accept_header_includes_jsonld(): void
     {
-        $articleId = new Uuid('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
+        $articleId = new UUID('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
 
         $newsArticle = new NewsArticle(
             $articleId,
@@ -193,7 +193,7 @@ final class GetNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_handles_getting_a_news_article_with_json_if_accept_header_specifically_requests_json(): void
     {
-        $articleId = new Uuid('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
+        $articleId = new UUID('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
 
         $newsArticle = new NewsArticle(
             $articleId,
@@ -238,7 +238,7 @@ final class GetNewsArticleRequestHandlerTest extends TestCase
      */
     public function it_throws_when_news_article_not_found(): void
     {
-        $articleId = new Uuid('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
+        $articleId = new UUID('ec00bcd0-41e9-47a0-8364-71aad7e537c5');
 
         $getNewsArticleRequest = $this->psr7RequestBuilder
             ->withRouteParameter('articleId', $articleId->toString())

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Curators;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -19,7 +19,7 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
         $this->connection = $connection;
     }
 
-    public function getById(Uuid $id): NewsArticle
+    public function getById(UUID $id): NewsArticle
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
@@ -149,7 +149,7 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
             ->execute();
     }
 
-    public function delete(Uuid $id): void
+    public function delete(UUID $id): void
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
@@ -163,7 +163,7 @@ final class DBALNewsArticleRepository implements NewsArticleRepository
     private function createNewsArticle(array $newsArticleRow): NewsArticle
     {
         $newsArticle = new NewsArticle(
-            new Uuid($newsArticleRow['id']),
+            new UUID($newsArticleRow['id']),
             $newsArticleRow['headline'],
             new Language($newsArticleRow['in_language']),
             $newsArticleRow['text'],

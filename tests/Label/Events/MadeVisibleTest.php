@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class MadeVisibleTest extends AbstractExtendsTest
 {
-    public function createEvent(Uuid $uuid, string $name): MadeVisible
+    public function createEvent(UUID $uuid, string $name): MadeVisible
     {
         return new MadeVisible($uuid, $name);
     }

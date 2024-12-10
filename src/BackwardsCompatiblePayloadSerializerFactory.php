@@ -24,7 +24,7 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated as EventTypicalAgeRangeU
 use CultuurNet\UDB3\EventSourcing\PayloadManipulatingSerializer;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated as PlaceBookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated as PlaceContactPointUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated as PlaceDescriptionTranslated;
@@ -507,7 +507,7 @@ class BackwardsCompatiblePayloadSerializerFactory
     ): array {
         if (!isset($serializedObject['payload']['name'])) {
             $uuid = $serializedObject['payload']['uuid'];
-            $label = $labelRepository->getByUuid(new Uuid($uuid));
+            $label = $labelRepository->getByUuid(new UUID($uuid));
 
             $serializedObject['payload']['name'] = $label->getName();
         }
@@ -522,7 +522,7 @@ class BackwardsCompatiblePayloadSerializerFactory
         if (!isset($serializedObject['payload']['label']) ||
             !isset($serializedObject['payload']['visibility'])) {
             $uuid = $serializedObject['payload']['labelId'];
-            $label = $labelRepository->getByUuid(new Uuid($uuid));
+            $label = $labelRepository->getByUuid(new UUID($uuid));
 
             $serializedObject['payload']['label'] = $label->getName();
             $serializedObject['payload']['visibility'] = $label->getVisibility()->sameAs(Visibility::VISIBLE());

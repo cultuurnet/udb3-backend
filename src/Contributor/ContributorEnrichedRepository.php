@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Contributor;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -56,7 +56,7 @@ final class ContributorEnrichedRepository extends DocumentRepositoryDecorator
 
     private function enrich(JsonDocument $jsonDocument): JsonDocument
     {
-        $contributors = $this->contributorRepository->getContributors(new Uuid($jsonDocument->getId()))->toStringArray();
+        $contributors = $this->contributorRepository->getContributors(new UUID($jsonDocument->getId()))->toStringArray();
 
         return $jsonDocument->applyAssoc(
             function (array $body) use ($contributors) {

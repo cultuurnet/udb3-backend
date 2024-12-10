@@ -18,7 +18,7 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class GetCreatorRequestHandlerTest extends TestCase
 {
@@ -47,7 +47,7 @@ class GetCreatorRequestHandlerTest extends TestCase
         $this->organizerRepository = $this->createMock(DocumentRepository::class);
         $this->userIdentityResolver = $this->createMock(UserIdentityResolver::class);
         $this->permissionVoter = $this->createMock(PermissionVoter::class);
-        $this->currentUser = new CurrentUser(Uuid::uuid4()->toString());
+        $this->currentUser = new CurrentUser(UUID::uuid4()->toString());
         $this->getCreatorRequestHandler = new GetCreatorRequestHandler(
             $this->organizerRepository,
             $this->userIdentityResolver,
@@ -61,8 +61,8 @@ class GetCreatorRequestHandlerTest extends TestCase
      */
     public function it_handles_getting_the_creator_details(): void
     {
-        $creatorId = Uuid::uuid4()->toString();
-        $organizerId = Uuid::uuid4()->toString();
+        $creatorId = UUID::uuid4()->toString();
+        $organizerId = UUID::uuid4()->toString();
 
         $creator = new UserIdentityDetails(
             $creatorId,
@@ -111,8 +111,8 @@ class GetCreatorRequestHandlerTest extends TestCase
      */
     public function it_throws_an_api_problem_when_creator_is_not_found(): void
     {
-        $creatorId = Uuid::uuid4()->toString();
-        $organizerId = Uuid::uuid4()->toString();
+        $creatorId = UUID::uuid4()->toString();
+        $organizerId = UUID::uuid4()->toString();
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', $organizerId)
@@ -150,7 +150,7 @@ class GetCreatorRequestHandlerTest extends TestCase
      */
     public function it_throws_an_api_problem_when_organizer_is_not_found(): void
     {
-        $organizerId = Uuid::uuid4()->toString();
+        $organizerId = UUID::uuid4()->toString();
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', $organizerId)
@@ -181,8 +181,8 @@ class GetCreatorRequestHandlerTest extends TestCase
      */
     public function it_throws_an_api_problem_when_user_is_not_owner(): void
     {
-        $organizerId = Uuid::uuid4()->toString();
-        $creatorId = Uuid::uuid4()->toString();
+        $organizerId = UUID::uuid4()->toString();
+        $creatorId = UUID::uuid4()->toString();
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', $organizerId)

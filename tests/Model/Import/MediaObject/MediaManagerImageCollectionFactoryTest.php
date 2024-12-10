@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Media\MediaObject as Udb3MediaObjectAggregate;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
@@ -46,7 +46,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
         $existingMedia = [
             // JPG image.
             'b170224d-a5c6-40e3-a622-c4bac3a68f3a' => Udb3MediaObjectAggregate::create(
-                new Uuid('b170224d-a5c6-40e3-a622-c4bac3a68f3a'),
+                new UUID('b170224d-a5c6-40e3-a622-c4bac3a68f3a'),
                 MIMEType::fromSubtype('jpeg'),
                 new MediaDescription('Example description'),
                 new CopyrightHolder('Bob'),
@@ -55,7 +55,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
             ),
             // MOV file.
             '9bad84d7-8200-4a23-af86-ec4decb3fe86' => Udb3MediaObjectAggregate::create(
-                new Uuid('9bad84d7-8200-4a23-af86-ec4decb3fe86'),
+                new UUID('9bad84d7-8200-4a23-af86-ec4decb3fe86'),
                 MIMEType::fromSubtype('octet-stream'),
                 new MediaDescription('Filmpje'),
                 new CopyrightHolder('Bob'),
@@ -64,7 +64,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
             ),
             // MOV file.
             'a6a883ac-47c4-4a87-811d-cdb0bfc7e0eb' => Udb3MediaObjectAggregate::create(
-                new Uuid('a6a883ac-47c4-4a87-811d-cdb0bfc7e0eb'),
+                new UUID('a6a883ac-47c4-4a87-811d-cdb0bfc7e0eb'),
                 MIMEType::fromSubtype('octet-stream'),
                 new MediaDescription('Filmpje 2'),
                 new CopyrightHolder('Bob'),
@@ -73,7 +73,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
             ),
             // PNG image.
             '502c9436-02cd-4224-a690-04898b7c3a8d' => Udb3MediaObjectAggregate::create(
-                new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
+                new UUID('502c9436-02cd-4224-a690-04898b7c3a8d'),
                 MIMEType::fromSubtype('png'),
                 new MediaDescription('PNG Afbeelding'),
                 new CopyrightHolder('Bob'),
@@ -85,7 +85,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
         $this->mediaManager->expects($this->any())
             ->method('get')
             ->willReturnCallback(
-                function (Uuid $id) use ($existingMedia) {
+                function (UUID $id) use ($existingMedia) {
                     if (isset($existingMedia[$id->toString()])) {
                         return $existingMedia[$id->toString()];
                     } else {
@@ -97,14 +97,14 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
         $input = new MediaObjectReferences(
             // JPG image with updated description, copyright holder and language.
             MediaObjectReference::createWithMediaObjectId(
-                new Uuid('b170224d-a5c6-40e3-a622-c4bac3a68f3a'),
+                new UUID('b170224d-a5c6-40e3-a622-c4bac3a68f3a'),
                 new Description('Voorbeeld beschrijving (aangepast)'),
                 new CopyrightHolder('Bobby'),
                 new Language('nl')
             ),
             // Does not exist.
             MediaObjectReference::createWithMediaObjectId(
-                new Uuid('27a317c3-b74d-4352-97f1-9606f7dc0e05'),
+                new UUID('27a317c3-b74d-4352-97f1-9606f7dc0e05'),
                 new Description('Voorbeeld beschrijving'),
                 new CopyrightHolder('Bob'),
                 new Language('nl')
@@ -112,7 +112,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
             // Movie.
             MediaObjectReference::createWithEmbeddedMediaObject(
                 new MediaObject(
-                    new Uuid('9bad84d7-8200-4a23-af86-ec4decb3fe86'),
+                    new UUID('9bad84d7-8200-4a23-af86-ec4decb3fe86'),
                     MediaObjectType::mediaObject(),
                     new Url('https://io.uitdatabank.be/media/9bad84d7-8200-4a23-af86-ec4decb3fe86.mov'),
                     new Url('https://io.uitdatabank.be/media/9bad84d7-8200-4a23-af86-ec4decb3fe86.jpg')
@@ -123,7 +123,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
             ),
             // Has no type so will be treated as an image but is actually a movie internally.
             MediaObjectReference::createWithMediaObjectId(
-                new Uuid('a6a883ac-47c4-4a87-811d-cdb0bfc7e0eb'),
+                new UUID('a6a883ac-47c4-4a87-811d-cdb0bfc7e0eb'),
                 new Description('Voorbeeld beschrijving 2'),
                 new CopyrightHolder('Bob'),
                 new Language('nl')
@@ -131,7 +131,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
             // PNG image with original description, copyright holder and language.
             MediaObjectReference::createWithEmbeddedMediaObject(
                 new MediaObject(
-                    new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
+                    new UUID('502c9436-02cd-4224-a690-04898b7c3a8d'),
                     MediaObjectType::imageObject(),
                     new Url('https://io.uitdatabank.be/media/502c9436-02cd-4224-a690-04898b7c3a8d.png'),
                     new Url('https://io.uitdatabank.be/media/502c9436-02cd-4224-a690-04898b7c3a8d.png')
@@ -145,7 +145,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
         $expected = ImageCollection::fromArray(
             [
                 new Image(
-                    new Uuid('b170224d-a5c6-40e3-a622-c4bac3a68f3a'),
+                    new UUID('b170224d-a5c6-40e3-a622-c4bac3a68f3a'),
                     MIMEType::fromSubtype('jpeg'),
                     new MediaDescription('Voorbeeld beschrijving (aangepast)'),
                     new CopyrightHolder('Bobby'),
@@ -153,7 +153,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                     new Language('nl')
                 ),
                 new Image(
-                    new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
+                    new UUID('502c9436-02cd-4224-a690-04898b7c3a8d'),
                     MIMEType::fromSubtype('png'),
                     new MediaDescription('PNG Afbeelding'),
                     new CopyrightHolder('Bob'),

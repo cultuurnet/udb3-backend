@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifier;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifiers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -167,7 +167,7 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
     private function createPlace(): ImmutablePlace
     {
         return new ImmutablePlace(
-            new Uuid('aadcee95-6180-4924-a8eb-ed829d4957a2'),
+            new UUID('aadcee95-6180-4924-a8eb-ed829d4957a2'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),

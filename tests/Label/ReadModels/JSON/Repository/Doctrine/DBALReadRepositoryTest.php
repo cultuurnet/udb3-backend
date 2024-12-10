@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Query;
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\ColumnNames as LabelRolesColumnNames;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\ColumnNames as PermissionsColumnNames;
 
 final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
@@ -47,42 +47,42 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         );
 
         $this->entityByUuid = new Entity(
-            new Uuid('7f328086-0e56-4c7d-a2e7-38ac5eaa0347'),
+            new UUID('7f328086-0e56-4c7d-a2e7-38ac5eaa0347'),
             'bibliotheekweek',
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );
 
         $this->entityByName = new Entity(
-            new Uuid('25ea383c-b14d-4776-989c-24e0ac044638'),
+            new UUID('25ea383c-b14d-4776-989c-24e0ac044638'),
             'boswandeling',
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );
 
         $this->entityPrivateAccess = new Entity(
-            new Uuid('6639d6d2-ac7d-4995-91e3-7660c74cf1eb'),
+            new UUID('6639d6d2-ac7d-4995-91e3-7660c74cf1eb'),
             'wandeltocht',
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE()
         );
 
         $this->entityPrivateNoAccess = new Entity(
-            new Uuid('b14dd3ea-6962-4565-91b6-d0e8d929e685'),
+            new UUID('b14dd3ea-6962-4565-91b6-d0e8d929e685'),
             'stadswandeling',
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE()
         );
 
         $this->similarEntity = new Entity(
-            new Uuid('22ce5549-4546-4a08-b036-a2c07ca4929c'),
+            new UUID('22ce5549-4546-4a08-b036-a2c07ca4929c'),
             'wandel',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
         );
 
         $this->excluded = new Entity(
-            new Uuid('67dcd2a0-5301-4747-a956-3741420efd52'),
+            new UUID('67dcd2a0-5301-4747-a956-3741420efd52'),
             'excluded',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC(),
@@ -97,7 +97,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
         for ($i = 0; $i < 10; $i++) {
             $entity = new Entity(
-                new Uuid('15c8c391-724d-4878-8a06-86163ed5412' . $i),
+                new UUID('15c8c391-724d-4878-8a06-86163ed5412' . $i),
                 'label' . $i,
                 Visibility::VISIBLE(),
                 Privacy::PRIVACY_PUBLIC()
@@ -124,7 +124,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     public function it_returns_null_when_not_found_by_uuid(): void
     {
         $entity = $this->dbalReadRepository->getByUuid(
-            new Uuid('d8d9737f-c31e-4a5d-bc11-8780a23fdb24')
+            new UUID('d8d9737f-c31e-4a5d-bc11-8780a23fdb24')
         );
 
         $this->assertNull($entity);
@@ -451,7 +451,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         );
     }
 
-    private function insertLabelRole(Uuid $labelId, Uuid $roleId): void
+    private function insertLabelRole(UUID $labelId, UUID $roleId): void
     {
         $this->getConnection()->insert(
             $this->labelRolesTableName,
@@ -463,7 +463,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
     }
 
 
-    private function insertUserRole(string $userId, Uuid $roleId): void
+    private function insertUserRole(string $userId, UUID $roleId): void
     {
         $this->getConnection()->insert(
             $this->userRolesTableName,
@@ -477,8 +477,8 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
 
     private function seedRoles(string $userId): void
     {
-        $roleId1 = new Uuid('5d0842b4-4fd1-4bc2-8577-c06a5ac5000a');
-        $roleId2 = new Uuid('56a8b820-2262-4a17-a496-bfa07f7e49bb');
+        $roleId1 = new UUID('5d0842b4-4fd1-4bc2-8577-c06a5ac5000a');
+        $roleId2 = new UUID('56a8b820-2262-4a17-a496-bfa07f7e49bb');
 
         $this->insertUserRole($userId, $roleId1);
 

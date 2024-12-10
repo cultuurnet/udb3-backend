@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Curators\NewsArticles;
 use CultuurNet\UDB3\Curators\NewsArticleSearch;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -38,7 +38,7 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
     public function it_handles_getting_all_news_articles_as_jsonld_without_accept_header(): void
     {
         $newsArticle1 = new NewsArticle(
-            new Uuid('ec00bcd0-41e9-47a0-8364-71aad7e537c5'),
+            new UUID('ec00bcd0-41e9-47a0-8364-71aad7e537c5'),
             'publiq wint API award',
             new Language('nl'),
             'Op 10 januari 2020 wint publiq de API award',
@@ -49,7 +49,7 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
         );
 
         $newsArticle2 = new NewsArticle(
-            new Uuid('9bf7f5fa-4a0b-4475-9ebb-f776e33510f5'),
+            new UUID('9bf7f5fa-4a0b-4475-9ebb-f776e33510f5'),
             'madewithlove creates API',
             new Language('en'),
             'Together with publiq madewithlove creates an API',
@@ -109,7 +109,7 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
     public function it_handles_getting_all_news_articles_as_jsonld_with_accept_header_that_includes_jsonld(): void
     {
         $newsArticle1 = new NewsArticle(
-            new Uuid('ec00bcd0-41e9-47a0-8364-71aad7e537c5'),
+            new UUID('ec00bcd0-41e9-47a0-8364-71aad7e537c5'),
             'publiq wint API award',
             new Language('nl'),
             'Op 10 januari 2020 wint publiq de API award',
@@ -120,7 +120,7 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
         );
 
         $newsArticle2 = new NewsArticle(
-            new Uuid('9bf7f5fa-4a0b-4475-9ebb-f776e33510f5'),
+            new UUID('9bf7f5fa-4a0b-4475-9ebb-f776e33510f5'),
             'madewithlove creates API',
             new Language('en'),
             'Together with publiq madewithlove creates an API',
@@ -181,7 +181,7 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
     public function it_handles_getting_all_news_articles_as_json_with_accept_header_that_requests_json(): void
     {
         $newsArticle1 = new NewsArticle(
-            new Uuid('ec00bcd0-41e9-47a0-8364-71aad7e537c5'),
+            new UUID('ec00bcd0-41e9-47a0-8364-71aad7e537c5'),
             'publiq wint API award',
             new Language('nl'),
             'Op 10 januari 2020 wint publiq de API award',
@@ -192,7 +192,7 @@ class GetNewsArticlesRequestHandlerTest extends TestCase
         );
 
         $newsArticle2 = new NewsArticle(
-            new Uuid('9bf7f5fa-4a0b-4475-9ebb-f776e33510f5'),
+            new UUID('9bf7f5fa-4a0b-4475-9ebb-f776e33510f5'),
             'madewithlove creates API',
             new Language('en'),
             'Together with publiq madewithlove creates an API',

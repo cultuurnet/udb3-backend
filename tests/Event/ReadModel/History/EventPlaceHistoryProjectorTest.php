@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -257,7 +257,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
     {
         $eventId = $this->uuid4();
         $oldPlaceId = $this->uuid4();
-        $newPlaceId = new Uuid('28d2900d-f784-4d04-8d66-5b93900c6f9c');
+        $newPlaceId = new UUID('28d2900d-f784-4d04-8d66-5b93900c6f9c');
 
         $this->eventRepository
             ->expects($this->once())
@@ -333,7 +333,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
     public function prevent_apply_event_updated_from_udb2_when_location_did_not_change(): void
     {
         $eventId = $this->uuid4();
-        $oldPlaceId = new Uuid('28d2900d-f784-4d04-8d66-5b93900c6f9c');
+        $oldPlaceId = new UUID('28d2900d-f784-4d04-8d66-5b93900c6f9c');
 
         $this->eventRepository
             ->expects($this->once())
@@ -360,7 +360,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
     public function apply_event_imported_from_udb2(): void
     {
         $eventId = $this->uuid4();
-        $newPlaceId = new Uuid('28d2900d-f784-4d04-8d66-5b93900c6f9c');
+        $newPlaceId = new UUID('28d2900d-f784-4d04-8d66-5b93900c6f9c');
 
         $this->repository
             ->expects($this->once())
@@ -428,8 +428,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
     }
 
     /** @todo Remove with the refactor of III-6438 */
-    private function uuid4(): Uuid
+    private function uuid4(): UUID
     {
-        return new Uuid(RamseyUuid::uuid4()->toString());
+        return new UUID(RamseyUuid::uuid4()->toString());
     }
 }

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
 class RemoveConstraintTest extends TestCase
 {
-    private Uuid $uuid;
+    private UUID $uuid;
 
     private RemoveConstraint $removeConstraint;
 
     protected function setUp(): void
     {
-        $this->uuid = new Uuid('45e61f58-e11b-4045-91a0-540e51c3a98d');
+        $this->uuid = new UUID('45e61f58-e11b-4045-91a0-540e51c3a98d');
 
         $this->removeConstraint = new RemoveConstraint($this->uuid);
     }

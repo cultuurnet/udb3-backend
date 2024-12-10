@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Curators\NewsArticleNotFound;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -29,7 +29,7 @@ final class GetNewsArticleRequestHandler implements RequestHandlerInterface
         $articleId = $routeParameters->get('articleId');
 
         try {
-            $newsArticle = $this->newsArticleRepository->getById(new Uuid($articleId));
+            $newsArticle = $this->newsArticleRepository->getById(new UUID($articleId));
         } catch (NewsArticleNotFound $exception) {
             throw ApiProblem::newsArticleNotFound($articleId);
         }

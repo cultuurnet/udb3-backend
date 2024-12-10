@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\Commands\RemoveImage as EventRemoveImage;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\Commands\RemoveImage as PlaceRemoveImage;
 use Psr\Http\Message\ResponseInterface;
@@ -35,7 +35,7 @@ final class RemoveImageRequestHandler implements RequestHandlerInterface
     {
         $routeParameters = new RouteParameters($request);
         $offerId = $routeParameters->getOfferId();
-        $mediaId = new Uuid($routeParameters->getMediaId());
+        $mediaId = new UUID($routeParameters->getMediaId());
 
         // Can we be sure that the given $mediaObjectId points to an image and not a different type?
         $image = $this->mediaManager->getImage($mediaId);

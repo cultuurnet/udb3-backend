@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 abstract class AbstractLabelEvent extends AbstractEvent
 {
     public const LABEL_ID = 'labelId';
 
-    private Uuid $labelId;
+    private UUID $labelId;
 
     final public function __construct(
-        Uuid $uuid,
-        Uuid $labelId
+        UUID $uuid,
+        UUID $labelId
     ) {
         parent::__construct($uuid);
         $this->labelId = $labelId;
     }
 
-    public function getLabelId(): Uuid
+    public function getLabelId(): UUID
     {
         return $this->labelId;
     }
@@ -28,8 +28,8 @@ abstract class AbstractLabelEvent extends AbstractEvent
     public static function deserialize(array $data): AbstractLabelEvent
     {
         return new static(
-            new Uuid($data[self::UUID]),
-            new Uuid($data[self::LABEL_ID])
+            new UUID($data[self::UUID]),
+            new UUID($data[self::LABEL_ID])
         );
     }
 

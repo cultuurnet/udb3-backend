@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContributors;
@@ -22,7 +22,7 @@ final class UpdateContributorsRequestHandlerTest extends TestCase
     use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
 
-    private Uuid $organizerId;
+    private UUID $organizerId;
 
     private UpdateContributorsRequestHandler $updateContributorsRequestHandler;
 
@@ -33,7 +33,7 @@ final class UpdateContributorsRequestHandlerTest extends TestCase
     public function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
-        $this->organizerId = new Uuid('4c47cbf8-8406-4af6-b6e7-fddd78e0efd8');
+        $this->organizerId = new UUID('4c47cbf8-8406-4af6-b6e7-fddd78e0efd8');
         $this->updateContributorsRequestHandler = new UpdateContributorsRequestHandler(
             $this->commandBus
         );

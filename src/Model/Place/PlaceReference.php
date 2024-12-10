@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Place;
 
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class PlaceReference
 {
-    private ?Uuid $placeId;
+    private ?UUID $placeId;
     private ?TranslatedAddress $address;
 
-    private function __construct(?Uuid $placeId, ?TranslatedAddress $address)
+    private function __construct(?UUID $placeId, ?TranslatedAddress $address)
     {
         $this->placeId = $placeId;
         $this->address = $address;
     }
 
-    public function getPlaceId(): ?Uuid
+    public function getPlaceId(): ?UUID
     {
         return $this->placeId;
     }
@@ -28,7 +28,7 @@ class PlaceReference
         return $this->address;
     }
 
-    public static function createWithPlaceId(Uuid $placeId): PlaceReference
+    public static function createWithPlaceId(UUID $placeId): PlaceReference
     {
         return new self($placeId, null);
     }

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class AbstractLabelEventTest extends TestCase
 {
-    protected Uuid $labelId;
+    protected UUID $labelId;
 
-    protected Uuid $uuid;
+    protected UUID $uuid;
 
     /**
      * @var AbstractLabelEvent&MockObject
@@ -21,8 +21,8 @@ class AbstractLabelEventTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new Uuid('1e99c6ab-6ff2-4611-96fa-eda8b8a78ae9');
-        $this->labelId = new Uuid('d50852d1-5351-46bc-8221-238c2d47e3cf');
+        $this->uuid = new UUID('1e99c6ab-6ff2-4611-96fa-eda8b8a78ae9');
+        $this->labelId = new UUID('d50852d1-5351-46bc-8221-238c2d47e3cf');
 
         $this->event = $this->getMockForAbstractClass(
             AbstractLabelEvent::class,

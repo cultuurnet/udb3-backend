@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
@@ -120,7 +120,7 @@ final class UpdateUniqueLabels extends Command
      * @throws DBALException
      * @throws UniqueConstraintViolationException
      */
-    private function updateLabel(Uuid $labelUuid, LabelName $labelName): void
+    private function updateLabel(UUID $labelUuid, LabelName $labelName): void
     {
         $this->connection
             ->insert(
@@ -132,9 +132,9 @@ final class UpdateUniqueLabels extends Command
             );
     }
 
-    private function getLabelUuid(array $labelAddedEvent): Uuid
+    private function getLabelUuid(array $labelAddedEvent): UUID
     {
-        return new Uuid($labelAddedEvent['uuid']);
+        return new UUID($labelAddedEvent['uuid']);
     }
 
     private function getLabelName(array $labelAddedEvent): LabelName

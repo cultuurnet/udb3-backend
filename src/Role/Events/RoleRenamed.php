@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class RoleRenamed extends AbstractEvent
 {
     private string $name;
 
-    final public function __construct(Uuid $uuid, string $name)
+    final public function __construct(UUID $uuid, string $name)
     {
         parent::__construct($uuid);
         $this->name = $name;
@@ -24,7 +24,7 @@ final class RoleRenamed extends AbstractEvent
     public static function deserialize(array $data): RoleRenamed
     {
         return new static(
-            new Uuid($data['uuid']),
+            new UUID($data['uuid']),
             $data['name']
         );
     }

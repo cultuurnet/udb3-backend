@@ -9,7 +9,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileSize;
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileType;
 use CultuurNet\UDB3\Media\Properties\Description;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use Laminas\Diactoros\Stream;
@@ -21,7 +21,7 @@ use RuntimeException;
 
 final class ImageUploaderServiceTest extends TestCase
 {
-    private Uuid $fileId;
+    private UUID $fileId;
 
     private ImageUploaderInterface $uploader;
 
@@ -44,7 +44,7 @@ final class ImageUploaderServiceTest extends TestCase
 
     public function setUp(): void
     {
-        $this->fileId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $this->fileId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
 
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->filesystem = $this->createMock(FilesystemOperator::class);

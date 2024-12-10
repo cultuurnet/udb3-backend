@@ -38,7 +38,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
@@ -117,7 +117,7 @@ class PlaceDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutablePlace(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -193,7 +193,7 @@ class PlaceDenormalizerTest extends TestCase
         );
 
         $expected = new ImmutablePlace(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -253,7 +253,7 @@ class PlaceDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutablePlace(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             (new TranslatedTitle(
                 new Language('nl'),
@@ -319,7 +319,7 @@ class PlaceDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutablePlace(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -388,7 +388,7 @@ class PlaceDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutablePlace(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -471,7 +471,7 @@ class PlaceDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutablePlace(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -568,7 +568,7 @@ class PlaceDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutablePlace(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -651,7 +651,7 @@ class PlaceDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutablePlace(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -813,7 +813,7 @@ class PlaceDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutablePlace(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -853,7 +853,7 @@ class PlaceDenormalizerTest extends TestCase
                 )
             )
             ->withOrganizerReference(
-                OrganizerReference::createWithOrganizerId(new Uuid('236f736e-5308-4c3a-94f3-da0bd768da7d'))
+                OrganizerReference::createWithOrganizerId(new UUID('236f736e-5308-4c3a-94f3-da0bd768da7d'))
             )
             ->withGeoCoordinates(
                 new Coordinates(
@@ -926,14 +926,14 @@ class PlaceDenormalizerTest extends TestCase
             ->withMediaObjectReferences(
                 new MediaObjectReferences(
                     MediaObjectReference::createWithMediaObjectId(
-                        new Uuid('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
+                        new UUID('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
                         new Description('Example image 1'),
                         new CopyrightHolder('Alice'),
                         new Language('nl')
                     ),
                     MediaObjectReference::createWithEmbeddedMediaObject(
                         new MediaObject(
-                            new Uuid('fc712fef-e7c9-4df6-8655-da943852bd8d'),
+                            new UUID('fc712fef-e7c9-4df6-8655-da943852bd8d'),
                             MediaObjectType::imageObject(),
                             new Url('https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png'),
                             new Url('https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png')

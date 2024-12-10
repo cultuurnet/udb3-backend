@@ -20,7 +20,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
@@ -67,14 +67,14 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
     public function setUp(): void
     {
         $this->offer = new ImmutableEvent(
-            new Uuid('91060c19-a860-4a47-8591-8a779bfa520a'),
+            new UUID('91060c19-a860-4a47-8591-8a779bfa520a'),
             new Language('nl'),
             (new TranslatedTitle(new Language('nl'), new Title('Voorbeeld titel')))
                 ->withTranslation(new Language('fr'), new Title('Titre example'))
                 ->withTranslation(new Language('en'), new Title('Example title')),
             new PermanentCalendar(new OpeningHours()),
             PlaceReference::createWithPlaceId(
-                new Uuid('6ba87a6b-efea-4467-9e87-458d145384d9')
+                new UUID('6ba87a6b-efea-4467-9e87-458d145384d9')
             ),
             new Categories(
                 new Category(
@@ -98,7 +98,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
                 ))->withTranslation(new Language('en'), new Description('Example description'))
             )
             ->withOrganizerReference(
-                OrganizerReference::createWithOrganizerId(new Uuid('cc4fa0d1-f86c-42cd-a9c6-995a660ba948'))
+                OrganizerReference::createWithOrganizerId(new UUID('cc4fa0d1-f86c-42cd-a9c6-995a660ba948'))
             )
             ->withAgeRange(
                 new AgeRange(new Age(8), new Age(12))

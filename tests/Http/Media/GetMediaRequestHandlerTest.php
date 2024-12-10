@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Media\MediaUrlMapping;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -37,10 +37,10 @@ final class GetMediaRequestHandlerTest extends TestCase
         $mediaManager = $this->createMock(MediaManager::class);
         $mediaManager->expects($this->once())
             ->method('get')
-            ->with(new Uuid($id))
+            ->with(new UUID($id))
             ->willReturn(
                 MediaObject::create(
-                    new Uuid($id),
+                    new UUID($id),
                     MIMEType::fromSubtype('jpeg'),
                     new Description('UDB2 image'),
                     new CopyrightHolder('publiq'),

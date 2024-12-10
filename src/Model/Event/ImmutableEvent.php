@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -27,7 +27,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
     private AudienceType $audience;
 
     public function __construct(
-        Uuid $id,
+        UUID $id,
         Language $mainLanguage,
         TranslatedTitle $title,
         Calendar $calendar,

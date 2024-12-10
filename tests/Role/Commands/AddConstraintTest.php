@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 
 class AddConstraintTest extends TestCase
 {
-    protected Uuid $uuid;
+    protected UUID $uuid;
 
     protected Query $query;
 
@@ -18,7 +18,7 @@ class AddConstraintTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new Uuid('7ec197c5-b816-43e1-b057-ba1d25a04567');
+        $this->uuid = new UUID('7ec197c5-b816-43e1-b057-ba1d25a04567');
         $this->query = new Query('city:3000');
 
         $this->addConstraint = new AddConstraint(

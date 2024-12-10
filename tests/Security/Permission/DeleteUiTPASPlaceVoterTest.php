@@ -10,7 +10,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class DeleteUiTPASPlaceVoterTest extends TestCase
 {
@@ -23,7 +23,7 @@ class DeleteUiTPASPlaceVoterTest extends TestCase
     {
         $this->documentRepository = $this->createMock(DocumentRepository::class);
         $this->uitpasLabels = ['UiTPAS', 'Paspartoe'];
-        $this->userId = Uuid::uuid4()->toString();
+        $this->userId = UUID::uuid4()->toString();
     }
 
     /**

@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Labels;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\Events\Created as LabelCreated;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\LabelAdded;
@@ -48,7 +48,7 @@ class LabelRolesProjector extends RoleProjector
         $this->repository->save($document);
     }
 
-    private function getDocument(Uuid $uuid): ?JsonDocument
+    private function getDocument(UUID $uuid): ?JsonDocument
     {
         try {
             return $this->repository->fetch($uuid->toString());
@@ -65,7 +65,7 @@ class LabelRolesProjector extends RoleProjector
         return Json::decodeAssociatively($document->getRawBody());
     }
 
-    private function createNewDocument(Uuid $uuid): JsonDocument
+    private function createNewDocument(UUID $uuid): JsonDocument
     {
         return new JsonDocument(
             $uuid->toString(),

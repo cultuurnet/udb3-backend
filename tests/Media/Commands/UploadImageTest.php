@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Media\Commands;
 
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
@@ -18,7 +18,7 @@ final class UploadImageTest extends TestCase
     protected function setUp(): void
     {
         $this->uploadImage = new UploadImage(
-            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('description'),
             new CopyrightHolder('copyright'),
@@ -33,7 +33,7 @@ final class UploadImageTest extends TestCase
     public function it_stores_a_file_id(): void
     {
         $this->assertEquals(
-            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
             $this->uploadImage->getFileId()
         );
     }

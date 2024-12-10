@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class AddEventToProductionRequestHandlerTest extends TestCase
 {
@@ -30,7 +30,7 @@ final class AddEventToProductionRequestHandlerTest extends TestCase
     public function it_can_add_an_event_to_an_existing_production(): void
     {
         $productionId = ProductionId::generate();
-        $eventId = Uuid::uuid4()->toString();
+        $eventId = UUID::uuid4()->toString();
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('productionId', $productionId->toNative())

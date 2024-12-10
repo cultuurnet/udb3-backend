@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\Roles;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 interface LabelRolesWriteRepositoryInterface
 {
-    public function insertLabelRole(Uuid $labelId, Uuid $roleId): void;
+    public function insertLabelRole(UUID $labelId, UUID $roleId): void;
 
-    public function removeLabelRole(Uuid $labelId, Uuid $roleId): void;
+    public function removeLabelRole(UUID $labelId, UUID $roleId): void;
 
-    public function removeRole(Uuid $roleId): void;
+    public function removeRole(UUID $roleId): void;
 }

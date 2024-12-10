@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
 class UserAddedTest extends TestCase
 {
     private UserAdded $userAdded;
 
-    private Uuid $uuid;
+    private UUID $uuid;
 
     private string $userId;
 
     protected function setUp(): void
     {
-        $this->uuid = new Uuid('510610a1-ffe0-4e10-a396-7d0cb28e0619');
+        $this->uuid = new UUID('510610a1-ffe0-4e10-a396-7d0cb28e0619');
 
         $this->userId = 'userId';
 

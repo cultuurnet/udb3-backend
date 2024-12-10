@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Console\Command;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Command\Command;
 
@@ -31,7 +31,7 @@ abstract class AbstractRemoveLabel extends Command
 
     protected function getLabel(string $labelId): ?string
     {
-        $uuid = new Uuid($labelId);
+        $uuid = new UUID($labelId);
         $entity = $this->readRepository->getByUuid($uuid);
         return isset($entity) ? $entity->getName() : null;
     }

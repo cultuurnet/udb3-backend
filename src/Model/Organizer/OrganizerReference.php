@@ -4,23 +4,23 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Organizer;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class OrganizerReference
 {
-    private Uuid $organizerId;
+    private UUID $organizerId;
 
-    private function __construct(Uuid $organizerId)
+    private function __construct(UUID $organizerId)
     {
         $this->organizerId = $organizerId;
     }
 
-    public function getOrganizerId(): Uuid
+    public function getOrganizerId(): UUID
     {
         return $this->organizerId;
     }
 
-    public static function createWithOrganizerId(Uuid $organizerId): OrganizerReference
+    public static function createWithOrganizerId(UUID $organizerId): OrganizerReference
     {
         return new self($organizerId);
     }

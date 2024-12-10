@@ -9,7 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
 class LabelNameUniqueConstraintServiceTest extends TestCase
@@ -25,7 +25,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
         $this->name = 'labelName';
 
         $this->created = $this->createDomainMessage(new Created(
-            new Uuid('23ad437f-b6f0-4fc4-95c0-0c6faf13050f'),
+            new UUID('23ad437f-b6f0-4fc4-95c0-0c6faf13050f'),
             $this->name,
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PRIVATE()
@@ -50,7 +50,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
         $this->assertFalse($this->uniqueHelper->hasUniqueConstraint(
             $this->createDomainMessage(
                 new MadeInvisible(
-                    new Uuid('f9b74707-5d2d-4dbb-886b-b149786a94c5'),
+                    new UUID('f9b74707-5d2d-4dbb-886b-b149786a94c5'),
                     '2dotstwice'
                 )
             )

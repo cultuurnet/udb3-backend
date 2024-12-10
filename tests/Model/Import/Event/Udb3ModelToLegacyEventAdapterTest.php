@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -31,14 +31,14 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
     public function setUp(): void
     {
         $event = new ImmutableEvent(
-            new Uuid('91060c19-a860-4a47-8591-8a779bfa520a'),
+            new UUID('91060c19-a860-4a47-8591-8a779bfa520a'),
             new Language('nl'),
             (new TranslatedTitle(new Language('nl'), new Title('Voorbeeld titel')))
                 ->withTranslation(new Language('fr'), new Title('Titre example'))
                 ->withTranslation(new Language('en'), new Title('Example title')),
             new PermanentCalendar(new OpeningHours()),
             PlaceReference::createWithPlaceId(
-                new Uuid('6ba87a6b-efea-4467-9e87-458d145384d9'),
+                new UUID('6ba87a6b-efea-4467-9e87-458d145384d9'),
             ),
             new Categories(
                 new Category(

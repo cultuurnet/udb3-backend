@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
 class CreateRoleTest extends TestCase
 {
-    protected Uuid $uuid;
+    protected UUID $uuid;
 
     protected string $name;
 
@@ -17,7 +17,7 @@ class CreateRoleTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new Uuid('da3d5569-9d0b-4f52-b61e-1f81b4deeb01');
+        $this->uuid = new UUID('da3d5569-9d0b-4f52-b61e-1f81b4deeb01');
 
         $this->name = 'roleName';
 

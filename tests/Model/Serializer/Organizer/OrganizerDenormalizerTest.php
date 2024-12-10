@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -60,7 +60,7 @@ class OrganizerDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableOrganizer(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -131,7 +131,7 @@ class OrganizerDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableOrganizer(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -164,7 +164,7 @@ class OrganizerDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableOrganizer(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             (new TranslatedTitle(
                 new Language('nl'),
@@ -247,7 +247,7 @@ class OrganizerDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableOrganizer(
-            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             (new TranslatedTitle(
                 new Language('nl'),

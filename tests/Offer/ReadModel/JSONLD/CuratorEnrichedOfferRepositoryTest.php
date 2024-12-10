@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Curators\NewsArticles;
 use CultuurNet\UDB3\Curators\NewsArticleSearch;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -61,7 +61,7 @@ final class CuratorEnrichedOfferRepositoryTest extends TestCase
             ->willReturn(
                 new NewsArticles(
                     new NewsArticle(
-                        new Uuid('1aa872e5-e0af-47a1-a9b3-31537b0cb4d9'),
+                        new UUID('1aa872e5-e0af-47a1-a9b3-31537b0cb4d9'),
                         'headline',
                         new Language('nl'),
                         'text',
@@ -71,7 +71,7 @@ final class CuratorEnrichedOfferRepositoryTest extends TestCase
                         new Url('https://www.publiq.be/logo.png')
                     ),
                     new NewsArticle(
-                        new Uuid('ad919c2e-c6ca-46b1-8f50-3b45f733342c'),
+                        new UUID('ad919c2e-c6ca-46b1-8f50-3b45f733342c'),
                         'headline',
                         new Language('nl'),
                         'text',
@@ -145,7 +145,7 @@ final class CuratorEnrichedOfferRepositoryTest extends TestCase
             ->willReturn(
                 new NewsArticles(
                     new NewsArticle(
-                        new Uuid('1aa872e5-e0af-47a1-a9b3-31537b0cb4d9'),
+                        new UUID('1aa872e5-e0af-47a1-a9b3-31537b0cb4d9'),
                         'headline',
                         new Language('nl'),
                         'text',

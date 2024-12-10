@@ -12,7 +12,7 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class ProductionEnrichedEventRepositoryTest extends TestCase
 {
@@ -51,7 +51,7 @@ final class ProductionEnrichedEventRepositoryTest extends TestCase
      */
     public function it_returns_a_null_production_when_the_event_does_not_belong_to_a_production(): void
     {
-        $eventId = Uuid::uuid4()->toString();
+        $eventId = UUID::uuid4()->toString();
         $originalJsonDocument = new JsonDocument(
             $eventId,
             Json::encode((object) ['@id' => $eventId])
@@ -76,13 +76,13 @@ final class ProductionEnrichedEventRepositoryTest extends TestCase
      */
     public function it_returns_production_data_when_event_belongs_to_a_production(): void
     {
-        $eventId = Uuid::uuid4()->toString();
+        $eventId = UUID::uuid4()->toString();
         $originalJsonDocument = new JsonDocument(
             $eventId,
             Json::encode((object) ['@id' => $eventId])
         );
 
-        $otherEventId = Uuid::uuid4()->toString();
+        $otherEventId = UUID::uuid4()->toString();
         $productionId = ProductionId::generate();
         $productionName = 'The Teenage Mutant Ninja String Quartet in Concert - Heroes in a half Cello';
         $production = new Production(
@@ -118,7 +118,7 @@ final class ProductionEnrichedEventRepositoryTest extends TestCase
             $this->iriGenerator
         );
 
-        $eventId = Uuid::uuid4()->toString();
+        $eventId = UUID::uuid4()->toString();
 
         $newProductionEnrichedEventRepository->save(
             new JsonDocument(
@@ -126,12 +126,12 @@ final class ProductionEnrichedEventRepositoryTest extends TestCase
                 Json::encode([
                     '@type' => 'Event',
                     'production' => [
-                        'id' => Uuid::uuid4()->toString(),
+                        'id' => UUID::uuid4()->toString(),
                         'title' => 'Movie Night',
                         'otherEvents' => [
-                            'https://io.uitdatabank.dev/event/' . Uuid::uuid4()->toString(),
-                            'https://io.uitdatabank.dev/event/' . Uuid::uuid4()->toString(),
-                            'https://io.uitdatabank.dev/event/' . Uuid::uuid4()->toString(),
+                            'https://io.uitdatabank.dev/event/' . UUID::uuid4()->toString(),
+                            'https://io.uitdatabank.dev/event/' . UUID::uuid4()->toString(),
+                            'https://io.uitdatabank.dev/event/' . UUID::uuid4()->toString(),
                         ],
                     ],
                 ])

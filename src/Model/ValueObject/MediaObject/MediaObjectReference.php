@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 final class MediaObjectReference
 {
-    private Uuid $mediaObjectId;
+    private UUID $mediaObjectId;
 
     private ?MediaObject $mediaObject;
 
@@ -21,7 +21,7 @@ final class MediaObjectReference
     private Language $language;
 
     private function __construct(
-        Uuid $mediaObjectId,
+        UUID $mediaObjectId,
         Description $description,
         CopyrightHolder $copyrightHolder,
         Language $language,
@@ -38,7 +38,7 @@ final class MediaObjectReference
         $this->mediaObject = $mediaObject;
     }
 
-    public function getMediaObjectId(): Uuid
+    public function getMediaObjectId(): UUID
     {
         return $this->mediaObjectId;
     }
@@ -78,7 +78,7 @@ final class MediaObjectReference
     }
 
     public static function createWithMediaObjectId(
-        Uuid $mediaObjectId,
+        UUID $mediaObjectId,
         Description $description,
         CopyrightHolder $copyrightHolder,
         Language $language

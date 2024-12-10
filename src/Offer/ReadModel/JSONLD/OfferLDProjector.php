@@ -19,7 +19,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -517,7 +517,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $document->withBody($offerLd);
     }
 
-    protected function mediaObjectMatchesId(object $mediaObject, Uuid $mediaObjectId): bool
+    protected function mediaObjectMatchesId(object $mediaObject, UUID $mediaObjectId): bool
     {
         return strpos($mediaObject->{'@id'}, $mediaObjectId->toString()) > 0;
     }

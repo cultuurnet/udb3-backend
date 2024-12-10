@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Label\Commands\MakeInvisible;
 use CultuurNet\UDB3\Label\Commands\MakePrivate;
 use CultuurNet\UDB3\Label\Commands\MakePublic;
 use CultuurNet\UDB3\Label\Commands\MakeVisible;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
 final class PatchLabelRequestHandlerTest extends TestCase
@@ -58,27 +58,27 @@ final class PatchLabelRequestHandlerTest extends TestCase
         return [
             'makeVisible' => [
                 'command' => CommandType::makeVisible(),
-                'expectedCommand' => new MakeVisible(new Uuid('9714108c-dddc-4105-a736-2e32632999f4')),
+                'expectedCommand' => new MakeVisible(new UUID('9714108c-dddc-4105-a736-2e32632999f4')),
             ],
             'makeInvisible' => [
                 'command' => CommandType::makeInvisible(),
-                'expectedCommand' => new MakeInvisible(new Uuid('9714108c-dddc-4105-a736-2e32632999f4')),
+                'expectedCommand' => new MakeInvisible(new UUID('9714108c-dddc-4105-a736-2e32632999f4')),
             ],
             'makePublic' => [
                 'command' => CommandType::makePublic(),
-                'expectedCommand' => new MakePublic(new Uuid('9714108c-dddc-4105-a736-2e32632999f4')),
+                'expectedCommand' => new MakePublic(new UUID('9714108c-dddc-4105-a736-2e32632999f4')),
             ],
             'makePrivate' => [
                 'command' => CommandType::makePrivate(),
-                'expectedCommand' => new MakePrivate(new Uuid('9714108c-dddc-4105-a736-2e32632999f4')),
+                'expectedCommand' => new MakePrivate(new UUID('9714108c-dddc-4105-a736-2e32632999f4')),
             ],
             'include' => [
                 'command' => CommandType::include(),
-                'expectedCommand' => new IncludeLabel(new Uuid('9714108c-dddc-4105-a736-2e32632999f4')),
+                'expectedCommand' => new IncludeLabel(new UUID('9714108c-dddc-4105-a736-2e32632999f4')),
             ],
             'exclude' => [
                 'command' => CommandType::exclude(),
-                'expectedCommand' => new ExcludeLabel(new Uuid('9714108c-dddc-4105-a736-2e32632999f4')),
+                'expectedCommand' => new ExcludeLabel(new UUID('9714108c-dddc-4105-a736-2e32632999f4')),
             ],
         ];
     }

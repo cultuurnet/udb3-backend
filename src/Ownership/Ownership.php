@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Ownership;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
@@ -24,8 +24,8 @@ final class Ownership extends EventSourcedAggregateRoot
     }
 
     public static function requestOwnership(
-        Uuid $id,
-        Uuid $itemId,
+        UUID $id,
+        UUID $itemId,
         ItemType $itemType,
         UserId $ownerId,
         UserId $requesterId

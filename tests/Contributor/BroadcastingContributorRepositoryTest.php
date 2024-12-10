@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\EventBus\TraceableEventBus;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
@@ -30,7 +30,7 @@ final class BroadcastingContributorRepositoryTest extends TestCase
 
     private BroadcastingContributorRepository $contributorRepository;
 
-    private Uuid $itemId;
+    private UUID $itemId;
 
     private EmailAddress $email;
 
@@ -38,7 +38,7 @@ final class BroadcastingContributorRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->itemId = new Uuid('f28b47d1-4d06-4c46-94cc-d0ddbaad102f');
+        $this->itemId = new UUID('f28b47d1-4d06-4c46-94cc-d0ddbaad102f');
         $this->decoratee = $this->createMock(ContributorRepository::class);
         $this->eventBus = new TraceableEventBus($this->createMock(EventBus::class));
         $this->contributorRepository = new BroadcastingContributorRepository(

@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventPlaceHistoryRepository;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -55,9 +55,9 @@ class EventPlaceHistoryProjector implements EventListener
         }
 
         $this->repository->storeEventPlaceMove(
-            new Uuid($locationUpdated->getItemId()),
+            new UUID($locationUpdated->getItemId()),
             $oldPlaceId,
-            new Uuid($locationUpdated->getLocationId()->toString()),
+            new UUID($locationUpdated->getLocationId()->toString()),
             $domainMessage->getRecordedOn()->toNative()
         );
     }
@@ -65,8 +65,8 @@ class EventPlaceHistoryProjector implements EventListener
     protected function applyEventCreated(EventCreated $eventCreated, DomainMessage $domainMessage): void
     {
         $this->repository->storeEventPlaceStartingPoint(
-            new Uuid($eventCreated->getEventId()),
-            new Uuid($eventCreated->getLocation()->toString()),
+            new UUID($eventCreated->getEventId()),
+            new UUID($eventCreated->getLocation()->toString()),
             $domainMessage->getRecordedOn()->toNative()
         );
     }
@@ -81,7 +81,7 @@ class EventPlaceHistoryProjector implements EventListener
         }
 
         $this->repository->storeEventPlaceStartingPoint(
-            new Uuid($eventCopied->getItemId()),
+            new UUID($eventCopied->getItemId()),
             $placeId,
             $domainMessage->getRecordedOn()->toNative()
         );
@@ -106,8 +106,8 @@ class EventPlaceHistoryProjector implements EventListener
         }
 
         $this->repository->storeEventPlaceStartingPoint(
-            new Uuid($eventImportedFromUDB2->getEventId()),
-            new Uuid($newPlaceId),
+            new UUID($eventImportedFromUDB2->getEventId()),
+            new UUID($newPlaceId),
             $domainMessage->getRecordedOn()->toNative()
         );
     }
@@ -138,9 +138,9 @@ class EventPlaceHistoryProjector implements EventListener
         }
 
         $this->repository->storeEventPlaceMove(
-            new Uuid($eventUpdatedFromUDB2->getEventId()),
+            new UUID($eventUpdatedFromUDB2->getEventId()),
             $oldPlaceId,
-            new Uuid($newPlaceId),
+            new UUID($newPlaceId),
             $domainMessage->getRecordedOn()->toNative()
         );
     }
@@ -154,14 +154,14 @@ class EventPlaceHistoryProjector implements EventListener
             return;
         }
 
-        $newPlaceId = new Uuid($majorInfoUpdated->getLocation()->toString());
+        $newPlaceId = new UUID($majorInfoUpdated->getLocation()->toString());
 
         if ($newPlaceId->sameAs($oldPlaceId)) {
             return;
         }
 
         $this->repository->storeEventPlaceMove(
-            new Uuid($majorInfoUpdated->getItemId()),
+            new UUID($majorInfoUpdated->getItemId()),
             $oldPlaceId,
             $newPlaceId,
             $domainMessage->getRecordedOn()->toNative()
@@ -171,13 +171,13 @@ class EventPlaceHistoryProjector implements EventListener
     /**
      * @throws DocumentDoesNotExist
      */
-    private function getOldPlaceUuid(string $eventId): Uuid
+    private function getOldPlaceUuid(string $eventId): UUID
     {
         $myEvent = $this->eventRepository->fetch($eventId);
 
         $body = $myEvent->getAssocBody();
 
         $id = (new PlaceIDParser())->fromUrl(new Url($body['location']['@id']));
-        return new Uuid($id->toString());
+        return new UUID($id->toString());
     }
 }

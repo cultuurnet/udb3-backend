@@ -8,7 +8,7 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\ProjectedToJSONLDFactory;
@@ -31,17 +31,17 @@ final class BroadcastingContributorRepository implements ContributorRepository
         $this->projectedToJSONLDFactory = $projectedToJSONLDFactory;
     }
 
-    public function getContributors(Uuid $id): EmailAddresses
+    public function getContributors(UUID $id): EmailAddresses
     {
         return $this->repository->getContributors($id);
     }
 
-    public function isContributor(Uuid $id, EmailAddress $emailAddress): bool
+    public function isContributor(UUID $id, EmailAddress $emailAddress): bool
     {
         return $this->repository->isContributor($id, $emailAddress);
     }
 
-    public function updateContributors(Uuid $id, EmailAddresses $emailAddresses, ItemType $itemType): void
+    public function updateContributors(UUID $id, EmailAddresses $emailAddresses, ItemType $itemType): void
     {
         $this->repository->updateContributors($id, $emailAddresses, $itemType);
 

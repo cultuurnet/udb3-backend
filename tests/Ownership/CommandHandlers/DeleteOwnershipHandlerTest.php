@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Commands\DeleteOwnership;
 use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
@@ -38,7 +38,7 @@ class DeleteOwnershipHandlerTest extends CommandHandlerScenarioTestCase
                 ),
             ])
             ->when(new DeleteOwnership(
-                new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
+                new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
             ))
             ->then([
                 new OwnershipDeleted('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),

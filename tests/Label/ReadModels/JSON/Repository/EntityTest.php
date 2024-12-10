@@ -7,12 +7,12 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
 class EntityTest extends TestCase
 {
-    private Uuid $uuid;
+    private UUID $uuid;
 
     private string $name;
 
@@ -28,7 +28,7 @@ class EntityTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new Uuid('17d17095-a628-4cfe-98c2-3306bb6af450');
+        $this->uuid = new UUID('17d17095-a628-4cfe-98c2-3306bb6af450');
 
         $this->name = 'labelName';
 

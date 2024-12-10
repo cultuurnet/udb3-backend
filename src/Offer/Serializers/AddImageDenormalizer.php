@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Serializers;
 
 use CultuurNet\UDB3\Event\Commands\AddImage as EventAddImage;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractAddImage;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Place\Commands\AddImage as PlaceAddImage;
@@ -28,12 +28,12 @@ final class AddImageDenormalizer implements DenormalizerInterface
         if ($this->offerType->sameAs(OfferType::event())) {
             return new EventAddImage(
                 $this->offerId,
-                new Uuid($data['mediaObjectId'])
+                new UUID($data['mediaObjectId'])
             );
         } else {
             return new PlaceAddImage(
                 $this->offerId,
-                new Uuid($data['mediaObjectId'])
+                new UUID($data['mediaObjectId'])
             );
         }
     }

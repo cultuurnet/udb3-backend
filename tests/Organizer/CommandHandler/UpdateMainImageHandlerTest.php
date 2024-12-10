@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Organizer\Commands\UpdateMainImage;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
@@ -49,7 +49,7 @@ final class UpdateMainImageHandlerTest extends CommandHandlerScenarioTestCase
                 ),
             ])
             ->when(
-                new UpdateMainImage($id, new Uuid('cf539408-bba9-4e77-9f85-72019013db37'))
+                new UpdateMainImage($id, new UUID('cf539408-bba9-4e77-9f85-72019013db37'))
             )
             ->then([
                 new MainImageUpdated($id, 'cf539408-bba9-4e77-9f85-72019013db37'),

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Curators\Serializer;
 
 use CultuurNet\UDB3\Curators\NewsArticle;
 use CultuurNet\UDB3\Curators\NewsArticleImage;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -14,9 +14,9 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class NewsArticleDenormalizer implements DenormalizerInterface
 {
-    private Uuid $uuid;
+    private UUID $uuid;
 
-    public function __construct(Uuid $uuid)
+    public function __construct(UUID $uuid)
     {
         $this->uuid = $uuid;
     }

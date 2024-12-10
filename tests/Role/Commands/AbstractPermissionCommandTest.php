@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +20,7 @@ class AbstractPermissionCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $uuid = new Uuid('e6f81e9d-33c4-4886-a4b5-dba566d811d5');
+        $uuid = new UUID('e6f81e9d-33c4-4886-a4b5-dba566d811d5');
         $this->rolePermission = Permission::aanbodBewerken();
 
         $this->abstractPermissionCommand = $this->getMockForAbstractClass(

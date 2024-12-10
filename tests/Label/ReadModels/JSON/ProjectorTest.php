@@ -20,16 +20,16 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelEvent;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class ProjectorTest extends TestCase
 {
-    private Uuid $uuid;
+    private UUID $uuid;
 
-    private Uuid $unknownId;
+    private UUID $unknownId;
 
     private string $labelName;
 
@@ -46,8 +46,8 @@ final class ProjectorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new Uuid('EC1697B7-7E2B-4462-A901-EC20E2A0AAFC');
-        $this->unknownId = new Uuid('ACFCFE56-3D16-48FB-A053-FAA9950720DC');
+        $this->uuid = new UUID('EC1697B7-7E2B-4462-A901-EC20E2A0AAFC');
+        $this->unknownId = new UUID('ACFCFE56-3D16-48FB-A053-FAA9950720DC');
 
         $this->labelName = 'labelName';
         $this->unknownLabelName = 'unknownLabelName';
@@ -256,7 +256,7 @@ final class ProjectorTest extends TestCase
     /**
      * @param AbstractEvent|AbstractLabelEvent|Included|Excluded $payload
      */
-    private function createDomainMessage(Uuid $id, $payload): DomainMessage
+    private function createDomainMessage(UUID $id, $payload): DomainMessage
     {
         return new DomainMessage(
             $id->toString(),

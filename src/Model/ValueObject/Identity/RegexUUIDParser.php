@@ -21,7 +21,7 @@ class RegexUUIDParser implements UUIDParser
         $this->matchIndex = $matchIndex;
     }
 
-    public function fromUrl(Url $url): Uuid
+    public function fromUrl(Url $url): UUID
     {
         $url = $url->toString();
 
@@ -29,7 +29,7 @@ class RegexUUIDParser implements UUIDParser
         preg_match($this->regex, $url, $matches);
 
         if (count($matches) > 1) {
-            return new Uuid($matches[$this->matchIndex]);
+            return new UUID($matches[$this->matchIndex]);
         }
 
         throw new \InvalidArgumentException("No {$this->idName} found in given Url.");

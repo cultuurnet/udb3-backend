@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Ownership\Repositories;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class OwnershipItem
 {
@@ -13,7 +13,7 @@ final class OwnershipItem
     private string $itemType;
     private string $ownerId;
     private string $state;
-    private ?Uuid $roleId;
+    private ?UUID $roleId;
 
     public function __construct(
         string $id,
@@ -30,7 +30,7 @@ final class OwnershipItem
         $this->roleId = null;
     }
 
-    public function withRoleId(Uuid $roleId): self
+    public function withRoleId(UUID $roleId): self
     {
         $ownershipItem = clone $this;
         $ownershipItem->roleId = $roleId;
@@ -62,7 +62,7 @@ final class OwnershipItem
         return $this->state;
     }
 
-    public function getRoleId(): ?Uuid
+    public function getRoleId(): ?UUID
     {
         return $this->roleId;
     }

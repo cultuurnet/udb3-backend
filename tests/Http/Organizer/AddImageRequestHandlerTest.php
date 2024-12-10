@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
@@ -61,7 +61,7 @@ final class AddImageRequestHandlerTest extends TestCase
             ->with('03789a2f-5063-4062-b7cb-95a0a2280d92')
             ->willReturn(
                 MediaObject::create(
-                    new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     MIMEType::fromSubtype('jpeg'),
                     new ImageDescription('Uploaded image'),
                     new CopyrightHolder('madewithlove'),
@@ -92,7 +92,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     'copyrightHolder' => 'publiq',
                 ],
                 new Image(
-                    new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     new Language('en'),
                     new Description('A nice image'),
                     new CopyrightHolder('publiq')
@@ -103,7 +103,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
                 ],
                 new Image(
-                    new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     new Language('nl'),
                     new Description('Uploaded image'),
                     new CopyrightHolder('madewithlove')
@@ -115,7 +115,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     'language' => 'fr',
                 ],
                 new Image(
-                    new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     new Language('fr'),
                     new Description('Uploaded image'),
                     new CopyrightHolder('madewithlove')
@@ -127,7 +127,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     'description' => 'A nice image',
                 ],
                 new Image(
-                    new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     new Language('nl'),
                     new Description('A nice image'),
                     new CopyrightHolder('madewithlove')
@@ -139,7 +139,7 @@ final class AddImageRequestHandlerTest extends TestCase
                     'copyrightHolder' => 'publiq',
                 ],
                 new Image(
-                    new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     new Language('nl'),
                     new Description('Uploaded image'),
                     new CopyrightHolder('publiq')

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class RenameRole extends AbstractCommand
 {
     private string $name;
 
     public function __construct(
-        Uuid $uuid,
+        UUID $uuid,
         string $name
     ) {
         parent::__construct($uuid);

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 final class Image
 {
-    private Uuid $id;
+    private UUID $id;
 
     private Language $language;
 
@@ -19,7 +19,7 @@ final class Image
     private CopyrightHolder $copyrightHolder;
 
     public function __construct(
-        Uuid $id,
+        UUID $id,
         Language $language,
         Description $description,
         CopyrightHolder $copyrightHolder
@@ -30,7 +30,7 @@ final class Image
         $this->copyrightHolder = $copyrightHolder;
     }
 
-    public function getId(): Uuid
+    public function getId(): UUID
     {
         return $this->id;
     }

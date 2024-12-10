@@ -9,7 +9,7 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class ReplayFlaggingMiddlewareTest extends TestCase
 {
@@ -27,7 +27,7 @@ final class ReplayFlaggingMiddlewareTest extends TestCase
     {
         $createDomainMessage = static function (int $id) {
             return new DomainMessage(
-                Uuid::uuid4()->toString(),
+                UUID::uuid4()->toString(),
                 0,
                 new Metadata(),
                 (object) ['id' => $id],

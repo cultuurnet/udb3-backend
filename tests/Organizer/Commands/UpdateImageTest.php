@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -19,7 +19,7 @@ final class UpdateImageTest extends TestCase
     {
         $this->updateImage = new UpdateImage(
             'a98df644-da7e-407e-9cd9-3217ddc61f27',
-            new Uuid('6da7230e-ce93-44d5-b76b-48a76140d8f7')
+            new UUID('6da7230e-ce93-44d5-b76b-48a76140d8f7')
         );
     }
 
@@ -40,7 +40,7 @@ final class UpdateImageTest extends TestCase
     public function it_stores_an_image_id(): void
     {
         $this->assertEquals(
-            new Uuid('6da7230e-ce93-44d5-b76b-48a76140d8f7'),
+            new UUID('6da7230e-ce93-44d5-b76b-48a76140d8f7'),
             $this->updateImage->getImageId()
         );
     }

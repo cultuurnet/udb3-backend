@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class SearchProductionsRequestHandlerTest extends TestCase
 {
@@ -96,8 +96,8 @@ final class SearchProductionsRequestHandlerTest extends TestCase
         $productionId = ProductionId::generate();
         $name = 'Indiana Foo and the arrayders of the lost SPARC';
         $events = [
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
+            UUID::uuid4()->toString(),
+            UUID::uuid4()->toString(),
         ];
 
         $productions = [new Production($productionId, $name, $events)];

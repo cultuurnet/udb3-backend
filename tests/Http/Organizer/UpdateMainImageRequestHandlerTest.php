@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Offer\ImageMustBeLinkedException;
 use CultuurNet\UDB3\Organizer\Commands\UpdateMainImage;
 use PHPUnit\Framework\TestCase;
@@ -46,7 +46,7 @@ final class UpdateMainImageRequestHandlerTest extends TestCase
 
         $expectedCommand = new UpdateMainImage(
             'c269632a-a887-4f21-8455-1631c31e4df5',
-            new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92')
+            new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92')
         );
 
         $response = $this->updateMainImageRequestHandler->handle($request);
@@ -69,7 +69,7 @@ final class UpdateMainImageRequestHandlerTest extends TestCase
 
         $expectedCommand = new UpdateMainImage(
             'c269632a-a887-4f21-8455-1631c31e4df5',
-            new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92')
+            new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92')
         );
 
         $response = $this->updateMainImageRequestHandler->handle($request);

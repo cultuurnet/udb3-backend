@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\Events;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class LabelDetailsProjectedToJSONLD implements Serializable
 {
     public const UUID = 'uuid';
 
-    private Uuid $uuid;
+    private UUID $uuid;
 
-    public function __construct(Uuid $uuid)
+    public function __construct(UUID $uuid)
     {
         $this->uuid = $uuid;
     }
 
-    public function getUuid(): Uuid
+    public function getUuid(): UUID
     {
         return $this->uuid;
     }
@@ -26,7 +26,7 @@ final class LabelDetailsProjectedToJSONLD implements Serializable
     public static function deserialize(array $data): LabelDetailsProjectedToJSONLD
     {
         return new static(
-            new Uuid($data[self::UUID])
+            new UUID($data[self::UUID])
         );
     }
 

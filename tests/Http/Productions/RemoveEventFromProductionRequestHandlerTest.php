@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\RemoveEventFromProduction;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class RemoveEventFromProductionRequestHandlerTest extends TestCase
 {
@@ -30,7 +30,7 @@ final class RemoveEventFromProductionRequestHandlerTest extends TestCase
     public function it_can_remove_an_event_from_a_production(): void
     {
         $productionId = ProductionId::generate();
-        $eventId = Uuid::uuid4()->toString();
+        $eventId = UUID::uuid4()->toString();
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('productionId', $productionId->toNative())

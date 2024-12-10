@@ -11,7 +11,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class ProductionCommandHandlerTest extends TestCase
 {
@@ -52,9 +52,9 @@ final class ProductionCommandHandlerTest extends TestCase
     {
         $name = "A Midsummer Night's Scream";
         $events = [
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
+            UUID::uuid4()->toString(),
+            UUID::uuid4()->toString(),
+            UUID::uuid4()->toString(),
         ];
 
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
@@ -73,12 +73,12 @@ final class ProductionCommandHandlerTest extends TestCase
      */
     public function it_will_not_group_events_as_production_when_event_already_belongs_to_production(): void
     {
-        $event = Uuid::uuid4()->toString();
+        $event = UUID::uuid4()->toString();
 
         $name = "A Midsummer Night's Scream";
         $events = [
             $event,
-            Uuid::uuid4()->toString(),
+            UUID::uuid4()->toString(),
         ];
 
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
@@ -92,7 +92,7 @@ final class ProductionCommandHandlerTest extends TestCase
             GroupEventsAsProduction::withProductionName(
                 [
                     $event,
-                    Uuid::uuid4()->toString(),
+                    UUID::uuid4()->toString(),
                 ],
                 'Some other production'
             )
@@ -104,7 +104,7 @@ final class ProductionCommandHandlerTest extends TestCase
      */
     public function it_will_not_group_events_as_production_when_event_does_not_exist(): void
     {
-        $event = Uuid::uuid4()->toString();
+        $event = UUID::uuid4()->toString();
 
         $this->eventRepository->method('fetch')->willThrowException(DocumentDoesNotExist::withId($event));
         $this->expectException(EventCannotBeAddedToProduction::class);
@@ -112,7 +112,7 @@ final class ProductionCommandHandlerTest extends TestCase
             GroupEventsAsProduction::withProductionName(
                 [
                     $event,
-                    Uuid::uuid4()->toString(),
+                    UUID::uuid4()->toString(),
                 ],
                 'Some production'
             )
@@ -125,11 +125,11 @@ final class ProductionCommandHandlerTest extends TestCase
     public function it_can_add_event_to_production(): void
     {
         $name = "A Midsummer Night's Scream 2";
-        $eventToAdd = Uuid::uuid4()->toString();
+        $eventToAdd = UUID::uuid4()->toString();
         $events = [
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
+            UUID::uuid4()->toString(),
+            UUID::uuid4()->toString(),
+            UUID::uuid4()->toString(),
         ];
 
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
@@ -156,7 +156,7 @@ final class ProductionCommandHandlerTest extends TestCase
     {
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
 
-        $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
+        $eventBelongingToFirstProduction = UUID::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
         $firstProductionCommand = GroupEventsAsProduction::withProductionName(
             [$eventBelongingToFirstProduction],
@@ -165,7 +165,7 @@ final class ProductionCommandHandlerTest extends TestCase
         $this->commandHandler->handle($firstProductionCommand);
 
         $name = "A Midsummer Night's Scream 3";
-        $secondProductionCommand = GroupEventsAsProduction::withProductionName([Uuid::uuid4()->toString()], $name);
+        $secondProductionCommand = GroupEventsAsProduction::withProductionName([UUID::uuid4()->toString()], $name);
         $this->commandHandler->handle($secondProductionCommand);
 
         $this->expectException(EventCannotBeAddedToProduction::class);
@@ -179,7 +179,7 @@ final class ProductionCommandHandlerTest extends TestCase
      */
     public function it_cannot_add_a_non_existing_event_to_a_production(): void
     {
-        $eventId = Uuid::uuid4()->toString();
+        $eventId = UUID::uuid4()->toString();
         $this->eventRepository->method('fetch')->with($eventId)->willThrowException(DocumentDoesNotExist::withId($eventId));
 
         $this->expectException(EventCannotBeAddedToProduction::class);
@@ -195,7 +195,7 @@ final class ProductionCommandHandlerTest extends TestCase
     {
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
 
-        $eventBelongingToProduction = Uuid::uuid4()->toString();
+        $eventBelongingToProduction = UUID::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
         $firstProductionCommand = GroupEventsAsProduction::withProductionName([$eventBelongingToProduction], $name);
         $this->commandHandler->handle($firstProductionCommand);
@@ -214,10 +214,10 @@ final class ProductionCommandHandlerTest extends TestCase
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
 
         $name = "A Midsummer Night's Scream 2";
-        $eventToRemove = Uuid::uuid4()->toString();
+        $eventToRemove = UUID::uuid4()->toString();
         $events = [
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
+            UUID::uuid4()->toString(),
+            UUID::uuid4()->toString(),
             $eventToRemove,
         ];
 
@@ -243,14 +243,14 @@ final class ProductionCommandHandlerTest extends TestCase
 
         $name = "A Midsummer Night's Scream 3";
         $eventsToRemove = [
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
+            UUID::uuid4()->toString(),
+            UUID::uuid4()->toString(),
+            UUID::uuid4()->toString(),
         ];
         $events = array_merge([
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
+            UUID::uuid4()->toString(),
+            UUID::uuid4()->toString(),
+            UUID::uuid4()->toString(),
             ], $eventsToRemove);
 
         $command = GroupEventsAsProduction::withProductionName($events, $name);
@@ -274,7 +274,7 @@ final class ProductionCommandHandlerTest extends TestCase
     {
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
 
-        $eventBelongingToFirstProduction = Uuid::uuid4()->toString();
+        $eventBelongingToFirstProduction = UUID::uuid4()->toString();
         $name = "A Midsummer Night's Scream 2";
         $firstProductionCommand = GroupEventsAsProduction::withProductionName(
             [$eventBelongingToFirstProduction],
@@ -282,7 +282,7 @@ final class ProductionCommandHandlerTest extends TestCase
         );
         $this->commandHandler->handle($firstProductionCommand);
 
-        $eventBelongingToSecondProduction = Uuid::uuid4()->toString();
+        $eventBelongingToSecondProduction = UUID::uuid4()->toString();
         $name = "A Midsummer Night's Scream 3";
         $secondProductionCommand = GroupEventsAsProduction::withProductionName(
             [$eventBelongingToSecondProduction],
@@ -308,12 +308,12 @@ final class ProductionCommandHandlerTest extends TestCase
     {
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
 
-        $event1 = Uuid::uuid4()->toString();
+        $event1 = UUID::uuid4()->toString();
         $name = 'I know what you did last Midsummer Night';
         $fromProductionCommand = GroupEventsAsProduction::withProductionName([$event1], $name);
         $this->commandHandler->handle($fromProductionCommand);
 
-        $event2 = Uuid::uuid4()->toString();
+        $event2 = UUID::uuid4()->toString();
         $name = "I know what you did last Midsummer Night's Dream";
         $toProductionCommand = GroupEventsAsProduction::withProductionName([$event2], $name);
         $this->commandHandler->handle($toProductionCommand);
@@ -337,7 +337,7 @@ final class ProductionCommandHandlerTest extends TestCase
     {
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('foo'));
 
-        $event1 = Uuid::uuid4()->toString();
+        $event1 = UUID::uuid4()->toString();
         $name = 'I know what you did last Midsummer Night';
         $fromProductionCommand = GroupEventsAsProduction::withProductionName([$event1], $name);
         $this->commandHandler->handle($fromProductionCommand);
@@ -357,7 +357,7 @@ final class ProductionCommandHandlerTest extends TestCase
     {
         $this->eventRepository->method('fetch')->willReturn(new JsonDocument('Foo'));
 
-        $eventId = Uuid::uuid4()->toString();
+        $eventId = UUID::uuid4()->toString();
         $groupEvent = GroupEventsAsProduction::withProductionName([$eventId], 'Foo');
         $this->commandHandler->handle($groupEvent);
 
@@ -376,8 +376,8 @@ final class ProductionCommandHandlerTest extends TestCase
     public function it_can_mark_events_as_skipped(): void
     {
         $eventPair = SimilarEventPair::fromArray([
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
+            UUID::uuid4()->toString(),
+            UUID::uuid4()->toString(),
         ]);
 
         $this->skippedSimilarEventsRepository->expects(self::once())

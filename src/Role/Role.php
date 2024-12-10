@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\Role\Events\ConstraintRemoved;
 use CultuurNet\UDB3\Role\Events\ConstraintUpdated;
@@ -23,7 +23,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Query;
 
 class Role extends EventSourcedAggregateRoot
 {
-    private Uuid $uuid;
+    private UUID $uuid;
 
     private string $name;
 
@@ -35,7 +35,7 @@ class Role extends EventSourcedAggregateRoot
     private array $permissions = [];
 
     /**
-     * @var Uuid[]
+     * @var UUID[]
      */
     private array $labelIds = [];
 
@@ -50,7 +50,7 @@ class Role extends EventSourcedAggregateRoot
     }
 
     public static function create(
-        Uuid $uuid,
+        UUID $uuid,
         string $name
     ): Role {
         $role = new Role();
@@ -64,7 +64,7 @@ class Role extends EventSourcedAggregateRoot
     }
 
     public function rename(
-        Uuid $uuid,
+        UUID $uuid,
         string $name
     ): void {
         $this->apply(new RoleRenamed($uuid, $name));
@@ -101,7 +101,7 @@ class Role extends EventSourcedAggregateRoot
     }
 
     public function addPermission(
-        Uuid $uuid,
+        UUID $uuid,
         Permission $permission
     ): void {
         if (!in_array($permission, $this->permissions)) {
@@ -110,7 +110,7 @@ class Role extends EventSourcedAggregateRoot
     }
 
     public function removePermission(
-        Uuid $uuid,
+        UUID $uuid,
         Permission $permission
     ): void {
         if (in_array($permission, $this->permissions)) {
@@ -119,7 +119,7 @@ class Role extends EventSourcedAggregateRoot
     }
 
     public function addLabel(
-        Uuid $labelId
+        UUID $labelId
     ): void {
         if (!in_array($labelId, $this->labelIds)) {
             $this->apply(new LabelAdded($this->uuid, $labelId));
@@ -127,7 +127,7 @@ class Role extends EventSourcedAggregateRoot
     }
 
     public function removeLabel(
-        Uuid $labelId
+        UUID $labelId
     ): void {
         if (in_array($labelId, $this->labelIds)) {
             $this->apply(new LabelRemoved($this->uuid, $labelId));
@@ -151,7 +151,7 @@ class Role extends EventSourcedAggregateRoot
     }
 
     public function delete(
-        Uuid $uuid
+        UUID $uuid
     ): void {
         $this->apply(new RoleDeleted($uuid));
     }

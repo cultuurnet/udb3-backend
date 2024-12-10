@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -15,7 +15,7 @@ final class UpdateImage implements AuthorizableCommand
 {
     private string $organizerId;
 
-    private Uuid $imageId;
+    private UUID $imageId;
 
     private ?Language $language = null;
 
@@ -23,13 +23,13 @@ final class UpdateImage implements AuthorizableCommand
 
     private ?CopyrightHolder $copyrightHolder = null;
 
-    public function __construct(string $organizerId, Uuid $imageId)
+    public function __construct(string $organizerId, UUID $imageId)
     {
         $this->organizerId = $organizerId;
         $this->imageId = $imageId;
     }
 
-    public function getImageId(): Uuid
+    public function getImageId(): UUID
     {
         return $this->imageId;
     }

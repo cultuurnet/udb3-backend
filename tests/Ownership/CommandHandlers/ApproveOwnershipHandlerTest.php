@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Commands\ApproveOwnership;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
@@ -38,7 +38,7 @@ class ApproveOwnershipHandlerTest extends CommandHandlerScenarioTestCase
                 ),
             ])
             ->when(new ApproveOwnership(
-                new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
+                new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
             ))
             ->then([
                 new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),

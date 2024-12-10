@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
@@ -72,7 +72,7 @@ class EventDenormalizer extends OfferDenormalizer
 
     protected function createOffer(
         array $originalData,
-        Uuid $id,
+        UUID $id,
         Language $mainLanguage,
         TranslatedTitle $title,
         Calendar $calendar,

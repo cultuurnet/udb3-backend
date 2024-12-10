@@ -21,7 +21,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -90,7 +90,7 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
             ->willReturnCallback(
                 function ($labelName) {
                     return new Entity(
-                        new Uuid(\Ramsey\Uuid\Uuid::uuid4()->toString()),
+                        new UUID(\Ramsey\Uuid\Uuid::uuid4()->toString()),
                         $labelName,
                         $labelName !== 'bar' ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
                         Privacy::PRIVACY_PUBLIC()

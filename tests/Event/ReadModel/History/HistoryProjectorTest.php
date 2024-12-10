@@ -68,7 +68,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
@@ -899,7 +899,7 @@ class HistoryProjectorTest extends TestCase
     public function it_logs_image_added(): void
     {
         $image = new Image(
-            new Uuid('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
             new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
@@ -937,7 +937,7 @@ class HistoryProjectorTest extends TestCase
     public function it_logs_image_removed(): void
     {
         $image = new Image(
-            new Uuid('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
             new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
@@ -1009,7 +1009,7 @@ class HistoryProjectorTest extends TestCase
     public function it_logs_images_imported_from_udb2(): void
     {
         $image1 = new Image(
-            new Uuid('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
             new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
@@ -1018,7 +1018,7 @@ class HistoryProjectorTest extends TestCase
         );
 
         $image2 = new Image(
-            new Uuid('f1926870-136c-4b06-b2a1-1fab01590847'),
+            new UUID('f1926870-136c-4b06-b2a1-1fab01590847'),
             MIMEType::fromSubtype('jpeg'),
             new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
@@ -1066,7 +1066,7 @@ class HistoryProjectorTest extends TestCase
     public function it_logs_images_updated_from_udb2(): void
     {
         $image1 = new Image(
-            new Uuid('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
             new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
@@ -1075,7 +1075,7 @@ class HistoryProjectorTest extends TestCase
         );
 
         $image2 = new Image(
-            new Uuid('f1926870-136c-4b06-b2a1-1fab01590847'),
+            new UUID('f1926870-136c-4b06-b2a1-1fab01590847'),
             MIMEType::fromSubtype('jpeg'),
             new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),
@@ -1285,7 +1285,7 @@ class HistoryProjectorTest extends TestCase
     public function it_logs_main_image_selected(): void
     {
         $image = new Image(
-            new Uuid('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
+            new UUID('0aa8d12d-26d6-409f-aa68-e8200e5c91a0'),
             MIMEType::fromSubtype('jpeg'),
             new MediaDescription('description'),
             new CopyrightHolder('copyright holder'),

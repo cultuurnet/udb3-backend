@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
@@ -38,7 +38,7 @@ final class AddImageHandlerTest extends CommandHandlerScenarioTestCase
             ->when(new AddImage(
                 $id,
                 new Image(
-                    new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                    new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                     new Language('nl'),
                     new Description('Description of the image'),
                     new CopyrightHolder('publiq')
@@ -77,7 +77,7 @@ final class AddImageHandlerTest extends CommandHandlerScenarioTestCase
             ->when(new AddImage(
                 $id,
                 new Image(
-                    new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                    new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                     new Language('nl'),
                     new Description('Description of the image'),
                     new CopyrightHolder('publiq')
@@ -108,7 +108,7 @@ final class AddImageHandlerTest extends CommandHandlerScenarioTestCase
             ->when(new AddImage(
                 $id,
                 new Image(
-                    new Uuid('0b02240d-5fc0-4efa-8a6f-4281f695dd5f'),
+                    new UUID('0b02240d-5fc0-4efa-8a6f-4281f695dd5f'),
                     new Language('en'),
                     new Description('Another image'),
                     new CopyrightHolder('publiq')

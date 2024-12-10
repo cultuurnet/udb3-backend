@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
 class LabelDetailsProjectedToJSONLDTest extends TestCase
 {
-    private Uuid $uuid;
+    private UUID $uuid;
 
     private LabelDetailsProjectedToJSONLD $labelDetailsProjectedToJSONLD;
 
     protected function setUp(): void
     {
-        $this->uuid = new Uuid('3960ff99-ceab-4b44-aa51-dc7a187b77e0');
+        $this->uuid = new UUID('3960ff99-ceab-4b44-aa51-dc7a187b77e0');
 
         $this->labelDetailsProjectedToJSONLD = new LabelDetailsProjectedToJSONLD(
             $this->uuid

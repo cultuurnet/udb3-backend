@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
@@ -980,7 +980,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 function (Organizer $organizer): void {
                     $organizer->addImage(
                         new Image(
-                            new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                            new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                             new Language('nl'),
                             new Description('Beschrijving van de afbeelding'),
                             new CopyrightHolder('publiq')
@@ -1011,7 +1011,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 function (Organizer $organizer): void {
                     $organizer->addImage(
                         new Image(
-                            new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                            new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                             new Language('nl'),
                             new Description('Beschrijving van de afbeelding'),
                             new CopyrightHolder('publiq')
@@ -1035,7 +1035,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 function (Organizer $organizer): void {
                     $organizer->addImage(
                         new Image(
-                            new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                            new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                             new Language('en'),
                             new Description('Description of the image'),
                             new CopyrightHolder('publiq')
@@ -1092,7 +1092,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ],
                 function (Organizer $organizer): void {
                     $organizer->updateImage(
-                        new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                        new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                         new Language('en'),
                         new Description('Beschrijving afbeelding'),
                         new CopyrightHolder('Rechtenhouder afbeelding')
@@ -1115,7 +1115,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ],
                 function (Organizer $organizer): void {
                     $organizer->updateImage(
-                        new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                        new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                         new Language('nl'),
                         new Description('Aangepaste beschrijving afbeelding'),
                         new CopyrightHolder('Rechtenhouder afbeelding')
@@ -1138,7 +1138,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ],
                 function (Organizer $organizer): void {
                     $organizer->updateImage(
-                        new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                        new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                         new Language('nl'),
                         new Description('Beschrijving afbeelding'),
                         new CopyrightHolder('Aangepaste rechtenhouder afbeelding')
@@ -1161,7 +1161,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ],
                 function (Organizer $organizer): void {
                     $organizer->updateImage(
-                        new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                        new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                         new Language('en'),
                         new Description('Aangepaste beschrijving afbeelding'),
                         new CopyrightHolder('Aangepaste rechtenhouder afbeelding')
@@ -1184,7 +1184,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ],
                 function (Organizer $organizer): void {
                     $organizer->updateImage(
-                        new Uuid('f0515293-4e39-4679-9f39-5406dddfb234'),
+                        new UUID('f0515293-4e39-4679-9f39-5406dddfb234'),
                         new Language('en'),
                         new Description('Aangepaste beschrijving afbeelding'),
                         new CopyrightHolder('Aangepaste rechterhouder afbeelding')
@@ -1200,7 +1200,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 ],
                 function (Organizer $organizer): void {
                     $organizer->updateImage(
-                        new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                        new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                         new Language('nl'),
                         new Description('Beschrijving afbeelding'),
                         new CopyrightHolder('Rechtenhouder afbeelding')
@@ -1246,7 +1246,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->removeImage(new Uuid('cf539408-bba9-4e77-9f85-72019013db37')),
+                    $organizer->removeImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
                 [
                     new ImageRemoved(
                         'ae3aab28-6351-489e-a61c-c48aec0a77df',
@@ -1270,7 +1270,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->removeImage(new Uuid('cf539408-bba9-4e77-9f85-72019013db37')),
+                    $organizer->removeImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
                 [
                 ],
             ],
@@ -1311,7 +1311,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->updateMainImage(new Uuid('cf539408-bba9-4e77-9f85-72019013db37')),
+                    $organizer->updateMainImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
                 [],
             ],
             'Main image is not updated when it is already the main image' => [
@@ -1329,7 +1329,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->updateMainImage(new Uuid('cf539408-bba9-4e77-9f85-72019013db37')),
+                    $organizer->updateMainImage(new UUID('cf539408-bba9-4e77-9f85-72019013db37')),
                 [],
             ],
             'Main image finally set' => [
@@ -1351,7 +1351,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     ),
                 ],
                 fn (Organizer $organizer) =>
-                    $organizer->updateMainImage(new Uuid('9692eef5-d844-430b-ac60-413b66227fc4')),
+                    $organizer->updateMainImage(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')),
                 [
                     new MainImageUpdated(
                         'ae3aab28-6351-489e-a61c-c48aec0a77df',
@@ -1377,7 +1377,7 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                     'publiq'
                 ),
             ])
-            ->when(fn (Organizer $organizer) => $organizer->updateMainImage(new Uuid('9692eef5-d844-430b-ac60-413b66227fc4')));
+            ->when(fn (Organizer $organizer) => $organizer->updateMainImage(new UUID('9692eef5-d844-430b-ac60-413b66227fc4')));
     }
 
     /**

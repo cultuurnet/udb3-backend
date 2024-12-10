@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -66,7 +66,7 @@ final class SelectMainImageRequestHandlerTest extends TestCase
 
 
         $this->image = new Image(
-            new Uuid(self::MEDIA_ID),
+            new UUID(self::MEDIA_ID),
             MIMEType::fromSubtype('png'),
             new Description('A picture of a picture'),
             new CopyrightHolder('CreativeCommons'),
@@ -135,7 +135,7 @@ final class SelectMainImageRequestHandlerTest extends TestCase
     {
         $this->mediaManager
             ->method('getImage')
-            ->with(new Uuid(self::MEDIA_ID))
+            ->with(new UUID(self::MEDIA_ID))
             ->willThrowException(new MediaObjectNotFoundException());
 
         $selectMainImageRequest = $this->psr7RequestBuilder
@@ -183,14 +183,14 @@ final class SelectMainImageRequestHandlerTest extends TestCase
     {
         $this->mediaManager
             ->method('getImage')
-            ->with(new Uuid(self::MEDIA_ID))
+            ->with(new UUID(self::MEDIA_ID))
             ->willReturn($this->image);
     }
 
     public function offerTypeDataProvider(): array
     {
         $image = new Image(
-            new Uuid(self::MEDIA_ID),
+            new UUID(self::MEDIA_ID),
             MIMEType::fromSubtype('png'),
             new Description('A picture of a picture'),
             new CopyrightHolder('CreativeCommons'),

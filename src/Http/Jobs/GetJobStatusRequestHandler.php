@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Jobs;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -25,7 +25,7 @@ final class GetJobStatusRequestHandler implements RequestHandlerInterface
     {
         $jobId = (new RouteParameters($request))->get('jobId');
 
-        if ($jobId === Uuid::NIL) {
+        if ($jobId === UUID::NIL) {
             $jobStatus = JobStatus::complete();
         } else {
             $jobStatus = $this->jobStatusFactory->createFromJobId($jobId);

@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -79,7 +79,7 @@ final class AddImageRequestHandlerTest extends TestCase
             ->with(self::MEDIA_ID)
             ->willReturn(
                 MediaObject::create(
-                    new Uuid(self::MEDIA_ID),
+                    new UUID(self::MEDIA_ID),
                     MIMEType::fromSubtype('jpeg'),
                     new Description('Uploaded image'),
                     new CopyrightHolder('madewithlove'),
@@ -151,14 +151,14 @@ final class AddImageRequestHandlerTest extends TestCase
                 'offerType' => 'events',
                 'addImage' => new EventAddImage(
                     self::OFFER_ID,
-                    new Uuid(self::MEDIA_ID)
+                    new UUID(self::MEDIA_ID)
                 ),
             ],
             [
                 'offerType' => 'places',
                 'addImage' => new PlaceAddImage(
                     self::OFFER_ID,
-                    new Uuid(self::MEDIA_ID)
+                    new UUID(self::MEDIA_ID)
                 ),
             ],
         ];

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
 {
@@ -21,7 +21,7 @@ final class GodUserReadRepositoryDecorator implements ReadRepositoryInterface
         $this->godUserIds = $godUserIds;
     }
 
-    public function getByUuid(Uuid $uuid): ?Entity
+    public function getByUuid(UUID $uuid): ?Entity
     {
         return $this->repository->getByUuid($uuid);
     }

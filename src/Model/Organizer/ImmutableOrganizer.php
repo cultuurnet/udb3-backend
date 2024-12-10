@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Model\Organizer;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 class ImmutableOrganizer implements Organizer
 {
-    private Uuid $id;
+    private UUID $id;
 
     private Language $mainLanguage;
 
@@ -49,7 +49,7 @@ class ImmutableOrganizer implements Organizer
      *  So there is a mix of organizers with and without url.
      */
     public function __construct(
-        Uuid $id,
+        UUID $id,
         Language $mainLanguage,
         TranslatedTitle $name,
         Url $url = null
@@ -65,7 +65,7 @@ class ImmutableOrganizer implements Organizer
         $this->workflowStatus = WorkflowStatus::ACTIVE();
     }
 
-    public function getId(): Uuid
+    public function getId(): UUID
     {
         return $this->id;
     }

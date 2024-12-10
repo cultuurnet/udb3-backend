@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine\ColumnNames as LabelRolesColumnNames;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\ColumnNames as PermissionsColumnNames;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -34,7 +34,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         $this->userRolesTableName = $userRolesTableName;
     }
 
-    public function getByUuid(Uuid $uuid): ?Entity
+    public function getByUuid(UUID $uuid): ?Entity
     {
         $aliases = $this->getAliases();
         $whereId = ColumnNames::UUID_COLUMN . ' = ?';
@@ -259,7 +259,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
 
     private function rowToEntity(array $row): Entity
     {
-        $uuid = new Uuid($row[ColumnNames::UUID_COLUMN]);
+        $uuid = new UUID($row[ColumnNames::UUID_COLUMN]);
 
         $name = $row[ColumnNames::NAME_COLUMN];
 

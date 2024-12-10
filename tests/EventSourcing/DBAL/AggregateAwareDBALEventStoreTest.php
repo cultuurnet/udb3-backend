@@ -13,7 +13,7 @@ use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\AggregateType;
 use PHPUnit\Framework\TestCase;
 
@@ -57,7 +57,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
      */
     public function it_can_load_an_aggregate_by_its_id(): void
     {
-        $uuid = new Uuid('072bb7b7-b58e-4f1a-a22e-399852e107a0');
+        $uuid = new UUID('072bb7b7-b58e-4f1a-a22e-399852e107a0');
         $domainMessage = $this->createDomainMessage($uuid);
 
         $this->insertDomainMessage($domainMessage);
@@ -77,7 +77,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
      */
     public function it_can_load_an_aggregate_by_its_id_and_from_a_playhead(): void
     {
-        $uuid = new Uuid('f905f1d8-e156-487a-8dc8-b4dde09c760d');
+        $uuid = new UUID('f905f1d8-e156-487a-8dc8-b4dde09c760d');
         $domainMessages = $this->createDomainMessages($uuid);
 
         foreach ($domainMessages as $domainMessage) {
@@ -100,7 +100,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
      */
     public function it_throws_an_exception_when_loading_a_non_existing_aggregate(): void
     {
-        $uuid = new Uuid('8f6b6aeb-4646-4b3a-90be-47b32593efea');
+        $uuid = new UUID('8f6b6aeb-4646-4b3a-90be-47b32593efea');
 
         $this->expectException(EventStreamNotFoundException::class);
         $this->expectExceptionMessage(sprintf(
@@ -116,7 +116,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
      */
     public function it_can_append_to_an_aggregate(): void
     {
-        $uuid = new Uuid('ab681b82-a014-4c2a-a271-0f3695c1b4f2');
+        $uuid = new UUID('ab681b82-a014-4c2a-a271-0f3695c1b4f2');
         $domainMessage = $this->createDomainMessage($uuid);
 
         $this->aggregateAwareDBALEventStore->append(
@@ -133,7 +133,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
         );
     }
 
-    private function createDomainMessage(Uuid $uuid): DomainMessage
+    private function createDomainMessage(UUID $uuid): DomainMessage
     {
         return new DomainMessage(
             $uuid->toString(),
@@ -152,7 +152,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
     /**
      * @return DomainMessage[]
      */
-    private function createDomainMessages(Uuid $uuid): array
+    private function createDomainMessages(UUID $uuid): array
     {
         return [
             new DomainMessage(
@@ -215,7 +215,7 @@ class AggregateAwareDBALEventStoreTest extends TestCase
         );
     }
 
-    private function selectDomainMessage(Uuid $uuid): array
+    private function selectDomainMessage(UUID $uuid): array
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 

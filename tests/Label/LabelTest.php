@@ -14,11 +14,11 @@ use CultuurNet\UDB3\Label\Events\MadePublic;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class LabelTest extends AggregateRootScenarioTestCase
 {
-    private Uuid $uuid;
+    private UUID $uuid;
 
     private string $name;
 
@@ -32,7 +32,7 @@ final class LabelTest extends AggregateRootScenarioTestCase
     {
         parent::setUp();
 
-        $this->uuid = new Uuid('b36ec769-2ec1-4a13-96cd-27d7a1f1e963');
+        $this->uuid = new UUID('b36ec769-2ec1-4a13-96cd-27d7a1f1e963');
         $this->name = 'labelName';
         $this->visibility = Visibility::INVISIBLE();
         $this->privacy = Privacy::PRIVACY_PRIVATE();
@@ -168,7 +168,7 @@ final class LabelTest extends AggregateRootScenarioTestCase
      */
     public function it_creates_an_invalid_label_as_excluded(): void
     {
-        $uuid = new Uuid('0f893a61-fb77-47b6-9c8d-e4e631afa9b3');
+        $uuid = new UUID('0f893a61-fb77-47b6-9c8d-e4e631afa9b3');
 
         $this->scenario
             ->when(

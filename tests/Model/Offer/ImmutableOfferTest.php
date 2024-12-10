@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
@@ -246,7 +246,7 @@ class ImmutableOfferTest extends TestCase
     public function it_should_return_a_copy_with_an_updated_organizer_reference(): void
     {
         $reference = OrganizerReference::createWithOrganizerId(
-            new Uuid('dd5e196a-4afb-449a-bcce-0120d01263b9')
+            new UUID('dd5e196a-4afb-449a-bcce-0120d01263b9')
         );
 
         $offer = $this->getOffer();
@@ -263,7 +263,7 @@ class ImmutableOfferTest extends TestCase
     public function it_should_return_a_copy_without_an_organizer_reference(): void
     {
         $reference = OrganizerReference::createWithOrganizerId(
-            new Uuid('dd5e196a-4afb-449a-bcce-0120d01263b9')
+            new UUID('dd5e196a-4afb-449a-bcce-0120d01263b9')
         );
 
         $offer = $this->getOffer()->withOrganizerReference($reference);
@@ -444,7 +444,7 @@ class ImmutableOfferTest extends TestCase
     public function it_should_return_a_copy_with_updated_media_object_references(): void
     {
         $reference = MediaObjectReference::createWithMediaObjectId(
-            new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
+            new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
             new Description('Een afbeelding beschrijving'),
             new CopyrightHolder('Publiq vzw'),
             new Language('nl')
@@ -592,9 +592,9 @@ class ImmutableOfferTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    private function getId(): Uuid
+    private function getId(): UUID
     {
-        return new Uuid('aadcee95-6180-4924-a8eb-ed829d4957a2');
+        return new UUID('aadcee95-6180-4924-a8eb-ed829d4957a2');
     }
 
     private function getMainLanguage(): Language

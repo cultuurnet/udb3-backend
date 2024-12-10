@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -52,7 +52,7 @@ final class UpdateImagesRequestHandlerTest extends TestCase
 
         $expectedCommand = (new UpdateImage(
             'c269632a-a887-4f21-8455-1631c31e4df5',
-            new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92')
+            new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92')
         ))
             ->withLanguage(new Language('en'))
             ->withDescription(new Description('A nice image'))
@@ -88,14 +88,14 @@ final class UpdateImagesRequestHandlerTest extends TestCase
         $expectedCommands = [
             (new UpdateImage(
                 'c269632a-a887-4f21-8455-1631c31e4df5',
-                new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92')
+                new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92')
             ))
                 ->withLanguage(new Language('en'))
                 ->withDescription(new Description('A nice image'))
                 ->withCopyrightHolder(new CopyrightHolder('publiq')),
             (new UpdateImage(
                 'c269632a-a887-4f21-8455-1631c31e4df5',
-                new Uuid('5451db35-601e-4d89-8169-72c0aee35543')
+                new UUID('5451db35-601e-4d89-8169-72c0aee35543')
             ))
                 ->withLanguage(new Language('fr')),
         ];

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
 class ConstraintRemovedTest extends TestCase
 {
-    private Uuid $uuid;
+    private UUID $uuid;
 
     private ConstraintRemoved $event;
 
     protected function setUp(): void
     {
-        $this->uuid = new Uuid('d95f6672-0cb2-4e66-b2e5-4fffd3398eb5');
+        $this->uuid = new UUID('d95f6672-0cb2-4e66-b2e5-4fffd3398eb5');
 
         $this->event = new ConstraintRemoved($this->uuid);
     }

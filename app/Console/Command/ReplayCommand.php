@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Event\Events\EventProjectedToJSONLD;
 use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\EventSourcing\DBAL\EventStream;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Organizer\OrganizerProjectedToJSONLD;
 use CultuurNet\UDB3\Place\Events\PlaceProjectedToJSONLD;
 use CultuurNet\UDB3\AggregateType;
@@ -133,7 +133,7 @@ final class ReplayCommand extends AbstractCommand
 
         if ($cdbids !== null) {
             $cdbids = array_map(
-                fn (string $cdbid) => new Uuid($cdbid),
+                fn (string $cdbid) => new UUID($cdbid),
                 $cdbids
             );
         }
@@ -149,7 +149,7 @@ final class ReplayCommand extends AbstractCommand
             $startId,
             $aggregateType,
             array_map(
-                fn (Uuid $cdbid) => $cdbid->toString(),
+                fn (UUID $cdbid) => $cdbid->toString(),
                 $cdbids
             )
         );
@@ -262,7 +262,7 @@ final class ReplayCommand extends AbstractCommand
         return $eventStream;
     }
 
-    private function purgeReadmodels(Uuid $cdbid): void
+    private function purgeReadmodels(UUID $cdbid): void
     {
         foreach (self::TABLES_TO_PURGE as $tableName => $columnName) {
             $this->connection->delete(

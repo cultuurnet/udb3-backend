@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -34,7 +34,7 @@ final class GetLabelRequestHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->label = new Entity(
-            new Uuid('b88f2756-a1d8-4377-a36a-59662fc02d98'),
+            new UUID('b88f2756-a1d8-4377-a36a-59662fc02d98'),
             'labelName',
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PRIVATE()
@@ -52,7 +52,7 @@ final class GetLabelRequestHandlerTest extends TestCase
     {
         $this->labelRepository->expects($this->once())
             ->method('getByUuid')
-            ->with(new Uuid('b88f2756-a1d8-4377-a36a-59662fc02d98'))
+            ->with(new UUID('b88f2756-a1d8-4377-a36a-59662fc02d98'))
             ->willReturn($this->label);
 
         $request = (new Psr7RequestBuilder())
@@ -100,7 +100,7 @@ final class GetLabelRequestHandlerTest extends TestCase
     {
         $this->labelRepository->expects($this->once())
             ->method('getByUuid')
-            ->with(new Uuid('b88f2756-a1d8-4377-a36a-59662fc02d98'))
+            ->with(new UUID('b88f2756-a1d8-4377-a36a-59662fc02d98'))
             ->willReturn(null);
 
         $request = (new Psr7RequestBuilder())

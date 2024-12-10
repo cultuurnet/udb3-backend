@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Organizer;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Organizer\Commands\RemoveImage;
 use PHPUnit\Framework\TestCase;
 
@@ -45,7 +45,7 @@ final class DeleteImageRequestHandlerTest extends TestCase
             [
                 new RemoveImage(
                     'c269632a-a887-4f21-8455-1631c31e4df5',
-                    new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92')
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92')
                 ),
             ],
             $this->commandBus->getRecordedCommands()

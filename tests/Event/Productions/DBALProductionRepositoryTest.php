@@ -8,7 +8,7 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class DBALProductionRepositoryTest extends TestCase
 {
@@ -39,7 +39,7 @@ final class DBALProductionRepositoryTest extends TestCase
     public function it_can_add_an_event_to_an_existing_production(): void
     {
         $production = $this->givenThereIsAProduction();
-        $eventToAdd = Uuid::uuid4()->toString();
+        $eventToAdd = UUID::uuid4()->toString();
         $this->repository->addEvent($eventToAdd, $production);
 
         $persistedProduction = $this->repository->find($production->getProductionId());
@@ -82,10 +82,10 @@ final class DBALProductionRepositoryTest extends TestCase
     {
         $production = Production::createEmpty('foo');
         $eventsToRemove = [
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
+            UUID::uuid4()->toString(),
+            UUID::uuid4()->toString(),
         ];
-        $eventToKeep = Uuid::uuid4()->toString();
+        $eventToKeep = UUID::uuid4()->toString();
 
         $production = $production->addEvent($eventsToRemove[0]);
         $production = $production->addEvent($eventToKeep);
@@ -155,8 +155,8 @@ final class DBALProductionRepositoryTest extends TestCase
      */
     public function it_can_find_production_for_event(): void
     {
-        $event = Uuid::uuid4()->toString();
-        $otherEvent = Uuid::uuid4()->toString();
+        $event = UUID::uuid4()->toString();
+        $otherEvent = UUID::uuid4()->toString();
         $name = 'FooBar';
 
         $production = Production::createEmpty($name);
@@ -176,7 +176,7 @@ final class DBALProductionRepositoryTest extends TestCase
      */
     public function it_will_throw_if_it_cannot_find_production_for_event(): void
     {
-        $randomEventId = Uuid::uuid4()->toString();
+        $randomEventId = UUID::uuid4()->toString();
 
         $this->expectException(EntityNotFoundException::class);
         $this->repository->findProductionForEventId($randomEventId);
@@ -185,8 +185,8 @@ final class DBALProductionRepositoryTest extends TestCase
     private function givenThereIsAProduction(string $name = 'foo'): Production
     {
         $production = Production::createEmpty($name);
-        $production = $production->addEvent(Uuid::uuid4()->toString());
-        $production = $production->addEvent(Uuid::uuid4()->toString());
+        $production = $production->addEvent(UUID::uuid4()->toString());
+        $production = $production->addEvent(UUID::uuid4()->toString());
 
         $this->repository->add($production);
 

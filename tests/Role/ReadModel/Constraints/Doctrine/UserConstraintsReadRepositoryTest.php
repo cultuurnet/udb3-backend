@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role\ReadModel\Constraints\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine\ColumnNames as PermissionColumnNames;
 use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\ColumnNames as SearchColumnNames;
@@ -17,7 +17,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     use DBALTestConnectionTrait;
 
     /**
-     * @var Uuid[]
+     * @var UUID[]
      */
     private array $roleIds;
 
@@ -34,10 +34,10 @@ class UserConstraintsReadRepositoryTest extends TestCase
         $this->setUpDatabase();
 
         $this->roleIds = [
-            new Uuid('36c96c3b-9ce4-492b-9b4e-fee465beb597'),
-            new Uuid('f874cea2-4f8e-475c-8e97-47f881fc5e1a'),
-            new Uuid('eec38cda-9e24-441e-9584-2dafe80590a3'),
-            new Uuid('09e79125-5982-4a0f-aba6-a28774b84699'),
+            new UUID('36c96c3b-9ce4-492b-9b4e-fee465beb597'),
+            new UUID('f874cea2-4f8e-475c-8e97-47f881fc5e1a'),
+            new UUID('eec38cda-9e24-441e-9584-2dafe80590a3'),
+            new UUID('09e79125-5982-4a0f-aba6-a28774b84699'),
         ];
 
         $this->userRolesTableName = 'user_roles';
@@ -133,7 +133,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     }
 
 
-    private function insertUserRole(string $userId, Uuid $roleId): void
+    private function insertUserRole(string $userId, UUID $roleId): void
     {
         $this->getConnection()->insert(
             $this->userRolesTableName,
@@ -145,7 +145,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     }
 
 
-    private function insertUserPermission(Uuid $roleId, Permission $permission): void
+    private function insertUserPermission(UUID $roleId, Permission $permission): void
     {
         $this->getConnection()->insert(
             $this->rolePermissionsTableName,
@@ -157,7 +157,7 @@ class UserConstraintsReadRepositoryTest extends TestCase
     }
 
     private function insertRole(
-        Uuid $roleId,
+        UUID $roleId,
         string $roleName,
         ?string $constraint
     ): void {

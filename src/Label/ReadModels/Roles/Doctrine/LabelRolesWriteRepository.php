@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine;
 
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesWriteRepositoryInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Doctrine\DBAL\Connection;
 
 class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
@@ -22,7 +22,7 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
         $this->labelRolesTableName = $labelRolesTableName;
     }
 
-    public function insertLabelRole(Uuid $labelId, Uuid $roleId): void
+    public function insertLabelRole(UUID $labelId, UUID $roleId): void
     {
         $this->connection->insert(
             $this->labelRolesTableName,
@@ -33,7 +33,7 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
         );
     }
 
-    public function removeLabelRole(Uuid $labelId, Uuid $roleId): void
+    public function removeLabelRole(UUID $labelId, UUID $roleId): void
     {
         $this->connection->delete(
             $this->labelRolesTableName,
@@ -44,7 +44,7 @@ class LabelRolesWriteRepository implements LabelRolesWriteRepositoryInterface
         );
     }
 
-    public function removeRole(Uuid $roleId): void
+    public function removeRole(UUID $roleId): void
     {
         $this->connection->delete(
             $this->labelRolesTableName,

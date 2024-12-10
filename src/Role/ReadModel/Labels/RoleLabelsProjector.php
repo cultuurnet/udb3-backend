@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\Events\LabelDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -83,7 +83,7 @@ class RoleLabelsProjector extends RoleProjector
         $roles = Json::decode($document->getRawBody());
 
         foreach ($roles as $roleId) {
-            $role = $this->getDocument(new Uuid($roleId));
+            $role = $this->getDocument(new UUID($roleId));
 
             if ($role) {
                 $labelDetails = $this->getLabelDetails($role);
@@ -107,7 +107,7 @@ class RoleLabelsProjector extends RoleProjector
         $this->repository->remove($roleDeleted->getUuid()->toString());
     }
 
-    private function getDocument(Uuid $uuid): ?JsonDocument
+    private function getDocument(UUID $uuid): ?JsonDocument
     {
         try {
             return $this->repository->fetch($uuid->toString());
@@ -124,7 +124,7 @@ class RoleLabelsProjector extends RoleProjector
         return Json::decodeAssociatively($document->getRawBody());
     }
 
-    private function createNewDocument(Uuid $uuid): JsonDocument
+    private function createNewDocument(UUID $uuid): JsonDocument
     {
         return new JsonDocument(
             $uuid->toString(),

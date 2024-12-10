@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -208,9 +208,9 @@ class ImmutablePlaceTest extends TestCase
         $this->assertNull($nilLocation->getGeoCoordinates());
     }
 
-    private function getId(): Uuid
+    private function getId(): UUID
     {
-        return new Uuid('aadcee95-6180-4924-a8eb-ed829d4957a2');
+        return new UUID('aadcee95-6180-4924-a8eb-ed829d4957a2');
     }
 
     private function getMainLanguage(): Language

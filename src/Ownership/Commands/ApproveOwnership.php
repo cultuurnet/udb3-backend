@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Ownership\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 final class ApproveOwnership
 {
-    private Uuid $id;
+    private UUID $id;
 
-    public function __construct(Uuid $id)
+    public function __construct(UUID $id)
     {
         $this->id = $id;
     }
 
-    public function getId(): Uuid
+    public function getId(): UUID
     {
         return $this->id;
     }

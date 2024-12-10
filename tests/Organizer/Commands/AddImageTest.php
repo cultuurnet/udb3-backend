@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
@@ -21,7 +21,7 @@ final class AddImageTest extends TestCase
         $this->addImage = new AddImage(
             '437604d2-5cb6-44ed-bb10-92ce33b6e7bd',
             new Image(
-                new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                 new Language('nl'),
                 new Description('Description of the image'),
                 new CopyrightHolder('publiq')
@@ -44,7 +44,7 @@ final class AddImageTest extends TestCase
     {
         $this->assertEquals(
             new Image(
-                new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                 new Language('nl'),
                 new Description('Description of the image'),
                 new CopyrightHolder('publiq')

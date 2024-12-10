@@ -8,7 +8,7 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class DBALEventPlaceHistoryRepositoryTest extends TestCase
@@ -66,8 +66,8 @@ class DBALEventPlaceHistoryRepositoryTest extends TestCase
     }
 
     /** @todo Remove with the refactor of III-6438  */
-    private function uuid4(): Uuid
+    private function uuid4(): UUID
     {
-        return new Uuid(RamseyUuid::uuid4()->toString());
+        return new UUID(RamseyUuid::uuid4()->toString());
     }
 }

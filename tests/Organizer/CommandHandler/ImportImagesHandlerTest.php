@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
@@ -61,13 +61,13 @@ class ImportImagesHandlerTest extends CommandHandlerScenarioTestCase
                     $id,
                     new Images(
                         new Image(
-                            new Uuid('d3d085db-dbd7-4663-b3c3-56bf9a54a025'),
+                            new UUID('d3d085db-dbd7-4663-b3c3-56bf9a54a025'),
                             new Language('en'),
                             new Description('beschrijving2 - updated'),
                             new CopyrightHolder('copyrightholder2 - updated')
                         ),
                         new Image(
-                            new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                            new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
                             new Language('nl'),
                             new Description('beschrijving3'),
                             new CopyrightHolder('copyrightholder3')

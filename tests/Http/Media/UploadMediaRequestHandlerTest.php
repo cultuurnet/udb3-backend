@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Laminas\Diactoros\UploadedFile;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -51,7 +51,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
             ->withFiles(['file' => $uploadedFile])
             ->build('POST');
 
-        $imageId = new Uuid('08d9df2e-091d-4f65-930b-00f565a9158f');
+        $imageId = new UUID('08d9df2e-091d-4f65-930b-00f565a9158f');
 
         $this->imageUploader
             ->expects($this->once())

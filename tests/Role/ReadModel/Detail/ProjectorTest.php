@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Detail;
 use Broadway\Domain\DateTime as BroadwayDateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Role\Events\AbstractEvent;
@@ -33,7 +33,7 @@ class ProjectorTest extends TestCase
      */
     private $repository;
 
-    private Uuid $uuid;
+    private UUID $uuid;
 
     private string $name;
 
@@ -43,7 +43,7 @@ class ProjectorTest extends TestCase
     {
         parent::setUp();
 
-        $this->uuid = new Uuid('49bd503f-0476-4b18-bc67-f48bf3ae8b57');
+        $this->uuid = new UUID('49bd503f-0476-4b18-bc67-f48bf3ae8b57');
         $this->name = 'roleName';
 
         $this->query = new Query('city:Leuven');
@@ -450,7 +450,7 @@ class ProjectorTest extends TestCase
     }
 
     private function createDomainMessage(
-        Uuid $id,
+        UUID $id,
         AbstractEvent $payload,
         BroadwayDateTime $dateTime = null
     ): DomainMessage {

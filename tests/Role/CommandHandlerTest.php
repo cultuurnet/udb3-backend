@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandHandler as BroadwayCommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddLabel;
 use CultuurNet\UDB3\Role\Commands\AddPermission;
@@ -38,7 +38,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Query;
 
 class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    private Uuid $uuid;
+    private UUID $uuid;
 
     private string $name;
 
@@ -48,7 +48,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
     private Query $updatedQuery;
 
-    private Uuid $labelId;
+    private UUID $labelId;
 
     private RoleCreated $roleCreated;
 
@@ -74,12 +74,12 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
     {
         parent::setUp();
 
-        $this->uuid = new Uuid('708bae44-9788-4318-8f19-1087da9e5814');
+        $this->uuid = new UUID('708bae44-9788-4318-8f19-1087da9e5814');
         $this->name = 'labelName';
         $this->permission = Permission::aanbodBewerken();
         $this->query = new Query('category_flandersregion_name:"Regio Aalst"');
         $this->updatedQuery = new Query('category_flandersregion_name:"Regio Brussel"');
-        $this->labelId = new Uuid('9335212c-54bd-466f-9772-4626b799927b');
+        $this->labelId = new UUID('9335212c-54bd-466f-9772-4626b799927b');
 
         $this->roleCreated = new RoleCreated(
             $this->uuid,

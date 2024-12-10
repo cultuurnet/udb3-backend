@@ -8,7 +8,7 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Commands\ApproveOwnership;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
@@ -83,7 +83,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
             [
-                new ApproveOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
+                new ApproveOwnership(new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -119,7 +119,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
             [
-                new ApproveOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
+                new ApproveOwnership(new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
             ],
             $this->commandBus->getRecordedCommands()
         );

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Productions;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class CreateProductionValidatorTest extends TestCase
 {
@@ -25,8 +25,8 @@ class CreateProductionValidatorTest extends TestCase
         $data = [
             'name' => 'foo',
             'eventIds' => [
-                Uuid::uuid4()->toString(),
-                Uuid::uuid4()->toString(),
+                UUID::uuid4()->toString(),
+                UUID::uuid4()->toString(),
             ],
         ];
 
@@ -84,8 +84,8 @@ class CreateProductionValidatorTest extends TestCase
             'Without name' => [
                 [
                     'eventIds' => [
-                        Uuid::uuid4()->toString(),
-                        Uuid::uuid4()->toString(),
+                        UUID::uuid4()->toString(),
+                        UUID::uuid4()->toString(),
                     ],
                 ],
                 [
@@ -96,8 +96,8 @@ class CreateProductionValidatorTest extends TestCase
                 [
                     'name' => '   ',
                     'eventIds' => [
-                        Uuid::uuid4()->toString(),
-                        Uuid::uuid4()->toString(),
+                        UUID::uuid4()->toString(),
+                        UUID::uuid4()->toString(),
                     ],
                 ],
                 [

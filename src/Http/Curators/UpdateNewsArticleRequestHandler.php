@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -34,7 +34,7 @@ final class UpdateNewsArticleRequestHandler implements RequestHandlerInterface
         $articleId = $routeParameters->get('articleId');
 
         try {
-            $this->newsArticleRepository->getById(new Uuid($articleId));
+            $this->newsArticleRepository->getById(new UUID($articleId));
         } catch (NewsArticleNotFound $exception) {
             throw ApiProblem::newsArticleNotFound($articleId);
         }
@@ -43,7 +43,7 @@ final class UpdateNewsArticleRequestHandler implements RequestHandlerInterface
             new UrlEncodingRequestBodyParser(),
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::NEWS_ARTICLE_POST),
             new DenormalizingRequestBodyParser(
-                new NewsArticleDenormalizer(new Uuid($articleId)),
+                new NewsArticleDenormalizer(new UUID($articleId)),
                 NewsArticle::class
             )
         );

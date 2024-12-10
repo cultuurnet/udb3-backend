@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -44,7 +44,7 @@ class CdbXMLToJsonLDLabelImporterTest extends TestCase
             ->method('getByName')
             ->willReturnCallback(
                 static function (string $labelName): ?Entity {
-                    $uuid = new Uuid('3b069d8a-2394-45f4-80ce-50469c643386');
+                    $uuid = new UUID('3b069d8a-2394-45f4-80ce-50469c643386');
                     $privacy = Privacy::PRIVACY_PUBLIC();
 
                     switch ($labelName) {

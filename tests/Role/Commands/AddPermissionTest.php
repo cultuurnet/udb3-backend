@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
 
 class AddPermissionTest extends TestCase
 {
-    protected Uuid $uuid;
+    protected UUID $uuid;
 
     protected Permission $permission;
 
@@ -18,7 +18,7 @@ class AddPermissionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new Uuid('dcad2d03-e927-45a9-82d2-4d4703d77a71');
+        $this->uuid = new UUID('dcad2d03-e927-45a9-82d2-4d4703d77a71');
 
         $this->permission = Permission::aanbodBewerken();
 

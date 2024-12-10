@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\MatchesRegexPattern;
 use Ramsey\Uuid\Uuid as RamseyUuid;
 
-class Uuid
+class UUID
 {
     use IsString;
     use MatchesRegexPattern;
@@ -33,6 +33,6 @@ class Uuid
 
     public static function uuid4(): self
     {
-        return new Uuid(RamseyUuid::uuid4()->toString());
+        return new UUID(RamseyUuid::uuid4()->toString());
     }
 }

@@ -9,7 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -66,7 +66,7 @@ class UserRolesProjectorTest extends TestCase
     public function it_updates_projection_when_document_found_on_user_added_event(): void
     {
         // The role uuid to which the user will be added.
-        $newRoleUuid = new Uuid('715b5044-eb82-4b60-be0b-f8febf86d84d');
+        $newRoleUuid = new UUID('715b5044-eb82-4b60-be0b-f8febf86d84d');
         $userAdded = new UserAdded(
             $newRoleUuid,
             'userId'
@@ -83,7 +83,7 @@ class UserRolesProjectorTest extends TestCase
             ->willReturn($newRoleDetailsDocument);
 
         // The existing role details document.
-        $existingRoleUuid = new Uuid('7942e704-7b3f-412d-bed3-43f39c783ebe');
+        $existingRoleUuid = new UUID('7942e704-7b3f-412d-bed3-43f39c783ebe');
         $existingRoleDetailsDocument = $this->createRoleDetailsDocument(
             $existingRoleUuid,
             'existingRole'
@@ -122,7 +122,7 @@ class UserRolesProjectorTest extends TestCase
     public function it_updates_projection_when_document_not_found_on_user_added_event(): void
     {
         $userAdded = new UserAdded(
-            new Uuid('3fb2cc47-890b-4926-be6f-96b68980ca63'),
+            new UUID('3fb2cc47-890b-4926-be6f-96b68980ca63'),
             'userId'
         );
 
@@ -165,7 +165,7 @@ class UserRolesProjectorTest extends TestCase
     public function it_updates_projection_on_user_removed_event(): void
     {
         $userRemoved = new UserRemoved(
-            new Uuid('742d3294-d1c8-49fb-b4fc-98519494c877'),
+            new UUID('742d3294-d1c8-49fb-b4fc-98519494c877'),
             'userId'
         );
 
@@ -196,7 +196,7 @@ class UserRolesProjectorTest extends TestCase
     public function it_updates_projection_on_role_details_projected_event(): void
     {
         $roleDetailsProjectedToJSONLD = new RoleDetailsProjectedToJSONLD(
-            new Uuid('d41cfafb-484d-4852-9de4-bb981a1b55f0')
+            new UUID('d41cfafb-484d-4852-9de4-bb981a1b55f0')
         );
 
         // The new role details to apply.
@@ -260,7 +260,7 @@ class UserRolesProjectorTest extends TestCase
     public function it_does_not_update_projection_when_role_details_not_found_on_user_added_event(): void
     {
         $userAdded = new UserAdded(
-            new Uuid('c0bb7336-1b09-46c0-a585-f5d81f16da2c'),
+            new UUID('c0bb7336-1b09-46c0-a585-f5d81f16da2c'),
             'userId'
         );
 
@@ -288,7 +288,7 @@ class UserRolesProjectorTest extends TestCase
     public function it_does_not_update_projection_when_document_not_found_on_user_removed_event(): void
     {
         $userRemoved = new UserRemoved(
-            new Uuid('54fc75c8-c6b1-412a-aba9-1189bcb45cac'),
+            new UUID('54fc75c8-c6b1-412a-aba9-1189bcb45cac'),
             'userId'
         );
 
@@ -313,7 +313,7 @@ class UserRolesProjectorTest extends TestCase
     public function it_does_not_update_projection_when_role_details_not_found_on_role_details_projected_event(): void
     {
         $roleDetailsProjectedToJSONLD = new RoleDetailsProjectedToJSONLD(
-            new Uuid('1e7ae3d7-9a15-4013-8164-f16643121fdc')
+            new UUID('1e7ae3d7-9a15-4013-8164-f16643121fdc')
         );
 
         $this->roleDetailsDocumentRepository->method('fetch')
@@ -342,7 +342,7 @@ class UserRolesProjectorTest extends TestCase
     public function it_does_not_update_projection_when_role_users_not_found_on_role_details_projected_event(): void
     {
         $roleDetailsProjectedToJSONLD = new RoleDetailsProjectedToJSONLD(
-            new Uuid('d61fd8d6-00f9-47ea-94b5-40d48e605504')
+            new UUID('d61fd8d6-00f9-47ea-94b5-40d48e605504')
         );
 
         $newRoleDetailsDocument = $this->createRoleDetailsDocument(
@@ -368,7 +368,7 @@ class UserRolesProjectorTest extends TestCase
     }
 
     private function createDomainMessage(
-        Uuid $uuid,
+        UUID $uuid,
         Serializable $payload
     ): DomainMessage {
         return new DomainMessage(
@@ -380,7 +380,7 @@ class UserRolesProjectorTest extends TestCase
         );
     }
 
-    private function createRoleDetailsDocument(Uuid $uuid, string $roleName): JsonDocument
+    private function createRoleDetailsDocument(UUID $uuid, string $roleName): JsonDocument
     {
         $document = new JsonDocument($uuid->toString());
 

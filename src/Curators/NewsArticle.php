@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Curators;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 final class NewsArticle
 {
-    private Uuid $id;
+    private UUID $id;
 
     private string $headline;
 
@@ -29,7 +29,7 @@ final class NewsArticle
     private ?NewsArticleImage $image = null;
 
     public function __construct(
-        Uuid $id,
+        UUID $id,
         string $headline,
         Language $language,
         string $text,
@@ -48,7 +48,7 @@ final class NewsArticle
         $this->publisherLogo = $publisherLogo;
     }
 
-    public function getId(): Uuid
+    public function getId(): UUID
     {
         return $this->id;
     }

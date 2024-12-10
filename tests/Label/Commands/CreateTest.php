@@ -6,13 +6,13 @@ namespace CultuurNet\UDB3\Label\Commands;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
 
 class CreateTest extends TestCase
 {
-    protected Uuid $uuid;
+    protected UUID $uuid;
 
     protected LabelName $name;
 
@@ -24,7 +24,7 @@ class CreateTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new Uuid('fec0c4d7-80e1-4713-98f9-4c436af6e650');
+        $this->uuid = new UUID('fec0c4d7-80e1-4713-98f9-4c436af6e650');
 
         $this->name = new LabelName('labelName');
 

@@ -26,7 +26,7 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 class SuggestOwnershipsRequestHandlerTest extends TestCase
 {
@@ -62,7 +62,7 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
         $this->searchService = $this->createMock(SearchServiceInterface::class);
 
         CurrentUser::configureGodUserIds([]);
-        $this->currentUser = new CurrentUser(Uuid::uuid4()->toString());
+        $this->currentUser = new CurrentUser(UUID::uuid4()->toString());
         $this->userIdentityResolver = $this->createMock(UserIdentityResolver::class);
         $this->offerRepositoryFactory = new OfferJsonDocumentReadRepositoryMockFactory();
         $offerRepository = $this->offerRepositoryFactory->create();
@@ -169,7 +169,7 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
                 new SearchParameter('state', OwnershipState::approved()->toString()),
             ]))
             ->willReturn(new OwnershipItemCollection(
-                new OwnershipItem(Uuid::uuid4()->toString(), $organizer['id'], ItemType::organizer()->toString(), $this->currentUser->getId(), OwnershipState::requested()->toString()),
+                new OwnershipItem(UUID::uuid4()->toString(), $organizer['id'], ItemType::organizer()->toString(), $this->currentUser->getId(), OwnershipState::requested()->toString()),
             ));
 
         $response = $this->suggestOwnershipsRequestHandler->handle($request);
@@ -238,7 +238,7 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
 
     private function givenThereIsAnOrganizer(): array
     {
-        $id = Uuid::uuid4()->toString();
+        $id = UUID::uuid4()->toString();
         return [
             'id' => $id,
             'body' => [
@@ -250,7 +250,7 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
 
     private function givenThereIsAnEventWithOrganizer(array $organizer): array
     {
-        $id = Uuid::uuid4()->toString();
+        $id = UUID::uuid4()->toString();
         $body = [
             '@id' => 'https://mock.io.uitdatabank.be/events/' . $id,
             'organizer' => $organizer['body'],
@@ -266,7 +266,7 @@ class SuggestOwnershipsRequestHandlerTest extends TestCase
 
     private function givenThereIsAnPlaceWithOrganizer(array $organizer): array
     {
-        $id = Uuid::uuid4()->toString();
+        $id = UUID::uuid4()->toString();
         $body = [
             '@id' => 'https://mock.io.uitdatabank.be/places/' . $id,
             'organizer' => $organizer['body'],

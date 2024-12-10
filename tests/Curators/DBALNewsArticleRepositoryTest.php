@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Curators;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -60,7 +60,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
     {
         $this->assertEquals(
             new NewsArticle(
-                new Uuid('4bd47771-4c83-4023-be0d-e4e93681c2ba'),
+                new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'),
                 'publiq wint API award',
                 new Language('nl'),
                 'Op 10 januari 2020 wint publiq de API award',
@@ -69,7 +69,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
                 new Url('https://www.publiq.be/blog/api-reward'),
                 new Url('https://www.bill.be/img/favicon.png')
             ),
-            $this->dbalNewsArticleRepository->getById(new Uuid('4bd47771-4c83-4023-be0d-e4e93681c2ba'))
+            $this->dbalNewsArticleRepository->getById(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'))
         );
     }
 
@@ -81,7 +81,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
         $this->expectException(NewsArticleNotFound::class);
         $this->expectExceptionMessage('News article with id "6a883273-4995-4455-9156-eb1f920253be" was not found.');
 
-        $this->dbalNewsArticleRepository->getById(new Uuid('6a883273-4995-4455-9156-eb1f920253be'));
+        $this->dbalNewsArticleRepository->getById(new UUID('6a883273-4995-4455-9156-eb1f920253be'));
     }
 
     /**
@@ -192,7 +192,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
     public function it_can_create_a_news_article(): void
     {
         $newsArticle = new NewsArticle(
-            new Uuid('727cf17c-d81f-4ec6-ba39-ef0227b5eb40'),
+            new UUID('727cf17c-d81f-4ec6-ba39-ef0227b5eb40'),
             'Creating news articles works',
             new Language('en'),
             'This test covers the creation of news articles',
@@ -206,7 +206,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
 
         $this->assertEquals(
             $newsArticle,
-            $this->dbalNewsArticleRepository->getById(new Uuid('727cf17c-d81f-4ec6-ba39-ef0227b5eb40'))
+            $this->dbalNewsArticleRepository->getById(new UUID('727cf17c-d81f-4ec6-ba39-ef0227b5eb40'))
         );
     }
 
@@ -216,7 +216,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
     public function it_can_create_a_news_article_with_an_image(): void
     {
         $newsArticle = (new NewsArticle(
-            new Uuid('727cf17c-d81f-4ec6-ba39-ef0227b5eb40'),
+            new UUID('727cf17c-d81f-4ec6-ba39-ef0227b5eb40'),
             'Creating news articles works',
             new Language('en'),
             'This test covers the creation of news articles',
@@ -235,7 +235,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
 
         $this->assertEquals(
             $newsArticle,
-            $this->dbalNewsArticleRepository->getById(new Uuid('727cf17c-d81f-4ec6-ba39-ef0227b5eb40'))
+            $this->dbalNewsArticleRepository->getById(new UUID('727cf17c-d81f-4ec6-ba39-ef0227b5eb40'))
         );
     }
 
@@ -245,7 +245,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
     public function it_can_update_a_news_article(): void
     {
         $newsArticle = new NewsArticle(
-            new Uuid('4bd47771-4c83-4023-be0d-e4e93681c2ba'),
+            new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'),
             'Updating news articles works',
             new Language('nl'),
             'This test covers the update of news articles',
@@ -259,7 +259,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
 
         $this->assertEquals(
             $newsArticle,
-            $this->dbalNewsArticleRepository->getById(new Uuid('4bd47771-4c83-4023-be0d-e4e93681c2ba'))
+            $this->dbalNewsArticleRepository->getById(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'))
         );
     }
 
@@ -269,7 +269,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
     public function it_can_update_a_news_article_with_an_image(): void
     {
         $newsArticle = (new NewsArticle(
-            new Uuid('4bd47771-4c83-4023-be0d-e4e93681c2ba'),
+            new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'),
             'Updating news articles works',
             new Language('nl'),
             'This test covers the update of news articles',
@@ -288,7 +288,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
 
         $this->assertEquals(
             $newsArticle,
-            $this->dbalNewsArticleRepository->getById(new Uuid('4bd47771-4c83-4023-be0d-e4e93681c2ba'))
+            $this->dbalNewsArticleRepository->getById(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'))
         );
     }
 
@@ -297,13 +297,13 @@ final class DBALNewsArticleRepositoryTest extends TestCase
      */
     public function it_can_delete_a_news_article(): void
     {
-        $this->dbalNewsArticleRepository->getById(new Uuid('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
+        $this->dbalNewsArticleRepository->getById(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
 
-        $this->dbalNewsArticleRepository->delete(new Uuid('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
+        $this->dbalNewsArticleRepository->delete(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
 
         $this->expectException(NewsArticleNotFound::class);
 
-        $this->dbalNewsArticleRepository->getById(new Uuid('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
+        $this->dbalNewsArticleRepository->getById(new UUID('4bd47771-4c83-4023-be0d-e4e93681c2ba'));
     }
 
     /**
@@ -311,7 +311,7 @@ final class DBALNewsArticleRepositoryTest extends TestCase
      */
     public function it_can_handle_an_already_deleted_news_article(): void
     {
-        $this->dbalNewsArticleRepository->delete(new Uuid('3a9f6da3-938c-4074-a5c9-73f254899d09'));
+        $this->dbalNewsArticleRepository->delete(new UUID('3a9f6da3-938c-4074-a5c9-73f254899d09'));
         $this->addToAssertionCount(1);
     }
 }

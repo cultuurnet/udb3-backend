@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 class MediaObject
 {
-    private Uuid $id;
+    private UUID $id;
 
     private MediaObjectType $type;
 
@@ -18,7 +18,7 @@ class MediaObject
     private Url $thumbnailUrl;
 
     public function __construct(
-        Uuid $id,
+        UUID $id,
         MediaObjectType $type,
         Url $contentUrl,
         Url $thumbnailUrl
@@ -29,7 +29,7 @@ class MediaObject
         $this->thumbnailUrl = $thumbnailUrl;
     }
 
-    public function getId(): Uuid
+    public function getId(): UUID
     {
         return $this->id;
     }

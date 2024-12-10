@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\AddLabel;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -81,8 +81,8 @@ final class AddLabelToRoleRequestHandlerTest extends TestCase
 
         $expectedResponse = new NoContentResponse();
         $expectedCommand = new AddLabel(
-            new Uuid($roleId),
-            new Uuid($labelId)
+            new UUID($roleId),
+            new UUID($labelId)
         );
 
         $this->assertJsonResponse($expectedResponse, $actualResponse);
@@ -119,7 +119,7 @@ final class AddLabelToRoleRequestHandlerTest extends TestCase
     public function it_adds_label_to_a_role_with_a_given_name_identifier(): void
     {
         $roleId = '03f982ac-76d6-4fea-9e70-c22c3c05edfc';
-        $labelId = new Uuid('94367f36-6fce-4ad1-920f-5ab0d2f908d5');
+        $labelId = new UUID('94367f36-6fce-4ad1-920f-5ab0d2f908d5');
         $labelName = 'my-label';
 
         $this->givenLabelExists($labelId, $labelName);
@@ -133,7 +133,7 @@ final class AddLabelToRoleRequestHandlerTest extends TestCase
 
         $expectedResponse = new NoContentResponse();
         $expectedCommand = new AddLabel(
-            new Uuid($roleId),
+            new UUID($roleId),
             $labelId
         );
 
@@ -150,7 +150,7 @@ final class AddLabelToRoleRequestHandlerTest extends TestCase
             ->willReturn(null);
     }
 
-    private function givenLabelExists(Uuid $labelId, string $name): void
+    private function givenLabelExists(UUID $labelId, string $name): void
     {
         $label = new Entity(
             $labelId,

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\Serializers;
 
 use CultuurNet\UDB3\Event\Commands\UpdateImage as EventUpdateImage;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractUpdateImage;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -18,9 +18,9 @@ final class UpdateImageDenormalizer implements DenormalizerInterface
 
     private string $offerId;
 
-    private Uuid $mediaObjectId;
+    private UUID $mediaObjectId;
 
-    public function __construct(OfferType $offerType, string $offerId, Uuid $mediaObjectId)
+    public function __construct(OfferType $offerType, string $offerId, UUID $mediaObjectId)
     {
         $this->offerType = $offerType;
         $this->offerId = $offerId;

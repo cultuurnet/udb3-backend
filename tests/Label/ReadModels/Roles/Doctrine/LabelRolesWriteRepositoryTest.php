@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\Roles\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Label\ReadModels\Roles\LabelRolesWriteRepositoryInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
 class LabelRolesWriteRepositoryTest extends TestCase
@@ -34,8 +34,8 @@ class LabelRolesWriteRepositoryTest extends TestCase
      */
     public function it_inserts_a_label_and_related_role(): void
     {
-        $labelId = new Uuid('bc579c8e-cc4a-4c21-abb2-a7d63b5f820f');
-        $roleId = new Uuid('2fd60f5c-8d0f-4efd-a005-128636a5530b');
+        $labelId = new UUID('bc579c8e-cc4a-4c21-abb2-a7d63b5f820f');
+        $roleId = new UUID('2fd60f5c-8d0f-4efd-a005-128636a5530b');
 
         $this->labelRolesWriteRepository->insertLabelRole($labelId, $roleId);
 
@@ -56,10 +56,10 @@ class LabelRolesWriteRepositoryTest extends TestCase
      */
     public function it_removes_a_label_and_related_role(): void
     {
-        $labelId1 = new Uuid('b18215d5-2d66-45e1-ae5d-1316a3b40897');
-        $labelId2 = new Uuid('72bffc2b-d784-403c-97b5-ef4f74decd5b');
-        $roleId1 = new Uuid('167ae73d-52ab-45c1-862e-d3638a1c7c5a');
-        $roleId2 = new Uuid('35acce4d-25e6-441b-8162-87a764e77ed4');
+        $labelId1 = new UUID('b18215d5-2d66-45e1-ae5d-1316a3b40897');
+        $labelId2 = new UUID('72bffc2b-d784-403c-97b5-ef4f74decd5b');
+        $roleId1 = new UUID('167ae73d-52ab-45c1-862e-d3638a1c7c5a');
+        $roleId2 = new UUID('35acce4d-25e6-441b-8162-87a764e77ed4');
 
         $this->insertLabelRole($labelId1, $roleId1);
         $this->insertLabelRole($labelId1, $roleId2);
@@ -88,10 +88,10 @@ class LabelRolesWriteRepositoryTest extends TestCase
      */
     public function it_removes_a_role_and_all_related_labels(): void
     {
-        $labelId1 = new Uuid('d5f8236b-f252-4d62-984b-e956dc2da15f');
-        $labelId2 = new Uuid('8b04e55d-08de-491c-9387-59c24197d42d');
-        $roleId1 = new Uuid('9e91887a-e40a-4dc8-a8b7-1b946146d59d');
-        $roleId2 = new Uuid('47ee089d-39de-4fdc-a8de-d07bea709865');
+        $labelId1 = new UUID('d5f8236b-f252-4d62-984b-e956dc2da15f');
+        $labelId2 = new UUID('8b04e55d-08de-491c-9387-59c24197d42d');
+        $roleId1 = new UUID('9e91887a-e40a-4dc8-a8b7-1b946146d59d');
+        $roleId2 = new UUID('47ee089d-39de-4fdc-a8de-d07bea709865');
 
         $this->insertLabelRole($labelId1, $roleId1);
         $this->insertLabelRole($labelId1, $roleId2);
@@ -112,7 +112,7 @@ class LabelRolesWriteRepositoryTest extends TestCase
     }
 
 
-    private function insertLabelRole(Uuid $labelId, Uuid $roleId): void
+    private function insertLabelRole(UUID $labelId, UUID $roleId): void
     {
         $this->connection->insert(
             $this->labelRolesTableName,

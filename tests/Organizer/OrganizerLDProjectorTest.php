@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
@@ -617,7 +617,7 @@ final class OrganizerLDProjectorTest extends TestCase
             ->with('03789a2f-5063-4062-b7cb-95a0a2280d92')
             ->willReturn(
                 MediaObject::create(
-                    new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     MIMEType::fromSubtype('jpeg'),
                     new Description('Uploaded image'),
                     new CopyrightHolder('publiq'),
@@ -653,7 +653,7 @@ final class OrganizerLDProjectorTest extends TestCase
             ->with('dd45e5a1-f70c-48d7-83e5-dde9226c1dd6')
             ->willReturn(
                 MediaObject::create(
-                    new Uuid('dd45e5a1-f70c-48d7-83e5-dde9226c1dd6'),
+                    new UUID('dd45e5a1-f70c-48d7-83e5-dde9226c1dd6'),
                     MIMEType::fromSubtype('png'),
                     new Description('Extra image'),
                     new CopyrightHolder('madewithlove'),
@@ -689,7 +689,7 @@ final class OrganizerLDProjectorTest extends TestCase
             ->with('03789a2f-5063-4062-b7cb-95a0a2280d92')
             ->willReturn(
                 MediaObject::create(
-                    new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    new UUID('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                     MIMEType::fromSubtype('jpeg'),
                     new Description('Image Description'),
                     new CopyrightHolder('madewithlove'),

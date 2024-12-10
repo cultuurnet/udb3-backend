@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine;
 
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventPlaceHistoryRepository;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 
@@ -18,17 +18,17 @@ class DBALEventPlaceHistoryRepository implements EventPlaceHistoryRepository
         $this->connection = $connection;
     }
 
-    public function storeEventPlaceStartingPoint(Uuid $eventId, Uuid $placeId, DateTimeInterface $date): void
+    public function storeEventPlaceStartingPoint(UUID $eventId, UUID $placeId, DateTimeInterface $date): void
     {
         $this->insertIntoPlaceHistoryTable($eventId, null, $placeId, $date);
     }
 
-    public function storeEventPlaceMove(Uuid $eventId, Uuid $oldPlaceId, Uuid $newPlaceId, DateTimeInterface $date): void
+    public function storeEventPlaceMove(UUID $eventId, UUID $oldPlaceId, UUID $newPlaceId, DateTimeInterface $date): void
     {
         $this->insertIntoPlaceHistoryTable($eventId, $oldPlaceId, $newPlaceId, $date);
     }
 
-    private function insertIntoPlaceHistoryTable(Uuid $eventId, ?Uuid $oldPlaceId, Uuid $newPlaceId, DateTimeInterface $date): void
+    private function insertIntoPlaceHistoryTable(UUID $eventId, ?UUID $oldPlaceId, UUID $newPlaceId, DateTimeInterface $date): void
     {
         $this->connection->insert(
             'event_place_history',

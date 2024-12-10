@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\Commands\RenameRole;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
@@ -86,7 +86,7 @@ class UpdateRoleRequestHandlerTest extends TestCase
         $response = $this->handler->handle($request);
         $this->assertJsonResponse(new Response(StatusCodeInterface::STATUS_NO_CONTENT), $response);
 
-        $expectedCommand = [new RenameRole(new Uuid($roleId), $name)];
+        $expectedCommand = [new RenameRole(new UUID($roleId), $name)];
         $this->assertEquals($expectedCommand, $this->commandBus->getRecordedCommands());
     }
 }

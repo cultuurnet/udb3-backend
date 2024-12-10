@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractUpdateImage;
 use CultuurNet\UDB3\Place\Commands\UpdateImage as PlaceUpdateImage;
@@ -115,7 +115,7 @@ class UpdateImageRequestHandlerTest extends TestCase
                 'offerType' => 'events',
                 'updateImage' => new EventUpdateImage(
                     self::OFFER_ID,
-                    new Uuid(self::MEDIA_ID),
+                    new UUID(self::MEDIA_ID),
                     'A new picture of a picture',
                     new CopyrightHolder('Public Domain')
                 ),
@@ -124,7 +124,7 @@ class UpdateImageRequestHandlerTest extends TestCase
                 'offerType' => 'places',
                 'updateImage' => new PlaceUpdateImage(
                     self::OFFER_ID,
-                    new Uuid(self::MEDIA_ID),
+                    new UUID(self::MEDIA_ID),
                     'A new picture of a picture',
                     new CopyrightHolder('Public Domain')
                 ),

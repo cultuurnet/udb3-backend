@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -19,7 +19,7 @@ class MediaObjectReferencesTest extends TestCase
     {
         $referenceWithEmbeddedMediaObject = MediaObjectReference::createWithEmbeddedMediaObject(
             new MediaObject(
-                new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
+                new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
                 MediaObjectType::imageObject(),
                 new Url('http://publiq.be/test.png'),
                 new Url('http://publiq.be/test.png?w=100&h=100')
@@ -30,7 +30,7 @@ class MediaObjectReferencesTest extends TestCase
         );
 
         $referenceWithoutEmbeddedMediaObject = MediaObjectReference::createWithMediaObjectId(
-            new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
+            new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
             new Description('Een afbeelding beschrijving'),
             new CopyrightHolder('Publiq vzw'),
             new Language('nl')

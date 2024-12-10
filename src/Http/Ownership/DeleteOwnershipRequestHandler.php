@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Ownership;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Ownership\Commands\DeleteOwnership;
 use CultuurNet\UDB3\User\CurrentUser;
 use Fig\Http\Message\StatusCodeInterface;
@@ -39,7 +39,7 @@ final class DeleteOwnershipRequestHandler implements RequestHandlerInterface
         $this->ownershipStatusGuard->isAllowedToDelete($ownershipId, $this->currentUser);
 
         $this->commandBus->dispatch(
-            new DeleteOwnership(new Uuid($ownershipId))
+            new DeleteOwnership(new UUID($ownershipId))
         );
 
         return new JsonResponse(
