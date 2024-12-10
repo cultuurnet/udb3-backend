@@ -796,7 +796,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     ))
             );
 
-        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $videoId = Uuid::uuid4();
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn($videoId);
