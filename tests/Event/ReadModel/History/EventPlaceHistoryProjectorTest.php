@@ -426,10 +426,4 @@ class EventPlaceHistoryProjectorTest extends TestCase
             ],
         ]));
     }
-
-    /** @todo Remove with the refactor of III-6438 */
-    private function uuid4(): Uuid
-    {
-        return new Uuid(RamseyUuid::uuid4()->toString());
-    }
 }

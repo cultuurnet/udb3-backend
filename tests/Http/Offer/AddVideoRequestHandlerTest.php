@@ -63,7 +63,7 @@ class AddVideoRequestHandlerTest extends TestCase
             )
             ->build('POST');
 
-        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $videoId = Uuid::uuid4();
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn($videoId);
@@ -97,7 +97,7 @@ class AddVideoRequestHandlerTest extends TestCase
             ->withBodyFromString('{"url":"https://www.youtube.com/watch?v=sdsd234", "language":"nl"}')
             ->build('POST');
 
-        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $videoId = Uuid::uuid4();
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn($videoId);
@@ -131,7 +131,7 @@ class AddVideoRequestHandlerTest extends TestCase
             ->withBodyFromString('{"url":"https://youtu.be/bsaAOun-dec", "language":"nl"}')
             ->build('POST');
 
-        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $videoId = Uuid::uuid4();
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn($videoId);
@@ -165,7 +165,7 @@ class AddVideoRequestHandlerTest extends TestCase
             ->withBodyFromString('{"url":"https://www.youtube.com/embed/yi_XlQetN28", "language":"nl"}')
             ->build('POST');
 
-        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $videoId = Uuid::uuid4();
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn($videoId);
