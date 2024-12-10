@@ -9,7 +9,7 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class InterceptingMiddlewareTest extends TestCase
 {
@@ -29,7 +29,7 @@ class InterceptingMiddlewareTest extends TestCase
 
         $createDomainMessage = static function (int $id, bool $intercept) {
             return new DomainMessage(
-                Uuid::uuid4(),
+                Uuid::uuid4()->toString(),
                 0,
                 new Metadata(),
                 (object) ['id' => $id, 'intercept' => $intercept],

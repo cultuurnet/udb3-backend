@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Place\Canonical;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class ImportDuplicatePlacesProcessorTest extends TestCase
 {

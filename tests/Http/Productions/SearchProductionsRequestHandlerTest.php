@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 final class SearchProductionsRequestHandlerTest extends TestCase
 {

@@ -8,7 +8,7 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\EntityNotFoundException;
 use Doctrine\DBAL\DBALException;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 final class DBALProductionRepositoryTest extends TestCase
 {

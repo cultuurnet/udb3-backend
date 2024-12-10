@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Role;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Role\Commands\RemoveConstraint;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
@@ -46,7 +46,7 @@ class DeleteConstraintRequestHandlerTest extends TestCase
         $this->assertJsonResponse($expectedResponse, $actualResponse);
 
         $expectedCommand = new RemoveConstraint(
-            new UUID($roleId)
+            new Uuid($roleId)
         );
 
         $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());

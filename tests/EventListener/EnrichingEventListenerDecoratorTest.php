@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class EnrichingEventListenerDecoratorTest extends TestCase
 {
@@ -55,7 +55,7 @@ class EnrichingEventListenerDecoratorTest extends TestCase
     public function it_enriches_supported_domain_messages_before_delegating_them_to_the_decoratee(): void
     {
         $supportedDomainMessage = new DomainMessage(
-            Uuid::uuid4(),
+            Uuid::uuid4()->toString(),
             0,
             new Metadata(),
             new EventCreated(
@@ -70,7 +70,7 @@ class EnrichingEventListenerDecoratorTest extends TestCase
         );
 
         $otherDomainMessage = new DomainMessage(
-            Uuid::uuid4(),
+            Uuid::uuid4()->toString(),
             0,
             new Metadata(),
             new PlaceCreated(

@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Role\Commands\CreateRole;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\TestCase;
@@ -90,6 +90,6 @@ final class CreateRoleRequestHandlerTest extends TestCase
             $response
         );
 
-        $this->assertEquals([new CreateRole(new UUID($this->uuid), $name)], $this->commandBus->getRecordedCommands());
+        $this->assertEquals([new CreateRole(new Uuid($this->uuid), $name)], $this->commandBus->getRecordedCommands());
     }
 }

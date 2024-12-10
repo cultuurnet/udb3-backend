@@ -10,7 +10,7 @@ use CultuurNet\UDB3\CommandHandling\AuthorizedCommandBusInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
 use CultuurNet\UDB3\Ownership\Readmodels\Name\ItemNameResolver;
@@ -125,7 +125,7 @@ final class OwnershipPermissionProjector implements EventListener
         $this->commandBus->enableAuthorization();
     }
 
-    private function getExistingRoleId(string $itemId): ?UUID
+    private function getExistingRoleId(string $itemId): ?Uuid
     {
         $existingOwnerships = $this->ownershipSearchRepository->search(
             new SearchQuery(
@@ -144,9 +144,9 @@ final class OwnershipPermissionProjector implements EventListener
         return $existingOwnerships->getFirst()->getRoleId();
     }
 
-    private function createRole(OwnershipItem $ownershipItem): UUID
+    private function createRole(OwnershipItem $ownershipItem): Uuid
     {
-        $roleId = new UUID($this->uuidFactory->uuid4()->toString());
+        $roleId = new Uuid($this->uuidFactory->uuid4()->toString());
 
         $this->commandBus->dispatch(
             new CreateRole(

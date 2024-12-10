@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 final class AddEventToProductionRequestHandlerTest extends TestCase
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -16,12 +16,12 @@ class AbstractUserEventTest extends TestCase
      */
     private $abstractUserEvent;
 
-    private UUID $uuid;
+    private Uuid $uuid;
     private string $userId;
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID('7c296342-d72b-4444-9f8b-2a0c99763c9a');
+        $this->uuid = new Uuid('7c296342-d72b-4444-9f8b-2a0c99763c9a');
 
         $this->userId = 'userId';
 

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -33,13 +33,13 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
     {
         $this->labels = [
             'c7a73397-a210-4126-8fa0-a9f822c2a356' => new Entity(
-                new UUID('c7a73397-a210-4126-8fa0-a9f822c2a356'),
+                new Uuid('c7a73397-a210-4126-8fa0-a9f822c2a356'),
                 'foo',
                 Visibility::VISIBLE(),
                 Privacy::PRIVACY_PRIVATE()
             ),
             'fa285cf6-314c-42cc-99ee-94030127954d' => new Entity(
-                new UUID('fa285cf6-314c-42cc-99ee-94030127954d'),
+                new Uuid('fa285cf6-314c-42cc-99ee-94030127954d'),
                 'bar',
                 Visibility::VISIBLE(),
                 Privacy::PRIVACY_PUBLIC()
@@ -51,7 +51,7 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
         $this->mockRepository->expects($this->any())
             ->method('getByUuid')
             ->willReturnCallback(
-                function (UUID $uuid) {
+                function (Uuid $uuid) {
                     $uuid = $uuid->toString();
 
                     return $this->labels[$uuid] ?? null;
@@ -120,7 +120,7 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
      */
     public function it_should_return_a_label_by_uuid_using_the_injected_repository(): void
     {
-        $uuid = new UUID('c7a73397-a210-4126-8fa0-a9f822c2a356');
+        $uuid = new Uuid('c7a73397-a210-4126-8fa0-a9f822c2a356');
         $expected = $this->labels['c7a73397-a210-4126-8fa0-a9f822c2a356'];
         $actual = $this->repository->getByUuid($uuid);
         $this->assertEquals($expected, $actual);

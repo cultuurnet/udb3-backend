@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Place;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +24,7 @@ class PlaceIDParserTest extends TestCase
     public function it_should_return_a_place_id_from_the_given_place_url(string $url, string $uuid): void
     {
         $url = new Url($url);
-        $expected = new UUID($uuid);
+        $expected = new Uuid($uuid);
         $actual = $this->parser->fromUrl($url);
         $this->assertEquals($expected, $actual);
     }

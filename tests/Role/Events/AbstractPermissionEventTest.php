@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class AbstractPermissionEventTest extends TestCase
 {
-    protected UUID $uuid;
+    protected Uuid $uuid;
 
     protected Permission $permission;
 
@@ -22,7 +22,7 @@ class AbstractPermissionEventTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID('56a7c6f9-729d-423f-a82b-a85ec4bc2c32');
+        $this->uuid = new Uuid('56a7c6f9-729d-423f-a82b-a85ec4bc2c32');
 
         $this->permission = Permission::aanbodBewerken();
 

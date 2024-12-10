@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PDO;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class SkippedSimilarEventsRepositoryTest extends TestCase
 {

@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Doctrine;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
@@ -30,7 +30,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_save(): void
     {
         $expectedEntity = new Entity(
-            new UUID('a5b046e8-3e09-4929-b510-dd05752355b1'),
+            new Uuid('a5b046e8-3e09-4929-b510-dd05752355b1'),
             'labelName',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
@@ -54,7 +54,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_not_save_same_uuid(): void
     {
         $entity1 = new Entity(
-            new UUID('4bf069ce-f181-4719-8a91-505d75456f1c'),
+            new Uuid('4bf069ce-f181-4719-8a91-505d75456f1c'),
             'labelName1',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
@@ -85,7 +85,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_not_save_same_name(): void
     {
         $entity1 = new Entity(
-            new UUID('a6a4f3ca-c3e3-43d3-8589-1295284f0eef'),
+            new Uuid('a6a4f3ca-c3e3-43d3-8589-1295284f0eef'),
             'labelName',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
@@ -94,7 +94,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $this->saveEntity($entity1);
 
         $entity2 = new Entity(
-            new UUID('d770db65-ca4a-4227-b540-ce060194421b'),
+            new Uuid('d770db65-ca4a-4227-b540-ce060194421b'),
             'labelName',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
@@ -116,7 +116,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_update_to_visible(): void
     {
         $entity = new Entity(
-            new UUID('4ffd7b9d-3727-4b0f-851c-2f145b5af172'),
+            new Uuid('4ffd7b9d-3727-4b0f-851c-2f145b5af172'),
             'labelName',
             Visibility::INVISIBLE(),
             Privacy::PRIVACY_PUBLIC()
@@ -140,7 +140,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_update_to_invisible(): void
     {
         $entity = new Entity(
-            new UUID('782bde60-cb83-4a8d-8924-50aaca123bc3'),
+            new Uuid('782bde60-cb83-4a8d-8924-50aaca123bc3'),
             'labelName',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
@@ -164,7 +164,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_update_to_public(): void
     {
         $entity = new Entity(
-            new UUID('92c02b85-02b5-43b1-bfb2-bc5092ae26b3'),
+            new Uuid('92c02b85-02b5-43b1-bfb2-bc5092ae26b3'),
             'labelName',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PRIVATE()
@@ -188,7 +188,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_update_to_private(): void
     {
         $entity = new Entity(
-            new UUID('608f3b20-0ecc-41f6-a2fb-e59410750b37'),
+            new Uuid('608f3b20-0ecc-41f6-a2fb-e59410750b37'),
             'labelName',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
@@ -212,7 +212,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_update_to_excluded(): void
     {
         $entity = new Entity(
-            new UUID('608f3b20-0ecc-41f6-a2fb-e59410750b37'),
+            new Uuid('608f3b20-0ecc-41f6-a2fb-e59410750b37'),
             'labelName',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()
@@ -233,7 +233,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
     public function it_can_update_to_included(): void
     {
         $entity = new Entity(
-            new UUID('608f3b20-0ecc-41f6-a2fb-e59410750b37'),
+            new Uuid('608f3b20-0ecc-41f6-a2fb-e59410750b37'),
             'labelName',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC(),

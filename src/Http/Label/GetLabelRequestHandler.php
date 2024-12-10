@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -27,7 +27,7 @@ final class GetLabelRequestHandler implements RequestHandlerInterface
         $labelId = (new RouteParameters($request))->getLabelId();
 
         try {
-            $entity = $this->labelRepository->getByUuid(new UUID($labelId));
+            $entity = $this->labelRepository->getByUuid(new Uuid($labelId));
         } catch (\InvalidArgumentException $exception) {
             $entity = $this->labelRepository->getByName($labelId);
         }

@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Label\Commands\Create;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\TestCase;
 
@@ -57,7 +57,7 @@ final class CreateLabelRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new Create(
-                    new UUID('9714108c-dddc-4105-a736-2e32632999f4'),
+                    new Uuid('9714108c-dddc-4105-a736-2e32632999f4'),
                     new LabelName('test-label-name'),
                     Visibility::INVISIBLE(),
                     Privacy::PRIVACY_PRIVATE()

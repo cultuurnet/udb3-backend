@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Media\Exceptions\InvalidFileSize;
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileType;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use League\Flysystem\FilesystemOperator;
@@ -63,7 +63,7 @@ final class ImageUploaderService implements ImageUploaderInterface
         Description $description,
         CopyrightHolder $copyrightHolder,
         Language $language
-    ): UUID {
+    ): Uuid {
         if ($file->getError() !== UPLOAD_ERR_OK) {
             throw new InvalidFileType('The file did not upload correctly.');
         }
@@ -73,7 +73,7 @@ final class ImageUploaderService implements ImageUploaderInterface
 
         $this->guardFileSizeLimit($file);
 
-        $fileId = new UUID($this->uuidGenerator->generate());
+        $fileId = new Uuid($this->uuidGenerator->generate());
         $fileName = $fileId->toString() . '.' . $this->guessExtensionForMimeType($mimeType);
         $destination = $this->getUploadDirectory() . '/' . $fileName;
 

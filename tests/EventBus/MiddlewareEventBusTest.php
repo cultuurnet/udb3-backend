@@ -11,7 +11,7 @@ use Broadway\Domain\Metadata;
 use Broadway\EventHandling\SimpleEventBus;
 use Broadway\EventHandling\TraceableEventBus;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class MiddlewareEventBusTest extends TestCase
 {
@@ -33,7 +33,7 @@ class MiddlewareEventBusTest extends TestCase
         // domain message to the domain event stream, and then check that the domain messages were added in the correct
         // order.
         $domainMessage1 = new DomainMessage(
-            Uuid::uuid4(),
+            Uuid::uuid4()->toString(),
             0,
             new Metadata(),
             (object) ['id' => 1],
@@ -51,7 +51,7 @@ class MiddlewareEventBusTest extends TestCase
             );
 
         $domainMessage2 = new DomainMessage(
-            Uuid::uuid4(),
+            Uuid::uuid4()->toString(),
             0,
             new Metadata(),
             (object) ['id' => 2],

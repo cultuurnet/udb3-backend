@@ -6,12 +6,12 @@ namespace CultuurNet\UDB3\Label\Events;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use PHPUnit\Framework\TestCase;
 
 class CreatedTest extends TestCase
 {
-    protected UUID $uuid;
+    protected Uuid $uuid;
 
     protected string $name;
 
@@ -23,7 +23,7 @@ class CreatedTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID('41bf85c1-b9b3-4f21-b7b3-e8276de506a4');
+        $this->uuid = new Uuid('41bf85c1-b9b3-4f21-b7b3-e8276de506a4');
 
         $this->name = 'labelName';
 

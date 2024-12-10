@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Contributor;
 
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -72,7 +72,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
 
         $this->contributorRepository->expects($this->once())
             ->method('getContributors')
-            ->with(new UUID($this->offerId))
+            ->with(new Uuid($this->offerId))
             ->willReturn(
                 EmailAddresses::fromArray([
                     new EmailAddress('info@example.com'),
@@ -118,7 +118,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
 
         $this->contributorRepository->expects($this->once())
             ->method('getContributors')
-            ->with(new UUID($this->offerId))
+            ->with(new Uuid($this->offerId))
             ->willReturn(
                 EmailAddresses::fromArray([])
             );
@@ -157,7 +157,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
 
         $this->contributorRepository->expects($this->never())
             ->method('getContributors')
-            ->with(new UUID($this->offerId));
+            ->with(new Uuid($this->offerId));
 
 
         $jsonLd = new JsonDocument($this->offerId, Json::encode(['@type' => $itemType]));
