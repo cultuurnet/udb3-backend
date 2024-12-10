@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Identity;
 
 use PHPUnit\Framework\TestCase;
 
-class UUIDTest extends TestCase
+class UuidTest extends TestCase
 {
     /**
      * @test
