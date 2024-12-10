@@ -26,10 +26,24 @@ class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEv
         return $clone;
     }
 
+    public function withStatusOnSubEvents(Status $status): self
+    {
+        $clone = clone $this;
+        $clone->subEvent = $this->subEvent->withStatus($status);
+        return $clone;
+    }
+
     public function withBookingAvailability(BookingAvailability $bookingAvailability): Calendar
     {
         $clone = clone $this;
         $clone->bookingAvailability = $bookingAvailability;
+        return $clone;
+    }
+
+    public function withBookingAvailabilityOnSubEvents(BookingAvailability $bookingAvailability): CalendarWithSubEvents
+    {
+        $clone = clone $this;
+        $clone->subEvent = $this->subEvent->withBookingAvailability($bookingAvailability);
         return $clone;
     }
 
