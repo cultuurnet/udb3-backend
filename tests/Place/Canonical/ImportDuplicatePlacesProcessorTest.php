@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Place\Canonical;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class ImportDuplicatePlacesProcessorTest extends TestCase
 {
@@ -58,9 +58,9 @@ class ImportDuplicatePlacesProcessorTest extends TestCase
     public function test_insert_new_clusters(): void
     {
         $places = [
-            new PlaceWithCluster('cluster_1', UUID::uuid4()->toString()),
-            new PlaceWithCluster('cluster_1', UUID::uuid4()->toString()),
-            new PlaceWithCluster('cluster_2', UUID::uuid4()->toString()),
+            new PlaceWithCluster('cluster_1', Uuid::uuid4()->toString()),
+            new PlaceWithCluster('cluster_1', Uuid::uuid4()->toString()),
+            new PlaceWithCluster('cluster_2', Uuid::uuid4()->toString()),
         ];
 
         $this->duplicatePlaceRepository->expects($this->once())

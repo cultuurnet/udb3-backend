@@ -12,7 +12,7 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Label\Events\LabelDetailsProjectedToJSONLD;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 final class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInterface
 {
@@ -27,7 +27,7 @@ final class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInter
     }
 
     public function save(
-        UUID $uuid,
+        Uuid $uuid,
         string $name,
         Visibility $visibility,
         Privacy $privacy
@@ -40,41 +40,41 @@ final class BroadcastingWriteRepositoryDecorator implements WriteRepositoryInter
         );
     }
 
-    public function updatePrivate(UUID $uuid): void
+    public function updatePrivate(Uuid $uuid): void
     {
         $this->writeRepository->updatePrivate($uuid);
         $this->broadcastDocumentUpdated($uuid);
     }
 
-    public function updatePublic(UUID $uuid): void
+    public function updatePublic(Uuid $uuid): void
     {
         $this->writeRepository->updatePublic($uuid);
         $this->broadcastDocumentUpdated($uuid);
     }
 
-    public function updateVisible(UUID $uuid): void
+    public function updateVisible(Uuid $uuid): void
     {
         $this->writeRepository->updateVisible($uuid);
         $this->broadcastDocumentUpdated($uuid);
     }
 
-    public function updateInvisible(UUID $uuid): void
+    public function updateInvisible(Uuid $uuid): void
     {
         $this->writeRepository->updateInvisible($uuid);
         $this->broadcastDocumentUpdated($uuid);
     }
 
-    public function updateIncluded(UUID $uuid): void
+    public function updateIncluded(Uuid $uuid): void
     {
         $this->writeRepository->updateIncluded($uuid);
     }
 
-    public function updateExcluded(UUID $uuid): void
+    public function updateExcluded(Uuid $uuid): void
     {
         $this->writeRepository->updateExcluded($uuid);
     }
 
-    private function broadcastDocumentUpdated(UUID $uuid): void
+    private function broadcastDocumentUpdated(Uuid $uuid): void
     {
         $event = new LabelDetailsProjectedToJSONLD($uuid);
 

@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PDO;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class SkippedSimilarEventsRepositoryTest extends TestCase
 {
@@ -27,8 +27,8 @@ class SkippedSimilarEventsRepositoryTest extends TestCase
      */
     public function it_can_add_skipped_similar_event_pairs(): void
     {
-        $event1 = UUID::uuid4()->toString();
-        $event2 = UUID::uuid4()->toString();
+        $event1 = Uuid::uuid4()->toString();
+        $event2 = Uuid::uuid4()->toString();
         $eventPair = new SimilarEventPair($event1, $event2);
 
         $this->repository->add($eventPair);

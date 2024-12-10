@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use CultuurNet\UDB3\Label\Commands\IncludeLabel as IncludeLabelCommand;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,7 +24,7 @@ final class IncludeLabel extends AbstractCommand
         $labelId = $input->getArgument('labelId');
 
         $this->commandBus->dispatch(
-            new IncludeLabelCommand(new UUID($labelId))
+            new IncludeLabelCommand(new Uuid($labelId))
         );
 
         $output->writeln('label with id ' . $labelId . ' successfully included.');

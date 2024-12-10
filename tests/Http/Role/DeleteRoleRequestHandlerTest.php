@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Role\Commands\DeleteRole;
 use PHPUnit\Framework\TestCase;
 
@@ -63,7 +63,7 @@ final class DeleteRoleRequestHandlerTest extends TestCase
         $actualResponse = $this->handler->handle($request);
 
         $expectedResponse = new NoContentResponse();
-        $expectedCommand = new DeleteRole(new UUID($roleId));
+        $expectedCommand = new DeleteRole(new Uuid($roleId));
 
         $this->assertJsonResponse($expectedResponse, $actualResponse);
         $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());

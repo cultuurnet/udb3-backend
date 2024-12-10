@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Organizer\CommandHandler;
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Organizer\Commands\UpdateContributors;
 use CultuurNet\UDB3\Organizer\OrganizerRepository;
 
@@ -33,7 +33,7 @@ final class UpdateContributorsHandler implements CommandHandler
         $this->organizerRepository->load($command->getItemId());
 
         $this->contributorRepository->updateContributors(
-            new UUID($command->getItemId()),
+            new Uuid($command->getItemId()),
             $command->getEmailAddresses(),
             ItemType::organizer()
         );

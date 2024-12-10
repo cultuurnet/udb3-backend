@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class AbstractEventTest extends TestCase
 {
-    protected UUID $uuid;
+    protected Uuid $uuid;
 
     /**
      * @var AbstractEvent&MockObject
@@ -19,7 +19,7 @@ class AbstractEventTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID('f3062b50-636b-43cd-917d-fe14f1d0d7ac');
+        $this->uuid = new Uuid('f3062b50-636b-43cd-917d-fe14f1d0d7ac');
 
         $this->event = $this->getMockForAbstractClass(
             AbstractEvent::class,

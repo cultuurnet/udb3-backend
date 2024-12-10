@@ -24,12 +24,12 @@ use CultuurNet\UDB3\Label\Events\MadePublic;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 final class CommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    private UUID $uuid;
+    private Uuid $uuid;
 
     private string $name;
 
@@ -41,7 +41,7 @@ final class CommandHandlerTest extends CommandHandlerScenarioTestCase
 
     public function setUp(): void
     {
-        $this->uuid = new UUID('0f4c288e-dec9-4a2e-bddd-94250acfcfd2');
+        $this->uuid = new Uuid('0f4c288e-dec9-4a2e-bddd-94250acfcfd2');
         $this->name = 'labelName';
         $this->visibility = Visibility::INVISIBLE();
         $this->privacy = Privacy::PRIVACY_PRIVATE();

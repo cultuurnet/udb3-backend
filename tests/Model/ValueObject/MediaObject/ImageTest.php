@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
@@ -16,7 +16,7 @@ final class ImageTest extends TestCase
     protected function setUp(): void
     {
         $this->image = new Image(
-            new UUID('cf539408-bba9-4e77-9f85-72019013db37'),
+            new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
             new Language('nl'),
             new Description('Description of the image'),
             new CopyrightHolder('publiq')
@@ -28,7 +28,7 @@ final class ImageTest extends TestCase
      */
     public function it_stores_an_id(): void
     {
-        $this->assertEquals(new UUID('cf539408-bba9-4e77-9f85-72019013db37'), $this->image->getId());
+        $this->assertEquals(new Uuid('cf539408-bba9-4e77-9f85-72019013db37'), $this->image->getId());
     }
 
     /**
@@ -67,7 +67,7 @@ final class ImageTest extends TestCase
     public function imagesDataProvider(): array
     {
         $image = new Image(
-            new UUID('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
+            new Uuid('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
             new Language('en'),
             new Description('Image description'),
             new CopyrightHolder('Image copyright holder')
@@ -82,7 +82,7 @@ final class ImageTest extends TestCase
             'Different id' => [
                 $image,
                 new Image(
-                    new UUID('d7da6e1d-f594-4614-9d77-157913e32d5b'),
+                    new Uuid('d7da6e1d-f594-4614-9d77-157913e32d5b'),
                     new Language('en'),
                     new Description('Image description'),
                     new CopyrightHolder('Image copyright holder')
@@ -92,7 +92,7 @@ final class ImageTest extends TestCase
             'Different language' => [
                 $image,
                 new Image(
-                    new UUID('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
+                    new Uuid('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
                     new Language('nl'),
                     new Description('Image description'),
                     new CopyrightHolder('Image copyright holder')
@@ -102,7 +102,7 @@ final class ImageTest extends TestCase
             'Different description' => [
                 $image,
                 new Image(
-                    new UUID('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
+                    new Uuid('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
                     new Language('en'),
                     new Description('Different image description'),
                     new CopyrightHolder('Image copyright holder')
@@ -112,7 +112,7 @@ final class ImageTest extends TestCase
             'Different copyright holder' => [
                 $image,
                 new Image(
-                    new UUID('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
+                    new Uuid('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
                     new Language('en'),
                     new Description('Image description'),
                     new CopyrightHolder('Different image copyright holder')
@@ -122,7 +122,7 @@ final class ImageTest extends TestCase
             'Everything different' => [
                 $image,
                 new Image(
-                    new UUID('d7da6e1d-f594-4614-9d77-157913e32d5b'),
+                    new Uuid('d7da6e1d-f594-4614-9d77-157913e32d5b'),
                     new Language('nl'),
                     new Description('Different image description'),
                     new CopyrightHolder('Different image copyright holder')

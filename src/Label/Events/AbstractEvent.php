@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Label\Events;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 abstract class AbstractEvent implements Serializable
 {
     public const UUID = 'uuid';
     public const NAME = 'name';
 
-    private UUID $uuid;
+    private Uuid $uuid;
 
     private string $name;
 
-    public function __construct(UUID $uuid, string $name)
+    public function __construct(Uuid $uuid, string $name)
     {
         $this->uuid = $uuid;
         $this->name = $name;
     }
 
-    public function getUuid(): UUID
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

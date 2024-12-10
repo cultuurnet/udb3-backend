@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\Productions\RejectSuggestedEventPair;
 use CultuurNet\UDB3\Event\Productions\SimilarEventPair;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 final class SkipEventsRequestHandlerTest extends TestCase
 {
@@ -32,8 +32,8 @@ final class SkipEventsRequestHandlerTest extends TestCase
      */
     public function it_can_skip_events(): void
     {
-        $eventId1 = UUID::uuid4()->toString();
-        $eventId2 = UUID::uuid4()->toString();
+        $eventId1 = Uuid::uuid4()->toString();
+        $eventId2 = Uuid::uuid4()->toString();
 
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray(

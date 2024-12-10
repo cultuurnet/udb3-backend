@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -72,7 +72,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
     public function it_should_use_existing_visibility_for_existing_labels(): void
     {
         $this->mockedLabelReadModels['foo'] = new Entity(
-            new UUID('9702eec8-badd-43be-b4d0-19b016ad6ecb'),
+            new Uuid('9702eec8-badd-43be-b4d0-19b016ad6ecb'),
             'foo',
             Visibility::VISIBLE(),
             Privacy::PRIVACY_PUBLIC()

@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use Fig\Http\Message\StatusCodeInterface;
@@ -71,7 +71,7 @@ class AddConstraintRequestHandlerTest extends TestCase
         $this->assertJsonResponse($expectedResponse, $actualResponse);
 
         $expectedCommand = new AddConstraint(
-            new UUID($roleId),
+            new Uuid($roleId),
             new Query($query)
         );
 

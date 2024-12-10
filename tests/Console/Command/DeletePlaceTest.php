@@ -14,7 +14,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -69,8 +69,8 @@ class DeletePlaceTest extends TestCase
      */
     public function it_should_give_warning_when_the_place_does_not_exist(): void
     {
-        $placeUuid = UUID::uuid4()->toString();
-        $canonicalUuid = UUID::uuid4()->toString();
+        $placeUuid = Uuid::uuid4()->toString();
+        $canonicalUuid = Uuid::uuid4()->toString();
         $this->placeDocumentRepository
             ->method('fetch')
             ->willReturnCallback(function ($id) use ($placeUuid, $canonicalUuid) {
@@ -98,8 +98,8 @@ class DeletePlaceTest extends TestCase
      */
     public function it_should_give_warning_when_canonical_does_not_exist(): void
     {
-        $placeUuid = UUID::uuid4()->toString();
-        $canonicalUuid = UUID::uuid4()->toString();
+        $placeUuid = Uuid::uuid4()->toString();
+        $canonicalUuid = Uuid::uuid4()->toString();
         $this->placeDocumentRepository
             ->method('fetch')
             ->with($canonicalUuid)
@@ -119,14 +119,14 @@ class DeletePlaceTest extends TestCase
      */
     public function it_should_execute_successfully_dispatched_commands(): void
     {
-        $eventId1 = UUID::uuid4()->toString();
-        $eventId2 = UUID::uuid4()->toString();
+        $eventId1 = Uuid::uuid4()->toString();
+        $eventId2 = Uuid::uuid4()->toString();
         $placeUuidToDelete = 'place-uuid';
-        $canonicalUuid = new LocationId(UUID::uuid4()->toString());
+        $canonicalUuid = new LocationId(Uuid::uuid4()->toString());
 
         $this->placeDocumentRepository
             ->method('fetch')
-            ->willReturn(new JsonDocument(UUID::uuid4()->toString(), json_encode([])));
+            ->willReturn(new JsonDocument(Uuid::uuid4()->toString(), json_encode([])));
 
         $this->eventRelationsRepository
             ->method('getEventsLocatedAtPlace')

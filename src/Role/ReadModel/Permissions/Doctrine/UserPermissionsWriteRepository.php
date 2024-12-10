@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Permissions\Doctrine;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsWriteRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use Doctrine\DBAL\Connection;
@@ -27,7 +27,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         $this->rolePermissionTableName = $rolePermissionTableName;
     }
 
-    public function removeRole(UUID $roleId): void
+    public function removeRole(Uuid $roleId): void
     {
         $connection = $this->connection;
 
@@ -51,7 +51,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         }
     }
 
-    public function addRolePermission(UUID $roleId, Permission $permission): void
+    public function addRolePermission(Uuid $roleId, Permission $permission): void
     {
         $this->connection->insert(
             $this->rolePermissionTableName,
@@ -62,7 +62,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         );
     }
 
-    public function removeRolePermission(UUID $roleId, Permission $permission): void
+    public function removeRolePermission(Uuid $roleId, Permission $permission): void
     {
         $this->connection->delete(
             $this->rolePermissionTableName,
@@ -73,7 +73,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         );
     }
 
-    public function addUserRole(string $userId, UUID $roleId): void
+    public function addUserRole(string $userId, Uuid $roleId): void
     {
         $this->connection->insert(
             $this->userRoleTableName,
@@ -84,7 +84,7 @@ class UserPermissionsWriteRepository implements UserPermissionsWriteRepositoryIn
         );
     }
 
-    public function removeUserRole(string $userId, UUID $roleId): void
+    public function removeUserRole(string $userId, Uuid $roleId): void
     {
         $this->connection->delete(
             $this->userRoleTableName,

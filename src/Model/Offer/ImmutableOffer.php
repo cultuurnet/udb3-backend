@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
@@ -24,7 +24,7 @@ use DateTimeImmutable;
 
 abstract class ImmutableOffer implements Offer
 {
-    private UUID $id;
+    private Uuid $id;
 
     private Language $mainLanguage;
 
@@ -57,7 +57,7 @@ abstract class ImmutableOffer implements Offer
     private ?DateTimeImmutable $availableFrom = null;
 
     public function __construct(
-        UUID $id,
+        Uuid $id,
         Language $mainLanguage,
         TranslatedTitle $title,
         Calendar $calendar,
@@ -79,7 +79,7 @@ abstract class ImmutableOffer implements Offer
         $this->workflowStatus = WorkflowStatus::DRAFT();
     }
 
-    public function getId(): UUID
+    public function getId(): Uuid
     {
         return $this->id;
     }

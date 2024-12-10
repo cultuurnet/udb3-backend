@@ -6,13 +6,13 @@ namespace CultuurNet\UDB3\Media\Commands;
 
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 final class UploadImage
 {
-    private UUID $fileId;
+    private Uuid $fileId;
 
     private Language $language;
 
@@ -25,7 +25,7 @@ final class UploadImage
     private string $filePath;
 
     public function __construct(
-        UUID $fileId,
+        Uuid $fileId,
         MIMEType $mimeType,
         Description $description,
         CopyrightHolder $copyrightHolder,
@@ -45,7 +45,7 @@ final class UploadImage
         return $this->language;
     }
 
-    public function getFileId(): UUID
+    public function getFileId(): Uuid
     {
         return $this->fileId;
     }

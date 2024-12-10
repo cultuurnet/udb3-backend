@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Productions;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 final class ProductionId
 {
@@ -17,7 +17,7 @@ final class ProductionId
 
     public static function generate(): self
     {
-        return new self(UUID::uuid4()->toString());
+        return new self(Uuid::uuid4()->toString());
     }
 
     public static function fromNative(string $id): self

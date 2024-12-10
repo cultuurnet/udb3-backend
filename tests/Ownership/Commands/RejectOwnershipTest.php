@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Ownership\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use PHPUnit\Framework\TestCase;
 
 class RejectOwnershipTest extends TestCase
@@ -15,7 +15,7 @@ class RejectOwnershipTest extends TestCase
     {
         parent::setUp();
 
-        $this->rejectOwnership = new RejectOwnership(new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
+        $this->rejectOwnership = new RejectOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
     }
 
     /**
@@ -24,7 +24,7 @@ class RejectOwnershipTest extends TestCase
     public function it_stores_an_id(): void
     {
         $this->assertEquals(
-            new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+            new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
             $this->rejectOwnership->getId()
         );
     }

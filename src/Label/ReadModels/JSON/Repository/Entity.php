@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class Entity implements \JsonSerializable
 {
@@ -16,7 +16,7 @@ class Entity implements \JsonSerializable
     public const PRIVACY = 'privacy';
     public const EXCLUDED = 'excluded';
 
-    private UUID $uuid;
+    private Uuid $uuid;
 
     private string $name;
 
@@ -27,7 +27,7 @@ class Entity implements \JsonSerializable
     private bool $excluded;
 
     public function __construct(
-        UUID $uuid,
+        Uuid $uuid,
         string $name,
         Visibility $visibility,
         Privacy $privacy,
@@ -40,7 +40,7 @@ class Entity implements \JsonSerializable
         $this->excluded = $excluded;
     }
 
-    public function getUuid(): UUID
+    public function getUuid(): Uuid
     {
         return $this->uuid;
     }

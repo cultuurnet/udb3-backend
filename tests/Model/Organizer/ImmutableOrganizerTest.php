@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -280,9 +280,9 @@ class ImmutableOrganizerTest extends TestCase
         $this->assertEquals($updatedContactPoint, $updatedOrganizer->getContactPoint());
     }
 
-    private function getId(): UUID
+    private function getId(): Uuid
     {
-        return new UUID('6db73fca-a23b-4c48-937d-62aaea73fbe8');
+        return new Uuid('6db73fca-a23b-4c48-937d-62aaea73fbe8');
     }
 
     private function getMainLanguage(): Language

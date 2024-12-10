@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -81,7 +81,7 @@ final class CreateNewsArticleRequestHandlerTest extends TestCase
         $this->newsArticleRepository->expects($this->once())
             ->method('create')
             ->with(new NewsArticle(
-                new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+                new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
                 'publiq wint API award',
                 new Language('nl'),
                 'Op 10 januari 2020 wint publiq de API award',
@@ -146,7 +146,7 @@ final class CreateNewsArticleRequestHandlerTest extends TestCase
         $this->newsArticleRepository->expects($this->once())
             ->method('create')
             ->with((new NewsArticle(
-                new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+                new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
                 'publiq wint API award',
                 new Language('nl'),
                 'Op 10 januari 2020 wint publiq de API award',
@@ -217,7 +217,7 @@ final class CreateNewsArticleRequestHandlerTest extends TestCase
         $this->newsArticleRepository->expects($this->once())
             ->method('create')
             ->with(new NewsArticle(
-                new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+                new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
                 'publiq wint API award',
                 new Language('nl'),
                 'Op 10 januari 2020 wint publiq de API award',
@@ -279,7 +279,7 @@ final class CreateNewsArticleRequestHandlerTest extends TestCase
         $this->newsArticleRepository->expects($this->once())
             ->method('create')
             ->with(new NewsArticle(
-                new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+                new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
                 'publiq wint API award',
                 new Language('nl'),
                 'Op 10 januari 2020 wint publiq de API award',
@@ -337,7 +337,7 @@ final class CreateNewsArticleRequestHandlerTest extends TestCase
         $this->newsArticleRepository->expects($this->once())
             ->method('create')
             ->with(new NewsArticle(
-                new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+                new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
                 'publiq wint API award',
                 new Language('nl'),
                 'Op 10 januari 2020 wint publiq de API award',
@@ -397,7 +397,7 @@ final class CreateNewsArticleRequestHandlerTest extends TestCase
             ->willReturn(
                 new NewsArticles(
                     new NewsArticle(
-                        new UUID('d684fc46-b0ba-4b64-9584-5f61fb5c4963'),
+                        new Uuid('d684fc46-b0ba-4b64-9584-5f61fb5c4963'),
                         'Some other headline',
                         new Language('nl'),
                         'Some other text',

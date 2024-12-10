@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Security\Permission;
 
 use CultuurNet\UDB3\Contributor\ContributorRepository;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\UserEmailAddressRepository;
@@ -57,7 +57,7 @@ final class ContributorVoterTest extends TestCase
 
         $this->contributorRepository->expects($this->once())
             ->method('isContributor')
-            ->with(new UUID($this->itemId), $this->email)
+            ->with(new Uuid($this->itemId), $this->email)
             ->willReturn(true);
 
         $this->assertTrue(
@@ -81,7 +81,7 @@ final class ContributorVoterTest extends TestCase
 
         $this->contributorRepository->expects($this->once())
             ->method('isContributor')
-            ->with(new UUID($this->itemId), $this->email)
+            ->with(new Uuid($this->itemId), $this->email)
             ->willReturn(false);
 
         $this->assertFalse(

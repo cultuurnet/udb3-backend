@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -32,7 +32,7 @@ class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
     public function setUp(): void
     {
         $place = new ImmutablePlace(
-            new UUID('6ba87a6b-efea-4467-9e87-458d145384d9'),
+            new Uuid('6ba87a6b-efea-4467-9e87-458d145384d9'),
             new Language('nl'),
             new TranslatedTitle(new Language('nl'), new Title('Voorbeeld titel')),
             new PermanentCalendar(new OpeningHours()),

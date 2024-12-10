@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 final class CreateProductionRequestHandlerTest extends TestCase
 {
@@ -35,8 +35,8 @@ final class CreateProductionRequestHandlerTest extends TestCase
      */
     public function it_can_create_a_production(): void
     {
-        $eventId1 = UUID::uuid4()->toString();
-        $eventId2 = UUID::uuid4()->toString();
+        $eventId1 = Uuid::uuid4()->toString();
+        $eventId2 = Uuid::uuid4()->toString();
         $name = 'Singing in the drain';
 
         $request = (new Psr7RequestBuilder())
@@ -72,7 +72,7 @@ final class CreateProductionRequestHandlerTest extends TestCase
      */
     public function it_can_create_production_with_single_event(): void
     {
-        $eventId1 = UUID::uuid4()->toString();
+        $eventId1 = Uuid::uuid4()->toString();
         $name = 'Singing in the drain';
 
         $request = (new Psr7RequestBuilder())

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Contributor;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use Doctrine\DBAL\Connection;
@@ -22,7 +22,7 @@ final class DbalContributorRepository implements ContributorRepository
         $this->connection = $connection;
     }
 
-    public function getContributors(UUID $id): EmailAddresses
+    public function getContributors(Uuid $id): EmailAddresses
     {
         $results = $this->connection->createQueryBuilder()
             ->select('email')
@@ -40,7 +40,7 @@ final class DbalContributorRepository implements ContributorRepository
         );
     }
 
-    public function isContributor(UUID $id, EmailAddress $emailAddress): bool
+    public function isContributor(Uuid $id, EmailAddress $emailAddress): bool
     {
         $results = $this->connection->createQueryBuilder()
             ->select('email')
@@ -55,7 +55,7 @@ final class DbalContributorRepository implements ContributorRepository
         return count($results) > 0;
     }
 
-    public function updateContributors(UUID $id, EmailAddresses $emailAddresses, ItemType $itemType): void
+    public function updateContributors(Uuid $id, EmailAddresses $emailAddresses, ItemType $itemType): void
     {
         $this->connection->transactional(
             function (Connection $connection) use ($id, $emailAddresses, $itemType): void {

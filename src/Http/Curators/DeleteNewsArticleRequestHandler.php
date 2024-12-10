@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Curators;
 use CultuurNet\UDB3\Curators\NewsArticleRepository;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -26,7 +26,7 @@ final class DeleteNewsArticleRequestHandler implements RequestHandlerInterface
         $routeParameters = new RouteParameters($request);
         $articleId = $routeParameters->get('articleId');
 
-        $this->newsArticleRepository->delete(new UUID($articleId));
+        $this->newsArticleRepository->delete(new Uuid($articleId));
 
         return new NoContentResponse();
     }

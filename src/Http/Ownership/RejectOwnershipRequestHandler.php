@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Ownership;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\Commands\RejectOwnership;
 use CultuurNet\UDB3\User\CurrentUser;
 use Fig\Http\Message\StatusCodeInterface;
@@ -38,7 +38,7 @@ final class RejectOwnershipRequestHandler implements RequestHandlerInterface
 
         $this->ownershipStatusGuard->isAllowedToReject($ownershipId, $this->currentUser);
 
-        $this->commandBus->dispatch(new RejectOwnership(new UUID($ownershipId)));
+        $this->commandBus->dispatch(new RejectOwnership(new Uuid($ownershipId)));
 
         return new JsonResponse(
             [],

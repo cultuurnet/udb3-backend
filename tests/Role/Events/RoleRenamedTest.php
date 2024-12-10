@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use PHPUnit\Framework\TestCase;
 
 class RoleRenamedTest extends TestCase
 {
-    protected UUID $uuid;
+    protected Uuid $uuid;
 
     protected string $name;
 
@@ -17,7 +17,7 @@ class RoleRenamedTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID('e97ed374-ca50-4d07-a893-637729341ab3');
+        $this->uuid = new Uuid('e97ed374-ca50-4d07-a893-637729341ab3');
 
         $this->name = 'roleName';
 

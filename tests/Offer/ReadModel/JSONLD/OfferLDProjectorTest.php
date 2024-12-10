@@ -20,7 +20,7 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
@@ -842,7 +842,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -910,7 +910,7 @@ class OfferLDProjectorTest extends TestCase
             ];
 
         $image1 = new Image(
-            new UUID('de305d54-ddde-eddd-adb2-eb6b9e546014'),
+            new Uuid('de305d54-ddde-eddd-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new MediaDescription('my best pokerface'),
             new CopyrightHolder('Hans Langucci'),
@@ -919,7 +919,7 @@ class OfferLDProjectorTest extends TestCase
         );
 
         $image2 = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1018,7 +1018,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1056,7 +1056,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('aa39128e-b2ca-5629-a275-b380381df0f3'),
+            new Uuid('aa39128e-b2ca-5629-a275-b380381df0f3'),
             new MIMEType('image/jpeg'),
             new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1096,7 +1096,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1147,7 +1147,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1186,7 +1186,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1217,7 +1217,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1268,7 +1268,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('7fba0270-9efa-5091-ac4a-381d6cc9394f'),
+            new Uuid('7fba0270-9efa-5091-ac4a-381d6cc9394f'),
             new MIMEType('image/jpeg'),
             new MediaDescription('THE FOX'),
             new CopyrightHolder('THE FOX'),
@@ -1320,7 +1320,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('5ae74e68-20a3-4cb1-b255-8e405aa01ab9'),
+            new Uuid('5ae74e68-20a3-4cb1-b255-8e405aa01ab9'),
             new MIMEType('image/png'),
             new MediaDescription('funny giphy image'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1380,7 +1380,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('5ae74e68-20a3-4cb1-b255-8e405aa01ab9'),
+            new Uuid('5ae74e68-20a3-4cb1-b255-8e405aa01ab9'),
             new MIMEType('image/jpeg'),
             new MediaDescription('funny giphy image'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1431,7 +1431,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $selectedMainImage = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -2298,7 +2298,7 @@ class OfferLDProjectorTest extends TestCase
     {
         $eventId = 'event-1';
         $image = new Image(
-            new UUID('ED5B9B25-8C16-48E5-9899-27BB2D110C57'),
+            new Uuid('ED5B9B25-8C16-48E5-9899-27BB2D110C57'),
             new MIMEType('image/jpg'),
             new MediaDescription('epische panorama foto'),
             new CopyrightHolder('Jean-François Millet'),
@@ -2359,7 +2359,7 @@ class OfferLDProjectorTest extends TestCase
     public function imageCollectionDataProvider(): array
     {
         $coverPicture = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/jpg'),
             new MediaDescription('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
@@ -2368,7 +2368,7 @@ class OfferLDProjectorTest extends TestCase
         );
 
         $selfie = new Image(
-            new UUID('e56e8eb6-dcd7-47e7-8106-8a149f1d241b'),
+            new Uuid('e56e8eb6-dcd7-47e7-8106-8a149f1d241b'),
             new MIMEType('image/jpg'),
             new MediaDescription('my favorite selfie'),
             new CopyrightHolder('Dirk Dirkington'),

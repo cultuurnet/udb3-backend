@@ -24,7 +24,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -158,7 +158,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
 
     abstract protected function createOffer(
         array $originalData,
-        UUID $id,
+        Uuid $id,
         Language $mainLanguage,
         TranslatedTitle $title,
         Calendar $calendar,

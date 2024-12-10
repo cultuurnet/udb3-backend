@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Model\Organizer;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 interface Organizer
 {
-    public function getId(): UUID;
+    public function getId(): Uuid;
 
     public function getMainLanguage(): Language;
 

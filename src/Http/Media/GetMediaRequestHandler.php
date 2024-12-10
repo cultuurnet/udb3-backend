@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Media\MediaManager;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Media\MediaUrlMapping;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -41,7 +41,7 @@ final class GetMediaRequestHandler implements RequestHandlerInterface
         $id = $routeParameters->get('id');
 
         try {
-            $mediaObject = $this->mediaManager->get(new UUID($id));
+            $mediaObject = $this->mediaManager->get(new Uuid($id));
         } catch (MediaObjectNotFoundException | InvalidArgumentException $e) {
             throw ApiProblem::mediaObjectNotFound($id);
         }

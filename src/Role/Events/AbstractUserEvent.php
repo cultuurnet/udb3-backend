@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 abstract class AbstractUserEvent extends AbstractEvent
 {
@@ -12,7 +12,7 @@ abstract class AbstractUserEvent extends AbstractEvent
 
     private string $userId;
 
-    final public function __construct(UUID $uuid, string $userId)
+    final public function __construct(Uuid $uuid, string $userId)
     {
         parent::__construct($uuid);
 
@@ -27,7 +27,7 @@ abstract class AbstractUserEvent extends AbstractEvent
     public static function deserialize(array $data): AbstractUserEvent
     {
         return new static(
-            new UUID($data[self::UUID]),
+            new Uuid($data[self::UUID]),
             $data[self::USER_ID]
         );
     }

@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -47,7 +47,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
     }
 
     public function create(
-        UUID $id,
+        Uuid $id,
         MIMEType $fileType,
         Description $description,
         CopyrightHolder $copyrightHolder,
@@ -106,7 +106,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         $this->logger->info('job_info', $jobInfo);
     }
 
-    public function get(UUID $fileId): MediaObject
+    public function get(Uuid $fileId): MediaObject
     {
         try {
             /** @var MediaObject $mediaObject */
@@ -122,7 +122,7 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         return $mediaObject;
     }
 
-    public function getImage(UUID $imageId): Image
+    public function getImage(Uuid $imageId): Image
     {
         $mediaObject = $this->get($imageId);
 

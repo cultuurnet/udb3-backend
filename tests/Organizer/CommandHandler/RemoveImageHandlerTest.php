@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Organizer\Commands\RemoveImage;
 use CultuurNet\UDB3\Organizer\Events\ImageAdded;
 use CultuurNet\UDB3\Organizer\Events\ImageRemoved;
@@ -56,7 +56,7 @@ final class RemoveImageHandlerTest extends CommandHandlerScenarioTestCase
                 ],
                 new removeImage(
                     '5e360b25-fd85-4dac-acf4-0571e0b57dce',
-                    new UUID('cf539408-bba9-4e77-9f85-72019013db37')
+                    new Uuid('cf539408-bba9-4e77-9f85-72019013db37')
                 ),
                 [
                     new ImageRemoved(
@@ -82,7 +82,7 @@ final class RemoveImageHandlerTest extends CommandHandlerScenarioTestCase
                 ],
                 new removeImage(
                     '5e360b25-fd85-4dac-acf4-0571e0b57dce',
-                    new UUID('cf539408-bba9-4e77-9f85-72019013db37')
+                    new Uuid('cf539408-bba9-4e77-9f85-72019013db37')
                 ),
                 [
                 ],
@@ -93,7 +93,7 @@ final class RemoveImageHandlerTest extends CommandHandlerScenarioTestCase
                 ],
                 new removeImage(
                     '5e360b25-fd85-4dac-acf4-0571e0b57dce',
-                    new UUID('cf539408-bba9-4e77-9f85-72019013db37')
+                    new Uuid('cf539408-bba9-4e77-9f85-72019013db37')
                 ),
                 [
                 ],

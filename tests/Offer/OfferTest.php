@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
@@ -89,7 +89,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->with(new Label(new LabelName('label')))
             ->with(new Label(new LabelName('cultuurnet')));
         $this->image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/gif'),
             new MediaDescription('my favorite giphy gif'),
             new CopyrightHolder('Bert Ramakers'),
@@ -142,7 +142,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = '77b4df58-b7e9-40cf-979f-ec741a072282';
 
         $updatedImage = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/jpg'),
             new MediaDescription('my updated pic'),
             new CopyrightHolder('Dirk Dirkingn updated'),
@@ -150,7 +150,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Language('en')
         );
         $secondImage = new Image(
-            new UUID('837bd340-e939-4210-8af9-e4baedd0d44e'),
+            new Uuid('837bd340-e939-4210-8af9-e4baedd0d44e'),
             new MIMEType('image/jpg'),
             new MediaDescription('my second pic'),
             new CopyrightHolder('Dirk Dirkingn again'),
@@ -523,7 +523,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_set_the_main_image_when_selecting_another_one(): void
     {
         $anotherImage = new Image(
-            new UUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
+            new Uuid('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
             new MIMEType('image/jpeg'),
             new MediaDescription('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
@@ -562,7 +562,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_can_select_main_image_even_after_image_update(): void
     {
         $anotherImage = new Image(
-            new UUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
+            new Uuid('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
             new MIMEType('image/jpeg'),
             new MediaDescription('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
@@ -733,7 +733,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function it_should_make_the_oldest_image_main_when_deleting_the_current_main_image(): void
     {
         $oldestImage = new Image(
-            new UUID('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
+            new Uuid('798b4619-07c4-456d-acca-8f3f3e6fd43f'),
             new MIMEType('image/gif'),
             new MediaDescription('my best selfie'),
             new CopyrightHolder('Dirk Dirkington'),
@@ -741,7 +741,7 @@ class OfferTest extends AggregateRootScenarioTestCase
             new Language('en')
         );
         $newerImage = new Image(
-            new UUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
+            new Uuid('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
             new MIMEType('image/jpeg'),
             new MediaDescription('pic'),
             new CopyrightHolder('Henk'),
@@ -812,7 +812,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $originalMainImage = $this->image;
         $newMainImage = new Image(
-            new UUID('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
+            new Uuid('fdfac613-61f9-43ac-b1a9-c75f9fd58386'),
             new MIMEType('image/jpeg'),
             new MediaDescription('pic'),
             new CopyrightHolder('Henk'),
@@ -2107,7 +2107,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $itemId = 'ca7a178e-24cb-4d66-b4e6-a575b25d531f';
 
         $dutchUdb3Image = new Image(
-            new UUID('0773EB2A-54BE-49AD-B261-5D1099F319D4'),
+            new Uuid('0773EB2A-54BE-49AD-B261-5D1099F319D4'),
             new MIMEType('image/jpg'),
             new MediaDescription('mijn favoriete wallpaper'),
             new CopyrightHolder('Dirk Dirkingn'),
@@ -2117,7 +2117,7 @@ class OfferTest extends AggregateRootScenarioTestCase
 
         $udb2Images = ImageCollection::fromArray([
             new Image(
-                new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+                new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
                 new MIMEType('image/jpg'),
                 new MediaDescription('episch panorama'),
                 new CopyrightHolder('Dirk Dirkingn'),
@@ -2172,7 +2172,7 @@ class OfferTest extends AggregateRootScenarioTestCase
     public function imageCollectionDataProvider(): array
     {
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/jpg'),
             new MediaDescription('my pic'),
             new CopyrightHolder('Dirk Dirkingn'),

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Label\Events;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class Created extends AbstractEvent
 {
@@ -18,7 +18,7 @@ class Created extends AbstractEvent
     private Privacy $privacy;
 
     public function __construct(
-        UUID $uuid,
+        Uuid $uuid,
         string $name,
         Visibility $visibility,
         Privacy $privacy
@@ -42,7 +42,7 @@ class Created extends AbstractEvent
     public static function deserialize(array $data): Created
     {
         return new self(
-            new UUID($data[self::UUID]),
+            new Uuid($data[self::UUID]),
             $data[self::NAME],
             new Visibility($data[self::VISIBILITY]),
             new Privacy($data[self::PRIVACY])

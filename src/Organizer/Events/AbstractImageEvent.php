@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Organizer\Events;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
@@ -65,7 +65,7 @@ abstract class AbstractImageEvent implements Serializable
     public function getImage(): Image
     {
         return new Image(
-            new UUID($this->imageId),
+            new Uuid($this->imageId),
             new Language($this->language),
             new Description($this->description),
             new CopyrightHolder($this->copyrightHolder)

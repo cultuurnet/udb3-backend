@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Role;
 
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler as AbstractCommandHandler;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddLabel;
 use CultuurNet\UDB3\Role\Commands\AddPermission;
@@ -157,7 +157,7 @@ class CommandHandler extends AbstractCommandHandler
         $this->save($role);
     }
 
-    private function load(UUID $uuid): Role
+    private function load(Uuid $uuid): Role
     {
         /** @var Role $role */
         $role = $this->repository->load($uuid->toString());

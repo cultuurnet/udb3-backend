@@ -43,7 +43,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
@@ -1329,7 +1329,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_should_not_add_duplicate_images(): void
     {
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1376,7 +1376,7 @@ class EventTest extends AggregateRootScenarioTestCase
         );
 
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1426,7 +1426,7 @@ class EventTest extends AggregateRootScenarioTestCase
         );
 
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),

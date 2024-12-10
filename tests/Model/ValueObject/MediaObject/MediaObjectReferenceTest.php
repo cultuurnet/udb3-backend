@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -17,7 +17,7 @@ class MediaObjectReferenceTest extends TestCase
      */
     public function it_should_be_creatable_with_a_media_object_id(): void
     {
-        $id = new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
+        $id = new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
         $description = new Description('Some image description');
         $copyrightHolder = new CopyrightHolder('Publiq vzw');
         $language = new Language('en');
@@ -41,7 +41,7 @@ class MediaObjectReferenceTest extends TestCase
      */
     public function it_should_be_creatable_with_an_embedded_media_object(): void
     {
-        $id = new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
+        $id = new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
         $type = MediaObjectType::imageObject();
         $contentUrl = new Url('http://publiq.be/test.png');
         $thumbnailUrl = new Url('http://publiq.be/test.png?w=100&h=100');
@@ -71,7 +71,7 @@ class MediaObjectReferenceTest extends TestCase
      */
     public function it_should_return_a_copy_with_an_updated_description(): void
     {
-        $id = new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
+        $id = new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
         $description = new Description('Some image description');
         $copyrightHolder = new CopyrightHolder('Publiq vzw');
         $language = new Language('en');
@@ -96,7 +96,7 @@ class MediaObjectReferenceTest extends TestCase
      */
     public function it_should_return_a_copy_with_an_updated_copyright_holder(): void
     {
-        $id = new UUID('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
+        $id = new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
         $description = new Description('Some image description');
         $copyrightHolder = new CopyrightHolder('Publiq vzw');
         $language = new Language('en');

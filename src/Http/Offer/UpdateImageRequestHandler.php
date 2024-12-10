@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Offer\Commands\Image\AbstractUpdateImage;
 use CultuurNet\UDB3\Offer\Serializers\UpdateImageDenormalizer;
 use Psr\Http\Message\ServerRequestInterface;
@@ -35,7 +35,7 @@ final class UpdateImageRequestHandler implements RequestHandlerInterface
         $offerId = $routeParameters->getOfferId();
 
         try {
-            $mediaId = new UUID($routeParameters->getMediaId());
+            $mediaId = new Uuid($routeParameters->getMediaId());
         } catch (\InvalidArgumentException $exception) {
             throw ApiProblem::imageNotFound($routeParameters->getMediaId());
         }

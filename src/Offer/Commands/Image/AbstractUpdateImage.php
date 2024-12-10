@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Commands\Image;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
 abstract class AbstractUpdateImage extends AbstractCommand
 {
-    protected UUID $mediaObjectId;
+    protected Uuid $mediaObjectId;
 
     protected string $description;
 
@@ -18,7 +18,7 @@ abstract class AbstractUpdateImage extends AbstractCommand
 
     public function __construct(
         string $itemId,
-        UUID $mediaObjectId,
+        Uuid $mediaObjectId,
         string $description,
         CopyrightHolder $copyrightHolder
     ) {
@@ -28,7 +28,7 @@ abstract class AbstractUpdateImage extends AbstractCommand
         $this->copyrightHolder = $copyrightHolder;
     }
 
-    public function getMediaObjectId(): UUID
+    public function getMediaObjectId(): Uuid
     {
         return $this->mediaObjectId;
     }

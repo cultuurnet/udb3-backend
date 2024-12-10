@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
@@ -69,7 +69,7 @@ final class GetContributorsRequestHandler implements RequestHandlerInterface
             );
         }
 
-        $results = $this->contributorRepository->getContributors(new UUID($offerId))->toArray();
+        $results = $this->contributorRepository->getContributors(new Uuid($offerId))->toArray();
 
         return new JsonResponse(
             array_map(

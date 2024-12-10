@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -41,7 +41,7 @@ final class UpdateImageHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 (new UpdateImage(
                     $id,
-                    new UUID('cf539408-bba9-4e77-9f85-72019013db37')
+                    new Uuid('cf539408-bba9-4e77-9f85-72019013db37')
                 ))
                     ->withLanguage(new Language('nl'))
                     ->withDescription(new Description('Beschrijving'))
@@ -74,7 +74,7 @@ final class UpdateImageHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 (new UpdateImage(
                     $id,
-                    new UUID('e717473d-609d-4bf1-a008-c935c8836335')
+                    new Uuid('e717473d-609d-4bf1-a008-c935c8836335')
                 ))->withLanguage(new Language('nl'))
             )
             ->then([]);
@@ -96,7 +96,7 @@ final class UpdateImageHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 (new UpdateImage(
                     $id,
-                    new UUID('cf539408-bba9-4e77-9f85-72019013db37')
+                    new Uuid('cf539408-bba9-4e77-9f85-72019013db37')
                 ))
                     ->withLanguage(new Language('en'))
                     ->withDescription(new Description('Description'))

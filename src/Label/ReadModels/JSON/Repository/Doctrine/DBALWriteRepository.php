@@ -8,12 +8,12 @@ use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\WriteRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 final class DBALWriteRepository extends AbstractDBALRepository implements WriteRepositoryInterface
 {
     public function save(
-        UUID $uuid,
+        Uuid $uuid,
         string $name,
         Visibility $visibility,
         Privacy $privacy
@@ -38,7 +38,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
         $queryBuilder->execute();
     }
 
-    public function updateVisible(UUID $uuid): void
+    public function updateVisible(Uuid $uuid): void
     {
         $this->executeUpdate(
             ColumnNames::VISIBLE_COLUMN,
@@ -47,7 +47,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
         );
     }
 
-    public function updateInvisible(UUID $uuid): void
+    public function updateInvisible(Uuid $uuid): void
     {
         $this->executeUpdate(
             ColumnNames::VISIBLE_COLUMN,
@@ -56,7 +56,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
         );
     }
 
-    public function updatePublic(UUID $uuid): void
+    public function updatePublic(Uuid $uuid): void
     {
         $this->executeUpdate(
             ColumnNames::PRIVATE_COLUMN,
@@ -65,7 +65,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
         );
     }
 
-    public function updatePrivate(UUID $uuid): void
+    public function updatePrivate(Uuid $uuid): void
     {
         $this->executeUpdate(
             ColumnNames::PRIVATE_COLUMN,
@@ -74,7 +74,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
         );
     }
 
-    public function updateIncluded(UUID $uuid): void
+    public function updateIncluded(Uuid $uuid): void
     {
         $this->executeUpdate(
             ColumnNames::EXCLUDED_COLUMN,
@@ -83,7 +83,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
         );
     }
 
-    public function updateExcluded(UUID $uuid): void
+    public function updateExcluded(Uuid $uuid): void
     {
         $this->executeUpdate(
             ColumnNames::EXCLUDED_COLUMN,
@@ -95,7 +95,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
     private function executeUpdate(
         string $column,
         bool $value,
-        UUID $uuid
+        Uuid $uuid
     ): void {
         $queryBuilder = $this->createQueryBuilder()
             ->update($this->getTableName())

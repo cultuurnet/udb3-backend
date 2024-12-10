@@ -38,7 +38,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
@@ -137,14 +137,14 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
             new PermanentCalendar(new OpeningHours()),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -181,14 +181,14 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
             new PermanentCalendar(new OpeningHours()),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -244,14 +244,14 @@ class EventDenormalizerTest extends TestCase
         );
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
             $expectedCalendar,
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -296,14 +296,14 @@ class EventDenormalizerTest extends TestCase
         );
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
             $expectedCalendar,
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -343,7 +343,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             (new TranslatedTitle(
                 new Language('nl'),
@@ -352,7 +352,7 @@ class EventDenormalizerTest extends TestCase
                 ->withTranslation(new Language('en'), new Title('Example title'))
                 ->withTranslation(new Language('fr'), new Title('Titre de l\'exemple')),
             new PermanentCalendar(new OpeningHours()),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -399,7 +399,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -417,7 +417,7 @@ class EventDenormalizerTest extends TestCase
                     new BookingAvailability(BookingAvailabilityType::Available())
                 ),
             ),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -471,7 +471,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -494,7 +494,7 @@ class EventDenormalizerTest extends TestCase
                     new BookingAvailability(BookingAvailabilityType::Available())
                 )
             ),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -534,7 +534,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -552,7 +552,7 @@ class EventDenormalizerTest extends TestCase
                     new BookingAvailability(BookingAvailabilityType::Available())
                 )
             ),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -609,7 +609,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -649,7 +649,7 @@ class EventDenormalizerTest extends TestCase
                     )
                 )
             ),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -730,7 +730,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -793,7 +793,7 @@ class EventDenormalizerTest extends TestCase
                     )
                 )
             ),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -851,7 +851,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -877,7 +877,7 @@ class EventDenormalizerTest extends TestCase
                     )
                 )
             ),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -924,7 +924,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -954,7 +954,7 @@ class EventDenormalizerTest extends TestCase
                     ))->withTranslation(new Language('fr'), new StatusReason('Frans'))
                 )
             ),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -1008,7 +1008,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -1038,7 +1038,7 @@ class EventDenormalizerTest extends TestCase
                     ))->withTranslation(new Language('fr'), new StatusReason('Frans'))
                 )
             ),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -1104,7 +1104,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -1151,7 +1151,7 @@ class EventDenormalizerTest extends TestCase
                     ))->withTranslation(new Language('fr'), new StatusReason('Frans'))
                 )
             ),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -1191,7 +1191,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -1204,7 +1204,7 @@ class EventDenormalizerTest extends TestCase
                 ),
                 new OpeningHours()
             ),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -1261,7 +1261,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -1290,7 +1290,7 @@ class EventDenormalizerTest extends TestCase
                     )
                 )
             ),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -1345,7 +1345,7 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
@@ -1370,7 +1370,7 @@ class EventDenormalizerTest extends TestCase
                     )
                 )
             ),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -1415,14 +1415,14 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
             new PermanentCalendar(new OpeningHours()),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1'),
@@ -1468,14 +1468,14 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = (new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
             new PermanentCalendar(new OpeningHours()),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -1615,14 +1615,14 @@ class EventDenormalizerTest extends TestCase
         ];
 
         $expected = new ImmutableEvent(
-            new UUID('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
+            new Uuid('9f34efc7-a528-4ea8-a53e-a183f21abbab'),
             new Language('nl'),
             new TranslatedTitle(
                 new Language('nl'),
                 new Title('Titel voorbeeld')
             ),
             new PermanentCalendar(new OpeningHours()),
-            PlaceReference::createWithPlaceId(new UUID('dbe91250-4e4b-495c-b692-3da9563b0d52')),
+            PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
             new Categories(
                 new Category(
                     new CategoryID('0.50.1.0.1')
@@ -1647,7 +1647,7 @@ class EventDenormalizerTest extends TestCase
                 )
             )
             ->withOrganizerReference(
-                OrganizerReference::createWithOrganizerId(new UUID('236f736e-5308-4c3a-94f3-da0bd768da7d'))
+                OrganizerReference::createWithOrganizerId(new Uuid('236f736e-5308-4c3a-94f3-da0bd768da7d'))
             )
             ->withAgeRange(
                 new AgeRange(new Age(8), new Age(12))
@@ -1723,14 +1723,14 @@ class EventDenormalizerTest extends TestCase
             ->withMediaObjectReferences(
                 new MediaObjectReferences(
                     MediaObjectReference::createWithMediaObjectId(
-                        new UUID('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
+                        new Uuid('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
                         new Description('Example image 1'),
                         new CopyrightHolder('Alice'),
                         new Language('nl')
                     ),
                     MediaObjectReference::createWithEmbeddedMediaObject(
                         new MediaObject(
-                            new UUID('fc712fef-e7c9-4df6-8655-da943852bd8d'),
+                            new Uuid('fc712fef-e7c9-4df6-8655-da943852bd8d'),
                             MediaObjectType::imageObject(),
                             new Url('https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png'),
                             new Url('https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png')

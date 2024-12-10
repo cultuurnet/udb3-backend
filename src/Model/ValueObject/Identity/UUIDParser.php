@@ -11,5 +11,5 @@ interface UUIDParser
     /**
      * @throws \InvalidArgumentException
      */
-    public function fromUrl(Url $url): UUID;
+    public function fromUrl(Url $url): Uuid;
 }

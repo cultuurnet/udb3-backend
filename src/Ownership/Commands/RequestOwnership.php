@@ -6,19 +6,19 @@ namespace CultuurNet\UDB3\Ownership\Commands;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 final class RequestOwnership
 {
-    private UUID $id;
-    private UUID $itemId;
+    private Uuid $id;
+    private Uuid $itemId;
     private ItemType $itemType;
     private UserId $ownerId;
     private UserId $requesterId;
 
     public function __construct(
-        UUID $id,
-        UUID $itemId,
+        Uuid $id,
+        Uuid $itemId,
         ItemType $itemType,
         UserId $ownerId,
         UserId $requesterId
@@ -30,12 +30,12 @@ final class RequestOwnership
         $this->requesterId = $requesterId;
     }
 
-    public function getId(): UUID
+    public function getId(): Uuid
     {
         return $this->id;
     }
 
-    public function getItemId(): UUID
+    public function getItemId(): Uuid
     {
         return $this->itemId;
     }

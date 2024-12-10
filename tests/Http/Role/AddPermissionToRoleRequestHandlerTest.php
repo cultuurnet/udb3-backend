@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Role\Commands\AddPermission;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use PHPUnit\Framework\TestCase;
@@ -90,7 +90,7 @@ final class AddPermissionToRoleRequestHandlerTest extends TestCase
 
         $expectedResponse = new NoContentResponse();
         $expectedCommand = new AddPermission(
-            new UUID($roleId),
+            new Uuid($roleId),
             $permission
         );
 

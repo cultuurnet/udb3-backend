@@ -48,7 +48,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
@@ -787,7 +787,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->willReturn(
                 (new ImageCollection())
                     ->with(new Image(
-                        new UUID('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
+                        new Uuid('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
                         MIMEType::fromSubtype('jpeg'),
                         new Description('Feest in de Hel'),
                         new CopyrightHolder('De Hel'),
@@ -921,7 +921,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     $placeId,
                     (new ImageCollection())
                         ->with(new Image(
-                            new UUID('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
+                            new Uuid('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
                             MIMEType::fromSubtype('jpeg'),
                             new Description('Feest in de Hel'),
                             new CopyrightHolder('De Hel'),

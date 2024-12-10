@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
@@ -320,7 +320,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
     }
 
     public function updateImage(
-        UUID $imageId,
+        Uuid $imageId,
         ?Language $language,
         ?Description $description,
         ?CopyrightHolder $copyrightHolder
@@ -394,7 +394,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         }
     }
 
-    public function updateMainImage(UUID $imageId): void
+    public function updateMainImage(Uuid $imageId): void
     {
         if (!$this->hasImage($imageId)) {
             throw new ImageMustBeLinkedException();
@@ -407,7 +407,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         }
     }
 
-    private function hasImage(UUID $imageId): bool
+    private function hasImage(Uuid $imageId): bool
     {
         if ($this->images->isEmpty()) {
             return false;
@@ -418,7 +418,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         )->isEmpty();
     }
 
-    public function removeImage(UUID $imageId): void
+    public function removeImage(Uuid $imageId): void
     {
         if (!$this->hasImage($imageId)) {
             return;

@@ -15,7 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -65,7 +65,7 @@ class ImmutableEventTest extends TestCase
     {
         $placeReference = $this->getPlaceReference();
 
-        $updatedPlaceId = new UUID('23e965f1-f348-4915-9003-12162aa0e982');
+        $updatedPlaceId = new Uuid('23e965f1-f348-4915-9003-12162aa0e982');
         $updatedPlaceReference = PlaceReference::createWithPlaceId($updatedPlaceId);
 
         $event = $this->getEvent();
@@ -123,9 +123,9 @@ class ImmutableEventTest extends TestCase
         $this->assertTrue($updatedEvent->getAudienceType()->sameAs($updatedAudience));
     }
 
-    private function getId(): UUID
+    private function getId(): Uuid
     {
-        return new UUID('aadcee95-6180-4924-a8eb-ed829d4957a2');
+        return new Uuid('aadcee95-6180-4924-a8eb-ed829d4957a2');
     }
 
     private function getMainLanguage(): Language
@@ -157,7 +157,7 @@ class ImmutableEventTest extends TestCase
 
     private function getPlaceReference(): PlaceReference
     {
-        return PlaceReference::createWithPlaceId(new UUID('23f94284-550c-4fdd-8b66-8b0e2393283c'));
+        return PlaceReference::createWithPlaceId(new Uuid('23f94284-550c-4fdd-8b66-8b0e2393283c'));
     }
 
     private function getTerms(): Categories
