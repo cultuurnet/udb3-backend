@@ -14,12 +14,12 @@ use CultuurNet\UDB3\Label\Events\MadePublic;
 use CultuurNet\UDB3\Label\Events\MadeVisible;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 final class Label extends EventSourcedAggregateRoot
 {
-    private UUID $uuid;
+    private Uuid $uuid;
 
     private string $name;
 
@@ -35,7 +35,7 @@ final class Label extends EventSourcedAggregateRoot
     }
 
     public static function create(
-        UUID $uuid,
+        Uuid $uuid,
         string $name,
         Visibility $visibility,
         Privacy $privacy

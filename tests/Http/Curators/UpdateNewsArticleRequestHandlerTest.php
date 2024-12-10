@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -61,7 +61,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $newsArticle = new NewsArticle(
-            new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+            new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
             'publiq wint API award',
             new Language('nl'),
             'Op 10 januari 2020 wint publiq de API award',
@@ -73,7 +73,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
 
         $this->newsArticleRepository->expects($this->once())
             ->method('getById')
-            ->with(new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
+            ->with(new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
             ->willReturn($newsArticle);
 
         $this->newsArticleRepository->expects($this->once())
@@ -120,7 +120,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $newsArticle = new NewsArticle(
-            new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+            new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
             'publiq wint API award',
             new Language('nl'),
             'Op 10 januari 2020 wint publiq de API award',
@@ -132,7 +132,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
 
         $this->newsArticleRepository->expects($this->once())
             ->method('getById')
-            ->with(new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
+            ->with(new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
             ->willReturn($newsArticle);
 
         $this->newsArticleRepository->expects($this->once())
@@ -179,7 +179,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $newsArticle = new NewsArticle(
-            new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+            new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
             'publiq wint API award',
             new Language('nl'),
             'Op 10 januari 2020 wint publiq de API award',
@@ -191,7 +191,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
 
         $this->newsArticleRepository->expects($this->once())
             ->method('getById')
-            ->with(new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
+            ->with(new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
             ->willReturn($newsArticle);
 
         $this->newsArticleRepository->expects($this->once())
@@ -234,7 +234,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $newsArticle = new NewsArticle(
-            new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+            new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
             'publiq wint API award',
             new Language('nl'),
             'Op 10 januari 2020 wint publiq de API award',
@@ -246,7 +246,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
 
         $this->newsArticleRepository->expects($this->once())
             ->method('getById')
-            ->with(new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
+            ->with(new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
             ->willReturn($newsArticle);
 
         $this->newsArticleRepository->expects($this->once())
@@ -296,7 +296,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $newsArticle = new NewsArticle(
-            new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+            new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
             'publiq wint API award',
             new Language('nl'),
             'Op 10 januari 2020 wint publiq de API award',
@@ -315,7 +315,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
 
         $this->newsArticleRepository->expects($this->once())
             ->method('getById')
-            ->with(new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
+            ->with(new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
             ->willReturn($newsArticle);
 
         $this->newsArticleRepository->expects($this->once())
@@ -369,7 +369,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $newsArticle = new NewsArticle(
-            new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+            new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
             'publiq wint API award',
             new Language('nl'),
             'Op 10 januari 2020 wint publiq de API award',
@@ -381,7 +381,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
 
         $this->newsArticleRepository->expects($this->once())
             ->method('getById')
-            ->with(new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
+            ->with(new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
             ->willReturn($newsArticle);
 
         $this->assertCallableThrowsApiProblem(
@@ -414,7 +414,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $newsArticle = new NewsArticle(
-            new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
+            new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),
             'publiq wint API award',
             new Language('nl'),
             'Op 10 januari 2020 wint publiq de API award',
@@ -426,7 +426,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
 
         $this->newsArticleRepository->expects($this->once())
             ->method('getById')
-            ->with(new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
+            ->with(new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'))
             ->willReturn($newsArticle);
 
         $this->assertCallableThrowsApiProblem(
@@ -448,7 +448,7 @@ final class UpdateNewsArticleRequestHandlerTest extends TestCase
 
         $this->newsArticleRepository->expects($this->once())
             ->method('getById')
-            ->willThrowException(new NewsArticleNotFound(new UUID('6c583739-a848-41ab-b8a3-8f7dab6f8ee1')));
+            ->willThrowException(new NewsArticleNotFound(new Uuid('6c583739-a848-41ab-b8a3-8f7dab6f8ee1')));
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::newsArticleNotFound('6c583739-a848-41ab-b8a3-8f7dab6f8ee1'),

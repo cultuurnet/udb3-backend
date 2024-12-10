@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -38,7 +38,7 @@ final class MediaObjectSerializerTest extends TestCase
     public function it_adds_schema_annotations_when_serializing_a_media_object_to_jsonld(): void
     {
         $mediaObject = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/jpg'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
@@ -73,7 +73,7 @@ final class MediaObjectSerializerTest extends TestCase
     public function it_should_serialize_media_objects_with_application_octet_stream_mime_type(): void
     {
         $mediaObject = MediaObject::create(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('application/octet-stream'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
@@ -108,7 +108,7 @@ final class MediaObjectSerializerTest extends TestCase
     public function it_should_serialize_image_objects_with_application_octet_stream_mime_type(): void
     {
         $mediaObject = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('application/octet-stream'),
             new Description('my pic'),
             new CopyrightHolder('Dirk Dirkington'),
@@ -143,7 +143,7 @@ final class MediaObjectSerializerTest extends TestCase
     public function it_should_throw_an_exception_when_trying_to_serialize_unknown_media_types(): void
     {
         $mediaObject = MediaObject::create(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('video/avi'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),

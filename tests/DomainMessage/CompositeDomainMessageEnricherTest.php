@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Place\Events\PlaceCreated;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class CompositeDomainMessageEnricherTest extends TestCase
 {
@@ -140,7 +140,7 @@ class CompositeDomainMessageEnricherTest extends TestCase
     private function createEventCreatedDomainMessage(): DomainMessage
     {
         return new DomainMessage(
-            UUID::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
             0,
             new Metadata(),
             new EventCreated(
@@ -158,7 +158,7 @@ class CompositeDomainMessageEnricherTest extends TestCase
     private function createPlaceCreatedDomainMessage(): DomainMessage
     {
         return new DomainMessage(
-            UUID::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
             0,
             new Metadata(),
             new PlaceCreated(
@@ -181,7 +181,7 @@ class CompositeDomainMessageEnricherTest extends TestCase
     private function createOrganizerCreatedDomainMessage(): DomainMessage
     {
         return new DomainMessage(
-            UUID::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
             0,
             new Metadata(),
             new OrganizerCreated(
@@ -202,7 +202,7 @@ class CompositeDomainMessageEnricherTest extends TestCase
     private function createOrganizerCreatedWithUniqueWebsiteDomainMessage(): DomainMessage
     {
         return new DomainMessage(
-            UUID::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
             0,
             new Metadata(),
             new OrganizerCreatedWithUniqueWebsite(

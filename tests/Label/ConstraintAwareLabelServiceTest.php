@@ -13,7 +13,7 @@ use CultuurNet\UDB3\EventSourcing\DBAL\UniqueConstraintException;
 use CultuurNet\UDB3\Label\Events\Created;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +40,7 @@ class ConstraintAwareLabelServiceTest extends TestCase
     public function it_creates_a_new_label_aggregate_for_a_given_label_name_and_visibility(): void
     {
         $labelName = 'foo';
-        $expectedUuid = new UUID('b67d6f8b-fe08-44c9-a0a7-8e6b47dab0ff');
+        $expectedUuid = new Uuid('b67d6f8b-fe08-44c9-a0a7-8e6b47dab0ff');
 
         $traceableEventStore = new TraceableEventStore($this->createMock(EventStore::class));
         $traceableEventStore->trace();

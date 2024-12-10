@@ -14,7 +14,7 @@ class UUIDTest extends TestCase
      */
     public function it_should_accept_a_valid_uuid_string(string $uuidString): void
     {
-        $uuid = new UUID($uuidString);
+        $uuid = new Uuid($uuidString);
         $this->assertEquals($uuidString, $uuid->toString());
     }
 
@@ -37,7 +37,7 @@ class UUIDTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("{$invalidUuid} is not a valid uuid.");
 
-        new UUID($invalidUuid);
+        new Uuid($invalidUuid);
     }
 
 
@@ -53,9 +53,9 @@ class UUIDTest extends TestCase
     /** @test */
     public function it_should_generate_a_valid_uuid4(): void
     {
-        $uuid = UUID::uuid4();
+        $uuid = Uuid::uuid4();
         $this->assertMatchesRegularExpression(
-            UUID::BC_REGEX,
+            Uuid::BC_REGEX,
             $uuid->toString(),
             'The generated UUID is not a valid UUIDv4.'
         );

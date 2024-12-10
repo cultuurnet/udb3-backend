@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class ProductionTest extends TestCase
 {
@@ -50,8 +50,8 @@ class ProductionTest extends TestCase
     public function it_knows_if_it_contains_a_certain_event(): void
     {
         $name = 'A Hose By Any Other Name - Gardening with Romeo & Juliet';
-        $eventInProduction = UUID::uuid4()->toString();
-        $eventNotInProduction = UUID::uuid4()->toString();
+        $eventInProduction = Uuid::uuid4()->toString();
+        $eventNotInProduction = Uuid::uuid4()->toString();
         $production = Production::createEmpty($name)->addEvent($eventInProduction);
 
         $this->assertTrue($production->containsEvent($eventInProduction));

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTID;
 
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\InvalidEmailAddress;
 use CultuurNet\UDB3\User\UserIdentityDetails;
@@ -32,7 +32,7 @@ class CdbXmlCreatedByToUserIdResolver implements LoggerAwareInterface, CreatedBy
     {
         try {
             // If the createdby is a UUID, return it immediately.
-            new UUID($createdByIdentifier);
+            new Uuid($createdByIdentifier);
             return $createdByIdentifier;
         } catch (InvalidArgumentException $exception) {
             $this->logger->info(

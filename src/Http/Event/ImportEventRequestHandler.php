@@ -39,7 +39,7 @@ use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Import\Event\Udb3ModelToLegacyEventAdapter;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -307,7 +307,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             'id' => $eventId,
             'eventId' => $eventId,
             'url' => $this->eventIriGenerator->iri($eventId),
-            'commandId' => UUID::NIL,
+            'commandId' => Uuid::NIL,
         ];
         return new JsonResponse($responseBody, $responseStatus);
     }

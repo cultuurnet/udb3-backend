@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 
 abstract class AbstractConstraintEvent extends AbstractEvent
@@ -12,7 +12,7 @@ abstract class AbstractConstraintEvent extends AbstractEvent
     private Query $query;
 
     final public function __construct(
-        UUID $uuid,
+        Uuid $uuid,
         Query $query
     ) {
         parent::__construct($uuid);
@@ -27,7 +27,7 @@ abstract class AbstractConstraintEvent extends AbstractEvent
     public static function deserialize(array $data): AbstractConstraintEvent
     {
         return new static(
-            new UUID($data['uuid']),
+            new Uuid($data['uuid']),
             new Query($data['query'])
         );
     }
