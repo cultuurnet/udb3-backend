@@ -13,6 +13,8 @@ class Uuid
     use IsString;
     use MatchesRegexPattern;
 
+    public const NIL = '00000000-0000-0000-0000-000000000000';
+
     /**
      * Ensures backwards compatibility with older, malformed, uuids present in UDB.
      */
