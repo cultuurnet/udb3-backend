@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ValueObjects;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 
 final class LocationId
 {
     use IsString;
-
-    public const NIL_LOCATION = '00000000-0000-0000-0000-000000000000';
 
     private static array $dummyPlaceForEducationIds = [];
 
@@ -25,7 +24,7 @@ final class LocationId
 
     public function isNilLocation(): bool
     {
-        return substr($this->value, -strlen(self::NIL_LOCATION)) === self::NIL_LOCATION;
+        return substr($this->value, -strlen(Uuid::NIL)) === Uuid::NIL;
     }
 
     public function isDummyPlaceForEducation(): bool

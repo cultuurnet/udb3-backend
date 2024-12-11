@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
@@ -65,7 +66,7 @@ final class UpdateLocationRequestHandlerTest extends TestCase
     {
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', 'dac793c2-4a8c-4744-b593-69420cfbf7bb')
-            ->withRouteParameter('locationId', '00000000-0000-0000-0000-000000000000')
+            ->withRouteParameter('locationId', Uuid::NIL)
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(

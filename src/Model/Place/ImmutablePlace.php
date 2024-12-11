@@ -135,7 +135,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
 
     public static function getNilLocationId(): Uuid
     {
-        return new Uuid('00000000-0000-0000-0000-000000000000');
+        return new Uuid(Uuid::NIL);
     }
 
     protected function guardCalendarType(Calendar $calendar): void

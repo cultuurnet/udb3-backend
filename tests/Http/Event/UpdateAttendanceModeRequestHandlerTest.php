@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -59,7 +60,7 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
             ),
             new UpdateLocation(
                 'c269632a-a887-4f21-8455-1631c31e4df5',
-                new LocationId('00000000-0000-0000-0000-000000000000')
+                new LocationId(Uuid::NIL)
             ),
         ];
 
@@ -248,7 +249,7 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
         $this->eventRelationsRepository->expects($this->once())
             ->method('getPlaceOfEvent')
             ->with('c269632a-a887-4f21-8455-1631c31e4df5')
-            ->willReturn('00000000-0000-0000-0000-000000000000');
+            ->willReturn(Uuid::NIL);
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
@@ -299,7 +300,7 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
         $this->eventRelationsRepository->expects($this->once())
             ->method('getPlaceOfEvent')
             ->with('c269632a-a887-4f21-8455-1631c31e4df5')
-            ->willReturn('00000000-0000-0000-0000-000000000000');
+            ->willReturn(Uuid::NIL);
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
