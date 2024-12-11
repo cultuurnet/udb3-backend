@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedDescriptionDenor
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Text\TranslatedTitleDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -30,7 +30,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class OrganizerDenormalizer implements DenormalizerInterface
 {
-    private UUIDParser $organizerIDParser;
+    private UuidParser $organizerIDParser;
 
     private DenormalizerInterface $titleDenormalizer;
 
@@ -47,7 +47,7 @@ class OrganizerDenormalizer implements DenormalizerInterface
     private DenormalizerInterface $imagesDenormalizer;
 
     public function __construct(
-        UUIDParser $organizerIDParser = null,
+        UuidParser $organizerIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
         DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $addressDenormalizer = null,

@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -28,7 +28,7 @@ class EventDenormalizer extends OfferDenormalizer
     private DenormalizerInterface $placeReferenceDenormalizer;
 
     public function __construct(
-        UUIDParser $eventIDParser = null,
+        UuidParser $eventIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
         DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $calendarDenormalizer = null,

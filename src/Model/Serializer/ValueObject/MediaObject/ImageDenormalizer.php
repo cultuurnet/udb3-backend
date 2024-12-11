@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectIDParser;
@@ -17,11 +17,11 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 final class ImageDenormalizer implements DenormalizerInterface
 {
     /**
-     * @var UUIDParser
+     * @var UuidParser
      */
     private $imageIdParser;
 
-    public function __construct(UUIDParser $imageIdParser = null)
+    public function __construct(UuidParser $imageIdParser = null)
     {
         if (!$imageIdParser) {
             $imageIdParser = new MediaObjectIDParser();

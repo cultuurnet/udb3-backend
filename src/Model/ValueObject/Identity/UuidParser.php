@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Identity;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
-interface UUIDParser
+interface UuidParser
 {
     /**
      * @throws \InvalidArgumentException

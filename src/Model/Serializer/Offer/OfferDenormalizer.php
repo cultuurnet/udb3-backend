@@ -26,7 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
@@ -43,7 +43,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 abstract class OfferDenormalizer implements DenormalizerInterface
 {
-    private UUIDParser $idParser;
+    private UuidParser $idParser;
 
     private DenormalizerInterface $titleDenormalizer;
 
@@ -72,7 +72,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     private bool $handlesDummyOrganizers = false;
 
     public function __construct(
-        UUIDParser $idParser,
+        UuidParser $idParser,
         DenormalizerInterface $titleDenormalizer = null,
         DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $calendarDenormalizer = null,

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Event;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\RegexUUIDParser;
+use CultuurNet\UDB3\Model\ValueObject\Identity\RegexUuidParser;
 
-class EventIDParser extends RegexUUIDParser
+class EventIDParser extends RegexUuidParser
 {
     // @codingStandardsIgnoreStart
     public const REGEX = '/\\/event[s]?\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-?[0-9A-Fa-f]{12})[\\/]?/';
