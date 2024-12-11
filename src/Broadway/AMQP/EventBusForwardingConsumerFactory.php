@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use InvalidArgumentException;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
 
 final class EventBusForwardingConsumerFactory
 {
