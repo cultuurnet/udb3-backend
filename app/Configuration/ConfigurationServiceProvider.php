@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Configuration;
 
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use League\Container\Argument\Literal\StringArgument;
 use League\Container\DefinitionContainerInterface;

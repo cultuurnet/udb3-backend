@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Label\Commands;
 
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 
 class Create extends AbstractCommand
@@ -18,7 +18,7 @@ class Create extends AbstractCommand
     private string $privacy;
 
     public function __construct(
-        UUID $uuid,
+        Uuid $uuid,
         LabelName $name,
         Visibility $visibility,
         Privacy $privacy

@@ -9,7 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -64,7 +64,7 @@ class RoleUsersProjectorTest extends TestCase
     public function it_creates_projection_with_empty_list_of_users_on_role_created_event(): void
     {
         $roleCreated = new RoleCreated(
-            new UUID('1be501c0-4e1c-4c92-a97d-33b3839897db'),
+            new Uuid('1be501c0-4e1c-4c92-a97d-33b3839897db'),
             'roleName'
         );
 
@@ -87,7 +87,7 @@ class RoleUsersProjectorTest extends TestCase
     public function it_removes_projection_on_role_deleted_event(): void
     {
         $roleDeleted = new RoleDeleted(
-            new UUID('6f5e21ce-5695-4e22-b395-ff0005ebb191')
+            new Uuid('6f5e21ce-5695-4e22-b395-ff0005ebb191')
         );
 
         $domainMessage = $this->createDomainMessage(
@@ -108,7 +108,7 @@ class RoleUsersProjectorTest extends TestCase
     public function it_updates_projection_with_user_identity_on_user_added_event(): void
     {
         $userAdded = new UserAdded(
-            new UUID('e0b91781-7aef-464a-8857-221fb347e279'),
+            new Uuid('e0b91781-7aef-464a-8857-221fb347e279'),
             'userId'
         );
 
@@ -145,7 +145,7 @@ class RoleUsersProjectorTest extends TestCase
     public function it_removes_user_identity_from_projection_on_user_removed_event(): void
     {
         $userRemoved = new UserRemoved(
-            new UUID('33981daf-91d0-4113-a7f4-655e645d9930'),
+            new Uuid('33981daf-91d0-4113-a7f4-655e645d9930'),
             'userId'
         );
 
@@ -175,7 +175,7 @@ class RoleUsersProjectorTest extends TestCase
     public function it_does_not_save_a_projection_when_document_not_found_on_user_added_event(): void
     {
         $userAdded = new UserAdded(
-            new UUID('45819178-ac36-4f3d-b12a-4b48cdd442fd'),
+            new Uuid('45819178-ac36-4f3d-b12a-4b48cdd442fd'),
             'userId'
         );
 
@@ -204,7 +204,7 @@ class RoleUsersProjectorTest extends TestCase
     public function it_does_not_save_a_projection_when_user_details_not_found_on_user_added_event(): void
     {
         $userAdded = new UserAdded(
-            new UUID('e9fb3606-5ed8-416a-b959-dabe3fa7f437'),
+            new Uuid('e9fb3606-5ed8-416a-b959-dabe3fa7f437'),
             'userId'
         );
 
@@ -236,7 +236,7 @@ class RoleUsersProjectorTest extends TestCase
     public function it_does_not_save_a_projection_when_document_not_found_on_user_removed_event(): void
     {
         $userRemoved = new UserRemoved(
-            new UUID('2b78616d-502b-47f4-95cf-b9bef3ad3a05'),
+            new Uuid('2b78616d-502b-47f4-95cf-b9bef3ad3a05'),
             'userId'
         );
 
@@ -259,7 +259,7 @@ class RoleUsersProjectorTest extends TestCase
         $this->roleUsersProjector->handle($domainMessage);
     }
 
-    private function mockFetch(UUID $uuid, JsonDocument $jsonDocument = null): void
+    private function mockFetch(Uuid $uuid, JsonDocument $jsonDocument = null): void
     {
         $this->repository
             ->method('fetch')
@@ -278,7 +278,7 @@ class RoleUsersProjectorTest extends TestCase
     }
 
     private function createDomainMessage(
-        UUID $uuid,
+        Uuid $uuid,
         Serializable $payload
     ): DomainMessage {
         return new DomainMessage(
@@ -290,7 +290,7 @@ class RoleUsersProjectorTest extends TestCase
         );
     }
 
-    private function createEmptyJsonDocument(UUID $uuid): JsonDocument
+    private function createEmptyJsonDocument(Uuid $uuid): JsonDocument
     {
         return new JsonDocument(
             $uuid->toString(),
@@ -299,7 +299,7 @@ class RoleUsersProjectorTest extends TestCase
     }
 
     private function createJsonDocumentWithUserIdentityDetail(
-        UUID $uuid,
+        Uuid $uuid,
         UserIdentityDetails $userIdentityDetail
     ): JsonDocument {
         $userIdentityDetails = [];

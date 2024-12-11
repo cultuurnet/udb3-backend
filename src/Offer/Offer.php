@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
@@ -242,7 +242,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     /**
      * Get the id of the main image if one is selected for this offer.
      */
-    protected function getMainImageId(): ?UUID
+    protected function getMainImageId(): ?Uuid
     {
         $mainImage = $this->images->getMain();
         return isset($mainImage) ? $mainImage->getMediaObjectId() : null;
@@ -554,7 +554,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     }
 
     public function updateImage(
-        UUID $mediaObjectId,
+        Uuid $mediaObjectId,
         ImageDescription $description,
         CopyrightHolder $copyrightHolder
     ): void {
@@ -570,7 +570,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     }
 
     private function updateImageAllowed(
-        UUID $mediaObjectId,
+        Uuid $mediaObjectId,
         ImageDescription $description,
         CopyrightHolder $copyrightHolder
     ): bool {
@@ -946,7 +946,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyImageUpdated(AbstractImageUpdated $imageUpdated): void
     {
-        $image = $this->images->findImageByUUID(new UUID($imageUpdated->getMediaObjectId()));
+        $image = $this->images->findImageByUUID(new Uuid($imageUpdated->getMediaObjectId()));
 
         $updatedImage = new Image(
             $image->getMediaObjectId(),
@@ -1058,7 +1058,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     abstract protected function createImageRemovedEvent(Image $image): AbstractImageRemoved;
 
     abstract protected function createImageUpdatedEvent(
-        UUID $uuid,
+        Uuid $uuid,
         ImageDescription $description,
         CopyrightHolder $copyrightHolder,
         ?string $language = null

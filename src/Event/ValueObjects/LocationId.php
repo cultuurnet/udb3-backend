@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ValueObjects;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 
 final class LocationId
@@ -24,7 +24,7 @@ final class LocationId
 
     public function isNilLocation(): bool
     {
-        return substr($this->value, -strlen(UUID::NIL)) === UUID::NIL;
+        return substr($this->value, -strlen(Uuid::NIL)) === Uuid::NIL;
     }
 
     public function isDummyPlaceForEducation(): bool

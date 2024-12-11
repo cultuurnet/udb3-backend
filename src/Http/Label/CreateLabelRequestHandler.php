@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\Commands\Create;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -33,7 +33,7 @@ final class CreateLabelRequestHandler implements RequestHandlerInterface
     {
         $body = Json::decodeAssociatively($request->getBody()->getContents());
 
-        $uuid = new UUID($this->uuidGenerator->generate());
+        $uuid = new Uuid($this->uuidGenerator->generate());
 
         $this->commandBus->dispatch(
             new Create(

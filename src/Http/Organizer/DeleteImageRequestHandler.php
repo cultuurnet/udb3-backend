@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Http\Organizer;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Organizer\Commands\RemoveImage;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -28,7 +28,7 @@ final class DeleteImageRequestHandler implements RequestHandlerInterface
         $organizerId = $routeParameters->getOrganizerId();
         $imageId = $routeParameters->get('imageId');
 
-        $this->commandBus->dispatch(new RemoveImage($organizerId, new UUID($imageId)));
+        $this->commandBus->dispatch(new RemoveImage($organizerId, new Uuid($imageId)));
 
         return new NoContentResponse();
     }

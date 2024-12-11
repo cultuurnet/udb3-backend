@@ -8,7 +8,7 @@ use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -25,7 +25,7 @@ final class MediaObjectTest extends AggregateRootScenarioTestCase
      */
     public function it_can_be_created(): void
     {
-        $fileId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $fileId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
         $fileType = new MIMEType('image/png');
         $description = new Description('The Gleaners');
         $copyrightHolder = new CopyrightHolder('Jean-François Millet');
@@ -66,7 +66,7 @@ final class MediaObjectTest extends AggregateRootScenarioTestCase
     public function it_should_keep_track_of_media_object_meta_data(): void
     {
         $mediaObject = MediaObject::create(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -80,7 +80,7 @@ final class MediaObjectTest extends AggregateRootScenarioTestCase
         );
 
         $this->assertEquals(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             $mediaObject->getMediaObjectId()
         );
 

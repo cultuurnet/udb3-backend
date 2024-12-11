@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Label\Commands\ExcludeLabel as ExcludeLabelCommand;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -48,7 +48,7 @@ final class ExcludeInvalidLabels extends AbstractCommand
             $labels = $this->getLabelsFromFirstResult($firstResult);
 
             foreach ($labels as $label) {
-                $labelId = new UUID($label['uuid_col']);
+                $labelId = new Uuid($label['uuid_col']);
                 $labelName = $label['name'];
 
                 if (!preg_match(LabelName::REGEX_SUGGESTIONS, $labelName)) {

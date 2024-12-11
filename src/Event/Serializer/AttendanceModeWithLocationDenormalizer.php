@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Serializer;
 
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;

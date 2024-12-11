@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\Events;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractExtendsTest extends TestCase
 {
-    protected UUID $uuid;
+    protected Uuid $uuid;
 
     protected string $name;
 
@@ -17,7 +17,7 @@ abstract class AbstractExtendsTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID('c69f924a-fdea-487d-a938-183adbe2d594');
+        $this->uuid = new Uuid('c69f924a-fdea-487d-a938-183adbe2d594');
 
         $this->name = '2dotstwice';
 
@@ -39,7 +39,7 @@ abstract class AbstractExtendsTest extends TestCase
         $this->assertEquals($this->event, $actualEvent);
     }
 
-    abstract public function createEvent(UUID $uuid, string $name): AbstractEvent;
+    abstract public function createEvent(Uuid $uuid, string $name): AbstractEvent;
 
     abstract public function deserialize(array $array): AbstractEvent;
 }

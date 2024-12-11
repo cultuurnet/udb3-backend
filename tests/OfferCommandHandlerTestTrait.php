@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -138,7 +138,7 @@ trait OfferCommandHandlerTestTrait
     public function it_can_add_an_image_to_an_offer(): void
     {
         $id = '1';
-        $imageId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $imageId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
         $image = new Image(
             $imageId,
             new MIMEType('image/png'),
@@ -173,7 +173,7 @@ trait OfferCommandHandlerTestTrait
     {
         $id = '1';
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new MediaDescription('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -204,7 +204,7 @@ trait OfferCommandHandlerTestTrait
     public function it_can_update_an_image_of_an_offer(): void
     {
         $itemId = '1';
-        $mediaObjectId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $mediaObjectId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
         $description = 'A description.';
         $copyrightHolder = new CopyrightHolder('Dirk');
         $imageAdded = $this->getEventClass('ImageAdded');
@@ -279,7 +279,7 @@ trait OfferCommandHandlerTestTrait
 
         $initialImages = [
             new Image(
-                new UUID('b0939d37-68f7-4c55-bfa3-fabdbb46154e'),
+                new Uuid('b0939d37-68f7-4c55-bfa3-fabdbb46154e'),
                 new MIMEType('image/jpeg'),
                 new MediaDescription('my best selfie'),
                 new CopyrightHolder('Dirk Dirkington'),
@@ -287,7 +287,7 @@ trait OfferCommandHandlerTestTrait
                 new Language('en')
             ),
             new Image(
-                new UUID('0de3d4a4-abaa-4685-896a-34cfa70f3cd0'),
+                new Uuid('0de3d4a4-abaa-4685-896a-34cfa70f3cd0'),
                 new MIMEType('image/png'),
                 new MediaDescription('mijn beste selfie'),
                 new CopyrightHolder('Dirk Dirkington'),
@@ -295,7 +295,7 @@ trait OfferCommandHandlerTestTrait
                 new Language('nl')
             ),
             new Image(
-                new UUID('0aee1053-bc6c-43bc-9743-20656b579167'),
+                new Uuid('0aee1053-bc6c-43bc-9743-20656b579167'),
                 new MIMEType('image/jpeg'),
                 new MediaDescription('my second best selfie'),
                 new CopyrightHolder('Dirk Dirkington'),
@@ -303,7 +303,7 @@ trait OfferCommandHandlerTestTrait
                 new Language('en')
             ),
             new Image(
-                new UUID('7e1d0180-97cc-4fbf-a133-c691a07a5a04'),
+                new Uuid('7e1d0180-97cc-4fbf-a133-c691a07a5a04'),
                 new MIMEType('image/gif'),
                 new MediaDescription('mijn tweede beste selfie'),
                 new CopyrightHolder('Dirk Dirkington'),
@@ -314,7 +314,7 @@ trait OfferCommandHandlerTestTrait
 
         $importImages = [
             new Image(
-                new UUID('4a66a43a-83e5-4d87-a28d-c16508140fd7'),
+                new Uuid('4a66a43a-83e5-4d87-a28d-c16508140fd7'),
                 new MIMEType('image/jpeg'),
                 new MediaDescription('new selfie'),
                 new CopyrightHolder('Dirk Dirkington'),
@@ -322,7 +322,7 @@ trait OfferCommandHandlerTestTrait
                 new Language('en')
             ),
             new Image(
-                new UUID('b0939d37-68f7-4c55-bfa3-fabdbb46154e'),
+                new Uuid('b0939d37-68f7-4c55-bfa3-fabdbb46154e'),
                 new MIMEType('image/jpeg'),
                 new MediaDescription('my best selfie UPDATED'),
                 new CopyrightHolder('Dirk Dirkington UPDATED'),
@@ -330,7 +330,7 @@ trait OfferCommandHandlerTestTrait
                 new Language('en')
             ),
             new Image(
-                new UUID('0de3d4a4-abaa-4685-896a-34cfa70f3cd0'),
+                new Uuid('0de3d4a4-abaa-4685-896a-34cfa70f3cd0'),
                 new MIMEType('image/png'),
                 new MediaDescription('mijn beste selfie UPDATED'),
                 new CopyrightHolder('Dirk Dirkington UPDATED'),

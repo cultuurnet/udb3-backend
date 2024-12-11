@@ -10,7 +10,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
 use CultuurNet\UDB3\Ownership\OwnershipState;
@@ -72,7 +72,7 @@ class OwnershipPermissionProjectorTest extends TestCase
     {
         $ownershipId = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
         $itemId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
-        $roleId = new UUID('8d17cffe-6f28-459c-8627-1f6345f8b296');
+        $roleId = new Uuid('8d17cffe-6f28-459c-8627-1f6345f8b296');
         $recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::fromString('2024-02-19T14:15:16Z'));
 
         $ownershipRequested = new OwnershipApproved($ownershipId);
@@ -155,7 +155,7 @@ class OwnershipPermissionProjectorTest extends TestCase
     {
         $ownershipId = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
         $itemId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
-        $roleId = new UUID('8d17cffe-6f28-459c-8627-1f6345f8b296');
+        $roleId = new Uuid('8d17cffe-6f28-459c-8627-1f6345f8b296');
         $recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::fromString('2024-02-19T14:15:16Z'));
 
         $ownershipRequested = new OwnershipApproved($ownershipId);
@@ -252,7 +252,7 @@ class OwnershipPermissionProjectorTest extends TestCase
                     'organizer',
                     'auth0|63e22626e39a8ca1264bd29b',
                     OwnershipState::requested()->toString()
-                ))->withRoleId(new UUID($roleId))
+                ))->withRoleId(new Uuid($roleId))
             );
 
         $this->ownershipSearchRepository->expects($this->once())
@@ -264,7 +264,7 @@ class OwnershipPermissionProjectorTest extends TestCase
         $this->assertEquals(
             [
                 new RemoveUser(
-                    new UUID($roleId),
+                    new Uuid($roleId),
                     'auth0|63e22626e39a8ca1264bd29b'
                 ),
             ],
