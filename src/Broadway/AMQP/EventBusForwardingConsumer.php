@@ -11,7 +11,7 @@ use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
 
 final class EventBusForwardingConsumer extends AbstractConsumer
 {

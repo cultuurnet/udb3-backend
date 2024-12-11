@@ -39,6 +39,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\FixedUuidFactory;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
@@ -76,24 +77,17 @@ use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use Money\Currency;
 use Money\Money;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidFactoryInterface;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class EventDenormalizerTest extends TestCase
 {
+    private const VIDEO_ID = '7bddfbb5-7c79-48af-a154-4a44df395608';
     private EventDenormalizer $denormalizer;
 
-    /**
-     * @var UuidFactoryInterface&MockObject
-     */
-    private $uuidFactory;
 
     public function setUp(): void
     {
-        $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
-
         $this->denormalizer = new EventDenormalizer(
             null,
             null,
@@ -108,7 +102,7 @@ class EventDenormalizerTest extends TestCase
             null,
             null,
             null,
-            new VideoDenormalizer($this->uuidFactory)
+            new VideoDenormalizer(new FixedUuidFactory(new Uuid(self::VIDEO_ID)))
         );
     }
 
@@ -1754,7 +1748,7 @@ class EventDenormalizerTest extends TestCase
                         new Language('fr')
                     ),
                     new Video(
-                        '7bddfbb5-7c79-48af-a154-4a44df395608',
+                        self::VIDEO_ID,
                         new Url('https://www.youtube.com/watch?v=cEItmb_234'),
                         new Language('nl')
                     )
@@ -1763,10 +1757,6 @@ class EventDenormalizerTest extends TestCase
             ->withWorkflowStatus(
                 WorkflowStatus::APPROVED()
             );
-
-        $this->uuidFactory->expects($this->once())
-            ->method('uuid4')
-            ->willReturn(\Ramsey\Uuid\Uuid::fromString('7bddfbb5-7c79-48af-a154-4a44df395608'));
 
         $actual = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
 

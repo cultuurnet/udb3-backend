@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
 use CultuurNet\UDB3\User\CurrentUser;
 use CultuurNet\UDB3\User\UserIdentityResolver;
-use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class RequestOwnershipDenormalizer implements DenormalizerInterface

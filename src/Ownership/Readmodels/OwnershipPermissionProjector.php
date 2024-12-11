@@ -23,7 +23,7 @@ use CultuurNet\UDB3\Role\Commands\CreateRole;
 use CultuurNet\UDB3\Role\Commands\RemoveUser;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
 
 final class OwnershipPermissionProjector implements EventListener
 {

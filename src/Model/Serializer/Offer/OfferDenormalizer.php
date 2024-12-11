@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidGenerationFactory;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -37,7 +38,6 @@ use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use Ramsey\Uuid\UuidFactory;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -131,7 +131,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         }
 
         if (!$videoDenormalizer) {
-            $videoDenormalizer = new VideoDenormalizer(new UuidFactory());
+            $videoDenormalizer = new VideoDenormalizer(new UuidGenerationFactory());
         }
 
         $this->idParser = $idParser;

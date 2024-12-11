@@ -95,7 +95,7 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
 
 final class ImportPlaceRequestHandlerTest extends TestCase
 {
@@ -796,7 +796,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     ))
             );
 
-        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $videoId = Uuid::uuid4();
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn($videoId);

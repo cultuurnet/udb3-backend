@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class VideoDenormalizer implements DenormalizerInterface

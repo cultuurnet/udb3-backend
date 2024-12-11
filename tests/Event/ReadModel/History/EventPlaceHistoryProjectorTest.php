@@ -34,7 +34,6 @@ use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class EventPlaceHistoryProjectorTest extends TestCase
 {
@@ -73,9 +72,9 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_location_updated(): void
     {
-        $eventId = $this->uuid4();
-        $oldPlaceId = $this->uuid4();
-        $newPlaceId = $this->uuid4();
+        $eventId = Uuid::uuid4();
+        $oldPlaceId = Uuid::uuid4();
+        $newPlaceId = Uuid::uuid4();
 
         $this->eventRepository
             ->expects($this->once())
@@ -103,9 +102,9 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_major_info_updated(): void
     {
-        $eventId = $this->uuid4();
-        $oldPlaceId = $this->uuid4();
-        $newPlaceId = $this->uuid4();
+        $eventId = Uuid::uuid4();
+        $oldPlaceId = Uuid::uuid4();
+        $newPlaceId = Uuid::uuid4();
 
         $this->eventRepository
             ->expects($this->once())
@@ -139,8 +138,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function prevent_apply_major_info_updated_when_location_did_not_change(): void
     {
-        $eventId = $this->uuid4();
-        $oldPlaceId = $this->uuid4();
+        $eventId = Uuid::uuid4();
+        $oldPlaceId = Uuid::uuid4();
         $newPlaceId = $oldPlaceId;
 
         $this->eventRepository
@@ -169,8 +168,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_event_created(): void
     {
-        $eventId = $this->uuid4();
-        $newPlaceId = $this->uuid4();
+        $eventId = Uuid::uuid4();
+        $newPlaceId = Uuid::uuid4();
 
         $this->repository
             ->expects($this->once())
@@ -199,9 +198,9 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_event_copied(): void
     {
-        $oldEventId = $this->uuid4();
-        $eventId = $this->uuid4();
-        $oldPlaceId = $this->uuid4();
+        $oldEventId = Uuid::uuid4();
+        $eventId = Uuid::uuid4();
+        $oldPlaceId = Uuid::uuid4();
 
         $this->eventRepository
             ->expects($this->once())
@@ -232,8 +231,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_location_updated_logs_error_when_document_does_not_exist(): void
     {
-        $eventId = $this->uuid4();
-        $newPlaceId = $this->uuid4();
+        $eventId = Uuid::uuid4();
+        $newPlaceId = Uuid::uuid4();
 
         $this->eventRepository
             ->expects($this->once())
@@ -255,8 +254,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_event_updated_from_udb2(): void
     {
-        $eventId = $this->uuid4();
-        $oldPlaceId = $this->uuid4();
+        $eventId = Uuid::uuid4();
+        $oldPlaceId = Uuid::uuid4();
         $newPlaceId = new Uuid('28d2900d-f784-4d04-8d66-5b93900c6f9c');
 
         $this->eventRepository
@@ -297,8 +296,8 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_event_updated_from_udb2_with_a_dummy_location(): void
     {
-        $eventId = $this->uuid4();
-        $oldPlaceId = $this->uuid4();
+        $eventId = Uuid::uuid4();
+        $oldPlaceId = Uuid::uuid4();
 
         $this->eventRepository
             ->expects($this->once())
@@ -332,7 +331,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function prevent_apply_event_updated_from_udb2_when_location_did_not_change(): void
     {
-        $eventId = $this->uuid4();
+        $eventId = Uuid::uuid4();
         $oldPlaceId = new Uuid('28d2900d-f784-4d04-8d66-5b93900c6f9c');
 
         $this->eventRepository
@@ -359,7 +358,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_event_imported_from_udb2(): void
     {
-        $eventId = $this->uuid4();
+        $eventId = Uuid::uuid4();
         $newPlaceId = new Uuid('28d2900d-f784-4d04-8d66-5b93900c6f9c');
 
         $this->repository
@@ -393,7 +392,7 @@ class EventPlaceHistoryProjectorTest extends TestCase
     /** @test */
     public function apply_event_imported_from_udb2_with_a_dummy_location(): void
     {
-        $eventId = $this->uuid4();
+        $eventId = Uuid::uuid4();
 
         $this->repository
             ->expects($this->never())
@@ -425,11 +424,5 @@ class EventPlaceHistoryProjectorTest extends TestCase
                 '@id' => sprintf('https://io.uitdatabank.be/place/%s', $placeId),
             ],
         ]));
-    }
-
-    /** @todo Remove with the refactor of III-6438 */
-    private function uuid4(): Uuid
-    {
-        return new Uuid(RamseyUuid::uuid4()->toString());
     }
 }

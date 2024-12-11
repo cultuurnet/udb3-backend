@@ -11,6 +11,7 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\FixedUuidFactory;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
 use CultuurNet\UDB3\Ownership\OwnershipState;
@@ -28,17 +29,14 @@ use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidFactory;
 
 class OwnershipPermissionProjectorTest extends TestCase
 {
+    private const ROLE_ID = '8d17cffe-6f28-459c-8627-1f6345f8b296';
     private TraceableAuthorizedCommandBus $commandBus;
 
     /** @var OwnershipSearchRepository&MockObject */
     private $ownershipSearchRepository;
-
-    /** @var UuidFactory&MockObject */
-    private $uuidFactory;
 
     private OwnershipPermissionProjector $ownershipPermissionProjector;
 
@@ -49,8 +47,6 @@ class OwnershipPermissionProjectorTest extends TestCase
 
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
 
-        $this->uuidFactory = $this->createMock(UuidFactory::class);
-
         $itemNameResolver = $this->createMock(ItemNameResolver::class);
         $itemNameResolver->expects($this->any())
             ->method('resolve')
@@ -60,7 +56,7 @@ class OwnershipPermissionProjectorTest extends TestCase
         $this->ownershipPermissionProjector = new OwnershipPermissionProjector(
             $this->commandBus,
             $this->ownershipSearchRepository,
-            $this->uuidFactory,
+            new FixedUuidFactory(new Uuid(self::ROLE_ID)),
             $itemNameResolver
         );
     }
@@ -72,7 +68,7 @@ class OwnershipPermissionProjectorTest extends TestCase
     {
         $ownershipId = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
         $itemId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
-        $roleId = new Uuid('8d17cffe-6f28-459c-8627-1f6345f8b296');
+        $roleId = new Uuid(self::ROLE_ID);
         $recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::fromString('2024-02-19T14:15:16Z'));
 
         $ownershipRequested = new OwnershipApproved($ownershipId);
@@ -110,10 +106,6 @@ class OwnershipPermissionProjectorTest extends TestCase
                 )
             )
             ->willReturn(new OwnershipItemCollection());
-
-        $this->uuidFactory->expects($this->once())
-            ->method('uuid4')
-            ->willReturn($roleId);
 
         $this->ownershipSearchRepository->expects($this->once())
             ->method('updateRoleId')
@@ -155,7 +147,7 @@ class OwnershipPermissionProjectorTest extends TestCase
     {
         $ownershipId = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
         $itemId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
-        $roleId = new Uuid('8d17cffe-6f28-459c-8627-1f6345f8b296');
+        $roleId = new Uuid(self::ROLE_ID);
         $recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::fromString('2024-02-19T14:15:16Z'));
 
         $ownershipRequested = new OwnershipApproved($ownershipId);
@@ -240,7 +232,7 @@ class OwnershipPermissionProjectorTest extends TestCase
             $recordedOn->toBroadwayDateTime()
         );
 
-        $roleId = '8d17cffe-6f28-459c-8627-1f6345f8b296';
+        $roleId = self::ROLE_ID;
 
         $this->ownershipSearchRepository->expects($this->once())
             ->method('getById')
