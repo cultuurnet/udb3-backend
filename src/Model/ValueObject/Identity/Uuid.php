@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Identity;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\MatchesRegexPattern;
+/** @phpstan-ignore-next-line */
 use Ramsey\Uuid\Uuid as RamseyUuid;
 
 class Uuid

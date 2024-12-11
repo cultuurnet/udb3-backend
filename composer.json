@@ -91,8 +91,7 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "CultuurNet\\UDB3\\": ["app/", "src/"],
-      "CultuurNet\\phpstan\\": ["phpstan/"]
+      "CultuurNet\\UDB3\\": ["app/", "src/"]
     }
   },
   "autoload-dev": {

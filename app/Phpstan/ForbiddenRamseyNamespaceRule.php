@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\phpstan;
+namespace CultuurNet\UDB3\Phpstan;
 
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Use_;
@@ -18,20 +18,19 @@ class ForbiddenRamseyNamespaceRule implements Rule
 
     public function processNode(Node $node, Scope $scope): array
     {
+        if (! $node instanceof Use_) {
+            return [];
+        }
+
         foreach ($node->uses as $use) {
             if (! str_contains($use->name->toString(), 'Ramsey')) {
-                continue;
-            }
-
-            $filePath = $scope->getFile();
-            if (str_ends_with($filePath, 'src/Model/ValueObject/Identity/Uuid.php')) {
                 continue;
             }
 
             return [
                 sprintf(
                     'The "Ramsey" namespace is not allowed in file: %s, please us CultuurNet\UDB3\Model\ValueObject\Identity\Uuid',
-                    $filePath
+                    $scope->getFile()
                 ),
             ];
         }

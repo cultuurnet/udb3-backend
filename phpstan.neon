@@ -20,5 +20,5 @@ parameters:
 
 services:
     -
-        class: CultuurNet\phpstan\ForbiddenRamseyNamespaceRule
+        class: CultuurNet\UDB3\Phpstan\ForbiddenRamseyNamespaceRule
         tags: [phpstan.rules.rule]
