@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Organizer\ReadModel\Permission;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -44,7 +45,7 @@ final class ProjectorTest extends TestCase
         $domainMessage = DomainMessage::recordNow(
             $organizerId,
             1,
-            new Metadata(['user_id' => '00000000-0000-0000-0000-000000000000']),
+            new Metadata(['user_id' => Uuid::NIL]),
             $ownerChanged
         );
 

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Configuration;
 
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use League\Container\Argument\Literal\StringArgument;
 use League\Container\DefinitionContainerInterface;
@@ -38,7 +39,7 @@ final class ConfigurationServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'system_user_id',
-            fn () => '00000000-0000-0000-0000-000000000000',
+            fn () => Uuid::NIL,
         );
 
         $container->addShared(

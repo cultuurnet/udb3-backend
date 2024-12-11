@@ -10,6 +10,7 @@ use CultuurNet\UDB3\EventExport\EventExportQuery;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use PHPUnit\Framework\TestCase;
 
@@ -65,7 +66,7 @@ final class ExportEventsAsOoXmlRequestHandlerTest extends TestCase
         );
 
         $this->assertJsonResponse(
-            new JsonResponse(['commandId' => '00000000-0000-0000-0000-000000000000']),
+            new JsonResponse(['commandId' => Uuid::NIL]),
             $response
         );
     }

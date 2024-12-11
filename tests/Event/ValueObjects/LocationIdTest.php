@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\ValueObjects;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use PHPUnit\Framework\TestCase;
 
 class LocationIdTest extends TestCase
@@ -48,7 +49,7 @@ class LocationIdTest extends TestCase
                 false,
             ],
             [
-                new LocationId('00000000-0000-0000-0000-000000000000'),
+                new LocationId(UUID::NIL),
                 true,
             ],
             [

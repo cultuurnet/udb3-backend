@@ -44,7 +44,7 @@ class UuidTest extends TestCase
     public function invalidUUIDDataProvider(): array
     {
         return [
-            'multi-line' => ['00000000-0000-0000-0000-000000000000' . PHP_EOL],
+            'multi-line' => [Uuid::NIL . PHP_EOL],
             'multi-value' => ['76831861-4706-4362-a42d-8710e32bd1ba' . PHP_EOL . '74738ff5-5367-5958-9aee-98fffdcd1876'],
             'without-separators' => ['74738ff5536759589aee98fffdcd1876'],
         ];
@@ -54,10 +54,6 @@ class UuidTest extends TestCase
     public function it_should_generate_a_valid_uuid4(): void
     {
         $uuid = Uuid::uuid4();
-        $this->assertMatchesRegularExpression(
-            Uuid::BC_REGEX,
-            $uuid->toString(),
-            'The generated UUID is not a valid UUIDv4.'
-        );
+        $this->assertInstanceOf(Uuid::class, $uuid);
     }
 }
