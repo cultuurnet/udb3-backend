@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\CommandHandling\AsyncCommand;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 trait AsyncDispatchTrait
 {

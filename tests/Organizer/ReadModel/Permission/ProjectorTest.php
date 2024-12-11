@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Organizer\ReadModel\Permission;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Organizer\Events\OwnerChanged;
 use CultuurNet\UDB3\Security\ResourceOwner\ResourceOwnerRepository;
 use PHPUnit\Framework\MockObject\MockObject;
