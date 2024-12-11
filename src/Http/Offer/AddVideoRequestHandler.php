@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
 
 final class AddVideoRequestHandler implements RequestHandlerInterface
 {

@@ -32,10 +32,10 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\FixedUuidFactory;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
-use Ramsey\Uuid\UuidFactoryInterface;
 
 class CopyEventRequestHandlerTest extends TestCase
 {
@@ -52,18 +52,13 @@ class CopyEventRequestHandlerTest extends TestCase
         $this->commandBus = new TraceableCommandBus();
         $this->commandBus->record();
 
-        $uuidFactory = $this->createMock(UuidFactoryInterface::class);
-        $uuidFactory->expects($this->any())
-            ->method('uuid4')
-            ->willReturn(Uuid::fromString(self::NEW_EVENT_ID));
-
         $iriGenerator = new CallableIriGenerator(
             fn (string $id) => 'https://mock.io/events/' . $id
         );
 
         $this->copyEventRequestHandler = new CopyEventRequestHandler(
             $this->commandBus,
-            $uuidFactory,
+            new FixedUuidFactory(new Uuid(self::NEW_EVENT_ID)),
             $iriGenerator
         );
     }
