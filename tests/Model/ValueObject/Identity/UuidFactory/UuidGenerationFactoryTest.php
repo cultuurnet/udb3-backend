@@ -12,7 +12,7 @@ class UuidGenerationFactoryTest extends TestCase
     /** @test */
     public function returns_a_valid_uuid(): void
     {
-        $factory = new UuidGenerationFactory();
+        $factory = new GeneratedUuidFactory();
         $this->assertInstanceOf(Uuid::class, $factory->uuid4());
     }
 }

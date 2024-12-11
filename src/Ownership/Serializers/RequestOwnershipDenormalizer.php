@@ -12,16 +12,16 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
 use CultuurNet\UDB3\User\CurrentUser;
 use CultuurNet\UDB3\User\UserIdentityResolver;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class RequestOwnershipDenormalizer implements DenormalizerInterface
 {
-    private UuidFactoryInterface $uuidFactory;
+    private UuidFactory $uuidFactory;
     private CurrentUser $currentUser;
     private UserIdentityResolver $identityResolver;
 
-    public function __construct(UuidFactoryInterface $uuidFactory, UserIdentityResolver $identityResolver, CurrentUser $currentUser)
+    public function __construct(UuidFactory $uuidFactory, UserIdentityResolver $identityResolver, CurrentUser $currentUser)
     {
         $this->uuidFactory = $uuidFactory;
         $this->currentUser = $currentUser;

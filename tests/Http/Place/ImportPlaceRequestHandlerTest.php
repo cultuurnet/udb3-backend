@@ -95,7 +95,7 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 
 final class ImportPlaceRequestHandlerTest extends TestCase
 {
@@ -109,7 +109,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /** @var UuidGeneratorInterface&MockObject */
     private object $uuidGenerator;
 
-    /** @var UuidFactoryInterface&MockObject */
+    /** @var UuidFactory&MockObject */
     private object $uuidFactory;
 
     private object $commandBus;
@@ -149,7 +149,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     {
         $this->aggregateRepository = $this->createMock(Repository::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
-        $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
+        $this->uuidFactory = $this->createMock(UuidFactory::class);
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
         $organizerRepository = new InMemoryDocumentRepository();

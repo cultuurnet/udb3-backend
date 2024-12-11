@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
-class FixedUuidFactory implements UuidFactoryInterface
+class FixedUuidFactory implements UuidFactory
 {
     private Uuid $uuid;
 

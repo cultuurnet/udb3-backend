@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidGenerationFactory;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\Event\PricesUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
@@ -50,7 +50,7 @@ final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
                     $uitpasDeserializerLocator,
                     $container->get(EventBus::class),
                     $container->get('config')['amqp']['consumer_tag'],
-                    new UuidGenerationFactory()
+                    new GeneratedUuidFactory()
                 );
 
                 $consumerConfig = $container->get('config')['amqp']['consumers']['uitpas'];

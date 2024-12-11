@@ -25,7 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidGenerationFactory;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -131,7 +131,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         }
 
         if (!$videoDenormalizer) {
-            $videoDenormalizer = new VideoDenormalizer(new UuidGenerationFactory());
+            $videoDenormalizer = new VideoDenormalizer(new GeneratedUuidFactory());
         }
 
         $this->idParser = $idParser;

@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Http\Ownership\RequestOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\SearchOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\SuggestOwnershipsRequestHandler;
 use CultuurNet\UDB3\Model\Organizer\OrganizerIDParser;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidGenerationFactory;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\Search\OffersSapi3SearchService;
@@ -53,7 +53,7 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             RequestOwnershipRequestHandler::class,
             fn () => new RequestOwnershipRequestHandler(
                 $container->get('event_command_bus'),
-                new UuidGenerationFactory(),
+                new GeneratedUuidFactory(),
                 $container->get(CurrentUser::class),
                 $container->get(OwnershipSearchRepository::class),
                 $container->get('organizer_jsonld_repository'),

@@ -17,7 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 
 class AddVideoRequestHandlerTest extends TestCase
 {
@@ -26,7 +26,7 @@ class AddVideoRequestHandlerTest extends TestCase
     private TraceableCommandBus $commandBus;
 
     /**
-     * @var UuidFactoryInterface&MockObject
+     * @var UuidFactory&MockObject
      */
     private $uuidFactory;
 
@@ -38,7 +38,7 @@ class AddVideoRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
+        $this->uuidFactory = $this->createMock(UuidFactory::class);
 
         $this->addVideoRequestHandler = new AddVideoRequestHandler(
             $this->commandBus,

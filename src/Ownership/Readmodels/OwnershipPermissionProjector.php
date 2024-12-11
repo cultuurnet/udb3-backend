@@ -23,7 +23,7 @@ use CultuurNet\UDB3\Role\Commands\CreateRole;
 use CultuurNet\UDB3\Role\Commands\RemoveUser;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 
 final class OwnershipPermissionProjector implements EventListener
 {
@@ -33,13 +33,13 @@ final class OwnershipPermissionProjector implements EventListener
 
     private AuthorizedCommandBusInterface $commandBus;
     private OwnershipSearchRepository $ownershipSearchRepository;
-    private UuidFactoryInterface $uuidFactory;
+    private UuidFactory $uuidFactory;
     private ItemNameResolver $itemNameResolver;
 
     public function __construct(
         AuthorizedCommandBusInterface $commandBus,
         OwnershipSearchRepository $ownershipSearchRepository,
-        UuidFactoryInterface $uuidFactory,
+        UuidFactory $uuidFactory,
         ItemNameResolver $itemNameResolver
     ) {
         $this->commandBus = $commandBus;

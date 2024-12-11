@@ -17,16 +17,16 @@ use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 
 final class AddVideoRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
-    private UuidFactoryInterface $uuidFactory;
+    private UuidFactory $uuidFactory;
 
     public function __construct(
         CommandBus $commandBus,
-        UuidFactoryInterface $uuidFactory
+        UuidFactory $uuidFactory
     ) {
         $this->commandBus = $commandBus;
         $this->uuidFactory = $uuidFactory;

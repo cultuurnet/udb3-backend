@@ -6,7 +6,10 @@ namespace CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
-interface UuidFactoryInterface
+class GeneratedUuidFactory implements UuidFactory
 {
-    public function uuid4(): Uuid;
+    public function uuid4(): Uuid
+    {
+        return Uuid::uuid4();
+    }
 }

@@ -8,8 +8,8 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactoryInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidGenerationFactory;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 
 class DomainMessageBuilder
 {
@@ -18,12 +18,12 @@ class DomainMessageBuilder
     private ?int $playhead = null;
     private ?DateTime $recordedOn = null;
     private ?bool $forReplay = false;
-    private UuidFactoryInterface $uuidFactory;
+    private UuidFactory $uuidFactory;
 
-    public function __construct(UuidFactoryInterface $uuidFactory = null)
+    public function __construct(UuidFactory $uuidFactory = null)
     {
         if ($uuidFactory === null) {
-            $uuidFactory = new UuidGenerationFactory();
+            $uuidFactory = new GeneratedUuidFactory();
         }
 
         $this->uuidFactory = $uuidFactory;

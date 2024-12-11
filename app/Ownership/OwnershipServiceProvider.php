@@ -8,7 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidGenerationFactory;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use CultuurNet\UDB3\Ownership\Readmodels\Name\DocumentItemNameResolver;
 use CultuurNet\UDB3\Ownership\Readmodels\OwnershipLDProjector;
 use CultuurNet\UDB3\Ownership\Readmodels\OwnershipPermissionProjector;
@@ -80,7 +80,7 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
             fn () => new OwnershipPermissionProjector(
                 $container->get('authorized_command_bus'),
                 $container->get(OwnershipSearchRepository::class),
-                new UuidGenerationFactory(),
+                new GeneratedUuidFactory(),
                 new DocumentItemNameResolver($container->get('organizer_jsonld_repository'))
             )
         );

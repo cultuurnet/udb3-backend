@@ -57,7 +57,7 @@ use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidGenerationFactory;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
@@ -588,7 +588,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             AddVideoRequestHandler::class,
             fn () => new AddVideoRequestHandler(
                 $container->get('event_command_bus'),
-                new UuidGenerationFactory()
+                new GeneratedUuidFactory()
             )
         );
 
