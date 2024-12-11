@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Event\Serializer\AttendanceModeWithLocation;
 use CultuurNet\UDB3\Event\Serializer\AttendanceModeWithLocationDenormalizer;
-use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
@@ -19,6 +18,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -84,7 +84,7 @@ final class UpdateAttendanceModeRequestHandler implements RequestHandlerInterfac
             !$attendanceModeWithLocation->getAttendanceMode()->sameAs(AttendanceMode::online())) {
             $location = $eventRelationsRepository->getPlaceOfEvent($eventId);
 
-            if ($location === null || $location === LocationId::NIL_LOCATION) {
+            if ($location === null || $location === Uuid::NIL) {
                 throw ApiProblem::bodyInvalidData(
                     new SchemaError(
                         '/',

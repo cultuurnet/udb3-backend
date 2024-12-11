@@ -282,7 +282,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     $event->updateMajorInfo(
                         new Title('foo'),
                         new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
-                        new LocationId('00000000-0000-0000-0000-000000000000'),
+                        new LocationId(Uuid::NIL),
                         new Calendar(CalendarType::permanent())
                     );
                     $event->updateAttendanceMode(AttendanceMode::online());
@@ -293,7 +293,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     'foo',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
-                    new LocationId('00000000-0000-0000-0000-000000000000'),
+                    new LocationId(Uuid::NIL),
                     new Calendar(CalendarType::permanent())
                 ),
             ]);

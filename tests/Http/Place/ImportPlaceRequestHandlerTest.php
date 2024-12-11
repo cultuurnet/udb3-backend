@@ -208,7 +208,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -331,7 +331,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -417,7 +417,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -497,7 +497,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -582,7 +582,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -652,7 +652,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -814,7 +814,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -1004,7 +1004,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -1103,7 +1103,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -1220,7 +1220,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -1308,7 +1308,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -3913,7 +3913,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -5270,7 +5270,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => self::PLACE_ID,
                 'placeId' => self::PLACE_ID,
                 'url' => self::PLACE_URI . self::PLACE_ID,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ],
             StatusCodeInterface::STATUS_CREATED
         );

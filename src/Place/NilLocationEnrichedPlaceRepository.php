@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -23,7 +23,7 @@ final class NilLocationEnrichedPlaceRepository extends DocumentRepositoryDecorat
 
     public function fetch(string $id, bool $includeMetadata = false): JsonDocument
     {
-        if ($id === LocationId::NIL_LOCATION) {
+        if ($id === Uuid::NIL) {
             return (new JsonDocument($id))->withAssocBody(
                 $this->nilLocationNormalizer->normalize(ImmutablePlace::createNilLocation())
             );

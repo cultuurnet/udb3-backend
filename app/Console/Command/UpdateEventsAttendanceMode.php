@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
@@ -49,7 +50,7 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
         $query = $this->askForQuery($input, $output);
         $attendanceMode = $this->askAttendanceMode($input, $output);
 
-        $locationId = new LocationId(LocationId::NIL_LOCATION);
+        $locationId = new LocationId(Uuid::NIL);
         if (!$attendanceMode->sameAs(AttendanceMode::online())) {
             $locationId = $this->askForPhysicalLocation($input, $output);
         }
@@ -102,7 +103,7 @@ final class UpdateEventsAttendanceMode extends AbstractCommand
     {
         $question = new Question('Provide UUID of the physical location the mixed/offline event will take place' . \PHP_EOL);
         $question->setValidator(static function (string $location) {
-            if ($location === LocationId::NIL_LOCATION) {
+            if ($location === Uuid::NIL) {
                 throw new RuntimeException('Mixed and offline events require a physical location and not a nil location');
             }
             return $location;

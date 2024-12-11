@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\CommandHandling\AsyncCommand;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
 
 trait AsyncDispatchTrait
 {
@@ -13,6 +14,6 @@ trait AsyncDispatchTrait
     {
         $commandBus->dispatch($command);
 
-        return $command->getAsyncCommandId() ?? '00000000-0000-0000-0000-000000000000';
+        return $command->getAsyncCommandId() ?? Uuid::NIL;
     }
 }
