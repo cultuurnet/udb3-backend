@@ -228,7 +228,7 @@ final class KinepolisService
             $parsedMovie->getTitle(),
             new Category(new CategoryID('0.50.6.0.0'), new CategoryLabel('Film'), CategoryDomain::eventType()),
             $parsedMovie->getLocationId(),
-            LegacyCalendar::fromUdb3ModelCalendar($parsedMovie->getCalendar()),
+            $parsedMovie->getCalendar(),
             $parsedMovie->getTheme()
         );
 

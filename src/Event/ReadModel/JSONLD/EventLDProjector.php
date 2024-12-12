@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\EntityNotFoundException;
@@ -67,6 +67,7 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AudienceTypeNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
@@ -250,11 +251,11 @@ final class EventLDProjector extends OfferLDProjector implements
             );
 
         $calendar = $eventCreated->getCalendar();
-        $calendarJsonLD = $calendar->toJsonLd();
+        $calendarJsonLD = (new CalendarNormalizer())->normalize($calendar);
         $jsonLD = (object) array_merge((array) $jsonLD, $calendarJsonLD);
 
         $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
-            $eventCreated->getCalendar(),
+            LegacyCalendar::fromUdb3ModelCalendar($eventCreated->getCalendar()),
             $eventCreated->getEventType()
         )->format(DateTimeInterface::ATOM);
 
@@ -317,7 +318,7 @@ final class EventLDProjector extends OfferLDProjector implements
         $eventJsonLD->{'@id'} = $this->iriGenerator->iri($eventCopied->getItemId());
 
         // Set the new calendar.
-        /** @var Calendar $calendar */
+        /** @var LegacyCalendar $calendar */
         $calendar = $eventCopied->getCalendar();
         $calendarJsonLD = $calendar->toJsonLd();
 
@@ -782,7 +783,7 @@ final class EventLDProjector extends OfferLDProjector implements
         return FacilitiesUpdated::class;
     }
 
-    protected function isPeriodicCalendarWithoutWeekScheme(Calendar $calendar): bool
+    protected function isPeriodicCalendarWithoutWeekScheme(LegacyCalendar $calendar): bool
     {
         return $calendar->getType()->sameAs(CalendarType::periodic())
             && $calendar->getOpeningHours() === [];

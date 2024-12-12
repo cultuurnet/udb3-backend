@@ -9,7 +9,6 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Broadway\EventStore\TraceableEventStore;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -18,7 +17,8 @@ use CultuurNet\UDB3\Event\Events\Moderation\Approved;
 use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\Moderation\Rejected;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -68,7 +68,7 @@ final class UpdateAvailableFromHandlerTest extends CommandHandlerScenarioTestCas
             'Permanent Event',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         return [
@@ -127,7 +127,7 @@ final class UpdateAvailableFromHandlerTest extends CommandHandlerScenarioTestCas
             'Permanent Event',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $updateAvailableFrom = new UpdateAvailableFrom($eventId, new DateTimeImmutable('2010-11-15T11:22:33+00:00'));
