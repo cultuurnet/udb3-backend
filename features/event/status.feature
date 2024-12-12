@@ -84,6 +84,58 @@ Feature: Test status updates
           }
           """
 
+  Scenario: Update status of 1 sub event to Unavailable with a reason
+    Given I set the JSON request payload from "places/place.json"
+    When I send a POST request to "/places/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I set the JSON request payload from "events/legacy/event-with-multiple-calendar.json"
+    When I send a POST request to "/events/"
+    Then the response status should be "201"
+    And the response body should be valid JSON
+    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    Given I set the JSON request payload to:
+          """
+            [
+              {
+                "id": 0,
+                "status": {
+                  "type": "Available"
+                }
+              },
+              {
+                "id": 1,
+                "status": {
+                  "type": "Unavailable",
+                  "reason": {
+                    "nl": "Het event is uitgesteld."
+                  }
+                }
+              }
+            ]
+          """
+    And I send a PATCH request to "/events/%{uuid_testevent}/subEvents"
+    Then the response status should be "204"
+    When I send a GET request to "/events/%{uuid_testevent}"
+    Then the response status should be "200"
+    And the JSON response at "status" should be:
+          """
+          {"type":"Available"}
+          """
+    And the JSON response at "subEvent/0/status" should be:
+          """
+          {"type": "Available"}
+          """
+    And the JSON response at "subEvent/1/status" should be:
+          """
+          {
+            "type": "Unavailable",
+            "reason": {
+              "nl": "Het event is uitgesteld."
+            }
+          }
+          """
+
   Scenario: Update status of 2 sub events to Unavailable
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
@@ -127,7 +179,7 @@ Feature: Test status updates
           """
           {"type": "Unavailable"}
           """
-    
+
   Scenario: Update status of copied event that was originally unavailable
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
