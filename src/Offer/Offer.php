@@ -6,14 +6,16 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultureFeed_Cdb_Item_Base;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
@@ -183,20 +185,29 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateAllStatuses(Status $status): void
     {
-        $this->updateCalendar(
-            $this->calendar
-                ->withStatus($status)
-                ->withStatusOnSubEvents(new Status($status->getType(), $status->getReason()))
-        );
+        $updatedCalendar = $this->calendar->withStatus($status);
+
+        if ($updatedCalendar instanceof CalendarWithSubEvents) {
+            $updatedCalendar = $updatedCalendar->withStatusOnSubEvents($status);
+        }
+
+        $this->updateCalendar($updatedCalendar);
     }
 
     public function updateBookingAvailability(BookingAvailability $bookingAvailability): void
     {
-        $this->updateCalendar(
-            $this->calendar
-                ->withBookingAvailability($bookingAvailability)
-                ->withBookingAvailabilityOnSubEvents($bookingAvailability)
-        );
+        if (!$this->calendar instanceof CalendarWithSubEvents) {
+            throw CalendarTypeNotSupported::forCalendarType($this->calendar->getType());
+        }
+
+        $updatedCalendar = $this->calendar
+            ->withBookingAvailability($bookingAvailability);
+
+        if ($updatedCalendar instanceof CalendarWithSubEvents) {
+            $updatedCalendar = $updatedCalendar->withBookingAvailabilityOnSubEvents($bookingAvailability);
+        }
+
+        $this->updateCalendar($updatedCalendar);
     }
 
     /**
@@ -368,7 +379,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateCalendar(Calendar $calendar): void
     {
-        if (is_null($this->calendar) || !$this->calendar->sameAs($calendar)) {
+        if (is_null($this->calendar) || !$this->sameCalendars($this->calendar, $calendar)) {
             $this->apply(
                 $this->createCalendarUpdatedEvent($calendar)
             );
@@ -885,6 +896,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected function isDeleted(): bool
     {
         return $this->workflowStatus && $this->workflowStatus->sameAs(WorkflowStatus::DELETED());
+    }
+
+    protected function sameCalendars(Calendar $calendar1, Calendar $calendar2): bool
+    {
+        $calendarNormalizer = new CalendarNormalizer();
+        return $calendarNormalizer->normalize($calendar1) === $calendarNormalizer->normalize($calendar2);
     }
 
     /**

@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
@@ -16,12 +15,17 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -30,7 +34,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
-use DateTime;
 use DateTimeImmutable;
 
 final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
@@ -51,7 +54,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Permanent Event',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new LegacyCalendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $this->expectException(CalendarTypeNotSupported::class);
@@ -74,10 +77,12 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Periodic Event',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new LegacyCalendar(
-                CalendarType::periodic(),
-                new DateTime('2020-01-01 10:00:00'),
-                new DateTime('2020-01-01 12:00:00')
+            new PeriodicCalendar(
+                new DateRange(
+                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                    new DateTimeImmutable('2020-01-01 12:00:00')
+                ),
+                new OpeningHours()
             )
         );
 
@@ -101,18 +106,13 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             'Single Event',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new LegacyCalendar(
-                CalendarType::single(),
-                null,
-                null,
-                [
-                    SubEvent::createAvailable(
-                        new DateRange(
-                            new DateTimeImmutable('2020-01-01 10:00:00'),
-                            new DateTimeImmutable('2020-01-01 12:00:00')
-                        )
-                    ),
-                ]
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00')
+                    )
+                )
             )
         );
 
@@ -149,11 +149,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     'Multiple Event',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -165,8 +162,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
                 new UpdateSubEvents(
@@ -175,24 +172,21 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new CalendarUpdated(
                     '1',
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
-                            SubEvent::createAvailable(
-                                new DateRange(
-                                    new DateTimeImmutable('2019-12-29 10:00:00'),
-                                    new DateTimeImmutable('2020-01-03 12:00:00')
-                                )
-                            ),
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
                                     new DateTimeImmutable('2020-01-01 12:00:00')
                                 )
                             ),
-                        ]
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2019-12-29 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
+                            )
+                        )
                     )
                 ),
             ],
@@ -203,11 +197,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     'Multiple Event',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -219,8 +210,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
                 new UpdateSubEvents(
@@ -231,24 +222,21 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new CalendarUpdated(
                     '1',
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
-                            SubEvent::createAvailable(
-                                new DateRange(
-                                    new DateTimeImmutable('2019-12-29 10:00:00'),
-                                    new DateTimeImmutable('2019-12-29 12:00:00')
-                                )
-                            ),
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
                                     new DateTimeImmutable('2020-01-01 12:00:00')
                                 )
                             ),
-                        ]
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2019-12-29 10:00:00'),
+                                    new DateTimeImmutable('2019-12-29 12:00:00')
+                                )
+                            )
+                        )
                     )
                 ),
             ],
@@ -259,11 +247,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     'Multiple Event',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -275,8 +260,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
                 new UpdateSubEvents(
@@ -286,24 +271,21 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new CalendarUpdated(
                     '1',
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
-                            SubEvent::createAvailable(
-                                new DateRange(
-                                    new DateTimeImmutable('2019-12-29 10:00:00'),
-                                    new DateTimeImmutable('2020-01-03 12:00:00')
-                                )
-                            ),
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2019-12-31 10:00:00'),
                                     new DateTimeImmutable('2020-01-01 12:00:00')
                                 )
                             ),
-                        ]
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2019-12-29 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
+                            )
+                        )
                     )
                 ),
             ],
@@ -314,11 +296,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     'Multiple Event',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -330,8 +309,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
                 new UpdateSubEvents(
@@ -345,24 +324,21 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new CalendarUpdated(
                     '1',
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
-                            SubEvent::createAvailable(
-                                new DateRange(
-                                    new DateTimeImmutable('2019-12-29 10:00:00'),
-                                    new DateTimeImmutable('2019-12-29 12:00:00')
-                                )
-                            ),
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2019-12-31 10:00:00'),
                                     new DateTimeImmutable('2019-12-31 12:00:00')
                                 )
                             ),
-                        ]
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2019-12-29 10:00:00'),
+                                    new DateTimeImmutable('2019-12-29 12:00:00')
+                                )
+                            )
+                        )
                     )
                 ),
             ],
@@ -373,11 +349,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                    'Multiple Event',
                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                   new LegacyCalendar(
-                       CalendarType::multiple(),
-                       null,
-                       null,
-                       [
+                   new MultipleSubEventsCalendar(
+                       new SubEvents(
                            SubEvent::createAvailable(
                                new DateRange(
                                    new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -389,8 +362,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                    new DateTimeImmutable('2020-01-03 10:00:00'),
                                    new DateTimeImmutable('2020-01-03 12:00:00')
                                )
-                           ),
-                       ]
+                           )
+                       )
                    )
                ),
                new UpdateSubEvents(
@@ -405,36 +378,33 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                        )
                    )
                ),
-               new CalendarUpdated(
-                   '1',
-                   new LegacyCalendar(
-                       CalendarType::multiple(),
-                       null,
-                       null,
-                       [
-                           SubEvent::createAvailable(
-                               new DateRange(
-                                   new DateTimeImmutable('2020-01-01 10:00:00'),
-                                   new DateTimeImmutable('2020-01-01 12:00:00')
-                               )
-                           ),
-                           (SubEvent::createAvailable(
-                               new DateRange(
-                                   new DateTimeImmutable('2020-01-03 10:00:00'),
-                                   new DateTimeImmutable('2020-01-03 12:00:00')
-                               )
-                           ))->withStatus(
-                               new Status(
-                                   StatusType::Unavailable(),
-                                   new TranslatedStatusReason(
-                                       new Language('nl'),
-                                       new StatusReason('Niet beschikbaar')
-                                   )
-                               )
-                           ),
-                       ]
-                   )
-               ),
+                new CalendarUpdated(
+                    '1',
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
+                            ),
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
+                            ))->withStatus(
+                                new Status(
+                                    StatusType::Unavailable(),
+                                    new TranslatedStatusReason(
+                                        new Language('nl'),
+                                        new StatusReason('Niet beschikbaar')
+                                    )
+                                )
+                            ),
+                        )
+                    )
+                ),
            ],
             'Update status on 2 sub events' => [
                 new EventCreated(
@@ -443,11 +413,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     'Multiple Event',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -459,8 +426,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
                 new UpdateSubEvents(
@@ -486,11 +453,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new CalendarUpdated(
                     '1',
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             (SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -519,7 +483,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     )
                                 )
                             ),
-                        ]
+                        )
                     )
                 ),
             ],
@@ -530,11 +494,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     'Multiple Event',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -546,8 +507,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
                 new UpdateSubEvents(
@@ -560,11 +521,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new CalendarUpdated(
                     '1',
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -577,7 +535,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
-                        ]
+                        )
                     )
                 ),
             ],
@@ -588,11 +546,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     'Multiple Event',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -604,8 +559,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
                 new UpdateSubEvents(
@@ -623,11 +578,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new CalendarUpdated(
                     '1',
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             (SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -640,7 +592,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
                             ))->withBookingAvailability(BookingAvailability::Unavailable()),
-                        ]
+                        )
                     )
                 ),
             ],
@@ -651,11 +603,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     'Multiple Event',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -667,8 +616,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
                 new UpdateSubEvents(
@@ -691,11 +640,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new CalendarUpdated(
                     '1',
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -716,7 +662,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     )
                                 )
                             )->withBookingAvailability(BookingAvailability::Unavailable()),
-                        ]
+                        )
                     )
                 ),
             ],
@@ -727,11 +673,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     'Multiple Event',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -743,8 +686,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
-                            ),
-                        ]
+                            )
+                        )
                     )
                 ),
                 new UpdateSubEvents(
@@ -782,11 +725,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new CalendarUpdated(
                     '1',
-                    new LegacyCalendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
                             (SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
@@ -814,8 +754,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                         new StatusReason('Tijdelijk niet beschikbaar')
                                     )
                                 )
-                            )->withBookingAvailability(BookingAvailability::Unavailable()),
-                        ]
+                            )->withBookingAvailability(BookingAvailability::Unavailable())
+                        )
                     )
                 ),
             ],

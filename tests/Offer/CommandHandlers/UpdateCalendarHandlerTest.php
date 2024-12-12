@@ -8,12 +8,15 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -45,12 +48,11 @@ class UpdateCalendarHandlerTest extends CommandHandlerScenarioTestCase
     {
         $id = '1ba6bafc-4368-4947-b3a4-48ea71bfe1a4';
 
-        $initialCalendar = new Calendar(CalendarType::permanent());
+        $initialCalendar = new PermanentCalendar(new OpeningHours());
 
-        $calendar = new Calendar(
-            CalendarType::periodic(),
-            new DateTimeImmutable(),
-            new DateTimeImmutable()
+        $calendar = new PeriodicCalendar(
+            new DateRange(new DateTimeImmutable(), new DateTimeImmutable()),
+            new OpeningHours()
         );
 
         $this->scenario

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
@@ -69,8 +68,14 @@ use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
@@ -357,11 +362,11 @@ final class Event extends Offer
 
     public function updateSubEvents(SubEventUpdate ...$subEventUpdates): void
     {
-        $subEvents = $this->calendar->getSubEvents();
-
-        if (empty($subEvents)) {
+        if (!$this->calendar instanceof CalendarWithSubEvents) {
             throw CalendarTypeNotSupported::forCalendarType($this->calendar->getType());
         }
+
+        $subEvents = $this->calendar->getSubEvents()->toArray();
 
         foreach ($subEventUpdates as $subEventUpdate) {
             $index = $subEventUpdate->getSubEventId();
@@ -388,15 +393,13 @@ final class Event extends Offer
             $subEvents[$index] = $updatedSubEvent;
         }
 
-        $updatedCalendar = new Calendar(
-            $this->calendar->getType(),
-            null,
-            null,
-            $subEvents,
-            $this->calendar->getOpeningHours()
-        );
+        if ($this->calendar->getType()->sameAs(CalendarType::single())) {
+            $updatedCalendar = new SingleSubEventCalendar($subEvents[0]);
+        } else {
+            $updatedCalendar = new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
+        }
 
-        if (!$this->calendar->sameAs($updatedCalendar)) {
+        if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(
                 new CalendarUpdated($this->eventId, $updatedCalendar)
             );

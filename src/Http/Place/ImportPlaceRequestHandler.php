@@ -140,7 +140,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $title = $place->getTitle()->getOriginalValue();
         $type = $place->getTerms()->getEventType();
         $address = $placeAdapter->getAddress();
-        $calendar = $placeAdapter->getCalendar();
+        $calendar = $place->getCalendar();
         $publishDate = $placeAdapter->getAvailableFrom(new DateTimeImmutable());
 
         // Get the workflowStatus from the JSON. If the JSON has no workflowStatus, it will be DRAFT by default.

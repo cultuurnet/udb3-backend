@@ -610,7 +610,10 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $offerLd = $document->getBody();
 
-        $offerLd->availableTo = AvailableTo::createFromLegacyCalendar($calendarUpdated->getCalendar())->format(DateTimeInterface::ATOM);
+        $offerLd->availableTo = AvailableTo::createFromCalendar(
+            $calendarUpdated->getCalendar(),
+            null
+        )->format(DateTimeInterface::ATOM);
 
         return $document->withBody($offerLd);
     }

@@ -10,7 +10,6 @@ use Broadway\EventStore\EventStore;
 use Broadway\Repository\Repository;
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Xml;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
@@ -24,7 +23,8 @@ use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -67,7 +67,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             'some representative title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
     }
 
@@ -81,7 +81,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $title = new Title('some representative title');
         $type = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
-        $calendar = new Calendar(CalendarType::permanent());
+        $calendar = new PermanentCalendar(new OpeningHours());
         $theme = new Category(new CategoryID('0.1.0.1.0.1'), new CategoryLabel('blues'), CategoryDomain::theme());
 
         $now = Chronos::now();
@@ -134,7 +134,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $title = new Title('foo');
         $eventType = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015');
-        $calendar = new Calendar(CalendarType::permanent());
+        $calendar = new PermanentCalendar(new OpeningHours());
 
         $this->scenario
             ->withAggregateId($id)
@@ -158,7 +158,7 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
         $title = new Title('foo');
         $eventType = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
         $location = new LocationId('6f87ce4c-bd39-4c5e-92b5-a9f8bdf4aa31');
-        $calendar = new Calendar(CalendarType::permanent());
+        $calendar = new PermanentCalendar(new OpeningHours());
 
         $this->scenario
             ->withAggregateId($id)

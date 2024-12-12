@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\CommandHandlers;
 
 use Broadway\Domain\DomainMessage;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\Commands\CopyEvent;
@@ -16,10 +15,10 @@ use CultuurNet\UDB3\Event\Productions\Production;
 use CultuurNet\UDB3\Event\Productions\ProductionId;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -71,18 +70,13 @@ final class CopyEventHandlerTest extends TestCase
             new Title('Mock event'),
             new Category(new CategoryID('0.0.0.0.1'), new CategoryLabel('Mock type'), CategoryDomain::eventType()),
             new LocationId('8aa2d316-0f5a-495d-9832-46fc22eeaa89'),
-            new Calendar(
-                CalendarType::single(),
-                null,
-                null,
-                [
-                    SubEvent::createAvailable(
-                        new DateRange(
-                            DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
-                        )
-                    ),
-                ]
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                    )
+                )
             )
         );
 
@@ -96,7 +90,7 @@ final class CopyEventHandlerTest extends TestCase
             ->willReturn($originalEvent);
 
         $expectedEvents = [
-            new EventCopied($newEventId, $originalEventId, Calendar::fromUdb3ModelCalendar($newCalendar)),
+            new EventCopied($newEventId, $originalEventId, $newCalendar),
         ];
         $actualEvents = [];
 
@@ -141,18 +135,13 @@ final class CopyEventHandlerTest extends TestCase
             new Title('Mock event'),
             new Category(new CategoryID('0.0.0.0.1'), new CategoryLabel('Mock type'), CategoryDomain::eventType()),
             new LocationId('8aa2d316-0f5a-495d-9832-46fc22eeaa89'),
-            new Calendar(
-                CalendarType::single(),
-                null,
-                null,
-                [
-                    SubEvent::createAvailable(
-                        new DateRange(
-                            DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
-                        )
-                    ),
-                ]
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                    )
+                )
             )
         );
 
@@ -166,7 +155,7 @@ final class CopyEventHandlerTest extends TestCase
             ->willReturn($originalEvent);
 
         $expectedEvents = [
-            new EventCopied($newEventId, $originalEventId, Calendar::fromUdb3ModelCalendar($newCalendar)),
+            new EventCopied($newEventId, $originalEventId, $newCalendar),
         ];
         $actualEvents = [];
 
@@ -218,18 +207,13 @@ final class CopyEventHandlerTest extends TestCase
             new Title('Mock event'),
             new Category(new CategoryID('0.0.0.0.1'), new CategoryLabel('Mock type'), CategoryDomain::eventType()),
             new LocationId('8aa2d316-0f5a-495d-9832-46fc22eeaa89'),
-            new Calendar(
-                CalendarType::single(),
-                null,
-                null,
-                [
-                    SubEvent::createAvailable(
-                        new DateRange(
-                            DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
-                            DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
-                        )
-                    ),
-                ]
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2022-01-01T12:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2022-01-02T12:00:00+01:00')
+                    )
+                )
             )
         );
 
@@ -243,7 +227,7 @@ final class CopyEventHandlerTest extends TestCase
             ->willReturn($originalEvent);
 
         $expectedEvents = [
-            new EventCopied($newEventId, $originalEventId, Calendar::fromUdb3ModelCalendar($newCalendar)),
+            new EventCopied($newEventId, $originalEventId, $newCalendar),
         ];
         $actualEvents = [];
 

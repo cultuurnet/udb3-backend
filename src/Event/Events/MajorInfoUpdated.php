@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
@@ -89,7 +90,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
             'event_type' => (new CategoryNormalizer())->normalize($this->getEventType()),
             'theme' => $theme,
             'location' => $this->getLocation()->toString(),
-            'calendar' => $this->getCalendar()->serialize(),
+            'calendar' => (new CalendarSerializer($this->getCalendar()))->serialize(),
         ];
     }
 
@@ -100,7 +101,7 @@ final class MajorInfoUpdated extends AbstractEvent implements ConvertsToGranular
             $data['title'],
             (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['event_type'], Category::class),
             new LocationId($data['location']),
-            Calendar::deserialize($data['calendar']),
+            CalendarSerializer::deserialize($data['calendar']),
             empty($data['theme']) ? null : (new CategoryDenormalizer(CategoryDomain::theme()))->denormalize($data['theme'], Category::class)
         );
     }

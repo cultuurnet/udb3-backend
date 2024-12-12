@@ -8,8 +8,8 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -36,7 +36,7 @@ final class MajorInfoUpdatedTest extends TestCase
                 new Locality('Leuven'),
                 new CountryCode('BE')
             ),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $expected = [
@@ -54,7 +54,7 @@ final class MajorInfoUpdatedTest extends TestCase
                     new CountryCode('BE')
                 )
             ),
-            new CalendarUpdated($placeId, new Calendar(CalendarType::permanent())),
+            new CalendarUpdated($placeId, new PermanentCalendar(new OpeningHours())),
         ];
 
         $actual = $event->toGranularEvents();

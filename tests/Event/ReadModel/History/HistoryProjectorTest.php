@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Event\Events\VideoUpdated;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
@@ -65,7 +64,8 @@ use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -275,7 +275,7 @@ class HistoryProjectorTest extends TestCase
             'Faith no More',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('7a59de16-6111-4658-aa6e-958ff855d14e'),
-            new Calendar(CalendarType::permanent()),
+            new PermanentCalendar(new OpeningHours()),
             new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
         );
 
@@ -316,7 +316,7 @@ class HistoryProjectorTest extends TestCase
         $eventCopied = new EventCopied(
             $eventId,
             $originalEventId,
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $now = new \DateTime();
@@ -660,7 +660,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_logs_calendar_updated(): void
     {
-        $event = new CalendarUpdated(self::EVENT_ID_1, new Calendar(CalendarType::permanent()));
+        $event = new CalendarUpdated(self::EVENT_ID_1, new PermanentCalendar(new OpeningHours()));
 
         $domainMessage = new DomainMessage(
             $event->getItemId(),
@@ -1327,7 +1327,7 @@ class HistoryProjectorTest extends TestCase
             'title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             new LocationId('a0c6c66e-d933-4817-a335-2a5a51df1fa7'),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $domainMessage = new DomainMessage(

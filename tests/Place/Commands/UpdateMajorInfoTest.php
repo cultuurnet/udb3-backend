@@ -8,14 +8,14 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Calendar\Calendar;
 use PHPUnit\Framework\TestCase;
 
 class UpdateMajorInfoTest extends TestCase
@@ -34,7 +34,7 @@ class UpdateMajorInfoTest extends TestCase
                 new Locality('Leuven'),
                 new CountryCode('BE')
             ),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
     }
 
@@ -52,7 +52,7 @@ class UpdateMajorInfoTest extends TestCase
             new Locality('Leuven'),
             new CountryCode('BE')
         );
-        $expectedCalendar = new Calendar(CalendarType::permanent());
+        $expectedCalendar = new PermanentCalendar(new OpeningHours());
 
         $this->assertEquals($expectedId, $this->updateMajorInfo->getItemId());
         $this->assertEquals($expectedTitle, $this->updateMajorInfo->getTitle());

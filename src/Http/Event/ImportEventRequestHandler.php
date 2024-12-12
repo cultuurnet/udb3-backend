@@ -133,7 +133,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $title = $event->getTitle()->getOriginalValue();
         $type = $event->getTerms()->getEventType();
         $location = $eventAdapter->getLocation();
-        $calendar = $eventAdapter->getCalendar();
+        $calendar = $event->getCalendar();
         $theme = $event->getTerms()->getTheme();
         $publishDate = $eventAdapter->getAvailableFrom(new DateTimeImmutable());
 

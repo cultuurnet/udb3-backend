@@ -12,11 +12,11 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DomainMessage\DomainMessageEnricherInterface;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -64,7 +64,7 @@ class EnrichingEventListenerDecoratorTest extends TestCase
                 'test title',
                 new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                 new LocationId('8bec7ce3-25d0-4677-926f-ac20df8898f1'),
-                new Calendar(CalendarType::permanent())
+                new PermanentCalendar(new OpeningHours())
             ),
             DateTime::now()
         );
@@ -84,7 +84,7 @@ class EnrichingEventListenerDecoratorTest extends TestCase
                     new Locality('Leuven'),
                     new CountryCode('BE')
                 ),
-                new Calendar(CalendarType::permanent())
+                new PermanentCalendar(new OpeningHours())
             ),
             DateTime::now()
         );

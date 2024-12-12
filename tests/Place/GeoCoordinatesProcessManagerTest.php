@@ -10,9 +10,9 @@ use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactoryInterface;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -196,7 +196,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                             new Locality('Bxl'),
                             new CountryCode('BE')
                         )),
-                        new Calendar(CalendarType::permanent())
+                        new PermanentCalendar(new OpeningHours())
                     )
                 ),
                 new UpdateGeoCoordinatesFromAddress(
@@ -224,7 +224,7 @@ class GeoCoordinatesProcessManagerTest extends TestCase
                             new Locality('Bxl'),
                             new CountryCode('BE')
                         )),
-                        new Calendar(CalendarType::permanent())
+                        new PermanentCalendar(new OpeningHours())
                     )
                 ),
                 new UpdateGeoCoordinatesFromAddress(

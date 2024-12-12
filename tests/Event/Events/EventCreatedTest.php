@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -38,7 +38,7 @@ class EventCreatedTest extends TestCase
             'title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->location,
-            new Calendar(CalendarType::permanent()),
+            new PermanentCalendar(new OpeningHours()),
             new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme()),
             $this->publicationDate
         );
@@ -58,7 +58,7 @@ class EventCreatedTest extends TestCase
             'Example title',
             $category,
             $this->location,
-            new Calendar(CalendarType::permanent()),
+            new PermanentCalendar(new OpeningHours()),
             new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
         );
 
@@ -68,7 +68,7 @@ class EventCreatedTest extends TestCase
             'Example title',
             $category,
             $this->location,
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $expectedWithTheme = [
@@ -76,14 +76,14 @@ class EventCreatedTest extends TestCase
             new TypeUpdated($eventId, $category),
             new ThemeUpdated($eventId, new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())),
             new LocationUpdated($eventId, $this->location),
-            new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
+            new CalendarUpdated($eventId, new PermanentCalendar(new OpeningHours())),
         ];
 
         $expectedWithoutTheme = [
             new TitleUpdated($eventId, 'Example title'),
             new TypeUpdated($eventId, $category),
             new LocationUpdated($eventId, $this->location),
-            new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
+            new CalendarUpdated($eventId, new PermanentCalendar(new OpeningHours())),
         ];
 
         $this->assertInstanceOf(ConvertsToGranularEvents::class, $eventWithTheme);
@@ -103,7 +103,7 @@ class EventCreatedTest extends TestCase
             'Example title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
             $this->location,
-            new Calendar(CalendarType::permanent()),
+            new PermanentCalendar(new OpeningHours()),
             new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())
         );
 
@@ -149,7 +149,7 @@ class EventCreatedTest extends TestCase
     public function it_stores_an_event_calendar(): void
     {
         $this->assertEquals(
-            new Calendar(CalendarType::permanent()),
+            new PermanentCalendar(new OpeningHours()),
             $this->eventCreated->getCalendar()
         );
     }
@@ -225,9 +225,7 @@ class EventCreatedTest extends TestCase
                     'title',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
-                    new Calendar(
-                        CalendarType::permanent()
-                    )
+                    new PermanentCalendar(new OpeningHours())
                 ),
             ],
             'with theme and without publication date' => [
@@ -263,9 +261,7 @@ class EventCreatedTest extends TestCase
                     'title',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
-                    new Calendar(
-                        CalendarType::permanent()
-                    ),
+                    new PermanentCalendar(new OpeningHours()),
                     new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme())
                 ),
             ],
@@ -298,9 +294,7 @@ class EventCreatedTest extends TestCase
                     'title',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
                     new LocationId('d379187b-7f71-4403-8fff-645a28be8fd0'),
-                    new Calendar(
-                        CalendarType::permanent()
-                    ),
+                    new PermanentCalendar(new OpeningHours()),
                     null,
                     DateTimeFactory::fromAtom('2016-08-01T00:00:00+02:00')
                 ),
