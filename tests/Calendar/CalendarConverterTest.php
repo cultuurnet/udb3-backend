@@ -8,16 +8,20 @@ use CultureFeed_Cdb_Data_Calendar_Period;
 use CultureFeed_Cdb_Data_Calendar_PeriodList;
 use CultureFeed_Cdb_Data_Calendar_Permanent;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use DateTime;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -35,7 +39,7 @@ class CalendarConverterTest extends TestCase
      */
     public function it_converts_a_permanent_calendar_as_a_cdb_calendar_object(): void
     {
-        $calendar = new Calendar(CalendarType::permanent());
+        $calendar = new PermanentCalendar(new OpeningHours());
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);
         $expectedCalendar = new \CultureFeed_Cdb_Data_Calendar_Permanent();
@@ -57,18 +61,13 @@ class CalendarConverterTest extends TestCase
             '19:00:00'
         ));
 
-        $calendar = new Calendar(
-            CalendarType::single(),
-            new DateTime('2017-01-24T08:00:00.000000+0000'),
-            new DateTime('2017-01-24T18:00:00.000000+0000'),
-            [
-                SubEvent::createAvailable(
-                    new DateRange(
-                        new \DateTimeImmutable('2017-01-24T08:00:00.000000+0000'),
-                        new \DateTimeImmutable('2017-01-24T18:00:00.000000+0000')
-                    )
-                ),
-            ]
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    new \DateTimeImmutable('2017-01-24T08:00:00.000000+0000'),
+                    new \DateTimeImmutable('2017-01-24T18:00:00.000000+0000')
+                )
+            )
         );
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);
@@ -100,11 +99,8 @@ class CalendarConverterTest extends TestCase
             '19:00:00'
         ));
 
-        $calendar = new Calendar(
-            CalendarType::multiple(),
-            new DateTime('2017-01-24T08:00:00.000000+0000'),
-            new DateTime('2017-01-26T18:00:00.000000+0000'),
-            [
+        $calendar = new MultipleSubEventsCalendar(
+            new SubEvents(
                 SubEvent::createAvailable(
                     new DateRange(
                         new DateTimeImmutable('2017-01-24T08:00:00.000000+0000'),
@@ -122,8 +118,8 @@ class CalendarConverterTest extends TestCase
                         new DateTimeImmutable('2017-01-26T08:00:00.000000+0000'),
                         new DateTimeImmutable('2017-01-26T18:00:00.000000+0000')
                     )
-                ),
-            ]
+                )
+            )
         );
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);
@@ -150,11 +146,8 @@ class CalendarConverterTest extends TestCase
             '03:00:00'
         ));
 
-        $calendar = new Calendar(
-            CalendarType::multiple(),
-            new DateTime('2017-01-24T18:00:00.000000+0000'),
-            new DateTime('2017-01-25T02:00:00.000000+0000'),
-            [
+        $calendar = new MultipleSubEventsCalendar(
+            new SubEvents(
                 SubEvent::createAvailable(
                     new DateRange(
                         new DateTimeImmutable('2017-01-24T18:00:00.000000+0000'),
@@ -166,8 +159,8 @@ class CalendarConverterTest extends TestCase
                         new DateTimeImmutable('2017-01-25T18:00:00.000000+0000'),
                         new DateTimeImmutable('2017-01-26T02:00:00.000000+0000')
                     )
-                ),
-            ]
+                )
+            )
         );
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);
@@ -195,12 +188,8 @@ class CalendarConverterTest extends TestCase
             Day::sunday()
         );
 
-        $calendar = new Calendar(
-            CalendarType::permanent(),
-            null,
-            null,
-            [],
-            [
+        $calendar = new PermanentCalendar(
+            new OpeningHours(
                 new OpeningHour(
                     $weekDays,
                     new Time(new Hour(9), new Minute(0)),
@@ -215,8 +204,8 @@ class CalendarConverterTest extends TestCase
                     $weekendDays,
                     new Time(new Hour(10), new Minute(0)),
                     new Time(new Hour(16), new Minute(0))
-                ),
-            ]
+                )
+            )
         );
 
         $expectedCalendar = new CultureFeed_Cdb_Data_Calendar_Permanent();
@@ -250,12 +239,12 @@ class CalendarConverterTest extends TestCase
             Day::sunday()
         );
 
-        $calendar = new Calendar(
-            CalendarType::periodic(),
-            new DateTime('2017-01-24T00:00:00.000000+0000'),
-            new DateTime('2018-01-24T00:00:00.000000+0000'),
-            [],
-            [
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                new DateTimeImmutable('2017-01-24T00:00:00.000000+0000'),
+                new DateTimeImmutable('2018-01-24T00:00:00.000000+0000')
+            ),
+            new OpeningHours(
                 new OpeningHour(
                     $weekDays,
                     new Time(new Hour(9), new Minute(0)),
@@ -270,8 +259,8 @@ class CalendarConverterTest extends TestCase
                     $weekendDays,
                     new Time(new Hour(10), new Minute(0)),
                     new Time(new Hour(16), new Minute(0))
-                ),
-            ]
+                )
+            )
         );
 
         $weekScheme = \CultureFeed_Cdb_Data_Calendar_Weekscheme::parseFromCdbXml(
@@ -295,18 +284,18 @@ class CalendarConverterTest extends TestCase
      */
     public function it_converts_a_periodic_calendar_with_a_single_set_of_opening_hours_as_a_cdb_calendar_with_week_scheme(): void
     {
-        $calendar = new Calendar(
-            CalendarType::periodic(),
-            new DateTime('2017-01-24T00:00:00.000000+0000'),
-            new DateTime('2018-01-24T00:00:00.000000+0000'),
-            [],
-            [
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                new DateTimeImmutable('2017-01-24T00:00:00.000000+0000'),
+                new DateTimeImmutable('2018-01-24T00:00:00.000000+0000')
+            ),
+            new OpeningHours(
                 new OpeningHour(
                     new Days(Day::monday()),
                     new Time(new Hour(9), new Minute(0)),
                     new Time(new Hour(17), new Minute(0))
-                ),
-            ]
+                )
+            )
         );
 
         $openSchemeDay = new \CultureFeed_Cdb_Data_Calendar_SchemeDay(
@@ -362,19 +351,13 @@ class CalendarConverterTest extends TestCase
             '02:00:00'
         ));
 
-        $calendar = new Calendar(
-            CalendarType::single(),
-            null,
-            null,
-            [
-                SubEvent::createAvailable(
-                    new DateRange(
-                        DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
-                        DateTimeFactory::fromAtom('2017-05-27T02:00:00+02:00')
-                    )
-                ),
-            ],
-            []
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2017-05-27T02:00:00+02:00')
+                )
+            )
         );
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);
@@ -404,19 +387,13 @@ class CalendarConverterTest extends TestCase
             '02:00:00'
         ));
 
-        $calendar = new Calendar(
-            CalendarType::single(),
-            null,
-            null,
-            [
-                SubEvent::createAvailable(
-                    new DateRange(
-                        DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
-                        DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00')
-                    )
-                ),
-            ],
-            []
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00')
+                )
+            )
         );
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);
@@ -463,19 +440,13 @@ class CalendarConverterTest extends TestCase
             '18:00:00'
         ));
 
-        $calendar = new Calendar(
-            CalendarType::single(),
-            null,
-            null,
-            [
-                SubEvent::createAvailable(
-                    new DateRange(
-                        DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
-                        DateTimeFactory::fromAtom('2017-05-07T18:00:00+02:00')
-                    )
-                ),
-            ],
-            []
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2017-05-07T18:00:00+02:00')
+                )
+            )
         );
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);
@@ -535,11 +506,8 @@ class CalendarConverterTest extends TestCase
             '02:00:00'
         ));
 
-        $calendar = new Calendar(
-            CalendarType::multiple(),
-            DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
-            DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00'),
-            [
+        $calendar = new MultipleSubEventsCalendar(
+            new SubEvents(
                 SubEvent::createAvailable(
                     new DateRange(
                         DateTimeFactory::fromAtom('2017-05-01T09:00:00+02:00'),
@@ -551,9 +519,8 @@ class CalendarConverterTest extends TestCase
                         DateTimeFactory::fromAtom('2017-05-26T21:00:00+02:00'),
                         DateTimeFactory::fromAtom('2017-05-28T02:00:00+02:00')
                     )
-                ),
-            ],
-            []
+                )
+            )
         );
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);
@@ -594,11 +561,8 @@ class CalendarConverterTest extends TestCase
             '16:00:00'
         ));
 
-        $calendar = new Calendar(
-            CalendarType::multiple(),
-            DateTimeFactory::fromAtom('2017-05-25T10:00:00+02:00'),
-            DateTimeFactory::fromAtom('2017-06-30T16:00:00+02:00'),
-            [
+        $calendar = new MultipleSubEventsCalendar(
+            new SubEvents(
                 SubEvent::createAvailable(
                     new DateRange(
                         DateTimeFactory::fromAtom('2017-05-25T10:00:00+02:00'),
@@ -616,9 +580,8 @@ class CalendarConverterTest extends TestCase
                         DateTimeFactory::fromAtom('2017-06-28T10:00:00+02:00'),
                         DateTimeFactory::fromAtom('2017-06-30T16:00:00+02:00')
                     )
-                ),
-            ],
-            []
+                )
+            )
         );
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);
@@ -640,18 +603,13 @@ class CalendarConverterTest extends TestCase
             '23:59:00'
         ));
 
-        $calendar = new Calendar(
-            CalendarType::single(),
-            new DateTime('2017-05-25T00:00:00+02:00'),
-            new DateTime('2017-05-25T23:59:00+02:00'),
-            [
-                SubEvent::createAvailable(
-                    new DateRange(
-                        new DateTimeImmutable('2017-05-25T00:00:00+02:00'),
-                        new DateTimeImmutable('2017-05-25T23:59:00+02:00')
-                    )
-                ),
-            ]
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    new DateTimeImmutable('2017-05-25T00:00:00+02:00'),
+                    new DateTimeImmutable('2017-05-25T23:59:00+02:00')
+                )
+            )
         );
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);
@@ -675,18 +633,13 @@ class CalendarConverterTest extends TestCase
             '20:00:00'
         ));
 
-        $calendar = new Calendar(
-            CalendarType::single(),
-            new DateTime('2017-07-20T20:00:00+02:00'),
-            new DateTime('2017-07-21T20:00:00+02:00'),
-            [
-                SubEvent::createAvailable(
-                    new DateRange(
-                        new DateTimeImmutable('2017-07-20T20:00:00+02:00'),
-                        new DateTimeImmutable('2017-07-21T20:00:00+02:00')
-                    )
-                ),
-            ]
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    new DateTimeImmutable('2017-07-20T20:00:00+02:00'),
+                    new DateTimeImmutable('2017-07-21T20:00:00+02:00')
+                )
+            )
         );
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);
@@ -710,18 +663,13 @@ class CalendarConverterTest extends TestCase
             '21:00:00'
         ));
 
-        $calendar = new Calendar(
-            CalendarType::single(),
-            new DateTime('2017-07-20T20:00:00+02:00'),
-            new DateTime('2017-07-21T21:00:00+02:00'),
-            [
-                SubEvent::createAvailable(
-                    new DateRange(
-                        new DateTimeImmutable('2017-07-20T20:00:00+02:00'),
-                        new DateTimeImmutable('2017-07-21T21:00:00+02:00')
-                    )
-                ),
-            ]
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    new DateTimeImmutable('2017-07-20T20:00:00+02:00'),
+                    new DateTimeImmutable('2017-07-21T21:00:00+02:00')
+                )
+            )
         );
 
         $cdbCalendar = $this->converter->toCdbCalendar($calendar);

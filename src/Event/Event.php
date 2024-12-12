@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
@@ -71,6 +70,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
@@ -210,7 +210,7 @@ final class Event extends Offer
     {
         $this->eventId = $eventCreated->getEventId();
         $this->titles[$eventCreated->getMainLanguage()->getCode()] = $eventCreated->getTitle();
-        $this->calendar = LegacyCalendar::fromUdb3ModelCalendar($eventCreated->getCalendar());
+        $this->calendar = $eventCreated->getCalendar();
         $this->audienceType = AudienceType::everyone();
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
@@ -224,7 +224,7 @@ final class Event extends Offer
     protected function applyEventCopied(EventCopied $eventCopied): void
     {
         $this->eventId = $eventCopied->getItemId();
-        $this->calendar = LegacyCalendar::fromUdb3ModelCalendar($eventCopied->getCalendar());
+        $this->calendar = $eventCopied->getCalendar();
         $this->workflowStatus = WorkflowStatus::DRAFT();
         $this->labels = new LabelsArray();
     }
@@ -317,7 +317,7 @@ final class Event extends Offer
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
     {
         $this->locationId = $majorInfoUpdated->getLocation();
-        $this->calendar = LegacyCalendar::fromUdb3ModelCalendar($majorInfoUpdated->getCalendar());
+        $this->calendar = $majorInfoUpdated->getCalendar();
 
         if ($this->locationId->isNilLocation()) {
             $this->attendanceMode = AttendanceMode::online()->toString();
@@ -362,11 +362,11 @@ final class Event extends Offer
 
     public function updateSubEvents(SubEventUpdate ...$subEventUpdates): void
     {
-        $subEvents = $this->calendar->getSubEvents();
-
-        if (empty($subEvents)) {
+        if (!$this->calendar instanceof CalendarWithSubEvents) {
             throw CalendarTypeNotSupported::forCalendarType($this->calendar->getType());
         }
+
+        $subEvents = $this->calendar->getSubEvents()->toArray();
 
         foreach ($subEventUpdates as $subEventUpdate) {
             $index = $subEventUpdate->getSubEventId();
@@ -399,7 +399,7 @@ final class Event extends Offer
             $updatedCalendar = new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
         }
 
-        if (!$this->calendar->sameAs(LegacyCalendar::fromUdb3ModelCalendar($updatedCalendar))) {
+        if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(
                 new CalendarUpdated($this->eventId, $updatedCalendar)
             );

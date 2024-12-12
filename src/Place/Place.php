@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -136,7 +135,7 @@ class Place extends Offer
     {
         $this->mainLanguage = $placeCreated->getMainLanguage();
         $this->titles[$this->mainLanguage->getCode()] = $placeCreated->getTitle();
-        $this->calendar = LegacyCalendar::fromUdb3ModelCalendar($placeCreated->getCalendar());
+        $this->calendar = $placeCreated->getCalendar();
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
         $this->typeId = $placeCreated->getEventType()->getId()->toString();
@@ -165,7 +164,7 @@ class Place extends Offer
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
     {
         $this->addresses[$this->mainLanguage->getCode()] = $majorInfoUpdated->getAddress();
-        $this->calendar = LegacyCalendar::fromUdb3ModelCalendar($majorInfoUpdated->getCalendar());
+        $this->calendar = $majorInfoUpdated->getCalendar();
     }
 
     public function updateAddress(Address $address, Language $language): void

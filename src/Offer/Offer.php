@@ -6,16 +6,16 @@ namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultureFeed_Cdb_Item_Base;
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\LabelAwareAggregateRoot;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarSerializer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
@@ -115,7 +115,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected ?ContactPoint $contactPoint = null;
 
-    protected ?LegacyCalendar $calendar = null;
+    protected ?Calendar $calendar = null;
 
     protected ?AgeRange $typicalAgeRange = null;
 
@@ -185,24 +185,27 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateAllStatuses(Status $status): void
     {
-        $updatedLegacyCalendar = $this->calendar
-            ->withStatus($status)
-            ->withStatusOnSubEvents(new Status($status->getType(), $status->getReason()));
+        $updatedCalendar = $this->calendar->withStatus($status);
 
-        // Temporay solution until $calendar property is refactored to use UDB3 Calendar
-        $updatedCalendar = CalendarSerializer::deserialize($updatedLegacyCalendar->serialize());
+        if ($updatedCalendar instanceof CalendarWithSubEvents) {
+            $updatedCalendar = $updatedCalendar->withStatusOnSubEvents($status);
+        }
 
         $this->updateCalendar($updatedCalendar);
     }
 
     public function updateBookingAvailability(BookingAvailability $bookingAvailability): void
     {
-        $updatedLegacyCalendar = $this->calendar
-            ->withBookingAvailability($bookingAvailability)
-            ->withBookingAvailabilityOnSubEvents($bookingAvailability);
+        if (!$this->calendar instanceof CalendarWithSubEvents) {
+            throw CalendarTypeNotSupported::forCalendarType($this->calendar->getType());
+        }
 
-        // Temporay solution until $calendar property is refactored to use UDB3 Calendar
-        $updatedCalendar = CalendarSerializer::deserialize($updatedLegacyCalendar->serialize());
+        $updatedCalendar = $this->calendar
+            ->withBookingAvailability($bookingAvailability);
+
+        if ($updatedCalendar instanceof CalendarWithSubEvents) {
+            $updatedCalendar = $updatedCalendar->withBookingAvailabilityOnSubEvents($bookingAvailability);
+        }
 
         $this->updateCalendar($updatedCalendar);
     }
@@ -376,7 +379,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function updateCalendar(Calendar $calendar): void
     {
-        if (is_null($this->calendar) || !$this->calendar->sameAs(LegacyCalendar::fromUdb3ModelCalendar($calendar))) {
+        if (is_null($this->calendar) || !$this->sameCalendars($this->calendar, $calendar)) {
             $this->apply(
                 $this->createCalendarUpdatedEvent($calendar)
             );
@@ -385,7 +388,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyCalendarUpdated(AbstractCalendarUpdated $calendarUpdated): void
     {
-        $this->calendar = LegacyCalendar::fromUdb3ModelCalendar($calendarUpdated->getCalendar());
+        $this->calendar = $calendarUpdated->getCalendar();
     }
 
     public function updateTypicalAgeRange(AgeRange $typicalAgeRange): void
@@ -893,6 +896,12 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     protected function isDeleted(): bool
     {
         return $this->workflowStatus && $this->workflowStatus->sameAs(WorkflowStatus::DELETED());
+    }
+
+    protected function sameCalendars(Calendar $calendar1, Calendar $calendar2): bool
+    {
+        $calendarNormalizer = new CalendarNormalizer();
+        return $calendarNormalizer->normalize($calendar1) === $calendarNormalizer->normalize($calendar2);
     }
 
     /**

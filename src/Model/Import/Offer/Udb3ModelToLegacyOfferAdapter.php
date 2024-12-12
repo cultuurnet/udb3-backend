@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Offer;
 
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Model\Offer\Offer;
 use DateTimeImmutable;
 
@@ -18,11 +17,6 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
     public function __construct(Offer $offer)
     {
         $this->offer = $offer;
-    }
-
-    public function getCalendar(): Calendar
-    {
-        return Calendar::fromUdb3ModelCalendar($this->offer->getCalendar());
     }
 
     public function getOrganizerId(): ?string
