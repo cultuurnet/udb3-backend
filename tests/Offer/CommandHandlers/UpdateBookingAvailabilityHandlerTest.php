@@ -8,13 +8,11 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
@@ -128,18 +126,13 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             ->then([
                 new CalendarUpdated(
                     '1',
-                    (new Calendar(
-                        CalendarType::single(),
-                        null,
-                        null,
-                        [
-                            (SubEvent::createAvailable(
-                                new DateRange(
-                                    new DateTimeImmutable('2020-01-01 10:00:00'),
-                                    new DateTimeImmutable('2020-01-01 12:00:00')
-                                )
-                            ))->withBookingAvailability(BookingAvailability::Unavailable()),
-                        ]
+                    (new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable('2020-01-01 10:00:00'),
+                                new DateTimeImmutable('2020-01-01 12:00:00')
+                            )
+                        )->withBookingAvailability(BookingAvailability::Unavailable())
                     ))->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ]);
@@ -183,24 +176,21 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             ->then([
                 new CalendarUpdated(
                     '1',
-                    (new Calendar(
-                        CalendarType::multiple(),
-                        null,
-                        null,
-                        [
-                            (SubEvent::createAvailable(
+                    (new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
                                     new DateTimeImmutable('2020-01-01 12:00:00')
                                 )
-                            ))->withBookingAvailability(BookingAvailability::Unavailable()),
-                            (SubEvent::createAvailable(
+                            )->withBookingAvailability(BookingAvailability::Unavailable()),
+                            SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
-                            ))->withBookingAvailability(BookingAvailability::Unavailable()),
-                        ]
+                            )->withBookingAvailability(BookingAvailability::Unavailable())
+                        )
                     ))->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ]);

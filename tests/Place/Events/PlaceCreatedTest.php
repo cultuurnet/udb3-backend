@@ -8,11 +8,9 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
@@ -64,7 +62,7 @@ class PlaceCreatedTest extends TestCase
                 new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType())
             ),
             new AddressUpdated('id', $this->address),
-            new CalendarUpdated('id', new Calendar(CalendarType::permanent())),
+            new CalendarUpdated('id', new PermanentCalendar(new OpeningHours())),
         ];
 
         $actual = $this->placeCreated->toGranularEvents();

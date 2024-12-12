@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events;
 
-use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarSerializer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 
 abstract class AbstractCalendarUpdated extends AbstractEvent
 {
@@ -25,7 +26,7 @@ abstract class AbstractCalendarUpdated extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'calendar' => $this->calendar->serialize(),
+            'calendar' => (new CalendarSerializer($this->calendar))->serialize(),
         ];
     }
 
@@ -33,7 +34,7 @@ abstract class AbstractCalendarUpdated extends AbstractEvent
     {
         return new static(
             $data['item_id'],
-            Calendar::deserialize($data['calendar'])
+            CalendarSerializer::deserialize($data['calendar'])
         );
     }
 }

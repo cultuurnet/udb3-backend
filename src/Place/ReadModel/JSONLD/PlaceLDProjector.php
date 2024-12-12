@@ -9,7 +9,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\DateTimeFactory;
@@ -240,7 +239,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     {
         $document = $this
             ->loadPlaceDocumentFromRepositoryById($majorInfoUpdated->getPlaceId())
-            ->apply(OfferUpdate::calendar(LegacyCalendar::fromUdb3ModelCalendar($majorInfoUpdated->getCalendar())));
+            ->apply(OfferUpdate::calendar($majorInfoUpdated->getCalendar()));
 
         $jsonLD = $document->getBody();
 

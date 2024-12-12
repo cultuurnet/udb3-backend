@@ -39,7 +39,9 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
@@ -509,10 +511,12 @@ class EventTest extends AggregateRootScenarioTestCase
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $createEvent = $this->getCreationEvent();
 
-        $calendar = new Calendar(
-            CalendarType::periodic(),
-            DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
-            DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
+                DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
+            ),
+            new OpeningHours()
         );
 
         $xmlData = $this->getSample('EventTest.cdbxml.xml');
@@ -1855,7 +1859,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Event $event): void {
                     $event->updateCalendar(
-                        new Calendar(CalendarType::permanent())
+                        new PermanentCalendar(new OpeningHours())
                     );
                 }
             )

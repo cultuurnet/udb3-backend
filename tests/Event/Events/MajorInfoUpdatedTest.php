@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -49,7 +47,7 @@ class MajorInfoUpdatedTest extends TestCase
             ),
             new ThemeUpdated($eventId, new Category(new CategoryID('1.8.3.5.0'), new CategoryLabel('Amusementsmuziek'), CategoryDomain::theme())),
             new LocationUpdated($eventId, new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e')),
-            new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
+            new CalendarUpdated($eventId, new PermanentCalendar(new OpeningHours())),
         ];
 
         $expectedWithoutTheme = [
@@ -59,7 +57,7 @@ class MajorInfoUpdatedTest extends TestCase
                 new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType())
             ),
             new LocationUpdated($eventId, new LocationId('395fe7eb-9bac-4647-acae-316b6446a85e')),
-            new CalendarUpdated($eventId, new Calendar(CalendarType::permanent())),
+            new CalendarUpdated($eventId, new PermanentCalendar(new OpeningHours())),
         ];
 
         $this->assertEquals($expectedWithTheme, $eventWithTheme->toGranularEvents());

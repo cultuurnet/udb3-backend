@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\Events;
 
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
@@ -84,7 +83,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
             new TitleUpdated($this->placeId, $this->title),
             new TypeUpdated($this->placeId, $this->eventType),
             new AddressUpdated($this->placeId, $this->address),
-            new CalendarUpdated($this->placeId, LegacyCalendar::fromUdb3ModelCalendar($this->calendar)),
+            new CalendarUpdated($this->placeId, $this->calendar),
         ];
     }
 

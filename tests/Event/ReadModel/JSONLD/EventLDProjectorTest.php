@@ -1186,12 +1186,13 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     {
         $eventId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
 
-        $calendar = new LegacyCalendar(
-            CalendarType::periodic(),
-            DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
-            DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2020-01-26T11:11:11+01:00'),
+                DateTimeFactory::fromAtom('2020-01-27T12:12:12+01:00')
+            ),
+            new OpeningHours()
         );
-
         $calendarUpdated = new CalendarUpdated($eventId, $calendar);
 
         $jsonLD = new stdClass();
@@ -1636,13 +1637,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
         $calendarUpdated = new CalendarUpdated(
             $eventId,
-            new LegacyCalendar(
-                CalendarType::single(),
-                $startDate,
-                $endDate,
-                [
-                    SubEvent::createAvailable(new DateRange($startDate, $endDate)),
-                ]
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(new DateRange($startDate, $endDate))
             )
         );
 
