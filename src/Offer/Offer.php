@@ -555,7 +555,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public function addImage(Image $image): void
     {
         // Find the image based on UUID inside the internal state.
-        $existingImage = $this->images->findImageByUUID($image->getMediaObjectId());
+        $existingImage = $this->images->findImageByUuid($image->getMediaObjectId());
 
         if ($existingImage === null) {
             $this->apply(
@@ -585,7 +585,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         ImageDescription $description,
         CopyrightHolder $copyrightHolder
     ): bool {
-        $image = $this->images->findImageByUUID($mediaObjectId);
+        $image = $this->images->findImageByUuid($mediaObjectId);
 
         // Don't update if the image is not found based on UUID.
         if (!$image) {
@@ -601,7 +601,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     {
         // Find the image based on UUID inside the internal state.
         // Use the image from the internal state.
-        $existingImage = $this->images->findImageByUUID($image->getMediaObjectId());
+        $existingImage = $this->images->findImageByUuid($image->getMediaObjectId());
 
         if ($existingImage) {
             $this->apply(
@@ -612,7 +612,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     public function selectMainImage(Image $image): void
     {
-        if (!$this->images->findImageByUUID($image->getMediaObjectId())) {
+        if (!$this->images->findImageByUuid($image->getMediaObjectId())) {
             throw new ImageMustBeLinkedException();
         }
 
@@ -963,7 +963,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     protected function applyImageUpdated(AbstractImageUpdated $imageUpdated): void
     {
-        $image = $this->images->findImageByUUID(new Uuid($imageUpdated->getMediaObjectId()));
+        $image = $this->images->findImageByUuid(new Uuid($imageUpdated->getMediaObjectId()));
 
         $updatedImage = new Image(
             $image->getMediaObjectId(),

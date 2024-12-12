@@ -87,7 +87,7 @@ class ImageCollectionTest extends TestCase
             ->with($image)
             ->with($anotherImage);
 
-        $this->assertEquals($image, $images->findImageByUUID($uuid));
-        $this->assertNull($images->findImageByUUID(new Uuid('9f585fca-924f-46ea-aaf9-399b8f5aff51')));
+        $this->assertEquals($image, $images->findImageByUuid($uuid));
+        $this->assertNull($images->findImageByUuid(new Uuid('9f585fca-924f-46ea-aaf9-399b8f5aff51')));
     }
 }

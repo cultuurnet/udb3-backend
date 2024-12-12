@@ -41,7 +41,7 @@ class ImageCollection extends Collection
         }
     }
 
-    public function findImageByUUID(Uuid $uuid): ?Image
+    public function findImageByUuid(Uuid $uuid): ?Image
     {
         /** @var Image $image */
         foreach ($this->getIterator() as $image) {
