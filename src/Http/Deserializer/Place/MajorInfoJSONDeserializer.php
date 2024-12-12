@@ -7,10 +7,8 @@ namespace CultuurNet\UDB3\Http\Deserializer\Place;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\Http\Deserializer\Address\AddressJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarForPlaceDataValidator;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONDeserializer;
-use CultuurNet\UDB3\Http\Deserializer\Calendar\CalendarJSONParser;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -26,8 +24,6 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
 
     private AddressJSONDeserializer $addressDeserializer;
 
-    private CalendarJSONDeserializer $calendarDeserializer;
-
     public function __construct()
     {
         parent::__construct(true);
@@ -35,10 +31,6 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
         $this->validator = new MajorInfoDataValidator();
 
         $this->addressDeserializer = new AddressJSONDeserializer();
-        $this->calendarDeserializer = new CalendarJSONDeserializer(
-            new CalendarJSONParser(),
-            new CalendarForPlaceDataValidator()
-        );
     }
 
     /**
@@ -53,7 +45,7 @@ class MajorInfoJSONDeserializer extends JSONDeserializer
 
         $address = $this->addressDeserializer->deserialize(Json::encode($data['address']));
 
-        $calendar = $this->calendarDeserializer->deserialize(Json::encode($data['calendar']));
+        $calendar = CalendarSerializer::deserialize($data['calendar']);
 
         return new MajorInfo(
             new Title($data['name']),
