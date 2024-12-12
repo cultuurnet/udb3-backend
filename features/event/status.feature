@@ -37,6 +37,53 @@ Feature: Test status updates
     And I get the event at "%{eventUrl}"
     Then the JSON response at "availableTo" should be "2021-05-17T08:00:00+00:00"
 
+  Scenario: Update status of single calendar Unavailable with a reason
+    Given I set the JSON request payload from "places/place.json"
+    When I send a POST request to "/places/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I set the JSON request payload from "events/legacy/event-with-single-calendar.json"
+    When I send a POST request to "/events/"
+    Then the response status should be "201"
+    And the response body should be valid JSON
+    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    Given I set the JSON request payload to:
+          """
+            [
+              {
+                "id": 0,
+                "status": {
+                  "type": "TemporarilyUnavailable",
+                  "reason": {
+                    "nl": "Het event is tijdelijk uitgesteld."
+                  }
+                }
+              }
+            ]
+          """
+    And I send a PATCH request to "/events/%{uuid_testevent}/subEvents"
+    Then the response status should be "204"
+    When I send a GET request to "/events/%{uuid_testevent}"
+    Then the response status should be "200"
+    And the JSON response at "status" should be:
+          """
+          {
+            "type": "TemporarilyUnavailable",
+            "reason": {
+              "nl": "Het event is tijdelijk uitgesteld."
+            }
+          }
+          """
+    And the JSON response at "subEvent/0/status" should be:
+          """
+          {
+            "type": "TemporarilyUnavailable",
+            "reason": {
+              "nl": "Het event is tijdelijk uitgesteld."
+            }
+          }
+          """
+
   Scenario: Update status of 2 sub events to Unavailable
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
