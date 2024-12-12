@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
@@ -51,8 +53,8 @@ class AvailableToTest extends TestCase
 
         $permanentCalendar = new PermanentCalendar(new OpeningHours());
 
-        $availableToFromSingleDateRange = AvailableTo::createFromCalendar($singleDateRangeCalendar);
-        $availableToFromPermanent = AvailableTo::createFromCalendar($permanentCalendar);
+        $availableToFromSingleDateRange = AvailableTo::createFromCalendar($singleDateRangeCalendar, null);
+        $availableToFromPermanent = AvailableTo::createFromCalendar($permanentCalendar, null);
 
         $this->assertEquals($endDate, $availableToFromSingleDateRange);
         $this->assertEquals(AvailableTo::forever(), $availableToFromPermanent);
@@ -63,10 +65,10 @@ class AvailableToTest extends TestCase
      * @dataProvider calendarsDateProvider
      */
     public function it_creates_available_to_from_calendars(
-        LegacyCalendar $calendar,
+        Calendar $calendar,
         \DateTimeInterface $expectedAvailableTo
     ): void {
-        $availableTo = AvailableTo::createFromLegacyCalendar($calendar);
+        $availableTo = AvailableTo::createFromCalendar($calendar, null);
 
         $this->assertEquals(
             $expectedAvailableTo,
@@ -76,119 +78,82 @@ class AvailableToTest extends TestCase
 
     public function calendarsDateProvider(): array
     {
-        $startDate = new \DateTime('2016-10-10T18:19:20');
-        $endDate = new \DateTime('2016-10-18T20:19:18');
-        $startDateNoHours = new \DateTime('2016-10-10');
-        $endDateNoHours = new \DateTime('2016-10-18');
-        $startDateAlmostMidnight = new \DateTime('2016-10-10T23:59:59');
-        $endDateAlmostMidnight = new \DateTime('2016-10-18T23:59:59');
+        $startDate = new \DateTimeImmutable('2016-10-10T18:19:20');
+        $endDate = new \DateTimeImmutable('2016-10-18T20:19:18');
+        $startDateNoHours = new \DateTimeImmutable('2016-10-10');
+        $endDateNoHours = new \DateTimeImmutable('2016-10-18');
+        $startDateAlmostMidnight = new \DateTimeImmutable('2016-10-10T23:59:59');
+        $endDateAlmostMidnight = new \DateTimeImmutable('2016-10-18T23:59:59');
 
         return [
-            [
-                new LegacyCalendar(CalendarType::permanent()),
-                new \DateTime('2100-01-01T00:00:00Z'),
+            'permanent calendar' => [
+                new PermanentCalendar(new OpeningHours()),
+                new \DateTimeImmutable('2100-01-01T00:00:00Z'),
             ],
-            [
-                new LegacyCalendar(
-                    CalendarType::single(),
-                    null,
-                    null,
-                    [
-                        SubEvent::createAvailable(
-                            new DateRange(
-                                DateTimeImmutable::createFromMutable($startDate),
-                                DateTimeImmutable::createFromMutable($startDate)
-                            )
-                        ),
-                    ]
+            'single calendar with end date equal to start date' => [
+                new SingleSubEventCalendar(
+                    SubEvent::createAvailable(new DateRange($startDate, $startDate))
                 ),
                 $startDate,
             ],
-            [
-                new LegacyCalendar(
-                    CalendarType::single(),
-                    null,
-                    null,
-                    [
-                        SubEvent::createAvailable(
-                            new DateRange(
-                                DateTimeImmutable::createFromMutable($startDate),
-                                DateTimeImmutable::createFromMutable($endDate)
-                            )
-                        ),
-                    ]
+            'single calendar' => [
+                new SingleSubEventCalendar(
+                    SubEvent::createAvailable(new DateRange($startDate, $endDate))
                 ),
                 $endDate,
             ],
-            [
-                new LegacyCalendar(CalendarType::periodic(), $startDate, $endDate),
-                $endDate,
-            ],
-            [
-                new LegacyCalendar(
-                    CalendarType::multiple(),
-                    null,
-                    null,
-                    [
-                        SubEvent::createAvailable(
-                            new DateRange(
-                                DateTimeImmutable::createFromMutable($startDate),
-                                DateTimeImmutable::createFromMutable($endDate)
-                            )
-                        ),
-                    ]
+            'periodic calendar' => [
+                new PeriodicCalendar(
+                    new DateRange($startDate, $endDate),
+                    new OpeningHours()
                 ),
                 $endDate,
             ],
-            [
-                new LegacyCalendar(
-                    CalendarType::single(),
-                    null,
-                    null,
-                    [
+            'multiple calendar' => [
+                new MultipleSubEventsCalendar(
+                    new SubEvents(
                         SubEvent::createAvailable(
                             new DateRange(
-                                DateTimeImmutable::createFromMutable($startDateNoHours),
-                                DateTimeImmutable::createFromMutable($startDateNoHours)
+                                new \DateTimeImmutable('2016-08-08T18:19:20'),
+                                new \DateTimeImmutable('2016-08-08T20:21:22')
                             )
                         ),
-                    ]
+                        SubEvent::createAvailable(new DateRange($startDate, $endDate))
+                    )
+                ),
+                $endDate,
+            ],
+            'single calendar no hours and end date equal to start date' => [
+                new SingleSubEventCalendar(
+                    SubEvent::createAvailable(new DateRange($startDateNoHours, $startDateNoHours))
                 ),
                 $startDateAlmostMidnight,
             ],
-            [
-                new LegacyCalendar(
-                    CalendarType::single(),
-                    null,
-                    null,
-                    [
-                        SubEvent::createAvailable(
-                            new DateRange(
-                                DateTimeImmutable::createFromMutable($startDateNoHours),
-                                DateTimeImmutable::createFromMutable($endDateNoHours)
-                            )
-                        ),
-                    ]
+            'periodic calendar no hours and end date equal to start date' => [
+                new PeriodicCalendar(
+                    new DateRange($startDateNoHours, $startDateNoHours),
+                    new OpeningHours()
+                ),
+                $startDateAlmostMidnight,
+            ],
+            'periodic calendar no hours' => [
+                new PeriodicCalendar(
+                    new DateRange($startDateNoHours, $endDateNoHours),
+                    new OpeningHours()
                 ),
                 $endDateAlmostMidnight,
             ],
-            [
-                new LegacyCalendar(CalendarType::periodic(), $startDate, $endDateNoHours),
-                $endDateAlmostMidnight,
-            ],
-            [
-                new LegacyCalendar(
-                    CalendarType::multiple(),
-                    null,
-                    null,
-                    [
+            'multiple calendar and no hours' => [
+                new MultipleSubEventsCalendar(
+                    new SubEvents(
                         SubEvent::createAvailable(
                             new DateRange(
-                                DateTimeImmutable::createFromMutable($startDate),
-                                DateTimeImmutable::createFromMutable($endDateNoHours)
+                                new \DateTimeImmutable('2016-08-08T18:19:20'),
+                                new \DateTimeImmutable('2016-08-08T20:21:22')
                             )
                         ),
-                    ]
+                        SubEvent::createAvailable(new DateRange($startDate, $endDateNoHours))
+                    )
                 ),
                 $endDateAlmostMidnight,
             ],
@@ -202,20 +167,18 @@ class AvailableToTest extends TestCase
     {
         $startDate = new DateTimeImmutable('2016-10-10T18:19:20');
         $endDate = new DateTimeImmutable('2020-10-10T18:19:20');
-        $calendar = new LegacyCalendar(
-            CalendarType::multiple(),
-            null,
-            null,
-            [
+        $calendar = new MultipleSubEventsCalendar(
+            new SubEvents(
                 SubEvent::createAvailable(new DateRange($startDate, $endDate)),
-            ]
+                SubEvent::createAvailable(new DateRange($startDate, $endDate))
+            )
         );
         $eventTypeResolver = new EventTypeResolver();
 
-        $availableTo = AvailableTo::createFromLegacyCalendar($calendar, $eventTypeResolver->byId('0.7.0.0.0'));
+        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId('0.7.0.0.0'));
         $this->assertEquals($endDate, $availableTo);
 
-        $availableTo = AvailableTo::createFromLegacyCalendar($calendar, $eventTypeResolver->byId('0.3.1.0.0'));
+        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId('0.3.1.0.0'));
         $this->assertEquals($startDate, $availableTo);
     }
 }

@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Event\ReadModel\JSONLD;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\EntityNotFoundException;
@@ -256,8 +255,8 @@ final class EventLDProjector extends OfferLDProjector implements
         $calendarJsonLD = (new CalendarNormalizer())->normalize($calendar);
         $jsonLD = (object) array_merge((array) $jsonLD, $calendarJsonLD);
 
-        $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
-            LegacyCalendar::fromUdb3ModelCalendar($eventCreated->getCalendar()),
+        $jsonLD->availableTo = AvailableTo::createFromCalendar(
+            $eventCreated->getCalendar(),
             $eventCreated->getEventType()
         )->format(DateTimeInterface::ATOM);
 
@@ -346,8 +345,8 @@ final class EventLDProjector extends OfferLDProjector implements
         unset($eventJsonLD->hiddenLabels);
 
         // Set available to and from.
-        $eventJsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
-            LegacyCalendar::fromUdb3ModelCalendar($eventCopied->getCalendar()),
+        $eventJsonLD->availableTo = AvailableTo::createFromCalendar(
+            $eventCopied->getCalendar(),
             $this->getEventType($eventJsonLD)
         )->format(DateTimeInterface::ATOM);
         unset($eventJsonLD->availableFrom);
@@ -374,8 +373,8 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $offerLd = $document->getBody();
 
-        $offerLd->availableTo = AvailableTo::createFromLegacyCalendar(
-            LegacyCalendar::fromUdb3ModelCalendar($calendarUpdated->getCalendar()),
+        $offerLd->availableTo = AvailableTo::createFromCalendar(
+            $calendarUpdated->getCalendar(),
             $this->getEventType($offerLd)
         )->format(DateTimeInterface::ATOM);
 
@@ -437,8 +436,8 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD = $this->setAttendanceMode($jsonLD, $majorInfoUpdated->getLocation());
 
-        $jsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
-            LegacyCalendar::fromUdb3ModelCalendar($majorInfoUpdated->getCalendar()),
+        $jsonLD->availableTo = AvailableTo::createFromCalendar(
+            $majorInfoUpdated->getCalendar(),
             $majorInfoUpdated->getEventType()
         )->format(DateTimeInterface::ATOM);
 
