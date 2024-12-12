@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Phpstan;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use PhpParser\Node;
 use PhpParser\Node\Stmt\Use_;
 use PHPStan\Analyser\Scope;
@@ -29,8 +30,9 @@ class ForbiddenRamseyNamespaceRule implements Rule
 
             return [
                 sprintf(
-                    'The "Ramsey" namespace is not allowed in file: %s, please us CultuurNet\UDB3\Model\ValueObject\Identity\Uuid',
-                    $scope->getFile()
+                    'The "Ramsey" namespace is not allowed in file: %s, please us %s',
+                    $scope->getFile(),
+                    Uuid::class
                 ),
             ];
         }
