@@ -23,6 +23,8 @@ use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
@@ -999,9 +1001,7 @@ class HistoryProjectorTest extends TestCase
                 new Locality('Leuven'),
                 new CountryCode('BE')
             ),
-            new Calendar(
-                CalendarType::permanent()
-            )
+            new PermanentCalendar(new OpeningHours())
         );
     }
 

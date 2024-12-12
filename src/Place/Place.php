@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Address\Address as LegacyAddress;
-use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
@@ -135,7 +136,7 @@ class Place extends Offer
     {
         $this->mainLanguage = $placeCreated->getMainLanguage();
         $this->titles[$this->mainLanguage->getCode()] = $placeCreated->getTitle();
-        $this->calendar = $placeCreated->getCalendar();
+        $this->calendar = LegacyCalendar::fromUdb3ModelCalendar($placeCreated->getCalendar());
         $this->contactPoint = new ContactPoint();
         $this->bookingInfo = new BookingInfo();
         $this->typeId = $placeCreated->getEventType()->getId()->toString();
@@ -148,7 +149,7 @@ class Place extends Offer
         Title $title,
         Category $eventType,
         LegacyAddress $address,
-        Calendar $calendar
+        LegacyCalendar $calendar
     ): void {
         $this->apply(
             new MajorInfoUpdated(
@@ -420,7 +421,7 @@ class Place extends Offer
         return new DescriptionDeleted($this->placeId, $language);
     }
 
-    protected function createCalendarUpdatedEvent(Calendar $calendar): CalendarUpdated
+    protected function createCalendarUpdatedEvent(LegacyCalendar $calendar): CalendarUpdated
     {
         return new CalendarUpdated($this->placeId, $calendar);
     }

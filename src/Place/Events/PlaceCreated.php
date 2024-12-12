@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\Events;
 
 use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Calendar\Calendar;
+use CultuurNet\UDB3\Calendar\Calendar as LegacyCalendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Place\PlaceEvent;
@@ -82,7 +84,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
             new TitleUpdated($this->placeId, $this->title),
             new TypeUpdated($this->placeId, $this->eventType),
             new AddressUpdated($this->placeId, $this->address),
-            new CalendarUpdated($this->placeId, $this->calendar),
+            new CalendarUpdated($this->placeId, LegacyCalendar::fromUdb3ModelCalendar($this->calendar)),
         ];
     }
 
@@ -97,7 +99,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
             'title' => $this->getTitle(),
             'event_type' => (new CategoryNormalizer())->normalize($this->getEventType()),
             'address' => $this->getAddress()->serialize(),
-            'calendar' => $this->getCalendar()->serialize(),
+            'calendar' => (new CalendarSerializer($this->getCalendar()))->serialize(),
             'publication_date' => $publicationDate,
         ];
     }
@@ -114,7 +116,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
             $data['title'],
             (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['event_type'], Category::class),
             Address::deserialize($data['address']),
-            Calendar::deserialize($data['calendar']),
+            CalendarSerializer::deserialize($data['calendar']),
             $publicationDate
         );
     }

@@ -13,10 +13,10 @@ use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Address\Locality;
 use CultuurNet\UDB3\Address\PostalCode;
 use CultuurNet\UDB3\Address\Street;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -66,7 +66,7 @@ class PlaceRepositoryTest extends TestCase
                 new Locality('Leuven'),
                 new CountryCode('BE')
             ),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $place1->updateTypicalAgeRange(
@@ -84,7 +84,7 @@ class PlaceRepositoryTest extends TestCase
                 new Locality('Leuven'),
                 new CountryCode('BE')
             ),
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $expectedEvents = [
@@ -99,7 +99,7 @@ class PlaceRepositoryTest extends TestCase
                     new Locality('Leuven'),
                     new CountryCode('BE')
                 ),
-                new Calendar(CalendarType::permanent())
+                new PermanentCalendar(new OpeningHours())
             ),
             new TypicalAgeRangeUpdated(
                 '41c94f16-9edf-4eaf-914a-cfc01336b66e',
@@ -116,7 +116,7 @@ class PlaceRepositoryTest extends TestCase
                     new Locality('Leuven'),
                     new CountryCode('BE')
                 ),
-                new Calendar(CalendarType::permanent())
+                new PermanentCalendar(new OpeningHours())
             ),
         ];
 
