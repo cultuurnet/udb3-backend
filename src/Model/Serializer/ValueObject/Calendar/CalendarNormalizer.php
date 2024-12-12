@@ -114,13 +114,19 @@ final class CalendarNormalizer implements NormalizerInterface
             return $calendar->getStatus();
         }
 
+        // Get the reason when there is only one sub event and the top level status has no reason.
+        $reason = null;
+        if (count($calendar->getSubEvents()->toArray()) === 1 && $calendar->getStatus()->getReason() === null) {
+            $reason =  $calendar->getSubEvents()->toArray()[0]->getStatus()->getReason();
+        }
+
         // If the calendar has subEvents, the top level status is valid if it is the same type as the type derived from
         // the subEvents. In that case return $this->status so we include the top-level reason (if it has one).
         $expectedStatusType = $this->deriveStatusTypeFromSubEvents($calendar->getSubEvents());
         if ($calendar->getStatus()->getType()->toString() === $expectedStatusType->toString()) {
             // Also make sure to include the reason of a sub event when there is no reason on the top level.
-            if (count($calendar->getSubEvents()->toArray()) === 1 && $calendar->getStatus()->getReason() === null) {
-                return $calendar->getSubEvents()->toArray()[0]->getStatus();
+            if ($calendar->getStatus()->getReason() === null) {
+                return new Status($expectedStatusType, $reason);
             }
 
             return $calendar->getStatus();
@@ -129,7 +135,7 @@ final class CalendarNormalizer implements NormalizerInterface
         // If the top-level status is invalid compared to the status type derived from the subEvents, return the
         // expected status type without any reason. (If the top level status had a reason it's probably not applicable
         // for the new status type.)
-        return new Status($expectedStatusType, null);
+        return new Status($expectedStatusType, $reason);
     }
 
     /**
