@@ -6,14 +6,12 @@ namespace CultuurNet\UDB3\Event\ReadModel\Permission;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Cdb\CreatedByToUserIdResolverInterface;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -167,7 +165,7 @@ final class ProjectorTest extends TestCase
         $payload = new EventCopied(
             $eventId,
             $originalEventId,
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $msg = DomainMessage::recordNow(

@@ -19,7 +19,6 @@ use CultuurNet\UDB3\Event\Events\VideoUpdated;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
-use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
@@ -65,7 +64,6 @@ use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
@@ -318,7 +316,7 @@ class HistoryProjectorTest extends TestCase
         $eventCopied = new EventCopied(
             $eventId,
             $originalEventId,
-            new Calendar(CalendarType::permanent())
+            new PermanentCalendar(new OpeningHours())
         );
 
         $now = new \DateTime();

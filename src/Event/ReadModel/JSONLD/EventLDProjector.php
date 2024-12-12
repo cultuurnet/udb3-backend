@@ -69,7 +69,9 @@ use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AudienceTypeNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
@@ -317,10 +319,8 @@ final class EventLDProjector extends OfferLDProjector implements
         // Set the id.
         $eventJsonLD->{'@id'} = $this->iriGenerator->iri($eventCopied->getItemId());
 
-        // Set the new calendar.
-        /** @var LegacyCalendar $calendar */
         $calendar = $eventCopied->getCalendar();
-        $calendarJsonLD = $calendar->toJsonLd();
+        $calendarJsonLD = (new CalendarNormalizer())->normalize($calendar);
 
         $eventJsonLD->sameAs = $this->sameAs->generateSameAs(
             $eventCopied->getItemId(),
@@ -347,7 +347,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         // Set available to and from.
         $eventJsonLD->availableTo = AvailableTo::createFromLegacyCalendar(
-            $eventCopied->getCalendar(),
+            LegacyCalendar::fromUdb3ModelCalendar($eventCopied->getCalendar()),
             $this->getEventType($eventJsonLD)
         )->format(DateTimeInterface::ATOM);
         unset($eventJsonLD->availableFrom);
@@ -783,9 +783,16 @@ final class EventLDProjector extends OfferLDProjector implements
         return FacilitiesUpdated::class;
     }
 
-    protected function isPeriodicCalendarWithoutWeekScheme(LegacyCalendar $calendar): bool
+    protected function isPeriodicCalendarWithoutWeekScheme(Calendar $calendar): bool
     {
-        return $calendar->getType()->sameAs(CalendarType::periodic())
-            && $calendar->getOpeningHours() === [];
+        if (!$calendar->getType()->sameAs(CalendarType::periodic())) {
+            return false;
+        }
+
+        if (!$calendar instanceof CalendarWithOpeningHours) {
+            return false;
+        }
+
+        return $calendar->getOpeningHours()->isEmpty();
     }
 }
