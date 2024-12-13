@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Label\Commands\MakeInvisible;
 use CultuurNet\UDB3\Label\Commands\MakePrivate;
 use CultuurNet\UDB3\Label\Commands\MakePublic;
 use CultuurNet\UDB3\Label\Commands\MakeVisible;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -30,7 +30,7 @@ final class PatchLabelRequestHandler implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $labelId = new UUID((new RouteParameters($request))->getLabelId());
+        $labelId = new Uuid((new RouteParameters($request))->getLabelId());
 
         $body = Json::decodeAssociatively($request->getBody()->getContents());
         $commandType = new CommandType($body['command']);

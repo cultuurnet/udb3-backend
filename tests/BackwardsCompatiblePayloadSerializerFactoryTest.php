@@ -25,7 +25,7 @@ use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
@@ -69,10 +69,10 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 
         $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
         $this->labelRepository->method('getByUuid')
-            ->with(new UUID('86c5b0f4-a5da-4a81-815f-3839634c212c'))
+            ->with(new Uuid('86c5b0f4-a5da-4a81-815f-3839634c212c'))
             ->willReturn(
                 new Entity(
-                    new UUID('86c5b0f4-a5da-4a81-815f-3839634c212c'),
+                    new Uuid('86c5b0f4-a5da-4a81-815f-3839634c212c'),
                     '2dotstwice',
                     Visibility::INVISIBLE(),
                     Privacy::PRIVACY_PRIVATE()

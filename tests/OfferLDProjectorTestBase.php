@@ -18,7 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint as Udb3ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -242,7 +242,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     public function it_projects_the_adding_of_an_image(): void
     {
         $id = 'foo';
-        $imageId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $imageId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
         $description = new MediaDescription('Some description.');
         $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
         $type = new MIMEType('image/png');
@@ -286,7 +286,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
     public function it_projects_the_editing_of_an_image(): void
     {
         $id = 'foo';
-        $imageId = new UUID('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $imageId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
         $description = 'Some description.';
         $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
         $eventClass = $this->getEventClass('ImageUpdated');

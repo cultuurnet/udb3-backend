@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -63,7 +63,7 @@ final class MediaManagerTest extends TestCase
     public function it_should_log_the_file_id_after_a_media_object_is_created_for_an_uploaded_image(): void
     {
         $command = new UploadImage(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('description'),
             new CopyrightHolder('copyright'),
@@ -106,7 +106,7 @@ final class MediaManagerTest extends TestCase
     public function it_should_move_a_file_to_the_media_directory_when_uploading(): void
     {
         $command = new UploadImage(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('description'),
             new CopyrightHolder('copyright'),
@@ -149,7 +149,7 @@ final class MediaManagerTest extends TestCase
         $language = new Language('en');
 
         $mediaObject = MediaObject::create(
-            new UUID($id),
+            new Uuid($id),
             $fileType,
             $description,
             $copyrightHolder,
@@ -163,10 +163,10 @@ final class MediaManagerTest extends TestCase
             ->with($id)
             ->willReturn($mediaObject);
 
-        $image = $this->mediaManager->getImage(new UUID($id));
+        $image = $this->mediaManager->getImage(new Uuid($id));
 
         $expectedImage = new Image(
-            new UUID($id),
+            new Uuid($id),
             $fileType,
             $description,
             $copyrightHolder,
@@ -193,6 +193,6 @@ final class MediaManagerTest extends TestCase
         $this->expectException(MediaObjectNotFoundException::class);
         $this->expectExceptionMessage("Media object with id '" . $id . "' not found");
 
-        $this->mediaManager->get(new UUID($id));
+        $this->mediaManager->get(new Uuid($id));
     }
 }

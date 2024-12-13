@@ -63,6 +63,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -1051,7 +1052,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     'foo',
                     'new title',
                     new Category(new CategoryID('0.50.4.0.1'), new CategoryLabel('Concert New'), CategoryDomain::eventType()),
-                    new LocationId('00000000-0000-0000-0000-000000000000'),
+                    new LocationId(Uuid::NIL),
                     new PeriodicCalendar(
                         new DateRange(
                             DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
@@ -1393,7 +1394,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             new Language('en'),
             'Online workshop',
             new Category(new CategoryID('0.3.1.0.0'), new CategoryLabel('Cursus of workshop'), CategoryDomain::eventType()),
-            new LocationId(LocationId::NIL_LOCATION),
+            new LocationId(Uuid::NIL),
             new PermanentCalendar(new OpeningHours())
         );
 

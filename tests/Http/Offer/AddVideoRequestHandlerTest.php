@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -16,7 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 
 class AddVideoRequestHandlerTest extends TestCase
 {
@@ -25,7 +26,7 @@ class AddVideoRequestHandlerTest extends TestCase
     private TraceableCommandBus $commandBus;
 
     /**
-     * @var UuidFactoryInterface&MockObject
+     * @var UuidFactory&MockObject
      */
     private $uuidFactory;
 
@@ -37,7 +38,7 @@ class AddVideoRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
 
-        $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
+        $this->uuidFactory = $this->createMock(UuidFactory::class);
 
         $this->addVideoRequestHandler = new AddVideoRequestHandler(
             $this->commandBus,
@@ -63,7 +64,7 @@ class AddVideoRequestHandlerTest extends TestCase
             )
             ->build('POST');
 
-        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $videoId = Uuid::uuid4();
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn($videoId);
@@ -97,7 +98,7 @@ class AddVideoRequestHandlerTest extends TestCase
             ->withBodyFromString('{"url":"https://www.youtube.com/watch?v=sdsd234", "language":"nl"}')
             ->build('POST');
 
-        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $videoId = Uuid::uuid4();
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn($videoId);
@@ -131,7 +132,7 @@ class AddVideoRequestHandlerTest extends TestCase
             ->withBodyFromString('{"url":"https://youtu.be/bsaAOun-dec", "language":"nl"}')
             ->build('POST');
 
-        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $videoId = Uuid::uuid4();
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn($videoId);
@@ -165,7 +166,7 @@ class AddVideoRequestHandlerTest extends TestCase
             ->withBodyFromString('{"url":"https://www.youtube.com/embed/yi_XlQetN28", "language":"nl"}')
             ->build('POST');
 
-        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $videoId = Uuid::uuid4();
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn($videoId);

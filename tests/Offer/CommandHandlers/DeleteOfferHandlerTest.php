@@ -28,7 +28,7 @@ use CultuurNet\UDB3\Security\Permission\CannotDeleteUiTPASPlace;
 use CultuurNet\UDB3\Security\Permission\DeleteUiTPASPlaceVoter;
 use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
-use Ramsey\Uuid\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class DeleteOfferHandlerTest extends CommandHandlerScenarioTestCase
 {

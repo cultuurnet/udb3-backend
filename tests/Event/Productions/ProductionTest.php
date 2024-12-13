@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Productions;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class ProductionTest extends TestCase
 {

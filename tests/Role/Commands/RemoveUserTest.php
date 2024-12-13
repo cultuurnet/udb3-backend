@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use PHPUnit\Framework\TestCase;
 
 class RemoveUserTest extends TestCase
@@ -13,7 +13,7 @@ class RemoveUserTest extends TestCase
 
     protected function setUp(): void
     {
-        $uuid = new UUID('67780d64-b401-4040-af1f-5f424e0b7306');
+        $uuid = new Uuid('67780d64-b401-4040-af1f-5f424e0b7306');
 
         $userId = 'userId';
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer\Serializers;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -24,7 +24,7 @@ final class UpdateImageDenormalizer implements DenormalizerInterface
     {
         $updateImage = new UpdateImage(
             $this->organizerId,
-            new UUID($data['id'])
+            new Uuid($data['id'])
         );
 
         if (isset($data['language'])) {

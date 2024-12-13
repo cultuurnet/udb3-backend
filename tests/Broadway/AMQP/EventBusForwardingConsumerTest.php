@@ -10,13 +10,13 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use CultuurNet\UDB3\Deserializer\DeserializerNotFoundException;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\UuidFactory;
 
 final class EventBusForwardingConsumerTest extends TestCase
 {
@@ -86,7 +86,7 @@ final class EventBusForwardingConsumerTest extends TestCase
             $this->consumerTag,
             $this->exchangeName,
             $this->queueName,
-            new UuidFactory(),
+            new GeneratedUuidFactory(),
             $delay
         );
 
@@ -112,7 +112,7 @@ final class EventBusForwardingConsumerTest extends TestCase
             $this->consumerTag,
             $this->exchangeName,
             $this->queueName,
-            new UuidFactory()
+            new GeneratedUuidFactory()
         );
 
         $expectedConnection = $this->connection;

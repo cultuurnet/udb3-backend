@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use InvalidArgumentException;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
-use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 
 final class EventBusForwardingConsumerFactory
 {
@@ -31,7 +31,7 @@ final class EventBusForwardingConsumerFactory
 
     private string $consumerTag;
 
-    private UuidFactoryInterface $uuidFactory;
+    private UuidFactory $uuidFactory;
 
     public function __construct(
         int $executionDelay,
@@ -40,7 +40,7 @@ final class EventBusForwardingConsumerFactory
         DeserializerLocatorInterface $deserializerLocator,
         EventBus $eventBus,
         string $consumerTag,
-        UuidFactoryInterface $uuidFactory
+        UuidFactory $uuidFactory
     ) {
         if ($executionDelay < 0) {
             throw new InvalidArgumentException('Execution delay should be zero or higher.');

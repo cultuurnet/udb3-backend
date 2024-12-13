@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Steps;
 
 use Behat\Gherkin\Node\PyStringNode;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
@@ -253,7 +254,7 @@ trait ResponseSteps
     public function theJsonResponseAtIsAnOnlineLocation(string $jsonPath): void
     {
         assertEquals(
-            $this->requestState->getBaseUrl() . '/place/' . '00000000-0000-0000-0000-000000000000',
+            $this->requestState->getBaseUrl() . '/place/' . Uuid::NIL,
             $this->responseState->getValueOnPath($jsonPath)
         );
     }

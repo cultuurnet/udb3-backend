@@ -29,7 +29,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
@@ -183,7 +183,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     'id' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
                     'organizerId' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
                     'url' => 'https://mock.uitdatabank.be/organizers/5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
-                    'commandId' => '00000000-0000-0000-0000-000000000000',
+                    'commandId' => Uuid::NIL,
                 ]
             ),
             $response->getBody()->getContents()
@@ -304,7 +304,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     'id' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
                     'organizerId' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
                     'url' => 'https://mock.uitdatabank.be/organizers/5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
-                    'commandId' => '00000000-0000-0000-0000-000000000000',
+                    'commandId' => Uuid::NIL,
                 ]
             ),
             $response->getBody()->getContents()
@@ -469,7 +469,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     'id' => $id,
                     'organizerId' => $id,
                     'url' => 'https://mock.uitdatabank.be/organizers/' . $id,
-                    'commandId' => '00000000-0000-0000-0000-000000000000',
+                    'commandId' => Uuid::NIL,
                 ]
             ),
             $response->getBody()->getContents()
@@ -540,7 +540,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     'id' => $id,
                     'organizerId' => $id,
                     'url' => 'https://mock.uitdatabank.be/organizers/' . $id,
-                    'commandId' => '00000000-0000-0000-0000-000000000000',
+                    'commandId' => Uuid::NIL,
                 ]
             ),
             $response->getBody()->getContents()
@@ -621,19 +621,19 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                 $id,
                 new Images(
                     new Image(
-                        new UUID('1a11c93c-3fd6-4d59-abb9-e8df724a3894'),
+                        new Uuid('1a11c93c-3fd6-4d59-abb9-e8df724a3894'),
                         new Language('nl'),
                         new Description('beschrijving1'),
                         new CopyrightHolder('copyrightholder1')
                     ),
                     new Image(
-                        new UUID('67171a6a-031d-4040-88aa-556e85165e33'),
+                        new Uuid('67171a6a-031d-4040-88aa-556e85165e33'),
                         new Language('nl'),
                         new Description('overwritten!'),
                         new CopyrightHolder('copyrightholder2')
                     ),
                     new Image(
-                        new UUID('5ab13b22-a913-4c8e-aa3b-a32279a771da'),
+                        new Uuid('5ab13b22-a913-4c8e-aa3b-a32279a771da'),
                         new Language('en'),
                         new Description('beschrijving3'),
                         new CopyrightHolder('overwritten!')
@@ -658,7 +658,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     'id' => $id,
                     'organizerId' => $id,
                     'url' => 'https://mock.uitdatabank.be/organizers/' . $id,
-                    'commandId' => '00000000-0000-0000-0000-000000000000',
+                    'commandId' => Uuid::NIL,
                 ]
             ),
             $response->getBody()->getContents()
@@ -724,7 +724,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     'id' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
                     'organizerId' => '5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
                     'url' => 'https://mock.uitdatabank.be/organizers/5829cdfb-21b1-4494-86da-f2dbd7c8d69c',
-                    'commandId' => '00000000-0000-0000-0000-000000000000',
+                    'commandId' => Uuid::NIL,
                 ]
             ),
             $response->getBody()->getContents()
@@ -814,7 +814,7 @@ class ImportOrganizerRequestHandlerTest extends TestCase
                     'id' => $id,
                     'organizerId' => $id,
                     'url' => 'https://mock.uitdatabank.be/organizers/' . $id,
-                    'commandId' => '00000000-0000-0000-0000-000000000000',
+                    'commandId' => Uuid::NIL,
                 ]
             ),
             $response->getBody()->getContents()

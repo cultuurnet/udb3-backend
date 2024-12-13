@@ -35,7 +35,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
@@ -308,7 +308,7 @@ final class KinepolisServiceTest extends TestCase
 
         $this->repository->expects($this->once())->method('save');
 
-        $imageId = new UUID('a05ca76d-0ccd-456c-97a2-b96859671d5e');
+        $imageId = new Uuid('a05ca76d-0ccd-456c-97a2-b96859671d5e');
         $this->imageUploader
             ->expects($this->once())
             ->method('upload')
@@ -485,7 +485,7 @@ final class KinepolisServiceTest extends TestCase
 
         $this->repository->expects($this->once())->method('save');
 
-        $imageId = new UUID('a05ca76d-0ccd-456c-97a2-b96859671d5e');
+        $imageId = new Uuid('a05ca76d-0ccd-456c-97a2-b96859671d5e');
         $this->imageUploader
             ->expects($this->once())
             ->method('upload')

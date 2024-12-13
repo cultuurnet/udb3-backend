@@ -48,7 +48,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
@@ -95,7 +95,7 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 
 final class ImportPlaceRequestHandlerTest extends TestCase
 {
@@ -109,7 +109,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /** @var UuidGeneratorInterface&MockObject */
     private object $uuidGenerator;
 
-    /** @var UuidFactoryInterface&MockObject */
+    /** @var UuidFactory&MockObject */
     private object $uuidFactory;
 
     private object $commandBus;
@@ -149,7 +149,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     {
         $this->aggregateRepository = $this->createMock(Repository::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
-        $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
+        $this->uuidFactory = $this->createMock(UuidFactory::class);
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
         $organizerRepository = new InMemoryDocumentRepository();
@@ -208,7 +208,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -331,7 +331,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -417,7 +417,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -497,7 +497,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -582,7 +582,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -652,7 +652,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -787,7 +787,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->willReturn(
                 (new ImageCollection())
                     ->with(new Image(
-                        new UUID('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
+                        new Uuid('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
                         MIMEType::fromSubtype('jpeg'),
                         new Description('Feest in de Hel'),
                         new CopyrightHolder('De Hel'),
@@ -796,7 +796,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     ))
             );
 
-        $videoId = \Ramsey\Uuid\Uuid::uuid4();
+        $videoId = Uuid::uuid4();
         $this->uuidFactory->expects($this->once())
             ->method('uuid4')
             ->willReturn($videoId);
@@ -814,7 +814,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -917,7 +917,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     $placeId,
                     (new ImageCollection())
                         ->with(new Image(
-                            new UUID('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
+                            new Uuid('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
                             MIMEType::fromSubtype('jpeg'),
                             new Description('Feest in de Hel'),
                             new CopyrightHolder('De Hel'),
@@ -1000,7 +1000,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -1099,7 +1099,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -1216,7 +1216,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -1304,7 +1304,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -3909,7 +3909,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => $placeId,
                 'placeId' => $placeId,
                 'url' => self::PLACE_URI . $placeId,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ]),
             $response->getBody()->getContents()
         );
@@ -5266,7 +5266,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 'id' => self::PLACE_ID,
                 'placeId' => self::PLACE_ID,
                 'url' => self::PLACE_URI . self::PLACE_ID,
-                'commandId' => '00000000-0000-0000-0000-000000000000',
+                'commandId' => Uuid::NIL,
             ],
             StatusCodeInterface::STATUS_CREATED
         );

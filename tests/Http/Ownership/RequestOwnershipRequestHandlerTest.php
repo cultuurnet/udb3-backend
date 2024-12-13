@@ -14,7 +14,8 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\FixedUuidFactory;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
 use CultuurNet\UDB3\Ownership\OwnershipState;
@@ -30,17 +31,12 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Ramsey\Uuid\Uuid as Uuidv4;
-use Ramsey\Uuid\UuidFactoryInterface;
 
 class RequestOwnershipRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
     private TraceableCommandBus $commandBus;
-
-    /** @var UuidFactoryInterface&MockObject */
-    private $uuidFactory;
 
     /** @var OwnershipSearchRepository&MockObject */
     private $ownerShipSearchRepository;
@@ -60,8 +56,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->commandBus = new TraceableCommandBus();
         $this->commandBus->record();
 
-        $this->uuidFactory = $this->createMock(UuidFactoryInterface::class);
-
         $this->ownerShipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
         $this->identityResolver = $this->createMock(UserIdentityResolver::class);
 
@@ -72,7 +66,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
 
         $this->requestOwnershipRequestHandler = new RequestOwnershipRequestHandler(
             $this->commandBus,
-            $this->uuidFactory,
+            new FixedUuidFactory(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
             new CurrentUser('auth0|63e22626e39a8ca1264bd29b'),
             $this->ownerShipSearchRepository,
             $organizerRepository,
@@ -96,10 +90,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
             ])
             ->build('POST');
-
-        $this->uuidFactory->expects($this->once())
-            ->method('uuid4')
-            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
 
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
@@ -139,8 +129,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new RequestOwnership(
-                    new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
-                    new UUID('9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new Uuid('9e68dafc-01d8-4c1c-9612-599c918b981d'),
                     ItemType::organizer(),
                     new UserId('auth0|63e22626e39a8ca1264bd29b'),
                     new UserId('auth0|63e22626e39a8ca1264bd29b')
@@ -164,10 +154,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'ownerId' => 'google-oauth2|102486314601596809843',
             ])
             ->build('POST');
-
-        $this->uuidFactory->expects($this->once())
-            ->method('uuid4')
-            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
 
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
@@ -213,10 +199,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ])
             ->build('POST');
 
-        $this->uuidFactory->expects($this->once())
-            ->method('uuid4')
-            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
-
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
             ->with(
@@ -255,8 +237,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new RequestOwnership(
-                    new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
-                    new UUID('9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new Uuid('9e68dafc-01d8-4c1c-9612-599c918b981d'),
                     ItemType::organizer(),
                     new UserId('auth0|63e22626e39a8ca1264bd29b'),
                     new UserId('auth0|63e22626e39a8ca1264bd29b')
@@ -280,10 +262,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
             ])
             ->build('POST');
-
-        $this->uuidFactory->expects($this->once())
-            ->method('uuid4')
-            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
 
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
@@ -316,8 +294,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new RequestOwnership(
-                    new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
-                    new UUID('9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new Uuid('9e68dafc-01d8-4c1c-9612-599c918b981d'),
                     ItemType::organizer(),
                     new UserId('auth0|63e22626e39a8ca1264bd29b'),
                     new UserId('auth0|63e22626e39a8ca1264bd29b')
@@ -339,10 +317,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
             ])
             ->build('POST');
-
-        $this->uuidFactory->expects($this->once())
-            ->method('uuid4')
-            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
 
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
@@ -398,10 +372,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ])
             ->build('POST');
 
-        $this->uuidFactory->expects($this->once())
-            ->method('uuid4')
-            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
-
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
             ->with(
@@ -456,10 +426,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ])
             ->build('POST');
 
-        $this->uuidFactory->expects($this->once())
-            ->method('uuid4')
-            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
-
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
             ->with(
@@ -491,8 +457,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new RequestOwnership(
-                    new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
-                    new UUID('9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new Uuid('9e68dafc-01d8-4c1c-9612-599c918b981d'),
                     ItemType::organizer(),
                     new UserId('auth0|63e22626e39a8ca1264bd29b'),
                     new UserId('auth0|63e22626e39a8ca1264bd29b')
@@ -515,10 +481,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ])
             ->build('POST');
 
-        $this->uuidFactory->expects($this->once())
-            ->method('uuid4')
-            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
-
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
             ->with(
@@ -550,8 +512,8 @@ class RequestOwnershipRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new RequestOwnership(
-                    new UUID('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
-                    new UUID('9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new Uuid('9e68dafc-01d8-4c1c-9612-599c918b981d'),
                     ItemType::organizer(),
                     new UserId('auth0|63e22626e39a8ca1264bd29b'),
                     new UserId('auth0|63e22626e39a8ca1264bd29b')
@@ -573,10 +535,6 @@ class RequestOwnershipRequestHandlerTest extends TestCase
                 'ownerId' => 'auth0|63e22626e39a8ca1264bd29b',
             ])
             ->build('POST');
-
-        $this->uuidFactory->expects($this->once())
-            ->method('uuid4')
-            ->willReturn(Uuidv4::fromString('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'));
 
         $this->permissionVoter->expects($this->never())
             ->method('isAllowed');

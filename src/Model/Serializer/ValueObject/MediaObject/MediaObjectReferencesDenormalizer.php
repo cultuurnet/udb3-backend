@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectIDParser;
@@ -20,12 +20,12 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class MediaObjectReferencesDenormalizer implements DenormalizerInterface
 {
     /**
-     * @var UUIDParser
+     * @var UuidParser
      */
     private $mediaObjectIdParser;
 
 
-    public function __construct(UUIDParser $mediaObjectIdParser = null)
+    public function __construct(UuidParser $mediaObjectIdParser = null)
     {
         if (!$mediaObjectIdParser) {
             $mediaObjectIdParser = new MediaObjectIDParser();

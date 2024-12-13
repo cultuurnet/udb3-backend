@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Identity;
 
 use PHPUnit\Framework\TestCase;
 
-class UUIDTest extends TestCase
+class UuidTest extends TestCase
 {
     /**
      * @test
@@ -14,7 +14,7 @@ class UUIDTest extends TestCase
      */
     public function it_should_accept_a_valid_uuid_string(string $uuidString): void
     {
-        $uuid = new UUID($uuidString);
+        $uuid = new Uuid($uuidString);
         $this->assertEquals($uuidString, $uuid->toString());
     }
 
@@ -37,16 +37,23 @@ class UUIDTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage("{$invalidUuid} is not a valid uuid.");
 
-        new UUID($invalidUuid);
+        new Uuid($invalidUuid);
     }
 
 
     public function invalidUUIDDataProvider(): array
     {
         return [
-            'multi-line' => ['00000000-0000-0000-0000-000000000000' . PHP_EOL],
+            'multi-line' => [Uuid::NIL . PHP_EOL],
             'multi-value' => ['76831861-4706-4362-a42d-8710e32bd1ba' . PHP_EOL . '74738ff5-5367-5958-9aee-98fffdcd1876'],
             'without-separators' => ['74738ff5536759589aee98fffdcd1876'],
         ];
+    }
+
+    /** @test */
+    public function it_should_generate_a_valid_uuid4(): void
+    {
+        $uuid = Uuid::uuid4();
+        $this->assertInstanceOf(Uuid::class, $uuid);
     }
 }

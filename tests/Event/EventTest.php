@@ -45,7 +45,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
@@ -284,7 +284,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     $event->updateMajorInfo(
                         new Title('foo'),
                         new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
-                        new LocationId('00000000-0000-0000-0000-000000000000'),
+                        new LocationId(Uuid::NIL),
                         new PermanentCalendar(new OpeningHours())
                     );
                     $event->updateAttendanceMode(AttendanceMode::online());
@@ -295,7 +295,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
                     'foo',
                     new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
-                    new LocationId('00000000-0000-0000-0000-000000000000'),
+                    new LocationId(Uuid::NIL),
                     new PermanentCalendar(new OpeningHours())
                 ),
             ]);
@@ -1331,7 +1331,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_should_not_add_duplicate_images(): void
     {
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1378,7 +1378,7 @@ class EventTest extends AggregateRootScenarioTestCase
         );
 
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
@@ -1428,7 +1428,7 @@ class EventTest extends AggregateRootScenarioTestCase
         );
 
         $image = new Image(
-            new UUID('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/png'),
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),

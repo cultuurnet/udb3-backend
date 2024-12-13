@@ -27,7 +27,7 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
-use Ramsey\Uuid\UuidFactory;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 
 final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
 {
@@ -146,7 +146,7 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             function () use ($container): CopyEventRequestHandler {
                 return new CopyEventRequestHandler(
                     $container->get('event_command_bus'),
-                    new UuidFactory(),
+                    new GeneratedUuidFactory(),
                     $container->get('event_iri_generator'),
                 );
             }

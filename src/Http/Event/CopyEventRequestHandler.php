@@ -20,17 +20,17 @@ use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 
 final class CopyEventRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
-    private UuidFactoryInterface $uuidFactory;
+    private UuidFactory $uuidFactory;
     private IriGeneratorInterface $iriGenerator;
 
     public function __construct(
         CommandBus $commandBus,
-        UuidFactoryInterface $uuidFactory,
+        UuidFactory $uuidFactory,
         IriGeneratorInterface $iriGenerator
     ) {
         $this->commandBus = $commandBus;

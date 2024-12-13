@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media;
 
 use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class ImageCollection extends Collection
 {
@@ -41,7 +41,7 @@ class ImageCollection extends Collection
         }
     }
 
-    public function findImageByUUID(UUID $uuid): ?Image
+    public function findImageByUuid(Uuid $uuid): ?Image
     {
         /** @var Image $image */
         foreach ($this->getIterator() as $image) {

@@ -24,8 +24,9 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
@@ -37,13 +38,12 @@ use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use Ramsey\Uuid\UuidFactory;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 abstract class OfferDenormalizer implements DenormalizerInterface
 {
-    private UUIDParser $idParser;
+    private UuidParser $idParser;
 
     private DenormalizerInterface $titleDenormalizer;
 
@@ -72,7 +72,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     private bool $handlesDummyOrganizers = false;
 
     public function __construct(
-        UUIDParser $idParser,
+        UuidParser $idParser,
         DenormalizerInterface $titleDenormalizer = null,
         DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $calendarDenormalizer = null,
@@ -131,7 +131,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         }
 
         if (!$videoDenormalizer) {
-            $videoDenormalizer = new VideoDenormalizer(new UuidFactory());
+            $videoDenormalizer = new VideoDenormalizer(new GeneratedUuidFactory());
         }
 
         $this->idParser = $idParser;
@@ -158,7 +158,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
 
     abstract protected function createOffer(
         array $originalData,
-        UUID $id,
+        Uuid $id,
         Language $mainLanguage,
         TranslatedTitle $title,
         Calendar $calendar,

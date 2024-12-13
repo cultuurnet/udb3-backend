@@ -15,8 +15,8 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDeno
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUIDParser;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -30,7 +30,7 @@ class PlaceDenormalizer extends OfferDenormalizer
     private DenormalizerInterface $geoCoordinatesDenormalizer;
 
     public function __construct(
-        UUIDParser $placeIDParser = null,
+        UuidParser $placeIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
         DenormalizerInterface $descriptionDenormalizer = null,
         DenormalizerInterface $calendarDenormalizer = null,
@@ -80,7 +80,7 @@ class PlaceDenormalizer extends OfferDenormalizer
 
     protected function createOffer(
         array $originalData,
-        UUID $id,
+        Uuid $id,
         Language $mainLanguage,
         TranslatedTitle $title,
         Calendar $calendar,

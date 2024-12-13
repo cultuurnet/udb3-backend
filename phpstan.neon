@@ -1,19 +1,24 @@
 parameters:
-	level: 6
-	checkMissingIterableValueType: false
-	checkGenericClassInNonGenericObjectType: false
-	paths:
-		- app
-		- src
-		- tests
-		- features
-		- bootstrap.php
-		- web/index.php
-	bootstrapFiles:
-		- tests/bootstrap.php
-	scanFiles:
-		- vendor/gridonic/princexml-php/lib/prince.php
-	excludePaths:
-		- tests/Event/Productions/SimilarEventsRepositoryTest.php
-		- tests/Http/Productions/SuggestProductionRequestHandlerTest.php
-		- tests/Offer/Commands/Moderation/AbstractModerationCommandTestBase.php
+    level: 6
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    paths:
+        - app
+        - src
+        - tests
+        - features
+        - bootstrap.php
+        - web/index.php
+    bootstrapFiles:
+        - tests/bootstrap.php
+    scanFiles:
+        - vendor/gridonic/princexml-php/lib/prince.php
+    excludePaths:
+        - tests/Event/Productions/SimilarEventsRepositoryTest.php
+        - tests/Http/Productions/SuggestProductionRequestHandlerTest.php
+        - tests/Offer/Commands/Moderation/AbstractModerationCommandTestBase.php
+
+services:
+    -
+        class: CultuurNet\UDB3\Phpstan\ForbiddenRamseyNamespaceRule
+        tags: [phpstan.rules.rule]

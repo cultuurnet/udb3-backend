@@ -24,7 +24,7 @@ use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated as EventTypicalAgeRangeU
 use CultuurNet\UDB3\EventSourcing\PayloadManipulatingSerializer;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated as PlaceBookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated as PlaceContactPointUpdated;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated as PlaceDescriptionTranslated;
@@ -507,7 +507,7 @@ class BackwardsCompatiblePayloadSerializerFactory
     ): array {
         if (!isset($serializedObject['payload']['name'])) {
             $uuid = $serializedObject['payload']['uuid'];
-            $label = $labelRepository->getByUuid(new UUID($uuid));
+            $label = $labelRepository->getByUuid(new Uuid($uuid));
 
             $serializedObject['payload']['name'] = $label->getName();
         }
@@ -522,7 +522,7 @@ class BackwardsCompatiblePayloadSerializerFactory
         if (!isset($serializedObject['payload']['label']) ||
             !isset($serializedObject['payload']['visibility'])) {
             $uuid = $serializedObject['payload']['labelId'];
-            $label = $labelRepository->getByUuid(new UUID($uuid));
+            $label = $labelRepository->getByUuid(new Uuid($uuid));
 
             $serializedObject['payload']['label'] = $label->getName();
             $serializedObject['payload']['visibility'] = $label->getVisibility()->sameAs(Visibility::VISIBLE());
@@ -542,7 +542,7 @@ class BackwardsCompatiblePayloadSerializerFactory
         // bug. Even when the bug is fixed, this data will still be corrupt. To fix any "location id can't have empty
         // value" issues in the core app or downstream, we use a nil uuid as a placeholder for the missing data.
         if ($serializedObject['payload']['location'] === '') {
-            $serializedObject['payload']['location'] = '00000000-0000-0000-0000-000000000000';
+            $serializedObject['payload']['location'] = Uuid::NIL;
         }
 
         return $serializedObject;

@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -40,10 +40,10 @@ final class NilLocationEnrichedPlaceRepositoryTest extends TestCase
         $this->placeRepository->expects($this->never())
             ->method('fetch');
 
-        $place = $this->nilLocationEnrichedPlaceRepository->fetch(LocationId::NIL_LOCATION);
+        $place = $this->nilLocationEnrichedPlaceRepository->fetch(UUID::NIL);
 
         $this->assertEquals(
-            (new JsonDocument(LocationId::NIL_LOCATION))->withAssocBody(
+            (new JsonDocument(UUID::NIL))->withAssocBody(
                 (new NilLocationNormalizer(new CallableIriGenerator(
                     fn (string $id) => 'https://io.uitdatabank.dev/places/' . $id
                 )))->normalize(ImmutablePlace::createNilLocation())

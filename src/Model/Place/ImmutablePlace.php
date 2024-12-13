@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -34,7 +34,7 @@ final class ImmutablePlace extends ImmutableOffer implements Place
     private ?Coordinates $coordinates = null;
 
     public function __construct(
-        UUID $id,
+        Uuid $id,
         Language $mainLanguage,
         TranslatedTitle $title,
         Calendar $calendar,
@@ -133,9 +133,9 @@ final class ImmutablePlace extends ImmutableOffer implements Place
         );
     }
 
-    public static function getNilLocationId(): UUID
+    public static function getNilLocationId(): Uuid
     {
-        return new UUID('00000000-0000-0000-0000-000000000000');
+        return new Uuid(Uuid::NIL);
     }
 
     protected function guardCalendarType(Calendar $calendar): void

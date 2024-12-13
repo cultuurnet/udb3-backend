@@ -79,7 +79,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
@@ -553,7 +553,7 @@ final class Event extends Offer
     }
 
     protected function createImageUpdatedEvent(
-        UUID $mediaObjectId,
+        Uuid $mediaObjectId,
         ImageDescription $description,
         CopyrightHolder $copyrightHolder,
         ?string $language = null

@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Ownership\Repositories\Search;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
@@ -97,7 +97,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
      */
     public function it_can_update_the_role_id(): void
     {
-        $roleId = new UUID('a75aa571-8131-4fd6-ab9b-59c7672095e5');
+        $roleId = new Uuid('a75aa571-8131-4fd6-ab9b-59c7672095e5');
         $ownershipItem = new OwnershipItem(
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',

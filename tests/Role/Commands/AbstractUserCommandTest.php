@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\Commands;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -16,13 +16,13 @@ class AbstractUserCommandTest extends TestCase
      */
     private $abstractUserCommand;
 
-    private UUID $uuid;
+    private Uuid $uuid;
 
     private string $userId;
 
     protected function setUp(): void
     {
-        $this->uuid = new UUID('ebb777b2-6735-4636-8f60-f7bde4576036');
+        $this->uuid = new Uuid('ebb777b2-6735-4636-8f60-f7bde4576036');
 
         $this->userId = 'ebb777b2-6735-4636-8f60-f7bde4576036';
 

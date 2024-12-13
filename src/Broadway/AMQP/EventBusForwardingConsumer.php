@@ -11,13 +11,13 @@ use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
-use Ramsey\Uuid\UuidFactoryInterface;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 
 final class EventBusForwardingConsumer extends AbstractConsumer
 {
     private EventBus $eventBus;
 
-    private UuidFactoryInterface $uuidFactory;
+    private UuidFactory $uuidFactory;
 
     public function __construct(
         AMQPStreamConnection $connection,
@@ -26,7 +26,7 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         string $consumerTag,
         string $exchangeName,
         String $queueName,
-        UuidFactoryInterface $uuidFactory,
+        UuidFactory $uuidFactory,
         int $delay = 0
     ) {
         $this->eventBus = $eventBus;

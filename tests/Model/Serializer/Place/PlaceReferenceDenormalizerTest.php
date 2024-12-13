@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UUID;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 
@@ -37,7 +37,7 @@ class PlaceReferenceDenormalizerTest extends TestCase
         $reference = $this->denormalizer->denormalize($data, PlaceReference::class);
 
         $this->assertEquals(
-            new UUID('ebe48c5f-5d3d-4fc3-a138-0037ab0fbc08'),
+            new Uuid('ebe48c5f-5d3d-4fc3-a138-0037ab0fbc08'),
             $reference->getPlaceId()
         );
         $this->assertNull($reference->getAddress());

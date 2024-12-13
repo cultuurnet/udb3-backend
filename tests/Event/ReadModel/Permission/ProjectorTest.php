@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -199,7 +200,7 @@ final class ProjectorTest extends TestCase
         $domainMessage = DomainMessage::recordNow(
             $eventId,
             1,
-            new Metadata(['user_id' => '00000000-0000-0000-0000-000000000000']),
+            new Metadata(['user_id' => UUID::NIL]),
             $ownerChanged
         );
 
