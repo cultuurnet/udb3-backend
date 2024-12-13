@@ -9,12 +9,12 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 final class UitIdV2JwtValidator implements JwtValidator
 {
     private JwtValidator $baseValidator;
-    private string $v2JwtProviderAuth0ClientId;
+    private string $v2JwtProviderOAuthClientId;
 
-    public function __construct(string $publicKey, array $validIssuers, string $v2JwtProviderAuth0ClientId)
+    public function __construct(string $publicKey, array $validIssuers, string $v2JwtProviderOAuthClientId)
     {
         $this->baseValidator = new GenericJwtValidator($publicKey, ['sub'], $validIssuers);
-        $this->v2JwtProviderAuth0ClientId = $v2JwtProviderAuth0ClientId;
+        $this->v2JwtProviderOAuthClientId = $v2JwtProviderOAuthClientId;
     }
 
     public function verifySignature(JsonWebToken $token): void
@@ -48,10 +48,10 @@ final class UitIdV2JwtValidator implements JwtValidator
     private function validateIdTokenFromJwtProvider(JsonWebToken $jwt): void
     {
         // Only accept id tokens if they were provided by the JWT provider v2.
-        // If an id token from another Auth0 client is used, ask to use the related access token instead.
+        // If an id token from another 0Auth client is used, ask to use the related access token instead.
         // Don't mention the JWT provider, we don't want to encourage any new usage of it, only support its tokens for
         // backward compatibility in existing integrations (who won't see this error then).
-        if (!$jwt->hasAudience($this->v2JwtProviderAuth0ClientId)) {
+        if (!$jwt->hasAudience($this->v2JwtProviderOAuthClientId)) {
             throw ApiProblem::unauthorized('The given token is an id token. Please use an access token instead.');
         }
     }
