@@ -39,14 +39,14 @@ final class GetHistoryRequestHandler implements RequestHandlerInterface
         $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
 
-//        if (!$this->currentUserIsGodUser) {
-//            throw ApiProblem::forbidden(
-//                sprintf(
-//                    'Current user/client does not have enough permissions to access %s history.',
-//                    $offerType->sameAs(OfferType::event()) ? 'event' : 'place'
-//                )
-//            );
-//        }
+        if (!$this->currentUserIsGodUser) {
+            throw ApiProblem::forbidden(
+                sprintf(
+                    'Current user/client does not have enough permissions to access %s history.',
+                    $offerType->sameAs(OfferType::event()) ? 'event' : 'place'
+                )
+            );
+        }
 
         try {
             $historyDocument = $this->getDocumentRepository($offerType)->fetch($offerId);
