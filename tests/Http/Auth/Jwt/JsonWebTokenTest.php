@@ -209,7 +209,7 @@ class JsonWebTokenTest extends TestCase
             ]
         );
 
-        $auth0Token = JsonWebTokenFactory::createWithClaims(
+        $OAuth = JsonWebTokenFactory::createWithClaims(
             [
                 'https://publiq.be/email' => 'mock@example.com',
             ]
@@ -229,7 +229,7 @@ class JsonWebTokenTest extends TestCase
 
         $this->assertEquals(
             new EmailAddress('mock@example.com'),
-            $auth0Token->getEmailAddress()
+            $OAuth->getEmailAddress()
         );
 
         $this->assertNull($tokenWithoutEmail->getEmailAddress());

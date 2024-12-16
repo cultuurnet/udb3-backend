@@ -57,6 +57,22 @@ final class GetHistoryRequestHandler implements RequestHandlerInterface
         $decoded = $historyDocument->getAssocBody();
         $history = array_reverse(array_values($decoded));
 
+        // Temportary fix until replay is done to make sure older history logs have the correct keys
+        $history = array_map(
+            function (array $log): array {
+                if (!isset($log['clientId']) && isset($log['auth0ClientId'])) {
+                    $log['clientId'] = $log['auth0ClientId'];
+                }
+
+                if (!isset($log['clientName']) && isset($log['auth0ClientName'])) {
+                    $log['clientName'] = $log['auth0ClientName'];
+                }
+
+                return $log;
+            },
+            $history
+        );
+
         return new JsonResponse($history, 200);
     }
 

@@ -168,7 +168,7 @@ class OfferMetadataProjectorTest extends TestCase
                 ),
                 new OfferMetadata(self::OFFER_ID, 'uitdatabank-ui'),
             ],
-            'with auth0 client id' => [
+            'with oauth client id' => [
                 new Metadata(
                     [
                         'auth_api_client_id' => 'auth0_client_id',

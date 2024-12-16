@@ -80,7 +80,7 @@ final class GetCurrentUserRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_user_identity_of_current_user_from_auth0_if_not_in_token(): void
+    public function it_can_get_user_identity_of_current_user_from_oauth_if_not_in_token(): void
     {
         $userIdentity = new UserIdentityDetails(
             'current_user_id',

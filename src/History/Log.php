@@ -21,9 +21,9 @@ class Log implements JsonSerializable
 
     private ?string $apiKey;
 
-    private ?string $auth0ClientId;
+    private ?string $clientId;
 
-    private ?string $auth0ClientName;
+    private ?string $clientName;
 
     private ?string $api;
 
@@ -35,8 +35,8 @@ class Log implements JsonSerializable
         string $description,
         string $author = null,
         string $apiKey = null,
-        string $auth0ClientId = null,
-        string $auth0ClientName = null,
+        string $clientId = null,
+        string $clientName = null,
         string $api = null,
         string $consumerName = null
     ) {
@@ -45,8 +45,8 @@ class Log implements JsonSerializable
         $this->description = $description;
         $this->author = $author;
         $this->apiKey = $apiKey;
-        $this->auth0ClientId = $auth0ClientId;
-        $this->auth0ClientName = $auth0ClientName;
+        $this->clientId = $clientId;
+        $this->clientName = $clientName;
         $this->api = $api;
         $this->consumerName = $consumerName;
     }
@@ -92,12 +92,14 @@ class Log implements JsonSerializable
             $log['apiKey'] = $this->apiKey;
         }
 
-        if ($this->auth0ClientId) {
-            $log['auth0ClientId'] = $this->auth0ClientId;
+        if ($this->clientId) {
+            $log['clientId'] = $this->clientId;
+            $log['auth0ClientId'] = $this->clientId;
         }
 
-        if ($this->auth0ClientName) {
-            $log['auth0ClientName'] = $this->auth0ClientName;
+        if ($this->clientName) {
+            $log['clientName'] = $this->clientName;
+            $log['auth0ClientName'] = $this->clientName;
         }
 
         if ($this->api) {
@@ -130,8 +132,8 @@ class Log implements JsonSerializable
 
         $author = $metadata['user_id'] ?? null;
         $apiKey = $metadata['auth_api_key'] ?? null;
-        $auth0ClientId = $metadata['auth_api_client_id'] ?? null;
-        $auth0ClientName = $metadata['auth_api_client_name'] ?? null;
+        $clientId = $metadata['auth_api_client_id'] ?? null;
+        $clientName = $metadata['auth_api_client_name'] ?? null;
         $api = $metadata['api'] ?? null;
         $consumer = $metadata['consumer']['name'] ?? null;
 
@@ -141,6 +143,6 @@ class Log implements JsonSerializable
             $apiKey = null;
         }
 
-        return new Log($id, $date, $description, $author, $apiKey, $auth0ClientId, $auth0ClientName, $api, $consumer);
+        return new Log($id, $date, $description, $author, $apiKey, $clientId, $clientName, $api, $consumer);
     }
 }
