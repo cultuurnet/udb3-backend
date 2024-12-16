@@ -39,14 +39,14 @@ final class GetHistoryRequestHandler implements RequestHandlerInterface
         $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
 
-        if (!$this->currentUserIsGodUser) {
-            throw ApiProblem::forbidden(
-                sprintf(
-                    'Current user/client does not have enough permissions to access %s history.',
-                    $offerType->sameAs(OfferType::event()) ? 'event' : 'place'
-                )
-            );
-        }
+//        if (!$this->currentUserIsGodUser) {
+//            throw ApiProblem::forbidden(
+//                sprintf(
+//                    'Current user/client does not have enough permissions to access %s history.',
+//                    $offerType->sameAs(OfferType::event()) ? 'event' : 'place'
+//                )
+//            );
+//        }
 
         try {
             $historyDocument = $this->getDocumentRepository($offerType)->fetch($offerId);
@@ -56,6 +56,22 @@ final class GetHistoryRequestHandler implements RequestHandlerInterface
 
         $decoded = $historyDocument->getAssocBody();
         $history = array_reverse(array_values($decoded));
+
+        // Temportary fix until replay is done to make sure older history logs have the correct keys
+        $history = array_map(
+            function (array $log): array {
+                if (!isset($log['clientId']) && isset($log['auth0ClientId'])) {
+                    $log['clientId'] = $log['auth0ClientId'];
+                }
+
+                if (!isset($log['clientName']) && isset($log['auth0ClientName'])) {
+                    $log['clientName'] = $log['auth0ClientName'];
+                }
+
+                return $log;
+            },
+            $history
+        );
 
         return new JsonResponse($history, 200);
     }
