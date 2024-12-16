@@ -94,10 +94,12 @@ class Log implements JsonSerializable
 
         if ($this->clientId) {
             $log['clientId'] = $this->clientId;
+            $log['auth0ClientId'] = $this->clientId;
         }
 
         if ($this->clientName) {
             $log['clientName'] = $this->clientName;
+            $log['auth0ClientName'] = $this->clientName;
         }
 
         if ($this->api) {

@@ -252,11 +252,17 @@ class HistoryProjectorTest extends TestCase
             ],
             'with oauth client id' => [
                 new Metadata(['auth_api_client_id' => 'my-oauth-client-id']),
-                ['clientId' => 'my-oauth-client-id'],
+                [
+                    'clientId' => 'my-oauth-client-id',
+                    'auth0ClientId' => 'my-oauth-client-id',
+                ],
             ],
             'with oauth client name' => [
                 new Metadata(['auth_api_client_name' => 'My OAuth Client']),
-                ['clientName' => 'My OAuth Client'],
+                [
+                    'clientName' => 'My OAuth Client',
+                    'auth0ClientName' => 'My OAuth Client',
+                ],
             ],
         ];
     }
