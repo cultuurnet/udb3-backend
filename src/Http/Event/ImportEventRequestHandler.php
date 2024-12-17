@@ -279,7 +279,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         // Update the organizer only at the end, because it can trigger UiTPAS to send messages to another worker
         // which might cause race conditions if we're still dispatching other commands here as well.
-        $organizerId = $eventAdapter->getOrganizerId();
+        $organizerId = $event->getOrganizerReference() !== null ? $event->getOrganizerReference()->getOrganizerId()->toString() : null;
         if ($organizerId) {
             try {
                 $this->guardOrganizer($organizerId, $this->organizerDocumentRepository);

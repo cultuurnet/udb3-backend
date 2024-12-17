@@ -253,7 +253,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new DeleteOffer($placeId);
         }
 
-        $organizerId = $placeAdapter->getOrganizerId();
+        $organizerId = $place->getOrganizerReference() !== null ? $place->getOrganizerReference()->getOrganizerId()->toString() : null;
         if ($organizerId) {
             $this->guardOrganizer($organizerId, $this->organizerDocumentRepository);
             $commands[] = new UpdateOrganizer($placeId, $organizerId);

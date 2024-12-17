@@ -11,8 +11,6 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
  */
 interface LegacyOffer
 {
-    public function getOrganizerId(): ?string;
-
     /**
      * @return Title[]
      *   Language code as key, and Title as value.

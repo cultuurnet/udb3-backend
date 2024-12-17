@@ -4,45 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Offer;
 
-use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
-use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
-use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
-use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
-use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
-use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
-use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
-use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
-use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
-use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
-use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
-use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
-use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
-use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
-use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
-use Money\Currency;
-use Money\Money;
 use PHPUnit\Framework\TestCase;
 
 class Udb3ModelToLegacyOfferAdapterTest extends TestCase
@@ -52,14 +27,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
      */
     private $offer;
 
-    /**
-     * @var ImmutableOffer
-     */
-    private $completeOffer;
-
     private Udb3ModelToLegacyOfferAdapter $adapter;
-
-    private Udb3ModelToLegacyOfferAdapter $completeAdapter;
 
     public function setUp(): void
     {
@@ -87,97 +55,7 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
             )
         );
 
-        $this->completeOffer = $this->offer
-            ->withDescription(
-                (new TranslatedDescription(
-                    new Language('nl'),
-                    new Description('Voorbeeld beschrijving')
-                ))->withTranslation(new Language('en'), new Description('Example description'))
-            )
-            ->withOrganizerReference(
-                OrganizerReference::createWithOrganizerId(new Uuid('cc4fa0d1-f86c-42cd-a9c6-995a660ba948'))
-            )
-            ->withAgeRange(
-                new AgeRange(new Age(8), new Age(12))
-            )
-            ->withPriceInfo(
-                new PriceInfo(
-                    new Tariff(
-                        new TranslatedTariffName(
-                            new Language('nl'),
-                            new TariffName('Basistarief')
-                        ),
-                        new Money(1500, new Currency('EUR'))
-                    ),
-                    new Tariffs(
-                        new Tariff(
-                            new TranslatedTariffName(
-                                new Language('nl'),
-                                new TariffName('Senioren')
-                            ),
-                            new Money(1050, new Currency('EUR'))
-                        )
-                    )
-                )
-            )
-            ->withBookingInfo(
-                new BookingInfo(
-                    new WebsiteLink(
-                        new Url('https://www.publiq.be'),
-                        new TranslatedWebsiteLabel(
-                            new Language('nl'),
-                            new WebsiteLabel('Publiq')
-                        )
-                    ),
-                    new TelephoneNumber('044/444444'),
-                    new EmailAddress('info@publiq.be'),
-                    new BookingAvailability(
-                        DateTimeFactory::fromAtom('2018-01-01T10:00:00+01:00'),
-                        DateTimeFactory::fromAtom('2018-01-10T10:00:00+01:00')
-                    )
-                )
-            )
-            ->withContactPoint(
-                new ContactPoint(
-                    new TelephoneNumbers(
-                        new TelephoneNumber('044/444444'),
-                        new TelephoneNumber('055/555555')
-                    ),
-                    new EmailAddresses(
-                        new EmailAddress('foo@publiq.be'),
-                        new EmailAddress('bar@publiq.be')
-                    ),
-                    new Urls(
-                        new Url('https://www.publiq.be'),
-                        new Url('https://www.uitdatabank.be')
-                    )
-                )
-            )
-            ->withAvailableFrom(
-                DateTimeFactory::fromAtom('2040-01-01T10:00:00+01:00')
-            );
-
         $this->adapter = new Udb3ModelToLegacyOfferAdapter($this->offer);
-        $this->completeAdapter = new Udb3ModelToLegacyOfferAdapter($this->completeOffer);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_no_organizer_id_by_default(): void
-    {
-        $actual = $this->adapter->getOrganizerId();
-        $this->assertNull($actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_an_organizer_id_if_there_is_one(): void
-    {
-        $expected = 'cc4fa0d1-f86c-42cd-a9c6-995a660ba948';
-        $actual = $this->completeAdapter->getOrganizerId();
-        $this->assertEquals($expected, $actual);
     }
 
     /**

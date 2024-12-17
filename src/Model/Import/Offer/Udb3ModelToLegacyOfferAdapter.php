@@ -18,17 +18,6 @@ class Udb3ModelToLegacyOfferAdapter implements LegacyOffer
         $this->offer = $offer;
     }
 
-    public function getOrganizerId(): ?string
-    {
-        $reference = $this->offer->getOrganizerReference();
-
-        if ($reference) {
-            return $reference->getOrganizerId()->toString();
-        }
-
-        return null;
-    }
-
     public function getTitleTranslations(): array
     {
         $titles = [];
