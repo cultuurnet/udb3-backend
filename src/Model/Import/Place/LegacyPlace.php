@@ -12,8 +12,6 @@ use CultuurNet\UDB3\Model\Import\Offer\LegacyOffer;
  */
 interface LegacyPlace extends LegacyOffer
 {
-    public function getAddress(): Address;
-
     /**
      * @return Address[]
      *  Language code as key, and Address as value.

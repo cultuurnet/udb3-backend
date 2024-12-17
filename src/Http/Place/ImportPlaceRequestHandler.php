@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\GuardOrganizer;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
@@ -21,7 +22,6 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
-use CultuurNet\UDB3\Model\Import\Place\Udb3ModelToLegacyPlaceAdapter;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
@@ -133,11 +133,9 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             new DenormalizingRequestBodyParser($this->placeDenormalizer, Place::class)
         )->parse($request)->getParsedBody();
 
-        $placeAdapter = new Udb3ModelToLegacyPlaceAdapter($place);
-
         $title = $place->getTitle()->getOriginalValue();
         $type = $place->getTerms()->getEventType();
-        $address = $placeAdapter->getAddress();
+        $address = $place->getAddress()->getTranslation($place->getMainLanguage());
         $calendar = $place->getCalendar();
         $publishDate = $place->getAvailableFrom() !== null ? $place->getAvailableFrom() : new DateTimeImmutable();
 
@@ -159,7 +157,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
                 $place->getMainLanguage(),
                 $title,
                 $type,
-                $address,
+                Address::fromUdb3ModelAddress($address),
                 $calendar,
                 $publishDate
             );

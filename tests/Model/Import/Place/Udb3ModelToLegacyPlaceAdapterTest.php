@@ -87,21 +87,6 @@ class Udb3ModelToLegacyPlaceAdapterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_address(): void
-    {
-        $expected = new \CultuurNet\UDB3\Address\Address(
-            new \CultuurNet\UDB3\Address\Street('Henegouwenkaai 41-43'),
-            new \CultuurNet\UDB3\Address\PostalCode('1080'),
-            new \CultuurNet\UDB3\Address\Locality('Brussel'),
-            new CountryCode('BE')
-        );
-        $actual = $this->adapter->getAddress();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
     public function it_should_return_address_translations(): void
     {
         $expected = [

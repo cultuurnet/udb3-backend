@@ -20,17 +20,6 @@ class Udb3ModelToLegacyPlaceAdapter extends Udb3ModelToLegacyOfferAdapter implem
         $this->place = $place;
     }
 
-    public function getAddress(): Address
-    {
-        $address = $this->place->getAddress();
-
-        return Address::fromUdb3ModelAddress(
-            $address->getTranslation(
-                $address->getOriginalLanguage()
-            )
-        );
-    }
-
     public function getAddressTranslations(): array
     {
         $translatedAddress = $this->place->getAddress();
