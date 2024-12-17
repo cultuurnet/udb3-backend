@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\RDF;
 
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\Formatter\FullAddressFormatter;
-use CultuurNet\UDB3\Address\Locality as LegacyLocality;
 use CultuurNet\UDB3\Address\Parser\AddressParser;
 use CultuurNet\UDB3\Address\Parser\ParsedAddress;
-use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
-use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -77,10 +77,10 @@ class PlaceJsonToTurtleConverterTest extends TestCase
         $this->expectedParsedAddresses = [];
 
         $this->expectParsedAddress(
-            new LegacyAddress(
-                new LegacyStreet('Martelarenlaan 1'),
-                new LegacyPostalCode('3000'),
-                new LegacyLocality('Leuven'),
+            new Address(
+                new Street('Martelarenlaan 1'),
+                new PostalCode('3000'),
+                new Locality('Leuven'),
                 new CountryCode('BE')
             ),
             new ParsedAddress(
@@ -209,10 +209,10 @@ class PlaceJsonToTurtleConverterTest extends TestCase
         ]);
 
         $this->expectParsedAddress(
-            new LegacyAddress(
-                new LegacyStreet('Martelarenlaan 1'),
-                new LegacyPostalCode('3000'),
-                new LegacyLocality('Louvain'),
+            new Address(
+                new Street('Martelarenlaan 1'),
+                new PostalCode('3000'),
+                new Locality('Louvain'),
                 new CountryCode('BE')
             ),
             new ParsedAddress(
@@ -322,7 +322,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
         $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/place-with-labels.ttl'), $turtle);
     }
 
-    private function expectParsedAddress(LegacyAddress $address, ParsedAddress $parsedAddress): void
+    private function expectParsedAddress(Address $address, ParsedAddress $parsedAddress): void
     {
         $formatted = (new FullAddressFormatter())->format($address);
         $this->expectedParsedAddresses[$formatted] = $parsedAddress;
