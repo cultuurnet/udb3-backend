@@ -15,7 +15,7 @@ class PrivacyTest extends TestCase
     {
         $privacy = Privacy::PRIVACY_PUBLIC();
 
-        $this->assertEquals($privacy->toString(), Privacy::PRIVACY_PUBLIC);
+        $this->assertEquals($privacy->toString(), 'public');
     }
 
     /**
@@ -25,7 +25,7 @@ class PrivacyTest extends TestCase
     {
         $privacy = Privacy::PRIVACY_PRIVATE();
 
-        $this->assertEquals($privacy->toString(), Privacy::PRIVACY_PRIVATE);
+        $this->assertEquals($privacy->toString(), 'private');
     }
 
     /**
@@ -37,8 +37,8 @@ class PrivacyTest extends TestCase
 
         $this->assertEquals(
             [
-                Privacy::PRIVACY_PUBLIC,
-                Privacy::PRIVACY_PRIVATE,
+                'public',
+                'private',
             ],
             $options
         );
