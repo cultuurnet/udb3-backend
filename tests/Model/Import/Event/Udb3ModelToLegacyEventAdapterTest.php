@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Event;
 
-use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
-use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -25,8 +23,6 @@ use PHPUnit\Framework\TestCase;
 class Udb3ModelToLegacyEventAdapterTest extends TestCase
 {
     private Udb3ModelToLegacyEventAdapter $adapter;
-
-    private Udb3ModelToLegacyEventAdapter $completeAdapter;
 
     public function setUp(): void
     {
@@ -54,16 +50,7 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
             )
         );
 
-        $completeEvent = $event
-            ->withAudienceType(
-                AudienceType::members()
-            )
-            ->withAvailableFrom(
-                DateTimeFactory::fromAtom('2018-01-01T10:00:00+01:00')
-            );
-
         $this->adapter = new Udb3ModelToLegacyEventAdapter($event);
-        $this->completeAdapter = new Udb3ModelToLegacyEventAdapter($completeEvent);
     }
 
     /**
@@ -73,26 +60,6 @@ class Udb3ModelToLegacyEventAdapterTest extends TestCase
     {
         $expected = new LocationId('6ba87a6b-efea-4467-9e87-458d145384d9');
         $actual = $this->adapter->getLocation();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_audience_type_everyone_by_default(): void
-    {
-        $expected = AudienceType::everyone();
-        $actual = $this->adapter->getAudienceType();
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_the_audience_type_that_was_set(): void
-    {
-        $expected = AudienceType::members();
-        $actual = $this->completeAdapter->getAudienceType();
         $this->assertEquals($expected, $actual);
     }
 }
