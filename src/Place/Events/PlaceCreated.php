@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Events;
 
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\EventSourcing\ConvertsToGranularEvents;
 use CultuurNet\UDB3\EventSourcing\MainLanguageDefined;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarSerializer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Place\PlaceEvent;
@@ -97,7 +99,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
             'main_language' => $this->mainLanguage->getCode(),
             'title' => $this->getTitle(),
             'event_type' => (new CategoryNormalizer())->normalize($this->getEventType()),
-            'address' => $this->getAddress()->serialize(),
+            'address' => (new AddressNormalizer())->normalize($this->getAddress()),
             'calendar' => (new CalendarSerializer($this->getCalendar()))->serialize(),
             'publication_date' => $publicationDate,
         ];
@@ -114,7 +116,7 @@ final class PlaceCreated extends PlaceEvent implements ConvertsToGranularEvents,
             new Language($data['main_language']),
             $data['title'],
             (new CategoryDenormalizer(CategoryDomain::eventType()))->denormalize($data['event_type'], Category::class),
-            Address::deserialize($data['address']),
+            (new AddressDenormalizer())->denormalize($data['address'], Address::class),
             CalendarSerializer::deserialize($data['calendar']),
             $publicationDate
         );

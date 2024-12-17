@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address\Formatter;
 
-use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 
 final class FullAddressFormatter implements AddressFormatter
 {
@@ -16,7 +16,7 @@ final class FullAddressFormatter implements AddressFormatter
             self::LINE_SEPARATOR,
             array_filter(
                 [
-                    $address->getStreetAddress()->toString(),
+                    $address->getStreet()->toString(),
                     $address->getPostalCode()->toString() . ' ' . $address->getLocality()->toString(),
                     $address->getCountryCode()->toString(),
                 ]

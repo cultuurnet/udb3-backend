@@ -8,7 +8,6 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\GuardOrganizer;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
@@ -157,7 +156,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
                 $place->getMainLanguage(),
                 $title,
                 $type,
-                Address::fromUdb3ModelAddress($address),
+                $address,
                 $calendar,
                 $publishDate
             );

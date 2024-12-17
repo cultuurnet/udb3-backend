@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Calendar\CalendarFactory;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -80,7 +79,7 @@ class Place extends Offer
     private string $placeId;
 
     /**
-     * @var LegacyAddress[]
+     * @var Address[]
      */
     private array $addresses;
 
@@ -113,7 +112,7 @@ class Place extends Offer
         Language $mainLanguage,
         Title $title,
         Category $eventType,
-        LegacyAddress $address,
+        Address $address,
         Calendar $calendar,
         DateTimeImmutable $publicationDate = null
     ): self {
@@ -147,7 +146,7 @@ class Place extends Offer
     public function updateMajorInfo(
         Title $title,
         Category $eventType,
-        LegacyAddress $address,
+        Address $address,
         Calendar $calendar
     ): void {
         $this->apply(
@@ -169,15 +168,13 @@ class Place extends Offer
 
     public function updateAddress(Address $address, Language $language): void
     {
-        $legacyAddress = LegacyAddress::fromUdb3ModelAddress($address);
-
         if ($language->getCode() === $this->mainLanguage->getCode()) {
-            $event = new AddressUpdated($this->placeId, $legacyAddress);
+            $event = new AddressUpdated($this->placeId, $address);
         } else {
-            $event = new AddressTranslated($this->placeId, $legacyAddress, $language);
+            $event = new AddressTranslated($this->placeId, $address, $language);
         }
 
-        if ($this->allowAddressUpdate($legacyAddress, $language)) {
+        if ($this->allowAddressUpdate($address, $language)) {
             $this->apply($event);
         }
     }
@@ -200,7 +197,7 @@ class Place extends Offer
         return $this->duplicates;
     }
 
-    private function allowAddressUpdate(LegacyAddress $address, Language $language): bool
+    private function allowAddressUpdate(Address $address, Language $language): bool
     {
         // No current address in the provided language so update with new address is allowed.
         if (!isset($this->addresses[$language->getCode()])) {

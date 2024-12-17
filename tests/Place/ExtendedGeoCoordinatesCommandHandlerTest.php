@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Place;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
@@ -63,7 +62,7 @@ class ExtendedGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTes
             new Language('en'),
             'Some place',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
-            LegacyAddress::fromUdb3ModelAddress($address),
+            $address,
             new PermanentCalendar(new OpeningHours())
         );
 

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\RDF\Editor;
 
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\Formatter\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Parser\AddressParser;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
@@ -48,7 +47,7 @@ final class AddressEditor
             }
 
             $addressFormatter = new FullAddressFormatter();
-            $formattedAddress = $addressFormatter->format(LegacyAddress::fromUdb3ModelAddress($address));
+            $formattedAddress = $addressFormatter->format($address);
             $parsedAddress = $this->addressParser->parse($formattedAddress);
 
             $houseNumber = $parsedAddress ? $parsedAddress->getHouseNumber() : null;

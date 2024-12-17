@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Deserializer\Address;
 
 use CultuurNet\UDB3\Deserializer\DataValidationException;
-use CultuurNet\UDB3\Address\Address;
-use CultuurNet\UDB3\Address\Locality;
-use CultuurNet\UDB3\Address\PostalCode;
-use CultuurNet\UDB3\Address\Street;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use PHPUnit\Framework\TestCase;
 
 class AddressJSONDeserializerTest extends TestCase
