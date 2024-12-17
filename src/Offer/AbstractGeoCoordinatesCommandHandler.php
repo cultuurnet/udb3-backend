@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\Repository\Repository;
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
 use CultuurNet\UDB3\Address\Formatter\AddressFormatter;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Geocoding\GeocodingService;
@@ -57,16 +56,12 @@ abstract class AbstractGeoCoordinatesCommandHandler extends Udb3CommandHandler i
             $this->fetchOfferName($offerId)
         );
 
-        $exactAddress = $this->defaultAddressFormatter->format(
-            LegacyAddress::fromUdb3ModelAddress($updateGeoCoordinates->getAddress())
-        );
+        $exactAddress = $this->defaultAddressFormatter->format($updateGeoCoordinates->getAddress());
 
         $coordinates = $this->geocodingService->getCoordinates($exactAddress, $locationName);
 
         if ($coordinates === null) {
-            $fallbackAddress = $this->fallbackAddressFormatter->format(
-                LegacyAddress::fromUdb3ModelAddress($updateGeoCoordinates->getAddress())
-            );
+            $fallbackAddress = $this->fallbackAddressFormatter->format($updateGeoCoordinates->getAddress());
 
             $this->logger->debug(
                 sprintf(
