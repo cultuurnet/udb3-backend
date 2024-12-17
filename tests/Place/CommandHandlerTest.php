@@ -8,10 +8,6 @@ use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use Broadway\Repository\Repository;
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
-use CultuurNet\UDB3\Address\Locality as LegacyLocality;
-use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
-use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -46,10 +42,10 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
         $id = '1';
         $title = new Title('foo');
         $eventType = new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
-        $address = new LegacyAddress(
-            new LegacyStreet('Kerkstraat 69'),
-            new LegacyPostalCode('3000'),
-            new LegacyLocality('Leuven'),
+        $address = new Address(
+            new Street('Kerkstraat 69'),
+            new PostalCode('3000'),
+            new Locality('Leuven'),
             new CountryCode('BE')
         );
         $calendar = new PermanentCalendar(new OpeningHours());
@@ -81,7 +77,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new UpdateAddress($id, $updatedAddress, new Language('nl'))
             )
-            ->then([new AddressUpdated($id, LegacyAddress::fromUdb3ModelAddress($updatedAddress))]);
+            ->then([new AddressUpdated($id, $updatedAddress)]);
     }
 
     /**
@@ -100,7 +96,7 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             ->when(
                 new UpdateAddress($id, $updatedAddress, new Language('fr'))
             )
-            ->then([new AddressTranslated($id, LegacyAddress::fromUdb3ModelAddress($updatedAddress), new Language('fr'))]);
+            ->then([new AddressTranslated($id, $updatedAddress, new Language('fr'))]);
     }
 
     public function updateAddressDataProvider(): array
@@ -144,10 +140,10 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             new Language('nl'),
             'some representative title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
-            new LegacyAddress(
-                new LegacyStreet('Kerkstraat 69'),
-                new LegacyPostalCode('3000'),
-                new LegacyLocality('Leuven'),
+            new Address(
+                new Street('Kerkstraat 69'),
+                new PostalCode('3000'),
+                new Locality('Leuven'),
                 new CountryCode('BE')
             ),
             new PermanentCalendar(new OpeningHours())
