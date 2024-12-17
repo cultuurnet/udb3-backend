@@ -34,7 +34,7 @@ final class LabelTest extends AggregateRootScenarioTestCase
 
         $this->uuid = new Uuid('b36ec769-2ec1-4a13-96cd-27d7a1f1e963');
         $this->name = 'labelName';
-        $this->visibility = Visibility::INVISIBLE();
+        $this->visibility = Visibility::invisible();
         $this->privacy = Privacy::private();
 
         $this->created = new Created(
@@ -175,7 +175,7 @@ final class LabelTest extends AggregateRootScenarioTestCase
                 fn () => Label::create(
                     $uuid,
                     'labelName#$',
-                    Visibility::VISIBLE(),
+                    Visibility::visible(),
                     Privacy::public()
                 )
             )
@@ -183,7 +183,7 @@ final class LabelTest extends AggregateRootScenarioTestCase
                 new Created(
                     $uuid,
                     'labelName#$',
-                    Visibility::VISIBLE(),
+                    Visibility::visible(),
                     Privacy::public()
                 ),
                 new Excluded($uuid),

@@ -19,12 +19,12 @@ class Visibility extends Enum
         ];
     }
 
-    public static function VISIBLE(): Visibility
+    public static function visible(): Visibility
     {
         return new Visibility(self::VISIBLE);
     }
 
-    public static function INVISIBLE(): Visibility
+    public static function invisible(): Visibility
     {
         return new Visibility(self::INVISIBLE);
     }

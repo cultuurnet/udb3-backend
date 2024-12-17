@@ -50,11 +50,11 @@ class CdbXMLToJsonLDLabelImporterTest extends TestCase
                     switch ($labelName) {
                         case 'visible_in_xml_and_visible_in_udb3':
                         case 'invisible_in_xml_and_visible_in_udb3':
-                            return new Entity($uuid, $labelName, Visibility::VISIBLE(), $privacy);
+                            return new Entity($uuid, $labelName, Visibility::visible(), $privacy);
 
                         case 'visible_in_xml_and_invisible_in_udb3':
                         case 'invisible_in_xml_and_invisible_in_udb3':
-                            return new Entity($uuid, $labelName, Visibility::INVISIBLE(), $privacy);
+                            return new Entity($uuid, $labelName, Visibility::invisible(), $privacy);
 
                         default:
                             return null;

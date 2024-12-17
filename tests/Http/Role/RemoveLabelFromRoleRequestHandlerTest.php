@@ -155,7 +155,7 @@ final class RemoveLabelFromRoleRequestHandlerTest extends TestCase
         $label = new Entity(
             $labelId,
             $name,
-            Visibility::VISIBLE(),
+            Visibility::visible(),
             Privacy::public()
         );
 

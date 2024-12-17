@@ -264,7 +264,7 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
         $name = $row[ColumnNames::NAME_COLUMN];
 
         $visibility = $row[ColumnNames::VISIBLE_COLUMN]
-            ? Visibility::VISIBLE() : Visibility::INVISIBLE();
+            ? Visibility::visible() : Visibility::invisible();
 
         $privacy = $row[ColumnNames::PRIVATE_COLUMN]
             ? Privacy::private() : Privacy::public();

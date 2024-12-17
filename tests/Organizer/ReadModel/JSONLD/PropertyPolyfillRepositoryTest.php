@@ -140,7 +140,7 @@ final class PropertyPolyfillRepositoryTest extends TestCase
                 new Entity(
                     new Uuid('7ba9e0e6-f1b5-4931-a00a-cd660c990e57'),
                     'UiTPAS Mechelen',
-                    Visibility::VISIBLE(),
+                    Visibility::visible(),
                     Privacy::public()
                 )
             );

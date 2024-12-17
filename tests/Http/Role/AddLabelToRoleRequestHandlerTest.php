@@ -155,7 +155,7 @@ final class AddLabelToRoleRequestHandlerTest extends TestCase
         $label = new Entity(
             $labelId,
             $name,
-            Visibility::VISIBLE(),
+            Visibility::visible(),
             Privacy::public()
         );
 

@@ -32,7 +32,7 @@ class EntityTest extends TestCase
 
         $this->name = 'labelName';
 
-        $this->visibility = Visibility::INVISIBLE();
+        $this->visibility = Visibility::invisible();
 
         $this->privacy = Privacy::private();
 

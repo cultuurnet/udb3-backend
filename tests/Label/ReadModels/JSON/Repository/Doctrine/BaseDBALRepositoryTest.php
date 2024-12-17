@@ -50,7 +50,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
         return [
             $entity->getUuid()->toString(),
             $entity->getName(),
-            $entity->getVisibility()->sameAs(Visibility::VISIBLE()),
+            $entity->getVisibility()->sameAs(Visibility::visible()),
             $entity->getPrivacy()->sameAs(Privacy::private()),
             $entity->isExcluded(),
         ];
@@ -72,7 +72,7 @@ abstract class BaseDBALRepositoryTest extends TestCase
             new Uuid($row[ColumnNames::UUID_COLUMN]),
             $row[ColumnNames::NAME_COLUMN],
             $row[ColumnNames::VISIBLE_COLUMN]
-                ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
+                ? Visibility::visible() : Visibility::invisible(),
             $row[ColumnNames::PRIVATE_COLUMN]
                 ? Privacy::private() : Privacy::public(),
             (bool) $row[ColumnNames::EXCLUDED_COLUMN]

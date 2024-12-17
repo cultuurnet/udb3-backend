@@ -30,7 +30,7 @@ final class DBALWriteRepository extends AbstractDBALRepository implements WriteR
             ->setParameters([
                 $uuid->toString(),
                 $name,
-                $visibility->sameAs(Visibility::VISIBLE()) ? 1 : 0,
+                $visibility->sameAs(Visibility::visible()) ? 1 : 0,
                 $privacy->sameAs(Privacy::private()) ? 1 : 0,
                 0,
             ]);

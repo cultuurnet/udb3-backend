@@ -28,7 +28,7 @@ class CreateTest extends TestCase
 
         $this->name = new LabelName('labelName');
 
-        $this->visibility = Visibility::VISIBLE();
+        $this->visibility = Visibility::visible();
 
         $this->privacy = Privacy::public();
 

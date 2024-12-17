@@ -35,13 +35,13 @@ final class GodUserReadRepositoryDecoratorTest extends TestCase
             'c7a73397-a210-4126-8fa0-a9f822c2a356' => new Entity(
                 new Uuid('c7a73397-a210-4126-8fa0-a9f822c2a356'),
                 'foo',
-                Visibility::VISIBLE(),
+                Visibility::visible(),
                 Privacy::private()
             ),
             'fa285cf6-314c-42cc-99ee-94030127954d' => new Entity(
                 new Uuid('fa285cf6-314c-42cc-99ee-94030127954d'),
                 'bar',
-                Visibility::VISIBLE(),
+                Visibility::visible(),
                 Privacy::public()
             ),
         ];

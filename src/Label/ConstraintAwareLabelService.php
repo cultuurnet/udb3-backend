@@ -32,7 +32,7 @@ class ConstraintAwareLabelService implements LabelServiceInterface
             $labelAggregate = Label::create(
                 new Uuid($this->uuidGenerator->generate()),
                 $labelName->toString(),
-                $visible ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
+                $visible ? Visibility::visible() : Visibility::invisible(),
                 Privacy::public()
             );
 

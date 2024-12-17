@@ -27,7 +27,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
         $this->created = $this->createDomainMessage(new Created(
             new Uuid('23ad437f-b6f0-4fc4-95c0-0c6faf13050f'),
             $this->name,
-            Visibility::VISIBLE(),
+            Visibility::visible(),
             Privacy::private()
         ));
 

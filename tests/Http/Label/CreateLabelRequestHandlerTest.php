@@ -59,7 +59,7 @@ final class CreateLabelRequestHandlerTest extends TestCase
                 new Create(
                     new Uuid('9714108c-dddc-4105-a736-2e32632999f4'),
                     new LabelName('test-label-name'),
-                    Visibility::INVISIBLE(),
+                    Visibility::invisible(),
                     Privacy::private()
                 ),
             ],
