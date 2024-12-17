@@ -60,7 +60,7 @@ final class CreateLabelRequestHandlerTest extends TestCase
                     new Uuid('9714108c-dddc-4105-a736-2e32632999f4'),
                     new LabelName('test-label-name'),
                     Visibility::INVISIBLE(),
-                    Privacy::PRIVACY_PRIVATE()
+                    Privacy::private()
                 ),
             ],
             $this->commandBus->getRecordedCommands()

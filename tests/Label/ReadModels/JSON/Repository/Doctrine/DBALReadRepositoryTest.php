@@ -50,42 +50,42 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
             new Uuid('7f328086-0e56-4c7d-a2e7-38ac5eaa0347'),
             'bibliotheekweek',
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->entityByName = new Entity(
             new Uuid('25ea383c-b14d-4776-989c-24e0ac044638'),
             'boswandeling',
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->entityPrivateAccess = new Entity(
             new Uuid('6639d6d2-ac7d-4995-91e3-7660c74cf1eb'),
             'wandeltocht',
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PRIVATE()
+            Privacy::private()
         );
 
         $this->entityPrivateNoAccess = new Entity(
             new Uuid('b14dd3ea-6962-4565-91b6-d0e8d929e685'),
             'stadswandeling',
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PRIVATE()
+            Privacy::private()
         );
 
         $this->similarEntity = new Entity(
             new Uuid('22ce5549-4546-4a08-b036-a2c07ca4929c'),
             'wandel',
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->excluded = new Entity(
             new Uuid('67dcd2a0-5301-4747-a956-3741420efd52'),
             'excluded',
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             true
         );
 
@@ -100,7 +100,7 @@ final class DBALReadRepositoryTest extends BaseDBALRepositoryTest
                 new Uuid('15c8c391-724d-4878-8a06-86163ed5412' . $i),
                 'label' . $i,
                 Visibility::VISIBLE(),
-                Privacy::PRIVACY_PUBLIC()
+                Privacy::public()
             );
             $this->saveEntity($entity);
         }

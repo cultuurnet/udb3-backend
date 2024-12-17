@@ -93,7 +93,7 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                         Uuid::uuid4(),
                         $labelName,
                         $labelName !== 'bar' ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
-                        Privacy::PRIVACY_PUBLIC()
+                        Privacy::public()
                     );
                 }
             );

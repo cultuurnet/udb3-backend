@@ -13,7 +13,7 @@ class PrivacyTest extends TestCase
      */
     public function it_has_a_public_option(): void
     {
-        $privacy = Privacy::PRIVACY_PUBLIC();
+        $privacy = Privacy::public();
 
         $this->assertEquals($privacy->toString(), 'public');
     }
@@ -23,7 +23,7 @@ class PrivacyTest extends TestCase
      */
     public function it_has_a_private_option(): void
     {
-        $privacy = Privacy::PRIVACY_PRIVATE();
+        $privacy = Privacy::private();
 
         $this->assertEquals($privacy->toString(), 'private');
     }

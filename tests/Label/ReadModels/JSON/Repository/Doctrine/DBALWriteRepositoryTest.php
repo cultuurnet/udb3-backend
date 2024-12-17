@@ -33,7 +33,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new Uuid('a5b046e8-3e09-4929-b510-dd05752355b1'),
             'labelName',
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->dbalWriteRepository->save(
@@ -57,7 +57,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new Uuid('4bf069ce-f181-4719-8a91-505d75456f1c'),
             'labelName1',
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->saveEntity($entity1);
@@ -66,7 +66,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             $entity1->getUuid(),
             'labelName2',
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->expectException(UniqueConstraintViolationException::class);
@@ -88,7 +88,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new Uuid('a6a4f3ca-c3e3-43d3-8589-1295284f0eef'),
             'labelName',
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->saveEntity($entity1);
@@ -97,7 +97,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new Uuid('d770db65-ca4a-4227-b540-ce060194421b'),
             'labelName',
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->expectException(UniqueConstraintViolationException::class);
@@ -119,7 +119,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new Uuid('4ffd7b9d-3727-4b0f-851c-2f145b5af172'),
             'labelName',
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->saveEntity($entity);
@@ -143,7 +143,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new Uuid('782bde60-cb83-4a8d-8924-50aaca123bc3'),
             'labelName',
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->saveEntity($entity);
@@ -167,7 +167,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new Uuid('92c02b85-02b5-43b1-bfb2-bc5092ae26b3'),
             'labelName',
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PRIVATE()
+            Privacy::private()
         );
 
         $this->saveEntity($entity);
@@ -177,7 +177,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $actualEntity = $this->getEntity();
 
         $this->assertEquals(
-            Privacy::PRIVACY_PRIVATE(),
+            Privacy::private(),
             $actualEntity->getPrivacy()
         );
     }
@@ -191,7 +191,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new Uuid('608f3b20-0ecc-41f6-a2fb-e59410750b37'),
             'labelName',
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->saveEntity($entity);
@@ -201,7 +201,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
         $actualEntity = $this->getEntity();
 
         $this->assertEquals(
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             $actualEntity->getPrivacy()
         );
     }
@@ -215,7 +215,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new Uuid('608f3b20-0ecc-41f6-a2fb-e59410750b37'),
             'labelName',
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Privacy::public()
         );
 
         $this->saveEntity($entity);
@@ -236,7 +236,7 @@ final class DBALWriteRepositoryTest extends BaseDBALRepositoryTest
             new Uuid('608f3b20-0ecc-41f6-a2fb-e59410750b37'),
             'labelName',
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC(),
+            Privacy::public(),
             true
         );
 

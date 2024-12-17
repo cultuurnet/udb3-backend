@@ -34,7 +34,7 @@ class EntityTest extends TestCase
 
         $this->visibility = Visibility::INVISIBLE();
 
-        $this->privacy = Privacy::PRIVACY_PRIVATE();
+        $this->privacy = Privacy::private();
 
         $this->excluded = true;
 

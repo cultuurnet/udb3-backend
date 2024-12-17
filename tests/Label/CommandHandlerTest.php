@@ -44,7 +44,7 @@ final class CommandHandlerTest extends CommandHandlerScenarioTestCase
         $this->uuid = new Uuid('0f4c288e-dec9-4a2e-bddd-94250acfcfd2');
         $this->name = 'labelName';
         $this->visibility = Visibility::INVISIBLE();
-        $this->privacy = Privacy::PRIVACY_PRIVATE();
+        $this->privacy = Privacy::private();
 
         $this->created = new Created(
             $this->uuid,

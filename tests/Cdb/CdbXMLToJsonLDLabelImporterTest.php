@@ -45,7 +45,7 @@ class CdbXMLToJsonLDLabelImporterTest extends TestCase
             ->willReturnCallback(
                 static function (string $labelName): ?Entity {
                     $uuid = new Uuid('3b069d8a-2394-45f4-80ce-50469c643386');
-                    $privacy = Privacy::PRIVACY_PUBLIC();
+                    $privacy = Privacy::public();
 
                     switch ($labelName) {
                         case 'visible_in_xml_and_visible_in_udb3':

@@ -28,7 +28,7 @@ class LabelNameUniqueConstraintServiceTest extends TestCase
             new Uuid('23ad437f-b6f0-4fc4-95c0-0c6faf13050f'),
             $this->name,
             Visibility::VISIBLE(),
-            Privacy::PRIVACY_PRIVATE()
+            Privacy::private()
         ));
 
         $this->uniqueHelper = new LabelNameUniqueConstraintService();

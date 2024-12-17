@@ -19,12 +19,12 @@ class Privacy extends Enum
         ];
     }
 
-    public static function PRIVACY_PUBLIC(): Privacy
+    public static function public(): Privacy
     {
         return new Privacy(self::PUBLIC);
     }
 
-    public static function PRIVACY_PRIVATE(): Privacy
+    public static function private(): Privacy
     {
         return new Privacy(self::PRIVATE);
     }

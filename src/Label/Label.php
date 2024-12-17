@@ -72,14 +72,14 @@ final class Label extends EventSourcedAggregateRoot
 
     public function makePublic(): void
     {
-        if (!$this->privacy->sameAs(Privacy::PRIVACY_PUBLIC())) {
+        if (!$this->privacy->sameAs(Privacy::public())) {
             $this->apply(new MadePublic($this->uuid, $this->name));
         }
     }
 
     public function makePrivate(): void
     {
-        if (!$this->privacy->sameAs(Privacy::PRIVACY_PRIVATE())) {
+        if (!$this->privacy->sameAs(Privacy::private())) {
             $this->apply(new MadePrivate($this->uuid, $this->name));
         }
     }
@@ -119,12 +119,12 @@ final class Label extends EventSourcedAggregateRoot
 
     public function applyMadePublic(MadePublic $madePublic): void
     {
-        $this->privacy = Privacy::PRIVACY_PUBLIC();
+        $this->privacy = Privacy::public();
     }
 
     public function applyMadePrivate(MadePrivate $madePrivate): void
     {
-        $this->privacy = Privacy::PRIVACY_PRIVATE();
+        $this->privacy = Privacy::private();
     }
 
     public function applyIncluded(): void

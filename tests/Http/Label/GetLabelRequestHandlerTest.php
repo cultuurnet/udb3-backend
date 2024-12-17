@@ -37,7 +37,7 @@ final class GetLabelRequestHandlerTest extends TestCase
             new Uuid('b88f2756-a1d8-4377-a36a-59662fc02d98'),
             'labelName',
             Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PRIVATE()
+            Privacy::private()
         );
 
         $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);

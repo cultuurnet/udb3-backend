@@ -30,7 +30,7 @@ class CreateTest extends TestCase
 
         $this->visibility = Visibility::VISIBLE();
 
-        $this->privacy = Privacy::PRIVACY_PUBLIC();
+        $this->privacy = Privacy::public();
 
         $this->create = new Create(
             $this->uuid,
