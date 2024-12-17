@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\GuardOrganizer;
@@ -36,7 +37,6 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Event\Event;
-use CultuurNet\UDB3\Model\Import\Event\Udb3ModelToLegacyEventAdapter;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -126,11 +126,9 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class)
         )->parse($request)->getParsedBody();
 
-        $eventAdapter = new Udb3ModelToLegacyEventAdapter($event);
-
         $title = $event->getTitle()->getOriginalValue();
         $type = $event->getTerms()->getEventType();
-        $location = $eventAdapter->getLocation();
+        $location = new LocationId($event->getPlaceReference()->getPlaceId()->toString());
         $calendar = $event->getCalendar();
         $theme = $event->getTerms()->getTheme();
         $publishDate = $event->getAvailableFrom() !== null ? $event->getAvailableFrom() : new DateTimeImmutable();
