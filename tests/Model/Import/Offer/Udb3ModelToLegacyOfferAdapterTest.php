@@ -41,7 +41,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
-use DateTimeImmutable;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
@@ -179,38 +178,6 @@ class Udb3ModelToLegacyOfferAdapterTest extends TestCase
         $expected = 'cc4fa0d1-f86c-42cd-a9c6-995a660ba948';
         $actual = $this->completeAdapter->getOrganizerId();
         $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_default_available_from_if_there_is_none(): void
-    {
-        $now = new DateTimeImmutable();
-        $actual = $this->adapter->getAvailableFrom($now);
-        $this->assertEquals($now, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_available_from_if_there_is_one(): void
-    {
-        $expected = DateTimeFactory::fromAtom('2040-01-01T10:00:00+01:00');
-        $actual = $this->completeAdapter->getAvailableFrom(new DateTimeImmutable());
-        $this->assertEquals($expected, $actual);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_return_default_if_available_from_is_in_the_past(): void
-    {
-        $now = new DateTimeImmutable();
-        $dateInThePast = new DateTimeImmutable('2019-02-14');
-        $offer = $this->completeOffer->withAvailableFrom($dateInThePast);
-        $adapter = new Udb3ModelToLegacyOfferAdapter($offer);
-        $this->assertEquals($now, $adapter->getAvailableFrom($now));
     }
 
     /**

@@ -135,7 +135,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $location = $eventAdapter->getLocation();
         $calendar = $event->getCalendar();
         $theme = $event->getTerms()->getTheme();
-        $publishDate = $eventAdapter->getAvailableFrom(new DateTimeImmutable());
+        $publishDate = $event->getAvailableFrom() !== null ? $event->getAvailableFrom() : new DateTimeImmutable();
 
         if (!$location->isNilLocation()) {
             try {

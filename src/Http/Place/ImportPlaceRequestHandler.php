@@ -141,7 +141,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $type = $place->getTerms()->getEventType();
         $address = $placeAdapter->getAddress();
         $calendar = $place->getCalendar();
-        $publishDate = $placeAdapter->getAvailableFrom(new DateTimeImmutable());
+        $publishDate = $place->getAvailableFrom() !== null ? $place->getAvailableFrom() : new DateTimeImmutable();
 
         // Get the workflowStatus from the JSON. If the JSON has no workflowStatus, it will be DRAFT by default.
         // If the request URL contains "imports", overwrite the workflowStatus to READY_FOR_VALIDATION to ensure
