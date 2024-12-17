@@ -23,7 +23,6 @@ class Udb3ModelToLegacyEventAdapter extends Udb3ModelToLegacyOfferAdapter implem
     {
         $placeId = $event->getPlaceReference()->getPlaceId();
 
-        parent::__construct($event);
         $this->event = $event;
         $this->placeId = $placeId;
     }

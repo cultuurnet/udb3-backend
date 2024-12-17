@@ -41,8 +41,6 @@ use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
-use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
@@ -248,11 +246,11 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdatePriceInfo($eventId, $event->getPriceInfo());
         }
 
-        foreach ($eventAdapter->getTitleTranslations() as $language => $title) {
+        foreach ($event->getTitle()->getLanguagesWithoutOriginal() as $language) {
             $commands[] = new UpdateTitle(
                 $eventId,
-                new Language($language),
-                new Title($title->toString())
+                $language,
+                $event->getTitle()->getTranslation($language)
             );
         }
 

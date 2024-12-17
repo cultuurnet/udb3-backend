@@ -25,8 +25,6 @@ use CultuurNet\UDB3\Model\Import\Place\Udb3ModelToLegacyPlaceAdapter;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
-use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
@@ -216,11 +214,11 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdatePriceInfo($placeId, $place->getPriceInfo());
         }
 
-        foreach ($placeAdapter->getTitleTranslations() as $language => $title) {
+        foreach ($place->getTitle()->getLanguagesWithoutOriginal() as $language) {
             $commands[] = new UpdateTitle(
                 $placeId,
-                new Language($language),
-                new Title($title->toString())
+                $language,
+                $place->getTitle()->getTranslation($language)
             );
         }
 
