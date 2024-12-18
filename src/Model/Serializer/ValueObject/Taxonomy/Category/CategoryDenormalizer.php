@@ -32,7 +32,7 @@ final class CategoryDenormalizer implements DenormalizerInterface
 
         return new Category(
             new CategoryID($data['id']),
-            isset($data['label']) ? new CategoryLabel($data['label']) : null,
+            !empty($data['label']) ? new CategoryLabel($data['label']) : null,
             $this->createCategoryDomain($data)
         );
     }
