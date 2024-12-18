@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 
 class EventPlaceHistoryProjector implements EventListener
@@ -152,6 +153,9 @@ class EventPlaceHistoryProjector implements EventListener
         } catch (DocumentDoesNotExist $e) {
             $this->logger->error(sprintf('Failed to store location updated: %s', $e->getMessage()));
             return;
+        } catch (InvalidArgumentException $e) {
+            $this->logger->error(sprintf('Failed to store location updated: %s', $e->getMessage()));
+            return;
         }
 
         $newPlaceId = new Uuid($majorInfoUpdated->getLocation()->toString());
@@ -170,6 +174,7 @@ class EventPlaceHistoryProjector implements EventListener
 
     /**
      * @throws DocumentDoesNotExist
+     * @throws InvalidArgumentException
      */
     private function getOldPlaceUuid(string $eventId): Uuid
     {
