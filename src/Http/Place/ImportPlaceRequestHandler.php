@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Address\Address;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\GuardOrganizer;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
@@ -21,12 +22,9 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
-use CultuurNet\UDB3\Model\Import\Place\Udb3ModelToLegacyPlaceAdapter;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
-use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
@@ -135,13 +133,11 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             new DenormalizingRequestBodyParser($this->placeDenormalizer, Place::class)
         )->parse($request)->getParsedBody();
 
-        $placeAdapter = new Udb3ModelToLegacyPlaceAdapter($place);
-
         $title = $place->getTitle()->getOriginalValue();
         $type = $place->getTerms()->getEventType();
-        $address = $placeAdapter->getAddress();
+        $address = $place->getAddress()->getTranslation($place->getMainLanguage());
         $calendar = $place->getCalendar();
-        $publishDate = $placeAdapter->getAvailableFrom(new DateTimeImmutable());
+        $publishDate = $place->getAvailableFrom() !== null ? $place->getAvailableFrom() : new DateTimeImmutable();
 
         // Get the workflowStatus from the JSON. If the JSON has no workflowStatus, it will be DRAFT by default.
         // If the request URL contains "imports", overwrite the workflowStatus to READY_FOR_VALIDATION to ensure
@@ -161,7 +157,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
                 $place->getMainLanguage(),
                 $title,
                 $type,
-                $address,
+                Address::fromUdb3ModelAddress($address),
                 $calendar,
                 $publishDate
             );
@@ -216,11 +212,11 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdatePriceInfo($placeId, $place->getPriceInfo());
         }
 
-        foreach ($placeAdapter->getTitleTranslations() as $language => $title) {
+        foreach ($place->getTitle()->getLanguagesWithoutOriginal() as $language) {
             $commands[] = new UpdateTitle(
                 $placeId,
-                new Language($language),
-                new Title($title->toString())
+                $language,
+                $place->getTitle()->getTranslation($language)
             );
         }
 
@@ -253,7 +249,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
             $commands[] = new DeleteOffer($placeId);
         }
 
-        $organizerId = $placeAdapter->getOrganizerId();
+        $organizerId = $place->getOrganizerReference() !== null ? $place->getOrganizerReference()->getOrganizerId()->toString() : null;
         if ($organizerId) {
             $this->guardOrganizer($organizerId, $this->organizerDocumentRepository);
             $commands[] = new UpdateOrganizer($placeId, $organizerId);
