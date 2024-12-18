@@ -49,7 +49,7 @@ final class AddLabelHandler implements CommandHandler
         // Load the label read model so we can determine the correct visibility.
         $labelEntity = $this->labelRepository->getByName($labelName);
         if ($labelEntity instanceof Entity) {
-            $labelVisibility = $labelEntity->getVisibility()->sameAs(Visibility::VISIBLE());
+            $labelVisibility = $labelEntity->getVisibility()->sameAs(Visibility::visible());
         }
 
         $offer = $this->offerRepository->load($command->getItemId());

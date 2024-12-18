@@ -525,7 +525,7 @@ class BackwardsCompatiblePayloadSerializerFactory
             $label = $labelRepository->getByUuid(new Uuid($uuid));
 
             $serializedObject['payload']['label'] = $label->getName();
-            $serializedObject['payload']['visibility'] = $label->getVisibility()->sameAs(Visibility::VISIBLE());
+            $serializedObject['payload']['visibility'] = $label->getVisibility()->sameAs(Visibility::visible());
         }
 
         return $serializedObject;

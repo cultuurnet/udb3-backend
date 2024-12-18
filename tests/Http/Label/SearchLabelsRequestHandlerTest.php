@@ -35,15 +35,15 @@ final class SearchLabelsRequestHandlerTest extends TestCase
         $this->labels[] = new Entity(
             new Uuid('b88f2756-a1d8-4377-a36a-59662fc02d98'),
             'Invisible Private Label',
-            Visibility::INVISIBLE(),
-            Privacy::PRIVACY_PRIVATE()
+            Visibility::invisible(),
+            Privacy::private()
         );
 
         $this->labels[] = new Entity(
             new Uuid('b88f2756-a1d8-4377-a36a-59662fc02d98'),
             'Visible Public Label',
-            Visibility::VISIBLE(),
-            Privacy::PRIVACY_PUBLIC()
+            Visibility::visible(),
+            Privacy::public()
         );
 
         $this->labelRepository = $this->createMock(ReadRepositoryInterface::class);
