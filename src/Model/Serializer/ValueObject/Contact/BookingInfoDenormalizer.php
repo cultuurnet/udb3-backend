@@ -83,6 +83,10 @@ class BookingInfoDenormalizer implements DenormalizerInterface
         }
 
         if ($starts || $ends) {
+            // Avoid crashes when the start date is after the end date for legacy data inside the event store.
+            if ($starts && $ends && $starts > $ends) {
+                $starts = $ends;
+            }
             $availability = new BookingAvailability($starts, $ends);
         }
 
