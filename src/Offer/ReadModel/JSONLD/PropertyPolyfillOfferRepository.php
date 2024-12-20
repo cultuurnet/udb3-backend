@@ -341,10 +341,10 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                     // that should be hidden labels do not show up on publication channels (which would be worse than
                     // visible labels accidentally being hidden).
                     $readModel = $this->labelReadRepository->getByName($duplicate);
-                    $visibility = $readModel ? $readModel->getVisibility() : Visibility::INVISIBLE();
+                    $visibility = $readModel ? $readModel->getVisibility() : Visibility::invisible();
 
                     // Filter the duplicate out of the property that it does not belong in.
-                    $filterProperty = $visibility->sameAs(Visibility::VISIBLE()) ? 'hiddenLabels' : 'labels';
+                    $filterProperty = $visibility->sameAs(Visibility::visible()) ? 'hiddenLabels' : 'labels';
                     $json[$filterProperty] = array_values(
                         array_filter(
                             $json[$filterProperty],

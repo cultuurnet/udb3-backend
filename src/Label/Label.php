@@ -58,28 +58,28 @@ final class Label extends EventSourcedAggregateRoot
 
     public function makeVisible(): void
     {
-        if (!$this->visibility->sameAs(Visibility::VISIBLE())) {
+        if (!$this->visibility->sameAs(Visibility::visible())) {
             $this->apply(new MadeVisible($this->uuid, $this->name));
         }
     }
 
     public function makeInvisible(): void
     {
-        if (!$this->visibility->sameAs(Visibility::INVISIBLE())) {
+        if (!$this->visibility->sameAs(Visibility::invisible())) {
             $this->apply(new MadeInvisible($this->uuid, $this->name));
         }
     }
 
     public function makePublic(): void
     {
-        if (!$this->privacy->sameAs(Privacy::PRIVACY_PUBLIC())) {
+        if (!$this->privacy->sameAs(Privacy::public())) {
             $this->apply(new MadePublic($this->uuid, $this->name));
         }
     }
 
     public function makePrivate(): void
     {
-        if (!$this->privacy->sameAs(Privacy::PRIVACY_PRIVATE())) {
+        if (!$this->privacy->sameAs(Privacy::private())) {
             $this->apply(new MadePrivate($this->uuid, $this->name));
         }
     }
@@ -109,22 +109,22 @@ final class Label extends EventSourcedAggregateRoot
 
     public function applyMadeVisible(MadeVisible $madeVisible): void
     {
-        $this->visibility = Visibility::VISIBLE();
+        $this->visibility = Visibility::visible();
     }
 
     public function applyMadeInvisible(MadeInvisible $madeInvisible): void
     {
-        $this->visibility = Visibility::INVISIBLE();
+        $this->visibility = Visibility::invisible();
     }
 
     public function applyMadePublic(MadePublic $madePublic): void
     {
-        $this->privacy = Privacy::PRIVACY_PUBLIC();
+        $this->privacy = Privacy::public();
     }
 
     public function applyMadePrivate(MadePrivate $madePrivate): void
     {
-        $this->privacy = Privacy::PRIVACY_PRIVATE();
+        $this->privacy = Privacy::private();
     }
 
     public function applyIncluded(): void
