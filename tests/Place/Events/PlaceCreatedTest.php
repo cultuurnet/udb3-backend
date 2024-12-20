@@ -240,6 +240,47 @@ class PlaceCreatedTest extends TestCase
                     DateTimeFactory::fromAtom('2016-08-01T00:00:00+02:00')
                 ),
             ],
+            'with empty term label' => [
+                [
+                    'place_id' => 'test 456',
+                    'main_language' => 'es',
+                    'title' => 'title',
+                    'address' => [
+                        'streetAddress' => 'De straat',
+                        'postalCode' => '9620',
+                        'addressLocality' => 'Zottegem',
+                        'addressCountry' => 'BE',
+                    ],
+                    'calendar' => [
+                        'type' => 'permanent',
+                        'status' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
+                    ],
+                    'event_type' => [
+                        'id' => '0.50.4.0.0',
+                        'label' => '',
+                        'domain' => 'eventtype',
+                    ],
+                    'publication_date' => null,
+                ],
+                new PlaceCreated(
+                    'test 456',
+                    new Language('es'),
+                    'title',
+                    new Category(new CategoryID('0.50.4.0.0'), null, CategoryDomain::eventType()),
+                    new Address(
+                        new Street('De straat'),
+                        new PostalCode('9620'),
+                        new Locality('Zottegem'),
+                        new CountryCode('BE')
+                    ),
+                    new PermanentCalendar(new OpeningHours())
+                ),
+            ],
         ];
     }
 }
