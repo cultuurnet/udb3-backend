@@ -6,13 +6,10 @@ namespace CultuurNet\UDB3\Label\ValueObjects;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Enum;
 
-/**
- * @deprecated Use new CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label
- */
 class Visibility extends Enum
 {
-    public const VISIBLE = 'visible';
-    public const INVISIBLE = 'invisible';
+    private const VISIBLE = 'visible';
+    private const INVISIBLE = 'invisible';
 
     public static function getAllowedValues(): array
     {
@@ -22,12 +19,12 @@ class Visibility extends Enum
         ];
     }
 
-    public static function VISIBLE(): Visibility
+    public static function visible(): Visibility
     {
         return new Visibility(self::VISIBLE);
     }
 
-    public static function INVISIBLE(): Visibility
+    public static function invisible(): Visibility
     {
         return new Visibility(self::INVISIBLE);
     }

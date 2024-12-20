@@ -86,7 +86,7 @@ final class LabelImportPreProcessor
                         $label->getName()->toString()
                     );
                     $visible = !$readModel ?
-                        $label->isVisible() : $readModel->getVisibility()->sameAs(Visibility::VISIBLE());
+                        $label->isVisible() : $readModel->getVisibility()->sameAs(Visibility::visible());
                     return new Label($label->getName(), $visible);
                 },
                 $labels->toArray()
