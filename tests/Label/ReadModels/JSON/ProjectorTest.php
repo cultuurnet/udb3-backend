@@ -57,8 +57,8 @@ final class ProjectorTest extends TestCase
         $this->entity = new Entity(
             $this->uuid,
             $this->labelName,
-            Visibility::VISIBLE(),
-            Privacy::PRIVACY_PRIVATE()
+            Visibility::visible(),
+            Privacy::private()
         );
 
         $uuidMap = [

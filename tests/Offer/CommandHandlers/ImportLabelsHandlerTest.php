@@ -92,8 +92,8 @@ final class ImportLabelsHandlerTest extends CommandHandlerScenarioTestCase
                     return new Entity(
                         Uuid::uuid4(),
                         $labelName,
-                        $labelName !== 'bar' ? Visibility::VISIBLE() : Visibility::INVISIBLE(),
-                        Privacy::PRIVACY_PUBLIC()
+                        $labelName !== 'bar' ? Visibility::visible() : Visibility::invisible(),
+                        Privacy::public()
                     );
                 }
             );

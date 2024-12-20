@@ -63,8 +63,8 @@ class ConstraintAwareLabelServiceTest extends TestCase
                 new Created(
                     $expectedUuid,
                     $labelName,
-                    Visibility::INVISIBLE(),
-                    Privacy::PRIVACY_PUBLIC()
+                    Visibility::invisible(),
+                    Privacy::public()
                 ),
             ],
             $traceableEventStore->getEvents()

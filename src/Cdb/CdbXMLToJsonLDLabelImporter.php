@@ -30,7 +30,7 @@ final class CdbXMLToJsonLDLabelImporter
         foreach ($labels as $label) {
             $labelReadModel = $this->labelReadRepository->getByName($label->getName()->toString());
             if ($labelReadModel) {
-                $isVisible = $labelReadModel->getVisibility()->sameAs(Visibility::VISIBLE());
+                $isVisible = $labelReadModel->getVisibility()->sameAs(Visibility::visible());
                 $label = new Label($label->getName(), $isVisible);
             }
             $labelsWithCorrectVisibility = $labelsWithCorrectVisibility->with($label);
