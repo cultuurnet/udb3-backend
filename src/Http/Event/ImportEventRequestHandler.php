@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
+use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\GuardOrganizer;
@@ -36,13 +37,10 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Event\Event;
-use CultuurNet\UDB3\Model\Import\Event\Udb3ModelToLegacyEventAdapter;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
-use CultuurNet\UDB3\Model\ValueObject\Text\Title;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
@@ -128,14 +126,12 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class)
         )->parse($request)->getParsedBody();
 
-        $eventAdapter = new Udb3ModelToLegacyEventAdapter($event);
-
         $title = $event->getTitle()->getOriginalValue();
         $type = $event->getTerms()->getEventType();
-        $location = $eventAdapter->getLocation();
+        $location = new LocationId($event->getPlaceReference()->getPlaceId()->toString());
         $calendar = $event->getCalendar();
         $theme = $event->getTerms()->getTheme();
-        $publishDate = $eventAdapter->getAvailableFrom(new DateTimeImmutable());
+        $publishDate = $event->getAvailableFrom() !== null ? $event->getAvailableFrom() : new DateTimeImmutable();
 
         if (!$location->isNilLocation()) {
             try {
@@ -248,11 +244,11 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdatePriceInfo($eventId, $event->getPriceInfo());
         }
 
-        foreach ($eventAdapter->getTitleTranslations() as $language => $title) {
+        foreach ($event->getTitle()->getLanguagesWithoutOriginal() as $language) {
             $commands[] = new UpdateTitle(
                 $eventId,
-                new Language($language),
-                new Title($title->toString())
+                $language,
+                $event->getTitle()->getTranslation($language)
             );
         }
 
@@ -279,7 +275,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         // Update the organizer only at the end, because it can trigger UiTPAS to send messages to another worker
         // which might cause race conditions if we're still dispatching other commands here as well.
-        $organizerId = $eventAdapter->getOrganizerId();
+        $organizerId = $event->getOrganizerReference() !== null ? $event->getOrganizerReference()->getOrganizerId()->toString() : null;
         if ($organizerId) {
             try {
                 $this->guardOrganizer($organizerId, $this->organizerDocumentRepository);
