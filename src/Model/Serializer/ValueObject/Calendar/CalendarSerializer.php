@@ -87,6 +87,15 @@ final class CalendarSerializer implements Serializable
             );
         }
 
+        // There are cases where the calendar type does not match the number of sub events.
+        // For those cases the amount of sub events dictates the calendar type.
+        if ($calendarType->sameAs(CalendarType::single()) && count($subEvents) > 1) {
+            $calendarType = CalendarType::multiple();
+        }
+        if ($calendarType->sameAs(CalendarType::multiple()) && count($subEvents) === 1) {
+            $calendarType = CalendarType::single();
+        }
+
         switch ($calendarType) {
             case CalendarType::single():
                 $calendar = new SingleSubEventCalendar($subEvents[0]);
