@@ -54,7 +54,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
     {
         $command = new UpdateGeoCoordinatesFromAddress(
             $placeCreated->getPlaceId(),
-            $placeCreated->getAddress()->toUdb3ModelAddress()
+            $placeCreated->getAddress()
         );
 
         $this->commandBus->dispatch($command);
@@ -68,7 +68,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
         // approach like this.
         $command = new UpdateGeoCoordinatesFromAddress(
             $majorInfoUpdated->getPlaceId(),
-            $majorInfoUpdated->getAddress()->toUdb3ModelAddress()
+            $majorInfoUpdated->getAddress()
         );
 
         $this->commandBus->dispatch($command);
@@ -78,7 +78,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
     {
         $command = new UpdateGeoCoordinatesFromAddress(
             $addressUpdated->getPlaceId(),
-            $addressUpdated->getAddress()->toUdb3ModelAddress()
+            $addressUpdated->getAddress()
         );
 
         $this->commandBus->dispatch($command);

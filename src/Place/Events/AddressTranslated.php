@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Events;
 
-use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\PlaceEvent;
 
@@ -34,7 +36,7 @@ final class AddressTranslated extends PlaceEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'address' => $this->address->serialize(),
+            'address' => (new AddressNormalizer())->normalize($this->address),
             'language' => $this->language->getCode(),
         ];
     }
@@ -43,7 +45,7 @@ final class AddressTranslated extends PlaceEvent
     {
         return new static(
             $data['place_id'],
-            Address::deserialize($data['address']),
+            (new AddressDenormalizer())->denormalize($data['address'], Address::class),
             new Language($data['language'])
         );
     }

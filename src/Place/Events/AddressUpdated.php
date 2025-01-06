@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Events;
 
-use CultuurNet\UDB3\Address\Address;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\AddressNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Place\PlaceEvent;
 
 final class AddressUpdated extends PlaceEvent
@@ -26,12 +28,15 @@ final class AddressUpdated extends PlaceEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'address' => $this->address->serialize(),
+            'address' => (new AddressNormalizer())->normalize($this->address),
         ];
     }
 
     public static function deserialize(array $data): AddressUpdated
     {
-        return new static($data['place_id'], Address::deserialize($data['address']));
+        return new static(
+            $data['place_id'],
+            (new AddressDenormalizer())->denormalize($data['address'], Address::class)
+        );
     }
 }

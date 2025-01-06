@@ -6,10 +6,6 @@ namespace CultuurNet\UDB3\Place;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
-use CultuurNet\UDB3\Address\Address as LegacyAddress;
-use CultuurNet\UDB3\Address\Locality as LegacyLocality;
-use CultuurNet\UDB3\Address\PostalCode as LegacyPostalCode;
-use CultuurNet\UDB3\Address\Street as LegacyStreet;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -275,7 +271,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                         new Language('nl'),
                         'Test place',
                         new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
-                        LegacyAddress::fromUdb3ModelAddress($originalAddress),
+                        $originalAddress,
                         new PermanentCalendar(new OpeningHours())
                     ),
                 ]
@@ -289,7 +285,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 [
                     new AddressUpdated(
                         'c5c1b435-0f3c-4b75-9f28-94d93be7078b',
-                        LegacyAddress::fromUdb3ModelAddress($updatedAddress)
+                        $updatedAddress
                     ),
                 ]
             );
@@ -302,7 +298,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
     {
         $placeCreated = $this->createPlaceCreatedEvent();
         $placeId = $placeCreated->getPlaceId();
-        $address = $placeCreated->getAddress()->toUdb3ModelAddress();
+        $address = $placeCreated->getAddress();
 
         $translatedAddress = new Address(
             new Street('One May Street'),
@@ -328,7 +324,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
             ->then([
                 new AddressTranslated(
                     $placeId,
-                    LegacyAddress::fromUdb3ModelAddress($translatedAddress),
+                    $translatedAddress,
                     new Language('en')
                 ),
             ]);
@@ -465,7 +461,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                         new Language('nl'),
                         'Test place',
                         new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
-                        LegacyAddress::fromUdb3ModelAddress($originalAddress),
+                        $originalAddress,
                         new PermanentCalendar(new OpeningHours())
                     ),
                 ]
@@ -479,7 +475,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 [
                     new AddressTranslated(
                         'c5c1b435-0f3c-4b75-9f28-94d93be7078b',
-                        LegacyAddress::fromUdb3ModelAddress($updatedAddress),
+                        $updatedAddress,
                         $language
                     ),
                 ]
@@ -652,10 +648,10 @@ class PlaceTest extends AggregateRootScenarioTestCase
     {
         $placeId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
 
-        $address = new LegacyAddress(
-            new LegacyStreet('Eenmeilaan'),
-            new LegacyPostalCode('3010'),
-            new LegacyLocality('Kessel-Lo'),
+        $address = new Address(
+            new Street('Eenmeilaan'),
+            new PostalCode('3010'),
+            new Locality('Kessel-Lo'),
             new CountryCode('BE')
         );
 
