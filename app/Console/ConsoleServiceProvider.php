@@ -21,7 +21,7 @@ use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
 use CultuurNet\UDB3\Console\Command\ExecuteCommandFromCsv;
 use CultuurNet\UDB3\Console\Command\FetchMoviesFromKinepolisApi;
-use CultuurNet\UDB3\Console\Command\FindMatchingTrailersOnYouTube;
+use CultuurNet\UDB3\Console\Command\AddMatchingTrailer;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
@@ -120,7 +120,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:convert-educational-description',
         'console.execute-command-from-csv',
         'console.movies:fetch',
-        'console.movies:find-trailers',
+        'console.movies:add-trailers',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -525,8 +525,8 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            'console.movies:find-trailers',
-            fn () => new FindMatchingTrailersOnYouTube(
+            'console.movies:add-trailers',
+            fn () => new AddMatchingTrailer(
                 $container->get('event_command_bus'),
                 $container->get(EventsSapi3SearchService::class),
                 $container->get('event_jsonld_repository'),

@@ -19,7 +19,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class FindMatchingTrailersOnYouTube extends Command
+final class AddMatchingTrailer extends Command
 {
     private CommandBus $commandBus;
 
@@ -48,7 +48,7 @@ final class FindMatchingTrailersOnYouTube extends Command
 
     public function configure(): void
     {
-        $this->setName('movies:find-trailers');
+        $this->setName('movies:add-trailers');
         $this->setDescription('Try to find a matching trailer for a movie');
     }
 
