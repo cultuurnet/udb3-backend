@@ -152,22 +152,13 @@ final class KinepolisService
 
             $this->logger->info('Found ' . count($parsedMovies) . ' screenings for movie with kinepolisId ' . $mid);
 
-            // We do only 1 search by movieTitle for a trailer to avoid hitting the YouTube Rate limiting.
-            $movieTitle = $movie['title'];
-            $trailer = null;
-            try {
-                $trailer = $this->trailerRepository->findMatchingTrailer($movieTitle);
-            } catch (GoogleException $exception) {
-                $this->logger->error('Problem with searching trailer for ' . $movieTitle . ':' . $exception->getMessage());
-            }
-
             foreach ($parsedMovies as $parsedMovie) {
-                $this->process($parsedMovie, $token, $trailer);
+                $this->process($parsedMovie, $token);
             }
         }
     }
 
-    private function process(ParsedMovie $parsedMovie, string $token, ?Video $trailer): void
+    private function process(ParsedMovie $parsedMovie, string $token): void
     {
         $commands = [];
         $eventId = $this->movieMappingRepository->getByMovieId($parsedMovie->getExternalId());
@@ -183,15 +174,6 @@ final class KinepolisService
             }
 
             $commands[] = $this->getLinkToProductionCommand($parsedMovie->getTitle()->toString(), $eventId);
-
-            if ($trailer !== null) {
-                $this->logger->info('Found trailer ' . $trailer->getUrl()->toString() . ' for movie ' . $parsedMovie->getTitle()->toString());
-                $addVideo = new AddVideo(
-                    $eventId,
-                    $trailer
-                );
-                $commands[] = $addVideo;
-            }
         } else {
             $updateCalendar = new UpdateCalendar($eventId, $parsedMovie->getCalendar());
             $commands[] = $updateCalendar;
