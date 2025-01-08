@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
+use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Kinepolis\Trailer\TrailerRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -17,10 +18,13 @@ use CultuurNet\UDB3\Search\SearchServiceInterface;
 use CultuurNet\UDB3\Search\Sorting;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class AddMatchingTrailer extends Command
 {
+    private const ONE_WEEK_LIMIT = 'one-week-limit';
+
     private CommandBus $commandBus;
 
     private ResultsGeneratorInterface $searchResultsGenerator;
@@ -48,13 +52,19 @@ final class AddMatchingTrailer extends Command
 
     public function configure(): void
     {
-        $this->setName('movies:add-trailers');
-        $this->setDescription('Try to find a matching trailer for a movie');
+        $this->setName('movies:add-trailers')
+            ->setDescription('Try to find a matching trailer for a movie')
+            ->addOption(
+                self::ONE_WEEK_LIMIT,
+                '-l',
+                InputOption::VALUE_NONE,
+                'Limit the search to movies created during the last week.'
+            );
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $query = $this->getQueryForMoviesWithoutTrailer();
+        $query = $this->getQueryForMoviesWithoutTrailer($input);
         $count = $this->searchResultsGenerator->count($query);
 
         if ($count === 0) {
@@ -70,9 +80,13 @@ final class AddMatchingTrailer extends Command
         return 0;
     }
 
-    private function getQueryForMoviesWithoutTrailer(): string
+    private function getQueryForMoviesWithoutTrailer(InputInterface $input): string
     {
-        return 'terms.id:0.50.6.0.0 AND videosCount:0 AND creator:' . Uuid::NIL;
+        $query = 'terms.id:0.50.6.0.0 AND videosCount:0 AND creator:' . Uuid::NIL;
+        if ($input->getOption(self::ONE_WEEK_LIMIT)) {
+            $query .= ' AND created:[' . Chronos::now()->subWeeks(1)->toIso8601String() . ' TO *]';
+        }
+        return $query;
     }
 
     private function dispatchAddVideoCommand(string $eventId, OutputInterface $output): void
