@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
@@ -74,15 +73,6 @@ final class FindMatchingTrailersOnYouTube extends Command
     private function getQueryForMoviesWithoutTrailer(): string
     {
         return 'terms.id:0.50.6.0.0 AND videosCount:0 AND creator:' . Uuid::NIL;
-    }
-
-    protected function getDocument(string $id): ?JsonDocument
-    {
-        try {
-            return $this->documentRepository->fetch($id);
-        } catch (DocumentDoesNotExist $e) {
-            return null;
-        }
     }
 
     private function dispatchAddVideoCommand(string $eventId, OutputInterface $output): void
