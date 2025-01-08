@@ -46,6 +46,7 @@ final class FindMatchingTrailersOnYouTube extends Command
         $this->documentRepository = $documentRepository;
         $this->trailerRepository = $trailerRepository;
     }
+
     public function configure(): void
     {
         $this->setName('movies:find-trailers');
