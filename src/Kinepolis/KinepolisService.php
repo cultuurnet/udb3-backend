@@ -57,8 +57,6 @@ final class KinepolisService
 
     private UuidGeneratorInterface $uuidGenerator;
 
-    private TrailerRepository $trailerRepository;
-
     private ProductionRepository $productionRepository;
 
     private LoggerInterface $logger;
@@ -72,7 +70,6 @@ final class KinepolisService
         MappingRepository $movieMappingRepository,
         ImageUploaderInterface $imageUploader,
         UuidGeneratorInterface $uuidGenerator,
-        TrailerRepository $trailerRepository,
         ProductionRepository $productionRepository,
         LoggerInterface $logger
     ) {
@@ -84,7 +81,6 @@ final class KinepolisService
         $this->movieMappingRepository = $movieMappingRepository;
         $this->imageUploader = $imageUploader;
         $this->uuidGenerator = $uuidGenerator;
-        $this->trailerRepository = $trailerRepository;
         $this->productionRepository = $productionRepository;
         $this->logger = $logger;
     }
