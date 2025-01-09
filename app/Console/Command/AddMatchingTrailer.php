@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use CultuurNet\UDB3\Search\Sorting;
+use Google\Service\Exception as GoogleException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -74,7 +75,12 @@ final class AddMatchingTrailer extends Command
 
         $results = $this->searchResultsGenerator->search($query);
         foreach ($results as $eventId => $result) {
-            $this->dispatchAddVideoCommand($eventId, $output);
+            try {
+                $this->dispatchAddVideoCommand($eventId, $output);
+            } catch (GoogleException $exception) {
+                $output->writeln($exception->getMessage());
+                break;
+            }
         }
 
         return 0;
