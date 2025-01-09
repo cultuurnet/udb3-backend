@@ -136,6 +136,40 @@ class EventPlaceHistoryProjectorTest extends TestCase
     }
 
     /** @test */
+    public function apply_major_info_updated_with_dummy_location(): void
+    {
+        $eventId = Uuid::uuid4();
+        $newPlaceId = Uuid::uuid4();
+
+        $this->eventRepository
+            ->expects($this->once())
+            ->method('fetch')
+            ->with($eventId->toString())
+            ->willReturn($this->givenAnEventWithADummyPlace($eventId));
+
+        $this->repository
+            ->expects($this->once())
+            ->method('storeEventPlaceStartingPoint')
+            ->with(
+                $eventId,
+                $newPlaceId,
+                DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT, self::DATE_TIME_VALUE)
+            );
+
+        $majorInfoUpdated = new MajorInfoUpdated(
+            $eventId->toString(),
+            'title',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId($newPlaceId->toString()),
+            new PermanentCalendar(new OpeningHours())
+        );
+
+        $this->projector->handle(
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($majorInfoUpdated)
+        );
+    }
+
+    /** @test */
     public function prevent_apply_major_info_updated_when_location_did_not_change(): void
     {
         $eventId = Uuid::uuid4();
@@ -229,6 +263,33 @@ class EventPlaceHistoryProjectorTest extends TestCase
     }
 
     /** @test */
+    public function apply_event_copied_with_dummy_location(): void
+    {
+        $oldEventId = Uuid::uuid4();
+        $eventId = Uuid::uuid4();
+
+        $this->eventRepository
+            ->expects($this->once())
+            ->method('fetch')
+            ->with($oldEventId->toString())
+            ->willReturn($this->givenAnEventWithADummyPlace($oldEventId));
+
+        $this->repository
+            ->expects($this->never())
+            ->method('storeEventPlaceStartingPoint');
+
+        $eventCopied = new EventCopied(
+            $eventId->toString(),
+            $oldEventId->toString(),
+            new PermanentCalendar(new OpeningHours())
+        );
+
+        $this->projector->handle(
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($eventCopied)
+        );
+    }
+
+    /** @test */
     public function apply_location_updated_logs_error_when_document_does_not_exist(): void
     {
         $eventId = Uuid::uuid4();
@@ -246,6 +307,34 @@ class EventPlaceHistoryProjectorTest extends TestCase
             ->with($this->stringContains('Failed to store location updated: Document not found'));
 
         $locationUpdated = new LocationUpdated($eventId->toString(), new LocationId($newPlaceId->toString()));
+        $this->projector->handle(
+            (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($locationUpdated)
+        );
+    }
+
+    /** @test */
+    public function apply_location_updated_with_dummy_location(): void
+    {
+        $eventId = Uuid::uuid4();
+        $newPlaceId = Uuid::uuid4();
+
+        $this->eventRepository
+            ->expects($this->once())
+            ->method('fetch')
+            ->with($eventId->toString())
+            ->willReturn($this->givenAnEventWithADummyPlace($eventId));
+
+        $this->repository
+            ->expects($this->once())
+            ->method('storeEventPlaceStartingPoint')
+            ->with(
+                $eventId,
+                $newPlaceId,
+                DateTimeImmutable::createFromFormat(self::DATE_TIME_FORMAT, self::DATE_TIME_VALUE)
+            );
+
+        $locationUpdated = new LocationUpdated($eventId->toString(), new LocationId($newPlaceId->toString()));
+
         $this->projector->handle(
             (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($locationUpdated)
         );
@@ -423,6 +512,13 @@ class EventPlaceHistoryProjectorTest extends TestCase
             'location' => [
                 '@id' => sprintf('https://io.uitdatabank.be/place/%s', $placeId),
             ],
+        ]));
+    }
+
+    private function givenAnEventWithADummyPlace(Uuid $oldEventId): JsonDocument
+    {
+        return new JsonDocument($oldEventId->toString(), Json::encode([
+            'location' => ['title' => 'old dummy place with no place id'],
         ]));
     }
 }
