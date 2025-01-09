@@ -196,7 +196,7 @@ class EventPlaceHistoryProjector implements EventListener
 
         $body = $myEvent->getAssocBody();
 
-        if (!isset($body['location']['@id'])) {
+        if (empty($body['location']['@id'])) {
             throw new CannotDeterminePlaceIdForDummyPlace();
         }
 
