@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
+use CultuurNet\UDB3\Event\ReadModel\History\Exception\CannotDeterminePlaceIdForDummyPlace;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventPlaceHistoryRepository;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
@@ -53,6 +54,13 @@ class EventPlaceHistoryProjector implements EventListener
         } catch (DocumentDoesNotExist $e) {
             $this->logger->error(sprintf('Failed to store location updated: %s', $e->getMessage()));
             return;
+        } catch (CannotDeterminePlaceIdForDummyPlace $e) {
+            $this->repository->storeEventPlaceStartingPoint(
+                new Uuid($locationUpdated->getItemId()),
+                new Uuid($locationUpdated->getLocationId()->toString()),
+                $domainMessage->getRecordedOn()->toNative()
+            );
+            return;
         }
 
         $this->repository->storeEventPlaceMove(
@@ -76,7 +84,7 @@ class EventPlaceHistoryProjector implements EventListener
     {
         try {
             $placeId = $this->getOldPlaceUuid($eventCopied->getOriginalEventId());
-        } catch (DocumentDoesNotExist $e) {
+        } catch (DocumentDoesNotExist|CannotDeterminePlaceIdForDummyPlace $e) {
             $this->logger->error(sprintf('Failed to store event copied: %s', $e->getMessage()));
             return;
         }
@@ -127,7 +135,7 @@ class EventPlaceHistoryProjector implements EventListener
 
         try {
             $oldPlaceId = $this->getOldPlaceUuid($eventUpdatedFromUDB2->getEventId());
-        } catch (DocumentDoesNotExist $e) {
+        } catch (DocumentDoesNotExist|CannotDeterminePlaceIdForDummyPlace $e) {
             $this->logger->error(sprintf('Failed to store event updated from UDB2: %s', $e->getMessage()));
             return;
         }
@@ -148,17 +156,22 @@ class EventPlaceHistoryProjector implements EventListener
 
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated, DomainMessage $domainMessage): void
     {
+        $newPlaceId = new Uuid($majorInfoUpdated->getLocation()->toString());
+
         try {
             $oldPlaceId = $this->getOldPlaceUuid($majorInfoUpdated->getItemId());
-        } catch (DocumentDoesNotExist $e) {
+        } catch (DocumentDoesNotExist|InvalidArgumentException $e) {
             $this->logger->error(sprintf('Failed to store location updated: %s', $e->getMessage()));
             return;
-        } catch (InvalidArgumentException $e) {
-            $this->logger->error(sprintf('Failed to store location updated: %s', $e->getMessage()));
+        } catch (CannotDeterminePlaceIdForDummyPlace $e) {
+            $this->repository->storeEventPlaceStartingPoint(
+                new Uuid($majorInfoUpdated->getItemId()),
+                $newPlaceId,
+                $domainMessage->getRecordedOn()->toNative()
+            );
+
             return;
         }
-
-        $newPlaceId = new Uuid($majorInfoUpdated->getLocation()->toString());
 
         if ($newPlaceId->sameAs($oldPlaceId)) {
             return;
@@ -175,12 +188,17 @@ class EventPlaceHistoryProjector implements EventListener
     /**
      * @throws DocumentDoesNotExist
      * @throws InvalidArgumentException
+     * @throws CannotDeterminePlaceIdForDummyPlace
      */
     private function getOldPlaceUuid(string $eventId): Uuid
     {
         $myEvent = $this->eventRepository->fetch($eventId);
 
         $body = $myEvent->getAssocBody();
+
+        if (empty($body['location']['@id'])) {
+            throw new CannotDeterminePlaceIdForDummyPlace();
+        }
 
         $id = (new PlaceIDParser())->fromUrl(new Url($body['location']['@id']));
         return new Uuid($id->toString());
