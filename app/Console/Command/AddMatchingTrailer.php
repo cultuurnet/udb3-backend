@@ -9,6 +9,7 @@ use Cake\Chronos\Chronos;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Kinepolis\Trailer\TrailerRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -76,10 +77,14 @@ final class AddMatchingTrailer extends Command
         $results = $this->searchResultsGenerator->search($query);
         foreach ($results as $eventId => $result) {
             try {
-                $this->dispatchAddVideoCommand($eventId, $output);
+                $trailer = $this->searchForTrailer($eventId, $output);
             } catch (GoogleException $exception) {
                 $output->writeln($exception->getMessage());
                 break;
+            }
+            if ($trailer !== null) {
+                $this->dispatchAddVideoCommand($eventId, $trailer);
+                $output->writeln("Added trailer for {$eventId}.");
             }
         }
 
@@ -95,13 +100,13 @@ final class AddMatchingTrailer extends Command
         return $query;
     }
 
-    private function dispatchAddVideoCommand(string $eventId, OutputInterface $output): void
+    private function searchForTrailer(string $eventId, OutputInterface $output): ?Video
     {
         try {
             $document = $this->documentRepository->fetch($eventId);
         } catch (DocumentDoesNotExist $e) {
             $output->writeln("Skipping {$eventId}. (Could not find JSON-LD in local repository.)");
-            return;
+            return null;
         }
 
         $jsonLd = Json::decodeAssociatively($document->getRawBody());
@@ -109,19 +114,22 @@ final class AddMatchingTrailer extends Command
 
         if (!isset($jsonLd['name'][$mainLanguage])) {
             $output->writeln("Skipping {$eventId}. (Could not find a name.)");
-            return;
+            return null;
         }
 
         $video = $this->trailerRepository->findMatchingTrailer($jsonLd['name'][$mainLanguage]);
 
         if ($video === null) {
             $output->writeln("Skipping {$eventId}. (Could not find a trailer.)");
-            return;
         }
 
+        return $video;
+    }
+
+    private function dispatchAddVideoCommand(string $eventId, Video $trailer): void
+    {
         $this->commandBus->dispatch(
-            new AddVideo($eventId, $video)
+            new AddVideo($eventId, $trailer)
         );
-        $output->writeln("Added trailer for {$eventId}.");
     }
 }
