@@ -97,6 +97,10 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
             $this->setHomepage($resource, $organizer->getUrl());
         }
 
+        if ($organizer->getDescription()) {
+            $this->setDescription($resource, $organizer->getDescription());
+        }
+
         if ($organizer->getAddress()) {
             (new AddressEditor($this->addressParser))
                 ->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $organizer->getAddress());
@@ -116,6 +120,16 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         return trim((new Turtle())->serialise($graph, 'turtle'));
+    }
+
+    private function setDescription(Resource $resource, TranslatedDescription $translatedDescription): void
+    {
+        foreach ($translatedDescription->getLanguages() as $language) {
+            $resource->addLiteral(
+                self::PROPERTY_ACTIVITEIT_DESCRIPTION,
+                new Literal($translatedDescription->getTranslation($language)->toString(), $language->toString())
+            );
+        }
     }
 
     private function fetchOrganizerData(string $organizerId): array

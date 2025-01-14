@@ -225,6 +225,22 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
         $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/organizer-with-labels.ttl'), $turtle);
     }
 
+    /**
+     * @test
+     */
+    public function it_converts_an_organizer_with_a_description(): void
+    {
+        $this->givenThereIsAnOrganizer([
+            'description' => [
+                'nl' => 'Publiq VZW',
+            ],
+        ]);
+
+        $turtle = $this->organizerJsonToTurtleConverter->convert($this->organizerId);
+
+        $this->assertStringEqualsFile(__DIR__ . '/ttl/organizer-with-description.ttl', $turtle);
+    }
+
     private function givenThereIsAnOrganizer(array $extraProperties = []): void
     {
         $organizer = array_merge($this->organizer, $extraProperties);
