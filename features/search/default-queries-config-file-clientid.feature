@@ -1,7 +1,7 @@
 @sapi3
 Feature: Test the Search API v3 default queries from the config file when using an clientId
 
-  # sapi3KeyWithConfigFileFilterForScherpenheuvel has a default filter with 'regions:nis-24134' in the config file
+  # test_client_with_default_search_query has a default filter with 'regions:nis-24134' in the config file
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
