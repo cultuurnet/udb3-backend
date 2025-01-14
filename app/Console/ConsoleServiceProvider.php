@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
 use CultuurNet\UDB3\Console\Command\ExecuteCommandFromCsv;
 use CultuurNet\UDB3\Console\Command\FetchMoviesFromKinepolisApi;
+use CultuurNet\UDB3\Console\Command\AddMatchingTrailer;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDForRelationsCommand;
@@ -119,6 +120,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:convert-educational-description',
         'console.execute-command-from-csv',
         'console.movies:fetch',
+        'console.movies:add-trailers',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -519,6 +521,28 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                         LoggerName::forService('fetching-movies', 'kinepolis')
                     )
                 ),
+            )
+        );
+
+        $container->addShared(
+            'console.movies:add-trailers',
+            fn () => new AddMatchingTrailer(
+                $container->get('event_command_bus'),
+                $container->get(EventsSapi3SearchService::class),
+                $container->get('event_jsonld_repository'),
+                new YoutubeTrailerRepository(
+                    new Google_Service_YouTube(
+                        new Google_Client(
+                            [
+                                'application_name' => 'UiTDatabankTrailerFinder',
+                                'developer_key' => $container->get('config')['kinepolis']['trailers']['developer_key'],
+                            ]
+                        )
+                    ),
+                    $container->get('config')['kinepolis']['trailers']['channel_id'],
+                    new Version4Generator(),
+                    $container->get('config')['kinepolis']['trailers']['enabled'] ??  true,
+                )
             )
         );
     }
