@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -61,6 +62,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private DenormalizerInterface $eventDenormalizer;
     private AddressParser $addressParser;
     private LoggerInterface $logger;
+    private ImageNormalizer $imageNormalizer;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
     private const TYPE_SPACE_TIME = 'cidoc:E92_Spacetime_Volume';
@@ -114,6 +116,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         DocumentRepository $documentRepository,
         DenormalizerInterface $eventDenormalizer,
         AddressParser $addressParser,
+        ImageNormalizer $imageNormalizer,
         LoggerInterface $logger
     ) {
         $this->eventsIriGenerator = $eventsIriGenerator;
@@ -124,6 +127,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         $this->eventDenormalizer = $eventDenormalizer;
         $this->addressParser = $addressParser;
         $this->logger = $logger;
+        $this->imageNormalizer = $imageNormalizer;
     }
 
     public function convert(string $id): string
@@ -227,7 +231,10 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if (!$event->getMediaObjectReferences()->isEmpty()) {
-            (new MediaObjectEditor())->setImages($resource, $event->getMediaObjectReferences());
+            (new MediaObjectEditor($this->imageNormalizer))->setImages(
+                $resource,
+                $event->getMediaObjectReferences()->toImages()
+            );
         }
 
         return trim((new Turtle())->serialise($graph, 'turtle'));

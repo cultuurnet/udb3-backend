@@ -33,4 +33,13 @@ class MediaObjectReferences extends Collection
             }
         );
     }
+
+    public function toImages() : Images
+    {
+        $images = [];
+        foreach ($this->toArray() as $mediaObjectReference) {
+            $images[] = $mediaObjectReference->toImage();
+        }
+        return new Images(... $images);
+    }
 }
