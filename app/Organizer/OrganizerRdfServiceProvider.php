@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\ImagesToMediaObjectReferencesConvertor;
 use CultuurNet\UDB3\Organizer\ReadModel\RDF\OrganizerJsonToTurtleConverter;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
 
@@ -30,6 +31,7 @@ final class OrganizerRdfServiceProvider extends AbstractServiceProvider
                 $this->container->get('organizer_jsonld_repository'),
                 new OrganizerDenormalizer(),
                 $this->container->get(AddressParser::class),
+                $this->container->get(ImagesToMediaObjectReferencesConvertor::class),
                 LoggerFactory::create($this->getContainer(), LoggerName::forService('rdf'))
             )
         );
