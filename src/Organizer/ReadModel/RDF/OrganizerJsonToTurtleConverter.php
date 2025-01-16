@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Http\RDF\JsonToTurtleConverter;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\ImagesToMediaObjectReferencesConvertor;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
@@ -33,20 +34,20 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
 {
+    private const TYPE_ORGANISATOR = 'cp:Organisator';
+    private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
+    private const PROPERTY_HOMEPAGE = 'foaf:homepage';
+    private const PROPERTY_LOCATIE_ADRES = 'locn:address';
+    private const PROPERTY_WORKFLOW_STATUS = 'udb:workflowStatus';
+    private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
+
     private IriGeneratorInterface $iriGenerator;
     private DocumentRepository $documentRepository;
     private DenormalizerInterface $denormalizer;
     private AddressParser $addressParser;
     private LoggerInterface $logger;
     private ImagesToMediaObjectReferencesConvertor $imagesToMediaObjectReferencesConvertor;
-
-    private const TYPE_ORGANISATOR = 'cp:Organisator';
-
-    private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
-    private const PROPERTY_HOMEPAGE = 'foaf:homepage';
-    private const PROPERTY_LOCATIE_ADRES = 'locn:address';
-    private const PROPERTY_WORKFLOW_STATUS = 'udb:workflowStatus';
-    private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
+    private ImageNormalizer $imageNormalizer;
 
     public function __construct(
         IriGeneratorInterface $iriGenerator,
@@ -54,6 +55,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         DenormalizerInterface $denormalizer,
         AddressParser $addressParser,
         ImagesToMediaObjectReferencesConvertor $imagesToMediaObjectReferencesConvertor,
+        ImageNormalizer $imageNormalizer,
         LoggerInterface $logger
     ) {
         $this->iriGenerator = $iriGenerator;
@@ -61,6 +63,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         $this->denormalizer = $denormalizer;
         $this->addressParser = $addressParser;
         $this->imagesToMediaObjectReferencesConvertor = $imagesToMediaObjectReferencesConvertor;
+        $this->imageNormalizer = $imageNormalizer;
         $this->logger = $logger;
     }
 
@@ -127,9 +130,9 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if (!$organizer->getImages()->isEmpty()) {
-            (new MediaObjectEditor())->setImages(
+            (new MediaObjectEditor($this->imageNormalizer))->setImages(
                 $resource,
-                $this->imagesToMediaObjectReferencesConvertor->convert($organizer->getImages())
+                $organizer->getImages()
             );
         }
 

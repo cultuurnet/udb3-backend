@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\RDF\Editor;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use DomainException;
@@ -20,46 +23,48 @@ final class MediaObjectEditor
     private const PROPERTY_COPYRIGHT_HOLDER = 'schema:copyrightHolder';
     private const PROPERTY_DESCRIPTION = 'schema:description';
     private const PROPERTY_IN_LANGUAGE = 'schema:inLanguage';
+    private ImageNormalizer $imageNormalizer;
 
-    public function setImages(Resource $resource, MediaObjectReferences $mediaObjectReferences): void
+    public function __construct(ImageNormalizer $imageNormalizer)
     {
-        foreach ($mediaObjectReferences as $mediaObjectReference) {
+        $this->imageNormalizer = $imageNormalizer;
+    }
+
+    public function setImages(Resource $resource, Images $images): void
+    {
+        foreach ($images as $image) {
             try {
-                $mediaResource = $this->createMediaResource($resource, $mediaObjectReference);
-                $resource->add(self::PROPERTY_MEDIA, $mediaResource);
+                $resource->add(self::PROPERTY_MEDIA, $this->createImage($resource, $image));
             } catch (DomainException $e) {
                 // We cannot add media resources without embedded media object
             }
         }
     }
 
-    private function createMediaResource(Resource $resource, MediaObjectReference $mediaObjectReference): Resource
+    private function createImage(Resource $resource, Image $image): Resource
     {
-        if ($mediaObjectReference->getEmbeddedMediaObject() === null) {
-            throw new DomainException('We cannot add media resources without embedded media object');
-        }
-
+        $normalizedImage = $this->imageNormalizer->normalize($image);
         $mediaResource = $resource->getGraph()->newBNode([self::TYPE_MEDIA_OBJECT]);
 
         $mediaResource->set(
             self::PROPERTY_IDENTIFIER,
-            new Literal($mediaObjectReference->getMediaObjectId()->toString())
+            new Literal($image->getId()->toString())
         );
         $mediaResource->set(
             self::PROPERTY_URL,
-            new Literal($mediaObjectReference->getEmbeddedMediaObject()->getContentUrl()->toString(), null, self::TYPE_URL)
+            new Literal($normalizedImage['contentUrl'], null, self::TYPE_URL)
         );
         $mediaResource->set(
             self::PROPERTY_COPYRIGHT_HOLDER,
-            new Literal($mediaObjectReference->getCopyrightHolder()->toString())
+            new Literal($image->getCopyrightHolder()->toString())
         );
         $mediaResource->set(
             self::PROPERTY_DESCRIPTION,
-            new Literal($mediaObjectReference->getDescription()->toString())
+            new Literal($image->getDescription()->toString())
         );
         $mediaResource->set(
             self::PROPERTY_IN_LANGUAGE,
-            new Literal($mediaObjectReference->getLanguage()->toString())
+            new Literal($image->getLanguage()->toString())
         );
 
         return $mediaResource;
