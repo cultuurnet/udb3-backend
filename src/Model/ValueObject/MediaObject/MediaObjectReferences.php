@@ -34,7 +34,7 @@ class MediaObjectReferences extends Collection
         );
     }
 
-    public function toImages() : Images
+    public function toImages(): Images
     {
         $images = [];
         /** @var MediaObjectReference $reference */

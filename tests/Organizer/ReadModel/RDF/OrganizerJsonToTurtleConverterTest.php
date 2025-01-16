@@ -9,15 +9,6 @@ use CultuurNet\UDB3\Address\Parser\ParsedAddress;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject as MediaObjectDto;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectType;
-use CultuurNet\UDB3\Model\ValueObject\Text\Description;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -266,25 +257,11 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
             ],
         ]);
 
-        $mediaObjectDto = new MediaObjectDto(
-            new Uuid($imgId),
-            MediaObjectType::imageObject(),
-            new Url($url),
-            new Url($url),
-        );
-
-        $mediaObjectReference = MediaObjectReference::createWithEmbeddedMediaObject(
-            $mediaObjectDto,
-            new Description('Main image'),
-            new CopyrightHolder('passa porta'),
-            new Language('nl')
-        );
-
-        /*
-        $this->imagesToMediaObjectReferencesConvertor->expects($this->once())
-            ->method('convert')
-            ->willReturn(new MediaObjectReferences($mediaObjectReference));
-        */
+        $this->imageNormalizer->expects($this->once())
+            ->method('normalize')
+            ->willReturn([
+                'contentUrl' => $url,
+            ]);
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($this->organizerId);
 

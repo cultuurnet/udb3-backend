@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Address\Parser\ParsedAddress;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -1079,19 +1078,27 @@ class EventJsonToTurtleConverterTest extends TestCase
      */
     public function it_converts_an_event_with_images(): void
     {
+        $url = 'https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg';
+
         $this->givenThereIsAnEvent([
             'mediaObject' => [
                 [
                     '@id' => 'https://io-acc.uitdatabank.be/images/6bab1cba-18d0-42e7-b0c9-3b869eb68934',
                     '@type' => 'schema:ImageObject',
-                    'contentUrl' => 'https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg',
-                    'thumbnailUrl' => 'https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg',
+                    'contentUrl' => $url,
+                    'thumbnailUrl' => $url,
                     'copyrightHolder' => 'publiq vzw',
                     'description' => 'A cute dog',
                     'inLanguage' => 'nl',
                 ],
             ],
         ]);
+
+        $this->imageNormalizer->expects($this->once())
+            ->method('normalize')
+            ->willReturn([
+                'contentUrl' => $url,
+            ]);
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 

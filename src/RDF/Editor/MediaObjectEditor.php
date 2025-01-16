@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\RDF\Editor;
 
-use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use DomainException;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
