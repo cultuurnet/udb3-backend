@@ -37,8 +37,14 @@ class MediaObjectReferences extends Collection
     public function toImages() : Images
     {
         $images = [];
-        foreach ($this->toArray() as $mediaObjectReference) {
-            $images[] = $mediaObjectReference->toImage();
+        /** @var MediaObjectReference $reference */
+        foreach ($this->toArray() as $reference) {
+            $images[] = new Image(
+                $reference->getMediaObjectId(),
+                $reference->getLanguage(),
+                $reference->getDescription(),
+                $reference->getCopyrightHolder()
+            );
         }
         return new Images(... $images);
     }
