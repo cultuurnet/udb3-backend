@@ -46,7 +46,6 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
     private DenormalizerInterface $denormalizer;
     private AddressParser $addressParser;
     private LoggerInterface $logger;
-    private ImagesToMediaObjectReferencesConvertor $imagesToMediaObjectReferencesConvertor;
     private ImageNormalizer $imageNormalizer;
 
     public function __construct(
@@ -54,7 +53,6 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         DocumentRepository $documentRepository,
         DenormalizerInterface $denormalizer,
         AddressParser $addressParser,
-        ImagesToMediaObjectReferencesConvertor $imagesToMediaObjectReferencesConvertor,
         ImageNormalizer $imageNormalizer,
         LoggerInterface $logger
     ) {
@@ -62,7 +60,6 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         $this->documentRepository = $documentRepository;
         $this->denormalizer = $denormalizer;
         $this->addressParser = $addressParser;
-        $this->imagesToMediaObjectReferencesConvertor = $imagesToMediaObjectReferencesConvertor;
         $this->imageNormalizer = $imageNormalizer;
         $this->logger = $logger;
     }
