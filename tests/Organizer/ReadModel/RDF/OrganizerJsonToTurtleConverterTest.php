@@ -232,7 +232,9 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
     {
         $this->givenThereIsAnOrganizer([
             'description' => [
-                'nl' => 'Publiq VZW',
+                'nl' => 'De smurfen',
+                'fr' => 'La schtroumpf',
+                'en' => 'The smurfs',
             ],
         ]);
 

@@ -24,4 +24,4 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/active> ;
   cpr:naam "publiq VZW"@nl, "publiq NPO"@en ;
   foaf:homepage "https://www.publiq.be" ;
-  dcterms:description "Publiq VZW"@nl .
+  dcterms:description "De smurfen"@nl, "La schtroumpf"@fr, "The smurfs"@en .
