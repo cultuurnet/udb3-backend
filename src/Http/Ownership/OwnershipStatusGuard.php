@@ -73,7 +73,7 @@ final class OwnershipStatusGuard
         }
 
         return $this->permissionVoter->isAllowed(
-            Permission::organisatiesBeheren(),
+            Permission::organisatiesBewerken(),
             $ownership->getItemId(),
             $currentUser->getId()
         );
