@@ -11,7 +11,7 @@ use EasyRdf\Literal;
 use EasyRdf\Resource;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class MediaObjectEditor
+final class ImageEditor
 {
     private const TYPE_MEDIA_OBJECT = 'schema:ImageObject';
     private const PROPERTY_MEDIA = 'schema:image';

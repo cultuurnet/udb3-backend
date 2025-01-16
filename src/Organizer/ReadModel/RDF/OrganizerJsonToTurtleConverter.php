@@ -19,7 +19,7 @@ use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GeometryEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\LabelEditor;
-use CultuurNet\UDB3\RDF\Editor\MediaObjectEditor;
+use CultuurNet\UDB3\RDF\Editor\ImageEditor;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
@@ -126,7 +126,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if (!$organizer->getImages()->isEmpty()) {
-            (new MediaObjectEditor($this->imageNormalizer))->setImages(
+            (new ImageEditor($this->imageNormalizer))->setImages(
                 $resource,
                 $organizer->getImages()
             );

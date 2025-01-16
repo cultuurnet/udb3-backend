@@ -37,7 +37,7 @@ use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\LabelEditor;
-use CultuurNet\UDB3\RDF\Editor\MediaObjectEditor;
+use CultuurNet\UDB3\RDF\Editor\ImageEditor;
 use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\VideoEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
@@ -231,7 +231,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if (!$event->getMediaObjectReferences()->isEmpty()) {
-            (new MediaObjectEditor($this->imageNormalizer))->setImages(
+            (new ImageEditor($this->imageNormalizer))->setImages(
                 $resource,
                 $event->getMediaObjectReferences()->toImages()
             );
