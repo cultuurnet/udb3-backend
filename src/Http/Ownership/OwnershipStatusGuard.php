@@ -25,6 +25,34 @@ final class OwnershipStatusGuard
         $this->permissionVoter = $permissionVoter;
     }
 
+    public function isAllowedToGet(string $ownershipId, CurrentUser $currentUser): void
+    {
+        try {
+            $ownership = $this->ownershipSearchRepository->getById($ownershipId);
+        } catch (OwnershipItemNotFound $exception) {
+            throw ApiProblem::ownershipNotFound($ownershipId);
+        }
+
+        if ($currentUser->isGodUser()) {
+            return;
+        }
+
+        $isOwner = $this->permissionVoter->isAllowed(
+            Permission::organisatiesBewerken(),
+            $ownership->getItemId(),
+            $currentUser->getId()
+        );
+        if ($isOwner) {
+            return;
+        }
+
+        if ($ownership->getOwnerId() === $currentUser->getId()) {
+            return;
+        }
+
+        throw ApiProblem::forbidden('You are not allowed to get this ownership');
+    }
+
     public function isAllowedToRequest(string $itemId, string $requesterId, CurrentUser $currentUser): void
     {
         $isOwner = $this->permissionVoter->isAllowed(
