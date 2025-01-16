@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
 use DomainException;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class MediaObjectEditor
 {
@@ -23,9 +24,9 @@ final class MediaObjectEditor
     private const PROPERTY_COPYRIGHT_HOLDER = 'schema:copyrightHolder';
     private const PROPERTY_DESCRIPTION = 'schema:description';
     private const PROPERTY_IN_LANGUAGE = 'schema:inLanguage';
-    private ImageNormalizer $imageNormalizer;
+    private NormalizerInterface $imageNormalizer;
 
-    public function __construct(ImageNormalizer $imageNormalizer)
+    public function __construct(NormalizerInterface $imageNormalizer)
     {
         $this->imageNormalizer = $imageNormalizer;
     }

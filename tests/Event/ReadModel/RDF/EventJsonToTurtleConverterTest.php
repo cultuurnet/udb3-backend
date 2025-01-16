@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Address\Parser\ParsedAddress;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -19,6 +20,7 @@ use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class EventJsonToTurtleConverterTest extends TestCase
 {
@@ -31,6 +33,11 @@ class EventJsonToTurtleConverterTest extends TestCase
     private $logger;
 
     private EventJsonToTurtleConverter $eventJsonToTurtleConverter;
+
+    /**
+     * @var NormalizerInterface|MockObject
+     */
+    private $imageNormalizer;
 
     protected function setUp(): void
     {
@@ -76,6 +83,7 @@ class EventJsonToTurtleConverterTest extends TestCase
             );
 
         $this->logger = $this->createMock(LoggerInterface::class);
+        $this->imageNormalizer = $this->createMock(NormalizerInterface::class);
 
         $this->eventJsonToTurtleConverter = new EventJsonToTurtleConverter(
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
@@ -85,6 +93,7 @@ class EventJsonToTurtleConverterTest extends TestCase
             $this->documentRepository,
             (new EventDenormalizer())->handlesDummyOrganizers(),
             $addressParser,
+            $this->imageNormalizer,
             $this->logger
         );
     }

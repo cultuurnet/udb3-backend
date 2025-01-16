@@ -10,8 +10,6 @@ use CultuurNet\UDB3\Http\RDF\JsonToTurtleConverter;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\ImagesToMediaObjectReferencesConvertor;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
@@ -31,6 +29,7 @@ use EasyRdf\Resource;
 use EasyRdf\Serialiser\Turtle;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
 {
@@ -46,14 +45,14 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
     private DenormalizerInterface $denormalizer;
     private AddressParser $addressParser;
     private LoggerInterface $logger;
-    private ImageNormalizer $imageNormalizer;
+    private NormalizerInterface $imageNormalizer;
 
     public function __construct(
         IriGeneratorInterface $iriGenerator,
         DocumentRepository $documentRepository,
         DenormalizerInterface $denormalizer,
         AddressParser $addressParser,
-        ImageNormalizer $imageNormalizer,
+        NormalizerInterface $imageNormalizer,
         LoggerInterface $logger
     ) {
         $this->iriGenerator = $iriGenerator;

@@ -51,6 +51,7 @@ use EasyRdf\Resource;
 use EasyRdf\Serialiser\Turtle;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 {
@@ -62,7 +63,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private DenormalizerInterface $eventDenormalizer;
     private AddressParser $addressParser;
     private LoggerInterface $logger;
-    private ImageNormalizer $imageNormalizer;
+    private NormalizerInterface $imageNormalizer;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
     private const TYPE_SPACE_TIME = 'cidoc:E92_Spacetime_Volume';
@@ -116,7 +117,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         DocumentRepository $documentRepository,
         DenormalizerInterface $eventDenormalizer,
         AddressParser $addressParser,
-        ImageNormalizer $imageNormalizer,
+        NormalizerInterface $imageNormalizer,
         LoggerInterface $logger
     ) {
         $this->eventsIriGenerator = $eventsIriGenerator;
