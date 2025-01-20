@@ -132,7 +132,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ["7.4", "8.0", "8.1"]
+                php-versions: ["8.1"]
         name: Unused composer dependencies ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
