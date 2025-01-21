@@ -16,6 +16,8 @@ use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Security\Permission\PermissionVoter;
+use CultuurNet\UDB3\User\CurrentUser;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -28,17 +30,27 @@ class SearchOwnershipRequestHandlerTest extends TestCase
     /** @var OwnershipSearchRepository&MockObject */
     private $ownershipSearchRepository;
 
+    /** @var PermissionVoter&MockObject */
+    private $permissionVoter;
+
     private SearchOwnershipRequestHandler $getOwnershipRequestHandler;
 
     protected function setUp(): void
     {
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
 
+        $this->permissionVoter = $this->createMock(PermissionVoter::class);
+
         $this->ownershipRepository = new InMemoryDocumentRepository();
 
         $this->getOwnershipRequestHandler = new SearchOwnershipRequestHandler(
             $this->ownershipSearchRepository,
-            $this->ownershipRepository
+            $this->ownershipRepository,
+            new CurrentUser('auth0|63e22626e39a8ca1264bd29b'),
+            new OwnershipStatusGuard(
+                $this->ownershipSearchRepository,
+                $this->permissionVoter
+            )
         );
 
         parent::setUp();
@@ -49,6 +61,8 @@ class SearchOwnershipRequestHandlerTest extends TestCase
      */
     public function it_handles_searching_ownerships_by_item_id(): void
     {
+        CurrentUser::configureGodUserIds([]);
+
         $getOwnershipRequest = (new Psr7RequestBuilder())
             ->withUriFromString('?itemId=9e68dafc-01d8-4c1c-9612-599c918b981d')
             ->build('GET');
@@ -99,6 +113,23 @@ class SearchOwnershipRequestHandlerTest extends TestCase
             ->with($searchQuery)
             ->willReturn(2);
 
+        $this->ownershipSearchRepository->expects($this->exactly(2))
+            ->method('getById')
+            ->willReturnCallback(
+                function (string $ownershipId) use ($ownershipCollection) {
+                    foreach ($ownershipCollection as $ownership) {
+                        if ($ownership->getId() === $ownershipId) {
+                            return $ownership;
+                        }
+                    }
+                    return null;
+                }
+            );
+
+        $this->permissionVoter->expects($this->exactly(2))
+            ->method('isAllowed')
+            ->willReturn(true);
+
         $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -119,6 +150,8 @@ class SearchOwnershipRequestHandlerTest extends TestCase
      */
     public function it_handles_searching_ownerships_by_state(): void
     {
+        CurrentUser::configureGodUserIds([]);
+
         $getOwnershipRequest = (new Psr7RequestBuilder())
             ->withUriFromString('?state=rejected')
             ->build('GET');
@@ -175,6 +208,10 @@ class SearchOwnershipRequestHandlerTest extends TestCase
             ->with($searchQuery)
             ->willReturn(1);
 
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('getById')
+            ->willReturn($rejectedOwnership);
+
         $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -195,6 +232,8 @@ class SearchOwnershipRequestHandlerTest extends TestCase
      */
     public function it_handles_searching_ownerships_by_owner_id(): void
     {
+        CurrentUser::configureGodUserIds([]);
+
         $getOwnershipRequest = (new Psr7RequestBuilder())
             ->withUriFromString('?ownerId=auth0|63e22626e39a8ca1264bd29b')
             ->build('GET');
@@ -260,6 +299,19 @@ class SearchOwnershipRequestHandlerTest extends TestCase
             ->with($searchQuery)
             ->willReturn(2);
 
+        $this->ownershipSearchRepository->expects($this->exactly(2))
+            ->method('getById')
+            ->willReturnCallback(
+                function (string $ownershipId) use ($ownershipCollection) {
+                    foreach ($ownershipCollection as $ownership) {
+                        if ($ownership->getId() === $ownershipId) {
+                            return $ownership;
+                        }
+                    }
+                    return null;
+                }
+            );
+
         $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -280,6 +332,8 @@ class SearchOwnershipRequestHandlerTest extends TestCase
      */
     public function it_handles_searching_ownerships_with_start_and_limit(): void
     {
+        CurrentUser::configureGodUserIds([]);
+
         $getOwnershipRequest = (new Psr7RequestBuilder())
             ->withUriFromString('?state=approved&start=1&limit=1')
             ->build('GET');
@@ -351,6 +405,10 @@ class SearchOwnershipRequestHandlerTest extends TestCase
             ->with($searchQuery)
             ->willReturn(1);
 
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('getById')
+            ->willReturn($approvedOwnership2);
+
         $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
 
         $this->assertEquals(200, $response->getStatusCode());
@@ -371,6 +429,8 @@ class SearchOwnershipRequestHandlerTest extends TestCase
      */
     public function it_returns_empty_collection_when_no_ownerships_found(): void
     {
+        CurrentUser::configureGodUserIds([]);
+
         $getOwnershipRequest = (new Psr7RequestBuilder())
             ->withUriFromString('?itemId=9e68dafc-01d8-4c1c-9612-599c918b981d')
             ->build('GET');
