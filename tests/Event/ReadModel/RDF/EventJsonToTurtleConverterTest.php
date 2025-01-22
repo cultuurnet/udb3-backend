@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\RDF\NodeUri\CRC32HashGenerator;
 use CultuurNet\UDB3\RDF\NodeUri\NodeUriGenerator;
-use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\ResourceFactoryWithoutBlankNodes;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactoryWithoutBlankNodes;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -89,7 +89,7 @@ class EventJsonToTurtleConverterTest extends TestCase
             (new EventDenormalizer())->handlesDummyOrganizers(),
             $addressParser,
             $this->logger,
-            new ResourceFactoryWithoutBlankNodes(new NodeUriGenerator(new CRC32HashGenerator()))
+            new RdfResourceFactoryWithoutBlankNodes(new NodeUriGenerator(new CRC32HashGenerator()))
         );
     }
 

@@ -27,18 +27,21 @@ final class OpeningHourNormalizerTest extends TestCase
      */
     public function it_should_normalize_opening_hour(): void
     {
-        $days = new Days(Day::monday(), Day::tuesday());
-        $openingTime = new Time(new Hour(9), new Minute(0));
-        $closingTime = new Time(new Hour(17), new Minute(0));
-
-        $openingHour = new OpeningHour($days, $openingTime, $closingTime);
+        $openingHour = new OpeningHour(
+            new Days(Day::monday(), Day::tuesday()),
+            new Time(new Hour(9), new Minute(0)),
+            new Time(
+                new Hour(17),
+                new Minute(0)
+            )
+        );
 
         $result = $this->normalizer->normalize($openingHour);
 
         $this->assertSame([
             'opens' => '09:00',
             'closes' => '17:00',
-            'dayOfWeek' => ['Monday', 'Tuesday'],
+            'dayOfWeek' => ['monday', 'tuesday'],
         ], $result);
     }
 

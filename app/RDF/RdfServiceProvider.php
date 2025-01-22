@@ -14,9 +14,9 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\RDF\NodeUri\CRC32HashGenerator;
 use CultuurNet\UDB3\RDF\NodeUri\NodeUriGenerator;
-use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\ResourceFactory;
-use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\ResourceFactoryWithBlankNodes;
-use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\ResourceFactoryWithoutBlankNodes;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactoryWithBlankNodes;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactoryWithoutBlankNodes;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
 use Geocoder\StatefulGeocoder;
 use Http\Adapter\Guzzle7\Client;
@@ -27,7 +27,7 @@ final class RdfServiceProvider extends AbstractServiceProvider
     {
         return [
             AddressParser::class,
-            ResourceFactory::class,
+            RdfResourceFactory::class,
         ];
     }
 
@@ -41,13 +41,13 @@ final class RdfServiceProvider extends AbstractServiceProvider
         );
 
         $this->container->addShared(
-            ResourceFactory::class,
-            function () use ($container): ResourceFactory {
+            RdfResourceFactory::class,
+            function () use ($container): RdfResourceFactory {
                 if ($container->get('config')['rdf']['blank_nodes_allowed'] ?? true) {
-                    return new ResourceFactoryWithBlankNodes();
+                    return new RdfResourceFactoryWithBlankNodes();
                 }
 
-                return new ResourceFactoryWithoutBlankNodes(new NodeUriGenerator(new CRC32HashGenerator()));
+                return new RdfResourceFactoryWithoutBlankNodes(new NodeUriGenerator(new CRC32HashGenerator()));
             }
         );
     }

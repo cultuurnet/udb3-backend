@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\RDF\NodeUri\ResourceFactory;
 
 use EasyRdf\Resource;
 
-interface ResourceFactory
+interface RdfResourceFactory
 {
     public function create(Resource $resource, string $nodeName, array $data): Resource;
 }
