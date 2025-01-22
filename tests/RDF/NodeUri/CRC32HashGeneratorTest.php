@@ -21,11 +21,16 @@ final class CRC32HashGeneratorTest extends TestCase
     public function it_should_generate_produces_consistent_hash(): void
     {
         $data = [
-            'key1' => 'value1',
-            'key2' => [
-                'key2_1' => 'value2_1',
-                'key2_2' => 'value2_2',
-            ],
+            'phone' => '+31 123 456 789',
+            'email' => 'test@public.be',
+            'availabilityStarts' => '2025-01-22 09:00:00',
+            'availabilityEnds' => '2025-01-22 17:00:00',
+            'urlLabel' => 'http://www.publiq.be',
+            'extraInfo' => [
+                'b' => 'b',
+                'c' => 'c',
+                'a' => 'a',
+            ]
         ];
 
         $this->assertSame($this->hashGenerator->generate($data), $this->hashGenerator->generate($data));
@@ -37,19 +42,29 @@ final class CRC32HashGeneratorTest extends TestCase
     public function it_should_generate_ignores_input_order(): void
     {
         $data1 = [
-            'key1' => 'value1',
-            'key2' => [
-                'key2_1' => 'value2_1',
-                'key2_2' => 'value2_2',
-            ],
+            'phone' => '+31 123 456 789',
+            'email' => 'test@public.be',
+            'availabilityStarts' => '2025-01-22 09:00:00',
+            'availabilityEnds' => '2025-01-22 17:00:00',
+            'urlLabel' => 'http://www.publiq.be',
+            'extraInfo' => [
+                'b' => 'b',
+                'c' => 'c',
+                'a' => 'a',
+            ]
         ];
 
         $data2 = [
-            'key2' => [
-                'key2_2' => 'value2_2',
-                'key2_1' => 'value2_1',
+            'availabilityEnds' => '2025-01-22 17:00:00',
+            'availabilityStarts' => '2025-01-22 09:00:00',
+            'email' => 'test@public.be',
+            'urlLabel' => 'http://www.publiq.be',
+            'extraInfo' => [
+                'a' => 'a',
+                'b' => 'b',
+                'c' => 'c',
             ],
-            'key1' => 'value1',
+            'phone' => '+31 123 456 789',
         ];
 
         $this->assertSame($this->hashGenerator->generate($data1), $this->hashGenerator->generate($data2));
