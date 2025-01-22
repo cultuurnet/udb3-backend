@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\RDF\NodeUri;
 
-use CultuurNet\UDB3\Json;
 use PHPUnit\Framework\TestCase;
 
 final class CRC32HashGeneratorTest extends TestCase
