@@ -15,6 +15,11 @@ final class NodeUriGenerator
 
     public function generate(string $nodeName, array $fields): string
     {
+        // Convert "schema:location" to "location".
+        if (str_contains($nodeName, ':')) {
+            $nodeName = substr($nodeName, strrpos($nodeName, ':') + 1);
+        }
+
         return sprintf('#%s-%s', $nodeName, $this->hashGenerator->generate($fields));
     }
 }
