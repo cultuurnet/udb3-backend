@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\RDF\Editor;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHourNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHoursNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\ResourceFactory;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
 
@@ -23,7 +26,7 @@ final class OpeningHoursEditor
     private const PROPERTY_CLOSES = 'schema:closes';
     private const PROPERTY_DAY_OF_WEEK = 'schema:dayOfWeek';
 
-    public function setOpeningHours(Resource $resource, Calendar $calendar): self
+    public function setOpeningHours(Resource $resource, Calendar $calendar, ResourceFactory $resourceFactory): self
     {
         if (!$calendar instanceof CalendarWithOpeningHours) {
             return $this;
@@ -34,11 +37,11 @@ final class OpeningHoursEditor
             return $this;
         }
 
-        $beschikbaarheid = $resource->getGraph()->newBNode([self::TYPE_BESCHIKBAARHEID]);
+        $beschikbaarheid = $resourceFactory->create($resource, self::TYPE_BESCHIKBAARHEID, (new OpeningHoursNormalizer())->normalize($openingHours));
 
         /** @var OpeningHour $openingHour */
         foreach ($openingHours as $openingHour) {
-            $hoursAvailable = $beschikbaarheid->getGraph()->newBNode([self::TYPE_OPENING_HOURS_SPECIFICATION]);
+            $hoursAvailable = $resourceFactory->create($resource, self::TYPE_OPENING_HOURS_SPECIFICATION, (new OpeningHourNormalizer())->normalize($openingHour));
 
             $hoursAvailable->addLiteral(self::PROPERTY_OPENS, $this->timeToLiteral($openingHour->getOpeningTime()));
             $hoursAvailable->addLiteral(self::PROPERTY_CLOSES, $this->timeToLiteral($openingHour->getClosingTime()));

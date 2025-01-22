@@ -242,6 +242,7 @@ trait ResponseSteps
      */
     public function theRdfResponseShouldMatch(string $fileName): void
     {
+        file_put_contents('response.txt', $this->responseState->getContent());
         assertEquals(
             $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
             $this->removeDates($this->responseState->getContent())

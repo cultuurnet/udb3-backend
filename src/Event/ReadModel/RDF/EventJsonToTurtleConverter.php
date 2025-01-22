@@ -42,6 +42,7 @@ use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\VideoEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\ResourceFactory;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
@@ -61,6 +62,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private DenormalizerInterface $eventDenormalizer;
     private AddressParser $addressParser;
     private LoggerInterface $logger;
+    private ResourceFactory $resourceFactory;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
     private const TYPE_SPACE_TIME = 'cidoc:E92_Spacetime_Volume';
@@ -114,7 +116,8 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         DocumentRepository $documentRepository,
         DenormalizerInterface $eventDenormalizer,
         AddressParser $addressParser,
-        LoggerInterface $logger
+        LoggerInterface $logger,
+        ResourceFactory $resourceFactory
     ) {
         $this->eventsIriGenerator = $eventsIriGenerator;
         $this->placesIriGenerator = $placesIriGenerator;
@@ -124,6 +127,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         $this->eventDenormalizer = $eventDenormalizer;
         $this->addressParser = $addressParser;
         $this->logger = $logger;
+        $this->resourceFactory = $resourceFactory;
     }
 
     public function convert(string $id): string
@@ -200,7 +204,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         $this->setCalendarWithLocation($resource, $event, $eventData['location']);
-        (new OpeningHoursEditor())->setOpeningHours($resource, $event->getCalendar());
+        (new OpeningHoursEditor())->setOpeningHours($resource, $event->getCalendar(), $this->resourceFactory);
 
         if ($event->getDescription()) {
             $this->setDescription($resource, $event->getDescription());
