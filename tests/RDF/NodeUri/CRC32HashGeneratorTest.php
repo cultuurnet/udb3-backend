@@ -30,7 +30,7 @@ final class CRC32HashGeneratorTest extends TestCase
                 'b' => 'b',
                 'c' => 'c',
                 'a' => 'a',
-            ]
+            ],
         ];
 
         $this->assertSame($this->hashGenerator->generate($data), $this->hashGenerator->generate($data));
@@ -51,7 +51,7 @@ final class CRC32HashGeneratorTest extends TestCase
                 'b' => 'b',
                 'c' => 'c',
                 'a' => 'a',
-            ]
+            ],
         ];
 
         $data2 = [
