@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\ImagesToMediaObjectReferencesConvertor;
 
 final class MediaServiceProvider extends AbstractServiceProvider
 {
@@ -30,6 +31,7 @@ final class MediaServiceProvider extends AbstractServiceProvider
             'media_url_mapping',
             GetMediaRequestHandler::class,
             UploadMediaRequestHandler::class,
+            ImagesToMediaObjectReferencesConvertor::class,
         ];
     }
 
@@ -143,6 +145,15 @@ final class MediaServiceProvider extends AbstractServiceProvider
                 return new UploadMediaRequestHandler(
                     $container->get('image_uploader'),
                     $container->get('media_object_iri_generator')
+                );
+            }
+        );
+
+        $container->addShared(
+            ImagesToMediaObjectReferencesConvertor::class,
+            function () use ($container) {
+                return new ImagesToMediaObjectReferencesConvertor(
+                    $container->get('media_object_repository'),
                 );
             }
         );

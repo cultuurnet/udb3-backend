@@ -10,7 +10,9 @@ use CultuurNet\UDB3\Http\RDF\JsonToTurtleConverter;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\ImagesToMediaObjectReferencesConvertor;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
+use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
@@ -18,6 +20,7 @@ use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GeometryEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\LabelEditor;
+use CultuurNet\UDB3\RDF\Editor\MediaObjectEditor;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
@@ -35,6 +38,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
     private DenormalizerInterface $denormalizer;
     private AddressParser $addressParser;
     private LoggerInterface $logger;
+    private ImagesToMediaObjectReferencesConvertor $imagesToMediaObjectReferencesConvertor;
 
     private const TYPE_ORGANISATOR = 'cp:Organisator';
 
@@ -42,18 +46,21 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
     private const PROPERTY_HOMEPAGE = 'foaf:homepage';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_WORKFLOW_STATUS = 'udb:workflowStatus';
+    private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
 
     public function __construct(
         IriGeneratorInterface $iriGenerator,
         DocumentRepository $documentRepository,
         DenormalizerInterface $denormalizer,
         AddressParser $addressParser,
+        ImagesToMediaObjectReferencesConvertor $imagesToMediaObjectReferencesConvertor,
         LoggerInterface $logger
     ) {
         $this->iriGenerator = $iriGenerator;
         $this->documentRepository = $documentRepository;
         $this->denormalizer = $denormalizer;
         $this->addressParser = $addressParser;
+        $this->imagesToMediaObjectReferencesConvertor = $imagesToMediaObjectReferencesConvertor;
         $this->logger = $logger;
     }
 
@@ -97,6 +104,10 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
             $this->setHomepage($resource, $organizer->getUrl());
         }
 
+        if ($organizer->getDescription()) {
+            $this->setDescription($resource, $organizer->getDescription());
+        }
+
         if ($organizer->getAddress()) {
             (new AddressEditor($this->addressParser))
                 ->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $organizer->getAddress());
@@ -115,7 +126,24 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
             (new LabelEditor())->setLabels($resource, $organizer->getLabels());
         }
 
+        if (!$organizer->getImages()->isEmpty()) {
+            (new MediaObjectEditor())->setImages(
+                $resource,
+                $this->imagesToMediaObjectReferencesConvertor->convert($organizer->getImages())
+            );
+        }
+
         return trim((new Turtle())->serialise($graph, 'turtle'));
+    }
+
+    private function setDescription(Resource $resource, TranslatedDescription $translatedDescription): void
+    {
+        foreach ($translatedDescription->getLanguages() as $language) {
+            $resource->addLiteral(
+                self::PROPERTY_ACTIVITEIT_DESCRIPTION,
+                new Literal($translatedDescription->getTranslation($language)->toString(), $language->toString())
+            );
+        }
     }
 
     private function fetchOrganizerData(string $organizerId): array

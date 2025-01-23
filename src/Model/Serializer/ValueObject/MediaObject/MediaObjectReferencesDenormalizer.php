@@ -19,11 +19,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class MediaObjectReferencesDenormalizer implements DenormalizerInterface
 {
-    /**
-     * @var UuidParser
-     */
-    private $mediaObjectIdParser;
-
+    private UuidParser $mediaObjectIdParser;
 
     public function __construct(UuidParser $mediaObjectIdParser = null)
     {
