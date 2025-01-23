@@ -32,7 +32,6 @@ class MediaObjectReferenceTest extends TestCase
         $this->assertEquals($description, $mediaObjectReference->getDescription());
         $this->assertEquals($copyrightHolder, $mediaObjectReference->getCopyrightHolder());
         $this->assertEquals($language, $mediaObjectReference->getLanguage());
-        $this->assertNull($mediaObjectReference->getEmbeddedMediaObject());
     }
 
     /**

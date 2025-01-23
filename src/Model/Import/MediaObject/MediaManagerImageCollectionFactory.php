@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
 class MediaManagerImageCollectionFactory implements ImageCollectionFactory
@@ -26,15 +25,6 @@ class MediaManagerImageCollectionFactory implements ImageCollectionFactory
 
     public function fromMediaObjectReferences(MediaObjectReferences $mediaObjectReferences): ImageCollection
     {
-        $mediaObjectsReferences = $mediaObjectReferences->filter(
-            function (MediaObjectReference $mediaObjectReference) {
-                $embeddedMediaObject = $mediaObjectReference->getEmbeddedMediaObject();
-
-                return is_null($embeddedMediaObject) ||
-                    $embeddedMediaObject->getType()->sameAs(MediaObjectType::imageObject());
-            }
-        );
-
         $images = array_map(
             function (MediaObjectReference $mediaObjectReference) {
                 $id = $mediaObjectReference->getMediaObjectId();
@@ -65,7 +55,7 @@ class MediaManagerImageCollectionFactory implements ImageCollectionFactory
                     new Language($mediaObjectReference->getLanguage()->toString())
                 );
             },
-            $mediaObjectsReferences->toArray()
+            $mediaObjectReferences->toArray()
         );
 
         $images = array_filter($images);

@@ -12,8 +12,6 @@ final class MediaObjectReference
 {
     private Uuid $mediaObjectId;
 
-    private ?MediaObject $mediaObject;
-
     private Description $description;
 
     private CopyrightHolder $copyrightHolder;
@@ -24,28 +22,17 @@ final class MediaObjectReference
         Uuid $mediaObjectId,
         Description $description,
         CopyrightHolder $copyrightHolder,
-        Language $language,
-        MediaObject $mediaObject = null
+        Language $language
     ) {
-        if ($mediaObject) {
-            $mediaObjectId = $mediaObject->getId();
-        }
-
         $this->mediaObjectId = $mediaObjectId;
         $this->description = $description;
         $this->copyrightHolder = $copyrightHolder;
         $this->language = $language;
-        $this->mediaObject = $mediaObject;
     }
 
     public function getMediaObjectId(): Uuid
     {
         return $this->mediaObjectId;
-    }
-
-    public function getEmbeddedMediaObject(): ?MediaObject
-    {
-        return $this->mediaObject;
     }
 
     public function getDescription(): Description
