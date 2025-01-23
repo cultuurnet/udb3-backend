@@ -313,7 +313,8 @@ abstract class OfferDenormalizer implements DenormalizerInterface
                 null,
                 ['originalLanguage' => $data['mainLanguage']]
             );
-            $offer = $offer->withMediaObjectReferences($mediaObjectReferences);
+            // Temporary until the OfferDenormalizer is refactored to use ImagesDenormalizer
+            $offer = $offer->withImages($mediaObjectReferences->toImages());
         }
 
         return $offer;
