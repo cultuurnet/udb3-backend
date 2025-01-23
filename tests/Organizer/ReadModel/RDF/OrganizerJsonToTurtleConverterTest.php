@@ -9,13 +9,6 @@ use CultuurNet\UDB3\Address\Parser\ParsedAddress;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\ImagesToMediaObjectReferencesConvertor;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject as MediaObjectDto;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectType;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -23,9 +16,7 @@ use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Model\ValueObject\Text\Description;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class OrganizerJsonToTurtleConverterTest extends TestCase
 {
@@ -35,8 +26,11 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
     private string $organizerId;
     private array $organizer;
-    /** @var ImagesToMediaObjectReferencesConvertor&MockObject */
-    private $imagesToMediaObjectReferencesConvertor;
+
+    /**
+     * @var NormalizerInterface|MockObject
+     */
+    private $imageNormalizer;
 
     protected function setUp(): void
     {
@@ -71,14 +65,14 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
 
         $logger = $this->createMock(LoggerInterface::class);
 
-        $this->imagesToMediaObjectReferencesConvertor = $this->createMock(ImagesToMediaObjectReferencesConvertor::class);
+        $this->imageNormalizer = $this->createMock(NormalizerInterface::class);
 
         $this->organizerJsonToTurtleConverter = new OrganizerJsonToTurtleConverter(
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/organizers/' . $item),
             $this->documentRepository,
             new OrganizerDenormalizer(),
             $addressParser,
-            $this->imagesToMediaObjectReferencesConvertor,
+            $this->imageNormalizer,
             $logger
         );
     }
@@ -263,23 +257,11 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
             ],
         ]);
 
-        $mediaObjectDto = new MediaObjectDto(
-            new Uuid($imgId),
-            MediaObjectType::imageObject(),
-            new Url($url),
-            new Url($url),
-        );
-
-        $mediaObjectReference = MediaObjectReference::createWithEmbeddedMediaObject(
-            $mediaObjectDto,
-            new Description('Main image'),
-            new CopyrightHolder('passa porta'),
-            new Language('nl')
-        );
-
-        $this->imagesToMediaObjectReferencesConvertor->expects($this->once())
-            ->method('convert')
-            ->willReturn(new MediaObjectReferences($mediaObjectReference));
+        $this->imageNormalizer->expects($this->once())
+            ->method('normalize')
+            ->willReturn([
+                'contentUrl' => $url,
+            ]);
 
         $turtle = $this->organizerJsonToTurtleConverter->convert($this->organizerId);
 
