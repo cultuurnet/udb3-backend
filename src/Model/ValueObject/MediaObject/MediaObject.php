@@ -38,14 +38,4 @@ class MediaObject
     {
         return $this->type;
     }
-
-    public function getContentUrl(): Url
-    {
-        return $this->contentUrl;
-    }
-
-    public function getThumbnailUrl(): Url
-    {
-        return $this->thumbnailUrl;
-    }
 }

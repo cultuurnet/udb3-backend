@@ -29,7 +29,5 @@ class MediaObjectTest extends TestCase
 
         $this->assertEquals($id, $mediaObject->getId());
         $this->assertEquals($type, $mediaObject->getType());
-        $this->assertEquals($contentUrl, $mediaObject->getContentUrl());
-        $this->assertEquals($thumbnailUrl, $mediaObject->getThumbnailUrl());
     }
 }
