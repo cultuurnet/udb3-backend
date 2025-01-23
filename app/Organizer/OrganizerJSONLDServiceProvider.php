@@ -52,10 +52,7 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
                     new JsonDocumentLanguageEnricher(
                         new OrganizerJsonDocumentLanguageAnalyzer()
                     ),
-                    new ImageNormalizer(
-                        $container->get('media_object_repository'),
-                        $container->get('media_object_iri_generator')
-                    ),
+                    $this->container->get(ImageNormalizer::class),
                     new CdbXMLImporter(
                         $container->get(CdbXMLToJsonLDLabelImporter::class),
                         new CultureFeedAddressFactory()
