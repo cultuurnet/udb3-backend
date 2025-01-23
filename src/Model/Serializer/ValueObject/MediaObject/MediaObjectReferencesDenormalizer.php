@@ -6,11 +6,9 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectIDParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectType;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -61,33 +59,12 @@ class MediaObjectReferencesDenormalizer implements DenormalizerInterface
         $description = new Description($referenceData['description']);
         $copyrightHolder = new CopyrightHolder($referenceData['copyrightHolder']);
         $language = new Language($referenceData['inLanguage']);
-        $mediaObject = null;
 
-        if (isset($referenceData['@type'])) {
-            $type = str_replace('schema:', '', $referenceData['@type']);
-            $type = lcfirst($type);
-            $type = new MediaObjectType($type);
-
-            $mediaObject = new MediaObject(
-                $id,
-                $type
-            );
-        }
-
-        if ($mediaObject) {
-            return MediaObjectReference::createWithEmbeddedMediaObject(
-                $mediaObject,
-                $description,
-                $copyrightHolder,
-                $language
-            );
-        } else {
-            return MediaObjectReference::createWithMediaObjectId(
-                $id,
-                $description,
-                $copyrightHolder,
-                $language
-            );
-        }
+        return MediaObjectReference::createWithMediaObjectId(
+            $id,
+            $description,
+            $copyrightHolder,
+            $language
+        );
     }
 }

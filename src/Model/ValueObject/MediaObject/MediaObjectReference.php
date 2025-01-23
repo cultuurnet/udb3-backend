@@ -90,19 +90,4 @@ final class MediaObjectReference
             $language
         );
     }
-
-    public static function createWithEmbeddedMediaObject(
-        MediaObject $mediaObject,
-        Description $description,
-        CopyrightHolder $copyrightHolder,
-        Language $language
-    ): MediaObjectReference {
-        return new self(
-            $mediaObject->getId(),
-            $description,
-            $copyrightHolder,
-            $language,
-            $mediaObject
-        );
-    }
 }

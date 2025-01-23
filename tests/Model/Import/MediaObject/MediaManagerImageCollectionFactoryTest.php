@@ -13,10 +13,8 @@ use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectType;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -110,11 +108,8 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new Language('nl')
             ),
             // Movie.
-            MediaObjectReference::createWithEmbeddedMediaObject(
-                new MediaObject(
-                    new Uuid('9bad84d7-8200-4a23-af86-ec4decb3fe86'),
-                    MediaObjectType::mediaObject()
-                ),
+            MediaObjectReference::createWithMediaObjectId(
+                new Uuid('9bad84d7-8200-4a23-af86-ec4decb3fe86'),
                 new Description('Filmpje'),
                 new CopyrightHolder('Bob'),
                 new Language('nl')
@@ -127,11 +122,8 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new Language('nl')
             ),
             // PNG image with original description, copyright holder and language.
-            MediaObjectReference::createWithEmbeddedMediaObject(
-                new MediaObject(
-                    new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
-                    MediaObjectType::imageObject()
-                ),
+            MediaObjectReference::createWithMediaObjectId(
+                new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
                 new Description('PNG Afbeelding'),
                 new CopyrightHolder('Bob'),
                 new Language('nl')
