@@ -60,7 +60,7 @@ class MediaObjectReferencesDenormalizer implements DenormalizerInterface
         $copyrightHolder = new CopyrightHolder($referenceData['copyrightHolder']);
         $language = new Language($referenceData['inLanguage']);
 
-        return MediaObjectReference::createWithMediaObjectId(
+        return new MediaObjectReference(
             $id,
             $description,
             $copyrightHolder,

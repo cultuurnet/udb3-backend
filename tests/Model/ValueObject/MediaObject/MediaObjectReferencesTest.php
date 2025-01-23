@@ -16,14 +16,14 @@ class MediaObjectReferencesTest extends TestCase
      */
     public function it_converts_to_images(): void
     {
-        $mediaObject1 = MediaObjectReference::createWithMediaObjectId(
+        $mediaObject1 = new MediaObjectReference(
             new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
             new Description('Some image description'),
             new CopyrightHolder('Publiq vzw'),
             new Language('en')
         );
 
-        $mediaObject2 = MediaObjectReference::createWithMediaObjectId(
+        $mediaObject2 = new MediaObjectReference(
             new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
             new Description('Een afbeelding beschrijving'),
             new CopyrightHolder('Publiq vzw'),

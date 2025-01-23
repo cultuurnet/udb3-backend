@@ -21,7 +21,7 @@ class MediaObjectReferenceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Publiq vzw');
         $language = new Language('en');
 
-        $mediaObjectReference = MediaObjectReference::createWithMediaObjectId(
+        $mediaObjectReference = new MediaObjectReference(
             $id,
             $description,
             $copyrightHolder,
@@ -44,7 +44,7 @@ class MediaObjectReferenceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Publiq vzw');
         $language = new Language('en');
 
-        $mediaObjectReference = MediaObjectReference::createWithMediaObjectId(
+        $mediaObjectReference = new MediaObjectReference(
             $id,
             $description,
             $copyrightHolder,
@@ -69,7 +69,7 @@ class MediaObjectReferenceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Publiq vzw');
         $language = new Language('en');
 
-        $mediaObjectReference = MediaObjectReference::createWithMediaObjectId(
+        $mediaObjectReference = new MediaObjectReference(
             $id,
             $description,
             $copyrightHolder,

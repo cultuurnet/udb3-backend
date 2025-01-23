@@ -18,7 +18,7 @@ final class MediaObjectReference
 
     private Language $language;
 
-    private function __construct(
+    public function __construct(
         Uuid $mediaObjectId,
         Description $description,
         CopyrightHolder $copyrightHolder,
@@ -62,19 +62,5 @@ final class MediaObjectReference
     public function getLanguage(): Language
     {
         return $this->language;
-    }
-
-    public static function createWithMediaObjectId(
-        Uuid $mediaObjectId,
-        Description $description,
-        CopyrightHolder $copyrightHolder,
-        Language $language
-    ): MediaObjectReference {
-        return new self(
-            $mediaObjectId,
-            $description,
-            $copyrightHolder,
-            $language
-        );
     }
 }
