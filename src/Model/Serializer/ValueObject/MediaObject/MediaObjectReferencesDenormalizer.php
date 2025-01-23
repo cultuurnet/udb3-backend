@@ -63,21 +63,14 @@ class MediaObjectReferencesDenormalizer implements DenormalizerInterface
         $language = new Language($referenceData['inLanguage']);
         $mediaObject = null;
 
-        if (isset($referenceData['@type']) &&
-            isset($referenceData['contentUrl']) &&
-            isset($referenceData['thumbnailUrl'])) {
+        if (isset($referenceData['@type'])) {
             $type = str_replace('schema:', '', $referenceData['@type']);
             $type = lcfirst($type);
             $type = new MediaObjectType($type);
 
-            $contentUrl = new Url($referenceData['contentUrl']);
-            $thumbnailUrl = new Url($referenceData['thumbnailUrl']);
-
             $mediaObject = new MediaObject(
                 $id,
-                $type,
-                $contentUrl,
-                $thumbnailUrl
+                $type
             );
         }
 

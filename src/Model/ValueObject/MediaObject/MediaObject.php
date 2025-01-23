@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
 class MediaObject
 {
@@ -13,20 +12,12 @@ class MediaObject
 
     private MediaObjectType $type;
 
-    private Url $contentUrl;
-
-    private Url $thumbnailUrl;
-
     public function __construct(
         Uuid $id,
-        MediaObjectType $type,
-        Url $contentUrl,
-        Url $thumbnailUrl
+        MediaObjectType $type
     ) {
         $this->id = $id;
         $this->type = $type;
-        $this->contentUrl = $contentUrl;
-        $this->thumbnailUrl = $thumbnailUrl;
     }
 
     public function getId(): Uuid

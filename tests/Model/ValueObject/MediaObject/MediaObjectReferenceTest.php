@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 class MediaObjectReferenceTest extends TestCase
@@ -43,10 +42,8 @@ class MediaObjectReferenceTest extends TestCase
     {
         $id = new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
         $type = MediaObjectType::imageObject();
-        $contentUrl = new Url('http://publiq.be/test.png');
-        $thumbnailUrl = new Url('http://publiq.be/test.png?w=100&h=100');
 
-        $mediaObject = new MediaObject($id, $type, $contentUrl, $thumbnailUrl);
+        $mediaObject = new MediaObject($id, $type);
 
         $description = new Description('Some image description');
         $copyrightHolder = new CopyrightHolder('Publiq vzw');

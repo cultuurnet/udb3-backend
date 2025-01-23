@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 class MediaObjectReferencesTest extends TestCase
@@ -20,9 +19,7 @@ class MediaObjectReferencesTest extends TestCase
         $referenceWithEmbeddedMediaObject = MediaObjectReference::createWithEmbeddedMediaObject(
             new MediaObject(
                 new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
-                MediaObjectType::imageObject(),
-                new Url('http://publiq.be/test.png'),
-                new Url('http://publiq.be/test.png?w=100&h=100')
+                MediaObjectType::imageObject()
             ),
             new Description('Some image description'),
             new CopyrightHolder('Publiq vzw'),
