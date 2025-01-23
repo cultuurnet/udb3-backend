@@ -176,7 +176,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -258,7 +258,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -330,7 +330,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -376,7 +376,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->once())
@@ -448,7 +448,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->once())
@@ -643,7 +643,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             );
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn($imageCollection);
 
         $this->aggregateRepository->expects($this->never())
@@ -805,7 +805,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -876,7 +876,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -985,7 +985,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         ];
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $expectedErrors = [
@@ -1074,7 +1074,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -1144,7 +1144,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -1224,7 +1224,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -1298,7 +1298,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         ];
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -1379,7 +1379,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -1460,7 +1460,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -1535,7 +1535,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -1614,7 +1614,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -1687,7 +1687,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -1960,7 +1960,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         ];
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->once())
@@ -2778,7 +2778,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -4041,7 +4041,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -4369,7 +4369,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ->build('PUT');
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
@@ -4843,7 +4843,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         ];
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $this->aggregateRepository->expects($this->never())
