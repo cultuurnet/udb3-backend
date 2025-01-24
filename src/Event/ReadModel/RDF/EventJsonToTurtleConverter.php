@@ -14,6 +14,8 @@ use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\MoneyNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -520,28 +522,28 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function createPrijsResource(Resource $resource, Tariff $tariff): Resource
     {
-        $prijsResource = $resource->getGraph()->newBNode([self::TYPE_PRICE_SPECIFICATION]);
+        $priceSpecificationResource = $this->resourceFactory->create($resource, self::TYPE_PRICE_SPECIFICATION, (new TariffNormalizer())->normalize($tariff));
 
-        $priceResource = $prijsResource->getGraph()->newBNode([self::TYPE_MONETARY_AMOUNT]);
-        $priceResource->set(
+        $monetaryAmountResource = $this->resourceFactory->create($resource, self::TYPE_MONETARY_AMOUNT, (new MoneyNormalizer())->normalize($tariff->getPrice()));
+        $monetaryAmountResource->set(
             self::PROPERTY_CURRENCY,
             new Literal($tariff->getPrice()->getCurrency()->getName(), null)
         );
-        $priceResource->set(
+        $monetaryAmountResource->set(
             self::PROPERTY_VALUE,
             new Literal((string)($tariff->getPrice()->getAmount() / 100), null, 'schema:Number')
         );
-        $prijsResource->set(self::PROPERTY_PRICE, $priceResource);
+        $priceSpecificationResource->set(self::PROPERTY_PRICE, $monetaryAmountResource);
 
         foreach ($tariff->getName()->getLanguages() as $language) {
             /** @var TariffName $name */
             $name = $tariff->getName()->getTranslation($language);
-            $prijsResource->add(
+            $priceSpecificationResource->add(
                 self::PROPERTY_PREF_LABEL,
                 new Literal($name->toString(), $language->toString())
             );
         }
 
-        return $prijsResource;
+        return $priceSpecificationResource;
     }
 }

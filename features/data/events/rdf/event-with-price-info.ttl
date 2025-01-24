@@ -28,22 +28,22 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-  cpa:prijs [
-    a schema:PriceSpecification ;
-    schema:price [
-      a schema:MonetaryAmount ;
-      schema:currency "EUR" ;
-      schema:value "59.99"^^schema:Number
-    ] ;
-    skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
-    cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis>
-  ], [
-    a schema:PriceSpecification ;
-    schema:price [
-      a schema:MonetaryAmount ;
-      schema:currency "EUR" ;
-      schema:value "40"^^schema:Number
-    ] ;
-    skos:prefLabel "Reductie"@nl ;
-    cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/tarief>
-  ] .
+  cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-38cfd4d4>, <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-e9f05748> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-38cfd4d4>
+  schema:price <http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-d0a4e992> ;
+  skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
+  cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-d0a4e992>
+  schema:currency "EUR" ;
+  schema:value "59.99"^^schema:Number .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-e9f05748>
+  schema:price <http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-5b5b7793> ;
+  skos:prefLabel "Reductie"@nl ;
+  cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/tarief> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-5b5b7793>
+  schema:currency "EUR" ;
+  schema:value "40"^^schema:Number .
