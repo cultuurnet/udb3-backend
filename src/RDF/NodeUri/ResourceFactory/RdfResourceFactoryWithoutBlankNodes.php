@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\RDF\NodeUri\ResourceFactory;
 use CultuurNet\UDB3\RDF\NodeUri\NodeUriGenerator;
 use EasyRdf\Resource;
 
-final class ResourceFactoryWithoutBlankNodes implements ResourceFactory
+final class RdfResourceFactoryWithoutBlankNodes implements RdfResourceFactory
 {
     private NodeUriGenerator $nodeUriGenerator;
 
