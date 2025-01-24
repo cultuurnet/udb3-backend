@@ -10,10 +10,8 @@ use DateTimeImmutable;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use InvalidArgumentException;
 
 class TariffNormalizerTest extends TestCase

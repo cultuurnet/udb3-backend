@@ -10,7 +10,6 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\TestCase;
 
-
 class MoneyNormalizerTest extends TestCase
 {
     private MoneyNormalizer $normalizer;
