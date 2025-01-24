@@ -12,40 +12,27 @@ final class MediaObjectReference
 {
     private Uuid $mediaObjectId;
 
-    private ?MediaObject $mediaObject;
-
     private Description $description;
 
     private CopyrightHolder $copyrightHolder;
 
     private Language $language;
 
-    private function __construct(
+    public function __construct(
         Uuid $mediaObjectId,
         Description $description,
         CopyrightHolder $copyrightHolder,
-        Language $language,
-        MediaObject $mediaObject = null
+        Language $language
     ) {
-        if ($mediaObject) {
-            $mediaObjectId = $mediaObject->getId();
-        }
-
         $this->mediaObjectId = $mediaObjectId;
         $this->description = $description;
         $this->copyrightHolder = $copyrightHolder;
         $this->language = $language;
-        $this->mediaObject = $mediaObject;
     }
 
     public function getMediaObjectId(): Uuid
     {
         return $this->mediaObjectId;
-    }
-
-    public function getEmbeddedMediaObject(): ?MediaObject
-    {
-        return $this->mediaObject;
     }
 
     public function getDescription(): Description
@@ -75,34 +62,5 @@ final class MediaObjectReference
     public function getLanguage(): Language
     {
         return $this->language;
-    }
-
-    public static function createWithMediaObjectId(
-        Uuid $mediaObjectId,
-        Description $description,
-        CopyrightHolder $copyrightHolder,
-        Language $language
-    ): MediaObjectReference {
-        return new self(
-            $mediaObjectId,
-            $description,
-            $copyrightHolder,
-            $language
-        );
-    }
-
-    public static function createWithEmbeddedMediaObject(
-        MediaObject $mediaObject,
-        Description $description,
-        CopyrightHolder $copyrightHolder,
-        Language $language
-    ): MediaObjectReference {
-        return new self(
-            $mediaObject->getId(),
-            $description,
-            $copyrightHolder,
-            $language,
-            $mediaObject
-        );
     }
 }
