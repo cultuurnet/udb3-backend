@@ -37,7 +37,7 @@ use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\LabelEditor;
-use CultuurNet\UDB3\RDF\Editor\MediaObjectEditor;
+use CultuurNet\UDB3\RDF\Editor\ImageEditor;
 use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\VideoEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
@@ -51,6 +51,7 @@ use EasyRdf\Resource;
 use EasyRdf\Serialiser\Turtle;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 {
@@ -63,6 +64,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private AddressParser $addressParser;
     private LoggerInterface $logger;
     private ResourceFactory $resourceFactory;
+    private NormalizerInterface $imageNormalizer;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
     private const TYPE_SPACE_TIME = 'cidoc:E92_Spacetime_Volume';
@@ -116,8 +118,9 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         DocumentRepository $documentRepository,
         DenormalizerInterface $eventDenormalizer,
         AddressParser $addressParser,
-        LoggerInterface $logger,
-        ResourceFactory $resourceFactory
+        ResourceFactory $resourceFactory,
+        NormalizerInterface $imageNormalizer,
+        LoggerInterface $logger
     ) {
         $this->eventsIriGenerator = $eventsIriGenerator;
         $this->placesIriGenerator = $placesIriGenerator;
@@ -128,6 +131,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         $this->addressParser = $addressParser;
         $this->logger = $logger;
         $this->resourceFactory = $resourceFactory;
+        $this->imageNormalizer = $imageNormalizer;
     }
 
     public function convert(string $id): string
@@ -231,7 +235,10 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if (!$event->getMediaObjectReferences()->isEmpty()) {
-            (new MediaObjectEditor())->setImages($resource, $event->getMediaObjectReferences());
+            (new ImageEditor($this->imageNormalizer))->setImages(
+                $resource,
+                $event->getMediaObjectReferences()->toImages()
+            );
         }
 
         return trim((new Turtle())->serialise($graph, 'turtle'));

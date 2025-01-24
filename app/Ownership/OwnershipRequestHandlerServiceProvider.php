@@ -65,7 +65,9 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
         $container->addShared(
             GetOwnershipRequestHandler::class,
             fn () => new GetOwnershipRequestHandler(
-                $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY)
+                $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY),
+                $container->get(CurrentUser::class),
+                $container->get(OwnershipStatusGuard::class)
             )
         );
 
@@ -73,7 +75,9 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             SearchOwnershipRequestHandler::class,
             fn () => new SearchOwnershipRequestHandler(
                 $container->get(OwnershipSearchRepository::class),
-                $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY)
+                $container->get(OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY),
+                $container->get(CurrentUser::class),
+                $container->get(OwnershipStatusGuard::class)
             )
         );
 

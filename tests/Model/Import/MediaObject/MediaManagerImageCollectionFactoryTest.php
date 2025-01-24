@@ -13,10 +13,8 @@ use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectType;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -96,46 +94,36 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
 
         $input = new MediaObjectReferences(
             // JPG image with updated description, copyright holder and language.
-            MediaObjectReference::createWithMediaObjectId(
+            new MediaObjectReference(
                 new Uuid('b170224d-a5c6-40e3-a622-c4bac3a68f3a'),
                 new Description('Voorbeeld beschrijving (aangepast)'),
                 new CopyrightHolder('Bobby'),
                 new Language('nl')
             ),
             // Does not exist.
-            MediaObjectReference::createWithMediaObjectId(
+            new MediaObjectReference(
                 new Uuid('27a317c3-b74d-4352-97f1-9606f7dc0e05'),
                 new Description('Voorbeeld beschrijving'),
                 new CopyrightHolder('Bob'),
                 new Language('nl')
             ),
             // Movie.
-            MediaObjectReference::createWithEmbeddedMediaObject(
-                new MediaObject(
-                    new Uuid('9bad84d7-8200-4a23-af86-ec4decb3fe86'),
-                    MediaObjectType::mediaObject(),
-                    new Url('https://io.uitdatabank.be/media/9bad84d7-8200-4a23-af86-ec4decb3fe86.mov'),
-                    new Url('https://io.uitdatabank.be/media/9bad84d7-8200-4a23-af86-ec4decb3fe86.jpg')
-                ),
+            new MediaObjectReference(
+                new Uuid('9bad84d7-8200-4a23-af86-ec4decb3fe86'),
                 new Description('Filmpje'),
                 new CopyrightHolder('Bob'),
                 new Language('nl')
             ),
             // Has no type so will be treated as an image but is actually a movie internally.
-            MediaObjectReference::createWithMediaObjectId(
+            new MediaObjectReference(
                 new Uuid('a6a883ac-47c4-4a87-811d-cdb0bfc7e0eb'),
                 new Description('Voorbeeld beschrijving 2'),
                 new CopyrightHolder('Bob'),
                 new Language('nl')
             ),
             // PNG image with original description, copyright holder and language.
-            MediaObjectReference::createWithEmbeddedMediaObject(
-                new MediaObject(
-                    new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
-                    MediaObjectType::imageObject(),
-                    new Url('https://io.uitdatabank.be/media/502c9436-02cd-4224-a690-04898b7c3a8d.png'),
-                    new Url('https://io.uitdatabank.be/media/502c9436-02cd-4224-a690-04898b7c3a8d.png')
-                ),
+            new MediaObjectReference(
+                new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
                 new Description('PNG Afbeelding'),
                 new CopyrightHolder('Bob'),
                 new Language('nl')
