@@ -113,9 +113,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
             MediaObjectReference::createWithEmbeddedMediaObject(
                 new MediaObject(
                     new Uuid('9bad84d7-8200-4a23-af86-ec4decb3fe86'),
-                    MediaObjectType::mediaObject(),
-                    new Url('https://io.uitdatabank.be/media/9bad84d7-8200-4a23-af86-ec4decb3fe86.mov'),
-                    new Url('https://io.uitdatabank.be/media/9bad84d7-8200-4a23-af86-ec4decb3fe86.jpg')
+                    MediaObjectType::mediaObject()
                 ),
                 new Description('Filmpje'),
                 new CopyrightHolder('Bob'),
@@ -132,9 +130,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
             MediaObjectReference::createWithEmbeddedMediaObject(
                 new MediaObject(
                     new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
-                    MediaObjectType::imageObject(),
-                    new Url('https://io.uitdatabank.be/media/502c9436-02cd-4224-a690-04898b7c3a8d.png'),
-                    new Url('https://io.uitdatabank.be/media/502c9436-02cd-4224-a690-04898b7c3a8d.png')
+                    MediaObjectType::imageObject()
                 ),
                 new Description('PNG Afbeelding'),
                 new CopyrightHolder('Bob'),

@@ -934,9 +934,7 @@ class PlaceDenormalizerTest extends TestCase
                     MediaObjectReference::createWithEmbeddedMediaObject(
                         new MediaObject(
                             new Uuid('fc712fef-e7c9-4df6-8655-da943852bd8d'),
-                            MediaObjectType::imageObject(),
-                            new Url('https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png'),
-                            new Url('https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png')
+                            MediaObjectType::imageObject()
                         ),
                         new Description('Example image 2'),
                         new CopyrightHolder('Bob'),
