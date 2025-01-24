@@ -14,46 +14,42 @@ class MediaObjectReferencesTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_all_references_either_with_or_without_an_embedded_media_object(): void
+    public function it_converts_to_images(): void
     {
-        $referenceWithEmbeddedMediaObject = MediaObjectReference::createWithEmbeddedMediaObject(
-            new MediaObject(
-                new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
-                MediaObjectType::imageObject()
-            ),
+        $mediaObject1 = new MediaObjectReference(
+            new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
             new Description('Some image description'),
             new CopyrightHolder('Publiq vzw'),
             new Language('en')
         );
 
-        $referenceWithoutEmbeddedMediaObject = MediaObjectReference::createWithMediaObjectId(
+        $mediaObject2 = new MediaObjectReference(
             new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
             new Description('Een afbeelding beschrijving'),
             new CopyrightHolder('Publiq vzw'),
             new Language('nl')
         );
 
-        $references = new MediaObjectReferences(
-            $referenceWithEmbeddedMediaObject,
-            $referenceWithoutEmbeddedMediaObject
-        );
+        $mediaObjectReferences = new MediaObjectReferences($mediaObject1, $mediaObject2);
 
-        $expectedReferencesWithEmbeddedMediaObject = new MediaObjectReferences(
-            $referenceWithEmbeddedMediaObject
-        );
-
-        $expectedReferencesWithoutEmbeddedMediaObject = new MediaObjectReferences(
-            $referenceWithoutEmbeddedMediaObject
-        );
+        $images = $mediaObjectReferences->toImages();
 
         $this->assertEquals(
-            $expectedReferencesWithEmbeddedMediaObject,
-            $references->getReferencesWithEmbeddedMediaObject()
-        );
-
-        $this->assertEquals(
-            $expectedReferencesWithoutEmbeddedMediaObject,
-            $references->getReferencesWithoutEmbeddedMediaObject()
+            new Images(
+                new Image(
+                    new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
+                    new Language('en'),
+                    new Description('Some image description'),
+                    new CopyrightHolder('Publiq vzw'),
+                ),
+                new Image(
+                    new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
+                    new Language('nl'),
+                    new Description('Een afbeelding beschrijving'),
+                    new CopyrightHolder('Publiq vzw')
+                )
+            ),
+            $images
         );
     }
 }

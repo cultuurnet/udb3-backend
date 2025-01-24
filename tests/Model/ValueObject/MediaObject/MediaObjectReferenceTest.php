@@ -21,7 +21,7 @@ class MediaObjectReferenceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Publiq vzw');
         $language = new Language('en');
 
-        $mediaObjectReference = MediaObjectReference::createWithMediaObjectId(
+        $mediaObjectReference = new MediaObjectReference(
             $id,
             $description,
             $copyrightHolder,
@@ -32,35 +32,6 @@ class MediaObjectReferenceTest extends TestCase
         $this->assertEquals($description, $mediaObjectReference->getDescription());
         $this->assertEquals($copyrightHolder, $mediaObjectReference->getCopyrightHolder());
         $this->assertEquals($language, $mediaObjectReference->getLanguage());
-        $this->assertNull($mediaObjectReference->getEmbeddedMediaObject());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_be_creatable_with_an_embedded_media_object(): void
-    {
-        $id = new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4');
-        $type = MediaObjectType::imageObject();
-
-        $mediaObject = new MediaObject($id, $type);
-
-        $description = new Description('Some image description');
-        $copyrightHolder = new CopyrightHolder('Publiq vzw');
-        $language = new Language('en');
-
-        $mediaObjectReference = MediaObjectReference::createWithEmbeddedMediaObject(
-            $mediaObject,
-            $description,
-            $copyrightHolder,
-            $language
-        );
-
-        $this->assertEquals($id, $mediaObjectReference->getMediaObjectId());
-        $this->assertEquals($description, $mediaObjectReference->getDescription());
-        $this->assertEquals($copyrightHolder, $mediaObjectReference->getCopyrightHolder());
-        $this->assertEquals($language, $mediaObjectReference->getLanguage());
-        $this->assertEquals($mediaObject, $mediaObjectReference->getEmbeddedMediaObject());
     }
 
     /**
@@ -73,7 +44,7 @@ class MediaObjectReferenceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Publiq vzw');
         $language = new Language('en');
 
-        $mediaObjectReference = MediaObjectReference::createWithMediaObjectId(
+        $mediaObjectReference = new MediaObjectReference(
             $id,
             $description,
             $copyrightHolder,
@@ -98,7 +69,7 @@ class MediaObjectReferenceTest extends TestCase
         $copyrightHolder = new CopyrightHolder('Publiq vzw');
         $language = new Language('en');
 
-        $mediaObjectReference = MediaObjectReference::createWithMediaObjectId(
+        $mediaObjectReference = new MediaObjectReference(
             $id,
             $description,
             $copyrightHolder,

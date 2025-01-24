@@ -16,24 +16,6 @@ class MediaObjectReferences extends Collection
         parent::__construct(...$mediaObjectReferences);
     }
 
-    public function getReferencesWithEmbeddedMediaObject(): MediaObjectReferences
-    {
-        return $this->filter(
-            function (MediaObjectReference $reference) {
-                return $reference->getEmbeddedMediaObject();
-            }
-        );
-    }
-
-    public function getReferencesWithoutEmbeddedMediaObject(): MediaObjectReferences
-    {
-        return $this->filter(
-            function (MediaObjectReference $reference) {
-                return !$reference->getEmbeddedMediaObject();
-            }
-        );
-    }
-
     public function toImages(): Images
     {
         $images = [];
