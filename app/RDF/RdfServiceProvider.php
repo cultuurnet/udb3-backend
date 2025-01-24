@@ -33,8 +33,6 @@ final class RdfServiceProvider extends AbstractServiceProvider
 
     public function register(): void
     {
-        $container = $this->getContainer();
-
         $this->container->addShared(
             AddressParser::class,
             fn (): AddressParser => $this->createGoogleMapsAddressParser()
@@ -42,8 +40,8 @@ final class RdfServiceProvider extends AbstractServiceProvider
 
         $this->container->addShared(
             ResourceFactory::class,
-            function () use ($container): ResourceFactory {
-                if ($container->get('config')['rdf']['blank_nodes_allowed'] ?? true) {
+            function (): ResourceFactory {
+                if ($this->getContainer()->get('config')['rdf']['blank_nodes_allowed'] ?? true) {
                     return new ResourceFactoryWithBlankNodes();
                 }
 
