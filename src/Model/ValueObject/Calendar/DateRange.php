@@ -42,11 +42,11 @@ class DateRange extends DateTimeImmutableRange
         return 0;
     }
 
-    public function toArray() : array
+    public function toArray(): array
     {
         return [
             'from' => $this->getFrom()->format(DateTime::ATOM),
-            'to' => $this->getTo()->format(DateTime::ATOM)
+            'to' => $this->getTo()->format(DateTime::ATOM),
         ];
     }
 }
