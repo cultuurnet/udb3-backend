@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
@@ -48,7 +48,7 @@ abstract class ImmutableOffer implements Offer
 
     private ContactPoint $contactPoint;
 
-    private MediaObjectReferences $mediaObjectReferences;
+    private Images $images;
 
     private VideoCollection $videos;
 
@@ -74,7 +74,7 @@ abstract class ImmutableOffer implements Offer
         $this->labels = new Labels();
         $this->bookingInfo = new BookingInfo();
         $this->contactPoint = new ContactPoint();
-        $this->mediaObjectReferences = new MediaObjectReferences();
+        $this->images = new Images();
         $this->videos = new VideoCollection();
         $this->workflowStatus = WorkflowStatus::DRAFT();
     }
@@ -281,19 +281,16 @@ abstract class ImmutableOffer implements Offer
         return $c;
     }
 
-    public function getMediaObjectReferences(): MediaObjectReferences
+    public function getImages(): Images
     {
-        return $this->mediaObjectReferences;
+        return $this->images;
     }
 
-    /**
-     * @return static
-     */
-    public function withMediaObjectReferences(MediaObjectReferences $mediaObjectReferences)
+    public function withImages(Images $images): ImmutableOffer
     {
-        $c = clone $this;
-        $c->mediaObjectReferences = $mediaObjectReferences;
-        return $c;
+        $clone = clone $this;
+        $clone->images = $images;
+        return $clone;
     }
 
     public function getVideos(): VideoCollection
