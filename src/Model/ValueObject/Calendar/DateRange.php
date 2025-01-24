@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\DateTimeImmutableRange;
+use DateTime;
 
 class DateRange extends DateTimeImmutableRange
 {
@@ -39,5 +40,13 @@ class DateRange extends DateTimeImmutableRange
         }
 
         return 0;
+    }
+
+    public function toArray() : array
+    {
+        return [
+            'from' => $this->getFrom()->format(DateTime::ATOM),
+            'to' => $this->getTo()->format(DateTime::ATOM)
+        ];
     }
 }

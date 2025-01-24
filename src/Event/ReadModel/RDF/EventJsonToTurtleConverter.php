@@ -344,7 +344,8 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_LOCATION, $addressResource);
             }
 
-            $calendarTypeResource = $spaceTimeResource->getGraph()->newBNode([self::TYPE_PERIOD]);
+            $calendarTypeResource = $this->resourceFactory->create($resource, self::TYPE_PERIOD, $subEvent->getDateRange()->toArray());
+
             $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE, $calendarTypeResource);
 
             $calendarTypeResource->set(
