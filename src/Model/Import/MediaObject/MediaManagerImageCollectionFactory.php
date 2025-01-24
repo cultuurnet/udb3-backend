@@ -24,7 +24,7 @@ class MediaManagerImageCollectionFactory implements ImageCollectionFactory
 
     public function fromImages(Images $images): ImageCollection
     {
-        $imageCollection = array_map(
+        $mediaImages = array_map(
             function (Image $image) {
                 $id = $image->getId();
 
@@ -57,8 +57,8 @@ class MediaManagerImageCollectionFactory implements ImageCollectionFactory
             $images->toArray()
         );
 
-        $imageCollection = array_filter($imageCollection);
+        $mediaImages = array_filter($mediaImages);
 
-        return ImageCollection::fromArray($imageCollection);
+        return ImageCollection::fromArray($mediaImages);
     }
 }
