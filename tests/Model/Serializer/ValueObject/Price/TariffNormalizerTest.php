@@ -24,13 +24,6 @@ class TariffNormalizerTest extends TestCase
     protected function setUp(): void
     {
         $this->normalizer = new TariffNormalizer();
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_normalize_a_tariff(): void
-    {
         $this->tariff = new Tariff(
             (new TranslatedTariffName(
                 new Language('nl'),
@@ -41,7 +34,13 @@ class TariffNormalizerTest extends TestCase
                 new Currency('EUR')
             )
         );
+    }
 
+    /**
+     * @test
+     */
+    public function it_should_normalize_a_tariff(): void
+    {
         $expected = [
             'price' => ['amount' => 100, 'currency' => 'EUR'],
             'names' => [
