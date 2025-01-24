@@ -10,11 +10,11 @@ use PHPUnit\Framework\TestCase;
 
 class MediaObjectIDParserTest extends TestCase
 {
-    private MediaObjectIDParser $parser;
+    private ImageIDParser $parser;
 
     public function setUp(): void
     {
-        $this->parser = new MediaObjectIDParser();
+        $this->parser = new ImageIDParser();
     }
 
     /**

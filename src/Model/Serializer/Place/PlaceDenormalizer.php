@@ -43,7 +43,7 @@ class PlaceDenormalizer extends OfferDenormalizer
         DenormalizerInterface $priceInfoDenormalizer = null,
         DenormalizerInterface $bookingInfoDenormalizer = null,
         DenormalizerInterface $contactPointDenormalizer = null,
-        DenormalizerInterface $mediaObjectReferencesDenormalizer = null,
+        DenormalizerInterface $imagesDenormalizer = null,
         VideoDenormalizer $videoDenormalizer = null
     ) {
         if (!$placeIDParser) {
@@ -73,7 +73,7 @@ class PlaceDenormalizer extends OfferDenormalizer
             $priceInfoDenormalizer,
             $bookingInfoDenormalizer,
             $contactPointDenormalizer,
-            $mediaObjectReferencesDenormalizer,
+            $imagesDenormalizer,
             $videoDenormalizer
         );
     }

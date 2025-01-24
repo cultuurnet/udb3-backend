@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectIDParser;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\ImageIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -24,7 +24,7 @@ final class ImageDenormalizer implements DenormalizerInterface
     public function __construct(UuidParser $imageIdParser = null)
     {
         if (!$imageIdParser) {
-            $imageIdParser = new MediaObjectIDParser();
+            $imageIdParser = new ImageIDParser();
         }
         $this->imageIdParser = $imageIdParser;
     }
