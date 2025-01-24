@@ -30,16 +30,16 @@
   schema:location [ a schema:VirtualLocation ] ;
   cp:ruimtetijd [
     a cidoc:E92_Spacetime_Volume ;
-    cidoc:P160_has_temporal_projection [
-      a m8g:PeriodOfTime ;
-      m8g:startTime ""^^xsd:dateTime ;
-      m8g:endTime ""^^xsd:dateTime
-    ]
+    cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36>
   ], [
     a cidoc:E92_Spacetime_Volume ;
-    cidoc:P160_has_temporal_projection [
-      a m8g:PeriodOfTime ;
-      m8g:startTime ""^^xsd:dateTime ;
-      m8g:endTime ""^^xsd:dateTime
-    ]
+    cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9>
   ] .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36>
+  m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
+  m8g:endTime "2021-05-17T22:00:00+00:00"^^xsd:dateTime .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9>
+  m8g:startTime "2021-05-18T08:00:00+00:00"^^xsd:dateTime ;
+  m8g:endTime "2021-05-18T22:00:00+00:00"^^xsd:dateTime .
