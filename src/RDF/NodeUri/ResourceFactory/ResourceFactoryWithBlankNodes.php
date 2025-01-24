@@ -10,7 +10,7 @@ use EasyRdf\Resource;
  * @todo The current implementation, can be removed after https://jira.publiq.be/browse/III-6450 has been deployed and verified on production.
  * */
 
-final class RdfResourceFactoryWithBlankNodes implements RdfResourceFactory
+final class ResourceFactoryWithBlankNodes implements ResourceFactory
 {
     public function create(Resource $resource, string $nodeName, array $data): Resource
     {

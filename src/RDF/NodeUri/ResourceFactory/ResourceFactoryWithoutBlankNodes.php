@@ -10,7 +10,7 @@ use EasyRdf\Resource;
 /*
  * New, Future implementation
  * */
-final class RdfResourceFactoryWithoutBlankNodes implements RdfResourceFactory
+final class ResourceFactoryWithoutBlankNodes implements ResourceFactory
 {
     private NodeUriGenerator $nodeUriGenerator;
 

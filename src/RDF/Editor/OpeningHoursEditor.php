@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
-use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\ResourceFactory;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
 
@@ -26,7 +26,7 @@ final class OpeningHoursEditor
     private const PROPERTY_CLOSES = 'schema:closes';
     private const PROPERTY_DAY_OF_WEEK = 'schema:dayOfWeek';
 
-    public function setOpeningHours(Resource $resource, Calendar $calendar, RdfResourceFactory $resourceFactory): self
+    public function setOpeningHours(Resource $resource, Calendar $calendar, ResourceFactory $resourceFactory): self
     {
         if (!$calendar instanceof CalendarWithOpeningHours) {
             return $this;

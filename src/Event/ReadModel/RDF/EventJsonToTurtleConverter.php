@@ -42,7 +42,7 @@ use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\VideoEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
-use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\ResourceFactory;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
@@ -62,7 +62,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private DenormalizerInterface $eventDenormalizer;
     private AddressParser $addressParser;
     private LoggerInterface $logger;
-    private RdfResourceFactory $resourceFactory;
+    private ResourceFactory $resourceFactory;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
     private const TYPE_SPACE_TIME = 'cidoc:E92_Spacetime_Volume';
@@ -117,7 +117,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         DenormalizerInterface $eventDenormalizer,
         AddressParser $addressParser,
         LoggerInterface $logger,
-        RdfResourceFactory $resourceFactory
+        ResourceFactory $resourceFactory
     ) {
         $this->eventsIriGenerator = $eventsIriGenerator;
         $this->placesIriGenerator = $placesIriGenerator;

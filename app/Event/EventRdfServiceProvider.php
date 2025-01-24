@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\RDF\EventJsonToTurtleConverter;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
-use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\ResourceFactory;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
 
 final class EventRdfServiceProvider extends AbstractServiceProvider
@@ -35,7 +35,7 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
                 (new EventDenormalizer())->handlesDummyOrganizers(),
                 $this->container->get(AddressParser::class),
                 LoggerFactory::create($this->getContainer(), LoggerName::forService('rdf')),
-                $this->container->get(RdfResourceFactory::class),
+                $this->container->get(ResourceFactory::class),
             )
         );
     }
