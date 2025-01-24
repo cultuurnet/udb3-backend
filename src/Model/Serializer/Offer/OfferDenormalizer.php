@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AgeRangeDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\MediaObjectReferencesDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImagesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\PriceInfoDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoriesDenormalizer;
@@ -27,7 +27,7 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
@@ -65,7 +65,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
 
     private DenormalizerInterface $contactPointDenormalizer;
 
-    private DenormalizerInterface $mediaObjectReferencesDenormalizer;
+    private DenormalizerInterface $imagesDenormalizer;
 
     private DenormalizerInterface $videoDenormalizer;
 
@@ -83,7 +83,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         DenormalizerInterface $priceInfoDenormalizer = null,
         DenormalizerInterface $bookingInfoDenormalizer = null,
         DenormalizerInterface $contactPointDenormalizer = null,
-        DenormalizerInterface $mediaObjectReferencesDenormalizer = null,
+        DenormalizerInterface $imagesDenormalizer = null,
         DenormalizerInterface $videoDenormalizer = null
     ) {
         if (!$titleDenormalizer) {
@@ -126,8 +126,8 @@ abstract class OfferDenormalizer implements DenormalizerInterface
             $contactPointDenormalizer = new ContactPointDenormalizer();
         }
 
-        if (!$mediaObjectReferencesDenormalizer) {
-            $mediaObjectReferencesDenormalizer = new MediaObjectReferencesDenormalizer();
+        if (!$imagesDenormalizer) {
+            $imagesDenormalizer = new ImagesDenormalizer();
         }
 
         if (!$videoDenormalizer) {
@@ -145,7 +145,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $this->priceInfoDenormalizer = $priceInfoDenormalizer;
         $this->bookingInfoDenormalizer = $bookingInfoDenormalizer;
         $this->contactPointDenormalizer = $contactPointDenormalizer;
-        $this->mediaObjectReferencesDenormalizer = $mediaObjectReferencesDenormalizer;
+        $this->imagesDenormalizer = $imagesDenormalizer;
         $this->videoDenormalizer = $videoDenormalizer;
     }
 
@@ -201,7 +201,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $offer = $this->denormalizePriceInfo($data, $offer);
         $offer = $this->denormalizeBookingInfo($data, $offer);
         $offer = $this->denormalizeContactPoint($data, $offer);
-        $offer = $this->denormalizeMediaObjectReferences($data, $offer);
+        $offer = $this->denormalizeImages($data, $offer);
         $offer = $this->denormalizeVideos($data, $offer);
         $offer = $this->denormalizeWorkflowStatus($data, $offer);
         return $this->denormalizeAvailableFrom($data, $offer);
@@ -303,17 +303,17 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         return $offer;
     }
 
-    protected function denormalizeMediaObjectReferences(array $data, ImmutableOffer $offer): ImmutableOffer
+    protected function denormalizeImages(array $data, ImmutableOffer $offer): ImmutableOffer
     {
         if (isset($data['mediaObject'])) {
-            /* @var MediaObjectReferences $mediaObjectReferences */
-            $mediaObjectReferences = $this->mediaObjectReferencesDenormalizer->denormalize(
+            /* @var Images $images */
+            $images = $this->imagesDenormalizer->denormalize(
                 $data['mediaObject'],
-                MediaObjectReferences::class,
+                Images::class,
                 null,
                 ['originalLanguage' => $data['mainLanguage']]
             );
-            $offer = $offer->withMediaObjectReferences($mediaObjectReferences);
+            $offer = $offer->withImages($images);
         }
 
         return $offer;

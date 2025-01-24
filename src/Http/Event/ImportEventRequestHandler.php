@@ -264,7 +264,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         $commands[] = new ImportLabels($eventId, $event->getLabels());
 
-        $images = $this->imageCollectionFactory->fromMediaObjectReferences($event->getMediaObjectReferences());
+        $images = $this->imageCollectionFactory->fromImages($event->getImages());
         $commands[] = new ImportImages($eventId, $images);
 
         $commands[] = new ImportVideos($eventId, $event->getVideos());

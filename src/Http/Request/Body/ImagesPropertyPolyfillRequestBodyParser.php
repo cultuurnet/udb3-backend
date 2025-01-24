@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\MediaObjectRepository;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectIDParser;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\ImageIDParser;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use InvalidArgumentException;
 use Psr\Http\Message\ServerRequestInterface;
@@ -127,7 +127,7 @@ final class ImagesPropertyPolyfillRequestBodyParser implements RequestBodyParser
             return $imageData;
         }
         try {
-            $imageId = (new MediaObjectIDParser())->fromUrl($imageIdUrl);
+            $imageId = (new ImageIDParser())->fromUrl($imageIdUrl);
         } catch (InvalidArgumentException $e) {
             throw ApiProblem::bodyInvalidData(
                 new SchemaError(

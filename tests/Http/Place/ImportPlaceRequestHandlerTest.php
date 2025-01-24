@@ -193,7 +193,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             );
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -249,7 +249,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             );
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -316,7 +316,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             );
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -402,7 +402,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             );
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -482,7 +482,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             );
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -567,7 +567,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             );
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -637,7 +637,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             );
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -783,7 +783,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->with($placeId);
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(
                 (new ImageCollection())
                     ->with(new Image(
@@ -984,7 +984,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->with($placeId);
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -1084,7 +1084,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             );
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -1150,7 +1150,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         ];
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $expectedErrors = [
@@ -1200,7 +1200,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->with($placeId);
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -1288,7 +1288,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->with($placeId);
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -3894,7 +3894,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             );
 
         $this->imageCollectionFactory->expects($this->once())
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -5209,7 +5209,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->willReturn(self::PLACE_ID);
 
         $this->imageCollectionFactory->expects($this->atMost(1))
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())
@@ -5252,7 +5252,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             ->willReturn(self::PLACE_ID);
 
         $this->imageCollectionFactory->expects($this->atMost(1))
-            ->method('fromMediaObjectReferences')
+            ->method('fromImages')
             ->willReturn(new ImageCollection());
 
         $request = (new Psr7RequestBuilder())

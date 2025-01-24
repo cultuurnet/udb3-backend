@@ -234,10 +234,10 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
             (new VideoEditor())->setVideos($resource, $event->getVideos());
         }
 
-        if (!$event->getMediaObjectReferences()->isEmpty()) {
+        if (!$event->getImages()->isEmpty()) {
             (new ImageEditor($this->imageNormalizer))->setImages(
                 $resource,
-                $event->getMediaObjectReferences()->toImages()
+                $event->getImages()
             );
         }
 

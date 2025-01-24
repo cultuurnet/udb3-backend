@@ -41,8 +41,8 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\FixedUuidFactory;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
@@ -1712,19 +1712,19 @@ class EventDenormalizerTest extends TestCase
                     )
                 )
             )
-            ->withMediaObjectReferences(
-                new MediaObjectReferences(
-                    new MediaObjectReference(
+            ->withImages(
+                new Images(
+                    new Image(
                         new Uuid('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
+                        new Language('nl'),
                         new Description('Example image 1'),
-                        new CopyrightHolder('Alice'),
-                        new Language('nl')
+                        new CopyrightHolder('Alice')
                     ),
-                    new MediaObjectReference(
+                    new Image(
                         new Uuid('fc712fef-e7c9-4df6-8655-da943852bd8d'),
+                        new Language('fr'),
                         new Description('Example image 2'),
-                        new CopyrightHolder('Bob'),
-                        new Language('fr')
+                        new CopyrightHolder('Bob')
                     )
                 )
             )

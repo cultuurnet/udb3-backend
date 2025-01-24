@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\MediaObject;
 
-use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\Image as MediaImage;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\MediaObject as Udb3MediaObjectAggregate;
@@ -13,8 +13,8 @@ use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -39,7 +39,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_image_collection_with_an_image_for_each_image_in_the_list_of_media_objects(): void
+    public function it_should_return_an_image_collection_from_images(): void
     {
         $existingMedia = [
             // JPG image.
@@ -92,47 +92,47 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 }
             );
 
-        $input = new MediaObjectReferences(
+        $input = new Images(
             // JPG image with updated description, copyright holder and language.
-            new MediaObjectReference(
+            new Image(
                 new Uuid('b170224d-a5c6-40e3-a622-c4bac3a68f3a'),
+                new Language('nl'),
                 new Description('Voorbeeld beschrijving (aangepast)'),
-                new CopyrightHolder('Bobby'),
-                new Language('nl')
+                new CopyrightHolder('Bobby')
             ),
             // Does not exist.
-            new MediaObjectReference(
+            new Image(
                 new Uuid('27a317c3-b74d-4352-97f1-9606f7dc0e05'),
+                new Language('nl'),
                 new Description('Voorbeeld beschrijving'),
-                new CopyrightHolder('Bob'),
-                new Language('nl')
+                new CopyrightHolder('Bob')
             ),
             // Movie.
-            new MediaObjectReference(
+            new Image(
                 new Uuid('9bad84d7-8200-4a23-af86-ec4decb3fe86'),
+                new Language('nl'),
                 new Description('Filmpje'),
-                new CopyrightHolder('Bob'),
-                new Language('nl')
+                new CopyrightHolder('Bob')
             ),
             // Has no type so will be treated as an image but is actually a movie internally.
-            new MediaObjectReference(
+            new Image(
                 new Uuid('a6a883ac-47c4-4a87-811d-cdb0bfc7e0eb'),
+                new Language('nl'),
                 new Description('Voorbeeld beschrijving 2'),
-                new CopyrightHolder('Bob'),
-                new Language('nl')
+                new CopyrightHolder('Bob')
             ),
             // PNG image with original description, copyright holder and language.
-            new MediaObjectReference(
+            new Image(
                 new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
+                new Language('nl'),
                 new Description('PNG Afbeelding'),
-                new CopyrightHolder('Bob'),
-                new Language('nl')
+                new CopyrightHolder('Bob')
             )
         );
 
         $expected = ImageCollection::fromArray(
             [
-                new Image(
+                new MediaImage(
                     new Uuid('b170224d-a5c6-40e3-a622-c4bac3a68f3a'),
                     MIMEType::fromSubtype('jpeg'),
                     new MediaDescription('Voorbeeld beschrijving (aangepast)'),
@@ -140,7 +140,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                     new Url('https://io.uitdatabank.be/images/b170224d-a5c6-40e3-a622-c4bac3a68f3a.jpg'),
                     new Language('nl')
                 ),
-                new Image(
+                new MediaImage(
                     new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
                     MIMEType::fromSubtype('png'),
                     new MediaDescription('PNG Afbeelding'),
@@ -151,7 +151,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
             ]
         );
 
-        $actual = $this->factory->fromMediaObjectReferences($input);
+        $actual = $this->factory->fromImages($input);
 
         $this->assertEquals($expected, $actual);
     }
