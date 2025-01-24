@@ -40,10 +40,8 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
@@ -925,19 +923,14 @@ class PlaceDenormalizerTest extends TestCase
             )
             ->withMediaObjectReferences(
                 new MediaObjectReferences(
-                    MediaObjectReference::createWithMediaObjectId(
+                    new MediaObjectReference(
                         new Uuid('8b3c82d5-6cfe-442e-946c-1f4452636d61'),
                         new Description('Example image 1'),
                         new CopyrightHolder('Alice'),
                         new Language('nl')
                     ),
-                    MediaObjectReference::createWithEmbeddedMediaObject(
-                        new MediaObject(
-                            new Uuid('fc712fef-e7c9-4df6-8655-da943852bd8d'),
-                            MediaObjectType::imageObject(),
-                            new Url('https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png'),
-                            new Url('https://io.uitdatabank.be/media/fc712fef-e7c9-4df6-8655-da943852bd8d.png')
-                        ),
+                    new MediaObjectReference(
+                        new Uuid('fc712fef-e7c9-4df6-8655-da943852bd8d'),
                         new Description('Example image 2'),
                         new CopyrightHolder('Bob'),
                         new Language('fr')

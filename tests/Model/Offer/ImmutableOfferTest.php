@@ -443,7 +443,7 @@ class ImmutableOfferTest extends TestCase
      */
     public function it_should_return_a_copy_with_updated_media_object_references(): void
     {
-        $reference = MediaObjectReference::createWithMediaObjectId(
+        $reference = new MediaObjectReference(
             new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
             new Description('Een afbeelding beschrijving'),
             new CopyrightHolder('Publiq vzw'),
