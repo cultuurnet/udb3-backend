@@ -21,6 +21,7 @@ use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\RDF\Editor\ImageEditor;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
@@ -44,8 +45,9 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
     private DocumentRepository $documentRepository;
     private DenormalizerInterface $denormalizer;
     private AddressParser $addressParser;
-    private LoggerInterface $logger;
     private NormalizerInterface $imageNormalizer;
+    private RdfResourceFactory $rdfResourceFactory;
+    private LoggerInterface $logger;
 
     public function __construct(
         IriGeneratorInterface $iriGenerator,
@@ -53,6 +55,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         DenormalizerInterface $denormalizer,
         AddressParser $addressParser,
         NormalizerInterface $imageNormalizer,
+        RdfResourceFactory $rdfResourceFactory,
         LoggerInterface $logger
     ) {
         $this->iriGenerator = $iriGenerator;
@@ -60,6 +63,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         $this->denormalizer = $denormalizer;
         $this->addressParser = $addressParser;
         $this->imageNormalizer = $imageNormalizer;
+        $this->rdfResourceFactory = $rdfResourceFactory;
         $this->logger = $logger;
     }
 
@@ -113,7 +117,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if ($organizer->getGeoCoordinates()) {
-            (new GeometryEditor())
+            (new GeometryEditor($this->rdfResourceFactory))
                 ->setCoordinates($resource, $organizer->getGeoCoordinates());
         }
 
