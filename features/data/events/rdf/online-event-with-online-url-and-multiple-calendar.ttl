@@ -35,14 +35,14 @@
     a cidoc:E92_Spacetime_Volume ;
     cidoc:P160_has_temporal_projection [
       a m8g:PeriodOfTime ;
-      m8g:startTime ""^^xsd:dateTime ;
-      m8g:endTime ""^^xsd:dateTime
+      m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
+      m8g:endTime "2021-05-17T22:00:00+00:00"^^xsd:dateTime
     ]
   ], [
     a cidoc:E92_Spacetime_Volume ;
     cidoc:P160_has_temporal_projection [
       a m8g:PeriodOfTime ;
-      m8g:startTime ""^^xsd:dateTime ;
-      m8g:endTime ""^^xsd:dateTime
+      m8g:startTime "2021-05-18T08:00:00+00:00"^^xsd:dateTime ;
+      m8g:endTime "2021-05-18T22:00:00+00:00"^^xsd:dateTime
     ]
   ] .
