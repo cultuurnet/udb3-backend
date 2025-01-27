@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\MediaObject;
 
-use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\Image as MediaImage;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Media\MediaObjectNotFoundException;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 
 class MediaManagerImageCollectionFactory implements ImageCollectionFactory
 {
@@ -23,11 +22,11 @@ class MediaManagerImageCollectionFactory implements ImageCollectionFactory
         $this->mediaManager = $mediaManager;
     }
 
-    public function fromMediaObjectReferences(MediaObjectReferences $mediaObjectReferences): ImageCollection
+    public function fromImages(Images $images): ImageCollection
     {
-        $images = array_map(
-            function (MediaObjectReference $mediaObjectReference) {
-                $id = $mediaObjectReference->getMediaObjectId();
+        $mediaImages = array_map(
+            function (Image $image) {
+                $id = $image->getId();
 
                 try {
                     $mediaObjectAggregate = $this->mediaManager->get($id);
@@ -46,20 +45,20 @@ class MediaManagerImageCollectionFactory implements ImageCollectionFactory
                     return null;
                 }
 
-                return new Image(
-                    $mediaObjectAggregate->getMediaObjectId(),
+                return new MediaImage(
+                    $id,
                     $mediaObjectAggregate->getMimeType(),
-                    new Description($mediaObjectReference->getDescription()->toString()),
-                    $mediaObjectReference->getCopyrightHolder(),
+                    new Description($image->getDescription()->toString()),
+                    $image->getCopyrightHolder(),
                     $mediaObjectAggregate->getSourceLocation(),
-                    new Language($mediaObjectReference->getLanguage()->toString())
+                    $image->getLanguage()
                 );
             },
-            $mediaObjectReferences->toArray()
+            $images->toArray()
         );
 
-        $images = array_filter($images);
+        $mediaImages = array_filter($mediaImages);
 
-        return ImageCollection::fromArray($images);
+        return ImageCollection::fromArray($mediaImages);
     }
 }

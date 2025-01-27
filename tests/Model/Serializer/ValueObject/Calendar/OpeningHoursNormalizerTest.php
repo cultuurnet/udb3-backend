@@ -13,9 +13,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHoursNormalizer
- */
 final class OpeningHoursNormalizerTest extends TestCase
 {
     private OpeningHoursNormalizer $normalizer;
