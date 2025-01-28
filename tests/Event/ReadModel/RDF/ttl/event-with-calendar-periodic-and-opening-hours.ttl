@@ -36,21 +36,28 @@
   cpa:beschikbaarheid <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Beschikbaarheid-958e340a> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-a41ac158>
+  a m8g:PeriodOfTime ;
   m8g:startTime "2020-05-06T20:00:00+01:00"^^xsd:dateTime ;
   m8g:endTime "2023-05-06T23:00:00+01:00"^^xsd:dateTime .
 
-<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Beschikbaarheid-958e340a> schema:hoursAvailable <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#OpeningHoursSpecification-a49142b8>, <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#OpeningHoursSpecification-8229482a>, <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#OpeningHoursSpecification-9ca2c640> .
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Beschikbaarheid-958e340a>
+  a cp:Beschikbaarheid ;
+  schema:hoursAvailable <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#OpeningHoursSpecification-a49142b8>, <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#OpeningHoursSpecification-8229482a>, <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#OpeningHoursSpecification-9ca2c640> .
+
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#OpeningHoursSpecification-a49142b8>
+  a schema:OpeningHoursSpecification ;
   schema:opens "20:00" ;
   schema:closes "23:00" ;
   schema:dayOfWeek schema:Monday, schema:Tuesday .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#OpeningHoursSpecification-8229482a>
+  a schema:OpeningHoursSpecification ;
   schema:opens "19:00" ;
   schema:closes "22:00" ;
   schema:dayOfWeek schema:Wednesday, schema:Thursday .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#OpeningHoursSpecification-9ca2c640>
+  a schema:OpeningHoursSpecification ;
   schema:opens "10:00" ;
   schema:closes "12:30" ;
   schema:dayOfWeek schema:Saturday, schema:Sunday .

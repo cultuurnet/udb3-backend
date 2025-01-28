@@ -37,4 +37,6 @@
   ] ;
   locn:geometry <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#Geometry-13cb679b> .
 
-<https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#Geometry-13cb679b> geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>4.9502035, 50.9656077</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral .
+<https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#Geometry-13cb679b>
+  a locn:Geometry ;
+  geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>4.9502035, 50.9656077</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral .
