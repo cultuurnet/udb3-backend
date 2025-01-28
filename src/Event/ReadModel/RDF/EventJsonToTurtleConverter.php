@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
@@ -330,7 +331,15 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         $addressResource = null;
 
         foreach ($subEvents as $subEvent) {
-            $spaceTimeResource = $resource->getGraph()->newBNode([self::TYPE_SPACE_TIME]);
+            $spaceTimeResource = $this->resourceFactory->create(
+                $resource,
+                self::TYPE_SPACE_TIME,
+                array_merge($this->getLocationResourceData($this->getDummyLocationName($locationData, $mainLanguage), $placeReference), [
+                    'from' => $subEvent->getDateRange()->getFrom()->format(DateTime::ATOM),
+                    'to' => $subEvent->getDateRange()->getTo()->format(DateTime::ATOM),
+                ])
+            );
+
             $resource->add(self::PROPERTY_RUIMTE_TIJD, $spaceTimeResource);
 
             if ($addressResource === null) {
@@ -562,13 +571,21 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function getLocationResourceData(string $dummyLocationName, PlaceReference $placeReference): array
     {
-        if ($dummyLocationName === '') {
+        if ($dummyLocationName !== '' && $placeReference->getAddress() instanceof TranslatedAddress) {
+            return array_merge(
+                ['locationName' => $dummyLocationName],
+                (new TranslatedAddressNormalizer())->normalize($placeReference->getAddress())
+            );
+        }
+
+        if ($dummyLocationName !== '') {
+            return ['locationName' => $dummyLocationName];
+        }
+
+        if ($placeReference->getAddress() !== null) {
             return (new TranslatedAddressNormalizer())->normalize($placeReference->getAddress());
         }
 
-        return array_merge(
-            ['locationName' => $dummyLocationName],
-            (new TranslatedAddressNormalizer())->normalize($placeReference->getAddress())
-        );
+        return [];
     }
 }
