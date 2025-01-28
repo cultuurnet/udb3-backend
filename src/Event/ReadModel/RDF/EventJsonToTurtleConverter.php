@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\MoneyNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
@@ -382,10 +383,14 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if ($placeReference->getAddress()) {
-            $locationResource = $resource->getGraph()->newBNode([self::TYPE_LOCATIE]);
-            $resource->add($property, $locationResource);
-
             $dummyLocationName = $this->getDummyLocationName($locationData, $mainLanguage);
+
+            $locationResource = $this->resourceFactory->create(
+                $resource,
+                self::TYPE_LOCATIE,
+                (new TranslatedAddressNormalizer())->normalize($placeReference->getAddress(), null, [TranslatedAddressNormalizer::LOCATION_NAME => $dummyLocationName])
+            );
+
             if ($dummyLocationName !== '') {
                 $locationResource->addLiteral(
                     self::PROPERTY_LOCATIE_NAAM,
