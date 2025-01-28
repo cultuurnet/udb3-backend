@@ -334,10 +334,10 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
             $spaceTimeResource = $this->resourceFactory->create(
                 $resource,
                 self::TYPE_SPACE_TIME,
-                array_merge($this->getLocationResourceData($this->getDummyLocationName($locationData, $mainLanguage), $placeReference), [
-                    'from' => $subEvent->getDateRange()->getFrom()->format(DateTime::ATOM),
-                    'to' => $subEvent->getDateRange()->getTo()->format(DateTime::ATOM),
-                ])
+                array_merge(
+                    $this->getLocationResourceData($this->getDummyLocationName($locationData, $mainLanguage), $placeReference),
+                    $this->getFromTo($subEvent)
+                )
             );
 
             $resource->add(self::PROPERTY_RUIMTE_TIJD, $spaceTimeResource);
@@ -357,10 +357,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
             $calendarTypeResource = $this->resourceFactory->create(
                 $resource,
                 self::TYPE_PERIOD,
-                [
-                    'from' => $subEvent->getDateRange()->getFrom()->format(DateTime::ATOM),
-                    'to' => $subEvent->getDateRange()->getTo()->format(DateTime::ATOM),
-                ]
+                $this->getFromTo($subEvent)
             );
 
             $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE, $calendarTypeResource);
@@ -587,5 +584,13 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         return [];
+    }
+
+    private function getFromTo(SubEvent $subEvent): array
+    {
+        return [
+            'from' => $subEvent->getDateRange()->getFrom()->format(DateTime::ATOM),
+            'to' => $subEvent->getDateRange()->getTo()->format(DateTime::ATOM),
+        ];
     }
 }
