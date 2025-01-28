@@ -28,12 +28,13 @@
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  cp:ruimtetijd [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-    cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-c7a7795e>
-  ] ;
+  cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-e572db1a> ;
   cpa:beschikbaarheid <http://data.uitdatabank.local:80/events/%{eventId}#Beschikbaarheid-2450812e> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-e572db1a>
+  a cidoc:E92_Spacetime_Volume ;
+  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
+  cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-c7a7795e> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-c7a7795e>
   a m8g:PeriodOfTime ;

@@ -31,15 +31,7 @@
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  cp:ruimtetijd [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-    cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36>
-  ], [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-    cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9>
-  ] ;
+  cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-38070e75>, <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-c9c8f4a1> ;
   dcterms:description "Nederlandse beschrijving"@nl, "English description"@en ;
   schema:contactPoint [
     a schema:ContactPoint ;
@@ -79,10 +71,20 @@
     schema:inLanguage "nl"
   ] .
 
+<http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-38070e75>
+  a cidoc:E92_Spacetime_Volume ;
+  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
+  cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36> .
+
 <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36>
   a m8g:PeriodOfTime ;
   m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
   m8g:endTime "2021-05-17T22:00:00+00:00"^^xsd:dateTime .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-c9c8f4a1>
+  a cidoc:E92_Spacetime_Volume ;
+  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
+  cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9>
   a m8g:PeriodOfTime ;

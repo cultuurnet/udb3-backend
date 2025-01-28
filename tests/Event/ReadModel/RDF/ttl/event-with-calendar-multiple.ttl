@@ -27,20 +27,22 @@
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  cp:ruimtetijd [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-    cidoc:P160_has_temporal_projection <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-8de5b7f4>
-  ], [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-    cidoc:P160_has_temporal_projection <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-a889f286>
-  ] .
+  cp:ruimtetijd <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#E92_Spacetime_Volume-8de5b7f4>, <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#E92_Spacetime_Volume-a889f286> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#E92_Spacetime_Volume-8de5b7f4>
+  a cidoc:E92_Spacetime_Volume ;
+  cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
+  cidoc:P160_has_temporal_projection <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-8de5b7f4> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-8de5b7f4>
   a m8g:PeriodOfTime ;
   m8g:startTime "2023-05-06T20:00:00+01:00"^^xsd:dateTime ;
   m8g:endTime "2023-05-06T23:00:00+01:00"^^xsd:dateTime .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#E92_Spacetime_Volume-a889f286>
+  a cidoc:E92_Spacetime_Volume ;
+  cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
+  cidoc:P160_has_temporal_projection <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-a889f286> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-a889f286>
   a m8g:PeriodOfTime ;

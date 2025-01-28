@@ -31,18 +31,20 @@
     a schema:VirtualLocation ;
     schema:url "https://www.publiq.be/livestream"^^schema:URL
   ] ;
-  cp:ruimtetijd [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36>
-  ], [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9>
-  ] .
+  cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-40308223>, <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-18ef9a04> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-40308223>
+  a cidoc:E92_Spacetime_Volume ;
+  cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36>
   a m8g:PeriodOfTime ;
   m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
   m8g:endTime "2021-05-17T22:00:00+00:00"^^xsd:dateTime .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-18ef9a04>
+  a cidoc:E92_Spacetime_Volume ;
+  cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9>
   a m8g:PeriodOfTime ;
