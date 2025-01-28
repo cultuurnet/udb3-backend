@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\MoneyNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
@@ -394,7 +395,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 );
             }
 
-            (new AddressEditor($this->addressParser))->setAddress(
+            (new AddressEditor($this->addressParser, $this->resourceFactory))->setAddress(
                 $locationResource,
                 self::PROPERTY_LOCATIE_ADRES,
                 $placeReference->getAddress()
