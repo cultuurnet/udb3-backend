@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\MoneyNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
