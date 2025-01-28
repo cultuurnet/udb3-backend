@@ -28,9 +28,9 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/online> ;
   schema:location [ a schema:VirtualLocation ] ;
-  cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-40308223>, <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-18ef9a04> .
+  cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-2aac7354>, <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-cbeaaec0> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-40308223>
+<http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-2aac7354>
   a cidoc:E92_Spacetime_Volume ;
   cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36> .
 
@@ -39,7 +39,7 @@
   m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
   m8g:endTime "2021-05-17T22:00:00+00:00"^^xsd:dateTime .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-18ef9a04>
+<http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-cbeaaec0>
   a cidoc:E92_Spacetime_Volume ;
   cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9> .
 
