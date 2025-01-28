@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Place\ReadModel\RDF\PlaceJsonToTurtleConverter;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
 
 final class PlaceRdfServiceProvider extends AbstractServiceProvider
@@ -31,6 +32,7 @@ final class PlaceRdfServiceProvider extends AbstractServiceProvider
                 $this->container->get('place_jsonld_repository'),
                 new PlaceDenormalizer(),
                 $this->container->get(AddressParser::class),
+                $this->container->get(RdfResourceFactory::class),
                 LoggerFactory::create($this->getContainer(), LoggerName::forService('rdf'))
             )
         );

@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\Organizer\ReadModel\RDF\OrganizerJsonToTurtleConverter;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
 
 final class OrganizerRdfServiceProvider extends AbstractServiceProvider
@@ -32,6 +33,7 @@ final class OrganizerRdfServiceProvider extends AbstractServiceProvider
                 new OrganizerDenormalizer(),
                 $this->container->get(AddressParser::class),
                 $this->container->get(ImageNormalizer::class),
+                $this->container->get(RdfResourceFactory::class),
                 LoggerFactory::create($this->getContainer(), LoggerName::forService('rdf'))
             )
         );
