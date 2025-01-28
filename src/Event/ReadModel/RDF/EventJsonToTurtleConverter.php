@@ -348,8 +348,8 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 $resource,
                 self::TYPE_PERIOD,
                 [
-                    'from' => $this->getFrom()->format(DateTime::ATOM),
-                    'to' => $this->getTo()->format(DateTime::ATOM),
+                    'from' => $subEvent->getDateRange()->getFrom()->format(DateTime::ATOM),
+                    'to' => $subEvent->getDateRange()->getTo()->format(DateTime::ATOM),
                 ]
             );
 
