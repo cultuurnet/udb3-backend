@@ -7,7 +7,6 @@
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
-@prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix locn: <http://www.w3.org/ns/locn#> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
@@ -27,12 +26,12 @@
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
-  cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  prov:atLocation [
-    a dcterms:Location ;
-    locn:locatorName "Het Depot"@nl ;
-    locn:address <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-c7fded52>
-  ] .
+  cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Location-71a2c8cb>
+  a dcterms:Location ;
+  locn:locatorName "Het Depot"@nl ;
+  locn:address <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-c7fded52> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-c7fded52>
   a locn:Address ;
