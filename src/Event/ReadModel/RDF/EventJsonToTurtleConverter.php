@@ -567,7 +567,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         return array_merge(
-            [TranslatedAddressNormalizer::LOCATION_NAME => $dummyLocationName],
+            ['locationName' => $dummyLocationName],
             (new TranslatedAddressNormalizer())->normalize($placeReference->getAddress())
         );
     }

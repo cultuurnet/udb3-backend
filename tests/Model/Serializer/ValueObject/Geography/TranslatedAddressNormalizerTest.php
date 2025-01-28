@@ -47,7 +47,7 @@ class TranslatedAddressNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_normalize_TranslatedAddress_without_location_name(): void
+    public function it_should_normalize_TranslatedAddress(): void
     {
         $expected = [
             'nl' => [
@@ -65,33 +65,6 @@ class TranslatedAddressNormalizerTest extends TestCase
         ];
 
         $this->assertEquals($expected, $this->normalizer->normalize($this->translatedAddress));
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_normalize_TranslatedAddress_with_location_name(): void
-    {
-        $expected = [
-            'nl' => [
-                'street' => 'Henegouwenkaai 41-43',
-                'postalCode' => '1080',
-                'locality' => 'Brussel',
-                'countryCode' => 'BE',
-            ],
-            'fr' => [
-                'street' => 'Quai du Hainaut 41-43',
-                'postalCode' => '1080',
-                'locality' => 'Bruxelles',
-                'countryCode' => 'BE',
-            ],
-            'locationName' => 'Publiq',
-        ];
-
-        $this->assertEquals(
-            $expected,
-            $this->normalizer->normalize($this->translatedAddress, null, [TranslatedAddressNormalizer::LOCATION_NAME => 'Publiq'])
-        );
     }
 
     /**

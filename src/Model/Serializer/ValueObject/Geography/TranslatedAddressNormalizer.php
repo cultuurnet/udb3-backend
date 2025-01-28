@@ -11,8 +11,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class TranslatedAddressNormalizer implements NormalizerInterface
 {
-    public const LOCATION_NAME = 'locationName';
-
     public function normalize($object, $format = null, array $context = [])
     {
         if (!$this->supportsNormalization($object)) {
