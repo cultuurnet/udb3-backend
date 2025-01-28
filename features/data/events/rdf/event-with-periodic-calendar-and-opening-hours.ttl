@@ -31,13 +31,13 @@
   cp:ruimtetijd [
     a cidoc:E92_Spacetime_Volume ;
     cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-    cidoc:P160_has_temporal_projection [
-      a m8g:PeriodOfTime ;
-      m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
-      m8g:endTime "2021-05-18T22:00:00+00:00"^^xsd:dateTime
-    ]
+    cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-c7a7795e>
   ] ;
   cpa:beschikbaarheid <http://data.uitdatabank.local:80/events/%{eventId}#Beschikbaarheid-2450812e> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-c7a7795e>
+  m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
+  m8g:endTime "2021-05-18T22:00:00+00:00"^^xsd:dateTime .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#Beschikbaarheid-2450812e> schema:hoursAvailable <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-19cb130c>, <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-74f53a6d> .
 <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-19cb130c>

@@ -38,8 +38,8 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
-use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\RDF\Editor\ImageEditor;
+use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\VideoEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
@@ -344,7 +344,15 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_LOCATION, $addressResource);
             }
 
-            $calendarTypeResource = $spaceTimeResource->getGraph()->newBNode([self::TYPE_PERIOD]);
+            $calendarTypeResource = $this->resourceFactory->create(
+                $resource,
+                self::TYPE_PERIOD,
+                [
+                    'from' => $subEvent->getDateRange()->getFrom()->format(DateTime::ATOM),
+                    'to' => $subEvent->getDateRange()->getTo()->format(DateTime::ATOM),
+                ]
+            );
+
             $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE, $calendarTypeResource);
 
             $calendarTypeResource->set(

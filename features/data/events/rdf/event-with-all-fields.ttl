@@ -7,10 +7,10 @@
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
-@prefix m8g: <http://data.europa.eu/m8g/> .
 @prefix schema: <https://schema.org/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix labeltype: <https://data.cultuurparticipatie.be/id/concept/LabelType/> .
+@prefix m8g: <http://data.europa.eu/m8g/> .
 @prefix cpp: <https://data.vlaanderen.be/ns/cultuurparticipatie#Prijsinfo.> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}>
@@ -34,19 +34,11 @@
   cp:ruimtetijd [
     a cidoc:E92_Spacetime_Volume ;
     cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-    cidoc:P160_has_temporal_projection [
-      a m8g:PeriodOfTime ;
-      m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
-      m8g:endTime "2021-05-17T22:00:00+00:00"^^xsd:dateTime
-    ]
+    cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36>
   ], [
     a cidoc:E92_Spacetime_Volume ;
     cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-    cidoc:P160_has_temporal_projection [
-      a m8g:PeriodOfTime ;
-      m8g:startTime "2021-05-18T08:00:00+00:00"^^xsd:dateTime ;
-      m8g:endTime "2021-05-18T22:00:00+00:00"^^xsd:dateTime
-    ]
+    cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9>
   ] ;
   dcterms:description "Nederlandse beschrijving"@nl, "English description"@en ;
   schema:contactPoint [
@@ -86,6 +78,14 @@
     schema:description "A cute dog" ;
     schema:inLanguage "nl"
   ] .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36>
+  m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
+  m8g:endTime "2021-05-17T22:00:00+00:00"^^xsd:dateTime .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9>
+  m8g:startTime "2021-05-18T08:00:00+00:00"^^xsd:dateTime ;
+  m8g:endTime "2021-05-18T22:00:00+00:00"^^xsd:dateTime .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be>
   schema:price <http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-3b58504c> ;
