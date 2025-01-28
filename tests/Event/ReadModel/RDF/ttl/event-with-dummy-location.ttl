@@ -30,13 +30,14 @@
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation [
     a dcterms:Location ;
-    locn:address [
-      a locn:Address ;
-      locn:adminUnitL1 "BE" ;
-      locn:postCode "3000" ;
-      locn:locatorDesignator "1" ;
-      locn:fullAddress "Martelarenplein 1, 3000 Leuven, BE"@nl ;
-      locn:postName "Leuven"@nl ;
-      locn:thoroughfare "Martelarenlaan"@nl
-    ]
+    locn:address <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-c7fded52>
   ] .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-c7fded52>
+  a locn:Address ;
+  locn:adminUnitL1 "BE" ;
+  locn:postCode "3000" ;
+  locn:locatorDesignator "1" ;
+  locn:fullAddress "Martelarenplein 1, 3000 Leuven, BE"@nl ;
+  locn:postName "Leuven"@nl ;
+  locn:thoroughfare "Martelarenlaan"@nl .
