@@ -42,9 +42,11 @@
   ] .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36>
+  a m8g:PeriodOfTime ;
   m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
   m8g:endTime "2021-05-17T22:00:00+00:00"^^xsd:dateTime .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9>
+  a m8g:PeriodOfTime ;
   m8g:startTime "2021-05-18T08:00:00+00:00"^^xsd:dateTime ;
   m8g:endTime "2021-05-18T22:00:00+00:00"^^xsd:dateTime .

@@ -80,18 +80,22 @@
   ] .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36>
+  a m8g:PeriodOfTime ;
   m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
   m8g:endTime "2021-05-17T22:00:00+00:00"^^xsd:dateTime .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9>
+  a m8g:PeriodOfTime ;
   m8g:startTime "2021-05-18T08:00:00+00:00"^^xsd:dateTime ;
   m8g:endTime "2021-05-18T22:00:00+00:00"^^xsd:dateTime .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be>
+  a schema:PriceSpecification ;
   schema:price <http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-3b58504c> ;
   skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
   cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-3b58504c>
+  a schema:MonetaryAmount ;
   schema:currency "EUR" ;
   schema:value "10.5"^^schema:Number .

@@ -7,6 +7,7 @@
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix schema: <https://schema.org/> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}>
@@ -29,13 +30,18 @@
   prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
   cpa:beschikbaarheid <http://data.uitdatabank.local:80/events/%{eventId}#Beschikbaarheid-6bc21d1d> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#Beschikbaarheid-6bc21d1d> schema:hoursAvailable <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-19cb130c>, <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-399b5bce> .
+<http://data.uitdatabank.local:80/events/%{eventId}#Beschikbaarheid-6bc21d1d>
+  a cp:Beschikbaarheid ;
+  schema:hoursAvailable <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-19cb130c>, <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-399b5bce> .
+
 <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-19cb130c>
+  a schema:OpeningHoursSpecification ;
   schema:opens "10:00" ;
   schema:closes "16:00" ;
   schema:dayOfWeek schema:Monday, schema:Tuesday .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-399b5bce>
+  a schema:OpeningHoursSpecification ;
   schema:opens "09:00" ;
   schema:closes "17:00" ;
   schema:dayOfWeek schema:Thursday, schema:Friday .
