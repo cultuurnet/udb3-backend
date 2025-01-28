@@ -388,7 +388,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
             $locationResource = $this->resourceFactory->create(
                 $resource,
                 self::TYPE_LOCATIE,
-                (new TranslatedAddressNormalizer())->normalize($placeReference->getAddress(), null, [TranslatedAddressNormalizer::LOCATION_NAME => $dummyLocationName])
+                $this->getLocationResourceData($dummyLocationName, $placeReference)
             );
 
             if ($dummyLocationName !== '') {
@@ -558,5 +558,17 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         return $priceSpecificationResource;
+    }
+
+    private function getLocationResourceData(string $dummyLocationName, PlaceReference $placeReference): array
+    {
+        if ($dummyLocationName === '') {
+            return (new TranslatedAddressNormalizer())->normalize($placeReference->getAddress());
+        }
+
+        return array_merge(
+            [TranslatedAddressNormalizer::LOCATION_NAME => $dummyLocationName],
+            (new TranslatedAddressNormalizer())->normalize($placeReference->getAddress())
+        );
     }
 }

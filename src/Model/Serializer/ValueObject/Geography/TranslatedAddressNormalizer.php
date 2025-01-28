@@ -15,12 +15,11 @@ class TranslatedAddressNormalizer implements NormalizerInterface
 
     public function normalize($object, $format = null, array $context = [])
     {
-        if (!$object instanceof TranslatedAddress) {
+        if (!$this->supportsNormalization($object)) {
             throw new InvalidArgumentException(sprintf('Invalid object type, expected %s, received %s.', TranslatedAddress::class, get_class($object)));
         }
 
-        // Optional field locationName
-        $output = !empty($context[self::LOCATION_NAME]) ? [self::LOCATION_NAME => $context[self::LOCATION_NAME]] : [];
+        $output = [];
 
         /** @var Language $language */
         foreach ($object->getLanguages() as $language) {
