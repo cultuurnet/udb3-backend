@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\RDF\NodeUri\ResourceFactory;
 
 use EasyRdf\Resource;
 
-final class ResourceFactoryWithBlankNodes implements ResourceFactory
+final class RdfResourceFactoryWithBlankNodes implements RdfResourceFactory
 {
     public function create(Resource $resource, string $nodeName, array $data): Resource
     {

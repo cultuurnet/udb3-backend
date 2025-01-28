@@ -69,16 +69,7 @@
     ]
   ] ;
   rdfs:label "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen ;
-  cpa:prijs [
-    a schema:PriceSpecification ;
-    schema:price [
-      a schema:MonetaryAmount ;
-      schema:currency "EUR" ;
-      schema:value "10.5"^^schema:Number
-    ] ;
-    skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
-    cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis>
-  ] ;
+  cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be> ;
   schema:video [
     a schema:VideoObject ;
     schema:identifier "b504cf44-9ab8-4641-9934-38d1cc67242c" ;
@@ -95,3 +86,12 @@
     schema:description "A cute dog" ;
     schema:inLanguage "nl"
   ] .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be>
+  schema:price <http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-3b58504c> ;
+  skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
+  cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-3b58504c>
+  schema:currency "EUR" ;
+  schema:value "10.5"^^schema:Number .

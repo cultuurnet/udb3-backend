@@ -14,6 +14,8 @@ use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\MoneyNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -42,6 +44,7 @@ use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\VideoEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
@@ -62,6 +65,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private DenormalizerInterface $eventDenormalizer;
     private AddressParser $addressParser;
     private LoggerInterface $logger;
+    private RdfResourceFactory $resourceFactory;
     private NormalizerInterface $imageNormalizer;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
@@ -116,6 +120,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         DocumentRepository $documentRepository,
         DenormalizerInterface $eventDenormalizer,
         AddressParser $addressParser,
+        RdfResourceFactory $resourceFactory,
         NormalizerInterface $imageNormalizer,
         LoggerInterface $logger
     ) {
@@ -127,6 +132,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         $this->eventDenormalizer = $eventDenormalizer;
         $this->addressParser = $addressParser;
         $this->logger = $logger;
+        $this->resourceFactory = $resourceFactory;
         $this->imageNormalizer = $imageNormalizer;
     }
 
@@ -204,7 +210,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         $this->setCalendarWithLocation($resource, $event, $eventData['location']);
-        (new OpeningHoursEditor())->setOpeningHours($resource, $event->getCalendar());
+        (new OpeningHoursEditor())->setOpeningHours($resource, $event->getCalendar(), $this->resourceFactory);
 
         if ($event->getDescription()) {
             $this->setDescription($resource, $event->getDescription());
@@ -516,28 +522,28 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function createPrijsResource(Resource $resource, Tariff $tariff): Resource
     {
-        $prijsResource = $resource->getGraph()->newBNode([self::TYPE_PRICE_SPECIFICATION]);
+        $priceSpecificationResource = $this->resourceFactory->create($resource, self::TYPE_PRICE_SPECIFICATION, (new TariffNormalizer())->normalize($tariff));
 
-        $priceResource = $prijsResource->getGraph()->newBNode([self::TYPE_MONETARY_AMOUNT]);
-        $priceResource->set(
+        $monetaryAmountResource = $this->resourceFactory->create($resource, self::TYPE_MONETARY_AMOUNT, (new MoneyNormalizer())->normalize($tariff->getPrice()));
+        $monetaryAmountResource->set(
             self::PROPERTY_CURRENCY,
             new Literal($tariff->getPrice()->getCurrency()->getName(), null)
         );
-        $priceResource->set(
+        $monetaryAmountResource->set(
             self::PROPERTY_VALUE,
             new Literal((string)($tariff->getPrice()->getAmount() / 100), null, 'schema:Number')
         );
-        $prijsResource->set(self::PROPERTY_PRICE, $priceResource);
+        $priceSpecificationResource->set(self::PROPERTY_PRICE, $monetaryAmountResource);
 
         foreach ($tariff->getName()->getLanguages() as $language) {
             /** @var TariffName $name */
             $name = $tariff->getName()->getTranslation($language);
-            $prijsResource->add(
+            $priceSpecificationResource->add(
                 self::PROPERTY_PREF_LABEL,
                 new Literal($name->toString(), $language->toString())
             );
         }
 
-        return $prijsResource;
+        return $priceSpecificationResource;
     }
 }
