@@ -568,7 +568,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function getLocationResourceData(string $dummyLocationName, PlaceReference $placeReference): array
     {
-        if ($dummyLocationName !== '' && $placeReference->getAddress() instanceof TranslatedAddress) {
+        if ($dummyLocationName !== '' && $placeReference->getAddress() !== null) {
             return array_merge(
                 ['locationName' => $dummyLocationName],
                 (new TranslatedAddressNormalizer())->normalize($placeReference->getAddress())
