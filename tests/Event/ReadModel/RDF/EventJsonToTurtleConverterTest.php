@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Address\Parser\ParsedAddress;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
 use CultuurNet\UDB3\RDF\NodeUri\CRC32HashGenerator;
@@ -96,6 +97,7 @@ class EventJsonToTurtleConverterTest extends TestCase
             (new EventDenormalizer())->handlesDummyOrganizers(),
             $addressParser,
             new RdfResourceFactoryWithoutBlankNodes(new NodeUriGenerator(new CRC32HashGenerator())),
+            new VideoNormalizer([]),
             $this->imageNormalizer,
             $this->logger
         );
