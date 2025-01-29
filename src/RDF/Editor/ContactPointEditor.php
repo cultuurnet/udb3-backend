@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\RDF\Editor;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use EasyRdf\Resource;
 
 final class ContactPointEditor
@@ -16,23 +18,36 @@ final class ContactPointEditor
     private const PROPERTY_CONTACT_POINT_URL = 'schema:url';
     private const PROPERTY_CONTACT_POINT_EMAIL = 'schema:email';
     private const PROPERTY_CONTACT_POINT_PHONE = 'schema:telephone';
+    private RdfResourceFactory $rdfResourceFactory;
+
+    public function __construct(RdfResourceFactory $rdfResourceFactory)
+    {
+        $this->rdfResourceFactory = $rdfResourceFactory;
+    }
 
     public function setContactPoint(Resource $resource, ContactPoint $contactPoint): void
     {
         foreach ($contactPoint->getUrls() as $url) {
-            $urlResource = $resource->getGraph()->newBNode([self::TYPE_CONTACT_POINT]);
+            $urlResource = $this->rdfResourceFactory->create($resource, self::TYPE_CONTACT_POINT, [
+                'url' => $url->toString()
+            ]);
+
             $urlResource->addLiteral(self::PROPERTY_CONTACT_POINT_URL, $url->toString());
             $resource->add(self::PROPERTY_CONTACT_POINT, $urlResource);
         }
 
         foreach ($contactPoint->getEmailAddresses() as $email) {
-            $urlResource = $resource->getGraph()->newBNode([self::TYPE_CONTACT_POINT]);
+            $urlResource = $this->rdfResourceFactory->create($resource, self::TYPE_CONTACT_POINT, [
+                'url' => $email->toString()
+            ]);
             $urlResource->addLiteral(self::PROPERTY_CONTACT_POINT_EMAIL, $email->toString());
             $resource->add(self::PROPERTY_CONTACT_POINT, $urlResource);
         }
 
         foreach ($contactPoint->getTelephoneNumbers() as $phone) {
-            $urlResource = $resource->getGraph()->newBNode([self::TYPE_CONTACT_POINT]);
+            $urlResource = $this->rdfResourceFactory->create($resource, self::TYPE_CONTACT_POINT, [
+                'url' => $phone->toString()
+            ]);
             $urlResource->addLiteral(self::PROPERTY_CONTACT_POINT_PHONE, $phone->toString());
             $resource->add(self::PROPERTY_CONTACT_POINT, $urlResource);
         }
@@ -40,7 +55,11 @@ final class ContactPointEditor
 
     public function setBookingInfo(Resource $resource, BookingInfo $bookingInfo): void
     {
-        $contactPoint = $resource->getGraph()->newBNode([self::TYPE_CONTACT_POINT]);
+        $contactPoint = $this->rdfResourceFactory->create(
+            $resource,
+            self::TYPE_CONTACT_POINT,
+            (new BookingInfoNormalizer())->normalize($bookingInfo)
+        );
 
         if ($bookingInfo->getWebsite()) {
             $contactPoint->addLiteral(

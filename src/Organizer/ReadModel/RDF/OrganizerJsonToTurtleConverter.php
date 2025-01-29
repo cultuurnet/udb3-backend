@@ -122,7 +122,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if (!$organizer->getContactPoint()->isEmpty()) {
-            (new ContactPointEditor())->setContactPoint($resource, $organizer->getContactPoint());
+            (new ContactPointEditor($this->rdfResourceFactory))->setContactPoint($resource, $organizer->getContactPoint());
         }
 
         if ($organizer->getLabels()->count() > 0) {

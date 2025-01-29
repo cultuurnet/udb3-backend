@@ -223,7 +223,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if (!$event->getContactPoint()->isEmpty()) {
-            (new ContactPointEditor())->setContactPoint($resource, $event->getContactPoint());
+            (new ContactPointEditor($this->rdfResourceFactory))->setContactPoint($resource, $event->getContactPoint());
         }
 
         if (!$event->getBookingInfo()->isEmpty()) {
@@ -472,7 +472,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     {
         $bookingInfoResource = $this->rdfResourceFactory->create($resource, self::TYPE_BOEKINGSINFO, (new BookingInfoNormalizer())->normalize($bookingInfo));
 
-        (new ContactPointEditor())->setBookingInfo($bookingInfoResource, $bookingInfo);
+        (new ContactPointEditor($this->rdfResourceFactory))->setBookingInfo($bookingInfoResource, $bookingInfo);
 
         $resource->add(self::PROPERTY_BOEKINGSINFO, $bookingInfoResource);
     }
@@ -502,7 +502,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function setDummyOrganizerContactPoint(Resource $organizerResource, array $contactPointData): void
     {
-        (new ContactPointEditor())->setContactPoint(
+        (new ContactPointEditor($this->rdfResourceFactory))->setContactPoint(
             $organizerResource,
             (new ContactPointDenormalizer())->denormalize(
                 $contactPointData,
