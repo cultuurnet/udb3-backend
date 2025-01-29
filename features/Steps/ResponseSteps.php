@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Steps;
 use Behat\Gherkin\Node\PyStringNode;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\RDF\NodeUri\CRC32HashGenerator;
 use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
@@ -236,6 +237,19 @@ trait ResponseSteps
             $this->responseState->getContent()
         );
     }
+
+
+    /**
+     * @When I save the identifier hash with the namespace :arg1 and id :arg2
+     */
+    public function iSaveTheIdentifierHashWithTheNamespaceAndId(string $namespace, string $localIdentifier): void
+    {
+        $this->variableState->setVariable('identifier', (new CRC32HashGenerator())->generate([
+            'generiek:naamruimte' => $namespace,
+            'generiek:lokaleIdentificator' => $this->variableState->getVariable($localIdentifier),
+        ]));
+    }
+
 
     /**
      * @Then the RDF response should match :fileName

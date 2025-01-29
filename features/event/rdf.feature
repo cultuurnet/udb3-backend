@@ -11,48 +11,56 @@ Feature: Test RDF projection of events
     Given I create an event from "events/rdf/event-with-required-fields.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/event-with-required-fields.ttl"
 
   Scenario: Create an event with permanent calendar and opening hours
     And I create an event from "events/event-with-permanent-calendar-and-opening-hours.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/event-with-permanent-calendar-and-opening-hours.ttl"
 
   Scenario: Create an event with periodic calendar and opening hours
     And I create an event from "events/event-with-periodic-calendar-and-opening-hours.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/event-with-periodic-calendar-and-opening-hours.ttl"
 
   Scenario: Create an online event with permanent calendar and online url
     And I create an event from "events/rdf/online-event-with-online-url-and-permanent-calendar.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/online-event-with-online-url-and-permanent-calendar.ttl"
 
   Scenario: Create an online event with multiple calendar
     And I create an event from "events/rdf/online-event-with-multiple-calendar.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/online-event-with-multiple-calendar.ttl"
 
   Scenario: Create an online event with multiple calendar and online url
     And I create an event from "events/rdf/online-event-with-online-url-and-multiple-calendar.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/online-event-with-online-url-and-multiple-calendar.ttl"
 
   Scenario: Create a mixed event with permanent calendar and online url
     And I create an event from "events/rdf/mixed-event-with-online-url-and-permanent-calendar.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/mixed-event-with-online-url-and-permanent-calendar.ttl"
 
   Scenario: Create a mixed event with multiple calendar and online url
     And I create an event from "events/rdf/mixed-event-with-online-url-and-multiple-calendar.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/mixed-event-with-online-url-and-multiple-calendar.ttl"
 
   Scenario: Create an event with organizer
@@ -63,36 +71,42 @@ Feature: Test RDF projection of events
     And I create an event from "events/rdf/event-with-organizer.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/event-with-organizer.ttl"
 
   Scenario: Create an event with contact point
     And I create an event from "events/rdf/event-with-contact-point.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/event-with-contact-point.ttl"
 
   Scenario: Create an event with booking info
     And I create an event from "events/rdf/event-with-booking-info.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/event-with-booking-info.ttl"
 
   Scenario: Create an event with labels
     And I create an event from "events/rdf/event-with-labels.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/event-with-labels.ttl"
 
   Scenario: Create an event with price info
     And I create an event from "events/rdf/event-with-price-info.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/event-with-price-info.ttl"
 
   Scenario: Create an event with videos
     And I create an event from "events/rdf/event-with-videos.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/event-with-videos.ttl"
 
   Scenario: Create an event with images
@@ -108,6 +122,7 @@ Feature: Test RDF projection of events
     And I create an event from "events/rdf/event-with-images.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/event-with-image-object.ttl"
 
   Scenario: Create an event with all fields
@@ -123,4 +138,5 @@ Feature: Test RDF projection of events
     Given I create an event from "events/rdf/event-with-all-fields.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
+    And I save the identifier hash with the namespace "http://data.uitdatabank.local:80/events/" and id "eventId"
     Then the RDF response should match "events/rdf/event-with-all-fields.ttl"
