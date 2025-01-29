@@ -4,14 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\DateTimeImmutableRange;
-
-class DateRange extends DateTimeImmutableRange
+final class DateRange
 {
+    private \DateTimeImmutable $from;
+
+    private \DateTimeImmutable $to;
+
     public function __construct(\DateTimeImmutable $from, \DateTimeImmutable $to)
     {
-        // Override the constructor to make both from and to required.
-        parent::__construct($from, $to);
+        if ($from > $to) {
+            throw new \InvalidArgumentException('"From" date should not be later than the "to" date.');
+        }
+
+        $this->from = $from;
+        $this->to = $to;
     }
 
     /**
@@ -39,5 +45,15 @@ class DateRange extends DateTimeImmutableRange
         }
 
         return 0;
+    }
+
+    public function getFrom(): \DateTimeImmutable
+    {
+        return $this->from;
+    }
+
+    public function getTo(): \DateTimeImmutable
+    {
+        return $this->to;
     }
 }
