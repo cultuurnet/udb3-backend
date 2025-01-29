@@ -17,28 +17,7 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/active> ;
   cpr:naam "publiq VZW"@nl, "publiq NPO"@en ;
   foaf:homepage "https://www.publiq.be" ;
-  schema:contactPoint [
-    a schema:ContactPoint ;
-    schema:url "https://www.publiq.be"
-  ], [
-    a schema:ContactPoint ;
-    schema:url "https://www.cultuurnet.be"
-  ], [
-    a schema:ContactPoint ;
-    schema:email "info@publiq.be"
-  ], [
-    a schema:ContactPoint ;
-    schema:email "info@cultuurnet.be"
-  ], [
-    a schema:ContactPoint ;
-    schema:telephone "016 10 20 30"
-  ], [
-    a schema:ContactPoint ;
-    schema:telephone "016 10 20 40"
-  ], [
-    a schema:ContactPoint ;
-    schema:telephone "016 99 99 99"
-  ] .
+  schema:contactPoint <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-66b969e2>, <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-b3906750>, <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-f3142b66>, <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-3979bafd>, <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-953ce804>, <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-08ebd0bd>, <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-6f2cc072> .
 
 <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#Identifier-dfdb13b1>
   a adms:Identifier ;
@@ -49,3 +28,31 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "https://mock.data.publiq.be/organizers/" ;
   generiek:lokaleIdentificator "56f1efdb-fe25-44f6-b9d7-4a6a836799d7" .
+
+<https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-66b969e2>
+  a schema:ContactPoint ;
+  schema:url "https://www.publiq.be" .
+
+<https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-b3906750>
+  a schema:ContactPoint ;
+  schema:url "https://www.cultuurnet.be" .
+
+<https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-f3142b66>
+  a schema:ContactPoint ;
+  schema:email "info@publiq.be" .
+
+<https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-3979bafd>
+  a schema:ContactPoint ;
+  schema:email "info@cultuurnet.be" .
+
+<https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-953ce804>
+  a schema:ContactPoint ;
+  schema:telephone "016 10 20 30" .
+
+<https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-08ebd0bd>
+  a schema:ContactPoint ;
+  schema:telephone "016 10 20 40" .
+
+<https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ContactPoint-6f2cc072>
+  a schema:ContactPoint ;
+  schema:telephone "016 99 99 99" .

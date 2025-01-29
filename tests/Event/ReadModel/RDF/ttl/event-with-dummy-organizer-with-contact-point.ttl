@@ -22,13 +22,7 @@
   cidoc:P14_carried_out_by [
     a cp:Organisator ;
     cpr:naam "Dummy Organizer"@nl ;
-    schema:contactPoint [
-      a schema:ContactPoint ;
-      schema:url "http://www.dummy-organizer.be"
-    ], [
-      a schema:ContactPoint ;
-      schema:telephone "016 666 666"
-    ]
+    schema:contactPoint <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#ContactPoint-ea81c639>, <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#ContactPoint-1b0f9b07>
   ] ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
@@ -43,3 +37,11 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "https://mock.data.publiq.be/events/" ;
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#ContactPoint-ea81c639>
+  a schema:ContactPoint ;
+  schema:url "http://www.dummy-organizer.be" .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#ContactPoint-1b0f9b07>
+  a schema:ContactPoint ;
+  schema:telephone "016 666 666" .
