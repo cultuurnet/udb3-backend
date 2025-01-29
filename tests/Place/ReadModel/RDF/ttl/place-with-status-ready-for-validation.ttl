@@ -10,13 +10,13 @@
   a dcterms:Location ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
-  adms:identifier <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-3a37c04d> ;
+  adms:identifier <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-29568352> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/ready-for-validation> ;
   locn:locatorName "Voorbeeld titel"@nl ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/8.48.0.0.0> ;
   locn:address <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-31b1ac5f> .
 
-<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-3a37c04d>
+<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-29568352>
   a adms:Identifier ;
   skos:notation "https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyURI ;
   generiek:gestructureerdeIdentificator <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-29568352> .

@@ -12,12 +12,12 @@
   a cp:Organisator ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
-  adms:identifier <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#Identifier-5d257cd9> ;
+  adms:identifier <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#Identifier-dfdb13b1> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/deleted> ;
   cpr:naam "publiq VZW"@nl, "publiq NPO"@en ;
   foaf:homepage "https://www.publiq.be" .
 
-<https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#Identifier-5d257cd9>
+<https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#Identifier-dfdb13b1>
   a adms:Identifier ;
   skos:notation "https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7"^^xsd:anyURI ;
   generiek:gestructureerdeIdentificator <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#GestructureerdeIdentificator-dfdb13b1> .
