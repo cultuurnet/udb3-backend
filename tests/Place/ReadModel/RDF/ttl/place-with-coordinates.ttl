@@ -23,15 +23,18 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   locn:locatorName "Voorbeeld titel"@nl ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/8.48.0.0.0> ;
-  locn:address [
-    a locn:Address ;
-    locn:adminUnitL1 "BE" ;
-    locn:postCode "3000" ;
-    locn:locatorDesignator "1" ;
-    locn:fullAddress "Martelarenlaan 1, 3000 Leuven, BE"@nl ;
-    locn:postName "Leuven"@nl ;
-    locn:thoroughfare "Martelarenlaan"@nl
-  ] ;
+  locn:address <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-31b1ac5f> ;
   locn:geometry <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Geometry-a1928804> .
 
-<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Geometry-a1928804> geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>4.6997, 50.879</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral .
+<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-31b1ac5f>
+  a locn:Address ;
+  locn:adminUnitL1 "BE" ;
+  locn:postCode "3000" ;
+  locn:locatorDesignator "1" ;
+  locn:fullAddress "Martelarenlaan 1, 3000 Leuven, BE"@nl ;
+  locn:postName "Leuven"@nl ;
+  locn:thoroughfare "Martelarenlaan"@nl .
+
+<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Geometry-a1928804>
+  a locn:Geometry ;
+  geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>4.6997, 50.879</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral .

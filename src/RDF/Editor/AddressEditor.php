@@ -6,13 +6,16 @@ namespace CultuurNet\UDB3\RDF\Editor;
 
 use CultuurNet\UDB3\Address\Formatter\FullAddressFormatter;
 use CultuurNet\UDB3\Address\Parser\AddressParser;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Geography\TranslatedAddress;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
 
 final class AddressEditor
 {
     private AddressParser $addressParser;
+    private RdfResourceFactory $resourceFactory;
 
     private const TYPE_ADRES = 'locn:Address';
 
@@ -23,14 +26,20 @@ final class AddressEditor
     private const PROPERTY_ADRES_LAND = 'locn:adminUnitL1';
     private const PROPERTY_ADRES_VOLLEDIG_ADRES = 'locn:fullAddress';
 
-    public function __construct(AddressParser $addressParser)
+    public function __construct(AddressParser $addressParser, RdfResourceFactory $resourceFactory)
     {
         $this->addressParser = $addressParser;
+        $this->resourceFactory = $resourceFactory;
     }
 
     public function setAddress(Resource $resource, string $property, TranslatedAddress $translatedAddress): Resource
     {
-        $addressResource = $resource->getGraph()->newBNode([self::TYPE_ADRES]);
+        $addressResource = $this->resourceFactory->create(
+            $resource,
+            self::TYPE_ADRES,
+            (new TranslatedAddressNormalizer())->normalize($translatedAddress)
+        );
+
         $resource->add($property, $addressResource);
 
         foreach ($translatedAddress->getLanguages() as $language) {

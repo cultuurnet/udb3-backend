@@ -18,9 +18,12 @@ final class RdfResourceFactoryWithoutBlankNodes implements RdfResourceFactory
 
     public function create(Resource $resource, string $nodeName, array $data): Resource
     {
-        return $resource->getGraph()->resource($this->nodeUriGenerator->generate(
-            $nodeName,
-            $data,
-        ));
+        return $resource->getGraph()->resource(
+            $this->nodeUriGenerator->generate(
+                $nodeName,
+                $data,
+            ),
+            [$nodeName]
+        );
     }
 }

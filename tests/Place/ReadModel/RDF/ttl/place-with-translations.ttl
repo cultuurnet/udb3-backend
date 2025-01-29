@@ -22,12 +22,13 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   locn:locatorName "Voorbeeld titel"@nl, "Example title"@en ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/8.48.0.0.0> ;
-  locn:address [
-    a locn:Address ;
-    locn:fullAddress "Martelarenlaan 1, 3000 Leuven, BE"@nl, "Martelarenlaan 1, 3000 Louvain, BE"@fr ;
-    locn:postName "Leuven"@nl, "Louvain"@fr ;
-    locn:thoroughfare "Martelarenlaan"@nl, "Martelarenlaan"@fr ;
-    locn:adminUnitL1 "BE" ;
-    locn:postCode "3000" ;
-    locn:locatorDesignator "1"
-  ] .
+  locn:address <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-de15eaad> .
+
+<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-de15eaad>
+  a locn:Address ;
+  locn:fullAddress "Martelarenlaan 1, 3000 Leuven, BE"@nl, "Martelarenlaan 1, 3000 Louvain, BE"@fr ;
+  locn:postName "Leuven"@nl, "Louvain"@fr ;
+  locn:thoroughfare "Martelarenlaan"@nl, "Martelarenlaan"@fr ;
+  locn:adminUnitL1 "BE" ;
+  locn:postCode "3000" ;
+  locn:locatorDesignator "1" .

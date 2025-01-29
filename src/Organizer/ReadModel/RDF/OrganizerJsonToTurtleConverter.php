@@ -112,7 +112,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if ($organizer->getAddress()) {
-            (new AddressEditor($this->addressParser))
+            (new AddressEditor($this->addressParser, $this->rdfResourceFactory))
                 ->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $organizer->getAddress());
         }
 
