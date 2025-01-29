@@ -91,7 +91,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         $modified = DateTimeFactory::fromISO8601($organizerData['modified'])->format(DateTime::ATOM);
-        GraphEditor::for($graph)->setGeneralProperties(
+        GraphEditor::for($graph, $this->rdfResourceFactory)->setGeneralProperties(
             $iri,
             self::TYPE_ORGANISATOR,
             isset($organizerData['created']) ?

@@ -66,7 +66,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private DenormalizerInterface $eventDenormalizer;
     private AddressParser $addressParser;
     private LoggerInterface $logger;
-    private RdfResourceFactory $resourceFactory;
+    private RdfResourceFactory $rdfResourceFactory;
     private NormalizerInterface $imageNormalizer;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
@@ -133,7 +133,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         $this->eventDenormalizer = $eventDenormalizer;
         $this->addressParser = $addressParser;
         $this->logger = $logger;
-        $this->resourceFactory = $resourceFactory;
+        $this->rdfResourceFactory = $resourceFactory;
         $this->imageNormalizer = $imageNormalizer;
     }
 
@@ -170,7 +170,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
             throw new JsonDataCouldNotBeConverted('Event ' . $id . ' has no created date.');
         }
 
-        GraphEditor::for($graph)->setGeneralProperties(
+        GraphEditor::for($graph, $this->rdfResourceFactory)->setGeneralProperties(
             $iri,
             self::TYPE_ACTIVITEIT,
             DateTimeFactory::fromISO8601($eventData['created'])->format(DateTime::ATOM),
@@ -211,7 +211,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         $this->setCalendarWithLocation($resource, $event, $eventData['location']);
-        (new OpeningHoursEditor())->setOpeningHours($resource, $event->getCalendar(), $this->resourceFactory);
+        (new OpeningHoursEditor())->setOpeningHours($resource, $event->getCalendar(), $this->rdfResourceFactory);
 
         if ($event->getDescription()) {
             $this->setDescription($resource, $event->getDescription());
@@ -330,7 +330,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         $addressResource = null;
 
         foreach ($subEvents as $subEvent) {
-            $spaceTimeResource = $this->resourceFactory->create(
+            $spaceTimeResource = $this->rdfResourceFactory->create(
                 $resource,
                 self::TYPE_SPACE_TIME,
                 array_merge(
@@ -353,7 +353,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_LOCATION, $addressResource);
             }
 
-            $calendarTypeResource = $this->resourceFactory->create(
+            $calendarTypeResource = $this->rdfResourceFactory->create(
                 $resource,
                 self::TYPE_PERIOD,
                 $this->getFromTo($subEvent)
@@ -390,7 +390,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         if ($placeReference->getAddress()) {
             $dummyLocationName = $this->getDummyLocationName($locationData, $mainLanguage);
 
-            $locationResource = $this->resourceFactory->create(
+            $locationResource = $this->rdfResourceFactory->create(
                 $resource,
                 self::TYPE_LOCATIE,
                 $this->getLocationResourceData($dummyLocationName, $placeReference)
@@ -404,7 +404,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 );
             }
 
-            (new AddressEditor($this->addressParser, $this->resourceFactory))->setAddress(
+            (new AddressEditor($this->addressParser, $this->rdfResourceFactory))->setAddress(
                 $locationResource,
                 self::PROPERTY_LOCATIE_ADRES,
                 $placeReference->getAddress()
@@ -540,9 +540,9 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function createPrijsResource(Resource $resource, Tariff $tariff): Resource
     {
-        $priceSpecificationResource = $this->resourceFactory->create($resource, self::TYPE_PRICE_SPECIFICATION, (new TariffNormalizer())->normalize($tariff));
+        $priceSpecificationResource = $this->rdfResourceFactory->create($resource, self::TYPE_PRICE_SPECIFICATION, (new TariffNormalizer())->normalize($tariff));
 
-        $monetaryAmountResource = $this->resourceFactory->create($resource, self::TYPE_MONETARY_AMOUNT, (new MoneyNormalizer())->normalize($tariff->getPrice()));
+        $monetaryAmountResource = $this->rdfResourceFactory->create($resource, self::TYPE_MONETARY_AMOUNT, (new MoneyNormalizer())->normalize($tariff->getPrice()));
         $monetaryAmountResource->set(
             self::PROPERTY_CURRENCY,
             new Literal($tariff->getPrice()->getCurrency()->getName(), null)
