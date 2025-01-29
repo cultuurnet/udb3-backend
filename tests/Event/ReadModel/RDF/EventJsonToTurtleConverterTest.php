@@ -264,7 +264,6 @@ class EventJsonToTurtleConverterTest extends TestCase
         ]);
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
-
         $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-calendar-periodic.ttl'), $turtle);
     }
 
