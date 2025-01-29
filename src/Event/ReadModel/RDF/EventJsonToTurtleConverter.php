@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
@@ -469,7 +470,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function setBookingInfo(Resource $resource, BookingInfo $bookingInfo): void
     {
-        $bookingInfoResource = $resource->getGraph()->newBNode([self::TYPE_BOEKINGSINFO]);
+        $bookingInfoResource = $this->rdfResourceFactory->create($resource, self::TYPE_BOEKINGSINFO, (new BookingInfoNormalizer())->normalize($bookingInfo));
 
         (new ContactPointEditor())->setBookingInfo($bookingInfoResource, $bookingInfo);
 
