@@ -6,6 +6,7 @@
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix schema: <https://schema.org/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 
@@ -19,14 +20,27 @@
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> .
+  prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
+  schema:video [
+    a schema:VideoObject ;
+    schema:identifier "6bab1cba-18d0-42e7-b0c9-3b869eb68934" ;
+    schema:url "https://youtu.be/fn-4RbxXThE"^^schema:URL ;
+    schema:embedUrl "https://www.youtube.com/embed/fn-4RbxXThE"^^schema:URL ;
+    schema:copyrightHolder "Copyright afgehandeld door YouTube" ;
+    schema:inLanguage "nl"
+  ], [
+    a schema:VideoObject ;
+    schema:identifier "58716d9e-46c8-4145-a0b2-60381ec3bd92" ;
+    schema:url "https://youtu.be/fd-5FGTh3se"^^schema:URL ;
+    schema:embedUrl "https://www.youtube.com/embed/fd-5FGTh3se"^^schema:URL ;
+    schema:copyrightHolder "Copyright afgehandeld door YouTube" ;
+    schema:inLanguage "nl"
+  ] .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-ef49fc0a>
-  a adms:Identifier ;
   skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyURI ;
   generiek:gestructureerdeIdentificator <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-fc28bf15> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-fc28bf15>
-  a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "https://mock.data.publiq.be/events/" ;
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
