@@ -7,8 +7,8 @@
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
-@prefix m8g: <http://data.europa.eu/m8g/> .
 @prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix m8g: <http://data.europa.eu/m8g/> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a cidoc:E7_Activity ;
@@ -30,13 +30,26 @@
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   cp:ruimtetijd [
     a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection _:genid4 ;
     cidoc:P160_has_temporal_projection <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-8de5b7f4>
   ], [
     a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection _:genid4 ;
+    cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Location-71a2c8cb> ;
     cidoc:P160_has_temporal_projection <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-a889f286>
   ] .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Location-71a2c8cb>
+  a dcterms:Location ;
+  locn:locatorName "Het Depot"@nl ;
+  locn:address <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-c7fded52> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-c7fded52>
+  a locn:Address ;
+  locn:adminUnitL1 "BE" ;
+  locn:postCode "3000" ;
+  locn:locatorDesignator "1" ;
+  locn:fullAddress "Martelarenplein 1, 3000 Leuven, BE"@nl ;
+  locn:postName "Leuven"@nl ;
+  locn:thoroughfare "Martelarenlaan"@nl .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-8de5b7f4>
   a m8g:PeriodOfTime ;
@@ -47,16 +60,3 @@
   a m8g:PeriodOfTime ;
   m8g:startTime "2023-05-07T20:00:00+01:00"^^xsd:dateTime ;
   m8g:endTime "2023-05-07T23:00:00+01:00"^^xsd:dateTime .
-
-_:genid4
-  a dcterms:Location ;
-  locn:locatorName "Het Depot"@nl ;
-  locn:address [
-    a locn:Address ;
-    locn:adminUnitL1 "BE" ;
-    locn:postCode "3000" ;
-    locn:locatorDesignator "1" ;
-    locn:fullAddress "Martelarenplein 1, 3000 Leuven, BE"@nl ;
-    locn:postName "Leuven"@nl ;
-    locn:thoroughfare "Martelarenlaan"@nl
-  ] .

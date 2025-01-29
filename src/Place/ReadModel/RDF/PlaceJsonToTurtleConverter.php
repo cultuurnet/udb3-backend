@@ -104,7 +104,7 @@ final class PlaceJsonToTurtleConverter implements JsonToTurtleConverter
 
         $this->setTerms($resource, $place->getTerms());
 
-        (new AddressEditor($this->addressParser))->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $place->getAddress());
+        (new AddressEditor($this->addressParser, $this->rdfResourceFactory))->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $place->getAddress());
 
         if ($place->getGeoCoordinates()) {
             (new GeometryEditor($this->rdfResourceFactory))->setCoordinates($resource, $place->getGeoCoordinates());

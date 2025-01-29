@@ -23,16 +23,17 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   locn:locatorName "Cafe Den Hemel"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/Yf4aZBfsUEu2NsQqsprngw> ;
-  locn:address [
-    a locn:Address ;
-    locn:adminUnitL1 "BE" ;
-    locn:postCode "3271" ;
-    locn:locatorDesignator "107" ;
-    locn:fullAddress "Hoornblaas 107, 3271 Scherpenheuvel-Zichem, BE"@nl ;
-    locn:postName "Scherpenheuvel-Zichem"@nl ;
-    locn:thoroughfare "Hoornblaas"@nl
-  ] ;
+  locn:address <http://data.uitdatabank.local:80/places/%{placeId}#Address-a25ff4ba> ;
   locn:geometry <http://data.uitdatabank.local:80/places/%{placeId}#Geometry-f23d5ad3> .
+
+<http://data.uitdatabank.local:80/places/%{placeId}#Address-a25ff4ba>
+  a locn:Address ;
+  locn:adminUnitL1 "BE" ;
+  locn:postCode "3271" ;
+  locn:locatorDesignator "107" ;
+  locn:fullAddress "Hoornblaas 107, 3271 Scherpenheuvel-Zichem, BE"@nl ;
+  locn:postName "Scherpenheuvel-Zichem"@nl ;
+  locn:thoroughfare "Hoornblaas"@nl .
 
 <http://data.uitdatabank.local:80/places/%{placeId}#Geometry-f23d5ad3>
   a locn:Geometry ;

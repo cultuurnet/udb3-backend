@@ -24,11 +24,12 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   locn:locatorName "xxxx"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/Yf4aZBfsUEu2NsQqsprngw> ;
-  locn:address [
-    a locn:Address ;
-    locn:adminUnitL1 "BE" ;
-    locn:postCode "bbbb" ;
-    locn:fullAddress "cccc, bbbb aaaa, BE"@nl ;
-    locn:postName "aaaa"@nl
-  ] ;
+  locn:address <http://data.uitdatabank.local:80/places/%{placeId}#Address-e65e3e32> ;
   rdfs:label "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen .
+
+<http://data.uitdatabank.local:80/places/%{placeId}#Address-e65e3e32>
+  a locn:Address ;
+  locn:adminUnitL1 "BE" ;
+  locn:postCode "bbbb" ;
+  locn:fullAddress "cccc, bbbb aaaa, BE"@nl ;
+  locn:postName "aaaa"@nl .
