@@ -21,19 +21,7 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-  schema:contactPoint [
-    a schema:ContactPoint ;
-    schema:url "https://www.example.com"
-  ], [
-    a schema:ContactPoint ;
-    schema:email "info@example.com"
-  ], [
-    a schema:ContactPoint ;
-    schema:telephone "016 10 20 30"
-  ], [
-    a schema:ContactPoint ;
-    schema:telephone "016 10 20 31"
-  ] .
+  schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-f20d8319>, <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-35306b47>, <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-953ce804>, <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-94fe8233> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
   a adms:Identifier ;
@@ -44,3 +32,19 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-f20d8319>
+  a schema:ContactPoint ;
+  schema:url "https://www.example.com" .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-35306b47>
+  a schema:ContactPoint ;
+  schema:email "info@example.com" .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-953ce804>
+  a schema:ContactPoint ;
+  schema:telephone "016 10 20 30" .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-94fe8233>
+  a schema:ContactPoint ;
+  schema:telephone "016 10 20 31" .
