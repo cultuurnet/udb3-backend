@@ -2,27 +2,19 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix schema: <https://schema.org/> .
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix m8g: <http://data.europa.eu/m8g/> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}>
   a cidoc:E7_Activity ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier [
-    a adms:Identifier ;
-    skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
-    generiek:gestructureerdeIdentificator [
-      a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
-      generiek:lokaleIdentificator "%{eventId}"
-    ]
-  ] ;
+  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}> ;
   dcterms:title "Permanent event"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
@@ -32,6 +24,16 @@
     schema:url "https://www.publiq.be/livestream"^^schema:URL
   ] ;
   cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-2aac7354>, <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-cbeaaec0> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
+  a adms:Identifier ;
+  skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}>
+  a generiek:GestructureerdeIdentificator ;
+  generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
+  generiek:lokaleIdentificator "%{eventId}" .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-2aac7354>
   a cidoc:E92_Spacetime_Volume ;
