@@ -13,7 +13,6 @@ final class GraphEditor
     private Graph $graph;
     private RdfResourceFactory $resourceFactory;
 
-
     private const TYPE_IDENTIFICATOR = 'adms:Identifier';
     private const TYPE_STRUCTURED_IDENTIFICATOR = 'generiek:GestructureerdeIdentificator';
 
@@ -54,16 +53,14 @@ final class GraphEditor
 
         [$namespace, $localIdentifier] = $this->splitIdentifier($resourceIri);
 
-        $identifier = $this->resourceFactory->create($resource,self::TYPE_IDENTIFICATOR, [
-            self::PROPERTY_AANGEMAAKT_OP => $createdOn,
-            self::PROPERTY_LAATST_AANGEPAST => $modifiedOn,
+        $identifier = $this->resourceFactory->create($resource, self::TYPE_IDENTIFICATOR, [
             self::PROPERTY_NAAMRUIMTE => $namespace,
             self::PROPERTY_LOKALE_IDENTIFICATOR => $localIdentifier,
         ]);
         $identifier->add(self::PROPERTY_IDENTIFICATOR_NOTATION, new Literal($resourceIri, null, 'xsd:anyURI'));
         $resource->add(self::PROPERTY_IDENTIFICATOR, $identifier);
 
-        $structuredIdentifier = $this->resourceFactory->create($resource,self::TYPE_STRUCTURED_IDENTIFICATOR, [
+        $structuredIdentifier = $this->resourceFactory->create($resource, self::TYPE_STRUCTURED_IDENTIFICATOR, [
             self::PROPERTY_NAAMRUIMTE => $namespace,
             self::PROPERTY_LOKALE_IDENTIFICATOR => $localIdentifier,
         ]);
