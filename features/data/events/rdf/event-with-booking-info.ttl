@@ -6,9 +6,9 @@
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
-@prefix schema: <https://schema.org/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
+@prefix schema: <https://schema.org/> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}>
   a cidoc:E7_Activity ;
@@ -21,15 +21,7 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-  cpa:boeking [
-    a cpa:Boekingsinfo ;
-    schema:contactPoint [
-      a schema:ContactPoint ;
-      schema:url "https://www.example.com" ;
-      schema:telephone "string" ;
-      schema:email "info@example.com"
-    ]
-  ] .
+  cpa:boeking <http://data.uitdatabank.local:80/events/%{eventId}#Boekingsinfo-1cb41cc5> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
   a adms:Identifier ;
@@ -40,3 +32,12 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#Boekingsinfo-1cb41cc5>
+  a cpa:Boekingsinfo ;
+  schema:contactPoint [
+    a schema:ContactPoint ;
+    schema:url "https://www.example.com" ;
+    schema:telephone "string" ;
+    schema:email "info@example.com"
+  ] .
