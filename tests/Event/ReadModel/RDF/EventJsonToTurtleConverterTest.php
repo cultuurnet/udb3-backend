@@ -921,7 +921,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-organizer-with-translated-name.ttl'), $turtle);
     }
 
     /**
