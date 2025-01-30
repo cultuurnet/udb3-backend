@@ -19,13 +19,11 @@ use CultuurNet\UDB3\Kinepolis\Exception\ImageNotFound;
 use CultuurNet\UDB3\Kinepolis\Mapping\MappingRepository;
 use CultuurNet\UDB3\Kinepolis\Parser\MovieParser;
 use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
-use CultuurNet\UDB3\Kinepolis\Trailer\TrailerRepository;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedMovie;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedPriceForATheater;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -33,10 +31,8 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
-use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use CultuurNet\UDB3\Security\AuthorizableCommand;
 use Exception;
-use Google\Service\Exception as GoogleException;
 use Psr\Log\LoggerInterface;
 
 final class KinepolisService
@@ -57,8 +53,6 @@ final class KinepolisService
 
     private UuidGeneratorInterface $uuidGenerator;
 
-    private TrailerRepository $trailerRepository;
-
     private ProductionRepository $productionRepository;
 
     private LoggerInterface $logger;
@@ -72,7 +66,6 @@ final class KinepolisService
         MappingRepository $movieMappingRepository,
         ImageUploaderInterface $imageUploader,
         UuidGeneratorInterface $uuidGenerator,
-        TrailerRepository $trailerRepository,
         ProductionRepository $productionRepository,
         LoggerInterface $logger
     ) {
@@ -84,7 +77,6 @@ final class KinepolisService
         $this->movieMappingRepository = $movieMappingRepository;
         $this->imageUploader = $imageUploader;
         $this->uuidGenerator = $uuidGenerator;
-        $this->trailerRepository = $trailerRepository;
         $this->productionRepository = $productionRepository;
         $this->logger = $logger;
     }
@@ -152,22 +144,13 @@ final class KinepolisService
 
             $this->logger->info('Found ' . count($parsedMovies) . ' screenings for movie with kinepolisId ' . $mid);
 
-            // We do only 1 search by movieTitle for a trailer to avoid hitting the YouTube Rate limiting.
-            $movieTitle = $movie['title'];
-            $trailer = null;
-            try {
-                $trailer = $this->trailerRepository->findMatchingTrailer($movieTitle);
-            } catch (GoogleException $exception) {
-                $this->logger->error('Problem with searching trailer for ' . $movieTitle . ':' . $exception->getMessage());
-            }
-
             foreach ($parsedMovies as $parsedMovie) {
-                $this->process($parsedMovie, $token, $trailer);
+                $this->process($parsedMovie, $token);
             }
         }
     }
 
-    private function process(ParsedMovie $parsedMovie, string $token, ?Video $trailer): void
+    private function process(ParsedMovie $parsedMovie, string $token): void
     {
         $commands = [];
         $eventId = $this->movieMappingRepository->getByMovieId($parsedMovie->getExternalId());
@@ -183,15 +166,6 @@ final class KinepolisService
             }
 
             $commands[] = $this->getLinkToProductionCommand($parsedMovie->getTitle()->toString(), $eventId);
-
-            if ($trailer !== null) {
-                $this->logger->info('Found trailer ' . $trailer->getUrl()->toString() . ' for movie ' . $parsedMovie->getTitle()->toString());
-                $addVideo = new AddVideo(
-                    $eventId,
-                    $trailer
-                );
-                $commands[] = $addVideo;
-            }
         } else {
             $updateCalendar = new UpdateCalendar($eventId, $parsedMovie->getCalendar());
             $commands[] = $updateCalendar;
