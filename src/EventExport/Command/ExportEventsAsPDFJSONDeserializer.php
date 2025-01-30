@@ -88,6 +88,8 @@ class ExportEventsAsPDFJSONDeserializer extends JSONDeserializer
 
         if ($sorting !== null) {
             $command = $command->withSorting($sorting);
+        } else {
+            $command = $command->withSorting(new Sorting('availableTo', 'asc'));
         }
 
         if (isset($customizations->subtitle)) {
