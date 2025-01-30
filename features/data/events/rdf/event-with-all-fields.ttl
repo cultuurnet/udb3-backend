@@ -35,15 +35,7 @@
     a schema:ContactPoint ;
     schema:telephone "string"
   ] ;
-  cpa:boeking [
-    a cpa:Boekingsinfo ;
-    schema:contactPoint [
-      a schema:ContactPoint ;
-      schema:url "https://www.example.com" ;
-      schema:telephone "string" ;
-      schema:email "info@example.com"
-    ]
-  ] ;
+  cpa:boeking <http://data.uitdatabank.local:80/events/%{eventId}#Boekingsinfo-1cb41cc5> ;
   rdfs:label "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen ;
   cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be> ;
   schema:video <http://data.uitdatabank.local:80/events/%{eventId}#VideoObject-8c7c2146> ;
@@ -85,6 +77,15 @@
   a m8g:PeriodOfTime ;
   m8g:startTime "2021-05-18T08:00:00+00:00"^^xsd:dateTime ;
   m8g:endTime "2021-05-18T22:00:00+00:00"^^xsd:dateTime .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#Boekingsinfo-1cb41cc5>
+  a cpa:Boekingsinfo ;
+  schema:contactPoint [
+    a schema:ContactPoint ;
+    schema:url "https://www.example.com" ;
+    schema:telephone "string" ;
+    schema:email "info@example.com"
+  ] .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be>
   a schema:PriceSpecification ;
