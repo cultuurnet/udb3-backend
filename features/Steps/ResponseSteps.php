@@ -247,7 +247,7 @@ trait ResponseSteps
     }
 
     /**
-     * @Then the RDF response should match organisation projection :fileName
+     * @Then the RDF response should match organizer projection :fileName
      */
     public function theRdfResponseShouldMatchOrganisationProjection(string $fileName): void
     {
