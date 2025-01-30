@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\MoneyNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
@@ -67,6 +68,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private AddressParser $addressParser;
     private LoggerInterface $logger;
     private RdfResourceFactory $rdfResourceFactory;
+    private VideoNormalizer $videoNormalizer;
     private NormalizerInterface $imageNormalizer;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
@@ -122,6 +124,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         DenormalizerInterface $eventDenormalizer,
         AddressParser $addressParser,
         RdfResourceFactory $resourceFactory,
+        VideoNormalizer $videoNormalizer,
         NormalizerInterface $imageNormalizer,
         LoggerInterface $logger
     ) {
@@ -134,6 +137,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         $this->addressParser = $addressParser;
         $this->logger = $logger;
         $this->rdfResourceFactory = $resourceFactory;
+        $this->videoNormalizer = $videoNormalizer;
         $this->imageNormalizer = $imageNormalizer;
     }
 
@@ -234,7 +238,10 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if (!$event->getVideos()->isEmpty()) {
-            (new VideoEditor())->setVideos($resource, $event->getVideos());
+            (new VideoEditor(
+                $this->rdfResourceFactory,
+                $this->videoNormalizer
+            ))->setVideos($resource, $event->getVideos());
         }
 
         if (!$event->getImages()->isEmpty()) {

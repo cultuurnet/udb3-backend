@@ -46,14 +46,7 @@
   ] ;
   rdfs:label "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen ;
   cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be> ;
-  schema:video [
-    a schema:VideoObject ;
-    schema:identifier "b504cf44-9ab8-4641-9934-38d1cc67242c" ;
-    schema:url "https://www.youtube.com/watch?v=cEItmb_a20D"^^schema:URL ;
-    schema:embedUrl "https://www.youtube.com/embed/cEItmb_a20D"^^schema:URL ;
-    schema:copyrightHolder "publiq" ;
-    schema:inLanguage "nl"
-  ] ;
+  schema:video <http://data.uitdatabank.local:80/events/%{eventId}#VideoObject-8c7c2146> ;
   schema:image [
     a schema:ImageObject ;
     schema:identifier "%{imageId}" ;
@@ -103,3 +96,11 @@
   a schema:MonetaryAmount ;
   schema:currency "EUR" ;
   schema:value "10.5"^^schema:Number .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#VideoObject-8c7c2146>
+  a schema:VideoObject ;
+  schema:identifier "b504cf44-9ab8-4641-9934-38d1cc67242c" ;
+  schema:url "https://www.youtube.com/watch?v=cEItmb_a20D"^^schema:URL ;
+  schema:embedUrl "https://www.youtube.com/embed/cEItmb_a20D"^^schema:URL ;
+  schema:copyrightHolder "publiq" ;
+  schema:inLanguage "nl" .

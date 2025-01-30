@@ -21,21 +21,7 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-  schema:video [
-    a schema:VideoObject ;
-    schema:identifier "6bab1cba-18d0-42e7-b0c9-3b869eb68934" ;
-    schema:url "https://youtu.be/fn-4RbxXThE"^^schema:URL ;
-    schema:embedUrl "https://www.youtube.com/embed/fn-4RbxXThE"^^schema:URL ;
-    schema:copyrightHolder "Copyright afgehandeld door YouTube" ;
-    schema:inLanguage "nl"
-  ], [
-    a schema:VideoObject ;
-    schema:identifier "58716d9e-46c8-4145-a0b2-60381ec3bd92" ;
-    schema:url "https://youtu.be/fd-5FGTh3se"^^schema:URL ;
-    schema:embedUrl "https://www.youtube.com/embed/fd-5FGTh3se"^^schema:URL ;
-    schema:copyrightHolder "Copyright afgehandeld door YouTube" ;
-    schema:inLanguage "nl"
-  ] .
+  schema:video <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#VideoObject-06299af1>, <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#VideoObject-a46c333b> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-fc28bf15>
   a adms:Identifier ;
@@ -46,3 +32,19 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "https://mock.data.publiq.be/events/" ;
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#VideoObject-06299af1>
+  a schema:VideoObject ;
+  schema:identifier "6bab1cba-18d0-42e7-b0c9-3b869eb68934" ;
+  schema:url "https://youtu.be/fn-4RbxXThE"^^schema:URL ;
+  schema:embedUrl "https://www.youtube.com/embed/fn-4RbxXThE"^^schema:URL ;
+  schema:copyrightHolder "Copyright afgehandeld door YouTube" ;
+  schema:inLanguage "nl" .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#VideoObject-a46c333b>
+  a schema:VideoObject ;
+  schema:identifier "58716d9e-46c8-4145-a0b2-60381ec3bd92" ;
+  schema:url "https://youtu.be/fd-5FGTh3se"^^schema:URL ;
+  schema:embedUrl "https://www.youtube.com/embed/fd-5FGTh3se"^^schema:URL ;
+  schema:copyrightHolder "Copyright afgehandeld door YouTube" ;
+  schema:inLanguage "nl" .
