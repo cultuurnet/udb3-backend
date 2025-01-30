@@ -10,25 +10,25 @@ Feature: Test RDF projection of organizers
     Given I create an organizer from "organizers/organizer-minimal.json" and save the "id" as "organizerId"
     And I accept "text/turtle"
     When I get the RDF of organizer with id "%{organizerId}"
-    Then the RDF response should match "organizers/rdf/organizer.ttl"
+    Then the RDF response should match organizer projection "organizers/rdf/organizer.ttl"
 
   Scenario: Create an organizer with address
     Given I create an organizer from "organizers/organizer-with-address.json" and save the "id" as "organizerId"
     And I accept "text/turtle"
     When I get the RDF of organizer with id "%{organizerId}"
-    Then the RDF response should match "organizers/rdf/organizer-with-address.ttl"
+    Then the RDF response should match organizer projection "organizers/rdf/organizer-with-address.ttl"
 
   Scenario: Create an organizer with contact point
     Given I create an organizer from "organizers/organizer-with-contact-point.json" and save the "id" as "organizerId"
     And I accept "text/turtle"
     When I get the RDF of organizer with id "%{organizerId}"
-    Then the RDF response should match "organizers/rdf/organizer-with-contact-point.ttl"
+    Then the RDF response should match organizer projection "organizers/rdf/organizer-with-contact-point.ttl"
 
   Scenario: Create an organizer with labels
     Given I create an organizer from "organizers/organizer-with-labels.json" and save the "id" as "organizerId"
     And I accept "text/turtle"
     When I get the RDF of organizer with id "%{organizerId}"
-    Then the RDF response should match "organizers/rdf/organizer-with-labels.ttl"
+    Then the RDF response should match organizer projection "organizers/rdf/organizer-with-labels.ttl"
 
   Scenario: Create an organizer with images
     Given I set the form data properties to:
@@ -52,10 +52,10 @@ Feature: Test RDF projection of organizers
     Given I create an organizer from "organizers/organizer-with-images.json" and save the "id" as "organizerId"
     And I accept "text/turtle"
     When I get the RDF of organizer with id "%{organizerId}"
-    Then the RDF response should match "organizers/rdf/organizer-with-images.ttl"
+    Then the RDF response should match organizer projection "organizers/rdf/organizer-with-images.ttl"
 
   Scenario: Create an organizer with description
     Given I create an organizer from "organizers/organizer-with-long-description.json" and save the "id" as "organizerId"
     And I accept "text/turtle"
     When I get the RDF of organizer with id "%{organizerId}"
-    Then the RDF response should match "organizers/rdf/organizer-with-description.ttl"
+    Then the RDF response should match organizer projection "organizers/rdf/organizer-with-description.ttl"

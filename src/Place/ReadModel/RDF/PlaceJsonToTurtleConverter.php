@@ -87,7 +87,7 @@ final class PlaceJsonToTurtleConverter implements JsonToTurtleConverter
             throw new JsonDataCouldNotBeConverted($throwable->getMessage());
         }
 
-        GraphEditor::for($graph)->setGeneralProperties(
+        GraphEditor::for($graph, $this->rdfResourceFactory)->setGeneralProperties(
             $iri,
             self::TYPE_LOCATIE,
             DateTimeFactory::fromISO8601($placeData['created'])->format(DateTime::ATOM),

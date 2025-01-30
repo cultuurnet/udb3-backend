@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Steps;
 use Behat\Gherkin\Node\PyStringNode;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\RDF\NodeUri\CRC32HashGenerator;
 use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
@@ -237,11 +238,44 @@ trait ResponseSteps
         );
     }
 
-    /**
-     * @Then the RDF response should match :fileName
-     */
-    public function theRdfResponseShouldMatch(string $fileName): void
+    private function calculateIdentifier(string $namespace, string $localIdentifier): void
     {
+        $this->variableState->setVariable('identifier', (new CRC32HashGenerator())->generate([
+            'generiek:naamruimte' => $namespace,
+            'generiek:lokaleIdentificator' => $this->variableState->getVariable($localIdentifier),
+        ]));
+    }
+
+    /**
+     * @Then the RDF response should match organizer projection :fileName
+     */
+    public function theRdfResponseShouldMatchOrganisationProjection(string $fileName): void
+    {
+        $this->calculateIdentifier('http://data.uitdatabank.local:80/organizers/', 'organizerId');
+        assertEquals(
+            $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
+            $this->removeDates($this->responseState->getContent())
+        );
+    }
+
+    /**
+     * @Then the RDF response should match event projection :fileName
+     */
+    public function theRdfResponseShouldMatchEventProjection(string $fileName): void
+    {
+        $this->calculateIdentifier('http://data.uitdatabank.local:80/events/', 'eventId');
+        assertEquals(
+            $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
+            $this->removeDates($this->responseState->getContent())
+        );
+    }
+
+    /**
+     * @Then the RDF response should match place projection :fileName
+     */
+    public function theRdfResponseShouldMatchPlacetProjection(string $fileName): void
+    {
+        $this->calculateIdentifier('http://data.uitdatabank.local:80/places/', 'placeId');
         assertEquals(
             $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
             $this->removeDates($this->responseState->getContent())

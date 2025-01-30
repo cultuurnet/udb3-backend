@@ -1,28 +1,30 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix locn: <http://www.w3.org/ns/locn#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 
 <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a dcterms:Location ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
-  adms:identifier [
-    a adms:Identifier ;
-    skos:notation "https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyURI ;
-    generiek:gestructureerdeIdentificator [
-      a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "https://mock.data.publiq.be/places/" ;
-      generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea"
-    ]
-  ] ;
+  adms:identifier <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-29568352> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/ready-for-validation> ;
   locn:locatorName "Voorbeeld titel"@nl ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/8.48.0.0.0> ;
   locn:address <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-31b1ac5f> .
+
+<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-29568352>
+  a adms:Identifier ;
+  skos:notation "https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyURI ;
+  generiek:gestructureerdeIdentificator <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-29568352> .
+
+<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-29568352>
+  a generiek:GestructureerdeIdentificator ;
+  generiek:naamruimte "https://mock.data.publiq.be/places/" ;
+  generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
 
 <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-31b1ac5f>
   a locn:Address ;
