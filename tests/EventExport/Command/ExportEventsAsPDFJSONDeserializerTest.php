@@ -6,14 +6,14 @@ namespace CultuurNet\UDB3\EventExport\Command;
 
 use CultuurNet\UDB3\Deserializer\MissingValueException;
 use CultuurNet\UDB3\EventExport\EventExportQuery;
-use CultuurNet\UDB3\EventExport\Format\HTML\WebArchive\WebArchiveTemplate;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Footer;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Publisher;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Subtitle;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
+use CultuurNet\UDB3\EventExport\Format\HTML\WebArchive\WebArchiveTemplate;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Search\Sorting;
-use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use PHPUnit\Framework\TestCase;
 
 class ExportEventsAsPDFJSONDeserializerTest extends TestCase
@@ -36,13 +36,13 @@ class ExportEventsAsPDFJSONDeserializerTest extends TestCase
         $this->assertInstanceOf(ExportEventsAsPDF::class, $command);
 
         $this->assertEquals(
-            new ExportEventsAsPDF(
+            (new ExportEventsAsPDF(
                 new EventExportQuery('city:doetown'),
                 'vlieg',
                 'http://foo.bar/logo.svg',
                 new Title('a title'),
                 WebArchiveTemplate::tips()
-            ),
+            ))->withSorting(new Sorting('availableTo', 'asc')),
             $command
         );
     }
