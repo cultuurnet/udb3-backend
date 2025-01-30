@@ -4,9 +4,10 @@
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
-@prefix schema: <https://schema.org/> .
+@prefix platform: <https://data.uitwisselingsplatform.be/ns/platform#virtueleLocatie> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
+@prefix schema: <https://schema.org/> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}>
   a cidoc:E7_Activity ;
@@ -17,10 +18,7 @@
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/online> ;
-  schema:location [
-    a schema:VirtualLocation ;
-    schema:url "https://www.publiq.be/livestream"^^schema:URL
-  ] .
+  platform:virtueleLocatie <http://data.uitdatabank.local:80/events/%{eventId}#virtueleLocatie-61d7772d> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
   a adms:Identifier ;
@@ -31,3 +29,7 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#virtueleLocatie-61d7772d>
+  a platform:virtueleLocatie ;
+  schema:url "https://www.publiq.be/livestream"^^schema:URL .
