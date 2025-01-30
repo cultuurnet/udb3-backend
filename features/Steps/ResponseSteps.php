@@ -238,11 +238,7 @@ trait ResponseSteps
         );
     }
 
-
-    /**
-     * @When I save the identifier hash with the namespace :arg1 and id :arg2
-     */
-    public function iSaveTheIdentifierHashWithTheNamespaceAndId(string $namespace, string $localIdentifier): void
+    private function calculateIdentifier(string $namespace, string $localIdentifier): void
     {
         $this->variableState->setVariable('identifier', (new CRC32HashGenerator())->generate([
             'generiek:naamruimte' => $namespace,
@@ -250,12 +246,36 @@ trait ResponseSteps
         ]));
     }
 
+    /**
+     * @Then the RDF response should match organizer projection :fileName
+     */
+    public function theRdfResponseShouldMatchOrganisationProjection(string $fileName): void
+    {
+        $this->calculateIdentifier('http://data.uitdatabank.local:80/organizers/', 'organizerId');
+        assertEquals(
+            $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
+            $this->removeDates($this->responseState->getContent())
+        );
+    }
 
     /**
-     * @Then the RDF response should match :fileName
+     * @Then the RDF response should match event projection :fileName
      */
-    public function theRdfResponseShouldMatch(string $fileName): void
+    public function theRdfResponseShouldMatchEventProjection(string $fileName): void
     {
+        $this->calculateIdentifier('http://data.uitdatabank.local:80/events/', 'eventId');
+        assertEquals(
+            $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
+            $this->removeDates($this->responseState->getContent())
+        );
+    }
+
+    /**
+     * @Then the RDF response should match place projection :fileName
+     */
+    public function theRdfResponseShouldMatchPlacetProjection(string $fileName): void
+    {
+        $this->calculateIdentifier('http://data.uitdatabank.local:80/places/', 'placeId');
         assertEquals(
             $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
             $this->removeDates($this->responseState->getContent())
