@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Kinepolis\Client\KinepolisClient;
 use CultuurNet\UDB3\Kinepolis\Mapping\MappingRepository;
 use CultuurNet\UDB3\Kinepolis\Parser\MovieParser;
 use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
-use CultuurNet\UDB3\Kinepolis\Trailer\TrailerRepository;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedMovie;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedPriceForATheater;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
@@ -48,7 +47,6 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
-use CultuurNet\UDB3\Offer\Commands\Video\AddVideo;
 use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -92,11 +90,6 @@ final class KinepolisServiceTest extends TestCase
     private $uuidGenerator;
 
     /**
-     * @var TrailerRepository&MockObject
-     */
-    private $trailerRepository;
-
-    /**
      * @var ImageUploaderInterface&MockObject
      */
     private $imageUploader;
@@ -120,7 +113,6 @@ final class KinepolisServiceTest extends TestCase
         $this->mappingRepository = $this->createMock(MappingRepository::class);
         $this->imageUploader = $this->createMock(ImageUploaderInterface::class);
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
-        $this->trailerRepository = $this->createMock(TrailerRepository::class);
         $this->productionRepository = $this->createMock(ProductionRepository::class);
 
         $this->service = new KinepolisService(
@@ -132,7 +124,6 @@ final class KinepolisServiceTest extends TestCase
             $this->mappingRepository,
             $this->imageUploader,
             $this->uuidGenerator,
-            $this->trailerRepository,
             $this->productionRepository,
             $this->createMock(LoggerInterface::class)
         );
@@ -330,11 +321,6 @@ final class KinepolisServiceTest extends TestCase
             new Url('https://www.youtube.com/watch?v=S11fnfCJPtw'),
             new Language('nl')
         );
-        $this->trailerRepository
-            ->expects($this->once())
-            ->method('findMatchingTrailer')
-            ->with('Discovery Day')
-            ->willReturn($video);
 
         $this->service->import();
         $this->assertEquals(
@@ -347,10 +333,6 @@ final class KinepolisServiceTest extends TestCase
                 new AddEventToProduction(
                     $this->eventId,
                     $productionId
-                ),
-                new AddVideo(
-                    $this->eventId,
-                    $video
                 ),
                 new UpdatePriceInfo(
                     $this->eventId,
@@ -507,11 +489,6 @@ final class KinepolisServiceTest extends TestCase
             new Url('https://www.youtube.com/watch?v=26r2alNpYSg'),
             new Language('nl')
         );
-        $this->trailerRepository
-            ->expects($this->once())
-            ->method('findMatchingTrailer')
-            ->with('Het Smelt')
-            ->willReturn($video);
 
         $this->service->import();
         $this->assertEquals(
@@ -524,10 +501,6 @@ final class KinepolisServiceTest extends TestCase
                 new AddEventToProduction(
                     $this->eventId,
                     $productionId
-                ),
-                new AddVideo(
-                    $this->eventId,
-                    $video
                 ),
                 new UpdateDescription(
                     $this->eventId,
@@ -673,11 +646,6 @@ final class KinepolisServiceTest extends TestCase
             new Url('https://www.youtube.com/watch?v=26r2alNpYSg'),
             new Language('nl')
         );
-        $this->trailerRepository
-            ->expects($this->once())
-            ->method('findMatchingTrailer')
-            ->with('Het Smelt')
-            ->willReturn($video);
 
         $this->service->import();
         $this->assertEquals(
