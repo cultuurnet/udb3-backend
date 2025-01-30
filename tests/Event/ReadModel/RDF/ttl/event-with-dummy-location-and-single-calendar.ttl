@@ -28,23 +28,26 @@
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  cp:ruimtetijd [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection [
-      a dcterms:Location ;
-      locn:address [
-        a locn:Address ;
-        locn:adminUnitL1 "BE" ;
-        locn:postCode "3000" ;
-        locn:locatorDesignator "1" ;
-        locn:fullAddress "Martelarenplein 1, 3000 Leuven, BE"@nl ;
-        locn:postName "Leuven"@nl ;
-        locn:thoroughfare "Martelarenlaan"@nl
-      ]
-    ] ;
-    cidoc:P160_has_temporal_projection [
-      a m8g:PeriodOfTime ;
-      m8g:startTime "2023-05-06T20:00:00+01:00"^^xsd:dateTime ;
-      m8g:endTime "2023-05-06T23:00:00+01:00"^^xsd:dateTime
-    ]
-  ] .
+  cp:ruimtetijd <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#E92_Spacetime_Volume-dda33cdc> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#E92_Spacetime_Volume-dda33cdc>
+  a cidoc:E92_Spacetime_Volume ;
+  cidoc:P160_has_temporal_projection <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-8de5b7f4> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Location-c7fded52>
+  a dcterms:Location ;
+  locn:address <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-c7fded52> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-c7fded52>
+  a locn:Address ;
+  locn:adminUnitL1 "BE" ;
+  locn:postCode "3000" ;
+  locn:locatorDesignator "1" ;
+  locn:fullAddress "Martelarenplein 1, 3000 Leuven, BE"@nl ;
+  locn:postName "Leuven"@nl ;
+  locn:thoroughfare "Martelarenlaan"@nl .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-8de5b7f4>
+  a m8g:PeriodOfTime ;
+  m8g:startTime "2023-05-06T20:00:00+01:00"^^xsd:dateTime ;
+  m8g:endTime "2023-05-06T23:00:00+01:00"^^xsd:dateTime .

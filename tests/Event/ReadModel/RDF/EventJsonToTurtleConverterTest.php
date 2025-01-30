@@ -11,6 +11,9 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
+use CultuurNet\UDB3\RDF\NodeUri\CRC32HashGenerator;
+use CultuurNet\UDB3\RDF\NodeUri\NodeUriGenerator;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactoryWithoutBlankNodes;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -19,6 +22,7 @@ use Exception;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class EventJsonToTurtleConverterTest extends TestCase
 {
@@ -31,6 +35,11 @@ class EventJsonToTurtleConverterTest extends TestCase
     private $logger;
 
     private EventJsonToTurtleConverter $eventJsonToTurtleConverter;
+
+    /**
+     * @var NormalizerInterface|MockObject
+     */
+    private $imageNormalizer;
 
     protected function setUp(): void
     {
@@ -76,6 +85,7 @@ class EventJsonToTurtleConverterTest extends TestCase
             );
 
         $this->logger = $this->createMock(LoggerInterface::class);
+        $this->imageNormalizer = $this->createMock(NormalizerInterface::class);
 
         $this->eventJsonToTurtleConverter = new EventJsonToTurtleConverter(
             new CallableIriGenerator(fn (string $item): string => 'https://mock.data.publiq.be/events/' . $item),
@@ -85,6 +95,8 @@ class EventJsonToTurtleConverterTest extends TestCase
             $this->documentRepository,
             (new EventDenormalizer())->handlesDummyOrganizers(),
             $addressParser,
+            new RdfResourceFactoryWithoutBlankNodes(new NodeUriGenerator(new CRC32HashGenerator())),
+            $this->imageNormalizer,
             $this->logger
         );
     }
@@ -252,7 +264,6 @@ class EventJsonToTurtleConverterTest extends TestCase
         ]);
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
-
         $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-calendar-periodic.ttl'), $turtle);
     }
 
@@ -1070,19 +1081,27 @@ class EventJsonToTurtleConverterTest extends TestCase
      */
     public function it_converts_an_event_with_images(): void
     {
+        $url = 'https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg';
+
         $this->givenThereIsAnEvent([
             'mediaObject' => [
                 [
                     '@id' => 'https://io-acc.uitdatabank.be/images/6bab1cba-18d0-42e7-b0c9-3b869eb68934',
                     '@type' => 'schema:ImageObject',
-                    'contentUrl' => 'https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg',
-                    'thumbnailUrl' => 'https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg',
+                    'contentUrl' => $url,
+                    'thumbnailUrl' => $url,
                     'copyrightHolder' => 'publiq vzw',
                     'description' => 'A cute dog',
                     'inLanguage' => 'nl',
                 ],
             ],
         ]);
+
+        $this->imageNormalizer->expects($this->once())
+            ->method('normalize')
+            ->willReturn([
+                'contentUrl' => $url,
+            ]);
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 

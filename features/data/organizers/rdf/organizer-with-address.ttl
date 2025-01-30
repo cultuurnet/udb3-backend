@@ -26,16 +26,18 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/active> ;
   cpr:naam "%{name}"@nl ;
   foaf:homepage "https://www.%{name}.be" ;
-  locn:address [
-    a locn:Address ;
-    locn:fullAddress "Henegouwenkaai 41-43, 1080 Brussel, BE"@nl, "Quai du Hainaut 41-43, 1080 Bruxelles, BE"@fr ;
-    locn:postName "Brussel"@nl, "Bruxelles"@fr ;
-    locn:thoroughfare "Quai du Hainaut"@nl, "Quai du Hainaut"@fr ;
-    locn:adminUnitL1 "BE" ;
-    locn:postCode "1080" ;
-    locn:locatorDesignator "41"
-  ] ;
-  locn:geometry [
-    a locn:Geometry ;
-    geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>4.3379778, 50.8509636</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral
-  ] .
+  locn:address <http://data.uitdatabank.local:80/organizers/%{organizerId}#Address-8b181138> ;
+  locn:geometry <http://data.uitdatabank.local:80/organizers/%{organizerId}#Geometry-3e08914b> .
+
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#Address-8b181138>
+  a locn:Address ;
+  locn:fullAddress "Henegouwenkaai 41-43, 1080 Brussel, BE"@nl, "Quai du Hainaut 41-43, 1080 Bruxelles, BE"@fr ;
+  locn:postName "Brussel"@nl, "Bruxelles"@fr ;
+  locn:thoroughfare "Quai du Hainaut"@nl, "Quai du Hainaut"@fr ;
+  locn:adminUnitL1 "BE" ;
+  locn:postCode "1080" ;
+  locn:locatorDesignator "41" .
+
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#Geometry-3e08914b>
+  a locn:Geometry ;
+  geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>4.3379778, 50.8509636</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral .

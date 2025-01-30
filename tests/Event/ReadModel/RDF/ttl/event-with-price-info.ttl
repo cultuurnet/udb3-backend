@@ -30,22 +30,26 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-  cpa:prijs [
-    a schema:PriceSpecification ;
-    schema:price [
-      a schema:MonetaryAmount ;
-      schema:currency "EUR" ;
-      schema:value "59.99"^^schema:Number
-    ] ;
-    skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
-    cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis>
-  ], [
-    a schema:PriceSpecification ;
-    schema:price [
-      a schema:MonetaryAmount ;
-      schema:currency "EUR" ;
-      schema:value "40"^^schema:Number
-    ] ;
-    skos:prefLabel "Reductie"@nl ;
-    cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/tarief>
-  ] .
+  cpa:prijs <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PriceSpecification-38cfd4d4>, <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PriceSpecification-e9f05748> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PriceSpecification-38cfd4d4>
+  a schema:PriceSpecification ;
+  schema:price <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#MonetaryAmount-d0a4e992> ;
+  skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
+  cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#MonetaryAmount-d0a4e992>
+  a schema:MonetaryAmount ;
+  schema:currency "EUR" ;
+  schema:value "59.99"^^schema:Number .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PriceSpecification-e9f05748>
+  a schema:PriceSpecification ;
+  schema:price <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#MonetaryAmount-5b5b7793> ;
+  skos:prefLabel "Reductie"@nl ;
+  cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/tarief> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#MonetaryAmount-5b5b7793>
+  a schema:MonetaryAmount ;
+  schema:currency "EUR" ;
+  schema:value "40"^^schema:Number .

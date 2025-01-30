@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Organizer\ImmutableOrganizer;
 use CultuurNet\UDB3\Model\Organizer\Organizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
+use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
@@ -18,7 +19,9 @@ use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GeometryEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\LabelEditor;
+use CultuurNet\UDB3\RDF\Editor\ImageEditor;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
@@ -27,33 +30,40 @@ use EasyRdf\Resource;
 use EasyRdf\Serialiser\Turtle;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
 {
-    private IriGeneratorInterface $iriGenerator;
-    private DocumentRepository $documentRepository;
-    private DenormalizerInterface $denormalizer;
-    private AddressParser $addressParser;
-    private LoggerInterface $logger;
-
     private const TYPE_ORGANISATOR = 'cp:Organisator';
-
     private const PROPERTY_REALISATOR_NAAM = 'cpr:naam';
     private const PROPERTY_HOMEPAGE = 'foaf:homepage';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_WORKFLOW_STATUS = 'udb:workflowStatus';
+    private const PROPERTY_ACTIVITEIT_DESCRIPTION = 'dcterms:description';
+
+    private IriGeneratorInterface $iriGenerator;
+    private DocumentRepository $documentRepository;
+    private DenormalizerInterface $denormalizer;
+    private AddressParser $addressParser;
+    private NormalizerInterface $imageNormalizer;
+    private RdfResourceFactory $rdfResourceFactory;
+    private LoggerInterface $logger;
 
     public function __construct(
         IriGeneratorInterface $iriGenerator,
         DocumentRepository $documentRepository,
         DenormalizerInterface $denormalizer,
         AddressParser $addressParser,
+        NormalizerInterface $imageNormalizer,
+        RdfResourceFactory $rdfResourceFactory,
         LoggerInterface $logger
     ) {
         $this->iriGenerator = $iriGenerator;
         $this->documentRepository = $documentRepository;
         $this->denormalizer = $denormalizer;
         $this->addressParser = $addressParser;
+        $this->imageNormalizer = $imageNormalizer;
+        $this->rdfResourceFactory = $rdfResourceFactory;
         $this->logger = $logger;
     }
 
@@ -97,13 +107,17 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
             $this->setHomepage($resource, $organizer->getUrl());
         }
 
+        if ($organizer->getDescription()) {
+            $this->setDescription($resource, $organizer->getDescription());
+        }
+
         if ($organizer->getAddress()) {
-            (new AddressEditor($this->addressParser))
+            (new AddressEditor($this->addressParser, $this->rdfResourceFactory))
                 ->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $organizer->getAddress());
         }
 
         if ($organizer->getGeoCoordinates()) {
-            (new GeometryEditor())
+            (new GeometryEditor($this->rdfResourceFactory))
                 ->setCoordinates($resource, $organizer->getGeoCoordinates());
         }
 
@@ -115,7 +129,24 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
             (new LabelEditor())->setLabels($resource, $organizer->getLabels());
         }
 
+        if (!$organizer->getImages()->isEmpty()) {
+            (new ImageEditor($this->imageNormalizer))->setImages(
+                $resource,
+                $organizer->getImages()
+            );
+        }
+
         return trim((new Turtle())->serialise($graph, 'turtle'));
+    }
+
+    private function setDescription(Resource $resource, TranslatedDescription $translatedDescription): void
+    {
+        foreach ($translatedDescription->getLanguages() as $language) {
+            $resource->addLiteral(
+                self::PROPERTY_ACTIVITEIT_DESCRIPTION,
+                new Literal($translatedDescription->getTranslation($language)->toString(), $language->toString())
+            );
+        }
     }
 
     private function fetchOrganizerData(string $organizerId): array

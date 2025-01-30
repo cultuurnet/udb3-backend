@@ -24,8 +24,8 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReference;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\MediaObjectReferences;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
@@ -433,31 +433,31 @@ class ImmutableOfferTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_an_empty_media_object_references_list_by_default(): void
+    public function it_should_return_empty_images_by_default(): void
     {
-        $this->assertEquals(new MediaObjectReferences(), $this->getOffer()->getMediaObjectReferences());
+        $this->assertEquals(new Images(), $this->getOffer()->getImages());
     }
 
     /**
      * @test
      */
-    public function it_should_return_a_copy_with_updated_media_object_references(): void
+    public function it_should_return_a_copy_with_updated_image(): void
     {
-        $reference = MediaObjectReference::createWithMediaObjectId(
+        $image = new Image(
             new Uuid('0bda23b1-3332-4866-b69b-1f1c1d1dbcb4'),
+            new Language('nl'),
             new Description('Een afbeelding beschrijving'),
-            new CopyrightHolder('Publiq vzw'),
-            new Language('nl')
+            new CopyrightHolder('Publiq vzw')
         );
 
-        $references = new MediaObjectReferences($reference);
+        $images = new Images($image);
 
         $offer = $this->getOffer();
-        $updatedOffer = $offer->withMediaObjectReferences($references);
+        $updatedOffer = $offer->withImages($images);
 
         $this->assertNotEquals($offer, $updatedOffer);
-        $this->assertEquals(new MediaObjectReferences(), $offer->getMediaObjectReferences());
-        $this->assertEquals($references, $updatedOffer->getMediaObjectReferences());
+        $this->assertEquals(new Images(), $offer->getImages());
+        $this->assertEquals($images, $updatedOffer->getImages());
     }
 
     /**

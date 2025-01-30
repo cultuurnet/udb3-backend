@@ -6,14 +6,15 @@ namespace CultuurNet\UDB3\Media;
 
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
+use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Http\Media\GetMediaRequestHandler;
 use CultuurNet\UDB3\Http\Media\UploadMediaRequestHandler;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
-use CultuurNet\UDB3\AggregateType;
-use CultuurNet\UDB3\Error\LoggerFactory;
-use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 
 final class MediaServiceProvider extends AbstractServiceProvider
 {
@@ -30,6 +31,7 @@ final class MediaServiceProvider extends AbstractServiceProvider
             'media_url_mapping',
             GetMediaRequestHandler::class,
             UploadMediaRequestHandler::class,
+            ImageNormalizer::class,
         ];
     }
 
@@ -142,6 +144,16 @@ final class MediaServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 return new UploadMediaRequestHandler(
                     $container->get('image_uploader'),
+                    $container->get('media_object_iri_generator')
+                );
+            }
+        );
+
+        $container->addShared(
+            ImageNormalizer::class,
+            function () use ($container) {
+                return new ImageNormalizer(
+                    $container->get('media_object_repository'),
                     $container->get('media_object_iri_generator')
                 );
             }

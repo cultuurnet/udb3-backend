@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\MediaObject;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\RegexUuidParser;
 
-class MediaObjectIDParser extends RegexUuidParser
+class ImageIDParser extends RegexUuidParser
 {
     // @codingStandardsIgnoreStart
     public const REGEX = '/\\/(media|image[s]?)\\/([0-9A-Fa-f]{8}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{4}-[0-9A-Fa-f]{12})/';

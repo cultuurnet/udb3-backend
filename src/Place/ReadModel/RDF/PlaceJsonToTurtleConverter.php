@@ -20,6 +20,7 @@ use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
@@ -36,6 +37,7 @@ final class PlaceJsonToTurtleConverter implements JsonToTurtleConverter
     private DocumentRepository $documentRepository;
     private DenormalizerInterface $denormalizer;
     private AddressParser $addressParser;
+    private RdfResourceFactory $rdfResourceFactory;
     private LoggerInterface $logger;
 
     private const TYPE_LOCATIE = 'dcterms:Location';
@@ -51,6 +53,7 @@ final class PlaceJsonToTurtleConverter implements JsonToTurtleConverter
         DocumentRepository $documentRepository,
         DenormalizerInterface $denormalizer,
         AddressParser $addressParser,
+        RdfResourceFactory $rdfResourceFactory,
         LoggerInterface $logger
     ) {
         $this->iriGenerator = $iriGenerator;
@@ -58,6 +61,7 @@ final class PlaceJsonToTurtleConverter implements JsonToTurtleConverter
         $this->documentRepository = $documentRepository;
         $this->denormalizer = $denormalizer;
         $this->addressParser = $addressParser;
+        $this->rdfResourceFactory = $rdfResourceFactory;
         $this->logger = $logger;
     }
 
@@ -100,10 +104,10 @@ final class PlaceJsonToTurtleConverter implements JsonToTurtleConverter
 
         $this->setTerms($resource, $place->getTerms());
 
-        (new AddressEditor($this->addressParser))->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $place->getAddress());
+        (new AddressEditor($this->addressParser, $this->rdfResourceFactory))->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $place->getAddress());
 
         if ($place->getGeoCoordinates()) {
-            (new GeometryEditor())->setCoordinates($resource, $place->getGeoCoordinates());
+            (new GeometryEditor($this->rdfResourceFactory))->setCoordinates($resource, $place->getGeoCoordinates());
         }
 
         if ($place->getLabels()->count() > 0) {

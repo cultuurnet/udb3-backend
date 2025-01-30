@@ -239,7 +239,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
         $commands[] = new ImportLabels($placeId, $place->getLabels());
 
-        $images = $this->imageCollectionFactory->fromMediaObjectReferences($place->getMediaObjectReferences());
+        $images = $this->imageCollectionFactory->fromImages($place->getImages());
         $commands[] = new ImportImages($placeId, $images);
 
         $commands[] = new ImportVideos($placeId, $place->getVideos());
