@@ -29,7 +29,7 @@ final class ContactPointEditor
     {
         foreach ($contactPoint->getUrls() as $url) {
             $urlResource = $this->rdfResourceFactory->create($resource, self::TYPE_CONTACT_POINT, [
-                'url' => $url->toString()
+                'url' => $url->toString(),
             ]);
 
             $urlResource->addLiteral(self::PROPERTY_CONTACT_POINT_URL, $url->toString());
@@ -38,7 +38,7 @@ final class ContactPointEditor
 
         foreach ($contactPoint->getEmailAddresses() as $email) {
             $urlResource = $this->rdfResourceFactory->create($resource, self::TYPE_CONTACT_POINT, [
-                'url' => $email->toString()
+                'url' => $email->toString(),
             ]);
             $urlResource->addLiteral(self::PROPERTY_CONTACT_POINT_EMAIL, $email->toString());
             $resource->add(self::PROPERTY_CONTACT_POINT, $urlResource);
@@ -46,7 +46,7 @@ final class ContactPointEditor
 
         foreach ($contactPoint->getTelephoneNumbers() as $phone) {
             $urlResource = $this->rdfResourceFactory->create($resource, self::TYPE_CONTACT_POINT, [
-                'url' => $phone->toString()
+                'url' => $phone->toString(),
             ]);
             $urlResource->addLiteral(self::PROPERTY_CONTACT_POINT_PHONE, $phone->toString());
             $resource->add(self::PROPERTY_CONTACT_POINT, $urlResource);
