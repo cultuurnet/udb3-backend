@@ -454,10 +454,6 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 self::PROPERTY_VIRTUAL_LOCATION_URL,
                 new Literal($onlineUrl->toString(), null, self::TYPE_VIRTUAL_LOCATION_URL)
             );
-            $virtualLocationResource->add(
-                self::PROPERTY_VIRTUAL_LOCATION_URL,
-                new Literal($onlineUrl->toString(), null, self::TYPE_VIRTUAL_LOCATION_URL)
-            );
         }
         $resource->add(self::PROPERTY_VIRTUAL_LOCATION, $virtualLocationResource);
     }
