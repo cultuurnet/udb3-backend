@@ -502,19 +502,6 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     new MovieMappingRepository($container->get(('dbal_connection'))),
                     $container->get('image_uploader'),
                     new Version4Generator(),
-                    new YoutubeTrailerRepository(
-                        new Google_Service_YouTube(
-                            new Google_Client(
-                                [
-                                    'application_name' => 'UiTDatabankTrailerFinder',
-                                    'developer_key' => $container->get('config')['kinepolis']['trailers']['developer_key'],
-                                ]
-                            )
-                        ),
-                        $container->get('config')['kinepolis']['trailers']['channel_id'],
-                        new Version4Generator(),
-                        $container->get('config')['kinepolis']['trailers']['enabled'] ??  true,
-                    ),
                     $container->get(ProductionRepository::class),
                     LoggerFactory::create(
                         $container,
