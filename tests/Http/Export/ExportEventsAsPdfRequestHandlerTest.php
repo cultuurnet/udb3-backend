@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Search\Sorting;
 use PHPUnit\Framework\TestCase;
 
 final class ExportEventsAsPdfRequestHandlerTest extends TestCase
@@ -67,7 +68,7 @@ final class ExportEventsAsPdfRequestHandlerTest extends TestCase
                     'logo',
                     new Title('title'),
                     WebArchiveTemplate::map()
-                ))->withEmailNotificationTo(new EmailAddress('jane@anonymous.com')),
+                ))->withEmailNotificationTo(new EmailAddress('jane@anonymous.com'))->withSorting(new Sorting('availableTo', 'asc')),
             ],
             $this->commandBus->getRecordedCommands()
         );
