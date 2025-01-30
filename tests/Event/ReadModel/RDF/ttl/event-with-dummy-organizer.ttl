@@ -3,12 +3,12 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
-@prefix cpr: <https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
+@prefix cpr: <https://data.vlaanderen.be/ns/cultuurparticipatie#Realisator.> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a cidoc:E7_Activity ;
@@ -18,10 +18,7 @@
   dcterms:title "Faith no more"@nl ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
-  cidoc:P14_carried_out_by [
-    a cp:Organisator ;
-    cpr:naam "Dummy Organizer"@nl
-  ] ;
+  cidoc:P14_carried_out_by <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Organisator-cc485dab> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> .
@@ -35,3 +32,7 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "https://mock.data.publiq.be/events/" ;
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Organisator-cc485dab>
+  a cp:Organisator ;
+  cpr:naam "Dummy Organizer"@nl .
