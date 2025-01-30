@@ -191,7 +191,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if ($this->hasDummyOrganizer($event, $eventData)) {
-            $organizerResource = $resource->getGraph()->newBNode([self::TYPE_ORGANISATOR]);
+            $organizerResource = $this->rdfResourceFactory->create($resource, self::TYPE_ORGANISATOR, $eventData['organizer']);
 
             $dummyOrganizerName = $this->getDummyOrganizerName($eventData['organizer'], $event->getMainLanguage());
             if (!empty($dummyOrganizerName)) {
