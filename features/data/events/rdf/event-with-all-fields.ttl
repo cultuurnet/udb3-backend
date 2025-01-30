@@ -25,16 +25,7 @@
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-8b563a39>, <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-5da8175b> ;
   dcterms:description "Nederlandse beschrijving"@nl, "English description"@en ;
-  schema:contactPoint [
-    a schema:ContactPoint ;
-    schema:url "https://www.example.com"
-  ], [
-    a schema:ContactPoint ;
-    schema:email "info@example.com"
-  ], [
-    a schema:ContactPoint ;
-    schema:telephone "string"
-  ] ;
+  schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-f20d8319>, <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-35306b47>, <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-2a082adb> ;
   cpa:boeking <http://data.uitdatabank.local:80/events/%{eventId}#Boekingsinfo-1cb41cc5> ;
   rdfs:label "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen ;
   cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be> ;
@@ -78,14 +69,27 @@
   m8g:startTime "2021-05-18T08:00:00+00:00"^^xsd:dateTime ;
   m8g:endTime "2021-05-18T22:00:00+00:00"^^xsd:dateTime .
 
+<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-f20d8319>
+  a schema:ContactPoint ;
+  schema:url "https://www.example.com" .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-35306b47>
+  a schema:ContactPoint ;
+  schema:email "info@example.com" .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-2a082adb>
+  a schema:ContactPoint ;
+  schema:telephone "string" .
+
 <http://data.uitdatabank.local:80/events/%{eventId}#Boekingsinfo-1cb41cc5>
   a cpa:Boekingsinfo ;
-  schema:contactPoint [
-    a schema:ContactPoint ;
-    schema:url "https://www.example.com" ;
-    schema:telephone "string" ;
-    schema:email "info@example.com"
-  ] .
+  schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-1cb41cc5> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-1cb41cc5>
+  a schema:ContactPoint ;
+  schema:url "https://www.example.com" ;
+  schema:telephone "string" ;
+  schema:email "info@example.com" .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be>
   a schema:PriceSpecification ;

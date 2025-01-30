@@ -35,9 +35,10 @@
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Boekingsinfo-3e57fdcd>
   a cpa:Boekingsinfo ;
-  schema:contactPoint [
-    a schema:ContactPoint ;
-    schema:url "https://www.publiq.be" ;
-    schema:telephone "016 10 20 30" ;
-    schema:email "info@publiq.be"
-  ] .
+  schema:contactPoint <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#ContactPoint-3e57fdcd> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#ContactPoint-3e57fdcd>
+  a schema:ContactPoint ;
+  schema:url "https://www.publiq.be" ;
+  schema:telephone "016 10 20 30" ;
+  schema:email "info@publiq.be" .

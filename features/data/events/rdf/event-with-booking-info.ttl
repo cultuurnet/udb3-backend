@@ -35,9 +35,10 @@
 
 <http://data.uitdatabank.local:80/events/%{eventId}#Boekingsinfo-1cb41cc5>
   a cpa:Boekingsinfo ;
-  schema:contactPoint [
-    a schema:ContactPoint ;
-    schema:url "https://www.example.com" ;
-    schema:telephone "string" ;
-    schema:email "info@example.com"
-  ] .
+  schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-1cb41cc5> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-1cb41cc5>
+  a schema:ContactPoint ;
+  schema:url "https://www.example.com" ;
+  schema:telephone "string" ;
+  schema:email "info@example.com" .

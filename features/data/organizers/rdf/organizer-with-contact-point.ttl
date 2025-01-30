@@ -17,25 +17,7 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/active> ;
   cpr:naam "%{name}"@nl ;
   foaf:homepage "https://www.%{name}.be" ;
-  schema:contactPoint [
-    a schema:ContactPoint ;
-    schema:url "https://www.publiq.be"
-  ], [
-    a schema:ContactPoint ;
-    schema:url "https://www.madewithlove.be"
-  ], [
-    a schema:ContactPoint ;
-    schema:email "info@publiq.be"
-  ], [
-    a schema:ContactPoint ;
-    schema:email "info@madewithlove.be"
-  ], [
-    a schema:ContactPoint ;
-    schema:telephone "016 10 20 30"
-  ], [
-    a schema:ContactPoint ;
-    schema:telephone "016 99 99 99"
-  ] .
+  schema:contactPoint <http://data.uitdatabank.local:80/organizers/%{organizerId}#ContactPoint-66b969e2>, <http://data.uitdatabank.local:80/organizers/%{organizerId}#ContactPoint-4c1eb8a2>, <http://data.uitdatabank.local:80/organizers/%{organizerId}#ContactPoint-f3142b66>, <http://data.uitdatabank.local:80/organizers/%{organizerId}#ContactPoint-afd55e86>, <http://data.uitdatabank.local:80/organizers/%{organizerId}#ContactPoint-953ce804>, <http://data.uitdatabank.local:80/organizers/%{organizerId}#ContactPoint-6f2cc072> .
 
 <http://data.uitdatabank.local:80/organizers/%{organizerId}#Identifier-%{identifier}>
   a adms:Identifier ;
@@ -46,3 +28,27 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/organizers/" ;
   generiek:lokaleIdentificator "%{organizerId}" .
+
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#ContactPoint-66b969e2>
+  a schema:ContactPoint ;
+  schema:url "https://www.publiq.be" .
+
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#ContactPoint-4c1eb8a2>
+  a schema:ContactPoint ;
+  schema:url "https://www.madewithlove.be" .
+
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#ContactPoint-f3142b66>
+  a schema:ContactPoint ;
+  schema:email "info@publiq.be" .
+
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#ContactPoint-afd55e86>
+  a schema:ContactPoint ;
+  schema:email "info@madewithlove.be" .
+
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#ContactPoint-953ce804>
+  a schema:ContactPoint ;
+  schema:telephone "016 10 20 30" .
+
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#ContactPoint-6f2cc072>
+  a schema:ContactPoint ;
+  schema:telephone "016 99 99 99" .
