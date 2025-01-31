@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\RDF\Editor;
 
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
-use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use DomainException;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
@@ -23,12 +22,10 @@ final class ImageEditor
     private const PROPERTY_DESCRIPTION = 'schema:description';
     private const PROPERTY_IN_LANGUAGE = 'schema:inLanguage';
     private NormalizerInterface $imageNormalizer;
-    private RdfResourceFactory $resourceFactory;
 
-    public function __construct(NormalizerInterface $imageNormalizer, RdfResourceFactory $resourceFactory)
+    public function __construct(NormalizerInterface $imageNormalizer)
     {
         $this->imageNormalizer = $imageNormalizer;
-        $this->resourceFactory = $resourceFactory;
     }
 
     public function setImages(Resource $resource, Images $images): void
@@ -45,7 +42,7 @@ final class ImageEditor
     private function createImage(Resource $resource, Image $image): Resource
     {
         $normalizedImage = $this->imageNormalizer->normalize($image);
-        $mediaResource = $this->resourceFactory->create($resource, self::TYPE_MEDIA_OBJECT, $normalizedImage);
+        $mediaResource = $resource->getGraph()->newBNode([self::TYPE_MEDIA_OBJECT]);
 
         $mediaResource->set(
             self::PROPERTY_IDENTIFIER,

@@ -130,7 +130,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if (!$organizer->getImages()->isEmpty()) {
-            (new ImageEditor($this->imageNormalizer, $this->rdfResourceFactory))->setImages(
+            (new ImageEditor($this->imageNormalizer))->setImages(
                 $resource,
                 $organizer->getImages()
             );
