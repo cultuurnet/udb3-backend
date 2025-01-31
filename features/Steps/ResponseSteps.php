@@ -30,7 +30,7 @@ trait ResponseSteps
         }
 
         if (is_numeric($value)) {
-            $expected = (int) $value;
+            $expected = (int)$value;
         }
 
         assertEquals(
@@ -271,6 +271,19 @@ trait ResponseSteps
     }
 
     /**
+     * @Then the RDF response should match2 event projection :fileName
+     */
+    public function theRdfResponseShouldMatch2EventProjection(string $fileName): void
+    {
+        $this->calculateIdentifier('http://data.uitdatabank.local:80/events/', 'eventId');
+        file_put_contents(__DIR__ . '/../data/' . $fileName, $this->responseState->getContent());
+        assertEquals(
+            $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
+            $this->removeDates($this->responseState->getContent())
+        );
+    }
+
+    /**
      * @Then the RDF response should match place projection :fileName
      */
     public function theRdfResponseShouldMatchPlacetProjection(string $fileName): void
@@ -307,5 +320,43 @@ trait ResponseSteps
         // Only remove the created and modified dates
         $datePattern = '/(?<=dcterms:created\s|dcterms:modified\s)"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}"/';
         return preg_replace($datePattern, '""', $value);
+    }
+
+    /**
+     * @Then I calculate the image hash with description :description, copyright :copyrightHolder and language :language for :imageId
+     */
+    public function iCalculateTheImageHashWith(string $description, string $copyrightHolder, string $language, string $imageId): void
+    {
+        switch ($imageId) {
+            case 'imageId':
+                $hashKey = 'imageHash';
+                break;
+
+            case 'imageId1':
+                $hashKey = 'imageHash1';
+                break;
+
+            case 'imageId2':
+                $hashKey = 'imageHash2';
+                break;
+
+            default:
+                throw new \InvalidArgumentException('No matching hash variable for variable ' . $imageId);
+        }
+
+        $imageIdValue = $this->variableState->getVariable($imageId);
+
+        $data = [
+            '@id' => 'http://io.uitdatabank.local:80/images/' . $imageIdValue,
+            '@type' => 'schema:ImageObject',
+            'id' => $imageIdValue,
+            'contentUrl' => 'https://images.uitdatabank.dev/' . $imageIdValue . '.jpeg',
+            'thumbnailUrl' => 'https://images.uitdatabank.dev/' . $imageIdValue . '.jpeg',
+            'description' => $description,
+            'copyrightHolder' => $copyrightHolder,
+            'inLanguage' => $language,
+        ];
+
+        $this->variableState->setVariable($hashKey, (new CRC32HashGenerator())->generate($data));
     }
 }
