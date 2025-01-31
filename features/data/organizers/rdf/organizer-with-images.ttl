@@ -17,7 +17,21 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/active> ;
   cpr:naam "%{name}"@nl ;
   foaf:homepage "https://www.%{name}.be" ;
-  schema:image <http://data.uitdatabank.local:80/organizers/%{organizerId}#ImageObject-%{imageHash1}>, <http://data.uitdatabank.local:80/organizers/%{organizerId}#ImageObject-%{imageHash2}> .
+  schema:image [
+    a schema:ImageObject ;
+    schema:identifier "%{imageId1}" ;
+    schema:url "https://images.uitdatabank.dev/%{imageId1}.jpeg"^^schema:URL ;
+    schema:copyrightHolder "me" ;
+    schema:description "logo" ;
+    schema:inLanguage "nl"
+  ], [
+    a schema:ImageObject ;
+    schema:identifier "%{imageId2}" ;
+    schema:url "https://images.uitdatabank.dev/%{imageId2}.jpeg"^^schema:URL ;
+    schema:copyrightHolder "me2" ;
+    schema:description "logo2" ;
+    schema:inLanguage "nl"
+  ] .
 
 <http://data.uitdatabank.local:80/organizers/%{organizerId}#Identifier-%{identifier}>
   a adms:Identifier ;
@@ -28,19 +42,3 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/organizers/" ;
   generiek:lokaleIdentificator "%{organizerId}" .
-
-<http://data.uitdatabank.local:80/organizers/%{organizerId}#ImageObject-%{imageHash1}>
-  a schema:ImageObject ;
-  schema:identifier "%{imageId1}" ;
-  schema:url "https://images.uitdatabank.dev/%{imageId1}.jpeg"^^schema:URL ;
-  schema:copyrightHolder "me" ;
-  schema:description "logo" ;
-  schema:inLanguage "nl" .
-
-<http://data.uitdatabank.local:80/organizers/%{organizerId}#ImageObject-%{imageHash2}>
-  a schema:ImageObject ;
-  schema:identifier "%{imageId2}" ;
-  schema:url "https://images.uitdatabank.dev/%{imageId2}.jpeg"^^schema:URL ;
-  schema:copyrightHolder "me2" ;
-  schema:description "logo2" ;
-  schema:inLanguage "nl" .

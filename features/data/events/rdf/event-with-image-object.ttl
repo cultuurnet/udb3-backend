@@ -19,7 +19,14 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-  schema:image <http://data.uitdatabank.local:80/events/%{eventId}#ImageObject-%{imageHash}> .
+  schema:image [
+    a schema:ImageObject ;
+    schema:identifier "%{imageId}" ;
+    schema:url "https://images.uitdatabank.dev/%{imageId}.jpeg"^^schema:URL ;
+    schema:copyrightHolder "publiq vzw" ;
+    schema:description "A cute dog" ;
+    schema:inLanguage "nl"
+  ] .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
   a adms:Identifier ;
@@ -30,11 +37,3 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .
-
-<http://data.uitdatabank.local:80/events/%{eventId}#ImageObject-%{imageHash}>
-  a schema:ImageObject ;
-  schema:identifier "%{imageId}" ;
-  schema:url "https://images.uitdatabank.dev/%{imageId}.jpeg"^^schema:URL ;
-  schema:copyrightHolder "publiq vzw" ;
-  schema:description "A cute dog" ;
-  schema:inLanguage "nl" .

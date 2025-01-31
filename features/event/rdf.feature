@@ -97,8 +97,8 @@ Feature: Test RDF projection of events
 
   Scenario: Create an event with images
     Given I set the form data properties to:
-      | description     | A cute dog |
-      | copyrightHolder | publiq vzw |
+      | description     | logo |
+      | copyrightHolder | me   |
       | language        | nl   |
     When I upload "file" from path "images/udb.jpg" to "/images/"
     Then the response status should be "201"
@@ -108,14 +108,12 @@ Feature: Test RDF projection of events
     And I create an event from "events/rdf/event-with-images.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
-    And I calculate the image hash with description "A cute dog", copyright "publiq vzw" and language "nl" for "imageId"
-
     Then the RDF response should match event projection "events/rdf/event-with-image-object.ttl"
 
   Scenario: Create an event with all fields
     Given I set the form data properties to:
-      | description     | A cute dog |
-      | copyrightHolder | publiq vzw |
+      | description     | logo |
+      | copyrightHolder | me   |
       | language        | nl   |
     When I upload "file" from path "images/udb.jpg" to "/images/"
     Then the response status should be "201"
@@ -125,5 +123,4 @@ Feature: Test RDF projection of events
     Given I create an event from "events/rdf/event-with-all-fields.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
-    And I calculate the image hash with description "A cute dog", copyright "publiq vzw" and language "nl" for "imageId"
     Then the RDF response should match event projection "events/rdf/event-with-all-fields.ttl"
