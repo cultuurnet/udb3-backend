@@ -76,7 +76,6 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private const TYPE_SPACE_TIME = 'cidoc:E92_Spacetime_Volume';
     private const TYPE_PERIOD = 'm8g:PeriodOfTime';
     private const TYPE_DATE_TIME = 'xsd:dateTime';
-    private const TYPE_VIRTUAL_LOCATION = 'schema:VirtualLocation';
     private const TYPE_LOCATIE = 'dcterms:Location';
     private const TYPE_VIRTUAL_LOCATION_URL = 'schema:URL';
     private const TYPE_BOEKINGSINFO = 'cpa:Boekingsinfo';
@@ -98,7 +97,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
 
-    private const PROPERTY_VIRTUAL_LOCATION = 'schema:location';
+    private const PROPERTY_VIRTUAL_LOCATION = 'platform:virtueleLocatie';
     private const PROPERTY_VIRTUAL_LOCATION_URL = 'schema:url';
     private const PROPERTY_LOCATIE_TYPE = 'cpa:locatieType';
 
@@ -446,7 +445,9 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function setVirtualLocation(Resource $resource, ?Url $onlineUrl): void
     {
-        $virtualLocationResource = $resource->getGraph()->newBNode([self::TYPE_VIRTUAL_LOCATION]);
+        $virtualLocationResource = $this->rdfResourceFactory->create($resource, self::PROPERTY_VIRTUAL_LOCATION, [
+            $onlineUrl ? $onlineUrl->toString() : '',
+        ]);
 
         if ($onlineUrl) {
             $virtualLocationResource->add(
@@ -454,7 +455,6 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 new Literal($onlineUrl->toString(), null, self::TYPE_VIRTUAL_LOCATION_URL)
             );
         }
-
         $resource->add(self::PROPERTY_VIRTUAL_LOCATION, $virtualLocationResource);
     }
 

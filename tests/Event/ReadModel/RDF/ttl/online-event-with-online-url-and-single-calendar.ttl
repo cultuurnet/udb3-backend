@@ -5,9 +5,10 @@
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
-@prefix schema: <https://schema.org/> .
+@prefix platform: <https://data.uitwisselingsplatform.be/ns/platform#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
+@prefix schema: <https://schema.org/> .
 @prefix m8g: <http://data.europa.eu/m8g/> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
@@ -20,10 +21,7 @@
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/online> ;
-  schema:location [
-    a schema:VirtualLocation ;
-    schema:url "https://www.publiq.be/livestream"^^schema:URL
-  ] ;
+  platform:virtueleLocatie <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtueleLocatie-61d7772d> ;
   cp:ruimtetijd <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#E92_Spacetime_Volume-8de5b7f4> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-fc28bf15>
@@ -35,6 +33,10 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "https://mock.data.publiq.be/events/" ;
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtueleLocatie-61d7772d>
+  a platform:virtueleLocatie ;
+  schema:url "https://www.publiq.be/livestream"^^schema:URL .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#E92_Spacetime_Volume-8de5b7f4>
   a cidoc:E92_Spacetime_Volume ;
