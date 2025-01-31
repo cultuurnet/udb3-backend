@@ -29,6 +29,6 @@ final class RdfNamespaces
         RdfNamespace::set('schema', 'https://schema.org/');
         RdfNamespace::set('foaf', 'http://xmlns.com/foaf/0.1/');
         RdfNamespace::set('labeltype', 'https://data.cultuurparticipatie.be/id/concept/LabelType/');
-        RdfNamespace::set('platform', 'https://data.uitwisselingsplatform.be/ns/platform#virtueleLocatie');
+        RdfNamespace::set('platform', 'https://data.uitwisselingsplatform.be/ns/platform');
     }
 }
