@@ -245,7 +245,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if (!$event->getImages()->isEmpty()) {
-            (new ImageEditor($this->imageNormalizer))->setImages(
+            (new ImageEditor($this->imageNormalizer, $this->rdfResourceFactory))->setImages(
                 $resource,
                 $event->getImages()
             );
