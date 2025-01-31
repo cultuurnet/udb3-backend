@@ -17,14 +17,7 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/active> ;
   cpr:naam "publiq VZW"@nl, "publiq NPO"@en ;
   foaf:homepage "https://www.publiq.be" ;
-  schema:image [
-    a schema:ImageObject ;
-    schema:identifier "a1a6e1fd-e7e4-4e8f-adc5-6a887b3c1d0d" ;
-    schema:url "https://images.uitdatabank.be/a1a6e1fd-e7e4-4e8f-adc5-6a887b3c1d0d.jpeg"^^schema:URL ;
-    schema:copyrightHolder "passa porta" ;
-    schema:description "Main image" ;
-    schema:inLanguage "nl"
-  ] .
+  schema:image <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ImageObject-1979c2ac> .
 
 <https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#Identifier-dfdb13b1>
   a adms:Identifier ;
@@ -35,3 +28,11 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "https://mock.data.publiq.be/organizers/" ;
   generiek:lokaleIdentificator "56f1efdb-fe25-44f6-b9d7-4a6a836799d7" .
+
+<https://mock.data.publiq.be/organizers/56f1efdb-fe25-44f6-b9d7-4a6a836799d7#ImageObject-1979c2ac>
+  a schema:ImageObject ;
+  schema:identifier "a1a6e1fd-e7e4-4e8f-adc5-6a887b3c1d0d" ;
+  schema:url "https://images.uitdatabank.be/a1a6e1fd-e7e4-4e8f-adc5-6a887b3c1d0d.jpeg"^^schema:URL ;
+  schema:copyrightHolder "passa porta" ;
+  schema:description "Main image" ;
+  schema:inLanguage "nl" .
