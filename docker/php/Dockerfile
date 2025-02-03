@@ -16,6 +16,10 @@ RUN pecl install -o -f redis &&  rm -rf /tmp/pear &&  docker-php-ext-enable redi
 
 RUN curl https://getcomposer.org/download/2.6.6/composer.phar -o /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
+RUN [ "$(uname -m)" = "x86_64" ] && curl -o prince.deb https://www.princexml.com/download/prince_15.4.1-1_debian11_amd64.deb
+RUN [ "$(uname -m)" = "aarch64" ] && curl -o prince.deb https://www.princexml.com/download/prince_15.4.1-1_debian11_arm64.deb
+RUN [ -f prince.deb ] && dpkg -i prince.deb
+
 RUN echo "memory_limit=4096M" > $PHP_INI_DIR/conf.d/memory-limit.ini
 RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" > $PHP_INI_DIR/conf.d/error_reporting.ini
 
