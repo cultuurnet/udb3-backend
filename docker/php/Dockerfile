@@ -1,6 +1,6 @@
 FROM php:7.4-apache
 
-RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev zlib1g-dev libpng-dev libzip-dev supervisor
+RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev zlib1g-dev libpng-dev libzip-dev supervisor fontconfig-config fonts-dejavu-core libdeflate0 libfontconfig1 libfreetype6 libgif7 libjbig0 libjpeg62-turbo liblcms2-2 libtiff5 libwebp6 libwebpdemux2 sensible-utils ucf
 
 RUN docker-php-ext-install mysqli pdo_mysql bcmath tidy sockets
 
