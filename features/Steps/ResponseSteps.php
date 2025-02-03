@@ -271,22 +271,9 @@ trait ResponseSteps
     }
 
     /**
-     * @Then the RDF response should match2 event projection :fileName
-     */
-    public function theRdfResponseShouldMatch2EventProjection(string $fileName): void
-    {
-        $this->calculateIdentifier('http://data.uitdatabank.local:80/events/', 'eventId');
-        file_put_contents(__DIR__ . '/../data/' . $fileName, $this->responseState->getContent());
-        assertEquals(
-            $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
-            $this->removeDates($this->responseState->getContent())
-        );
-    }
-
-    /**
      * @Then the RDF response should match place projection :fileName
      */
-    public function theRdfResponseShouldMatchPlacetProjection(string $fileName): void
+    public function theRdfResponseShouldMatchPlaceProjection(string $fileName): void
     {
         $this->calculateIdentifier('http://data.uitdatabank.local:80/places/', 'placeId');
         assertEquals(
