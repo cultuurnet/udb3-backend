@@ -16,13 +16,6 @@ RUN pecl install -o -f redis &&  rm -rf /tmp/pear &&  docker-php-ext-enable redi
 
 RUN curl https://getcomposer.org/download/2.6.6/composer.phar -o /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
-RUN if [ "$(uname -m)" = "aarch64" ]; then \
-      curl https://www.princexml.com/download/prince-15.4.1-linux-generic-aarch64.tar.gz -o /root/prince-15.4.1-linux-generic-aarch64.tar.gz && \
-      tar -xzf /root/prince-15.4.1-linux-generic-aarch64.tar.gz -C /root && \
-      cd /root/prince-15.4.1-linux-generic-aarch64 && \
-      ./install.sh </dev/null; \
-    fi
-
 RUN echo "memory_limit=4096M" > $PHP_INI_DIR/conf.d/memory-limit.ini
 RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" > $PHP_INI_DIR/conf.d/error_reporting.ini
 
