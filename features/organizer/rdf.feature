@@ -52,8 +52,8 @@ Feature: Test RDF projection of organizers
     Given I create an organizer from "organizers/organizer-with-images.json" and save the "id" as "organizerId"
     And I accept "text/turtle"
     When I get the RDF of organizer with id "%{organizerId}"
-    And I calculate the image hash with description "logo", copyright "me" and language "nl" for "imageId1"
-    And I calculate the image hash with description "logo2", copyright "me2" and language "nl" for "imageId2"
+    And I calculate the image hash with description "logo", copyright "me" and language "nl" for "%{imageId1}" as "imageHash1"
+    And I calculate the image hash with description "logo2", copyright "me2" and language "nl" for "%{imageId2}" as "imageHash2"
     Then the RDF response should match organizer projection "organizers/rdf/organizer-with-images.ttl"
 
   Scenario: Create an organizer with description

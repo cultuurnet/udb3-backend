@@ -310,35 +310,16 @@ trait ResponseSteps
     }
 
     /**
-     * @Then I calculate the image hash with description :description, copyright :copyrightHolder and language :language for :imageId
+     * @Then I calculate the image hash with description :description, copyright :copyrightHolder and language :language for :imageId as :hashKey
      */
-    public function iCalculateTheImageHashWith(string $description, string $copyrightHolder, string $language, string $imageId): void
+    public function iCalculateTheImageHashWith(string $description, string $copyrightHolder, string $language, string $imageId, string $hashKey): void
     {
-        switch ($imageId) {
-            case 'imageId':
-                $hashKey = 'imageHash';
-                break;
-
-            case 'imageId1':
-                $hashKey = 'imageHash1';
-                break;
-
-            case 'imageId2':
-                $hashKey = 'imageHash2';
-                break;
-
-            default:
-                throw new \InvalidArgumentException('No matching hash variable for variable ' . $imageId);
-        }
-
-        $imageIdValue = $this->variableState->getVariable($imageId);
-
         $data = [
-            '@id' => 'http://io.uitdatabank.local:80/images/' . $imageIdValue,
+            '@id' => 'http://io.uitdatabank.local:80/images/' . $imageId,
             '@type' => 'schema:ImageObject',
-            'id' => $imageIdValue,
-            'contentUrl' => 'https://images.uitdatabank.dev/' . $imageIdValue . '.jpeg',
-            'thumbnailUrl' => 'https://images.uitdatabank.dev/' . $imageIdValue . '.jpeg',
+            'id' => $imageId,
+            'contentUrl' => 'https://images.uitdatabank.dev/' . $imageId . '.jpeg',
+            'thumbnailUrl' => 'https://images.uitdatabank.dev/' . $imageId . '.jpeg',
             'description' => $description,
             'copyrightHolder' => $copyrightHolder,
             'inLanguage' => $language,

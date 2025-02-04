@@ -133,4 +133,28 @@ final class FeatureContext implements Context
     {
         return $this->variableState->replaceVariables($id);
     }
+
+    /**
+     * @Transform :imageId
+     */
+    public function replaceImageId(string $id): string
+    {
+        return $this->variableState->replaceVariables($id);
+    }
+
+    /**
+     * @Transform :imageId1
+     */
+    public function replaceImage1Id(string $id): string
+    {
+        return $this->variableState->replaceVariables($id);
+    }
+
+    /**
+     * @Transform :imageId2
+     */
+    public function replaceImage2Id(string $id): string
+    {
+        return $this->variableState->replaceVariables($id);
+    }
 }
