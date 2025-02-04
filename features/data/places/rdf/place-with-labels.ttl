@@ -3,7 +3,7 @@
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix locn: <http://www.w3.org/ns/locn#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix labeltype: <https://data.cultuurparticipatie.be/id/concept/LabelType/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
@@ -19,7 +19,7 @@
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/Yf4aZBfsUEu2NsQqsprngw> ;
   locn:address <http://data.uitdatabank.local:80/places/%{placeId}#Address-a25ff4ba> ;
   locn:geometry <http://data.uitdatabank.local:80/places/%{placeId}#Geometry-f23d5ad3> ;
-  rdfs:label "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen .
+  dcat:keyword "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen .
 
 <http://data.uitdatabank.local:80/places/%{placeId}#Identifier-%{identifier}>
   a adms:Identifier ;

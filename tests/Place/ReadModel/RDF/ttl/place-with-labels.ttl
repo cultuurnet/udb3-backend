@@ -3,7 +3,7 @@
 @prefix adms: <http://www.w3.org/ns/adms#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix locn: <http://www.w3.org/ns/locn#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix labeltype: <https://data.cultuurparticipatie.be/id/concept/LabelType/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
@@ -17,7 +17,7 @@
   locn:locatorName "Voorbeeld titel"@nl ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/8.48.0.0.0> ;
   locn:address <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-31b1ac5f> ;
-  rdfs:label "public_label_1"^^labeltype:publiek, "public_label_2"^^labeltype:publiek, "hidden_label_1"^^labeltype:verborgen, "hidden_label_2"^^labeltype:verborgen .
+  dcat:keyword "public_label_1"^^labeltype:publiek, "public_label_2"^^labeltype:publiek, "hidden_label_1"^^labeltype:verborgen, "hidden_label_2"^^labeltype:verborgen .
 
 <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-29568352>
   a adms:Identifier ;
