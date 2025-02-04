@@ -11,7 +11,7 @@ use EasyRdf\Resource;
 
 final class LabelEditor
 {
-    private const PROPERTY_LABEL = 'rdfs:label';
+    private const PROPERTY_LABEL = 'dcat:keyword';
 
     public function setLabels(Resource $resource, Labels $getLabels): void
     {

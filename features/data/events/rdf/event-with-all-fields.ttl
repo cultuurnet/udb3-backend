@@ -6,7 +6,7 @@
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix schema: <https://schema.org/> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcat: <http://www.w3.org/ns/dcat#> .
 @prefix labeltype: <https://data.cultuurparticipatie.be/id/concept/LabelType/> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
@@ -27,7 +27,7 @@
   dcterms:description "Nederlandse beschrijving"@nl, "English description"@en ;
   schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-f20d8319>, <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-35306b47>, <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-2a082adb> ;
   cpa:boeking <http://data.uitdatabank.local:80/events/%{eventId}#Boekingsinfo-1cb41cc5> ;
-  rdfs:label "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen ;
+  dcat:keyword "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen ;
   cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be> ;
   schema:video <http://data.uitdatabank.local:80/events/%{eventId}#VideoObject-8c7c2146> ;
   schema:image <http://data.uitdatabank.local:80/events/%{eventId}#ImageObject-%{imageHash}> .
