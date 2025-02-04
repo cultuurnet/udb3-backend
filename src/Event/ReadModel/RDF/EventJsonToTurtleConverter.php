@@ -13,7 +13,12 @@ use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\MoneyNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -36,12 +41,13 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\RDF\Editor\AddressEditor;
 use CultuurNet\UDB3\RDF\Editor\ContactPointEditor;
 use CultuurNet\UDB3\RDF\Editor\GraphEditor;
-use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\RDF\Editor\ImageEditor;
+use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\RDF\Editor\OpeningHoursEditor;
 use CultuurNet\UDB3\RDF\Editor\VideoEditor;
 use CultuurNet\UDB3\RDF\Editor\WorkflowStatusEditor;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
@@ -62,13 +68,14 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private DenormalizerInterface $eventDenormalizer;
     private AddressParser $addressParser;
     private LoggerInterface $logger;
+    private RdfResourceFactory $rdfResourceFactory;
+    private VideoNormalizer $videoNormalizer;
     private NormalizerInterface $imageNormalizer;
 
     private const TYPE_ACTIVITEIT = 'cidoc:E7_Activity';
     private const TYPE_SPACE_TIME = 'cidoc:E92_Spacetime_Volume';
     private const TYPE_PERIOD = 'm8g:PeriodOfTime';
     private const TYPE_DATE_TIME = 'xsd:dateTime';
-    private const TYPE_VIRTUAL_LOCATION = 'schema:VirtualLocation';
     private const TYPE_LOCATIE = 'dcterms:Location';
     private const TYPE_VIRTUAL_LOCATION_URL = 'schema:URL';
     private const TYPE_BOEKINGSINFO = 'cpa:Boekingsinfo';
@@ -90,7 +97,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
 
-    private const PROPERTY_VIRTUAL_LOCATION = 'schema:location';
+    private const PROPERTY_VIRTUAL_LOCATION = 'platform:virtueleLocatie';
     private const PROPERTY_VIRTUAL_LOCATION_URL = 'schema:url';
     private const PROPERTY_LOCATIE_TYPE = 'cpa:locatieType';
 
@@ -116,6 +123,8 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         DocumentRepository $documentRepository,
         DenormalizerInterface $eventDenormalizer,
         AddressParser $addressParser,
+        RdfResourceFactory $resourceFactory,
+        VideoNormalizer $videoNormalizer,
         NormalizerInterface $imageNormalizer,
         LoggerInterface $logger
     ) {
@@ -127,6 +136,8 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         $this->eventDenormalizer = $eventDenormalizer;
         $this->addressParser = $addressParser;
         $this->logger = $logger;
+        $this->rdfResourceFactory = $resourceFactory;
+        $this->videoNormalizer = $videoNormalizer;
         $this->imageNormalizer = $imageNormalizer;
     }
 
@@ -163,7 +174,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
             throw new JsonDataCouldNotBeConverted('Event ' . $id . ' has no created date.');
         }
 
-        GraphEditor::for($graph)->setGeneralProperties(
+        GraphEditor::for($graph, $this->rdfResourceFactory)->setGeneralProperties(
             $iri,
             self::TYPE_ACTIVITEIT,
             DateTimeFactory::fromISO8601($eventData['created'])->format(DateTime::ATOM),
@@ -179,7 +190,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if ($this->hasDummyOrganizer($event, $eventData)) {
-            $organizerResource = $resource->getGraph()->newBNode([self::TYPE_ORGANISATOR]);
+            $organizerResource = $this->rdfResourceFactory->create($resource, self::TYPE_ORGANISATOR, $eventData['organizer']);
 
             $dummyOrganizerName = $this->getDummyOrganizerName($eventData['organizer'], $event->getMainLanguage());
             if (!empty($dummyOrganizerName)) {
@@ -204,14 +215,14 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         $this->setCalendarWithLocation($resource, $event, $eventData['location']);
-        (new OpeningHoursEditor())->setOpeningHours($resource, $event->getCalendar());
+        (new OpeningHoursEditor())->setOpeningHours($resource, $event->getCalendar(), $this->rdfResourceFactory);
 
         if ($event->getDescription()) {
             $this->setDescription($resource, $event->getDescription());
         }
 
         if (!$event->getContactPoint()->isEmpty()) {
-            (new ContactPointEditor())->setContactPoint($resource, $event->getContactPoint());
+            (new ContactPointEditor($this->rdfResourceFactory))->setContactPoint($resource, $event->getContactPoint());
         }
 
         if (!$event->getBookingInfo()->isEmpty()) {
@@ -227,7 +238,10 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if (!$event->getVideos()->isEmpty()) {
-            (new VideoEditor())->setVideos($resource, $event->getVideos());
+            (new VideoEditor(
+                $this->rdfResourceFactory,
+                $this->videoNormalizer
+            ))->setVideos($resource, $event->getVideos());
         }
 
         if (!$event->getImages()->isEmpty()) {
@@ -323,7 +337,15 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         $addressResource = null;
 
         foreach ($subEvents as $subEvent) {
-            $spaceTimeResource = $resource->getGraph()->newBNode([self::TYPE_SPACE_TIME]);
+            $spaceTimeResource = $this->rdfResourceFactory->create(
+                $resource,
+                self::TYPE_SPACE_TIME,
+                array_merge(
+                    $this->getLocationResourceData($this->getDummyLocationName($locationData, $mainLanguage), $placeReference),
+                    $this->getFromTo($subEvent)
+                )
+            );
+
             $resource->add(self::PROPERTY_RUIMTE_TIJD, $spaceTimeResource);
 
             if ($addressResource === null) {
@@ -338,7 +360,12 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_LOCATION, $addressResource);
             }
 
-            $calendarTypeResource = $spaceTimeResource->getGraph()->newBNode([self::TYPE_PERIOD]);
+            $calendarTypeResource = $this->rdfResourceFactory->create(
+                $resource,
+                self::TYPE_PERIOD,
+                $this->getFromTo($subEvent)
+            );
+
             $spaceTimeResource->add(self::PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE, $calendarTypeResource);
 
             $calendarTypeResource->set(
@@ -368,10 +395,14 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if ($placeReference->getAddress()) {
-            $locationResource = $resource->getGraph()->newBNode([self::TYPE_LOCATIE]);
-            $resource->add($property, $locationResource);
-
             $dummyLocationName = $this->getDummyLocationName($locationData, $mainLanguage);
+
+            $locationResource = $this->rdfResourceFactory->create(
+                $resource,
+                self::TYPE_LOCATIE,
+                $this->getLocationResourceData($dummyLocationName, $placeReference)
+            );
+
             if ($dummyLocationName !== '') {
                 $locationResource->addLiteral(
                     self::PROPERTY_LOCATIE_NAAM,
@@ -380,7 +411,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 );
             }
 
-            (new AddressEditor($this->addressParser))->setAddress(
+            (new AddressEditor($this->addressParser, $this->rdfResourceFactory))->setAddress(
                 $locationResource,
                 self::PROPERTY_LOCATIE_ADRES,
                 $placeReference->getAddress()
@@ -414,7 +445,9 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function setVirtualLocation(Resource $resource, ?Url $onlineUrl): void
     {
-        $virtualLocationResource = $resource->getGraph()->newBNode([self::TYPE_VIRTUAL_LOCATION]);
+        $virtualLocationResource = $this->rdfResourceFactory->create($resource, self::PROPERTY_VIRTUAL_LOCATION, [
+            $onlineUrl ? $onlineUrl->toString() : '',
+        ]);
 
         if ($onlineUrl) {
             $virtualLocationResource->add(
@@ -422,7 +455,6 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 new Literal($onlineUrl->toString(), null, self::TYPE_VIRTUAL_LOCATION_URL)
             );
         }
-
         $resource->add(self::PROPERTY_VIRTUAL_LOCATION, $virtualLocationResource);
     }
 
@@ -438,9 +470,9 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function setBookingInfo(Resource $resource, BookingInfo $bookingInfo): void
     {
-        $bookingInfoResource = $resource->getGraph()->newBNode([self::TYPE_BOEKINGSINFO]);
+        $bookingInfoResource = $this->rdfResourceFactory->create($resource, self::TYPE_BOEKINGSINFO, (new BookingInfoNormalizer())->normalize($bookingInfo));
 
-        (new ContactPointEditor())->setBookingInfo($bookingInfoResource, $bookingInfo);
+        (new ContactPointEditor($this->rdfResourceFactory))->setBookingInfo($bookingInfoResource, $bookingInfo);
 
         $resource->add(self::PROPERTY_BOEKINGSINFO, $bookingInfoResource);
     }
@@ -470,7 +502,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function setDummyOrganizerContactPoint(Resource $organizerResource, array $contactPointData): void
     {
-        (new ContactPointEditor())->setContactPoint(
+        (new ContactPointEditor($this->rdfResourceFactory))->setContactPoint(
             $organizerResource,
             (new ContactPointDenormalizer())->denormalize(
                 $contactPointData,
@@ -516,28 +548,56 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function createPrijsResource(Resource $resource, Tariff $tariff): Resource
     {
-        $prijsResource = $resource->getGraph()->newBNode([self::TYPE_PRICE_SPECIFICATION]);
+        $priceSpecificationResource = $this->rdfResourceFactory->create($resource, self::TYPE_PRICE_SPECIFICATION, (new TariffNormalizer())->normalize($tariff));
 
-        $priceResource = $prijsResource->getGraph()->newBNode([self::TYPE_MONETARY_AMOUNT]);
-        $priceResource->set(
+        $monetaryAmountResource = $this->rdfResourceFactory->create($resource, self::TYPE_MONETARY_AMOUNT, (new MoneyNormalizer())->normalize($tariff->getPrice()));
+        $monetaryAmountResource->set(
             self::PROPERTY_CURRENCY,
             new Literal($tariff->getPrice()->getCurrency()->getName(), null)
         );
-        $priceResource->set(
+        $monetaryAmountResource->set(
             self::PROPERTY_VALUE,
             new Literal((string)($tariff->getPrice()->getAmount() / 100), null, 'schema:Number')
         );
-        $prijsResource->set(self::PROPERTY_PRICE, $priceResource);
+        $priceSpecificationResource->set(self::PROPERTY_PRICE, $monetaryAmountResource);
 
         foreach ($tariff->getName()->getLanguages() as $language) {
             /** @var TariffName $name */
             $name = $tariff->getName()->getTranslation($language);
-            $prijsResource->add(
+            $priceSpecificationResource->add(
                 self::PROPERTY_PREF_LABEL,
                 new Literal($name->toString(), $language->toString())
             );
         }
 
-        return $prijsResource;
+        return $priceSpecificationResource;
+    }
+
+    private function getLocationResourceData(string $dummyLocationName, PlaceReference $placeReference): array
+    {
+        if ($dummyLocationName !== '' && $placeReference->getAddress() !== null) {
+            return array_merge(
+                ['locationName' => $dummyLocationName],
+                (new TranslatedAddressNormalizer())->normalize($placeReference->getAddress())
+            );
+        }
+
+        if ($dummyLocationName !== '') {
+            return ['locationName' => $dummyLocationName];
+        }
+
+        if ($placeReference->getAddress() !== null) {
+            return (new TranslatedAddressNormalizer())->normalize($placeReference->getAddress());
+        }
+
+        return [];
+    }
+
+    private function getFromTo(SubEvent $subEvent): array
+    {
+        return [
+            'from' => $subEvent->getDateRange()->getFrom()->format(DateTime::ATOM),
+            'to' => $subEvent->getDateRange()->getTo()->format(DateTime::ATOM),
+        ];
     }
 }

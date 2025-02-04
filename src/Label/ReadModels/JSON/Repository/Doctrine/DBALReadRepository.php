@@ -18,6 +18,8 @@ use Doctrine\DBAL\Query\QueryBuilder;
 
 final class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
 {
+    private const MAX_RESULTS = 30;
+
     private string $labelRolesTableName;
 
     private string $userRolesTableName;
@@ -122,10 +124,8 @@ final class DBALReadRepository extends AbstractDBALRepository implements ReadRep
                 ->setFirstResult($query->getOffset());
         }
 
-        if ($query->getLimit()) {
-            $queryBuilder
-                ->setMaxResults($query->getLimit());
-        }
+        $queryBuilder
+            ->setMaxResults($query->getLimit() ?? self::MAX_RESULTS);
 
         return $this->getResults($queryBuilder);
     }

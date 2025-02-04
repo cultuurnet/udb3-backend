@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\RDF\NodeUri\ResourceFactory;
 use CultuurNet\UDB3\RDF\NodeUri\NodeUriGenerator;
 use EasyRdf\Resource;
 
-final class ResourceFactoryWithoutBlankNodes implements ResourceFactory
+final class RdfResourceFactoryWithoutBlankNodes implements RdfResourceFactory
 {
     private NodeUriGenerator $nodeUriGenerator;
 
@@ -18,9 +18,12 @@ final class ResourceFactoryWithoutBlankNodes implements ResourceFactory
 
     public function create(Resource $resource, string $nodeName, array $data): Resource
     {
-        return $resource->getGraph()->resource($this->nodeUriGenerator->generate(
-            $nodeName,
-            $data,
-        ));
+        return $resource->getGraph()->resource(
+            $this->nodeUriGenerator->generate(
+                $nodeName,
+                $data,
+            ),
+            [$nodeName]
+        );
     }
 }

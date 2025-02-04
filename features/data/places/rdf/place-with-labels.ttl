@@ -1,41 +1,45 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix locn: <http://www.w3.org/ns/locn#> .
-@prefix geosparql: <http://www.opengis.net/ont/geosparql#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix labeltype: <https://data.cultuurparticipatie.be/id/concept/LabelType/> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
+@prefix geosparql: <http://www.opengis.net/ont/geosparql#> .
 
 <http://data.uitdatabank.local:80/places/%{placeId}>
   a dcterms:Location ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier [
-    a adms:Identifier ;
-    skos:notation "http://data.uitdatabank.local:80/places/%{placeId}"^^xsd:anyURI ;
-    generiek:gestructureerdeIdentificator [
-      a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "http://data.uitdatabank.local:80/places/" ;
-      generiek:lokaleIdentificator "%{placeId}"
-    ]
-  ] ;
+  adms:identifier <http://data.uitdatabank.local:80/places/%{placeId}#Identifier-%{identifier}> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   locn:locatorName "Cafe Den Hemel"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/Yf4aZBfsUEu2NsQqsprngw> ;
-  locn:address [
-    a locn:Address ;
-    locn:adminUnitL1 "BE" ;
-    locn:postCode "3271" ;
-    locn:locatorDesignator "107" ;
-    locn:fullAddress "Hoornblaas 107, 3271 Scherpenheuvel-Zichem, BE"@nl ;
-    locn:postName "Scherpenheuvel-Zichem"@nl ;
-    locn:thoroughfare "Hoornblaas"@nl
-  ] ;
-  locn:geometry [
-    a locn:Geometry ;
-    geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>5.0037447, 51.0155378</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral
-  ] ;
+  locn:address <http://data.uitdatabank.local:80/places/%{placeId}#Address-a25ff4ba> ;
+  locn:geometry <http://data.uitdatabank.local:80/places/%{placeId}#Geometry-f23d5ad3> ;
   rdfs:label "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen .
+
+<http://data.uitdatabank.local:80/places/%{placeId}#Identifier-%{identifier}>
+  a adms:Identifier ;
+  skos:notation "http://data.uitdatabank.local:80/places/%{placeId}"^^xsd:anyURI ;
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/places/%{placeId}#GestructureerdeIdentificator-%{identifier}> .
+
+<http://data.uitdatabank.local:80/places/%{placeId}#GestructureerdeIdentificator-%{identifier}>
+  a generiek:GestructureerdeIdentificator ;
+  generiek:naamruimte "http://data.uitdatabank.local:80/places/" ;
+  generiek:lokaleIdentificator "%{placeId}" .
+
+<http://data.uitdatabank.local:80/places/%{placeId}#Address-a25ff4ba>
+  a locn:Address ;
+  locn:adminUnitL1 "BE" ;
+  locn:postCode "3271" ;
+  locn:locatorDesignator "107" ;
+  locn:fullAddress "Hoornblaas 107, 3271 Scherpenheuvel-Zichem, BE"@nl ;
+  locn:postName "Scherpenheuvel-Zichem"@nl ;
+  locn:thoroughfare "Hoornblaas"@nl .
+
+<http://data.uitdatabank.local:80/places/%{placeId}#Geometry-f23d5ad3>
+  a locn:Geometry ;
+  geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>5.0037447, 51.0155378</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral .

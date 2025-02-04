@@ -2,45 +2,51 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix m8g: <http://data.europa.eu/m8g/> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a cidoc:E7_Activity ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
-  adms:identifier [
-    a adms:Identifier ;
-    skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyURI ;
-    generiek:gestructureerdeIdentificator [
-      a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "https://mock.data.publiq.be/events/" ;
-      generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea"
-    ]
-  ] ;
+  adms:identifier <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-fc28bf15> ;
   dcterms:title "Faith no more"@nl ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  cp:ruimtetijd [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-    cidoc:P160_has_temporal_projection [
-      a m8g:PeriodOfTime ;
-      m8g:startTime "2023-05-06T20:00:00+01:00"^^xsd:dateTime ;
-      m8g:endTime "2023-05-06T23:00:00+01:00"^^xsd:dateTime
-    ]
-  ], [
-    a cidoc:E92_Spacetime_Volume ;
-    cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-    cidoc:P160_has_temporal_projection [
-      a m8g:PeriodOfTime ;
-      m8g:startTime "2023-05-07T20:00:00+01:00"^^xsd:dateTime ;
-      m8g:endTime "2023-05-07T23:00:00+01:00"^^xsd:dateTime
-    ]
-  ] .
+  cp:ruimtetijd <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#E92_Spacetime_Volume-8de5b7f4>, <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#E92_Spacetime_Volume-a889f286> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-fc28bf15>
+  a adms:Identifier ;
+  skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyURI ;
+  generiek:gestructureerdeIdentificator <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-fc28bf15> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-fc28bf15>
+  a generiek:GestructureerdeIdentificator ;
+  generiek:naamruimte "https://mock.data.publiq.be/events/" ;
+  generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#E92_Spacetime_Volume-8de5b7f4>
+  a cidoc:E92_Spacetime_Volume ;
+  cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
+  cidoc:P160_has_temporal_projection <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-8de5b7f4> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-8de5b7f4>
+  a m8g:PeriodOfTime ;
+  m8g:startTime "2023-05-06T20:00:00+01:00"^^xsd:dateTime ;
+  m8g:endTime "2023-05-06T23:00:00+01:00"^^xsd:dateTime .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#E92_Spacetime_Volume-a889f286>
+  a cidoc:E92_Spacetime_Volume ;
+  cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
+  cidoc:P160_has_temporal_projection <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-a889f286> .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#PeriodOfTime-a889f286>
+  a m8g:PeriodOfTime ;
+  m8g:startTime "2023-05-07T20:00:00+01:00"^^xsd:dateTime ;
+  m8g:endTime "2023-05-07T23:00:00+01:00"^^xsd:dateTime .

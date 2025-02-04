@@ -21,6 +21,7 @@ use CultuurNet\UDB3\RDF\Editor\GraphEditor;
 use CultuurNet\UDB3\RDF\Editor\LabelEditor;
 use CultuurNet\UDB3\RDF\Editor\ImageEditor;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTime;
 use EasyRdf\Graph;
@@ -44,8 +45,9 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
     private DocumentRepository $documentRepository;
     private DenormalizerInterface $denormalizer;
     private AddressParser $addressParser;
-    private LoggerInterface $logger;
     private NormalizerInterface $imageNormalizer;
+    private RdfResourceFactory $rdfResourceFactory;
+    private LoggerInterface $logger;
 
     public function __construct(
         IriGeneratorInterface $iriGenerator,
@@ -53,6 +55,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         DenormalizerInterface $denormalizer,
         AddressParser $addressParser,
         NormalizerInterface $imageNormalizer,
+        RdfResourceFactory $rdfResourceFactory,
         LoggerInterface $logger
     ) {
         $this->iriGenerator = $iriGenerator;
@@ -60,6 +63,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         $this->denormalizer = $denormalizer;
         $this->addressParser = $addressParser;
         $this->imageNormalizer = $imageNormalizer;
+        $this->rdfResourceFactory = $rdfResourceFactory;
         $this->logger = $logger;
     }
 
@@ -87,7 +91,7 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         $modified = DateTimeFactory::fromISO8601($organizerData['modified'])->format(DateTime::ATOM);
-        GraphEditor::for($graph)->setGeneralProperties(
+        GraphEditor::for($graph, $this->rdfResourceFactory)->setGeneralProperties(
             $iri,
             self::TYPE_ORGANISATOR,
             isset($organizerData['created']) ?
@@ -108,17 +112,17 @@ final class OrganizerJsonToTurtleConverter implements JsonToTurtleConverter
         }
 
         if ($organizer->getAddress()) {
-            (new AddressEditor($this->addressParser))
+            (new AddressEditor($this->addressParser, $this->rdfResourceFactory))
                 ->setAddress($resource, self::PROPERTY_LOCATIE_ADRES, $organizer->getAddress());
         }
 
         if ($organizer->getGeoCoordinates()) {
-            (new GeometryEditor())
+            (new GeometryEditor($this->rdfResourceFactory))
                 ->setCoordinates($resource, $organizer->getGeoCoordinates());
         }
 
         if (!$organizer->getContactPoint()->isEmpty()) {
-            (new ContactPointEditor())->setContactPoint($resource, $organizer->getContactPoint());
+            (new ContactPointEditor($this->rdfResourceFactory))->setContactPoint($resource, $organizer->getContactPoint());
         }
 
         if ($organizer->getLabels()->count() > 0) {

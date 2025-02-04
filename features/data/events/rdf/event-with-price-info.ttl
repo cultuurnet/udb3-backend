@@ -2,11 +2,11 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix schema: <https://schema.org/> .
 @prefix cpp: <https://data.vlaanderen.be/ns/cultuurparticipatie#Prijsinfo.> .
 
@@ -14,36 +14,42 @@
   a cidoc:E7_Activity ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier [
-    a adms:Identifier ;
-    skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
-    generiek:gestructureerdeIdentificator [
-      a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
-      generiek:lokaleIdentificator "%{eventId}"
-    ]
-  ] ;
+  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}> ;
   dcterms:title "Permanent event"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-  cpa:prijs [
-    a schema:PriceSpecification ;
-    schema:price [
-      a schema:MonetaryAmount ;
-      schema:currency "EUR" ;
-      schema:value "59.99"^^schema:Number
-    ] ;
-    skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
-    cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis>
-  ], [
-    a schema:PriceSpecification ;
-    schema:price [
-      a schema:MonetaryAmount ;
-      schema:currency "EUR" ;
-      schema:value "40"^^schema:Number
-    ] ;
-    skos:prefLabel "Reductie"@nl ;
-    cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/tarief>
-  ] .
+  cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-38cfd4d4>, <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-e9f05748> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
+  a adms:Identifier ;
+  skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}>
+  a generiek:GestructureerdeIdentificator ;
+  generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
+  generiek:lokaleIdentificator "%{eventId}" .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-38cfd4d4>
+  a schema:PriceSpecification ;
+  schema:price <http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-d0a4e992> ;
+  skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
+  cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-d0a4e992>
+  a schema:MonetaryAmount ;
+  schema:currency "EUR" ;
+  schema:value "59.99"^^schema:Number .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-e9f05748>
+  a schema:PriceSpecification ;
+  schema:price <http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-5b5b7793> ;
+  skos:prefLabel "Reductie"@nl ;
+  cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/tarief> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-5b5b7793>
+  a schema:MonetaryAmount ;
+  schema:currency "EUR" ;
+  schema:value "40"^^schema:Number .

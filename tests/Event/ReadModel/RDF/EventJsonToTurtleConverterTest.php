@@ -9,8 +9,12 @@ use CultuurNet\UDB3\Address\Parser\ParsedAddress;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
+use CultuurNet\UDB3\RDF\NodeUri\CRC32HashGenerator;
+use CultuurNet\UDB3\RDF\NodeUri\NodeUriGenerator;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactoryWithoutBlankNodes;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -92,6 +96,8 @@ class EventJsonToTurtleConverterTest extends TestCase
             $this->documentRepository,
             (new EventDenormalizer())->handlesDummyOrganizers(),
             $addressParser,
+            new RdfResourceFactoryWithoutBlankNodes(new NodeUriGenerator(new CRC32HashGenerator())),
+            new VideoNormalizer([]),
             $this->imageNormalizer,
             $this->logger
         );
@@ -260,7 +266,6 @@ class EventJsonToTurtleConverterTest extends TestCase
         ]);
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
-
         $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-calendar-periodic.ttl'), $turtle);
     }
 
@@ -916,7 +921,7 @@ class EventJsonToTurtleConverterTest extends TestCase
 
         $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
 
-        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-organizer.ttl'), $turtle);
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-dummy-organizer-with-translated-name.ttl'), $turtle);
     }
 
     /**

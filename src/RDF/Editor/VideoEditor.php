@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\RDF\Editor;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoPlatformFactory;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use EasyRdf\Literal;
 use EasyRdf\Resource;
 
@@ -21,6 +23,14 @@ final class VideoEditor
     private const PROPERTY_VIDEO_EMBED_URL = 'schema:embedUrl';
     private const PROPERTY_VIDEO_COPYRIGHT_HOLDER = 'schema:copyrightHolder';
     private const PROPERTY_VIDEO_IN_LANGUAGE = 'schema:inLanguage';
+    private RdfResourceFactory $rdfResourceFactory;
+    private VideoNormalizer $videoNormalizer;
+
+    public function __construct(RdfResourceFactory $rdfResourceFactory, VideoNormalizer $videoNormalizer)
+    {
+        $this->rdfResourceFactory = $rdfResourceFactory;
+        $this->videoNormalizer = $videoNormalizer;
+    }
 
     public function setVideos(Resource $resource, VideoCollection $videos): void
     {
@@ -34,7 +44,11 @@ final class VideoEditor
     {
         $videoPlatform = VideoPlatformFactory::fromVideo($video);
 
-        $videoResource = $resource->getGraph()->newBNode([self::TYPE_VIDEO_OBJECT]);
+        $videoResource = $this->rdfResourceFactory->create(
+            $resource,
+            self::TYPE_VIDEO_OBJECT,
+            $this->videoNormalizer->normalize($video)
+        );
 
         $videoResource->set(
             self::PROPERTY_VIDEO_IDENTIFIER,

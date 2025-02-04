@@ -2,11 +2,11 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix schema: <https://schema.org/> .
 
@@ -14,31 +14,36 @@
   a cidoc:E7_Activity ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier [
-    a adms:Identifier ;
-    skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
-    generiek:gestructureerdeIdentificator [
-      a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
-      generiek:lokaleIdentificator "%{eventId}"
-    ]
-  ] ;
+  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}> ;
   dcterms:title "Permanent event"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-  cpa:beschikbaarheid [
-    a cp:Beschikbaarheid ;
-    schema:hoursAvailable [
-      a schema:OpeningHoursSpecification ;
-      schema:opens "10:00" ;
-      schema:closes "16:00" ;
-      schema:dayOfWeek schema:Monday, schema:Tuesday
-    ], [
-      a schema:OpeningHoursSpecification ;
-      schema:opens "09:00" ;
-      schema:closes "17:00" ;
-      schema:dayOfWeek schema:Thursday, schema:Friday
-    ]
-  ] .
+  cpa:beschikbaarheid <http://data.uitdatabank.local:80/events/%{eventId}#Beschikbaarheid-6bc21d1d> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
+  a adms:Identifier ;
+  skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}>
+  a generiek:GestructureerdeIdentificator ;
+  generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
+  generiek:lokaleIdentificator "%{eventId}" .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#Beschikbaarheid-6bc21d1d>
+  a cp:Beschikbaarheid ;
+  schema:hoursAvailable <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-19cb130c>, <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-399b5bce> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-19cb130c>
+  a schema:OpeningHoursSpecification ;
+  schema:opens "10:00" ;
+  schema:closes "16:00" ;
+  schema:dayOfWeek schema:Monday, schema:Tuesday .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-399b5bce>
+  a schema:OpeningHoursSpecification ;
+  schema:opens "09:00" ;
+  schema:closes "17:00" ;
+  schema:dayOfWeek schema:Thursday, schema:Friday .

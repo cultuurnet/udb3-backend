@@ -2,27 +2,29 @@
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix adms: <http://www.w3.org/ns/adms#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 @prefix udb: <https://data.publiq.be/ns/uitdatabank#> .
 @prefix cpa: <https://data.vlaanderen.be/ns/cultuurparticipatie#Activiteit.> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}>
   a cidoc:E7_Activity ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier [
-    a adms:Identifier ;
-    skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
-    generiek:gestructureerdeIdentificator [
-      a generiek:GestructureerdeIdentificator ;
-      generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
-      generiek:lokaleIdentificator "%{eventId}"
-    ]
-  ] ;
+  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}> ;
   dcterms:title "Permanent event"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
+  a adms:Identifier ;
+  skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}> .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}>
+  a generiek:GestructureerdeIdentificator ;
+  generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
+  generiek:lokaleIdentificator "%{eventId}" .

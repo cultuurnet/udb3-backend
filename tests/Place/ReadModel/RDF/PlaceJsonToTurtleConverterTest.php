@@ -17,6 +17,9 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\RDF\JsonDataCouldNotBeConverted;
+use CultuurNet\UDB3\RDF\NodeUri\CRC32HashGenerator;
+use CultuurNet\UDB3\RDF\NodeUri\NodeUriGenerator;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactoryWithoutBlankNodes;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -99,6 +102,7 @@ class PlaceJsonToTurtleConverterTest extends TestCase
             $this->documentRepository,
             new PlaceDenormalizer(),
             $addressParser,
+            new RdfResourceFactoryWithoutBlankNodes(new NodeUriGenerator(new CRC32HashGenerator())),
             $this->logger
         );
     }

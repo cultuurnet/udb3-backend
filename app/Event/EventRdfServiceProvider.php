@@ -10,6 +10,8 @@ use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\RDF\EventJsonToTurtleConverter;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use CultuurNet\UDB3\RDF\RdfServiceProvider;
 
@@ -34,6 +36,8 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
                 $this->container->get('event_jsonld_repository'),
                 (new EventDenormalizer())->handlesDummyOrganizers(),
                 $this->container->get(AddressParser::class),
+                $this->container->get(RdfResourceFactory::class),
+                new VideoNormalizer($this->container->get('config')['media']['video_default_copyright']),
                 $this->container->get(ImageNormalizer::class),
                 LoggerFactory::create($this->getContainer(), LoggerName::forService('rdf'))
             )
