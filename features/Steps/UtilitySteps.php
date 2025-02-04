@@ -17,6 +17,15 @@ trait UtilitySteps
     }
 
     /**
+     * @Given /^I create a name that includes a dash and keep it as "([^"]*)"$/
+     */
+    public function iCreateANameThatIncludesADashAndKeepItAs(string $variableName): void
+    {
+        $value = uniqid('', true) . '-\'' . uniqid('', true);
+        $this->variableState->setVariable($variableName, $value);
+    }
+
+    /**
      * @Given I create a random name of :nrOfCharacters characters
      */
     public function iCreateARandomNameOfCharacters(int $nrOfCharacters): void
