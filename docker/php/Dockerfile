@@ -1,6 +1,6 @@
 FROM php:7.4-apache
 
-RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev zlib1g-dev libpng-dev libzip-dev supervisor
+RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev zlib1g-dev libpng-dev libzip-dev supervisor fontconfig-config fonts-dejavu-core libdeflate0 libfontconfig1 libfreetype6 libgif7 libjbig0 libjpeg62-turbo liblcms2-2 libtiff5 libwebp6 libwebpdemux2 sensible-utils ucf
 
 RUN docker-php-ext-install mysqli pdo_mysql bcmath tidy sockets
 
@@ -16,12 +16,9 @@ RUN pecl install -o -f redis &&  rm -rf /tmp/pear &&  docker-php-ext-enable redi
 
 RUN curl https://getcomposer.org/download/2.6.6/composer.phar -o /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
-RUN if [ "$(uname -m)" = "aarch64" ]; then \
-      curl https://www.princexml.com/download/prince-15.4.1-linux-generic-aarch64.tar.gz -o /root/prince-15.4.1-linux-generic-aarch64.tar.gz && \
-      tar -xzf /root/prince-15.4.1-linux-generic-aarch64.tar.gz -C /root && \
-      cd /root/prince-15.4.1-linux-generic-aarch64 && \
-      ./install.sh </dev/null; \
-    fi
+RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_15.4.1-1_debian11_amd64.deb; fi
+RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_15.4.1-1_debian11_arm64.deb; fi
+RUN if [ -f prince.deb ]; then dpkg -i prince.deb; fi
 
 RUN echo "memory_limit=4096M" > $PHP_INI_DIR/conf.d/memory-limit.ini
 RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" > $PHP_INI_DIR/conf.d/error_reporting.ini
