@@ -14,22 +14,6 @@ You will also need sudo privileges on the first run to add `127.0.0.1 io.uitdata
 $ make config
 ```
 
-### RabbitMQ
-
-Login to the management console on http://io.uitdatabank.local:15672/ with username `vagrant` and password `vagrant` 
-
-### Acceptance tests
-
-To run the acceptance tests for the very first time you need to initialize test data. This required test data contains several fixed labels and roles which are used by various acceptance tests.
-This can be done with:
-```
-$ make feature-init
-```
-You can run the actual acceptance tests with:
-```
-$ make feature
-```
-
 ## Start
 
 ### Docker
@@ -51,4 +35,20 @@ $ make init
 To execute all CI tasks, run the following command:
 ```
 $ make ci
+```
+
+### RabbitMQ
+
+Login to the management console on http://io.uitdatabank.local:15672/ with username `vagrant` and password `vagrant` 
+
+### Acceptance tests
+
+To run the acceptance tests for the very first time you need to initialize test data. This required test data contains several fixed labels and roles which are used by various acceptance tests.
+This can be done with:
+```
+$ make feature-init
+```
+You can run the actual acceptance tests with:
+```
+$ make feature
 ```
