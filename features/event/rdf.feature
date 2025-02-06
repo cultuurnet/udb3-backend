@@ -108,7 +108,7 @@ Feature: Test RDF projection of events
     And I create an event from "events/rdf/event-with-images.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
-    And I calculate the image hash with description "A cute dog", copyright "publiq vzw" and language "nl" for "imageId" as "imageHash"
+    And I calculate the image hash with description "A cute dog", copyright "publiq vzw" and language "nl" for "%{imageId}" as "imageHash"
 
     Then the RDF response should match event projection "events/rdf/event-with-image-object.ttl"
 

@@ -312,8 +312,15 @@ trait ResponseSteps
     /**
      * @Then I calculate the image hash with description :description, copyright :copyrightHolder and language :language for :imageId as :hashKey
      */
-    public function iCalculateTheImageHashWith(string $description, string $copyrightHolder, string $language, string $imageId, string $hashKey): void
-    {
+    public function iCalculateTheImageHashWith(
+        string $description,
+        string $copyrightHolder,
+        string $language,
+        string $imageId,
+        string $hashKey
+    ): void {
+        $imageId = $this->variableState->replaceVariables($imageId);
+
         $data = [
             '@id' => 'http://io.uitdatabank.local:80/images/' . $imageId,
             '@type' => 'schema:ImageObject',
