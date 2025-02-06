@@ -10,23 +10,23 @@
   a dcterms:Location ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
-  adms:identifier <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-29568352> ;
+  adms:identifier <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#identifier-29568352> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/rejected> ;
   locn:locatorName "Voorbeeld titel"@nl ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/8.48.0.0.0> ;
-  locn:address <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-31b1ac5f> .
+  locn:address <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#address-31b1ac5f> .
 
-<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-29568352>
+<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#identifier-29568352>
   a adms:Identifier ;
   skos:notation "https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyURI ;
-  generiek:gestructureerdeIdentificator <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-29568352> .
+  generiek:gestructureerdeIdentificator <https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#gestructureerdeIdentificator-29568352> .
 
-<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-29568352>
+<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#gestructureerdeIdentificator-29568352>
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "https://mock.data.publiq.be/places/" ;
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
 
-<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#Address-31b1ac5f>
+<https://mock.data.publiq.be/places/d4b46fba-6433-4f86-bcb5-edeef6689fea#address-31b1ac5f>
   a locn:Address ;
   locn:adminUnitL1 "BE" ;
   locn:postCode "3000" ;

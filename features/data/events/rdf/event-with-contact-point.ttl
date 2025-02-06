@@ -14,37 +14,37 @@
   a cidoc:E7_Activity ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}> ;
+  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}> ;
   dcterms:title "Event met contact point"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-  schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-f20d8319>, <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-35306b47>, <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-953ce804>, <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-94fe8233> .
+  schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-f20d8319>, <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-35306b47>, <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-953ce804>, <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-94fe8233> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
+<http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}>
   a adms:Identifier ;
   skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
-  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}> .
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#gestructureerdeIdentificator-%{identifier}> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}>
+<http://data.uitdatabank.local:80/events/%{eventId}#gestructureerdeIdentificator-%{identifier}>
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-f20d8319>
+<http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-f20d8319>
   a schema:ContactPoint ;
   schema:url "https://www.example.com" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-35306b47>
+<http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-35306b47>
   a schema:ContactPoint ;
   schema:email "info@example.com" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-953ce804>
+<http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-953ce804>
   a schema:ContactPoint ;
   schema:telephone "016 10 20 30" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-94fe8233>
+<http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-94fe8233>
   a schema:ContactPoint ;
   schema:telephone "016 10 20 31" .

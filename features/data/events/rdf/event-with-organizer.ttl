@@ -13,7 +13,7 @@
   a cidoc:E7_Activity ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}> ;
+  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}> ;
   dcterms:title "Permanent event"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.2.0.0> ;
@@ -22,12 +22,12 @@
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
+<http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}>
   a adms:Identifier ;
   skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
-  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}> .
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#gestructureerdeIdentificator-%{identifier}> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}>
+<http://data.uitdatabank.local:80/events/%{eventId}#gestructureerdeIdentificator-%{identifier}>
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .

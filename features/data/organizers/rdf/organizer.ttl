@@ -12,17 +12,17 @@
   a cp:Organisator ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier <http://data.uitdatabank.local:80/organizers/%{organizerId}#Identifier-%{identifier}> ;
+  adms:identifier <http://data.uitdatabank.local:80/organizers/%{organizerId}#identifier-%{identifier}> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/active> ;
   cpr:naam "%{name}"@nl ;
   foaf:homepage "https://www.%{name}.be" .
 
-<http://data.uitdatabank.local:80/organizers/%{organizerId}#Identifier-%{identifier}>
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#identifier-%{identifier}>
   a adms:Identifier ;
   skos:notation "http://data.uitdatabank.local:80/organizers/%{organizerId}"^^xsd:anyURI ;
-  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/organizers/%{organizerId}#GestructureerdeIdentificator-%{identifier}> .
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/organizers/%{organizerId}#gestructureerdeIdentificator-%{identifier}> .
 
-<http://data.uitdatabank.local:80/organizers/%{organizerId}#GestructureerdeIdentificator-%{identifier}>
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#gestructureerdeIdentificator-%{identifier}>
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/organizers/" ;
   generiek:lokaleIdentificator "%{organizerId}" .
