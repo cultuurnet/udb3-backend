@@ -14,30 +14,30 @@
   a cidoc:E7_Activity ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
-  adms:identifier <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-fc28bf15> ;
+  adms:identifier <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#identifier-fc28bf15> ;
   dcterms:title "Faith no more"@nl ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-  cpa:boeking <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Boekingsinfo-3e57fdcd> .
+  cpa:boeking <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#boekingsinfo-3e57fdcd> .
 
-<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-fc28bf15>
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#identifier-fc28bf15>
   a adms:Identifier ;
   skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyURI ;
-  generiek:gestructureerdeIdentificator <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-fc28bf15> .
+  generiek:gestructureerdeIdentificator <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#gestructureerdeIdentificator-fc28bf15> .
 
-<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-fc28bf15>
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#gestructureerdeIdentificator-fc28bf15>
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "https://mock.data.publiq.be/events/" ;
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
 
-<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Boekingsinfo-3e57fdcd>
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#boekingsinfo-3e57fdcd>
   a cpa:Boekingsinfo ;
-  schema:contactPoint <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#ContactPoint-3e57fdcd> .
+  schema:contactPoint <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#contactPoint-3e57fdcd> .
 
-<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#ContactPoint-3e57fdcd>
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#contactPoint-3e57fdcd>
   a schema:ContactPoint ;
   schema:url "https://www.publiq.be" ;
   schema:telephone "016 10 20 30" ;
