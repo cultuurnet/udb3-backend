@@ -15,7 +15,7 @@
   a cidoc:E7_Activity ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}> ;
+  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}> ;
   dcterms:title "Event met contact point"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.3.1.0> ;
@@ -24,12 +24,12 @@
   prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
   dcat:keyword "public-visible-1"^^labeltype:publiek, "public-visible-2"^^labeltype:publiek, "public-invisible-1"^^labeltype:verborgen, "public-invisible-2"^^labeltype:verborgen .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
+<http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}>
   a adms:Identifier ;
   skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
-  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}> .
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#gestructureerdeIdentificator-%{identifier}> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}>
+<http://data.uitdatabank.local:80/events/%{eventId}#gestructureerdeIdentificator-%{identifier}>
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .
