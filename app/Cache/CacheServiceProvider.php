@@ -8,6 +8,8 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use Doctrine\Common\Cache\PredisCache;
 use League\Container\Argument\Literal\CallableArgument;
 use Predis\Client;
+use RectorPrefix202209\Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
 
 final class CacheServiceProvider extends AbstractServiceProvider
 {
@@ -15,6 +17,7 @@ final class CacheServiceProvider extends AbstractServiceProvider
     {
         return [
             'cache',
+            CacheInterface::class,
         ];
     }
 
@@ -32,6 +35,17 @@ final class CacheServiceProvider extends AbstractServiceProvider
                     )
                 )
             )
+        );
+
+        $container->addShared(
+            CacheInterface::class,
+            new RedisAdapter(
+                new Client(
+                    $container->get('config')['cache']['redis']
+                ),
+                'permission' . '_',
+                86400,
+            ),
         );
     }
 }
