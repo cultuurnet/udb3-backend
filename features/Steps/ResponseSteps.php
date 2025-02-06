@@ -30,7 +30,7 @@ trait ResponseSteps
         }
 
         if (is_numeric($value)) {
-            $expected = (int) $value;
+            $expected = (int)$value;
         }
 
         assertEquals(
@@ -273,7 +273,7 @@ trait ResponseSteps
     /**
      * @Then the RDF response should match place projection :fileName
      */
-    public function theRdfResponseShouldMatchPlacetProjection(string $fileName): void
+    public function theRdfResponseShouldMatchPlaceProjection(string $fileName): void
     {
         $this->calculateIdentifier('http://data.uitdatabank.local:80/places/', 'placeId');
         assertEquals(
@@ -307,5 +307,31 @@ trait ResponseSteps
         // Only remove the created and modified dates
         $datePattern = '/(?<=dcterms:created\s|dcterms:modified\s)"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}"/';
         return preg_replace($datePattern, '""', $value);
+    }
+
+    /**
+     * @Then I calculate the image hash with description :description, copyright :copyrightHolder and language :language for :imageId as :hashKey
+     */
+    public function iCalculateTheImageHashWith(
+        string $description,
+        string $copyrightHolder,
+        string $language,
+        string $imageId,
+        string $hashKey
+    ): void {
+        $imageId = $this->variableState->replaceVariables($imageId);
+
+        $data = [
+            '@id' => 'http://io.uitdatabank.local:80/images/' . $imageId,
+            '@type' => 'schema:ImageObject',
+            'id' => $imageId,
+            'contentUrl' => 'https://images.uitdatabank.dev/' . $imageId . '.jpeg',
+            'thumbnailUrl' => 'https://images.uitdatabank.dev/' . $imageId . '.jpeg',
+            'description' => $description,
+            'copyrightHolder' => $copyrightHolder,
+            'inLanguage' => $language,
+        ];
+
+        $this->variableState->setVariable($hashKey, (new CRC32HashGenerator())->generate($data));
     }
 }

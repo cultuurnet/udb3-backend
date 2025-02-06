@@ -15,8 +15,8 @@
 
 <http://data.uitdatabank.local:80/events/%{eventId}>
   a cidoc:E7_Activity ;
-  dcterms:created ""^^xsd:dateTime ;
-  dcterms:modified ""^^xsd:dateTime ;
+  dcterms:created "2025-01-30T15:33:29+00:00"^^xsd:dateTime ;
+  dcterms:modified "2025-01-30T15:33:29+00:00"^^xsd:dateTime ;
   adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}> ;
   dcterms:title "Event met alle velden"@nl, "Event with all fields"@en ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
@@ -30,14 +30,7 @@
   dcat:keyword "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen ;
   cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be> ;
   schema:video <http://data.uitdatabank.local:80/events/%{eventId}#VideoObject-8c7c2146> ;
-  schema:image [
-    a schema:ImageObject ;
-    schema:identifier "%{imageId}" ;
-    schema:url "https://images.uitdatabank.dev/%{imageId}.jpeg"^^schema:URL ;
-    schema:copyrightHolder "publiq vzw" ;
-    schema:description "A cute dog" ;
-    schema:inLanguage "nl"
-  ] .
+  schema:image <http://data.uitdatabank.local:80/events/%{eventId}#ImageObject-%{imageHash}> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
   a adms:Identifier ;
@@ -108,4 +101,12 @@
   schema:url "https://www.youtube.com/watch?v=cEItmb_a20D"^^schema:URL ;
   schema:embedUrl "https://www.youtube.com/embed/cEItmb_a20D"^^schema:URL ;
   schema:copyrightHolder "publiq" ;
+  schema:inLanguage "nl" .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#ImageObject-%{imageHash}>
+  a schema:ImageObject ;
+  schema:identifier "%{imageId}" ;
+  schema:url "https://images.uitdatabank.dev/%{imageId}.jpeg"^^schema:URL ;
+  schema:copyrightHolder "publiq vzw" ;
+  schema:description "A cute dog" ;
   schema:inLanguage "nl" .

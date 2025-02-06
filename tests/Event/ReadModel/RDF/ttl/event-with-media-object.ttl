@@ -21,14 +21,7 @@
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-  schema:image [
-    a schema:ImageObject ;
-    schema:identifier "6bab1cba-18d0-42e7-b0c9-3b869eb68934" ;
-    schema:url "https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg"^^schema:URL ;
-    schema:copyrightHolder "publiq vzw" ;
-    schema:description "A cute dog" ;
-    schema:inLanguage "nl"
-  ] .
+  schema:image <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#ImageObject-9dd47a29> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-fc28bf15>
   a adms:Identifier ;
@@ -39,3 +32,11 @@
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "https://mock.data.publiq.be/events/" ;
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
+
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#ImageObject-9dd47a29>
+  a schema:ImageObject ;
+  schema:identifier "6bab1cba-18d0-42e7-b0c9-3b869eb68934" ;
+  schema:url "https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg"^^schema:URL ;
+  schema:copyrightHolder "publiq vzw" ;
+  schema:description "A cute dog" ;
+  schema:inLanguage "nl" .
