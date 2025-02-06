@@ -20,6 +20,9 @@ final class NodeUriGenerator
             $nodeName = substr($nodeName, strrpos($nodeName, ':') + 1);
         }
 
+        // Convert AddressDetail to addressDetail
+        $nodeName = mb_strtolower(substr($nodeName, 0, 1)) . substr($nodeName, 1);
+
         return sprintf('#%s-%s', $nodeName, $this->hashGenerator->generate($fields));
     }
 }
