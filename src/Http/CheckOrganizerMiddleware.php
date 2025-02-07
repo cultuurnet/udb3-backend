@@ -11,15 +11,21 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class CheckOrganizerMiddleware implements MiddlewareInterface
 {
-    private DocumentRepository $offerRepository;
+    private DocumentRepository $organizerRepository;
 
-    public function __construct(DocumentRepository $offerRepository)
+    public function __construct(DocumentRepository $organizerRepository)
     {
-        $this->offerRepository = $offerRepository;
+        $this->organizerRepository = $organizerRepository;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
+        if ($routeParameters->hasOrganizerId()) {
+            $organizerId = $routeParameters->getOrganizerId();
+            $this->organizerRepository->fetch($organizerId);
+        }
+
+        return $handler->handle($request);
     }
 }
