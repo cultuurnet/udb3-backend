@@ -8,6 +8,7 @@
 @prefix platform: <https://data.uitwisselingsplatform.be/ns/platform#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
+@prefix schema: <https://schema.org/> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea>
   a cidoc:E7_Activity ;
@@ -19,7 +20,7 @@
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/online> ;
-  platform:virtueleLocatie <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtueleLocatie-b4e9ae58> .
+  platform:virtueleLocatie <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtualLocation-b4e9ae58> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#identifier-fc28bf15>
   a adms:Identifier ;
@@ -31,4 +32,4 @@
   generiek:naamruimte "https://mock.data.publiq.be/events/" ;
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
 
-<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtueleLocatie-b4e9ae58> a platform:virtueleLocatie .
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtualLocation-b4e9ae58> a schema:virtualLocation .
