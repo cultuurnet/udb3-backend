@@ -463,7 +463,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new ConvertDescriptionToEducationalDescriptionForCultuurkuur(
                 $container->get('event_command_bus'),
                 $container->get(OrganizersSapi3SearchService::class),
-                new CacheDocumentRepository($container->get('organizer_jsonld_cache'))
+                $container->get('organizer_jsonld_cache')
             )
         );
 
