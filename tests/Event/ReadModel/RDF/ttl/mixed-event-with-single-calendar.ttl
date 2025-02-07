@@ -34,7 +34,7 @@
   generiek:naamruimte "https://mock.data.publiq.be/events/" ;
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
 
-<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtualLocation-b4e9ae58> a schema:virtualLocation .
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtualLocation-b4e9ae58> a schema:VirtualLocation .
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#e92_Spacetime_Volume-8de5b7f4>
   a cidoc:E92_Spacetime_Volume ;
   cidoc:P161_has_spatial_projection <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;

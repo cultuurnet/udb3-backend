@@ -33,5 +33,5 @@
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtualLocation-61d7772d>
-  a schema:virtualLocation ;
+  a schema:VirtualLocation ;
   schema:url "https://www.publiq.be/livestream"^^schema:URL .

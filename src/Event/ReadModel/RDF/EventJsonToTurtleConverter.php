@@ -77,7 +77,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private const TYPE_PERIOD = 'm8g:PeriodOfTime';
     private const TYPE_DATE_TIME = 'xsd:dateTime';
     private const TYPE_LOCATIE = 'dcterms:Location';
-    private const TYPE_VIRTUAL_LOCATION = 'schema:virtualLocation';
+    private const TYPE_VIRTUAL_LOCATION = 'schema:VirtualLocation';
     private const TYPE_VIRTUAL_LOCATION_URL = 'schema:URL';
     private const TYPE_BOEKINGSINFO = 'cpa:Boekingsinfo';
     private const TYPE_ORGANISATOR = 'cp:Organisator';
