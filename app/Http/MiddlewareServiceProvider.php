@@ -12,7 +12,7 @@ final class MiddlewareServiceProvider extends AbstractServiceProvider
     {
         return [
             CheckTypeOfOfferMiddleware::class,
-            CheckOrganizerMiddleware::class
+            CheckOrganizerMiddleware::class,
         ];
     }
 

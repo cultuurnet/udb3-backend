@@ -48,7 +48,6 @@ use CultuurNet\UDB3\Console\Command\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueLabels;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
