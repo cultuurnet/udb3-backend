@@ -8,6 +8,7 @@
 @prefix cp: <https://data.vlaanderen.be/ns/cultuurparticipatie#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix generiek: <https://data.vlaanderen.be/ns/generiek#> .
+@prefix schema: <https://schema.org/> .
 @prefix m8g: <http://data.europa.eu/m8g/> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}>
@@ -32,7 +33,7 @@
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#virtualLocation-b4e9ae58> a schema:virtualLocation .
+<http://data.uitdatabank.local:80/events/%{eventId}#virtualLocation-b4e9ae58> a schema:VirtualLocation .
 <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-2aac7354>
   a cidoc:E92_Spacetime_Volume ;
   cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-31d8dd36> .

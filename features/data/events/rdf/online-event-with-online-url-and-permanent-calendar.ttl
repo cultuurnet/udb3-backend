@@ -31,5 +31,5 @@
   generiek:lokaleIdentificator "%{eventId}" .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#virtualLocation-61d7772d>
-  a schema:virtualLocation ;
+  a schema:VirtualLocation ;
   schema:url "https://www.publiq.be/livestream"^^schema:URL .
