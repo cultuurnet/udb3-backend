@@ -8,16 +8,20 @@ use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Http\Media\GetMediaRequestHandler;
 use CultuurNet\UDB3\Http\Media\UploadMediaRequestHandler;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Media\ReadModel\ImageLDProjector;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 
 final class MediaServiceProvider extends AbstractServiceProvider
 {
+    public const IMAGE_JSONLD_REPOSITORY = 'image_jsonld_repository';
+
     protected function getProvidedServiceNames(): array
     {
         return [
@@ -29,6 +33,8 @@ final class MediaServiceProvider extends AbstractServiceProvider
             'media_object_serializer',
             'media_manager',
             'media_url_mapping',
+            MediaServiceProvider::IMAGE_JSONLD_REPOSITORY,
+            ImageLDProjector::class,
             GetMediaRequestHandler::class,
             UploadMediaRequestHandler::class,
             ImageNormalizer::class,
@@ -125,6 +131,24 @@ final class MediaServiceProvider extends AbstractServiceProvider
             'media_url_mapping',
             function () use ($container) {
                 return new MediaUrlMapping($container->get('config')['media']['media_url_mapping']);
+            }
+        );
+
+        $container->addShared(
+            MediaServiceProvider::IMAGE_JSONLD_REPOSITORY,
+            fn () => new CacheDocumentRepository(
+                $container->get('cache')('image_jsonld'),
+            )
+        );
+
+        $container->addShared(
+            ImageLDProjector::class,
+            function () use ($container) {
+                return new ImageLDProjector(
+                    $container->get(MediaServiceProvider::IMAGE_JSONLD_REPOSITORY),
+                    $container->get('media_object_iri_generator'),
+                    $container->get('content_url_generator')
+                );
             }
         );
 
