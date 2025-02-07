@@ -19,7 +19,7 @@
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/online> ;
-  platform:virtueleLocatie <http://data.uitdatabank.local:80/events/%{eventId}#virtueleLocatie-b4e9ae58> ;
+  platform:virtueleLocatie <http://data.uitdatabank.local:80/events/%{eventId}#virtualLocation-b4e9ae58> ;
   cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-2aac7354>, <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-cbeaaec0> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}>
@@ -32,7 +32,7 @@
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#virtueleLocatie-b4e9ae58> a platform:virtueleLocatie .
+<http://data.uitdatabank.local:80/events/%{eventId}#virtualLocation-b4e9ae58> a schema:virtualLocation .
 <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-2aac7354>
   a cidoc:E92_Spacetime_Volume ;
   cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-31d8dd36> .
