@@ -21,7 +21,7 @@
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/online> ;
-  platform:virtueleLocatie <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtueleLocatie-61d7772d> ;
+  platform:virtueleLocatie <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtualLocation-61d7772d> ;
   cp:ruimtetijd <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#e92_Spacetime_Volume-8de5b7f4>, <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#e92_Spacetime_Volume-a889f286> .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#identifier-fc28bf15>
@@ -34,8 +34,8 @@
   generiek:naamruimte "https://mock.data.publiq.be/events/" ;
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
 
-<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtueleLocatie-61d7772d>
-  a platform:virtueleLocatie ;
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#virtualLocation-61d7772d>
+  a schema:VirtualLocation ;
   schema:url "https://www.publiq.be/livestream"^^schema:URL .
 
 <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#e92_Spacetime_Volume-8de5b7f4>

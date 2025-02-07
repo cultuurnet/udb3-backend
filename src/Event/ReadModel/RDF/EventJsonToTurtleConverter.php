@@ -77,6 +77,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private const TYPE_PERIOD = 'm8g:PeriodOfTime';
     private const TYPE_DATE_TIME = 'xsd:dateTime';
     private const TYPE_LOCATIE = 'dcterms:Location';
+    private const TYPE_VIRTUAL_LOCATION = 'schema:VirtualLocation';
     private const TYPE_VIRTUAL_LOCATION_URL = 'schema:URL';
     private const TYPE_BOEKINGSINFO = 'cpa:Boekingsinfo';
     private const TYPE_ORGANISATOR = 'cp:Organisator';
@@ -96,7 +97,6 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private const PROPERTY_RUIMTE_TIJD_CALENDAR_TYPE = 'cidoc:P160_has_temporal_projection';
     private const PROPERTY_LOCATIE_ADRES = 'locn:address';
     private const PROPERTY_LOCATIE_NAAM = 'locn:locatorName';
-
     private const PROPERTY_VIRTUAL_LOCATION = 'platform:virtueleLocatie';
     private const PROPERTY_VIRTUAL_LOCATION_URL = 'schema:url';
     private const PROPERTY_LOCATIE_TYPE = 'cpa:locatieType';
@@ -445,7 +445,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
 
     private function setVirtualLocation(Resource $resource, ?Url $onlineUrl): void
     {
-        $virtualLocationResource = $this->rdfResourceFactory->create($resource, self::PROPERTY_VIRTUAL_LOCATION, [
+        $virtualLocationResource = $this->rdfResourceFactory->create($resource, self::TYPE_VIRTUAL_LOCATION, [
             $onlineUrl ? $onlineUrl->toString() : '',
         ]);
 
