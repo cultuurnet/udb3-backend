@@ -43,7 +43,7 @@ final class CacheServiceProvider extends AbstractServiceProvider
                 new Client(
                     $container->get('config')['cache']['redis']
                 ),
-                'permission' . '_',
+                'users' . '_',
                 86400,
             ),
         );
