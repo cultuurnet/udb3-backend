@@ -8,8 +8,8 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use Doctrine\Common\Cache\PredisCache;
 use League\Container\Argument\Literal\CallableArgument;
 use Predis\Client;
-use RectorPrefix202209\Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Contracts\Cache\CacheInterface;
 
 final class CacheServiceProvider extends AbstractServiceProvider
 {
