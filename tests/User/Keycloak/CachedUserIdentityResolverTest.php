@@ -11,7 +11,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Contracts\Cache\CacheInterface;
-use function Clue\StreamFilter\fun;
 
 final class CachedUserIdentityResolverTest extends TestCase
 {
@@ -19,8 +18,6 @@ final class CachedUserIdentityResolverTest extends TestCase
      * @var UserIdentityResolver&MockObject
      */
     private $fallbackUserIdentityResolver;
-
-    private CacheInterface $cache;
 
     private CachedUserIdentityResolver $cachedUserIdentityResolver;
 
@@ -31,11 +28,11 @@ final class CachedUserIdentityResolverTest extends TestCase
     protected function setUp(): void
     {
         $this->fallbackUserIdentityResolver = $this->createMock(UserIdentityResolver::class);
-        $this->cache =  new ArrayAdapter();
+        $cache =  new ArrayAdapter();
 
         $this->cachedUserIdentityResolver = new CachedUserIdentityResolver(
             $this->fallbackUserIdentityResolver,
-            $this->cache
+            $cache
         );
 
         $this->uncachedUserIdentityDetails = new UserIdentityDetails(
@@ -50,21 +47,21 @@ final class CachedUserIdentityResolverTest extends TestCase
             'jane@anonymous.com'
         );
 
-        $this->cache->get(
+        $cache->get(
             'user_identity_d515f818-fe13-497d-abfa-c99be9a8ffae_user_id',
             function () {
                 return $this->cachedUserIdentityDetails;
             }
         );
 
-        $this->cache->get(
+        $cache->get(
             'user_identity_jane_anonymous.com_email',
             function () {
                 return $this->cachedUserIdentityDetails;
             }
         );
 
-        $this->cache->get(
+        $cache->get(
             'user_identity_Jane Doe_nick',
             function () {
                 return $this->cachedUserIdentityDetails;
