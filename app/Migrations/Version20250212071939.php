@@ -15,7 +15,7 @@ class Version20250212071939 extends AbstractMigration
         $table = $schema->createTable('mails_sent');
 
         $table->addColumn('identifier', Types::GUID)->setLength(36)->setNotnull(true);
-        $table->addColumn('email', Types::STRING)->setLength(100)->setNotnull(true);
+        $table->addColumn('email', Types::STRING)->setLength(320)->setNotnull(true);
         $table->addColumn('type', Types::STRING)->setLength(100)->setNotnull(true);
         $table->addColumn('dateTime', Types::DATETIME_IMMUTABLE)->setNotnull(true);
 
