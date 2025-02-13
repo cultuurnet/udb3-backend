@@ -26,7 +26,7 @@ Feature: Test updating organizers of events
       "type": "https://api.publiq.be/probs/url/not-found",
       "title": "Not Found",
       "status": 404,
-      "detail": "Organizer with id \"qwerty\" does not exist."
+      "detail": "The Organizer with id \"qwerty\" was not found."
     }
     """
 
