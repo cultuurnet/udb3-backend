@@ -21,13 +21,16 @@ final class SmtpMailer implements Mailer
     private MailerInterface $mailer;
     private LoggerInterface $logger;
     private Address $from;
+    /** @var string[] */
+    private array $whiteListedDomains;
 
-    public function __construct(TwigEnvironment $twig, MailerInterface $mailer, LoggerInterface $logger, Address $from)
+    public function __construct(TwigEnvironment $twig, MailerInterface $mailer, LoggerInterface $logger, Address $from, array $whiteListedDomains)
     {
         $this->twig = $twig;
         $this->mailer = $mailer;
         $this->logger = $logger;
         $this->from = $from;
+        $this->whiteListedDomains = $whiteListedDomains;
     }
 
     public function send(EmailAddress $to, string $subject, string $htmlTemplate, string $textTemplate, array $variables = []): bool
@@ -48,11 +51,33 @@ final class SmtpMailer implements Mailer
             ->html($html);
 
         try {
-            $this->mailer->send($email);
+            if ($this->isAllowedToSentEmail($to)) {
+                $this->mailer->send($email);
+            }
             return true;
         } catch (TransportExceptionInterface $e) {
             $this->logger->critical('[TransportException] ' . $e->getMessage());
             return false;
         }
+    }
+
+    /*
+     * Checks if whitelisted domains are configured, in which case only mails to those domains can be sent.
+     * This is used on acc / test.
+     * If empty, on production, it will send mails to everybody.
+     * */
+    private function isAllowedToSentEmail(EmailAddress $email): bool
+    {
+        if ($this->whiteListedDomains === []) {
+            return true;
+        }
+
+        foreach ($this->whiteListedDomains as $domain) {
+            if (str_ends_with($email->toString(), $domain)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
