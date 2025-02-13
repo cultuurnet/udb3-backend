@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use DateTimeInterface;
 use Doctrine\DBAL\Connection;
 
-class DBALMailsSentRepository implements MailsSentRepository
+final class DBALMailsSentRepository implements MailsSentRepository
 {
     private Connection $connection;
 
