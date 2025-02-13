@@ -22,38 +22,54 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
         $this->userIdentityResolver = $userIdentityResolver;
         $this->cache =$cache;
     }
+
     public function getUserById(string $userId): ?UserIdentityDetails
     {
-        return $this->cache->get(
-            $this->createCacheKey($userId, 'user_id'),
-            function () use ($userId) {
-                return $this->userIdentityResolver->getUserById($userId);
-            }
+        return $this->deserializeUserIdentityDetails(
+            $this->cache->get(
+                $this->createCacheKey($userId, 'user_id'),
+                function () use ($userId) {
+                    return $this->userIdentityResolver->getUserById($userId)->jsonSerialize();
+                }
+            )
         );
     }
 
     public function getUserByEmail(EmailAddress $email): ?UserIdentityDetails
     {
-        return $this->cache->get(
-            $this->createCacheKey($email->toString(), 'email'),
-            function () use ($email) {
-                return $this->userIdentityResolver->getUserByEmail($email);
-            }
+        return $this->deserializeUserIdentityDetails(
+            $this->cache->get(
+                $this->createCacheKey($email->toString(), 'email'),
+                function () use ($email) {
+                    return $this->userIdentityResolver->getUserByEmail($email)->jsonSerialize();
+                }
+            )
         );
     }
 
     public function getUserByNick(string $nick): ?UserIdentityDetails
     {
-        return $this->cache->get(
-            $this->createCacheKey($nick, 'nick'),
-            function () use ($nick) {
-                return $this->userIdentityResolver->getUserByNick($nick);
-            }
+        return $this->deserializeUserIdentityDetails(
+            $this->cache->get(
+                $this->createCacheKey($nick, 'nick'),
+                function () use ($nick) {
+                    return $this->userIdentityResolver->getUserByNick($nick)->jsonSerialize();
+                }
+            )
         );
     }
 
     private function createCacheKey(string $value, string $property): string
     {
         return preg_replace('/[{}()\/\\\\@:]/', '_', 'user_identity_' . $value . '_' . $property);
+    }
+
+    private function deserializeUserIdentityDetails(?array $cachedUserIdentityDetails): ?UserIdentityDetails
+    {
+        return $cachedUserIdentityDetails !== null ? new UserIdentityDetails(
+            $cachedUserIdentityDetails['uuid'],
+            $cachedUserIdentityDetails['username'],
+            $cachedUserIdentityDetails['email']
+        ) : null;
     }
 }
