@@ -49,21 +49,21 @@ final class CachedUserIdentityResolverTest extends TestCase
         $cache->get(
             'user_identity_d515f818-fe13-497d-abfa-c99be9a8ffae_user_id',
             function () {
-                return $this->cachedUserIdentityDetails;
+                return $this->cachedUserIdentityDetails->jsonSerialize();
             }
         );
 
         $cache->get(
             'user_identity_jane_anonymous.com_email',
             function () {
-                return $this->cachedUserIdentityDetails;
+                return $this->cachedUserIdentityDetails->jsonSerialize();
             }
         );
 
         $cache->get(
             'user_identity_Jane Doe_nick',
             function () {
-                return $this->cachedUserIdentityDetails;
+                return $this->cachedUserIdentityDetails->jsonSerialize();
             }
         );
     }
