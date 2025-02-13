@@ -13,25 +13,25 @@
   a cidoc:E7_Activity ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}> ;
+  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}> ;
   dcterms:title "Permanent event"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-  schema:video <http://data.uitdatabank.local:80/events/%{eventId}#VideoObject-06299af1>, <http://data.uitdatabank.local:80/events/%{eventId}#VideoObject-a46c333b> .
+  schema:video <http://data.uitdatabank.local:80/events/%{eventId}#videoObject-06299af1>, <http://data.uitdatabank.local:80/events/%{eventId}#videoObject-a46c333b> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
+<http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}>
   a adms:Identifier ;
   skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
-  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}> .
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#gestructureerdeIdentificator-%{identifier}> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}>
+<http://data.uitdatabank.local:80/events/%{eventId}#gestructureerdeIdentificator-%{identifier}>
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#VideoObject-06299af1>
+<http://data.uitdatabank.local:80/events/%{eventId}#videoObject-06299af1>
   a schema:VideoObject ;
   schema:identifier "6bab1cba-18d0-42e7-b0c9-3b869eb68934" ;
   schema:url "https://youtu.be/fn-4RbxXThE"^^schema:URL ;
@@ -39,7 +39,7 @@
   schema:copyrightHolder "Copyright afgehandeld door YouTube" ;
   schema:inLanguage "nl" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#VideoObject-a46c333b>
+<http://data.uitdatabank.local:80/events/%{eventId}#videoObject-a46c333b>
   a schema:VideoObject ;
   schema:identifier "58716d9e-46c8-4145-a0b2-60381ec3bd92" ;
   schema:url "https://youtu.be/fd-5FGTh3se"^^schema:URL ;

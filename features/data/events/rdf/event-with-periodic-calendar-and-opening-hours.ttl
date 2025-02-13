@@ -14,46 +14,46 @@
   a cidoc:E7_Activity ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}> ;
+  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}> ;
   dcterms:title "Single calendar event"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-7d299e51> ;
-  cpa:beschikbaarheid <http://data.uitdatabank.local:80/events/%{eventId}#Beschikbaarheid-2450812e> .
+  cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-7d299e51> ;
+  cpa:beschikbaarheid <http://data.uitdatabank.local:80/events/%{eventId}#beschikbaarheid-2450812e> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
+<http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}>
   a adms:Identifier ;
   skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
-  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}> .
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#gestructureerdeIdentificator-%{identifier}> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}>
+<http://data.uitdatabank.local:80/events/%{eventId}#gestructureerdeIdentificator-%{identifier}>
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-7d299e51>
+<http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-7d299e51>
   a cidoc:E92_Spacetime_Volume ;
   cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-  cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-c7a7795e> .
+  cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-c7a7795e> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-c7a7795e>
+<http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-c7a7795e>
   a m8g:PeriodOfTime ;
   m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
   m8g:endTime "2021-05-18T22:00:00+00:00"^^xsd:dateTime .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#Beschikbaarheid-2450812e>
+<http://data.uitdatabank.local:80/events/%{eventId}#beschikbaarheid-2450812e>
   a cp:Beschikbaarheid ;
-  schema:hoursAvailable <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-19cb130c>, <http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-74f53a6d> .
+  schema:hoursAvailable <http://data.uitdatabank.local:80/events/%{eventId}#openingHoursSpecification-19cb130c>, <http://data.uitdatabank.local:80/events/%{eventId}#openingHoursSpecification-74f53a6d> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-19cb130c>
+<http://data.uitdatabank.local:80/events/%{eventId}#openingHoursSpecification-19cb130c>
   a schema:OpeningHoursSpecification ;
   schema:opens "10:00" ;
   schema:closes "16:00" ;
   schema:dayOfWeek schema:Monday, schema:Tuesday .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#OpeningHoursSpecification-74f53a6d>
+<http://data.uitdatabank.local:80/events/%{eventId}#openingHoursSpecification-74f53a6d>
   a schema:OpeningHoursSpecification ;
   schema:opens "09:00" ;
   schema:closes "17:00" ;

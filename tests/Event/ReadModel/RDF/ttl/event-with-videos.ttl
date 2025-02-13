@@ -14,26 +14,26 @@
   a cidoc:E7_Activity ;
   dcterms:created "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
   dcterms:modified "2023-01-01T12:30:15+01:00"^^xsd:dateTime ;
-  adms:identifier <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-fc28bf15> ;
+  adms:identifier <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#identifier-fc28bf15> ;
   dcterms:title "Faith no more"@nl ;
   dcterms:type <https://mock.taxonomy.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> ;
-  schema:video <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#VideoObject-06299af1>, <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#VideoObject-a46c333b> .
+  schema:video <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#videoObject-06299af1>, <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#videoObject-a46c333b> .
 
-<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#Identifier-fc28bf15>
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#identifier-fc28bf15>
   a adms:Identifier ;
   skos:notation "https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea"^^xsd:anyURI ;
-  generiek:gestructureerdeIdentificator <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-fc28bf15> .
+  generiek:gestructureerdeIdentificator <https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#gestructureerdeIdentificator-fc28bf15> .
 
-<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#GestructureerdeIdentificator-fc28bf15>
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#gestructureerdeIdentificator-fc28bf15>
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "https://mock.data.publiq.be/events/" ;
   generiek:lokaleIdentificator "d4b46fba-6433-4f86-bcb5-edeef6689fea" .
 
-<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#VideoObject-06299af1>
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#videoObject-06299af1>
   a schema:VideoObject ;
   schema:identifier "6bab1cba-18d0-42e7-b0c9-3b869eb68934" ;
   schema:url "https://youtu.be/fn-4RbxXThE"^^schema:URL ;
@@ -41,7 +41,7 @@
   schema:copyrightHolder "Copyright afgehandeld door YouTube" ;
   schema:inLanguage "nl" .
 
-<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#VideoObject-a46c333b>
+<https://mock.data.publiq.be/events/d4b46fba-6433-4f86-bcb5-edeef6689fea#videoObject-a46c333b>
   a schema:VideoObject ;
   schema:identifier "58716d9e-46c8-4145-a0b2-60381ec3bd92" ;
   schema:url "https://youtu.be/fd-5FGTh3se"^^schema:URL ;

@@ -13,32 +13,34 @@
   a cp:Organisator ;
   dcterms:created ""^^xsd:dateTime ;
   dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier <http://data.uitdatabank.local:80/organizers/%{organizerId}#Identifier-%{identifier}> ;
+  adms:identifier <http://data.uitdatabank.local:80/organizers/%{organizerId}#identifier-%{identifier}> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/active> ;
   cpr:naam "%{name}"@nl ;
   foaf:homepage "https://www.%{name}.be" ;
-  schema:image [
-    a schema:ImageObject ;
-    schema:identifier "%{imageId1}" ;
-    schema:url "https://images.uitdatabank.dev/%{imageId1}.jpeg"^^schema:URL ;
-    schema:copyrightHolder "me" ;
-    schema:description "logo" ;
-    schema:inLanguage "nl"
-  ], [
-    a schema:ImageObject ;
-    schema:identifier "%{imageId2}" ;
-    schema:url "https://images.uitdatabank.dev/%{imageId2}.jpeg"^^schema:URL ;
-    schema:copyrightHolder "me2" ;
-    schema:description "logo2" ;
-    schema:inLanguage "nl"
-  ] .
+  schema:image <http://data.uitdatabank.local:80/organizers/%{organizerId}#imageObject-%{imageHash1}>, <http://data.uitdatabank.local:80/organizers/%{organizerId}#imageObject-%{imageHash2}> .
 
-<http://data.uitdatabank.local:80/organizers/%{organizerId}#Identifier-%{identifier}>
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#identifier-%{identifier}>
   a adms:Identifier ;
   skos:notation "http://data.uitdatabank.local:80/organizers/%{organizerId}"^^xsd:anyURI ;
-  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/organizers/%{organizerId}#GestructureerdeIdentificator-%{identifier}> .
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/organizers/%{organizerId}#gestructureerdeIdentificator-%{identifier}> .
 
-<http://data.uitdatabank.local:80/organizers/%{organizerId}#GestructureerdeIdentificator-%{identifier}>
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#gestructureerdeIdentificator-%{identifier}>
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/organizers/" ;
   generiek:lokaleIdentificator "%{organizerId}" .
+
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#imageObject-%{imageHash1}>
+  a schema:ImageObject ;
+  schema:identifier "%{imageId1}" ;
+  schema:url "https://images.uitdatabank.dev/%{imageId1}.jpeg"^^schema:URL ;
+  schema:copyrightHolder "me" ;
+  schema:description "logo" ;
+  schema:inLanguage "nl" .
+
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#imageObject-%{imageHash2}>
+  a schema:ImageObject ;
+  schema:identifier "%{imageId2}" ;
+  schema:url "https://images.uitdatabank.dev/%{imageId2}.jpeg"^^schema:URL ;
+  schema:copyrightHolder "me2" ;
+  schema:description "logo2" ;
+  schema:inLanguage "nl" .

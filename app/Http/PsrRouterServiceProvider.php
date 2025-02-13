@@ -247,6 +247,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
         $router->middleware($container->get(RequestAuthenticatorMiddleware::class));
 
         $router->middleware($container->get(CheckTypeOfOfferMiddleware::class));
+        $router->middleware($container->get(CheckOrganizerMiddleware::class));
     }
 
     private function bindNewsArticles(Router $router): void

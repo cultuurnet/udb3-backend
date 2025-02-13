@@ -48,7 +48,6 @@ use CultuurNet\UDB3\Console\Command\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueLabels;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
@@ -463,7 +462,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new ConvertDescriptionToEducationalDescriptionForCultuurkuur(
                 $container->get('event_command_bus'),
                 $container->get(OrganizersSapi3SearchService::class),
-                new CacheDocumentRepository($container->get('organizer_jsonld_cache'))
+                $container->get('organizer_jsonld_cache')
             )
         );
 

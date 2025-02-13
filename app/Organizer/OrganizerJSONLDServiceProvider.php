@@ -76,7 +76,7 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'organizer_jsonld_repository',
             function () use ($container) {
-                $repository = new CacheDocumentRepository($container->get('organizer_jsonld_cache'));
+                $repository = $container->get('organizer_jsonld_cache');
                 $repository = new PropertyPolyfillRepository($repository, $container->get(LabelServiceProvider::JSON_READ_REPOSITORY));
 
                 $repository = new ContributorEnrichedRepository(
@@ -97,7 +97,7 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'organizer_jsonld_cache',
             function () use ($container) {
-                return $container->get('cache')('organizer_jsonld');
+                return new CacheDocumentRepository($container->get('cache')('organizer_jsonld'));
             }
         );
     }
