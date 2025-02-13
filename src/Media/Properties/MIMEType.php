@@ -43,4 +43,10 @@ final class MIMEType
 
         return new self($type . '/' . $subtypeString);
     }
+
+    public function getFilenameExtension(): string
+    {
+        $parts = explode('/', $this->value);
+        return $parts[1];
+    }
 }
