@@ -1,0 +1,164 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\User\Keycloak;
+
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\User\UserIdentityDetails;
+use CultuurNet\UDB3\User\UserIdentityResolver;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Contracts\Cache\CacheInterface;
+use function Clue\StreamFilter\fun;
+
+final class CachedUserIdentityResolverTest extends TestCase
+{
+    /**
+     * @var UserIdentityResolver&MockObject
+     */
+    private $fallbackUserIdentityResolver;
+
+    private CacheInterface $cache;
+
+    private CachedUserIdentityResolver $cachedUserIdentityResolver;
+
+    private UserIdentityDetails $uncachedUserIdentityDetails;
+
+    private UserIdentityDetails $cachedUserIdentityDetails;
+
+    protected function setUp(): void
+    {
+        $this->fallbackUserIdentityResolver = $this->createMock(UserIdentityResolver::class);
+        $this->cache =  new ArrayAdapter();
+
+        $this->cachedUserIdentityResolver = new CachedUserIdentityResolver(
+            $this->fallbackUserIdentityResolver,
+            $this->cache
+        );
+
+        $this->uncachedUserIdentityDetails = new UserIdentityDetails(
+            '9f3e9228-4eca-40ad-982f-4420bf4bbf09',
+            'John Doe',
+            'john@anonymous.com'
+        );
+
+        $this->cachedUserIdentityDetails = new UserIdentityDetails(
+            'd515f818-fe13-497d-abfa-c99be9a8ffae',
+            'Jane Doe',
+            'jane@anonymous.com'
+        );
+
+        $this->cache->get(
+            'user_identity_d515f818-fe13-497d-abfa-c99be9a8ffae_user_id',
+            function () {
+                return $this->cachedUserIdentityDetails;
+            }
+        );
+
+        $this->cache->get(
+            'user_identity_jane_anonymous.com_email',
+            function () {
+                return $this->cachedUserIdentityDetails;
+            }
+        );
+
+        $this->cache->get(
+            'user_identity_Jane Doe_nick',
+            function () {
+                return $this->cachedUserIdentityDetails;
+            }
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_an_uncached_user_by_id(): void
+    {
+        $this->fallbackUserIdentityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with('9f3e9228-4eca-40ad-982f-4420bf4bbf09')
+            ->willReturn($this->uncachedUserIdentityDetails);
+
+        $this->assertEquals(
+            $this->uncachedUserIdentityDetails,
+            $this->cachedUserIdentityResolver->getUserById('9f3e9228-4eca-40ad-982f-4420bf4bbf09')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_a_cached_user_by_id(): void
+    {
+        $this->fallbackUserIdentityResolver->expects($this->never())
+            ->method('getUserById');
+
+        $this->assertEquals(
+            $this->cachedUserIdentityDetails,
+            $this->cachedUserIdentityResolver->getUserById('d515f818-fe13-497d-abfa-c99be9a8ffae')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_an_uncached_user_by_email(): void
+    {
+        $this->fallbackUserIdentityResolver->expects($this->once())
+            ->method('getUserByEmail')
+            ->with(new EmailAddress('john@anonymous.com'))
+            ->willReturn($this->uncachedUserIdentityDetails);
+
+        $this->assertEquals(
+            $this->uncachedUserIdentityDetails,
+            $this->cachedUserIdentityResolver->getUserByEmail(new EmailAddress('john@anonymous.com'))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_a_cached_user_by_email(): void
+    {
+        $this->fallbackUserIdentityResolver->expects($this->never())
+            ->method('getUserByEmail');
+
+        $this->assertEquals(
+            $this->cachedUserIdentityDetails,
+            $this->cachedUserIdentityResolver->getUserByEmail(new EmailAddress('jane@anonymous.com'))
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_an_uncached_user_by_nick(): void
+    {
+        $this->fallbackUserIdentityResolver->expects($this->once())
+            ->method('getUserByNick')
+            ->with('John Doe')
+            ->willReturn($this->uncachedUserIdentityDetails);
+
+        $this->assertEquals(
+            $this->uncachedUserIdentityDetails,
+            $this->cachedUserIdentityResolver->getUserByNick('John Doe')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_get_a_cached_user_by_nick(): void
+    {
+        $this->fallbackUserIdentityResolver->expects($this->never())
+            ->method('getUserByNick');
+
+        $this->assertEquals(
+            $this->cachedUserIdentityDetails,
+            $this->cachedUserIdentityResolver->getUserByNick('Jane Doe')
+        );
+    }
+}

@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Symfony\Contracts\Cache\CacheInterface;
-use function Clue\StreamFilter\fun;
 
 final class CachedUserIdentityResolver implements UserIdentityResolver
 {
@@ -55,6 +54,6 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
 
     private function createCacheKey(string $value, string $property): string
     {
-        return 'user_identity_' .  $value . '_' . $property;
+        return preg_replace('/[{}()\/\\\\@:]/', '_', 'user_identity_' . $value . '_' . $property);
     }
 }
