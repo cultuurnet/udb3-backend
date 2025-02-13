@@ -18,7 +18,7 @@
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/online> ;
-  platform:virtueleLocatie <http://data.uitdatabank.local:80/events/%{eventId}#virtueleLocatie-61d7772d> .
+  platform:virtueleLocatie <http://data.uitdatabank.local:80/events/%{eventId}#virtualLocation-61d7772d> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}>
   a adms:Identifier ;
@@ -30,6 +30,6 @@
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#virtueleLocatie-61d7772d>
-  a platform:virtueleLocatie ;
+<http://data.uitdatabank.local:80/events/%{eventId}#virtualLocation-61d7772d>
+  a schema:VirtualLocation ;
   schema:url "https://www.publiq.be/livestream"^^schema:URL .
