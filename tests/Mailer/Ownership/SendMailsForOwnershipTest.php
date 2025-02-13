@@ -18,6 +18,7 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use DateTimeImmutable;
+use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -114,8 +115,8 @@ class SendMailsForOwnershipTest extends TestCase
             ->with(
                 new EmailAddress($email),
                 'Beheers aanvraag voor organisatie ' . $organizerName,
-                'approved.html.twig',
-                'approved.txt.twig',
+                'ownershipRequested.html.twig',
+                'ownershipRequested.txt.twig',
                 [
                     'organisationName' => $organizerName,
                     'firstName' => $name,
@@ -131,7 +132,7 @@ class SendMailsForOwnershipTest extends TestCase
                 new Uuid($id),
                 new EmailAddress($email),
                 OwnershipRequested::class,
-                DateTimeImmutable::createFromFormat(\DateTimeInterface::ATOM, self::DATE_TIME_VALUE)
+                DateTimeImmutable::createFromFormat(DateTimeInterface::ATOM, self::DATE_TIME_VALUE)
             );
 
         $this->sendMailsForOwnership->handle(
