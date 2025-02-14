@@ -61,7 +61,7 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
 
     private function createCacheKey(string $value, string $property): string
     {
-        return preg_replace('/[{}()\/\\\\@:]/', '_', 'user_identity_' . $value . '_' . $property);
+        return preg_replace('/[{}()\/\\\\@:]/', '_', $value . '_' . $property);
     }
 
     private function deserializeUserIdentityDetails(?array $cachedUserIdentityDetails): ?UserIdentityDetails
