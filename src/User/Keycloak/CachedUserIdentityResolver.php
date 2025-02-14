@@ -20,7 +20,7 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
         CacheInterface $cache
     ) {
         $this->userIdentityResolver = $userIdentityResolver;
-        $this->cache =$cache;
+        $this->cache = $cache;
     }
 
     public function getUserById(string $userId): ?UserIdentityDetails
@@ -29,7 +29,7 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
             $this->cache->get(
                 $this->createCacheKey($userId, 'user_id'),
                 function () use ($userId) {
-                    return $this->userIdentityResolver->getUserById($userId)->jsonSerialize();
+                    return $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserById($userId));
                 }
             )
         );
@@ -41,7 +41,7 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
             $this->cache->get(
                 $this->createCacheKey($email->toString(), 'email'),
                 function () use ($email) {
-                    return $this->userIdentityResolver->getUserByEmail($email)->jsonSerialize();
+                    return $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByEmail($email));
                 }
             )
         );
@@ -53,7 +53,7 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
             $this->cache->get(
                 $this->createCacheKey($nick, 'nick'),
                 function () use ($nick) {
-                    return $this->userIdentityResolver->getUserByNick($nick)->jsonSerialize();
+                    return $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByNick($nick));
                 }
             )
         );
@@ -62,6 +62,14 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
     private function createCacheKey(string $value, string $property): string
     {
         return preg_replace('/[{}()\/\\\\@:]/', '_', $value . '_' . $property);
+    }
+
+    private function getUserIdentityDetailsAsArray(?UserIdentityDetails $userIdentityDetails): ?array
+    {
+        if ($userIdentityDetails !== null) {
+            return $userIdentityDetails->jsonSerialize();
+        }
+        return null;
     }
 
     private function deserializeUserIdentityDetails(?array $cachedUserIdentityDetails): ?UserIdentityDetails
