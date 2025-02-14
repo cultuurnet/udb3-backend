@@ -5,9 +5,10 @@ Feature: Test the UiTPAS organizers
     And I send and accept "application/json"
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I create a minimal organizer and save the "id" as "organizerId"
 
   Scenario: Get card systems of an organizer that is not an UiTPAS organizer
-    When I send a GET request to "/uitpas/organizers/18827e56-mock-4961-a5c8-7acd5dcfed9a/card-systems"
+    When I send a GET request to "/uitpas/organizers/%{organizerId}/card-systems"
     Then the response status should be "404"
     And the JSON response should be:
     """
@@ -15,6 +16,6 @@ Feature: Test the UiTPAS organizers
      "type": "https://api.publiq.be/probs/url/not-found",
      "title": "Not Found",
      "status": 404,
-     "detail": "Organizer with id '18827e56-mock-4961-a5c8-7acd5dcfed9a' was not found in UiTPAS. Are you sure it is an UiTPAS organizer?"
+     "detail": "Organizer with id '%{organizerId}' was not found in UiTPAS. Are you sure it is an UiTPAS organizer?"
     }
     """
