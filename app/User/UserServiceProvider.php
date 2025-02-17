@@ -13,8 +13,8 @@ use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Security\InMemoryUserEmailAddressRepository;
 use CultuurNet\UDB3\Security\UserEmailAddressRepository;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
+use CultuurNet\UDB3\User\Keycloak\CachedUserIdentityResolver;
 use CultuurNet\UDB3\User\Keycloak\KeycloakManagementTokenGenerator;
-use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
 use CultuurNet\UDB3\User\ManagementToken\CacheRepository;
 use CultuurNet\UDB3\User\ManagementToken\ManagementTokenProvider;
 use GuzzleHttp\Client;
@@ -97,6 +97,6 @@ final class UserServiceProvider extends AbstractServiceProvider
 
     private function getUserIdentityResolver(DefinitionContainerInterface $container): UserIdentityResolver
     {
-        return $container->get(KeycloakUserIdentityResolver::class);
+        return $container->get(CachedUserIdentityResolver::class);
     }
 }

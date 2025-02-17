@@ -15,6 +15,7 @@ final class CacheServiceProvider extends AbstractServiceProvider
     {
         return [
             'cache',
+            Client::class,
         ];
     }
 
@@ -31,6 +32,13 @@ final class CacheServiceProvider extends AbstractServiceProvider
                         ['prefix' => $cacheType . '_'],
                     )
                 )
+            )
+        );
+
+        $container->addShared(
+            Client::class,
+            new Client(
+                $container->get('config')['cache']['redis']
             )
         );
     }
