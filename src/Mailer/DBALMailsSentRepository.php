@@ -33,18 +33,11 @@ final class DBALMailsSentRepository implements MailsSentRepository
 
     public function addMailSent(Uuid $identifier, EmailAddress $email, string $type, DateTimeInterface $dateTime): void
     {
-        $this->connection->createQueryBuilder()
-            ->insert('mails_sent')
-            ->setValue('identifier', ':identifier')
-            ->setValue('email', ':email')
-            ->setValue('type', ':type')
-            ->setValue('dateTime', ':dateTime')
-            ->setParameters([
-                ':identifier' => $identifier->toString(),
-                ':email' => $email->toString(),
-                ':type' => $type,
-                ':dateTime' => $dateTime->format(DateTimeInterface::ATOM),
-            ])
-            ->execute();
+        $this->connection->insert('mails_sent', [
+            'identifier' => $identifier->toString(),
+            'email' => $email->toString(),
+            'type' => $type,
+            'dateTime' => $dateTime->format(DateTimeInterface::ATOM),
+        ]);
     }
 }
