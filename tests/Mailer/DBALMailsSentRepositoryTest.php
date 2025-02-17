@@ -73,9 +73,9 @@ class DBALMailsSentRepositoryTest extends TestCase
         $uuid2 = Uuid::uuid4();
 
         return [
-            [$uuid, OwnershipApproved::class, $uuid, OwnershipApproved::class, true],
-            [$uuid2, OwnershipApproved::class, $uuid2, OwnershipRejected::class, false],
-            [Uuid::uuid4(), OwnershipApproved::class, Uuid::uuid4(), OwnershipApproved::class, false],
+            'mail is already sent -> return true' => [$uuid, OwnershipApproved::class, $uuid, OwnershipApproved::class, true],
+            'for matching identifier a mail has been sent, but not for this type -> return false' => [$uuid2, OwnershipApproved::class, $uuid2, OwnershipRejected::class, false],
+            'for matching type a mail has been sent, but not for this identifier -> return false' => [Uuid::uuid4(), OwnershipApproved::class, Uuid::uuid4(), OwnershipApproved::class, false],
         ];
     }
 }
