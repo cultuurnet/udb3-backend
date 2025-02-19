@@ -44,7 +44,7 @@ final class CachedApiKeyAuthenticatorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_a_cached_api_key(): void
+    public function it_can_get_a_cached_unauthorized_api_key(): void
     {
         $this->fallbackApiKeyAuthenticator->expects($this->never())
             ->method('authenticate');
