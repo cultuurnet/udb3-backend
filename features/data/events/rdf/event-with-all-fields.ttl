@@ -15,97 +15,98 @@
 
 <http://data.uitdatabank.local:80/events/%{eventId}>
   a cidoc:E7_Activity ;
-  dcterms:created ""^^xsd:dateTime ;
-  dcterms:modified ""^^xsd:dateTime ;
-  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}> ;
+  dcterms:created "2025-01-30T15:33:29+00:00"^^xsd:dateTime ;
+  dcterms:modified "2025-01-30T15:33:29+00:00"^^xsd:dateTime ;
+  adms:identifier <http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}> ;
   dcterms:title "Event met alle velden"@nl, "Event with all fields"@en ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-8b563a39>, <http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-5da8175b> ;
+  cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-8b563a39>, <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-5da8175b> ;
   dcterms:description "Nederlandse beschrijving"@nl, "English description"@en ;
-  schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-f20d8319>, <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-35306b47>, <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-2a082adb> ;
-  cpa:boeking <http://data.uitdatabank.local:80/events/%{eventId}#Boekingsinfo-1cb41cc5> ;
+  schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-f20d8319>, <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-35306b47>, <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-2a082adb> ;
+  cpa:boeking <http://data.uitdatabank.local:80/events/%{eventId}#boekingsinfo-1cb41cc5> ;
   dcat:keyword "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen ;
-  cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be> ;
-  schema:video <http://data.uitdatabank.local:80/events/%{eventId}#VideoObject-8c7c2146> ;
-  schema:image [
-    a schema:ImageObject ;
-    schema:identifier "%{imageId}" ;
-    schema:url "https://images.uitdatabank.dev/%{imageId}.jpeg"^^schema:URL ;
-    schema:copyrightHolder "publiq vzw" ;
-    schema:description "A cute dog" ;
-    schema:inLanguage "nl"
-  ] .
+  cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#priceSpecification-594fd7be> ;
+  schema:video <http://data.uitdatabank.local:80/events/%{eventId}#videoObject-8c7c2146> ;
+  schema:image <http://data.uitdatabank.local:80/events/%{eventId}#imageObject-%{imageHash}> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#Identifier-%{identifier}>
+<http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}>
   a adms:Identifier ;
   skos:notation "http://data.uitdatabank.local:80/events/%{eventId}"^^xsd:anyURI ;
-  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}> .
+  generiek:gestructureerdeIdentificator <http://data.uitdatabank.local:80/events/%{eventId}#gestructureerdeIdentificator-%{identifier}> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#GestructureerdeIdentificator-%{identifier}>
+<http://data.uitdatabank.local:80/events/%{eventId}#gestructureerdeIdentificator-%{identifier}>
   a generiek:GestructureerdeIdentificator ;
   generiek:naamruimte "http://data.uitdatabank.local:80/events/" ;
   generiek:lokaleIdentificator "%{eventId}" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-8b563a39>
+<http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-8b563a39>
   a cidoc:E92_Spacetime_Volume ;
   cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-  cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36> .
+  cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-31d8dd36> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-31d8dd36>
+<http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-31d8dd36>
   a m8g:PeriodOfTime ;
   m8g:startTime "2021-05-17T08:00:00+00:00"^^xsd:dateTime ;
   m8g:endTime "2021-05-17T22:00:00+00:00"^^xsd:dateTime .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#E92_Spacetime_Volume-5da8175b>
+<http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-5da8175b>
   a cidoc:E92_Spacetime_Volume ;
   cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
-  cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9> .
+  cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-3bce2ab9> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#PeriodOfTime-3bce2ab9>
+<http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-3bce2ab9>
   a m8g:PeriodOfTime ;
   m8g:startTime "2021-05-18T08:00:00+00:00"^^xsd:dateTime ;
   m8g:endTime "2021-05-18T22:00:00+00:00"^^xsd:dateTime .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-f20d8319>
+<http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-f20d8319>
   a schema:ContactPoint ;
   schema:url "https://www.example.com" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-35306b47>
+<http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-35306b47>
   a schema:ContactPoint ;
   schema:email "info@example.com" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-2a082adb>
+<http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-2a082adb>
   a schema:ContactPoint ;
   schema:telephone "string" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#Boekingsinfo-1cb41cc5>
+<http://data.uitdatabank.local:80/events/%{eventId}#boekingsinfo-1cb41cc5>
   a cpa:Boekingsinfo ;
-  schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-1cb41cc5> .
+  schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-1cb41cc5> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#ContactPoint-1cb41cc5>
+<http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-1cb41cc5>
   a schema:ContactPoint ;
   schema:url "https://www.example.com" ;
   schema:telephone "string" ;
   schema:email "info@example.com" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#PriceSpecification-594fd7be>
+<http://data.uitdatabank.local:80/events/%{eventId}#priceSpecification-594fd7be>
   a schema:PriceSpecification ;
-  schema:price <http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-3b58504c> ;
+  schema:price <http://data.uitdatabank.local:80/events/%{eventId}#monetaryAmount-3b58504c> ;
   skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;
   cpp:prijscategorie <https://data.cultuurparticipatie.be/id/concept/PrijsCategorieType/basis> .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#MonetaryAmount-3b58504c>
+<http://data.uitdatabank.local:80/events/%{eventId}#monetaryAmount-3b58504c>
   a schema:MonetaryAmount ;
   schema:currency "EUR" ;
   schema:value "10.5"^^schema:Number .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#VideoObject-8c7c2146>
+<http://data.uitdatabank.local:80/events/%{eventId}#videoObject-8c7c2146>
   a schema:VideoObject ;
   schema:identifier "b504cf44-9ab8-4641-9934-38d1cc67242c" ;
   schema:url "https://www.youtube.com/watch?v=cEItmb_a20D"^^schema:URL ;
   schema:embedUrl "https://www.youtube.com/embed/cEItmb_a20D"^^schema:URL ;
   schema:copyrightHolder "publiq" ;
+  schema:inLanguage "nl" .
+
+<http://data.uitdatabank.local:80/events/%{eventId}#imageObject-%{imageHash}>
+  a schema:ImageObject ;
+  schema:identifier "%{imageId}" ;
+  schema:url "https://images.uitdatabank.dev/%{imageId}.jpeg"^^schema:URL ;
+  schema:copyrightHolder "publiq vzw" ;
+  schema:description "A cute dog" ;
   schema:inLanguage "nl" .

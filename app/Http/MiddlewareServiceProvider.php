@@ -12,6 +12,7 @@ final class MiddlewareServiceProvider extends AbstractServiceProvider
     {
         return [
             CheckTypeOfOfferMiddleware::class,
+            CheckOrganizerMiddleware::class,
         ];
     }
 
@@ -24,6 +25,13 @@ final class MiddlewareServiceProvider extends AbstractServiceProvider
             fn () => new CheckTypeOfOfferMiddleware(
                 $container->get('place_jsonld_cache'),
                 $container->get('event_jsonld_cache')
+            )
+        );
+
+        $container->addShared(
+            CheckOrganizerMiddleware::class,
+            fn () => new CheckOrganizerMiddleware(
+                $container->get('organizer_jsonld_cache'),
             )
         );
     }

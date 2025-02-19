@@ -41,4 +41,21 @@ class NodeUriGeneratorTest extends TestCase
 
         $this->assertEquals('#address-abc', $uri);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_generate_a_node_uri_with_lower_camel_case(): void
+    {
+        $generator = $this->createMock(HashGenerator::class);
+        $generator->expects($this->once())
+            ->method('generate')
+            ->with(['a', 'b', 'c'])
+            ->willReturn('abc');
+
+        $nodeUriGenerator = new NodeUriGenerator($generator);
+        $uri = $nodeUriGenerator->generate('AddressDetails', ['a', 'b', 'c']);
+
+        $this->assertEquals('#addressDetails-abc', $uri);
+    }
 }

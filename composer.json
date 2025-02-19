@@ -68,6 +68,7 @@
     "slim/psr7": "^1.4",
     "sweetrdf/easyrdf": "1.8.0",
     "swiftmailer/swiftmailer": "~5.3",
+    "symfony/cache": "^5.4",
     "symfony/console": "^5.4",
     "symfony/process": "4.4.30",
     "symfony/serializer": "^v3.1.10",
