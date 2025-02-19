@@ -11,6 +11,8 @@ use CultuurNet\UDB3\ApiGuard\Consumer\CultureFeedConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
+use CultuurNet\UDB3\Cache\CachedApiKeyAuthenticator;
+use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV1JwtValidator;
@@ -21,6 +23,7 @@ use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\User\CurrentUser;
 use League\Container\DefinitionContainerInterface;
+use Predis\Client as RedisClient;
 
 final class AuthServiceProvider extends AbstractServiceProvider
 {
@@ -52,7 +55,14 @@ final class AuthServiceProvider extends AbstractServiceProvider
                         $container->get('config')['jwt']['v1']['valid_issuers']
                     ),
                     $this->createUitIdV2JwtValidator($container),
-                    new CultureFeedApiKeyAuthenticator($container->get(ConsumerReadRepository::class)),
+                    new CachedApiKeyAuthenticator(
+                        new CultureFeedApiKeyAuthenticator($container->get(ConsumerReadRepository::class)),
+                        CacheFactory::create(
+                            $container->get(RedisClient::class),
+                            'api_key',
+                            86400
+                        )
+                    ),
                     $container->get(ConsumerReadRepository::class),
                     new ConsumerIsInPermissionGroup((string) $container->get('config')['api_key']['group_id']),
                     $container->get(UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY),
