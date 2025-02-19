@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
 use CultuurNet\UDB3\User\UserIdentityDetails;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -17,9 +17,9 @@ final class KeycloakCommand extends Command
     private const OPTION_EMAIL = 'email';
     private const OPTION_ID = 'id';
 
-    private KeycloakUserIdentityResolver $keycloakUserIdentityResolver;
+    private UserIdentityResolver $keycloakUserIdentityResolver;
 
-    public function __construct(KeycloakUserIdentityResolver $keycloakUserIdentityResolver)
+    public function __construct(UserIdentityResolver $keycloakUserIdentityResolver)
     {
         parent::__construct();
         $this->keycloakUserIdentityResolver = $keycloakUserIdentityResolver;
