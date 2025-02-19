@@ -62,7 +62,7 @@ final class CachedApiKeyAuthenticatorTest extends TestCase
         $uncachedApiKey = new ApiKey('17bd454a-7bf4-4c70-8182-cb7d6b48dfac');
         $this->fallbackApiKeyAuthenticator->expects($this->once())
             ->method('authenticate')
-        ->willThrowException(ApiKeyAuthenticationException::forApiKey($uncachedApiKey));
+            ->willThrowException(ApiKeyAuthenticationException::forApiKey($uncachedApiKey));
 
         $this->expectException(ApiKeyAuthenticationException::class);
 
