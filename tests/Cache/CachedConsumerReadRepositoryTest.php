@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Cache;
 
+use CultureFeed_Consumer;
 use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedConsumerAdapter;
@@ -56,9 +57,14 @@ final class CachedConsumerReadRepositoryTest extends TestCase
         $this->fallbackConsumerReadRepository->expects($this->never())
             ->method('getConsumer');
 
+        $cultureFeedConsumer = new CultureFeed_Consumer();
+        $cultureFeedConsumer->apiKeySapi3 = $this->cachedApiKey->toString();
+        $cultureFeedConsumer->searchPrefixSapi3 = '';
+        $cultureFeedConsumer->group = [1, 2, 3];
+        $cultureFeedConsumer->name = 'FOOBAR';
         $this->assertEquals(
             new CultureFeedConsumerAdapter(
-                new CultureFeed_Consumer()
+                $cultureFeedConsumer
             ),
             $this->cachedConsumerReadRepository->getConsumer($this->cachedApiKey)
         );
