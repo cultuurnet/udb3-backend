@@ -20,6 +20,7 @@ final class CachedApiKeyAuthenticator implements ApiKeyAuthenticator
         $this->baseApiKeyAuthenticator = $baseApiKeyAuthenticator;
         $this->cache = $cache;
     }
+
     public function authenticate(ApiKey $apiKey): void
     {
         $isAuthenticated = $this->cache->get(
