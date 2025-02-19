@@ -41,7 +41,7 @@ final class CachedConsumerReadRepository implements ConsumerReadRepository
     private function consumerAsArray(Consumer $consumer): array
     {
         return [
-            'api_key' => $consumer->getApiKey(),
+            'api_key' => $consumer->getApiKey()->toString(),
             'default_query' => $consumer->getDefaultQuery(),
             'permission_group_ids' => $consumer->getPermissionGroupIds(),
             'name' => $consumer->getName(),
