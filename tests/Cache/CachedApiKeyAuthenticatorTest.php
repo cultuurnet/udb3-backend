@@ -57,7 +57,7 @@ final class CachedApiKeyAuthenticatorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_an_uncached_invalid_api_key_from_the_decoree(): void
+    public function it_can_get_an_uncached_unauthorized_api_key_from_the_decoree(): void
     {
         $uncachedApiKey = new ApiKey('17bd454a-7bf4-4c70-8182-cb7d6b48dfac');
         $this->fallbackApiKeyAuthenticator->expects($this->once())
@@ -72,7 +72,7 @@ final class CachedApiKeyAuthenticatorTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_an_uncached_valid_api_key_from_the_decoree(): void
+    public function it_can_get_an_uncached_authorized_api_key_from_the_decoree(): void
     {
         $uncachedApiKey = new ApiKey('17bd454a-7bf4-4c70-8182-cb7d6b48dfac');
         $this->fallbackApiKeyAuthenticator->expects($this->once())
