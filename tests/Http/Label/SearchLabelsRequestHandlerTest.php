@@ -144,4 +144,35 @@ final class SearchLabelsRequestHandlerTest extends TestCase
             $response,
         );
     }
+
+    /**
+     * @test https://jira.publiq.be/browse/III-4855
+     */
+    public function it_enforces_a_maximum_number_of_items_returned(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('labels?limit=9223372036854775807')
+            ->build('GET');
+
+        $this->labelRepository->expects($this->once())
+            ->method('searchTotalLabels')
+            ->with(new Query('', '123', 0, 30))
+            ->willReturn(count($this->labels));
+
+        $this->labelRepository->expects($this->once())
+            ->method('search')
+            ->with(new Query('', '123', 0, 30))
+            ->willReturn($this->labels);
+
+        $response = $this->searchLabelsRequestHandler->handle($request);
+
+        $this->assertJsonResponse(
+            new PagedCollectionResponse(
+                30,
+                2,
+                $this->labels
+            ),
+            $response,
+        );
+    }
 }

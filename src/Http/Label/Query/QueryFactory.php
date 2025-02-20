@@ -34,7 +34,10 @@ class QueryFactory implements QueryFactoryInterface
 
         $offset = $queryParameters->getAsInt(self::START, 0);
 
-        $limit = $queryParameters->getAsInt(self::LIMIT, self::MAX_LIMIT);
+        $limit = min(
+            $queryParameters->getAsInt(self::LIMIT, self::MAX_LIMIT),
+            self::MAX_LIMIT
+        );
 
         $suggestion = filter_var($queryParameters->get(self::SUGGESTION), FILTER_VALIDATE_BOOLEAN);
 
