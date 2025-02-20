@@ -113,4 +113,35 @@ final class SearchLabelsRequestHandlerTest extends TestCase
             $response,
         );
     }
+
+    /**
+     * @test https://jira.publiq.be/browse/III-4855
+     */
+    public function it_uses_default_start_and_limit_when_not_provided(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('labels')
+            ->build('GET');
+
+        $this->labelRepository->expects($this->once())
+            ->method('searchTotalLabels')
+            ->with(new Query('', '123', 0, 30))
+            ->willReturn(count($this->labels));
+
+        $this->labelRepository->expects($this->once())
+            ->method('search')
+            ->with(new Query('', '123', 0, 30))
+            ->willReturn($this->labels);
+
+        $response = $this->searchLabelsRequestHandler->handle($request);
+
+        $this->assertJsonResponse(
+            new PagedCollectionResponse(
+                30,
+                2,
+                $this->labels
+            ),
+            $response,
+        );
+    }
 }

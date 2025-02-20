@@ -90,3 +90,15 @@ Feature: Test the UDB3 labels API
     """
     []
     """
+
+  @bugfix # https://jira.publiq.be/browse/III-4855
+  Scenario: Search labels without offset and limit
+    When I send a GET request to "/labels/" with parameters:
+      | query   | special |
+    Then the response status should be "200"
+    And the response body should be valid JSON
+    And the JSON response at "totalItems" should be 4
+    And the JSON response at "member/0/name" should be "special_label"
+    And the JSON response at "member/1/name" should be "special_label*"
+    And the JSON response at "member/2/name" should be "special_label#"
+    And the JSON response at "member/3/name" should be "special-label"
