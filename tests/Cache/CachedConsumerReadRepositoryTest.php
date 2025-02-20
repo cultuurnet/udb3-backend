@@ -36,6 +36,7 @@ final class CachedConsumerReadRepositoryTest extends TestCase
         $this->cachedConsumer->searchPrefixSapi3 = 'regions:nis-44021';
         $this->cachedConsumer->group = [1, 2, 3];
         $this->cachedConsumer->name = 'Foobar';
+        $this->cachedConsumer->status = 'ACTIVE';
 
         $cache->get(
             $this->cachedApiKey->toString(),
@@ -47,6 +48,7 @@ final class CachedConsumerReadRepositoryTest extends TestCase
                     'name' => $this->cachedConsumer->name,
                     'blocked' => false,
                     'removed' => false,
+                    'status' => 'ACTIVE',
                 ];
             }
         );
@@ -82,6 +84,7 @@ final class CachedConsumerReadRepositoryTest extends TestCase
         $uncachedConsumer->searchPrefixSapi3 = 'regions:nis-44021';
         $uncachedConsumer->group = [4, 5, 6];
         $uncachedConsumer->name = 'Bar Foo';
+        $uncachedConsumer->status = 'ACTIVE';
 
         $this->fallbackConsumerReadRepository->expects($this->once())
             ->method('getConsumer')

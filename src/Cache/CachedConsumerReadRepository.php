@@ -45,8 +45,8 @@ final class CachedConsumerReadRepository implements ConsumerReadRepository
             'default_query' => $consumer->getDefaultQuery(),
             'permission_group_ids' => $consumer->getPermissionGroupIds(),
             'name' => $consumer->getName(),
-            'blocked' => $consumer->isBlocked(),
-            'removed' => $consumer->isRemoved(),
+            'status' => $consumer->isBlocked() ? 'BLOCKED' :
+                ($consumer->isRemoved() ? 'REMOVED' : 'ACTIVE'),
         ];
     }
 
@@ -57,12 +57,7 @@ final class CachedConsumerReadRepository implements ConsumerReadRepository
         $consumer->searchPrefixSapi3 = $consumerAsArray['default_query'];
         $consumer->group = $consumerAsArray['permission_group_ids'];
         $consumer->name = $consumerAsArray['name'];
-        if ($consumerAsArray['blocked']) {
-            $consumer->status = 'BLOCKED';
-        }
-        if ($consumerAsArray['removed']) {
-            $consumer->status = 'REMOVED';
-        }
+        $consumer->status = $consumerAsArray['status'];
         return new CultureFeedConsumerAdapter($consumer);
     }
 }
