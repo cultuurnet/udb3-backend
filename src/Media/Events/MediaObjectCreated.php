@@ -91,6 +91,11 @@ final class MediaObjectCreated implements Serializable
         if (strlen($copyrightHolderData) < 2) {
             $copyrightHolderData .= '_';
         }
+        // Some old events also exist with a copyright of more than 250 characters.
+        // Those copyrights are truncated to 250 characters.
+        if (strlen($copyrightHolderData) > 250) {
+            $copyrightHolderData = substr($copyrightHolderData, 0, 250);
+        }
 
         return new self(
             new Uuid($data['media_object_id']),
