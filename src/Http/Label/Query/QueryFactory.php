@@ -10,6 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class QueryFactory implements QueryFactoryInterface
 {
+    public const MAX_LIMIT = 30;
     public const QUERY = 'query';
     public const START = 'start';
     public const LIMIT = 'limit';
@@ -31,9 +32,9 @@ class QueryFactory implements QueryFactoryInterface
 
         $userId = $this->userId ?: null;
 
-        $offset = (int) $queryParameters->get(self::START);
+        $offset = (int) $queryParameters->get(self::START, '0');
 
-        $limit = (int) $queryParameters->get(self::LIMIT);
+        $limit = (int) $queryParameters->get(self::LIMIT, (string) self::MAX_LIMIT);
 
         $suggestion = filter_var($queryParameters->get(self::SUGGESTION), FILTER_VALIDATE_BOOLEAN);
 

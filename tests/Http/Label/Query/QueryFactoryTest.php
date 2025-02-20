@@ -75,7 +75,7 @@ final class QueryFactoryTest extends TestCase
         $expectedQuery = new Query(
             self::QUERY_VALUE,
             self::USER_ID_VALUE,
-            null,
+            0,
             self::LIMIT_VALUE
         );
 
@@ -105,7 +105,7 @@ final class QueryFactoryTest extends TestCase
             self::QUERY_VALUE,
             self::USER_ID_VALUE,
             self::START_VALUE,
-            null
+            QueryFactory::MAX_LIMIT,
         );
 
         $this->assertEquals($expectedQuery, $query);
@@ -131,8 +131,8 @@ final class QueryFactoryTest extends TestCase
         $expectedQuery = new Query(
             self::QUERY_VALUE,
             self::USER_ID_VALUE,
-            null,
-            null
+            0,
+            QueryFactory::MAX_LIMIT,
         );
 
         $this->assertEquals($expectedQuery, $query);
