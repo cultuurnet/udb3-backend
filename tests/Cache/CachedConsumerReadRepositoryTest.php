@@ -23,29 +23,37 @@ final class CachedConsumerReadRepositoryTest extends TestCase
 
     private CachedConsumerReadRepository $cachedConsumerReadRepository;
 
+    private CultureFeed_Consumer $cachedConsumer;
+
     protected function setUp(): void
     {
         $this->fallbackConsumerReadRepository = $this->createMock(ConsumerReadRepository::class);
         $cache = new ArrayAdapter();
         $this->cachedApiKey = new ApiKey('b26e5a7b-5e01-46c1-8da8-f45edc51d01a');
 
-        $this->cachedConsumerReadRepository = new CachedConsumerReadRepository(
-            $this->fallbackConsumerReadRepository,
-            $cache
-        );
+        $this->cachedConsumer = new CultureFeed_Consumer();
+        $this->cachedConsumer->apiKeySapi3 = $this->cachedApiKey->toString();
+        $this->cachedConsumer->searchPrefixSapi3 = 'regions:nis-44021';
+        $this->cachedConsumer->group = [1, 2, 3];
+        $this->cachedConsumer->name = 'Foobar';
 
         $cache->get(
             $this->cachedApiKey->toString(),
             function () {
                 return [
-                    'api_key' => $this->cachedApiKey->toString(),
-                    'default_query' => '',
-                    'permission_group_ids' => [1, 2, 3],
-                    'name' => 'FOOBAR',
+                    'api_key' => $this->cachedConsumer->apiKeySapi3,
+                    'default_query' => $this->cachedConsumer->searchPrefixSapi3,
+                    'permission_group_ids' => $this->cachedConsumer->group,
+                    'name' => $this->cachedConsumer->name,
                     'blocked' => false,
                     'removed' => false,
                 ];
             }
+        );
+
+        $this->cachedConsumerReadRepository = new CachedConsumerReadRepository(
+            $this->fallbackConsumerReadRepository,
+            $cache
         );
     }
 
@@ -57,15 +65,8 @@ final class CachedConsumerReadRepositoryTest extends TestCase
         $this->fallbackConsumerReadRepository->expects($this->never())
             ->method('getConsumer');
 
-        $cultureFeedConsumer = new CultureFeed_Consumer();
-        $cultureFeedConsumer->apiKeySapi3 = $this->cachedApiKey->toString();
-        $cultureFeedConsumer->searchPrefixSapi3 = '';
-        $cultureFeedConsumer->group = [1, 2, 3];
-        $cultureFeedConsumer->name = 'FOOBAR';
         $this->assertEquals(
-            new CultureFeedConsumerAdapter(
-                $cultureFeedConsumer
-            ),
+            new CultureFeedConsumerAdapter($this->cachedConsumer),
             $this->cachedConsumerReadRepository->getConsumer($this->cachedApiKey)
         );
     }
@@ -75,6 +76,5 @@ final class CachedConsumerReadRepositoryTest extends TestCase
      */
     public function it_can_get_an_uncached_consumer_from_the_decoretee(): void
     {
-
     }
 }
