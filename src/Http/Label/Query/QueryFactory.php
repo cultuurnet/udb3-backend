@@ -32,9 +32,9 @@ class QueryFactory implements QueryFactoryInterface
 
         $userId = $this->userId ?: null;
 
-        $offset = (int) $queryParameters->get(self::START, '0');
+        $offset = $queryParameters->getAsInt(self::START, 0);
 
-        $limit = (int) $queryParameters->get(self::LIMIT, (string) self::MAX_LIMIT);
+        $limit = $queryParameters->getAsInt(self::LIMIT, self::MAX_LIMIT);
 
         $suggestion = filter_var($queryParameters->get(self::SUGGESTION), FILTER_VALIDATE_BOOLEAN);
 

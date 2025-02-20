@@ -82,7 +82,7 @@ Feature: Test the UDB3 labels API
   @bugfix # https://jira.uitdatabank.be/browse/III-5006
   Scenario: Search labels with offset beyond result window with at least one result
     When I send a GET request to "/labels/" with parameters:
-      | start   | 999999999999999999999999999999  |
+      | start   | 9223372036854775807  |
       | query   | special |
     Then the response status should be "200"
     And the response body should be valid JSON
@@ -97,6 +97,7 @@ Feature: Test the UDB3 labels API
       | query   | special |
     Then the response status should be "200"
     And the response body should be valid JSON
+    And the JSON response at "itemsPerPage" should be 30
     And the JSON response at "totalItems" should be 4
     And the JSON response at "member/0/name" should be "special_label"
     And the JSON response at "member/1/name" should be "special_label*"
