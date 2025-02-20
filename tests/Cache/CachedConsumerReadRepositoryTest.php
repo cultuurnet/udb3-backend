@@ -76,5 +76,20 @@ final class CachedConsumerReadRepositoryTest extends TestCase
      */
     public function it_can_get_an_uncached_consumer_from_the_decoretee(): void
     {
+        $uncachedApiKey = new ApiKey('c90fbc92-a572-4c39-a002-53f02f58844c');
+        $uncachedConsumer = new CultureFeed_Consumer();
+        $uncachedConsumer->apiKeySapi3 = $uncachedApiKey->toString();
+        $uncachedConsumer->searchPrefixSapi3 = 'regions:nis-44021';
+        $uncachedConsumer->group = [4, 5, 6];
+        $uncachedConsumer->name = 'Bar Foo';
+
+        $this->fallbackConsumerReadRepository->expects($this->once())
+            ->method('getConsumer')
+            ->willReturn(new CultureFeedConsumerAdapter($uncachedConsumer));
+
+        $this->assertEquals(
+            new CultureFeedConsumerAdapter($uncachedConsumer),
+            $this->cachedConsumerReadRepository->getConsumer($uncachedApiKey)
+        );
     }
 }
