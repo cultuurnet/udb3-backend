@@ -84,6 +84,7 @@ final class CachedConsumerReadRepositoryTest extends TestCase
 
         $this->fallbackConsumerReadRepository->expects($this->once())
             ->method('getConsumer')
+            ->with($uncachedApiKey)
             ->willReturn($uncachedConsumer);
 
         $this->assertEquals(
