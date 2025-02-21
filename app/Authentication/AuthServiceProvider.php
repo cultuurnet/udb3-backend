@@ -8,10 +8,10 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\ApiKey;
 use CultuurNet\UDB3\ApiGuard\Consumer\Consumer;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\CultureFeedConsumerReadRepository;
-use CultuurNet\UDB3\ApiGuard\Consumer\InMemoryConsumerRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
 use CultuurNet\UDB3\ApiGuard\CultureFeed\CultureFeedApiKeyAuthenticator;
 use CultuurNet\UDB3\Cache\CachedApiKeyAuthenticator;
+use CultuurNet\UDB3\Cache\CachedConsumerReadRepository;
 use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
@@ -160,8 +160,13 @@ final class AuthServiceProvider extends AbstractServiceProvider
         $container->addShared(
             ConsumerReadRepository::class,
             function () use ($container): ConsumerReadRepository {
-                return new InMemoryConsumerRepository(
-                    new CultureFeedConsumerReadRepository($container->get('culturefeed'), true)
+                return new CachedConsumerReadRepository(
+                    new CultureFeedConsumerReadRepository($container->get('culturefeed'), true),
+                    CacheFactory::create(
+                        $container->get(RedisClient::class),
+                        'culturefeed_consumer',
+                        86400
+                    )
                 );
             }
         );
