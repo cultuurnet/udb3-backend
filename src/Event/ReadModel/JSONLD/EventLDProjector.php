@@ -443,7 +443,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         // Remove old theme and event type.
         $jsonLD->terms = array_filter(
-            $jsonLD->terms,
+            (array) $jsonLD->terms,
             function ($term) {
                 return $term->domain !== CategoryDomain::eventType()->toString()
                     && $term->domain !== CategoryDomain::theme()->toString();
