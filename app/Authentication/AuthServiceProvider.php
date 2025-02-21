@@ -164,7 +164,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                     new CultureFeedConsumerReadRepository($container->get('culturefeed'), true),
                     CacheFactory::create(
                         $container->get(RedisClient::class),
-                        'consumer_repository',
+                        'culturefeed_consumer',
                         86400
                     )
                 );
