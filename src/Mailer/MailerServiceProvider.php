@@ -37,16 +37,12 @@ class MailerServiceProvider extends AbstractServiceProvider
                 $config = $this->container->get('config');
 
                 return new SmtpMailer(
-                    new TwigEnvironment(
-                        new FilesystemLoader(__DIR__ . '/templates'),
-                    ),
                     new SymfonyMailer(Transport::fromDsn($config['mail']['smtp'])),
                     LoggerFactory::create($container, LoggerName::forWeb()),
                     new Address(
                         $config['mail']['sender']['address'],
                         $config['mail']['sender']['name']
                     ),
-                    $this->container->get('config')['mail']['whitelisted_domains'] ?? [],
                 );
             }
         );
