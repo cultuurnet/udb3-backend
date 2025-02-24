@@ -107,7 +107,7 @@ final class YoutubeTrailerRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_log_when_the_log_throws_an_exception(): void
+    public function it_should_log_when_youtube_throws_an_exception(): void
     {
         $this->search->expects($this->once())->method('listSearch')->with('id,snippet', [
             'channelId' => $this->channelId,
