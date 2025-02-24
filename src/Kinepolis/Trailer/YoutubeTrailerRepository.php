@@ -54,11 +54,15 @@ final class YoutubeTrailerRepository implements TrailerRepository
             foreach ($response['items'] as $result) {
                 switch ($result['id']['kind']) {
                     case 'youtube#video':
+                        $youtubeTrailer = new Url('https://www.youtube.com/watch?v=' . $result['id']['videoId']);
+                        $this->logger->info('Matched ' . $youtubeTrailer->toString() . ' for ' . $title);
                         return new Video(
                             $this->uuidGenerator->generate(),
-                            new Url('https://www.youtube.com/watch?v=' . $result['id']['videoId']),
+                            $youtubeTrailer,
                             new Language('nl')
                         );
+                    default:
+                        $this->logger->info('No Matching trailer found for ' . $title);
                 }
             }
         } catch (GoogleException $exception) {
