@@ -10,6 +10,7 @@ use CultuurNet\UDB3\User\Keycloak\CachedUserIdentityResolver;
 use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
 use CultuurNet\UDB3\User\ManagementToken\ManagementTokenProvider;
 use GuzzleHttp\Client;
+use Predis\Client as RedisClient;
 
 final class KeycloakServiceProvider extends AbstractServiceProvider
 {

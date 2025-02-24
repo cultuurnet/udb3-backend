@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\User\CurrentUser;
 use League\Container\DefinitionContainerInterface;
+use Predis\Client as RedisClient;
 
 final class AuthServiceProvider extends AbstractServiceProvider
 {
