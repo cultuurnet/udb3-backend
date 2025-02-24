@@ -8,6 +8,7 @@ use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use Google\Service\Exception as GoogleException;
 use Google_Service_YouTube;
 use Psr\Log\LoggerInterface;
 
@@ -43,21 +44,25 @@ final class YoutubeTrailerRepository implements TrailerRepository
             return null;
         }
 
-        $response = $this->youTubeClient->search->listSearch('id,snippet', [
-            'channelId' => $this->channelId,
-            'q' => urlencode($title),
-            'maxResults' => 1,
-        ]);
+        try {
+            $response = $this->youTubeClient->search->listSearch('id,snippet', [
+                'channelId' => $this->channelId,
+                'q' => urlencode($title),
+                'maxResults' => 1,
+            ]);
 
-        foreach ($response['items'] as $result) {
-            switch ($result['id']['kind']) {
-                case 'youtube#video':
-                    return new Video(
-                        $this->uuidGenerator->generate(),
-                        new Url('https://www.youtube.com/watch?v=' . $result['id']['videoId']),
-                        new Language('nl')
-                    );
+            foreach ($response['items'] as $result) {
+                switch ($result['id']['kind']) {
+                    case 'youtube#video':
+                        return new Video(
+                            $this->uuidGenerator->generate(),
+                            new Url('https://www.youtube.com/watch?v=' . $result['id']['videoId']),
+                            new Language('nl')
+                        );
+                }
             }
+        } catch (GoogleException $exception) {
+            $this->logger->error($exception->getMessage());
         }
 
         return null;
