@@ -34,7 +34,7 @@ final class GeocodingServiceProvider extends AbstractServiceProvider
                         ),
                         $container->get('config')['google_maps_api_key'],
                     ),
-                    $container->get('cache')($geocodingServiceFactory->getCacheName())
+                    $container->get('persistent_cache')($geocodingServiceFactory->getCacheName())
                 );
             }
         );

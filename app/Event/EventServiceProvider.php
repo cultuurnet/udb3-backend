@@ -48,7 +48,7 @@ final class EventServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'event_calendar_repository',
             fn () => new CacheCalendarRepository(
-                $container->get('cache')('event_calendar')
+                $container->get('persistent_cache')('event_calendar')
             )
         );
 

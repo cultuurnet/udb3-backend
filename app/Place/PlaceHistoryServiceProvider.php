@@ -35,7 +35,7 @@ final class PlaceHistoryServiceProvider extends AbstractServiceProvider
             'places_history_repository',
             function () use ($container) {
                 return new CacheDocumentRepository(
-                    $container->get('cache')('place_history')
+                    $container->get('persistent_cache')('place_history')
                 );
             }
         );

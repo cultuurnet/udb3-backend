@@ -14,7 +14,7 @@ final class CacheServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
-            'cache',
+            'persistent_cache',
             Client::class,
         ];
     }
@@ -24,7 +24,7 @@ final class CacheServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->addShared(
-            'cache',
+            'persistent_cache',
             new CallableArgument(
                 fn ($cacheType) => new PredisCache(
                     new Client(

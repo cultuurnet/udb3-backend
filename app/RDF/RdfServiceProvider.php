@@ -65,7 +65,7 @@ final class RdfServiceProvider extends AbstractServiceProvider
         );
         $parser->setLogger($logger);
 
-        $parser = new CachingAddressParser($parser, $this->container->get('cache')('google_addresses'));
+        $parser = new CachingAddressParser($parser, $this->container->get('persistent_cache')('google_addresses'));
         $parser->setLogger($logger);
 
         return $parser;
