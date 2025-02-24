@@ -58,7 +58,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                     new CachedApiKeyAuthenticator(
                         new CultureFeedApiKeyAuthenticator($container->get(ConsumerReadRepository::class)),
                         CacheFactory::create(
-                            $container->get(RedisClient::class),
+                            $container->get('temporary_cache'),
                             'api_key',
                             86400
                         )
@@ -163,7 +163,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                 return new CachedConsumerReadRepository(
                     new CultureFeedConsumerReadRepository($container->get('culturefeed'), true),
                     CacheFactory::create(
-                        $container->get(RedisClient::class),
+                        $container->get('temporary_cache'),
                         'culturefeed_consumer',
                         86400
                     )

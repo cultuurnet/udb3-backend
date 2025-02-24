@@ -15,7 +15,7 @@ final class CacheServiceProvider extends AbstractServiceProvider
     {
         return [
             'persistent_cache',
-            Client::class,
+            'temporary_cache',
         ];
     }
 
@@ -36,7 +36,7 @@ final class CacheServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            Client::class,
+            'temporary_cache',
             new Client(
                 $container->get('config')['cache']['temporary_cache']
             )

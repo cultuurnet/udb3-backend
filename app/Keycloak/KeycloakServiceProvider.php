@@ -36,7 +36,7 @@ final class KeycloakServiceProvider extends AbstractServiceProvider
                         $container->get(ManagementTokenProvider::class)->token()
                     ),
                     CacheFactory::create(
-                        $container->get(RedisClient::class),
+                        $container->get('temporary_cache'),
                         'user_identity',
                         86400
                     )
