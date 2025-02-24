@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\SampleFiles;
+use Google\Service\Exception as GoogleException;
 use Google\Service\YouTube\Resource\Search;
 use Google_Service_YouTube;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -32,6 +33,11 @@ final class YoutubeTrailerRepositoryTest extends TestCase
      */
     private $search;
 
+    /**
+     * @var LoggerInterface&MockObject
+     */
+    private $logger;
+
     public function setUp(): void
     {
         $this->search = $this->createMock(Search::class);
@@ -39,12 +45,13 @@ final class YoutubeTrailerRepositoryTest extends TestCase
         $youtubeClient->search = $this->search;
         $this->channelId = 'mockChannelId';
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->trailerRepository = new YoutubeTrailerRepository(
             $youtubeClient,
             $this->channelId,
             $this->uuidGenerator,
-            $this->createMock(LoggerInterface::class),
+            $this->logger,
             true
         );
     }
@@ -95,5 +102,25 @@ final class YoutubeTrailerRepositoryTest extends TestCase
             ),
             $video
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_log_when_the_log_throws_an_exception(): void
+    {
+        $this->search->expects($this->once())->method('listSearch')->with('id,snippet', [
+            'channelId' => $this->channelId,
+            'q' => 'NotFound',
+            'maxResults' => 1,
+        ])->willThrowException(new GoogleException('some Google Exception'));
+
+        $this->uuidGenerator->expects($this->never())->method('generate');
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with('some Google Exception');
+
+        $video = $this->trailerRepository->findMatchingTrailer('NotFound');
+        $this->assertNull($video);
     }
 }
