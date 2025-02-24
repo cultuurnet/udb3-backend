@@ -527,6 +527,10 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     ),
                     $container->get('config')['kinepolis']['trailers']['channel_id'],
                     new Version4Generator(),
+                    LoggerFactory::create(
+                        $container,
+                        LoggerName::forService('add-matching-trailer', 'kinepolis')
+                    ),
                     $container->get('config')['kinepolis']['trailers']['enabled'] ??  true,
                 )
             )
