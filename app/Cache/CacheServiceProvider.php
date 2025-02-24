@@ -28,7 +28,7 @@ final class CacheServiceProvider extends AbstractServiceProvider
             new CallableArgument(
                 fn ($cacheType) => new PredisCache(
                     new Client(
-                        $container->get('config')['cache']['redis'],
+                        $container->get('config')['cache']['persistent_cache'],
                         ['prefix' => $cacheType . '_'],
                     )
                 )
