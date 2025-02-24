@@ -13,6 +13,8 @@ use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\EventCommandHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
+use CultuurNet\UDB3\Mailer\MailSentCommandHandler;
+use CultuurNet\UDB3\Mailer\Queue\MailerCommandBus;
 use CultuurNet\UDB3\Ownership\CommandHandlers\ApproveOwnershipHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\DeleteOwnershipHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\RejectOwnershipHandler;
@@ -47,6 +49,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             'bulk_label_offer_command_bus',
             'bulk_label_offer_command_bus_out',
             'logger_factory.resque_worker',
+            MailerCommandBus::class,
         ];
     }
 
@@ -246,6 +249,15 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 $commandBus = $this->createResqueCommandBus('event_export', $container);
                 $commandBus->subscribe($container->get('event_export_command_handler'));
+                return $commandBus;
+            }
+        );
+
+        $container->addShared(
+            MailerCommandBus::class,
+            function () {
+                $commandBus = $this->createResqueCommandBus('event_export', $this->container);
+                $commandBus->subscribe($this->container->get(MailSentCommandHandler::class));
                 return $commandBus;
             }
         );

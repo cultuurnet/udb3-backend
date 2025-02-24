@@ -9,8 +9,10 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Mailer\Ownership\SendMailsForOwnership;
+use CultuurNet\UDB3\Mailer\Queue\MailerCommandBus;
 use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
+use CultuurNet\UDB3\User\UserIdentityResolver;
 use Symfony\Component\Mailer\Mailer as SymfonyMailer;
 use Symfony\Component\Mailer\Transport;
 use Symfony\Component\Mime\Address;
@@ -23,7 +25,9 @@ class MailerServiceProvider extends AbstractServiceProvider
     {
         return [
             Mailer::class,
+            MailSentCommandHandler::class,
             SendMailsForOwnership::class,
+            MailsSentRepository::class,
         ];
     }
 
@@ -33,12 +37,11 @@ class MailerServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             Mailer::class,
-            function () use ($container): Mailer {
+            function (): Mailer {
                 $config = $this->container->get('config');
-
                 return new SmtpMailer(
                     new SymfonyMailer(Transport::fromDsn($config['mail']['smtp'])),
-                    LoggerFactory::create($container, LoggerName::forWeb()),
+                    LoggerFactory::create($this->container, LoggerName::forWeb()),
                     new Address(
                         $config['mail']['sender']['address'],
                         $config['mail']['sender']['name']
@@ -48,16 +51,36 @@ class MailerServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            SendMailsForOwnership::class,
-            function () use ($container): SendMailsForOwnership {
-                return new SendMailsForOwnership(
-                    new DomainMessageIsReplayed(),
+            MailsSentRepository::class,
+            function () use ($container): MailsSentRepository {
+                return new DBALMailsSentRepository($container->get('dbal_connection'));
+            }
+        );
+
+        $container->addShared(
+            MailSentCommandHandler::class,
+            function (): MailSentCommandHandler {
+                return new MailSentCommandHandler(
                     $this->container->get(Mailer::class),
+                    $this->container->get(MailsSentRepository::class),
+                    LoggerFactory::create($this->container, LoggerName::forResqueWorker(MailerCommandBus::getQueueName())),
+                );
+            }
+        );
+
+        $container->addShared(
+            SendMailsForOwnership::class,
+            function (): SendMailsForOwnership {
+                return new SendMailsForOwnership(
+                    $this->container->get(MailerCommandBus::class),
+                    new DomainMessageIsReplayed(),
                     $this->container->get('organizer_jsonld_repository'),
-                    $this->container->get(KeycloakUserIdentityResolver::class),
+                    $this->container->get(UserIdentityResolver::class),
                     $this->container->get(OrganizerServiceProvider::ORGANIZER_FRONTEND_IRI_GENERATOR),
-                    new DBALMailsSentRepository($container->get('dbal_connection')),
-                    LoggerFactory::create($container, LoggerName::forWeb()),
+                    new TwigEnvironment(
+                        new FilesystemLoader(__DIR__ . '/templates'),
+                    ),
+                    LoggerFactory::create($this->container, LoggerName::forWeb()),
                     $this->container->get('config')['mail']['send_organiser_mails'] ?? false,
                 );
             }

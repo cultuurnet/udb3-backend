@@ -11,12 +11,11 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-use Twig\Environment as TwigEnvironment;
 
 class SmtpMailerTest extends TestCase
 {
     private SmtpMailer $smtpMailer;
-    /** @var TwigEnvironment|MockObject */
+    /** @var MailerInterface|MockObject */
     private $mailer;
     /** @var LoggerInterface|MockObject */
     private $logger;

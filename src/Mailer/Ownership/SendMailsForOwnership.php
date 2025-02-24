@@ -7,9 +7,9 @@ namespace CultuurNet\UDB3\Mailer\Ownership;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
+use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Mailer\Mailer;
-use CultuurNet\UDB3\Mailer\MailsSentRepository;
+use CultuurNet\UDB3\Mailer\Event\SentMail;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
@@ -20,37 +20,38 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use DateTimeInterface;
 use Psr\Log\LoggerInterface;
+use Twig\Environment as TwigEnvironment;
 
 final class SendMailsForOwnership implements EventListener
 {
     private const SUBJECT_OWNERSHIP_REQUESTED = 'Beheers aanvraag voor organisatie {{ organisationName }}';
 
+    private ResqueCommandBus $mailerCommandBus;
     private DomainMessageSpecificationInterface $isReplay;
-    private Mailer $mailer;
     private DocumentRepository $organizerRepository;
     private UserIdentityResolver $identityResolver;
     private IriGeneratorInterface $organizerIriGenerator;
-    private MailsSentRepository $mailsSentRepository;
+    private TwigEnvironment $twig;
     private LoggerInterface $logger;
     private bool $sendOrganiserMail;
 
     public function __construct(
+        ResqueCommandBus $mailerCommandBus,
         DomainMessageSpecificationInterface $domainMessageSpecification,
-        Mailer $mailer,
         DocumentRepository $organizerRepository,
         UserIdentityResolver $identityResolver,
         IriGeneratorInterface $organizerIriGenerator,
-        MailsSentRepository $mailsSentRepository,
+        TwigEnvironment $twig,
         LoggerInterface $logger,
         bool $sendOrganiserMail
     ) {
+        $this->mailerCommandBus = $mailerCommandBus;
         $this->isReplay = $domainMessageSpecification;
-        $this->mailer = $mailer;
         $this->organizerRepository = $organizerRepository;
         $this->identityResolver = $identityResolver;
-        $this->logger = $logger;
         $this->organizerIriGenerator = $organizerIriGenerator;
-        $this->mailsSentRepository = $mailsSentRepository;
+        $this->twig = $twig;
+        $this->logger = $logger;
         $this->sendOrganiserMail = $sendOrganiserMail;
     }
 
@@ -68,7 +69,7 @@ final class SendMailsForOwnership implements EventListener
         $event = $domainMessage->getPayload();
         switch (true) {
             case $event instanceof OwnershipRequested:
-                $this->handleOwnershipRequested($event, $domainMessage->getRecordedOn()->toNative());
+                $this->handleOwnershipRequested($event);
                 break;
             case $event instanceof OwnershipApproved:
                 // @Todo
@@ -79,12 +80,8 @@ final class SendMailsForOwnership implements EventListener
         }
     }
 
-    private function handleOwnershipRequested(OwnershipRequested $ownershipRequested, DateTimeInterface $dateTime): void
+    private function handleOwnershipRequested(OwnershipRequested $ownershipRequested): void
     {
-        if ($this->mailsSentRepository->isMailSent(new Uuid($ownershipRequested->getId()), OwnershipRequested::class)) {
-            return;
-        }
-
         try {
             $organizerProjection = $this->organizerRepository->fetch($ownershipRequested->getItemId());
         } catch (DocumentDoesNotExist $e) {
@@ -102,32 +99,28 @@ final class SendMailsForOwnership implements EventListener
             return;
         }
 
-        $to = new EmailAddress($ownerDetails->getEmailAddress());
-        $subject = $this->parseSubject($organizer['name']['nl']);
+        $params = [
+            'organisationName' => $organizer['name']['nl'],
+            'firstName' => $ownerDetails->getUserName(),
+            'organisationUrl' => $this->organizerIriGenerator->iri($ownershipRequested->getItemId()),
+        ];
 
-        $success = $this->mailer->send(
-            $to,
-            $subject,
-            'ownershipRequested.html.twig',
-            'ownershipRequested.txt.twig',
-            [
-                'organisationName' => $organizer['name']['nl'],
-                'firstName' => $ownerDetails->getUserName(),
-                'organisationUrl' => $this->organizerIriGenerator->iri($ownershipRequested->getItemId()),
-            ]
+        $subject = $this->parseSubject(self::SUBJECT_OWNERSHIP_REQUESTED, $organizer['name']['nl']);
+        $this->mailerCommandBus->dispatch(
+            new SentMail(
+                new Uuid($ownershipRequested->getId()),
+                new EmailAddress($ownerDetails->getEmailAddress()),
+                $subject,
+                $this->twig->render('ownershipRequested.html.twig', $params),
+                $this->twig->render('ownershipRequested.txt.twig', $params),
+            )
         );
 
-        if (!$success) {
-            return;
-        }
-
-        $this->mailsSentRepository->addMailSent(new Uuid($ownershipRequested->getId()), $to, OwnershipRequested::class, $dateTime);
-
-        $this->logger->info(sprintf('Mail "%s" sent to %s', $subject, $ownerDetails->getEmailAddress()));
+        $this->logger->info(sprintf('[ownership-mail] Queue mail %s to %s', $subject, $ownerDetails->getEmailAddress()));
     }
 
-    private function parseSubject(string $name): string
+    private function parseSubject(string $subject, string $name): string
     {
-        return str_replace('{{ organisationName }}', $name, self::SUBJECT_OWNERSHIP_REQUESTED);
+        return str_replace('{{ organisationName }}', $name, $subject);
     }
 }
