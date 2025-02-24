@@ -8,5 +8,5 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
 interface Mailer
 {
-    public function send(EmailAddress $to, string $subject, string $htmlTemplate, string $textTemplate, array $variables = []): bool;
+    public function send(EmailAddress $to, string $subject, string $html, string $text): bool;
 }

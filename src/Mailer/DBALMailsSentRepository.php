@@ -35,8 +35,8 @@ final class DBALMailsSentRepository implements MailsSentRepository
     {
         $this->connection->insert('mails_sent', [
             'identifier' => $identifier->toString(),
-            'email' => $email->toString(),
             'type' => $type,
+            'email' => $email->toString(),
             'dateTime' => $dateTime->format(DateTimeInterface::ATOM),
         ]);
     }

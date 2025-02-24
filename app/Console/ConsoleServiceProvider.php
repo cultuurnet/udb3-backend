@@ -67,7 +67,7 @@ use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use CultuurNet\UDB3\Search\OffersSapi3SearchService;
 use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
-use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
+use CultuurNet\UDB3\User\Keycloak\CachedUserIdentityResolver;
 use Google_Client;
 use Google_Service_YouTube;
 use Http\Adapter\Guzzle7\Client;
@@ -409,7 +409,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.keycloak:find-user',
             fn () => new KeycloakCommand(
-                $container->get(KeycloakUserIdentityResolver::class)
+                $container->get(CachedUserIdentityResolver::class)
             )
         );
 
@@ -527,6 +527,10 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     ),
                     $container->get('config')['kinepolis']['trailers']['channel_id'],
                     new Version4Generator(),
+                    LoggerFactory::create(
+                        $container,
+                        LoggerName::forService('add-matching-trailer', 'kinepolis')
+                    ),
                     $container->get('config')['kinepolis']['trailers']['enabled'] ??  true,
                 )
             )
