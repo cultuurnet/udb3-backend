@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Google_Service_YouTube;
+use Psr\Log\LoggerInterface;
 
 final class YoutubeTrailerRepository implements TrailerRepository
 {
@@ -18,17 +19,21 @@ final class YoutubeTrailerRepository implements TrailerRepository
 
     private UuidGeneratorInterface $uuidGenerator;
 
+    private LoggerInterface $logger;
+
     private bool $enabled;
 
     public function __construct(
         Google_Service_YouTube $youTubeClient,
         string $channelId,
         UuidGeneratorInterface $uuidGenerator,
+        LoggerInterface $logger,
         bool $enabled
     ) {
         $this->channelId = $channelId;
         $this->uuidGenerator = $uuidGenerator;
         $this->youTubeClient = $youTubeClient;
+        $this->logger = $logger;
         $this->enabled = $enabled;
     }
 

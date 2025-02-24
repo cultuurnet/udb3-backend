@@ -14,6 +14,7 @@ use Google\Service\YouTube\Resource\Search;
 use Google_Service_YouTube;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 final class YoutubeTrailerRepositoryTest extends TestCase
 {
@@ -43,6 +44,7 @@ final class YoutubeTrailerRepositoryTest extends TestCase
             $youtubeClient,
             $this->channelId,
             $this->uuidGenerator,
+            $this->createMock(LoggerInterface::class),
             true
         );
     }
