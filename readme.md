@@ -2,6 +2,9 @@
 
 This repository contains the PHP app that provides most of the backend of UiTdatabank v3, aka UDB3.
 
+## Setup
+You can find a full guide on how to setup the project [here](docker.md)
+
 ## Contributing
 
 Several CI checks have been provided to make sure any changes are compliant with our coding standards and to detect potential bugs.

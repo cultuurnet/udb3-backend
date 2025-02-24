@@ -35,7 +35,7 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     volumes:
-      - 'udb3-mysql:/var/lib/mysql'
+      - 'udb3-mysql:/bitnami/mysql/data'
       - ./docker/mysql:/docker-entrypoint-initdb.d
     ports:
       - '3306:3306'

@@ -75,7 +75,7 @@ final class QueryFactoryTest extends TestCase
         $expectedQuery = new Query(
             self::QUERY_VALUE,
             self::USER_ID_VALUE,
-            null,
+            0,
             self::LIMIT_VALUE
         );
 
@@ -105,7 +105,7 @@ final class QueryFactoryTest extends TestCase
             self::QUERY_VALUE,
             self::USER_ID_VALUE,
             self::START_VALUE,
-            null
+            QueryFactory::MAX_LIMIT,
         );
 
         $this->assertEquals($expectedQuery, $query);
@@ -131,8 +131,8 @@ final class QueryFactoryTest extends TestCase
         $expectedQuery = new Query(
             self::QUERY_VALUE,
             self::USER_ID_VALUE,
-            null,
-            null
+            0,
+            QueryFactory::MAX_LIMIT,
         );
 
         $this->assertEquals($expectedQuery, $query);
@@ -164,6 +164,37 @@ final class QueryFactoryTest extends TestCase
             self::USER_ID_VALUE,
             0,
             0
+        );
+
+        $this->assertEquals($expectedQuery, $query);
+    }
+
+    /**
+     * @test
+     */
+    public function it_enforces_a_maximum_limit(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString(
+                sprintf(
+                    '/?%s=%s&%s=%s&%s=%s',
+                    QueryFactory::QUERY,
+                    self::QUERY_VALUE,
+                    QueryFactory::START,
+                    0,
+                    QueryFactory::LIMIT,
+                    9223372036854775807,
+                )
+            )
+            ->build('GET');
+
+        $query = $this->queryFactory->createFromRequest($request);
+
+        $expectedQuery = new Query(
+            self::QUERY_VALUE,
+            self::USER_ID_VALUE,
+            0,
+            30,
         );
 
         $this->assertEquals($expectedQuery, $query);

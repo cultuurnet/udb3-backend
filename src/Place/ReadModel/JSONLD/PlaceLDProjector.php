@@ -261,7 +261,7 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
         )->format(DateTimeInterface::ATOM);
 
         // Remove old theme and event type.
-        $jsonLD->terms = array_filter($jsonLD->terms, function ($term) {
+        $jsonLD->terms = array_filter((array) $jsonLD->terms, function ($term) {
             return $term->domain !== CategoryDomain::eventType()->toString() &&  $term->domain !== CategoryDomain::theme()->toString();
         });
 
