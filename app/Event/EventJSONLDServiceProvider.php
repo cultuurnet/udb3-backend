@@ -142,7 +142,7 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
             'event_jsonld_cache',
             function () use ($container) {
                 $repository = new CacheDocumentRepository(
-                    $container->get('persistent_cache')('event_jsonld'),
+                    $container->get('cache')('event_jsonld'),
                     $container->get('config')['cache']['allowed_retries'] ?? 3,
                     $container->get('config')['cache']['milliseconds_between_retry'] ?? 0
                 );

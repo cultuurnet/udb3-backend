@@ -137,7 +137,7 @@ final class MediaServiceProvider extends AbstractServiceProvider
         $container->addShared(
             MediaServiceProvider::IMAGE_JSONLD_REPOSITORY,
             fn () => new CacheDocumentRepository(
-                $container->get('persistent_cache')('image_jsonld'),
+                $container->get('cache')('image_jsonld'),
             )
         );
 

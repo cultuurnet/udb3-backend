@@ -97,7 +97,7 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'organizer_jsonld_cache',
             function () use ($container) {
-                return new CacheDocumentRepository($container->get('persistent_cache')('organizer_jsonld'));
+                return new CacheDocumentRepository($container->get('cache')('organizer_jsonld'));
             }
         );
     }

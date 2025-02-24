@@ -32,7 +32,7 @@ final class EventHistoryServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'event_history_repository',
             function () use ($container): CacheDocumentRepository {
-                return new CacheDocumentRepository($container->get('persistent_cache')('event_history'));
+                return new CacheDocumentRepository($container->get('cache')('event_history'));
             }
         );
     }

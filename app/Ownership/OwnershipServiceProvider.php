@@ -51,7 +51,7 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
         $container->addShared(
             OwnershipServiceProvider::OWNERSHIP_JSONLD_REPOSITORY,
             fn () => new CacheDocumentRepository(
-                $container->get('persistent_cache')('ownership_jsonld'),
+                $container->get('cache')('ownership_jsonld'),
             )
         );
 

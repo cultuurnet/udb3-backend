@@ -75,7 +75,7 @@ final class RoleServiceProvider extends AbstractServiceProvider
             'role_read_repository',
             fn () => new BroadcastingDocumentRepositoryDecorator(
                 new CacheDocumentRepository(
-                    $container->get('persistent_cache')('role_detail')
+                    $container->get('cache')('role_detail')
                 ),
                 $container->get(EventBus::class),
                 new EventFactory()
@@ -84,7 +84,7 @@ final class RoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'user_roles_repository',
-            fn () => new CacheDocumentRepository($container->get('persistent_cache')('user_roles'))
+            fn () => new CacheDocumentRepository($container->get('cache')('user_roles'))
         );
 
         $container->addShared(
@@ -116,7 +116,7 @@ final class RoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'role_labels_read_repository',
-            fn () => new CacheDocumentRepository($container->get('persistent_cache')('role_labels'))
+            fn () => new CacheDocumentRepository($container->get('cache')('role_labels'))
         );
 
         $container->addShared(
@@ -130,7 +130,7 @@ final class RoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'label_roles_read_repository',
-            fn () => new CacheDocumentRepository($container->get('persistent_cache')('label_roles'))
+            fn () => new CacheDocumentRepository($container->get('cache')('label_roles'))
         );
 
         $container->addShared(
@@ -140,7 +140,7 @@ final class RoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'role_users_read_repository',
-            fn () => new CacheDocumentRepository($container->get('persistent_cache')('role_users'))
+            fn () => new CacheDocumentRepository($container->get('cache')('role_users'))
         );
 
         $container->addShared(

@@ -90,7 +90,7 @@ final class UserServiceProvider extends AbstractServiceProvider
                 $container->get('config')['keycloak']['client_secret']
             ),
             new CacheRepository(
-                $container->get('persistent_cache')('keycloak-management-token')
+                $container->get('cache')('keycloak-management-token')
             )
         );
     }

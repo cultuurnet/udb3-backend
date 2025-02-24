@@ -174,7 +174,7 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
             'place_jsonld_cache',
             function () use ($container) {
                 $repository = new CacheDocumentRepository(
-                    $container->get('persistent_cache')('place_jsonld')
+                    $container->get('cache')('place_jsonld')
                 );
 
                 $repository->setLogger(LoggerFactory::create($container, LoggerName::forWeb()));
