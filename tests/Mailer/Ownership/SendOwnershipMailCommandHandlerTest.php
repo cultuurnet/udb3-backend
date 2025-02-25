@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Mailer\Ownership;
 
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Mailer\Command\SentOwnershipRequestedMail;
+use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
 use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Mailer\MailsSentRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -23,14 +23,14 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Twig\Environment as TwigEnvironment;
 
-class SentOwnershipMailCommandHandlerTest extends TestCase
+class SendOwnershipMailCommandHandlerTest extends TestCase
 {
     /** @var Mailer|MockObject */
     private $mailer;
 
     /** @var MailsSentRepository|MockObject */
     private $mailsSentRepository;
-    private SentOwnershipMailCommandHandler $commandHandler;
+    private SendOwnershipMailCommandHandler $commandHandler;
     /** @var OwnershipSearchRepository|MockObject */
     private $ownershipSearchRepository;
 
@@ -56,7 +56,7 @@ class SentOwnershipMailCommandHandlerTest extends TestCase
         $this->identityResolver = $this->createMock(UserIdentityResolver::class);
         $this->logger = $this->createMock(LoggerInterface::class);
 
-        $this->commandHandler = new SentOwnershipMailCommandHandler(
+        $this->commandHandler = new SendOwnershipMailCommandHandler(
             $this->mailer,
             $this->mailsSentRepository,
             $this->organizerRepository,
@@ -88,7 +88,7 @@ class SentOwnershipMailCommandHandlerTest extends TestCase
         $this->mailsSentRepository
             ->expects($this->once())
             ->method('isMailSent')
-            ->with(new Uuid($id), SentOwnershipRequestedMail::class)
+            ->with(new Uuid($id), SendOwnershipRequestedMail::class)
             ->willReturn(false);
 
         $this->mailsSentRepository
@@ -97,7 +97,7 @@ class SentOwnershipMailCommandHandlerTest extends TestCase
             ->with(
                 new Uuid($id),
                 $email,
-                SentOwnershipRequestedMail::class
+                SendOwnershipRequestedMail::class
             );
 
         $this->ownershipSearchRepository
@@ -155,7 +155,7 @@ class SentOwnershipMailCommandHandlerTest extends TestCase
             )
             ->willReturn(true);
 
-        $this->commandHandler->handle(new SentOwnershipRequestedMail($id));
+        $this->commandHandler->handle(new SendOwnershipRequestedMail($id));
     }
 
     /** @test */
@@ -166,7 +166,7 @@ class SentOwnershipMailCommandHandlerTest extends TestCase
         $this->mailsSentRepository
             ->expects($this->once())
             ->method('isMailSent')
-            ->with(new Uuid($id), SentOwnershipRequestedMail::class)
+            ->with(new Uuid($id), SendOwnershipRequestedMail::class)
             ->willReturn(true);
 
         $this->mailsSentRepository
@@ -177,7 +177,7 @@ class SentOwnershipMailCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('send');
 
-        $this->commandHandler->handle(new SentOwnershipRequestedMail($id));
+        $this->commandHandler->handle(new SendOwnershipRequestedMail($id));
     }
 
     /** @test */
@@ -188,7 +188,7 @@ class SentOwnershipMailCommandHandlerTest extends TestCase
         $this->mailsSentRepository
             ->expects($this->once())
             ->method('isMailSent')
-            ->with(new Uuid($id), SentOwnershipRequestedMail::class)
+            ->with(new Uuid($id), SendOwnershipRequestedMail::class)
             ->willReturn(false);
 
         $this->ownershipSearchRepository
@@ -204,7 +204,7 @@ class SentOwnershipMailCommandHandlerTest extends TestCase
         $this->logger->expects($this->once())
             ->method('warning');
 
-        $this->commandHandler->handle(new SentOwnershipRequestedMail($id));
+        $this->commandHandler->handle(new SendOwnershipRequestedMail($id));
     }
 
     /** @test */
@@ -217,7 +217,7 @@ class SentOwnershipMailCommandHandlerTest extends TestCase
         $this->mailsSentRepository
             ->expects($this->once())
             ->method('isMailSent')
-            ->with(new Uuid($id), SentOwnershipRequestedMail::class)
+            ->with(new Uuid($id), SendOwnershipRequestedMail::class)
             ->willReturn(false);
 
         $this->ownershipSearchRepository
@@ -245,7 +245,7 @@ class SentOwnershipMailCommandHandlerTest extends TestCase
         $this->logger->expects($this->once())
             ->method('warning');
 
-        $this->commandHandler->handle(new SentOwnershipRequestedMail($id));
+        $this->commandHandler->handle(new SendOwnershipRequestedMail($id));
     }
 
     /** @test */
@@ -259,7 +259,7 @@ class SentOwnershipMailCommandHandlerTest extends TestCase
         $this->mailsSentRepository
             ->expects($this->once())
             ->method('isMailSent')
-            ->with(new Uuid($id), SentOwnershipRequestedMail::class)
+            ->with(new Uuid($id), SendOwnershipRequestedMail::class)
             ->willReturn(false);
 
         $this->ownershipSearchRepository
@@ -293,6 +293,6 @@ class SentOwnershipMailCommandHandlerTest extends TestCase
         $this->logger->expects($this->once())
             ->method('warning');
 
-        $this->commandHandler->handle(new SentOwnershipRequestedMail($id));
+        $this->commandHandler->handle(new SendOwnershipRequestedMail($id));
     }
 }

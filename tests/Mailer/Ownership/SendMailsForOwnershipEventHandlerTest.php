@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Mailer\Ownership;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
 use CultuurNet\UDB3\CommandHandling\ContextDecoratedCommandBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
-use CultuurNet\UDB3\Mailer\Command\SentOwnershipRequestedMail;
+use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -61,7 +61,7 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
 
         $this->commandBus->expects($this->once())
             ->method('dispatch')
-            ->with(new SentOwnershipRequestedMail($id));
+            ->with(new SendOwnershipRequestedMail($id));
 
         $this->sendMailsForOwnership->handle(
             $domainMessage

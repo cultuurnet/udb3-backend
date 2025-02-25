@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Mailer\Ownership;
 
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Mailer\Command\SentOwnershipRequestedMail;
+use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
 use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Mailer\MailsSentRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -23,7 +23,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class SentOwnershipMailCommandHandler implements CommandHandler
+class SendOwnershipMailCommandHandler implements CommandHandler
 {
     private const SUBJECT_OWNERSHIP_REQUESTED = 'Beheers aanvraag voor organisatie {{ organisationName }}';
     private const TEMPLATE_OWNERSHIP_REQUESTED = 'ownershipRequested';
@@ -60,7 +60,7 @@ class SentOwnershipMailCommandHandler implements CommandHandler
     public function handle($command): void
     {
         switch (true) {
-            case $command instanceof SentOwnershipRequestedMail:
+            case $command instanceof SendOwnershipRequestedMail:
                 $this->sentMail(
                     $command,
                     self::SUBJECT_OWNERSHIP_REQUESTED,
@@ -71,7 +71,7 @@ class SentOwnershipMailCommandHandler implements CommandHandler
         }
     }
 
-    public function sentMail(SentOwnershipRequestedMail $command, string $rawSubject, string $template): void
+    public function sentMail(SendOwnershipRequestedMail $command, string $rawSubject, string $template): void
     {
         $uuid = new Uuid($command->getUuid());
 

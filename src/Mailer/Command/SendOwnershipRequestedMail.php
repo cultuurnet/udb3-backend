@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Mailer\Command;
 use CultuurNet\UDB3\CommandHandling\AsyncCommand;
 use CultuurNet\UDB3\CommandHandling\AsyncCommandTrait;
 
-final class SentOwnershipRequestedMail implements AsyncCommand
+final class SendOwnershipRequestedMail implements AsyncCommand
 {
     use AsyncCommandTrait;
 

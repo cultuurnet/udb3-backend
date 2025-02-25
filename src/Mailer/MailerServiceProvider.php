@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Mailer\Ownership\SendMailsForOwnershipEventHandler;
-use CultuurNet\UDB3\Mailer\Ownership\SentOwnershipMailCommandHandler;
+use CultuurNet\UDB3\Mailer\Ownership\SendOwnershipMailCommandHandler;
 use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\User\UserIdentityResolver;
@@ -25,7 +25,7 @@ class MailerServiceProvider extends AbstractServiceProvider
     {
         return [
             Mailer::class,
-            SentOwnershipMailCommandHandler::class,
+            SendOwnershipMailCommandHandler::class,
             SendMailsForOwnershipEventHandler::class,
             MailsSentRepository::class,
         ];
@@ -58,9 +58,9 @@ class MailerServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            SentOwnershipMailCommandHandler::class,
-            function (): SentOwnershipMailCommandHandler {
-                return new SentOwnershipMailCommandHandler(
+            SendOwnershipMailCommandHandler::class,
+            function (): SendOwnershipMailCommandHandler {
+                return new SendOwnershipMailCommandHandler(
                     $this->container->get(Mailer::class),
                     $this->container->get(MailsSentRepository::class),
                     $this->container->get('organizer_jsonld_repository'),
