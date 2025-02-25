@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Mailer\Ownership\SendMailsForOwnership;
+use CultuurNet\UDB3\Mailer\Ownership\SentOwnershipMailHandler;
 use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Symfony\Component\Mailer\Mailer as SymfonyMailer;

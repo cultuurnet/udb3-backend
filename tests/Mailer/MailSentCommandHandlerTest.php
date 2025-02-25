@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Mailer;
 
 use CultuurNet\UDB3\Mailer\Command\SentOwnershipMail;
+use CultuurNet\UDB3\Mailer\Ownership\SentOwnershipMailHandler;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use PHPUnit\Framework\MockObject\MockObject;

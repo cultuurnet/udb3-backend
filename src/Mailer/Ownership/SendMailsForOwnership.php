@@ -114,19 +114,19 @@ final class SendMailsForOwnership implements EventListener
         $subject = $this->parseSubject(self::SUBJECT_OWNERSHIP_REQUESTED, $organizer['name']['nl']);
 
         try {
-            $commandId = $this->dispatchAsyncCommand($this->mailerCommandBus, new SentOwnershipMail(
+            $this->dispatchAsyncCommand($this->mailerCommandBus, new SentOwnershipMail(
                 new Uuid($ownershipRequested->getId()),
                 new EmailAddress($ownerDetails->getEmailAddress()),
                 $subject,
                 $this->twig->render('ownershipRequested.html.twig', $params),
                 $this->twig->render('ownershipRequested.txt.twig', $params),
             ));
-        } catch (CommandAuthorizationException|LoaderError|RuntimeError|SyntaxError $e) {
+        } catch (LoaderError|RuntimeError|SyntaxError $e) {
             $this->logger->error($e->getMessage());
             return;
         }
 
-        $this->logger->info(sprintf('[ownership-mail] [%s] Queue mail %s to %s', $commandId, $subject, $ownerDetails->getEmailAddress()));
+        $this->logger->info(sprintf('[ownership-mail] Queue mail %s to %s', $subject, $ownerDetails->getEmailAddress()));
     }
 
     private function parseSubject(string $subject, string $name): string

@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Mailer;
+namespace CultuurNet\UDB3\Mailer\Ownership;
 
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Mailer\Command\SentOwnershipMail;
+use CultuurNet\UDB3\Mailer\Mailer;
+use CultuurNet\UDB3\Mailer\MailsSentRepository;
 use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 
@@ -24,9 +26,6 @@ class SentOwnershipMailHandler implements CommandHandler
 
     public function handle($command): void
     {
-        $this->logger->error(sprintf('Try to sent mail "%s" sent to %s', $command->getSubject(), $command->getTo()->toString()));
-        file_put_contents('/var/www/html/log.txt', sprintf('Try to sent mail "%s" sent to %s', $command->getSubject(), $command->getTo()->toString()) . PHP_EOL, FILE_APPEND);
-
         if (!$command instanceof SentOwnershipMail) {
             return;
         }
