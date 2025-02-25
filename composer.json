@@ -70,6 +70,7 @@
     "swiftmailer/swiftmailer": "~5.3",
     "symfony/cache": "^5.4",
     "symfony/console": "^5.4",
+    "symfony/mailer": "^5.4",
     "symfony/process": "4.4.30",
     "symfony/serializer": "^v3.1.10",
     "twig/extensions": "^1.5",
