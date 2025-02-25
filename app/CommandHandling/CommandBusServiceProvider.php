@@ -13,8 +13,7 @@ use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\EventCommandHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
-use CultuurNet\UDB3\Mailer\MailSentCommandHandler;
-use CultuurNet\UDB3\Mailer\Queue\MailerCommandBus;
+use CultuurNet\UDB3\Mailer\SentOwnershipMailHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\ApproveOwnershipHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\DeleteOwnershipHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\RejectOwnershipHandler;
@@ -49,7 +48,9 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             'bulk_label_offer_command_bus',
             'bulk_label_offer_command_bus_out',
             'logger_factory.resque_worker',
-            MailerCommandBus::class,
+
+            'mails_command_bus',
+            'mails_command_bus_out',
         ];
     }
 
@@ -254,10 +255,20 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            MailerCommandBus::class,
+            'mails_command_bus',
             function () {
-                $commandBus = $this->createResqueCommandBus('event_export', $this->container);
-                $commandBus->subscribe($this->container->get(MailSentCommandHandler::class));
+                return new ContextDecoratedCommandBus(
+                    $this->createResqueCommandBus('mails', $this->container),
+                    $this->container
+                );
+            }
+        );
+
+        $container->addShared(
+            'mails_command_bus_out',
+            function () {
+                $commandBus = $this->createResqueCommandBus('mails', $this->container);
+                $commandBus->subscribe($this->container->get(SentOwnershipMailHandler::class));
                 return $commandBus;
             }
         );

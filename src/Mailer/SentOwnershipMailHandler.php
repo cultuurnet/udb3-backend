@@ -5,16 +5,12 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Mailer;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\CommandHandling\AsyncCommand;
-use CultuurNet\UDB3\CommandHandling\AsyncCommandTrait;
-use CultuurNet\UDB3\Mailer\Event\SentMail;
+use CultuurNet\UDB3\Mailer\Command\SentOwnershipMail;
 use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 
-class MailSentCommandHandler implements CommandHandler, AsyncCommand
+class SentOwnershipMailHandler implements CommandHandler
 {
-    use AsyncCommandTrait;
-
     private Mailer $mailer;
     private MailsSentRepository $mailsSentRepository;
     private LoggerInterface $logger;
@@ -28,7 +24,10 @@ class MailSentCommandHandler implements CommandHandler, AsyncCommand
 
     public function handle($command): void
     {
-        if (!$command instanceof SentMail) {
+        $this->logger->error(sprintf('Try to sent mail "%s" sent to %s', $command->getSubject(), $command->getTo()->toString()));
+        file_put_contents('/var/www/html/log.txt', sprintf('Try to sent mail "%s" sent to %s', $command->getSubject(), $command->getTo()->toString()) . PHP_EOL, FILE_APPEND);
+
+        if (!$command instanceof SentOwnershipMail) {
             return;
         }
 

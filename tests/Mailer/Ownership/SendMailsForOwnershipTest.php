@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Mailer\Ownership;
 
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
-use CultuurNet\UDB3\CommandHandling\ResqueCommandBus;
+use CultuurNet\UDB3\CommandHandling\ContextDecoratedCommandBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\Mailer\Event\SentMail;
+use CultuurNet\UDB3\Mailer\Command\SentOwnershipMail;
 use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -36,14 +36,14 @@ class SendMailsForOwnershipTest extends TestCase
     private $organizerRepository;
     /** @var UserIdentityResolver|MockObject */
     private $identityResolver;
-    /** @var ResqueCommandBus|MockObject */
+    /** @var ContextDecoratedCommandBus|MockObject */
     private $commandBus;
     /** @var TwigEnvironment|MockObject */
     private $twig;
 
     protected function setUp(): void
     {
-        $this->commandBus = $this->createMock(ResqueCommandBus::class);
+        $this->commandBus = $this->createMock(ContextDecoratedCommandBus::class);
         $this->twig = $this->createMock(TwigEnvironment::class);
         $this->domainMessageSpecification = $this->createMock(DomainMessageSpecificationInterface::class);
         $this->organizerRepository = $this->createMock(DocumentRepository::class);
@@ -125,7 +125,7 @@ class SendMailsForOwnershipTest extends TestCase
         $this->commandBus->expects($this->once())
             ->method('dispatch')
             ->with(
-                new SentMail(
+                new SentOwnershipMail(
                     new Uuid($id),
                     new EmailAddress($email),
                     'Beheers aanvraag voor organisatie ' . $organizerName,

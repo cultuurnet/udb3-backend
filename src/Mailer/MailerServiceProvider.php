@@ -9,9 +9,7 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Mailer\Ownership\SendMailsForOwnership;
-use CultuurNet\UDB3\Mailer\Queue\MailerCommandBus;
 use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
-use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Symfony\Component\Mailer\Mailer as SymfonyMailer;
 use Symfony\Component\Mailer\Transport;
@@ -25,7 +23,7 @@ class MailerServiceProvider extends AbstractServiceProvider
     {
         return [
             Mailer::class,
-            MailSentCommandHandler::class,
+            SentOwnershipMailHandler::class,
             SendMailsForOwnership::class,
             MailsSentRepository::class,
         ];
@@ -58,12 +56,12 @@ class MailerServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            MailSentCommandHandler::class,
-            function (): MailSentCommandHandler {
-                return new MailSentCommandHandler(
+            SentOwnershipMailHandler::class,
+            function (): SentOwnershipMailHandler {
+                return new SentOwnershipMailHandler(
                     $this->container->get(Mailer::class),
                     $this->container->get(MailsSentRepository::class),
-                    LoggerFactory::create($this->container, LoggerName::forResqueWorker(MailerCommandBus::getQueueName())),
+                    LoggerFactory::create($this->container, LoggerName::forResqueWorker('mails')),
                 );
             }
         );
@@ -72,7 +70,7 @@ class MailerServiceProvider extends AbstractServiceProvider
             SendMailsForOwnership::class,
             function (): SendMailsForOwnership {
                 return new SendMailsForOwnership(
-                    $this->container->get(MailerCommandBus::class),
+                    $this->container->get('mails_command_bus'),
                     new DomainMessageIsReplayed(),
                     $this->container->get('organizer_jsonld_repository'),
                     $this->container->get(UserIdentityResolver::class),

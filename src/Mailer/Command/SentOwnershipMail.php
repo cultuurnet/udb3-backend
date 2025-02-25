@@ -2,13 +2,17 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Mailer\Event;
+namespace CultuurNet\UDB3\Mailer\Command;
 
+use CultuurNet\UDB3\CommandHandling\AsyncCommand;
+use CultuurNet\UDB3\CommandHandling\AsyncCommandTrait;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 
-final class SentMail
+final class SentOwnershipMail implements AsyncCommand
 {
+    use AsyncCommandTrait;
+
     private Uuid $uuid;
     private EmailAddress $to;
     private string $subject;

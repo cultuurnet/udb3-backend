@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailer;
 
-use CultuurNet\UDB3\Mailer\Event\SentMail;
+use CultuurNet\UDB3\Mailer\Command\SentOwnershipMail;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -18,13 +18,13 @@ class MailSentCommandHandlerTest extends TestCase
 
     /** @var MailsSentRepository|MockObject */
     private $mailsSentRepository;
-    private MailSentCommandHandler $commandHandler;
+    private SentOwnershipMailHandler $commandHandler;
 
     protected function setUp(): void
     {
         $this->mailer = $this->createMock(Mailer::class);
         $this->mailsSentRepository = $this->createMock(MailsSentRepository::class);
-        $this->commandHandler = new MailSentCommandHandler(
+        $this->commandHandler = new SentOwnershipMailHandler(
             $this->mailer,
             $this->mailsSentRepository,
             $this->createMock(LoggerInterface::class)
@@ -65,7 +65,7 @@ class MailSentCommandHandlerTest extends TestCase
             )
             ->willReturn(true);
 
-        $this->commandHandler->handle(new SentMail(
+        $this->commandHandler->handle(new SentOwnershipMail(
             $id,
             $email,
             $subject,
@@ -96,7 +96,7 @@ class MailSentCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('send');
 
-        $this->commandHandler->handle(new SentMail(
+        $this->commandHandler->handle(new SentOwnershipMail(
             $id,
             $email,
             $subject,
@@ -134,7 +134,7 @@ class MailSentCommandHandlerTest extends TestCase
             )
             ->willReturn(false);
 
-        $this->commandHandler->handle(new SentMail(
+        $this->commandHandler->handle(new SentOwnershipMail(
             $id,
             $email,
             $subject,
