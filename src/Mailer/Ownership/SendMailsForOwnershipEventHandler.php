@@ -1,0 +1,59 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Mailer\Ownership;
+
+use Broadway\Domain\DomainMessage;
+use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
+use CultuurNet\UDB3\CommandHandling\ContextDecoratedCommandBus;
+use CultuurNet\UDB3\Http\AsyncDispatchTrait;
+use CultuurNet\UDB3\Mailer\Command\SentOwnershipRequestedMail;
+use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
+use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
+use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
+
+final class SendMailsForOwnershipEventHandler implements EventListener
+{
+    use AsyncDispatchTrait;
+
+    private ContextDecoratedCommandBus $mailerCommandBus;
+    private DomainMessageSpecificationInterface $isReplay;
+    private bool $sendOrganiserMail;
+
+    public function __construct(
+        ContextDecoratedCommandBus $mailerCommandBus,
+        DomainMessageSpecificationInterface $domainMessageSpecification,
+        bool $sendOrganiserMail
+    ) {
+        $this->mailerCommandBus = $mailerCommandBus;
+        $this->isReplay = $domainMessageSpecification;
+        $this->sendOrganiserMail = $sendOrganiserMail;
+    }
+
+    public function handle(DomainMessage $domainMessage): void
+    {
+        if (!$this->sendOrganiserMail) {
+            return;
+        }
+
+        if ($this->isReplay->isSatisfiedBy($domainMessage)) {
+            // This is a replay, don't sent the email
+            return;
+        }
+
+        $event = $domainMessage->getPayload();
+        switch (true) {
+            case $event instanceof OwnershipRequested:
+                $this->dispatchAsyncCommand($this->mailerCommandBus, new SentOwnershipRequestedMail($event->getId()));
+                break;
+            case $event instanceof OwnershipApproved:
+                // @Todo
+                break;
+            case $event instanceof OwnershipRejected:
+                // @Todo
+                break;
+        }
+    }
+}

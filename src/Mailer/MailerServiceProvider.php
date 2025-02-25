@@ -8,9 +8,10 @@ use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\Mailer\Ownership\SendMailsForOwnership;
-use CultuurNet\UDB3\Mailer\Ownership\SentOwnershipMailHandler;
+use CultuurNet\UDB3\Mailer\Ownership\SendMailsForOwnershipEventHandler;
+use CultuurNet\UDB3\Mailer\Ownership\SentOwnershipMailCommandHandler;
 use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
+use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Symfony\Component\Mailer\Mailer as SymfonyMailer;
 use Symfony\Component\Mailer\Transport;
@@ -24,8 +25,8 @@ class MailerServiceProvider extends AbstractServiceProvider
     {
         return [
             Mailer::class,
-            SentOwnershipMailHandler::class,
-            SendMailsForOwnership::class,
+            SentOwnershipMailCommandHandler::class,
+            SendMailsForOwnershipEventHandler::class,
             MailsSentRepository::class,
         ];
     }
@@ -57,29 +58,29 @@ class MailerServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            SentOwnershipMailHandler::class,
-            function (): SentOwnershipMailHandler {
-                return new SentOwnershipMailHandler(
+            SentOwnershipMailCommandHandler::class,
+            function (): SentOwnershipMailCommandHandler {
+                return new SentOwnershipMailCommandHandler(
                     $this->container->get(Mailer::class),
                     $this->container->get(MailsSentRepository::class),
-                    LoggerFactory::create($this->container, LoggerName::forResqueWorker('mails')),
-                );
-            }
-        );
-
-        $container->addShared(
-            SendMailsForOwnership::class,
-            function (): SendMailsForOwnership {
-                return new SendMailsForOwnership(
-                    $this->container->get('mails_command_bus'),
-                    new DomainMessageIsReplayed(),
                     $this->container->get('organizer_jsonld_repository'),
                     $this->container->get(UserIdentityResolver::class),
                     $this->container->get(OrganizerServiceProvider::ORGANIZER_FRONTEND_IRI_GENERATOR),
                     new TwigEnvironment(
                         new FilesystemLoader(__DIR__ . '/templates'),
                     ),
-                    LoggerFactory::create($this->container, LoggerName::forWeb()),
+                    $this->container->get(OwnershipSearchRepository::class),
+                    LoggerFactory::create($this->container, LoggerName::forResqueWorker('mails')),
+                );
+            }
+        );
+
+        $container->addShared(
+            SendMailsForOwnershipEventHandler::class,
+            function (): SendMailsForOwnershipEventHandler {
+                return new SendMailsForOwnershipEventHandler(
+                    $this->container->get('mails_command_bus'),
+                    new DomainMessageIsReplayed(),
                     $this->container->get('config')['mail']['send_organiser_mails'] ?? false,
                 );
             }
