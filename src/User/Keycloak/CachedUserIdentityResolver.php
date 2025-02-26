@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\User\Keycloak;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
+use Symfony\Component\Cache\Exception\CacheException;
 use Symfony\Contracts\Cache\CacheInterface;
 
 final class CachedUserIdentityResolver implements UserIdentityResolver
@@ -25,38 +26,62 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
 
     public function getUserById(string $userId): ?UserIdentityDetails
     {
-        return $this->deserializeUserIdentityDetails(
-            $this->cache->get(
-                $this->createCacheKey($userId, 'user_id'),
-                function () use ($userId) {
-                    return $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserById($userId));
-                }
-            )
-        );
+        try {
+            return $this->deserializeUserIdentityDetails(
+                $this->cache->get(
+                    $this->createCacheKey($userId, 'user_id'),
+                    function () use ($userId) {
+                        $userIdentityDetails = $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserById($userId));
+
+                        if ($userIdentityDetails === null) {
+                            throw new CacheException();
+                        }
+
+                        return $userIdentityDetails;
+                    }
+                )
+            );
+        } catch (CacheException $exception) {
+            return null;
+        }
     }
 
     public function getUserByEmail(EmailAddress $email): ?UserIdentityDetails
     {
-        return $this->deserializeUserIdentityDetails(
-            $this->cache->get(
-                $this->createCacheKey($email->toString(), 'email'),
-                function () use ($email) {
-                    return $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByEmail($email));
-                }
-            )
-        );
+        try {
+            return $this->deserializeUserIdentityDetails(
+                $this->cache->get(
+                    $this->createCacheKey($email->toString(), 'email'),
+                    function () use ($email) {
+                        $userIdentityDetails = $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByEmail($email));
+
+                        if ($userIdentityDetails === null) {
+                            throw new CacheException();
+                        }
+
+                        return $userIdentityDetails;
+                    }
+                )
+            );
+        } catch (CacheException $exception) {
+            return null;
+        }
     }
 
     public function getUserByNick(string $nick): ?UserIdentityDetails
     {
-        return $this->deserializeUserIdentityDetails(
-            $this->cache->get(
-                $this->createCacheKey($nick, 'nick'),
-                function () use ($nick) {
-                    return $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByNick($nick));
-                }
-            )
-        );
+        try {
+            return $this->deserializeUserIdentityDetails(
+                $this->cache->get(
+                    $this->createCacheKey($nick, 'nick'),
+                    function () use ($nick) {
+                        return $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByNick($nick));
+                    }
+                )
+            );
+        } catch (CacheException $exception) {
+            return null;
+        }
     }
 
     private function createCacheKey(string $value, string $property): string
