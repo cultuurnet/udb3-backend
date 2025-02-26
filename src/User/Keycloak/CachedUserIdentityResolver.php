@@ -30,15 +30,7 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
             return $this->deserializeUserIdentityDetails(
                 $this->cache->get(
                     $this->createCacheKey($userId, 'user_id'),
-                    function () use ($userId) {
-                        $userIdentityDetails = $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserById($userId));
-
-                        if ($userIdentityDetails === null) {
-                            throw new CacheException();
-                        }
-
-                        return $userIdentityDetails;
-                    }
+                    fn () => $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserById($userId))
                 )
             );
         } catch (CacheException $exception) {
@@ -52,15 +44,7 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
             return $this->deserializeUserIdentityDetails(
                 $this->cache->get(
                     $this->createCacheKey($email->toString(), 'email'),
-                    function () use ($email) {
-                        $userIdentityDetails = $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByEmail($email));
-
-                        if ($userIdentityDetails === null) {
-                            throw new CacheException();
-                        }
-
-                        return $userIdentityDetails;
-                    }
+                    fn () => $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByEmail($email))
                 )
             );
         } catch (CacheException $exception) {
@@ -74,15 +58,7 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
             return $this->deserializeUserIdentityDetails(
                 $this->cache->get(
                     $this->createCacheKey($nick, 'nick'),
-                    function () use ($nick) {
-                        $userIdentityDetails = $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByNick($nick));
-
-                        if ($userIdentityDetails === null) {
-                            throw new CacheException();
-                        }
-
-                        return $userIdentityDetails;
-                    }
+                    fn () => $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByNick($nick))
                 )
             );
         } catch (CacheException $exception) {
@@ -95,12 +71,12 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
         return preg_replace('/[{}()\/\\\\@:]/', '_', $value . '_' . $property);
     }
 
-    private function getUserIdentityDetailsAsArray(?UserIdentityDetails $userIdentityDetails): ?array
+    private function getUserIdentityDetailsAsArray(?UserIdentityDetails $userIdentityDetails): array
     {
-        if ($userIdentityDetails !== null) {
-            return $userIdentityDetails->jsonSerialize();
+        if ($userIdentityDetails === null) {
+            throw new CacheException();
         }
-        return null;
+        return $userIdentityDetails->jsonSerialize();
     }
 
     private function deserializeUserIdentityDetails(?array $cachedUserIdentityDetails): ?UserIdentityDetails
