@@ -35,16 +35,7 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
-# Copy xdebug.ini from the host machine to the container
-COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-
-# Install Xdebug if enabled
-RUN if [ "$ENABLE_XDEBUG" = "true" ] ; then \
-      pecl install xdebug-3.1.5 && \
-      docker-php-ext-enable xdebug ; \
-    fi
-
-# Always copy a file, but choose xdebug.ini or an empty one
+# Always copy a file, but choose# Always copy a file, but choose xdebug.ini or an empty one xdebug.ini or an empty one
 COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 COPY xdebug-empty.ini /usr/local/etc/php/conf.d/xdebug-empty.ini
 
