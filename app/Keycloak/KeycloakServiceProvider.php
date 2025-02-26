@@ -10,7 +10,6 @@ use CultuurNet\UDB3\User\Keycloak\CachedUserIdentityResolver;
 use CultuurNet\UDB3\User\Keycloak\KeycloakUserIdentityResolver;
 use CultuurNet\UDB3\User\ManagementToken\ManagementTokenProvider;
 use GuzzleHttp\Client;
-use Predis\Client as RedisClient;
 
 final class KeycloakServiceProvider extends AbstractServiceProvider
 {
@@ -36,7 +35,7 @@ final class KeycloakServiceProvider extends AbstractServiceProvider
                         $container->get(ManagementTokenProvider::class)->token()
                     ),
                     CacheFactory::create(
-                        $container->get(RedisClient::class),
+                        $container->get('app_cache'),
                         'user_identity',
                         86400
                     )
