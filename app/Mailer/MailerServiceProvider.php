@@ -67,7 +67,7 @@ class MailerServiceProvider extends AbstractServiceProvider
                     $this->container->get(UserIdentityResolver::class),
                     $this->container->get(OrganizerServiceProvider::ORGANIZER_FRONTEND_IRI_GENERATOR),
                     new TwigEnvironment(
-                        new FilesystemLoader(__DIR__ . '/templates'),
+                        new FilesystemLoader(__DIR__ . '/../../src/Mailer/templates'),
                     ),
                     $this->container->get(OwnershipSearchRepository::class),
                     LoggerFactory::create($this->container, LoggerName::forResqueWorker('mails')),
