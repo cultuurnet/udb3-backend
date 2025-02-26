@@ -101,6 +101,20 @@ final class CachedUserIdentityResolverTest extends TestCase
     /**
      * @test
      */
+    public function it_does_not_cache_when_id_is_null(): void
+    {
+        $this->fallbackUserIdentityResolver->expects($this->exactly(2))
+            ->method('getUserById')
+            ->with('null')
+            ->willReturn(Null);
+
+        $this->cachedUserIdentityResolver->getUserById('null');
+        $this->cachedUserIdentityResolver->getUserById('null');
+    }
+
+    /**
+     * @test
+     */
     public function it_can_get_an_uncached_user_by_email(): void
     {
         $this->fallbackUserIdentityResolver->expects($this->once())
@@ -131,6 +145,21 @@ final class CachedUserIdentityResolverTest extends TestCase
     /**
      * @test
      */
+    public function it_does_not_cache_when_email_is_null(): void
+    {
+        $nonExistingUser = new EmailAddress('null@null.com');
+        $this->fallbackUserIdentityResolver->expects($this->exactly(2))
+            ->method('getUserByEmail')
+            ->with($nonExistingUser)
+            ->willReturn(Null);
+
+        $this->cachedUserIdentityResolver->getUserByEmail($nonExistingUser);
+        $this->cachedUserIdentityResolver->getUserByEmail($nonExistingUser);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_get_an_uncached_user_by_nick(): void
     {
         $this->fallbackUserIdentityResolver->expects($this->once())
@@ -156,5 +185,19 @@ final class CachedUserIdentityResolverTest extends TestCase
             $this->cachedUserIdentityDetails,
             $this->cachedUserIdentityResolver->getUserByNick('Jane Doe')
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_cache_when_nick_is_null(): void
+    {
+        $this->fallbackUserIdentityResolver->expects($this->exactly(2))
+            ->method('getUserByNick')
+            ->with('null')
+            ->willReturn(Null);
+
+        $this->cachedUserIdentityResolver->getUserByNick('null');
+        $this->cachedUserIdentityResolver->getUserByNick('null');
     }
 }
