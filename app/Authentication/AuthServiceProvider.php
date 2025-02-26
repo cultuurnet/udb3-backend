@@ -23,7 +23,6 @@ use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\User\CurrentUser;
 use League\Container\DefinitionContainerInterface;
-use Predis\Client as RedisClient;
 
 final class AuthServiceProvider extends AbstractServiceProvider
 {
@@ -58,7 +57,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                     new CachedApiKeyAuthenticator(
                         new CultureFeedApiKeyAuthenticator($container->get(ConsumerReadRepository::class)),
                         CacheFactory::create(
-                            $container->get(RedisClient::class),
+                            $container->get('app_cache'),
                             'api_key',
                             86400
                         )
@@ -163,7 +162,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                 return new CachedConsumerReadRepository(
                     new CultureFeedConsumerReadRepository($container->get('culturefeed'), true),
                     CacheFactory::create(
-                        $container->get(RedisClient::class),
+                        $container->get('app_cache'),
                         'culturefeed_consumer',
                         86400
                     )
