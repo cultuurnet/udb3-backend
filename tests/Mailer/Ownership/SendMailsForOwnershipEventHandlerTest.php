@@ -4,10 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailer\Ownership;
 
+use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
 use CultuurNet\UDB3\CommandHandling\ContextDecoratedCommandBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
+use CultuurNet\UDB3\Mailer\Command\AbstractSendOwnershipMail;
+use CultuurNet\UDB3\Mailer\Command\SendOwnershipAcceptedMail;
+use CultuurNet\UDB3\Mailer\Command\SendOwnershipRejectedMail;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
+use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
+use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -35,21 +41,11 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
     }
 
     /** @test
+     * @dataProvider eventToCommandProvider
      * This is the happy path
      * */
-    public function it_handles_ownership_requested_event(): void
+    public function it_handles_ownership_requested_event(Serializable $event, AbstractSendOwnershipMail $command): void
     {
-        $id = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
-        $organizerId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
-        $ownerId = 'auth0|63e22626e39a8ca1264bd29b';
-
-        $event = new OwnershipRequested(
-            $id,
-            $organizerId,
-            'organizer',
-            $ownerId,
-            'google-oauth2|102486314601596809843'
-        );
         $domainMessage = (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($event);
 
         $this->domainMessageSpecification
@@ -60,11 +56,36 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
 
         $this->commandBus->expects($this->once())
             ->method('dispatch')
-            ->with(new SendOwnershipRequestedMail($id));
+            ->with($command);
 
         $this->sendMailsForOwnership->handle(
             $domainMessage
         );
+    }
+
+    public function eventToCommandProvider(): array
+    {
+        $id = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
+        return [
+            'OwnershipRequested' => [
+                new OwnershipRequested(
+                    $id,
+                    '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                    'organizer',
+                    'auth0|63e22626e39a8ca1264bd29b',
+                    'google-oauth2|102486314601596809843'
+                ),
+                new SendOwnershipRequestedMail($id),
+            ],
+            'OwnershipApproved' => [
+                new OwnershipApproved($id),
+                new SendOwnershipAcceptedMail($id),
+            ],
+            'OwnershipRejected' => [
+                new OwnershipRejected($id),
+                new SendOwnershipRejectedMail($id),
+            ],
+        ];
     }
 
     /** @test */

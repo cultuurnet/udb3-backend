@@ -9,6 +9,8 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
 use CultuurNet\UDB3\CommandHandling\ContextDecoratedCommandBus;
 use CultuurNet\UDB3\Http\AsyncDispatchTrait;
+use CultuurNet\UDB3\Mailer\Command\SendOwnershipAcceptedMail;
+use CultuurNet\UDB3\Mailer\Command\SendOwnershipRejectedMail;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
@@ -42,10 +44,10 @@ final class SendMailsForOwnershipEventHandler implements EventListener
                 $this->dispatchAsyncCommand($this->mailerCommandBus, new SendOwnershipRequestedMail($event->getId()));
                 break;
             case $event instanceof OwnershipApproved:
-                // @Todo
+                $this->dispatchAsyncCommand($this->mailerCommandBus, new SendOwnershipAcceptedMail($event->getId()));
                 break;
             case $event instanceof OwnershipRejected:
-                // @Todo
+                $this->dispatchAsyncCommand($this->mailerCommandBus, new SendOwnershipRejectedMail($event->getId()));
                 break;
         }
     }

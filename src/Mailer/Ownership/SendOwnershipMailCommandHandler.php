@@ -6,10 +6,14 @@ namespace CultuurNet\UDB3\Mailer\Ownership;
 
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Mailer\Command\AbstractSendOwnershipMail;
+use CultuurNet\UDB3\Mailer\Command\SendOwnershipAcceptedMail;
+use CultuurNet\UDB3\Mailer\Command\SendOwnershipRejectedMail;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
 use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Mailer\MailsSentRepository;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\RecipientStrategy;
+use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToOwnersOfOrganisation;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToRequesterOfOwnership;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -31,6 +35,12 @@ class SendOwnershipMailCommandHandler implements CommandHandler
 {
     private const SUBJECT_OWNERSHIP_REQUESTED = 'Beheers aanvraag voor organisatie {{ organisationName }}';
     private const TEMPLATE_OWNERSHIP_REQUESTED = 'ownershipRequested';
+
+    private const SUBJECT_OWNERSHIP_APPROVED = 'Je bent nu beheerder van organisatie {{ organisationName }}!';
+    private const TEMPLATE_OWNERSHIP_APPROVED = 'approved';
+
+    private const SUBJECT_OWNERSHIP_REJECTED = 'Je beheersaanvraag voor organisatie {{ organisationName }} is geweigerd';
+    private const TEMPLATE_OWNERSHIP_REJECTED = 'rejected';
 
     private Mailer $mailer;
     private MailsSentRepository $mailsSentRepository;
@@ -69,13 +79,29 @@ class SendOwnershipMailCommandHandler implements CommandHandler
                     $command,
                     self::SUBJECT_OWNERSHIP_REQUESTED,
                     self::TEMPLATE_OWNERSHIP_REQUESTED,
+                    new SendToOwnersOfOrganisation($this->identityResolver, $this->logger)
+                );
+                break;
+            case $command instanceof SendOwnershipAcceptedMail:
+                $this->processCommand(
+                    $command,
+                    self::SUBJECT_OWNERSHIP_APPROVED,
+                    self::TEMPLATE_OWNERSHIP_APPROVED,
+                    new SendToRequesterOfOwnership($this->identityResolver, $this->logger)
+                );
+                break;
+            case $command instanceof SendOwnershipRejectedMail:
+                $this->processCommand(
+                    $command,
+                    self::SUBJECT_OWNERSHIP_REJECTED,
+                    self::TEMPLATE_OWNERSHIP_REJECTED,
                     new SendToRequesterOfOwnership($this->identityResolver, $this->logger)
                 );
                 break;
         }
     }
 
-    public function processCommand(SendOwnershipRequestedMail $command, string $rawSubject, string $template, RecipientStrategy $recipients): void
+    public function processCommand(AbstractSendOwnershipMail $command, string $rawSubject, string $template, RecipientStrategy $recipients): void
     {
         $uuid = new Uuid($command->getUuid());
 
@@ -118,7 +144,7 @@ class SendOwnershipMailCommandHandler implements CommandHandler
         OwnershipItem $ownershipItem,
         string $rawSubject,
         string $template,
-        SendOwnershipRequestedMail $command
+        AbstractSendOwnershipMail $command
     ): void {
         $params = [
             'organisationName' => $organisationName,
