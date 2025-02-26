@@ -75,7 +75,13 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
                 $this->cache->get(
                     $this->createCacheKey($nick, 'nick'),
                     function () use ($nick) {
-                        return $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByNick($nick));
+                        $userIdentityDetails = $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByNick($nick));
+
+                        if ($userIdentityDetails === null) {
+                            throw new CacheException();
+                        }
+
+                        return $userIdentityDetails;
                     }
                 )
             );
