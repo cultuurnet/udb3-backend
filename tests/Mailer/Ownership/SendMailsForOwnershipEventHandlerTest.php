@@ -31,7 +31,6 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
         $this->sendMailsForOwnership = new SendMailsForOwnershipEventHandler(
             $this->commandBus,
             $this->domainMessageSpecification,
-            true
         );
     }
 
@@ -88,26 +87,6 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
         $this->sendMailsForOwnership->handle(
             $domainMessage
         );
-    }
-
-    /** @test */
-    public function it_tests_feature_toggle(): void
-    {
-        $itemId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
-        $ownerId = 'auth0|63e22626e39a8ca1264bd29b';
-
-        $sendMailsForOwnership = new SendMailsForOwnershipEventHandler(
-            $this->createMock(ContextDecoratedCommandBus::class),
-            $this->createMock(DomainMessageSpecificationInterface::class),
-            false
-        );
-
-        $domainMessage = (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create(
-            $this->getEvent($itemId, $ownerId)
-        );
-        $sendMailsForOwnership->handle($domainMessage);
-
-        $this->commandBus->expects($this->never())->method('dispatch');
     }
 
     private function getEvent(string $itemId, string $ownerId): OwnershipRequested

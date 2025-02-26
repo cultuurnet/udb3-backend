@@ -81,7 +81,6 @@ class MailerServiceProvider extends AbstractServiceProvider
                 return new SendMailsForOwnershipEventHandler(
                     $this->container->get('mails_command_bus'),
                     new DomainMessageIsReplayed(),
-                    $this->container->get('config')['mail']['send_organiser_mails'] ?? false,
                 );
             }
         );

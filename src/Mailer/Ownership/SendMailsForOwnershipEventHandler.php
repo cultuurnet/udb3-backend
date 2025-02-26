@@ -20,24 +20,17 @@ final class SendMailsForOwnershipEventHandler implements EventListener
 
     private ContextDecoratedCommandBus $mailerCommandBus;
     private DomainMessageSpecificationInterface $isReplay;
-    private bool $sendOrganiserMail;
 
     public function __construct(
         ContextDecoratedCommandBus $mailerCommandBus,
-        DomainMessageSpecificationInterface $domainMessageSpecification,
-        bool $sendOrganiserMail
+        DomainMessageSpecificationInterface $domainMessageSpecification
     ) {
         $this->mailerCommandBus = $mailerCommandBus;
         $this->isReplay = $domainMessageSpecification;
-        $this->sendOrganiserMail = $sendOrganiserMail;
     }
 
     public function handle(DomainMessage $domainMessage): void
     {
-        if (!$this->sendOrganiserMail) {
-            return;
-        }
-
         if ($this->isReplay->isSatisfiedBy($domainMessage)) {
             // This is a replay, don't sent the email
             return;

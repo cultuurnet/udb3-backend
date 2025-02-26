@@ -89,7 +89,6 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                             OwnershipSearchProjector::class,
                             OwnershipPermissionProjector::class,
                             ImageLDProjector::class,
-                            SendMailsForOwnershipEventHandler::class,
                         ];
 
                         $initialSubscribersCount = count($subscribers);
@@ -100,6 +99,10 @@ final class EventBusServiceProvider extends AbstractServiceProvider
 
                         foreach ($subscribers as $subscriberServiceId) {
                             $eventBus->subscribe($container->get($subscriberServiceId));
+                        }
+
+                        if ($this->container->get('config')['mail']['send_ownernship_mails'] ?? false) {
+                            $eventBus->subscribe($container->get(SendMailsForOwnershipEventHandler::class));
                         }
                     }
                 );
