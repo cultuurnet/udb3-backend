@@ -27,7 +27,7 @@ final class CachedUserIdentityResolverTest extends TestCase
     protected function setUp(): void
     {
         $this->fallbackUserIdentityResolver = $this->createMock(UserIdentityResolver::class);
-        $cache =  new ArrayAdapter();
+        $cache = new ArrayAdapter();
 
         $this->cachedUserIdentityResolver = new CachedUserIdentityResolver(
             $this->fallbackUserIdentityResolver,
