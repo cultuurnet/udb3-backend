@@ -106,7 +106,7 @@ final class CachedUserIdentityResolverTest extends TestCase
         $this->fallbackUserIdentityResolver->expects($this->exactly(2))
             ->method('getUserById')
             ->with('null')
-            ->willReturn(Null);
+            ->willReturn(null);
 
         $this->cachedUserIdentityResolver->getUserById('null');
         $this->cachedUserIdentityResolver->getUserById('null');
@@ -151,7 +151,7 @@ final class CachedUserIdentityResolverTest extends TestCase
         $this->fallbackUserIdentityResolver->expects($this->exactly(2))
             ->method('getUserByEmail')
             ->with($nonExistingUser)
-            ->willReturn(Null);
+            ->willReturn(null);
 
         $this->cachedUserIdentityResolver->getUserByEmail($nonExistingUser);
         $this->cachedUserIdentityResolver->getUserByEmail($nonExistingUser);
@@ -195,7 +195,7 @@ final class CachedUserIdentityResolverTest extends TestCase
         $this->fallbackUserIdentityResolver->expects($this->exactly(2))
             ->method('getUserByNick')
             ->with('null')
-            ->willReturn(Null);
+            ->willReturn(null);
 
         $this->cachedUserIdentityResolver->getUserByNick('null');
         $this->cachedUserIdentityResolver->getUserByNick('null');
