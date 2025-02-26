@@ -15,7 +15,7 @@ final class CacheServiceProvider extends AbstractServiceProvider
     {
         return [
             'cache',
-            'temporary_cache',
+            'app_cache',
         ];
     }
 
@@ -36,9 +36,9 @@ final class CacheServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            'temporary_cache',
+            'app_cache',
             new Client(
-                $container->get('config')['cache']['temporary_cache']
+                $container->get('config')['cache']['app_cache']
             )
         );
     }

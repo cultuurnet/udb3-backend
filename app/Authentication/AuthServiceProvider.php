@@ -57,7 +57,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                     new CachedApiKeyAuthenticator(
                         new CultureFeedApiKeyAuthenticator($container->get(ConsumerReadRepository::class)),
                         CacheFactory::create(
-                            $container->get('temporary_cache'),
+                            $container->get('app_cache'),
                             'api_key',
                             86400
                         )
@@ -162,7 +162,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                 return new CachedConsumerReadRepository(
                     new CultureFeedConsumerReadRepository($container->get('culturefeed'), true),
                     CacheFactory::create(
-                        $container->get('temporary_cache'),
+                        $container->get('app_cache'),
                         'culturefeed_consumer',
                         86400
                     )

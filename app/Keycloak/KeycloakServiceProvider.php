@@ -35,7 +35,7 @@ final class KeycloakServiceProvider extends AbstractServiceProvider
                         $container->get(ManagementTokenProvider::class)->token()
                     ),
                     CacheFactory::create(
-                        $container->get('temporary_cache'),
+                        $container->get('app_cache'),
                         'user_identity',
                         86400
                     )
