@@ -76,6 +76,7 @@ class SendOwnershipMailCommandHandler implements CommandHandler
         $uuid = new Uuid($command->getUuid());
 
         if ($this->mailsSentRepository->isMailSent($uuid, get_class($command))) {
+            $this->logger->info(sprintf('[ownership-mail] Mail %s about %s was already sent', $uuid->toString(), get_class($command)));
             return;
         }
 
@@ -104,13 +105,15 @@ class SendOwnershipMailCommandHandler implements CommandHandler
             return;
         }
 
+        $organizerName = $organizer['name'][$organizer['mainLanguage']] ?? $organizer['name']['nl'];
+
         $params = [
-            'organisationName' => $organizer['name']['nl'],
+            'organisationName' => $organizerName,
             'firstName' => $ownerDetails->getUserName(),//@todo change to be the correct user
             'organisationUrl' => $this->organizerIriGenerator->iri($ownershipItem->getItemId()),
         ];
 
-        $subject = $this->parseSubject($rawSubject, $organizer['name']['nl']);
+        $subject = $this->parseSubject($rawSubject, $organizerName);
         $to = new EmailAddress($ownerDetails->getEmailAddress());
 
         try {
@@ -121,17 +124,18 @@ class SendOwnershipMailCommandHandler implements CommandHandler
                 $this->twig->render($template . '.txt.twig', $params),
             );
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
-            $this->logger->error($e->getMessage());
+            $this->logger->error('[ownership-mail] ' . $e->getMessage());
             return;
         }
 
         if (!$success) {
+            $this->logger->error(sprintf('[ownership-mail] Mail "%s" failed to sent to %s', $subject, $to->toString()));
             return;
         }
 
         $this->mailsSentRepository->addMailSent($uuid, $to, get_class($command), new DateTimeImmutable());
 
-        $this->logger->info(sprintf('Mail "%s" sent to %s', $subject, $to->toString()));
+        $this->logger->info(sprintf('[ownership-mail] Mail "%s" sent to %s', $subject, $to->toString()));
     }
 
     private function parseSubject(string $subject, string $name): string

@@ -116,7 +116,7 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('fetch')
             ->with($organizerId)
-            ->willReturn(new JsonDocument($organizerId, json_encode(['name' => ['nl' => $organizerName]])));
+            ->willReturn(new JsonDocument($organizerId, json_encode(['mainLanguage' => 'nl', 'name' => ['nl' => $organizerName]])));
 
         $this->identityResolver
             ->expects($this->once())
@@ -155,6 +155,11 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             )
             ->willReturn(true);
 
+        $this->logger
+            ->expects($this->once())
+            ->method('info')
+            ->with(sprintf('[ownership-mail] Mail "%s" sent to %s', $subject, $email->toString()));
+
         $this->commandHandler->handle(new SendOwnershipRequestedMail($id));
     }
 
@@ -176,6 +181,11 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
         $this->mailer
             ->expects($this->never())
             ->method('send');
+
+        $this->logger
+            ->expects($this->once())
+            ->method('info')
+            ->with(sprintf('[ownership-mail] Mail %s about %s was already sent', $id, SendOwnershipRequestedMail::class));
 
         $this->commandHandler->handle(new SendOwnershipRequestedMail($id));
     }
@@ -278,7 +288,7 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('fetch')
             ->with($organizerId)
-            ->willReturn(new JsonDocument($organizerId, json_encode(['name' => ['nl' => $organizerName]])));
+            ->willReturn(new JsonDocument($organizerId, json_encode(['mainLanguage' => 'fr', 'name' => ['fr' => $organizerName]])));
 
         $this->identityResolver
             ->expects($this->once())
@@ -292,6 +302,94 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
 
         $this->logger->expects($this->once())
             ->method('warning');
+
+        $this->commandHandler->handle(new SendOwnershipRequestedMail($id));
+    }
+
+    /** @test */
+    public function it_gives_a_warning_when_mail_failed_to_sent(): void
+    {
+        $id = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
+        $ownerId = 'd6e21fa4-8d8d-4f23-b0cc-c63e34e43a01';
+        $organizerId = 'd146a8cb-14c8-4364-9207-9d32d36f6959';
+
+        $organizerName = 'Publiq VZW';
+        $name = 'Grote smurf';
+
+        $email = new EmailAddress('grotesmurf@publiq.be');
+        $subject = 'Beheers aanvraag voor organisatie Publiq VZW';
+        $html = '<p>body</p>';
+        $text = 'body';
+
+        $this->mailsSentRepository
+            ->expects($this->once())
+            ->method('isMailSent')
+            ->with(new Uuid($id), SendOwnershipRequestedMail::class)
+            ->willReturn(false);
+
+        $this->mailsSentRepository
+            ->expects($this->never())
+            ->method('addMailSent');
+
+        $this->ownershipSearchRepository
+            ->expects($this->once())
+            ->method('getById')
+            ->with($id)
+            ->willReturn(new OwnershipItem(
+                $id,
+                $organizerId,
+                'organizer',
+                $ownerId,
+                'requested'
+            ));
+
+        $this->organizerRepository
+            ->expects($this->once())
+            ->method('fetch')
+            ->with($organizerId)
+            ->willReturn(new JsonDocument($organizerId, json_encode(['mainLanguage' => 'nl', 'name' => ['nl' => $organizerName]])));
+
+        $this->identityResolver
+            ->expects($this->once())
+            ->method('getUserById')
+            ->with($ownerId)
+            ->willReturn(new UserIdentityDetails($ownerId, $name, $email->toString()));
+
+        $expectedParams = [
+            'organisationName' => $organizerName,
+            'firstName' => $name,
+            'organisationUrl' => 'http://localhost/organizers/' . $organizerId,
+        ];
+
+        $this->twig->expects($this->exactly(2))
+            ->method('render')
+            ->willReturnCallback(function (string $type, array $params) use ($expectedParams) {
+                $this->assertEquals($expectedParams, $params);
+                switch ($type) {
+                    case 'ownershipRequested.html.twig':
+                        return '<p>body</p>';
+                    case 'ownershipRequested.txt.twig':
+                        return 'body';
+                    default:
+                        $this->fail(sprintf('Type %s is unexpected', $type));
+                }
+            });
+
+        $this->mailer
+            ->expects($this->once())
+            ->method('send')
+            ->with(
+                $email,
+                $subject,
+                $html,
+                $text
+            )
+            ->willReturn(false);
+
+        $this->logger
+            ->expects($this->once())
+            ->method('error')
+            ->with(sprintf('[ownership-mail] Mail "%s" failed to sent to %s', $subject, $email->toString()));
 
         $this->commandHandler->handle(new SendOwnershipRequestedMail($id));
     }
