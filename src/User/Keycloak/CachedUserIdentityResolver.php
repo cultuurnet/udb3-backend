@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\User\Keycloak;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
+use InvalidArgumentException;
 use Symfony\Contracts\Cache\CacheInterface;
 
 final class CachedUserIdentityResolver implements UserIdentityResolver
@@ -25,37 +26,28 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
 
     public function getUserById(string $userId): ?UserIdentityDetails
     {
-        return $this->deserializeUserIdentityDetails(
-            $this->cache->get(
-                $this->createCacheKey($userId, 'user_id'),
-                function () use ($userId) {
-                    return $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserById($userId));
-                }
-            )
+        return $this->getUserFromCache(
+            $userId,
+            'user_id',
+            fn () => $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserById($userId))
         );
     }
 
     public function getUserByEmail(EmailAddress $email): ?UserIdentityDetails
     {
-        return $this->deserializeUserIdentityDetails(
-            $this->cache->get(
-                $this->createCacheKey($email->toString(), 'email'),
-                function () use ($email) {
-                    return $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByEmail($email));
-                }
-            )
+        return $this->getUserFromCache(
+            $email->toString(),
+            'email',
+            fn () => $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByEmail($email))
         );
     }
 
     public function getUserByNick(string $nick): ?UserIdentityDetails
     {
-        return $this->deserializeUserIdentityDetails(
-            $this->cache->get(
-                $this->createCacheKey($nick, 'nick'),
-                function () use ($nick) {
-                    return $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByNick($nick));
-                }
-            )
+        return $this->getUserFromCache(
+            $nick,
+            'nick',
+            fn () => $this->getUserIdentityDetailsAsArray($this->userIdentityResolver->getUserByNick($nick))
         );
     }
 
@@ -64,12 +56,26 @@ final class CachedUserIdentityResolver implements UserIdentityResolver
         return preg_replace('/[{}()\/\\\\@:]/', '_', $value . '_' . $property);
     }
 
-    private function getUserIdentityDetailsAsArray(?UserIdentityDetails $userIdentityDetails): ?array
+    private function getUserFromCache(string $key, string $type, callable $callback): ?UserIdentityDetails
     {
-        if ($userIdentityDetails !== null) {
-            return $userIdentityDetails->jsonSerialize();
+        try {
+            return $this->deserializeUserIdentityDetails(
+                $this->cache->get(
+                    $this->createCacheKey($key, $type),
+                    fn () => $callback()
+                )
+            );
+        } catch (InvalidArgumentException $exception) {
+            return null;
         }
-        return null;
+    }
+
+    private function getUserIdentityDetailsAsArray(?UserIdentityDetails $userIdentityDetails): array
+    {
+        if ($userIdentityDetails === null) {
+            throw new InvalidArgumentException();
+        }
+        return $userIdentityDetails->jsonSerialize();
     }
 
     private function deserializeUserIdentityDetails(?array $cachedUserIdentityDetails): ?UserIdentityDetails
