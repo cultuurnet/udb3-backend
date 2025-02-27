@@ -37,7 +37,8 @@ class OwnershipMailParamExtractorTest extends TestCase
         );
     }
 
-    public function testFetchParamsSuccessfully(): void
+    /** @test */
+    public function it_returns_ownernship_mail_params(): void
     {
         $this->organizerRepository
             ->expects($this->once())
@@ -60,7 +61,8 @@ class OwnershipMailParamExtractorTest extends TestCase
         ], $result);
     }
 
-    public function testFetchParamsWithMissingMainLanguage(): void
+    /** @test */
+    public function it_returns_ownernship_mail_params_with_fallback_main_language(): void
     {
         $this->organizerRepository
             ->expects($this->once())
@@ -83,7 +85,8 @@ class OwnershipMailParamExtractorTest extends TestCase
         ], $result);
     }
 
-    public function testFetchParamsThrowsExceptionWhenDocumentNotFound(): void
+    /** @test */
+    public function it_throw_exception_when_organizer_not_found(): void
     {
         $this->expectException(DocumentDoesNotExist::class);
 
