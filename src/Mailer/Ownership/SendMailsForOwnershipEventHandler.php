@@ -32,7 +32,6 @@ final class SendMailsForOwnershipEventHandler implements EventListener
     public function handle(DomainMessage $domainMessage): void
     {
         if ($this->isReplay->isSatisfiedBy($domainMessage)) {
-            // This is a replay, don't sent the email
             return;
         }
 
