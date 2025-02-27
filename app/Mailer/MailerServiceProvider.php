@@ -41,11 +41,11 @@ class MailerServiceProvider extends AbstractServiceProvider
                 $config = $this->container->get('config');
                 return new SmtpMailer(
                     new SymfonyMailer(Transport::fromDsn($config['mail']['smtp'])),
-                    LoggerFactory::create($this->container, LoggerName::forWeb()),
                     new Address(
                         $config['mail']['sender']['address'],
                         $config['mail']['sender']['name']
                     ),
+                    LoggerFactory::create($this->container, LoggerName::forWeb()),
                 );
             }
         );
