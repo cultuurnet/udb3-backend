@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Mailer\Handler;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
+use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Mailer\MailsSentRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
@@ -30,31 +29,28 @@ class SendOwnershipMailCommandHandler implements CommandHandler
 
     private Mailer $mailer;
     private MailsSentRepository $mailsSentRepository;
-    private LoggerInterface $logger;
-    private DocumentRepository $organizerRepository;
     private UserIdentityResolver $identityResolver;
-    private IriGeneratorInterface $organizerIriGenerator;
     private TwigEnvironment $twig;
     private OwnershipSearchRepository $ownershipSearchRepository;
+    private OwnershipMailParamExtractor $paramExtractor;
+    private LoggerInterface $logger;
 
     public function __construct(
         Mailer $mailer,
         MailsSentRepository $mailsSentRepository,
-        DocumentRepository $organizerRepository,
         UserIdentityResolver $identityResolver,
-        IriGeneratorInterface $organizerIriGenerator,
         TwigEnvironment $twig,
         OwnershipSearchRepository $ownershipSearchRepository,
+        OwnershipMailParamExtractor $paramExtractor,
         LoggerInterface $logger
     ) {
         $this->mailer = $mailer;
         $this->mailsSentRepository = $mailsSentRepository;
-        $this->logger = $logger;
-        $this->organizerRepository = $organizerRepository;
         $this->identityResolver = $identityResolver;
-        $this->organizerIriGenerator = $organizerIriGenerator;
         $this->twig = $twig;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
+        $this->paramExtractor = $paramExtractor;
+        $this->logger = $logger;
     }
 
     public function handle($command): void
@@ -87,15 +83,6 @@ class SendOwnershipMailCommandHandler implements CommandHandler
             return;
         }
 
-        try {
-            $organizerProjection = $this->organizerRepository->fetch($ownershipItem->getItemId());
-        } catch (DocumentDoesNotExist $e) {
-            $this->logger->warning(sprintf('[ownership-mail] Could not load organizer: %s', $e->getMessage()));
-            return;
-        }
-
-        $organizer = $organizerProjection->getAssocBody();
-
         //@todo loop over ALL owners of organisation
         $ownerId = $ownershipItem->getOwnerId();
         $ownerDetails = $this->identityResolver->getUserById($ownerId);
@@ -105,15 +92,14 @@ class SendOwnershipMailCommandHandler implements CommandHandler
             return;
         }
 
-        $organizerName = $organizer['name'][$organizer['mainLanguage']] ?? $organizer['name']['nl'];
+        try {
+            $params = $this->paramExtractor->fetchParams($ownershipItem, $ownerDetails);
+        } catch (DocumentDoesNotExist $e) {
+            $this->logger->warning(sprintf('[ownership-mail] Could not load organizer: %s', $e->getMessage()));
+            return;
+        }
 
-        $params = [
-            'organisationName' => $organizerName,
-            'firstName' => $ownerDetails->getUserName(),//@todo change to be the correct user
-            'organisationUrl' => $this->organizerIriGenerator->iri($ownershipItem->getItemId()),
-        ];
-
-        $subject = $this->parseSubject($rawSubject, $organizerName);
+        $subject = $this->parseSubject($rawSubject, $params['organisationName']);
         $to = new EmailAddress($ownerDetails->getEmailAddress());
 
         try {

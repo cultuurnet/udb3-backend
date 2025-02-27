@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailer\Handler;
 
-use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
+use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Mailer\MailsSentRepository;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -14,8 +14,6 @@ use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -40,8 +38,8 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
     /** @var TwigEnvironment|MockObject */
     private $twig;
 
-    /** @var DocumentRepository|MockObject */
-    private $organizerRepository;
+    /** @var OwnershipMailParamExtractor|MockObject */
+    private $ownershipMailParamExtractor;
 
     /** @var LoggerInterface|MockObject */
     private $logger;
@@ -51,21 +49,19 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
         $this->mailer = $this->createMock(Mailer::class);
         $this->mailsSentRepository = $this->createMock(MailsSentRepository::class);
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
-        $this->organizerRepository = $this->createMock(DocumentRepository::class);
         $this->twig = $this->createMock(TwigEnvironment::class);
         $this->identityResolver = $this->createMock(UserIdentityResolver::class);
         $this->logger = $this->createMock(LoggerInterface::class);
+        $this->identityResolver = $this->createMock(UserIdentityResolver::class);
+        $this->ownershipMailParamExtractor = $this->createMock(OwnershipMailParamExtractor::class);
 
         $this->commandHandler = new SendOwnershipMailCommandHandler(
             $this->mailer,
             $this->mailsSentRepository,
-            $this->organizerRepository,
             $this->identityResolver,
-            new CallableIriGenerator(
-                fn (string $id) => 'http://localhost/organizers/' . $id
-            ),
             $this->twig,
             $this->ownershipSearchRepository,
+            $this->ownershipMailParamExtractor,
             $this->logger
         );
     }
@@ -100,34 +96,40 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
                 SendOwnershipRequestedMail::class
             );
 
+        $ownershipItem = new OwnershipItem(
+            $id,
+            $organizerId,
+            'organizer',
+            $ownerId,
+            'requested'
+        );
         $this->ownershipSearchRepository
             ->expects($this->once())
             ->method('getById')
             ->with($id)
-            ->willReturn(new OwnershipItem(
-                $id,
-                $organizerId,
-                'organizer',
-                $ownerId,
-                'requested'
-            ));
+            ->willReturn($ownershipItem);
 
-        $this->organizerRepository
-            ->expects($this->once())
-            ->method('fetch')
-            ->with($organizerId)
-            ->willReturn(new JsonDocument($organizerId, json_encode(['mainLanguage' => 'nl', 'name' => ['nl' => $organizerName]])));
-
+        $userIdentityDetails = new UserIdentityDetails($ownerId, $name, $email->toString());
         $this->identityResolver
             ->expects($this->once())
             ->method('getUserById')
             ->with($ownerId)
-            ->willReturn(new UserIdentityDetails($ownerId, $name, $email->toString()));
+            ->willReturn($userIdentityDetails);
+
+        $this->ownershipMailParamExtractor
+            ->expects($this->once())
+            ->method('fetchParams')
+            ->with($ownershipItem, $userIdentityDetails)
+            ->willReturn([
+                'organisationName' => $organizerName,
+                'firstName' => 'Grote smurf',
+                'organisationUrl' => 'http://localhost/organizers/' . $organizerId . '/preview',
+            ]);
 
         $expectedParams = [
             'organisationName' => $organizerName,
             'firstName' => $name,
-            'organisationUrl' => 'http://localhost/organizers/' . $organizerId,
+            'organisationUrl' => 'http://localhost/organizers/' . $organizerId . '/preview',
         ];
 
         $this->twig->expects($this->exactly(2))
@@ -230,22 +232,30 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             ->with(new Uuid($id), SendOwnershipRequestedMail::class)
             ->willReturn(false);
 
+        $ownershipItem = new OwnershipItem(
+            $id,
+            $organizerId,
+            'organizer',
+            $ownerId,
+            'requested'
+        );
         $this->ownershipSearchRepository
             ->expects($this->once())
             ->method('getById')
             ->with($id)
-            ->willReturn(new OwnershipItem(
-                $id,
-                $organizerId,
-                'organizer',
-                $ownerId,
-                'requested'
-            ));
+            ->willReturn($ownershipItem);
 
-        $this->organizerRepository
+        $userIdentityDetails = new UserIdentityDetails($ownerId, 'Grote smurf', 'info@publiq.be');
+        $this->identityResolver
             ->expects($this->once())
-            ->method('fetch')
-            ->with($organizerId)
+            ->method('getUserById')
+            ->with($ownerId)
+            ->willReturn($userIdentityDetails);
+
+        $this->ownershipMailParamExtractor
+            ->expects($this->once())
+            ->method('fetchParams')
+            ->with($ownershipItem, $userIdentityDetails)
             ->willThrowException(new DocumentDoesNotExist());
 
         $this->mailer
@@ -264,7 +274,6 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
         $id = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
         $ownerId = 'd6e21fa4-8d8d-4f23-b0cc-c63e34e43a01';
         $organizerId = 'd146a8cb-14c8-4364-9207-9d32d36f6959';
-        $organizerName = 'Publiq VZW';
 
         $this->mailsSentRepository
             ->expects($this->once())
@@ -284,11 +293,9 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
                 'requested'
             ));
 
-        $this->organizerRepository
-            ->expects($this->once())
-            ->method('fetch')
-            ->with($organizerId)
-            ->willReturn(new JsonDocument($organizerId, json_encode(['mainLanguage' => 'fr', 'name' => ['fr' => $organizerName]])));
+        $this->ownershipMailParamExtractor
+            ->expects($this->never())
+            ->method('fetchParams');
 
         $this->identityResolver
             ->expects($this->once())
@@ -343,11 +350,14 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
                 'requested'
             ));
 
-        $this->organizerRepository
+        $this->ownershipMailParamExtractor
             ->expects($this->once())
-            ->method('fetch')
-            ->with($organizerId)
-            ->willReturn(new JsonDocument($organizerId, json_encode(['mainLanguage' => 'nl', 'name' => ['nl' => $organizerName]])));
+            ->method('fetchParams')
+            ->willReturn([
+                'organisationName' => $organizerName,
+                'firstName' => 'Grote smurf',
+                'organisationUrl' => 'http://localhost/organizers/' . $organizerId . '/preview',
+            ]);
 
         $this->identityResolver
             ->expects($this->once())
@@ -358,7 +368,7 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
         $expectedParams = [
             'organisationName' => $organizerName,
             'firstName' => $name,
-            'organisationUrl' => 'http://localhost/organizers/' . $organizerId,
+            'organisationUrl' => 'http://localhost/organizers/' . $organizerId . '/preview',
         ];
 
         $this->twig->expects($this->exactly(2))

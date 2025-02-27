@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Mailer\Handler;
 
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
 use CultuurNet\UDB3\CommandHandling\ContextDecoratedCommandBus;
-use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
