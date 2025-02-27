@@ -38,11 +38,11 @@ final class OrganizerServiceProvider extends AbstractServiceProvider
             )
         );
 
-        // use if you want to sent the user to the user-friendly GUI version
+        // Url to the user-friendly GUI version of an organizer
         $container->addShared(
             self::ORGANIZER_FRONTEND_IRI_GENERATOR,
             fn () => new CallableIriGenerator(
-                fn ($cdbid) => $container->get('config')['baseurl'] . '/organizers/' . $cdbid
+                fn ($cdbid) => $container->get('config')['frontend_url'] . '/organizers/' . $cdbid . '/preview'
             )
         );
 
