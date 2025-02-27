@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Mailer\Ownership;
+namespace CultuurNet\UDB3\Mailer\Handler;
 
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;

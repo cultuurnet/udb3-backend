@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Mailer\Ownership;
+namespace CultuurNet\UDB3\Mailer\Handler;
 
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
