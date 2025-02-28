@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Serializer\Organizer\OrganizerDenormalizer;
 use CultuurNet\UDB3\RDF\NodeUri\CRC32HashGenerator;
 use CultuurNet\UDB3\RDF\NodeUri\NodeUriGenerator;
-use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactoryWithoutBlankNodes;
+use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -76,7 +76,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
             new OrganizerDenormalizer(),
             $addressParser,
             $this->imageNormalizer,
-            new RdfResourceFactoryWithoutBlankNodes(new NodeUriGenerator(new CRC32HashGenerator())),
+            new RdfResourceFactory(new NodeUriGenerator(new CRC32HashGenerator())),
             $logger
         );
     }
