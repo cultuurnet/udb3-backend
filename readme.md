@@ -32,6 +32,41 @@ To run the migrations, you can use the following composer script:
 composer migrate
 ```
 
+## Docker with Xdebug
+
+The docker file is provided with an optional profile to enable Xdebug.
+
+The first time you have to build both versions:
+
+### Install without Xdebug
+
+```
+docker-compose up
+```
+
+### Install profile with Xdebug
+
+```
+docker-compose --profile xdebug up
+```
+
+You don't have to rebuild to switch, *you can just switch between versions in your docker engine*.
+
+### Using xdebug
+To bash inside the xdebug enable container, use 
+```
+make bash-xdebug
+```
+
+Xdebug is configured to run with trigger mode, meaning you have to modify the request to enable xdebug: 
+
+- API: ADD XDEBUG_TRIGGER as a GET or POST variable
+- CLI (useful with unit tests):
+```
+make bash-xdebug
+source ./start-xdebug.sh
+```
+
 ## Logs
 
 Logs are located in the `./logs` directory.
