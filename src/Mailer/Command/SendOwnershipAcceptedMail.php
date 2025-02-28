@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailer\Command;
 
-final class SendOwnershipRequestedMail extends AbstractSendOwnershipMail
+final class SendOwnershipAcceptedMail extends AbstractSendOwnershipMail
 {
 }
