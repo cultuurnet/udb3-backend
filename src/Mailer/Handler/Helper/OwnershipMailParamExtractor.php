@@ -9,6 +9,7 @@ namespace CultuurNet\UDB3\Mailer\Handler\Helper;
  * */
 
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Offer\ExtractOfferName;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -37,7 +38,7 @@ class OwnershipMailParamExtractor
         $organizer = $organizerProjection->getAssocBody();
 
         return [
-            'organisationName' => $organizer['name'][$organizer['mainLanguage']] ?? $organizer['name']['nl'],
+            'organisationName' => ExtractOfferName::extract($organizer),
             'firstName' => $identityDetails->getUserName(),
             'organisationUrl' => $this->organizerIriGenerator->iri($ownershipItem->getItemId()),
         ];
