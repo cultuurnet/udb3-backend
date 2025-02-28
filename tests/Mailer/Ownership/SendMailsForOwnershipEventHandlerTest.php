@@ -41,10 +41,10 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
     }
 
     /** @test
-     * @dataProvider eventToCommandProvider
+     * @dataProvider dataProvider
      * This is the happy path
      * */
-    public function it_handles_ownership_requested_event(Serializable $event, AbstractSendOwnershipMail $command): void
+    public function it_converts_the_event_to_the_correct_command(Serializable $event, AbstractSendOwnershipMail $command): void
     {
         $domainMessage = (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($event);
 
@@ -63,7 +63,7 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
         );
     }
 
-    public function eventToCommandProvider(): array
+    public function dataProvider(): array
     {
         $id = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
         return [
