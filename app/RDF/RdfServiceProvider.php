@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\RDF\NodeUri\CRC32HashGenerator;
 use CultuurNet\UDB3\RDF\NodeUri\NodeUriGenerator;
 use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactory;
-use CultuurNet\UDB3\RDF\NodeUri\ResourceFactory\RdfResourceFactoryWithoutBlankNodes;
 use Geocoder\Provider\GoogleMaps\GoogleMaps;
 use Geocoder\StatefulGeocoder;
 use Http\Adapter\Guzzle7\Client;
@@ -40,7 +39,7 @@ final class RdfServiceProvider extends AbstractServiceProvider
         $this->container->addShared(
             RdfResourceFactory::class,
             function (): RdfResourceFactory {
-                return new RdfResourceFactoryWithoutBlankNodes(new NodeUriGenerator(new CRC32HashGenerator()));
+                return new RdfResourceFactory(new NodeUriGenerator(new CRC32HashGenerator()));
             }
         );
     }
