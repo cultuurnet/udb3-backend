@@ -8,8 +8,9 @@ use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\Mailer\Ownership\SendMailsForOwnershipEventHandler;
-use CultuurNet\UDB3\Mailer\Ownership\SendOwnershipMailCommandHandler;
+use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
+use CultuurNet\UDB3\Mailer\Handler\SendMailsForOwnershipEventHandler;
+use CultuurNet\UDB3\Mailer\Handler\SendOwnershipMailCommandHandler;
 use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\User\UserIdentityResolver;
@@ -41,11 +42,11 @@ class MailerServiceProvider extends AbstractServiceProvider
                 $config = $this->container->get('config');
                 return new SmtpMailer(
                     new SymfonyMailer(Transport::fromDsn($config['mail']['smtp'])),
-                    LoggerFactory::create($this->container, LoggerName::forWeb()),
                     new Address(
                         $config['mail']['sender']['address'],
                         $config['mail']['sender']['name']
                     ),
+                    LoggerFactory::create($this->container, LoggerName::forWeb()),
                 );
             }
         );
@@ -63,17 +64,27 @@ class MailerServiceProvider extends AbstractServiceProvider
                 return new SendOwnershipMailCommandHandler(
                     $this->container->get(Mailer::class),
                     $this->container->get(MailsSentRepository::class),
-                    $this->container->get('organizer_jsonld_repository'),
                     $this->container->get(UserIdentityResolver::class),
-                    $this->container->get(OrganizerServiceProvider::ORGANIZER_FRONTEND_IRI_GENERATOR),
                     new TwigEnvironment(
                         new FilesystemLoader(__DIR__ . '/../../src/Mailer/templates'),
                     ),
                     $this->container->get(OwnershipSearchRepository::class),
+                    $this->container->get(OwnershipMailParamExtractor::class),
                     LoggerFactory::create($this->container, LoggerName::forResqueWorker('mails')),
                 );
             }
         );
+
+        $container->addShared(
+            OwnershipMailParamExtractor::class,
+            function (): OwnershipMailParamExtractor {
+                return new OwnershipMailParamExtractor(
+                    $this->container->get('organizer_jsonld_repository'),
+                    $this->container->get(OrganizerServiceProvider::ORGANIZER_FRONTEND_IRI_GENERATOR),
+                );
+            }
+        );
+
 
         $container->addShared(
             SendMailsForOwnershipEventHandler::class,

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Mailer\Ownership;
+namespace CultuurNet\UDB3\Mailer\Handler;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
+use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Mailer\MailsSentRepository;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\RecipientStrategy;
@@ -34,31 +34,28 @@ class SendOwnershipMailCommandHandler implements CommandHandler
 
     private Mailer $mailer;
     private MailsSentRepository $mailsSentRepository;
-    private LoggerInterface $logger;
-    private DocumentRepository $organizerRepository;
     private UserIdentityResolver $identityResolver;
-    private IriGeneratorInterface $organizerIriGenerator;
     private TwigEnvironment $twig;
     private OwnershipSearchRepository $ownershipSearchRepository;
+    private OwnershipMailParamExtractor $paramExtractor;
+    private LoggerInterface $logger;
 
     public function __construct(
         Mailer $mailer,
         MailsSentRepository $mailsSentRepository,
-        DocumentRepository $organizerRepository,
         UserIdentityResolver $identityResolver,
-        IriGeneratorInterface $organizerIriGenerator,
         TwigEnvironment $twig,
         OwnershipSearchRepository $ownershipSearchRepository,
+        OwnershipMailParamExtractor $paramExtractor,
         LoggerInterface $logger
     ) {
         $this->mailer = $mailer;
         $this->mailsSentRepository = $mailsSentRepository;
-        $this->logger = $logger;
-        $this->organizerRepository = $organizerRepository;
         $this->identityResolver = $identityResolver;
-        $this->organizerIriGenerator = $organizerIriGenerator;
         $this->twig = $twig;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
+        $this->paramExtractor = $paramExtractor;
+        $this->logger = $logger;
     }
 
     public function handle($command): void
@@ -80,6 +77,7 @@ class SendOwnershipMailCommandHandler implements CommandHandler
         $uuid = new Uuid($command->getUuid());
 
         if ($this->mailsSentRepository->isMailSent($uuid, get_class($command))) {
+            $this->logger->info(sprintf('[ownership-mail] Mail %s about %s was already sent', $uuid->toString(), get_class($command)));
             return;
         }
 
@@ -112,6 +110,15 @@ class SendOwnershipMailCommandHandler implements CommandHandler
         }
     }
 
+        try {
+            $params = $this->paramExtractor->fetchParams($ownershipItem, $ownerDetails);
+        } catch (DocumentDoesNotExist $e) {
+            $this->logger->warning(sprintf('[ownership-mail] Could not load organizer: %s', $e->getMessage()));
+            return;
+        }
+
+        $subject = $this->parseSubject($rawSubject, $params['organisationName']);
+        $to = new EmailAddress($ownerDetails->getEmailAddress());
     public function sendMail(
         string $organisationName,
         UserIdentityDetails $userIdentityDetails,
@@ -137,17 +144,18 @@ class SendOwnershipMailCommandHandler implements CommandHandler
                 $this->twig->render($template . '.txt.twig', $params),
             );
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
-            $this->logger->error($e->getMessage());
+            $this->logger->error('[ownership-mail] ' . $e->getMessage());
             return;
         }
 
         if (!$success) {
+            $this->logger->error(sprintf('[ownership-mail] Mail "%s" failed to sent to %s', $subject, $to->toString()));
             return;
         }
 
         $this->mailsSentRepository->addMailSent(new Uuid($ownershipItem->getId()), $to, get_class($command), new DateTimeImmutable());
 
-        $this->logger->info(sprintf('Mail "%s" sent to %s', $subject, $to->toString()));
+        $this->logger->info(sprintf('[ownership-mail] Mail "%s" sent to %s', $subject, $to->toString()));
     }
 
     private function parseSubject(string $subject, string $name): string

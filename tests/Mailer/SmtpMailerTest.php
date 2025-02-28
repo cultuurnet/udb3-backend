@@ -26,8 +26,8 @@ class SmtpMailerTest extends TestCase
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->smtpMailer = new SmtpMailer(
             $this->mailer,
-            $this->logger,
             new Address('koen@publiq.be', 'Publiq'),
+            $this->logger,
         );
     }
 

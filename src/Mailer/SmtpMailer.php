@@ -14,14 +14,14 @@ use Symfony\Component\Mime\Email;
 final class SmtpMailer implements Mailer
 {
     private MailerInterface $mailer;
-    private LoggerInterface $logger;
     private Address $from;
+    private LoggerInterface $logger;
 
-    public function __construct(MailerInterface $mailer, LoggerInterface $logger, Address $from)
+    public function __construct(MailerInterface $mailer, Address $from, LoggerInterface $logger)
     {
         $this->mailer = $mailer;
-        $this->logger = $logger;
         $this->from = $from;
+        $this->logger = $logger;
     }
 
     public function send(EmailAddress $to, string $subject, string $html, string $text): bool
