@@ -33,9 +33,7 @@ class OwnershipMailParamExtractor
      */
     public function fetchParams(OwnershipItem $ownershipItem, UserIdentityDetails $identityDetails): array
     {
-        $organizerProjection = $this->organizerRepository->fetch($ownershipItem->getItemId());
-
-        $organizer = $organizerProjection->getAssocBody();
+        $organizer = $this->organizerRepository->fetch($ownershipItem->getItemId())->getAssocBody();
 
         return [
             'organisationName' => ExtractOfferName::extract($organizer),

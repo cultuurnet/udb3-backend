@@ -72,7 +72,7 @@ class SendOwnershipMailCommandHandler implements CommandHandler
         }
     }
 
-    public function processCommand(SendOwnershipRequestedMail $command, string $rawSubject, string $template, RecipientStrategy $recipients): void
+    public function processCommand(SendOwnershipRequestedMail $command, string $rawSubject, string $template, RecipientStrategy $recipientStrategy): void
     {
         $uuid = new Uuid($command->getUuid());
 
@@ -89,18 +89,15 @@ class SendOwnershipMailCommandHandler implements CommandHandler
         }
 
         try {
-            $organizerProjection = $this->organizerRepository->fetch($ownershipItem->getItemId());
-        } catch (DocumentDoesNotExist $e) {
+            $recipients = $recipientStrategy->getRecipients($ownershipItem);
+        }
+        catch (DocumentDoesNotExist $e) {
             $this->logger->warning(sprintf('[ownership-mail] Could not load organizer: %s', $e->getMessage()));
             return;
         }
 
-        $organizer = $organizerProjection->getAssocBody();
-
-        /** @var UserIdentityDetails $userIdentityDetails */
-        foreach ($recipients->getRecipients($ownershipItem, $organizer) as $userIdentityDetails) {
+        foreach ($recipients as $userIdentityDetails) {
             $this->sendMail(
-                $organizer['name']['nl'],
                 $userIdentityDetails,
                 $ownershipItem,
                 $rawSubject,
@@ -110,30 +107,22 @@ class SendOwnershipMailCommandHandler implements CommandHandler
         }
     }
 
-        try {
-            $params = $this->paramExtractor->fetchParams($ownershipItem, $ownerDetails);
-        } catch (DocumentDoesNotExist $e) {
-            $this->logger->warning(sprintf('[ownership-mail] Could not load organizer: %s', $e->getMessage()));
-            return;
-        }
-
-        $subject = $this->parseSubject($rawSubject, $params['organisationName']);
-        $to = new EmailAddress($ownerDetails->getEmailAddress());
     public function sendMail(
-        string $organisationName,
         UserIdentityDetails $userIdentityDetails,
         OwnershipItem $ownershipItem,
         string $rawSubject,
         string $template,
         SendOwnershipRequestedMail $command
     ): void {
-        $params = [
-            'organisationName' => $organisationName,
-            'firstName' => $userIdentityDetails->getUserName(),
-            'organisationUrl' => $this->organizerIriGenerator->iri($ownershipItem->getItemId()),
-        ];
+        try {
+            $params = $this->paramExtractor->fetchParams($ownershipItem, $userIdentityDetails);
+        }
+        catch (DocumentDoesNotExist $e) {
+            $this->logger->warning(sprintf('[ownership-mail] Could not load organizer: %s', $e->getMessage()));
+            return;
+        }
 
-        $subject = $this->parseSubject($rawSubject, $organisationName);
+        $subject = $this->parseSubject($rawSubject, $params['organisationName']);
         $to = new EmailAddress($userIdentityDetails->getEmailAddress());
 
         try {

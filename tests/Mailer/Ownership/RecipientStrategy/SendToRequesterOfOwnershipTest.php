@@ -46,7 +46,7 @@ class SendToRequesterOfOwnershipTest extends TestCase
         );
         $this->identityResolver->method('getUserById')->with($this->ownerId)->willReturn($ownerDetails);
 
-        $recipients = $this->strategy->getRecipients($this->ownershipItem, []);
+        $recipients = $this->strategy->getRecipients($this->ownershipItem);
 
         $this->assertCount(1, $recipients);
         $this->assertSame($ownerDetails, $recipients[0]);
@@ -62,6 +62,6 @@ class SendToRequesterOfOwnershipTest extends TestCase
             ->method('warning')
             ->with($this->stringContains('Could not load owner details for ' . $this->ownerId));
 
-        $this->assertEmpty($this->strategy->getRecipients($this->ownershipItem, []));
+        $this->assertEmpty($this->strategy->getRecipients($this->ownershipItem));
     }
 }

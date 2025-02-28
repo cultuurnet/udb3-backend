@@ -21,7 +21,7 @@ class SendToRequesterOfOwnership implements RecipientStrategy
     }
 
     /** @return UserIdentityDetails[] */
-    public function getRecipients(OwnershipItem $item, array $organizer): array
+    public function getRecipients(OwnershipItem $item): array
     {
         $ownerDetails = $this->identityResolver->getUserById($item->getOwnerId());
 
