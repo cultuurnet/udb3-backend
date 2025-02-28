@@ -13,6 +13,8 @@ use CultuurNet\UDB3\Offer\OfferLocator;
 
 final class OrganizerServiceProvider extends AbstractServiceProvider
 {
+    public const ORGANIZER_FRONTEND_IRI_GENERATOR = 'organizer_frontend_iri_generator';
+
     protected function getProvidedServiceNames(): array
     {
         return [
@@ -28,10 +30,19 @@ final class OrganizerServiceProvider extends AbstractServiceProvider
     {
         $container = $this->getContainer();
 
+        // Use if you want to generate a JSON url endpoint
         $container->addShared(
             'organizer_iri_generator',
             fn () => new CallableIriGenerator(
                 fn ($cdbid) => $container->get('config')['url'] . '/organizers/' . $cdbid
+            )
+        );
+
+        // Url to the user-friendly GUI version of an organizer
+        $container->addShared(
+            self::ORGANIZER_FRONTEND_IRI_GENERATOR,
+            fn () => new CallableIriGenerator(
+                fn ($cdbid) => $container->get('config')['frontend_url'] . '/organizers/' . $cdbid . '/preview'
             )
         );
 

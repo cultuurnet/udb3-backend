@@ -12,7 +12,9 @@ use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\EventCommandHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
+use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
+use CultuurNet\UDB3\Mailer\Handler\SendOwnershipMailCommandHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\ApproveOwnershipHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\DeleteOwnershipHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\RejectOwnershipHandler;
@@ -20,13 +22,12 @@ use CultuurNet\UDB3\Ownership\CommandHandlers\RequestOwnershipHandler;
 use CultuurNet\UDB3\Place\CommandHandler as PlaceCommandHandler;
 use CultuurNet\UDB3\Place\ExtendedGeoCoordinatesCommandHandler;
 use CultuurNet\UDB3\Role\CommandHandler as RoleCommandHandler;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\LabelCommandBusSecurity;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\PermissionSwitchVoter;
-use CultuurNet\UDB3\Security\PermissionVoterCommandBusSecurity;
-use CultuurNet\UDB3\Security\LabelCommandBusSecurity;
-use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
-use CultuurNet\UDB3\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Security\PermissionVoterCommandBusSecurity;
 use CultuurNet\UDB3\User\CurrentUser;
 use Monolog\Logger;
 use Predis\Client;
@@ -47,6 +48,9 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             'bulk_label_offer_command_bus',
             'bulk_label_offer_command_bus_out',
             'logger_factory.resque_worker',
+
+            'mails_command_bus',
+            'mails_command_bus_out',
         ];
     }
 
@@ -246,6 +250,25 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 $commandBus = $this->createResqueCommandBus('event_export', $container);
                 $commandBus->subscribe($container->get('event_export_command_handler'));
+                return $commandBus;
+            }
+        );
+
+        $container->addShared(
+            'mails_command_bus',
+            function () {
+                return new ContextDecoratedCommandBus(
+                    $this->createResqueCommandBus('mails', $this->container),
+                    $this->container
+                );
+            }
+        );
+
+        $container->addShared(
+            'mails_command_bus_out',
+            function () {
+                $commandBus = $this->createResqueCommandBus('mails', $this->container);
+                $commandBus->subscribe($this->container->get(SendOwnershipMailCommandHandler::class));
                 return $commandBus;
             }
         );
