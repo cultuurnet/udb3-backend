@@ -17,7 +17,6 @@ use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use DateTimeImmutable;
@@ -90,8 +89,7 @@ class SendOwnershipMailCommandHandler implements CommandHandler
 
         try {
             $recipients = $recipientStrategy->getRecipients($ownershipItem);
-        }
-        catch (DocumentDoesNotExist $e) {
+        } catch (DocumentDoesNotExist $e) {
             $this->logger->warning(sprintf('[ownership-mail] Could not load organizer: %s', $e->getMessage()));
             return;
         }
@@ -116,8 +114,7 @@ class SendOwnershipMailCommandHandler implements CommandHandler
     ): void {
         try {
             $params = $this->paramExtractor->fetchParams($ownershipItem, $userIdentityDetails);
-        }
-        catch (DocumentDoesNotExist $e) {
+        } catch (DocumentDoesNotExist $e) {
             $this->logger->warning(sprintf('[ownership-mail] Could not load organizer: %s', $e->getMessage()));
             return;
         }

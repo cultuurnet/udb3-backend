@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\User\UserIdentityDetails;

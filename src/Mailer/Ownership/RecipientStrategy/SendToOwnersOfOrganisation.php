@@ -35,6 +35,12 @@ class SendToOwnersOfOrganisation implements RecipientStrategy
         //@todo loop over ALL owners of organisation
         $ownerDetails = $this->identityResolver->getUserById($organizer['creator'] ?? '');
 
+        //check all ownerships
+
+        //check other roles
+
+        //make sure nobody gets email double
+
         if ($ownerDetails === null) {
             $this->logger->warning(sprintf('[ownership-mail] Could not load owner details for %s', (empty($organizer['creator']) ? 'unknown' : $organizer['creator'])));
             return [];
