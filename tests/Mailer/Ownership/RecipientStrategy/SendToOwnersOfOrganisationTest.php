@@ -16,7 +16,10 @@ use Psr\Log\LoggerInterface;
 
 class SendToOwnersOfOrganisationTest extends TestCase
 {
-    private MockObject $identityResolver;
+    /**
+     * @var UserIdentityResolver&MockObject
+     */
+    private $identityResolver;
     private MockObject $logger;
     private MockObject $organizerRepository;
     private SendToOwnersOfOrganisation $strategy;
