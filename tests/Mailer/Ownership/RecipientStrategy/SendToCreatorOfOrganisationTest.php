@@ -10,6 +10,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
+use Monolog\Logger;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -20,8 +21,14 @@ class SendToCreatorOfOrganisationTest extends TestCase
      * @var UserIdentityResolver&MockObject
      */
     private $identityResolver;
-    private MockObject $logger;
-    private MockObject $organizerRepository;
+    /**
+     * @var LoggerInterface&MockObject
+     */
+    private $logger;
+    /**
+     * @var DocumentRepository&MockObject
+     */
+    private $organizerRepository;
     private SendToCreatorOfOrganisation $strategy;
     private OwnershipItem $ownershipItem;
     private string $itemId;

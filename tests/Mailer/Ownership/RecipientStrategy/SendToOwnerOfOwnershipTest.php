@@ -14,8 +14,14 @@ use Psr\Log\LoggerInterface;
 
 class SendToOwnerOfOwnershipTest extends TestCase
 {
-    private MockObject $identityResolver;
-    private MockObject $logger;
+    /**
+     * @var UserIdentityResolver&MockObject
+     */
+    private $identityResolver;
+    /**
+     * @var LoggerInterface&MockObject
+     */
+    private $logger;
     private SendToOwnerOfOwnership $strategy;
     private OwnershipItem $ownershipItem;
     private string $ownerId;
