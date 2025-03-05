@@ -6,26 +6,38 @@ namespace CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class SendToRequesterOfOwnershipTest extends TestCase
+class SendToCreatorOfOrganisationTest extends TestCase
 {
-    private MockObject $identityResolver;
+    /**
+     * @var UserIdentityResolver&MockObject
+     */
+    private $identityResolver;
     private MockObject $logger;
-    private SendToRequesterOfOwnership $strategy;
+    private MockObject $organizerRepository;
+    private SendToCreatorOfOrganisation $strategy;
     private OwnershipItem $ownershipItem;
+    private string $itemId;
+    private string $creator;
     private string $ownerId;
 
     protected function setUp(): void
     {
+        $this->itemId = Uuid::uuid4()->toString();
+        $this->creator = Uuid::uuid4()->toString();
         $this->ownerId = Uuid::uuid4()->toString();
+        $this->organizerRepository = $this->createMock(DocumentRepository::class);
+
         $this->ownershipItem = new OwnershipItem(
             Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
+            $this->itemId,
             'organizer',
             $this->ownerId,
             'requested'
@@ -33,7 +45,7 @@ class SendToRequesterOfOwnershipTest extends TestCase
 
         $this->identityResolver = $this->createMock(UserIdentityResolver::class);
         $this->logger = $this->createMock(LoggerInterface::class);
-        $this->strategy = new SendToRequesterOfOwnership($this->identityResolver, $this->logger);
+        $this->strategy = new SendToCreatorOfOrganisation($this->identityResolver, $this->organizerRepository, $this->logger);
     }
 
     /** @test */
@@ -42,9 +54,14 @@ class SendToRequesterOfOwnershipTest extends TestCase
         $ownerDetails = new UserIdentityDetails(
             $this->ownerId,
             'Grote smurf',
-            'grotesmurf@public.be'
+            'grotesmurf@publiq.be'
         );
-        $this->identityResolver->method('getUserById')->with($this->ownerId)->willReturn($ownerDetails);
+        $this->identityResolver->method('getUserById')->with($this->creator)->willReturn($ownerDetails);
+
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
+            ->with($this->itemId)
+            ->willReturn(new JsonDocument($this->ownerId, json_encode(['creator' => $this->creator], JSON_THROW_ON_ERROR)));
 
         $recipients = $this->strategy->getRecipients($this->ownershipItem);
 
@@ -55,12 +72,17 @@ class SendToRequesterOfOwnershipTest extends TestCase
     /** @test */
     public function it_logs_warning_and_returns_nothing_when_owner_not_found(): void
     {
-        $this->identityResolver->method('getUserById')->with($this->ownerId)->willReturn(null);
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
+            ->with($this->itemId)
+            ->willReturn(new JsonDocument($this->ownerId, json_encode(['creator' => $this->creator], JSON_THROW_ON_ERROR)));
+
+        $this->identityResolver->method('getUserById')->with($this->creator)->willReturn(null);
 
         $this->logger
             ->expects($this->once())
             ->method('warning')
-            ->with($this->stringContains('Could not load owner details for ' . $this->ownerId));
+            ->with($this->stringContains('Could not load owner details for ' . $this->creator));
 
         $this->assertEmpty($this->strategy->getRecipients($this->ownershipItem));
     }

@@ -10,7 +10,8 @@ use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Mailer\MailsSentRepository;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\RecipientStrategy;
-use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToRequesterOfOwnership;
+use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToCreatorOfOrganisation;
+use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToOwnerOfOwnership;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
@@ -26,34 +27,37 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class SendOwnershipMailCommandHandler implements CommandHandler
+final class SendOwnershipMailCommandHandler implements CommandHandler
 {
     private const SUBJECT_OWNERSHIP_REQUESTED = 'Beheers aanvraag voor organisatie {{ organisationName }}';
     private const TEMPLATE_OWNERSHIP_REQUESTED = 'ownershipRequested';
 
     private Mailer $mailer;
     private MailsSentRepository $mailsSentRepository;
-    private UserIdentityResolver $identityResolver;
     private TwigEnvironment $twig;
     private OwnershipSearchRepository $ownershipSearchRepository;
     private OwnershipMailParamExtractor $paramExtractor;
+    private RecipientStrategy $sendToOwnersOfOrganisation;
+    private RecipientStrategy $sendToCreatorOfOrganisation;
     private LoggerInterface $logger;
 
     public function __construct(
         Mailer $mailer,
         MailsSentRepository $mailsSentRepository,
-        UserIdentityResolver $identityResolver,
         TwigEnvironment $twig,
         OwnershipSearchRepository $ownershipSearchRepository,
         OwnershipMailParamExtractor $paramExtractor,
+        RecipientStrategy $sendToOwnersOfOrganisation,
+        RecipientStrategy $sendToCreatorOfOrganisation,
         LoggerInterface $logger
     ) {
         $this->mailer = $mailer;
         $this->mailsSentRepository = $mailsSentRepository;
-        $this->identityResolver = $identityResolver;
         $this->twig = $twig;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->paramExtractor = $paramExtractor;
+        $this->sendToOwnersOfOrganisation = $sendToOwnersOfOrganisation;
+        $this->sendToCreatorOfOrganisation = $sendToCreatorOfOrganisation;
         $this->logger = $logger;
     }
 
@@ -65,13 +69,13 @@ class SendOwnershipMailCommandHandler implements CommandHandler
                     $command,
                     self::SUBJECT_OWNERSHIP_REQUESTED,
                     self::TEMPLATE_OWNERSHIP_REQUESTED,
-                    new SendToRequesterOfOwnership($this->identityResolver, $this->logger)
+                    $this->sendToCreatorOfOrganisation,
                 );
                 break;
         }
     }
 
-    public function processCommand(SendOwnershipRequestedMail $command, string $rawSubject, string $template, RecipientStrategy $recipientStrategy): void
+    private function processCommand(SendOwnershipRequestedMail $command, string $rawSubject, string $template, RecipientStrategy $recipientStrategy): void
     {
         $uuid = new Uuid($command->getUuid());
 

@@ -9,7 +9,7 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Psr\Log\LoggerInterface;
 
-class SendToRequesterOfOwnership implements RecipientStrategy
+class SendToOwnerOfOwnership implements RecipientStrategy
 {
     private UserIdentityResolver $identityResolver;
     private LoggerInterface $logger;

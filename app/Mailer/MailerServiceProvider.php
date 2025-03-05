@@ -11,6 +11,10 @@ use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Handler\SendMailsForOwnershipEventHandler;
 use CultuurNet\UDB3\Mailer\Handler\SendOwnershipMailCommandHandler;
+use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\CombinedRecipientStrategy;
+use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\RecipientStrategy;
+use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToCreatorOfOrganisation;
+use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToOwnerOfOwnership;
 use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\User\UserIdentityResolver;
@@ -58,19 +62,31 @@ class MailerServiceProvider extends AbstractServiceProvider
             }
         );
 
+        $logger = LoggerFactory::create($this->container, LoggerName::forResqueWorker('mails'));
+
         $container->addShared(
             SendOwnershipMailCommandHandler::class,
-            function (): SendOwnershipMailCommandHandler {
+            function () use ($logger): SendOwnershipMailCommandHandler {
                 return new SendOwnershipMailCommandHandler(
                     $this->container->get(Mailer::class),
                     $this->container->get(MailsSentRepository::class),
-                    $this->container->get(UserIdentityResolver::class),
                     new TwigEnvironment(
                         new FilesystemLoader(__DIR__ . '/../../src/Mailer/templates'),
                     ),
                     $this->container->get(OwnershipSearchRepository::class),
                     $this->container->get(OwnershipMailParamExtractor::class),
-                    LoggerFactory::create($this->container, LoggerName::forResqueWorker('mails')),
+                    new SendToOwnerOfOwnership(
+                        $this->container->get(UserIdentityResolver::class),
+                        $logger
+                    ),
+                    new CombinedRecipientStrategy(
+                        new SendToCreatorOfOrganisation(
+                            $this->container->get(UserIdentityResolver::class),
+                            $this->container->get('organizer_jsonld_repository'),
+                            $logger
+                        )
+                    ),
+                    $logger,
                 );
             }
         );

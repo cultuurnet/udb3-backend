@@ -11,7 +11,7 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use Psr\Log\LoggerInterface;
 
-class SendToOwnersOfOrganisation implements RecipientStrategy
+class SendToCreatorOfOrganisation implements RecipientStrategy
 {
     private UserIdentityResolver $identityResolver;
     private DocumentRepository $organizerRepository;
@@ -32,14 +32,7 @@ class SendToOwnersOfOrganisation implements RecipientStrategy
     {
         $organizer = $this->organizerRepository->fetch($item->getItemId())->getAssocBody();
 
-        //@todo loop over ALL owners of organisation
         $ownerDetails = $this->identityResolver->getUserById($organizer['creator'] ?? '');
-
-        //check all ownerships
-
-        //check other roles
-
-        //make sure nobody gets email double
 
         if ($ownerDetails === null) {
             $this->logger->warning(sprintf('[ownership-mail] Could not load owner details for %s', (empty($organizer['creator']) ? 'unknown' : $organizer['creator'])));
