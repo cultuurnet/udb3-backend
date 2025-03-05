@@ -12,9 +12,7 @@ use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Handler\SendMailsForOwnershipEventHandler;
 use CultuurNet\UDB3\Mailer\Handler\SendOwnershipMailCommandHandler;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\CombinedRecipientStrategy;
-use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\RecipientStrategy;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToCreatorOfOrganisation;
-use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToOwnerOfOwnership;
 use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\User\UserIdentityResolver;
@@ -75,10 +73,6 @@ class MailerServiceProvider extends AbstractServiceProvider
                     ),
                     $this->container->get(OwnershipSearchRepository::class),
                     $this->container->get(OwnershipMailParamExtractor::class),
-                    new SendToOwnerOfOwnership(
-                        $this->container->get(UserIdentityResolver::class),
-                        $logger
-                    ),
                     new CombinedRecipientStrategy(
                         new SendToCreatorOfOrganisation(
                             $this->container->get(UserIdentityResolver::class),

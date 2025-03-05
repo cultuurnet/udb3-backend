@@ -24,7 +24,7 @@ final class CombinedRecipientStrategy implements RecipientStrategy
         $output = [];
         foreach ($this->recipientStrategies as $voter) {
             try {
-                foreach($voter->getRecipients($item) as $recipient) {
+                foreach ($voter->getRecipients($item) as $recipient) {
                     $output[$recipient->getEmailAddress()] = $recipient;
                 }
             } catch (DocumentDoesNotExist $e) {
@@ -32,6 +32,6 @@ final class CombinedRecipientStrategy implements RecipientStrategy
             }
         }
 
-        return $output;
+        return array_values($output);
     }
 }

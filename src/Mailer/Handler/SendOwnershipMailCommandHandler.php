@@ -10,8 +10,6 @@ use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Mailer\MailsSentRepository;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\RecipientStrategy;
-use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToCreatorOfOrganisation;
-use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToOwnerOfOwnership;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
@@ -19,7 +17,6 @@ use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\User\UserIdentityDetails;
-use CultuurNet\UDB3\User\UserIdentityResolver;
 use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 use Twig\Environment as TwigEnvironment;
@@ -37,7 +34,6 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
     private TwigEnvironment $twig;
     private OwnershipSearchRepository $ownershipSearchRepository;
     private OwnershipMailParamExtractor $paramExtractor;
-    private RecipientStrategy $sendToOwnersOfOrganisation;
     private RecipientStrategy $sendToCreatorOfOrganisation;
     private LoggerInterface $logger;
 
@@ -47,7 +43,6 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
         TwigEnvironment $twig,
         OwnershipSearchRepository $ownershipSearchRepository,
         OwnershipMailParamExtractor $paramExtractor,
-        RecipientStrategy $sendToOwnersOfOrganisation,
         RecipientStrategy $sendToCreatorOfOrganisation,
         LoggerInterface $logger
     ) {
@@ -56,7 +51,6 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
         $this->twig = $twig;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->paramExtractor = $paramExtractor;
-        $this->sendToOwnersOfOrganisation = $sendToOwnersOfOrganisation;
         $this->sendToCreatorOfOrganisation = $sendToCreatorOfOrganisation;
         $this->logger = $logger;
     }
