@@ -35,7 +35,7 @@ class SendToCreatorOfOrganisation implements RecipientStrategy
         $ownerDetails = $this->identityResolver->getUserById($organizer['creator'] ?? '');
 
         if ($ownerDetails === null) {
-            $this->logger->warning(sprintf('[ownership-mail] Could not load owner details for %s', (empty($organizer['creator']) ? 'unknown' : $organizer['creator'])));
+            $this->logger->warning(sprintf('Could not load owner details for %s', (empty($organizer['creator']) ? 'unknown' : $organizer['creator'])));
             return [];
         }
 
