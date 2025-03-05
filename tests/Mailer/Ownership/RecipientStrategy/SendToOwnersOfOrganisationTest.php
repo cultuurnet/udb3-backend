@@ -91,6 +91,5 @@ class SendToOwnersOfOrganisationTest extends TestCase
         $this->assertCount(1, $recipients);
         $this->assertEquals($ownerId, $recipients[0]->getUserId());
         $this->assertEquals('grotesmurf@publiq.be', $recipients[0]->getEmailAddress());
-
     }
 }
