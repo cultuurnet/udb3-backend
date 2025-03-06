@@ -13,7 +13,6 @@ use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 
 class SendToCreatorOfOrganisationTest extends TestCase
 {

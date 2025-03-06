@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\User\Recipients;
-use CultuurNet\UDB3\User\UserIdentityDetails;
 
 final class CombinedRecipientStrategy implements RecipientStrategy
 {

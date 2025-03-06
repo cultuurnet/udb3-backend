@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy;
 
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\User\Recipients;
-use CultuurNet\UDB3\User\UserIdentityDetails;
 
 interface RecipientStrategy
 {
