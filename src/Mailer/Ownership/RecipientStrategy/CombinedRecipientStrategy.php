@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\User\Recipients;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 
 final class CombinedRecipientStrategy implements RecipientStrategy
@@ -18,20 +20,19 @@ final class CombinedRecipientStrategy implements RecipientStrategy
         $this->recipientStrategies = $recipientStrategies;
     }
 
-    /** @return UserIdentityDetails[] */
-    public function getRecipients(OwnershipItem $item): array
+    public function getRecipients(OwnershipItem $item): Recipients
     {
-        $output = [];
+        $recipients = new Recipients();
         foreach ($this->recipientStrategies as $voter) {
             try {
                 foreach ($voter->getRecipients($item) as $recipient) {
-                    $output[$recipient->getEmailAddress()] = $recipient;
+                    $recipients->add($recipient);
                 }
             } catch (DocumentDoesNotExist $e) {
                 // Do nothing
             }
         }
 
-        return array_values($output);
+        return $recipients;
     }
 }

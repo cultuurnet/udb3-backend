@@ -78,7 +78,6 @@ class MailerServiceProvider extends AbstractServiceProvider
                         new SendToCreatorOfOrganisation(
                             $this->container->get(UserIdentityResolver::class),
                             $this->container->get('organizer_jsonld_repository'),
-                            $logger
                         ),
                         new SendToOwnersOfOrganisation(
                             $this->container->get(UserIdentityResolver::class),

@@ -34,7 +34,7 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
     private TwigEnvironment $twig;
     private OwnershipSearchRepository $ownershipSearchRepository;
     private OwnershipMailParamExtractor $paramExtractor;
-    private RecipientStrategy $sendToCreatorOfOrganisation;
+    private RecipientStrategy $sendToOwnersOfOrganizer;
     private LoggerInterface $logger;
 
     public function __construct(
@@ -51,7 +51,7 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
         $this->twig = $twig;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->paramExtractor = $paramExtractor;
-        $this->sendToCreatorOfOrganisation = $sendToCreatorOfOrganisation;
+        $this->sendToOwnersOfOrganizer = $sendToCreatorOfOrganisation;
         $this->logger = $logger;
     }
 
@@ -63,7 +63,7 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
                     $command,
                     self::SUBJECT_OWNERSHIP_REQUESTED,
                     self::TEMPLATE_OWNERSHIP_REQUESTED,
-                    $this->sendToCreatorOfOrganisation,
+                    $this->sendToOwnersOfOrganizer,
                 );
                 break;
         }
@@ -85,12 +85,7 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
             return;
         }
 
-        try {
-            $recipients = $recipientStrategy->getRecipients($ownershipItem);
-        } catch (DocumentDoesNotExist $e) {
-            $this->logger->warning(sprintf('[ownership-mail] Could not load organizer: %s', $e->getMessage()));
-            return;
-        }
+        $recipients = $recipientStrategy->getRecipients($ownershipItem);
 
         foreach ($recipients as $userIdentityDetails) {
             $this->sendMail(

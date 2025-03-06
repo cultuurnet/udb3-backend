@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\User\Recipients;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use PHPUnit\Framework\TestCase;
 
@@ -48,32 +49,32 @@ final class CombinedRecipientStrategyTest extends TestCase
     public function get_recipients_combines_results(): void
     {
         $strategyReturns2Items = $this->createMock(RecipientStrategy::class);
-        $strategyReturns2Items->method('getRecipients')->with($this->ownershipItem)->willReturn([$this->recipient1, $this->recipient2]);
+        $strategyReturns2Items->method('getRecipients')->with($this->ownershipItem)->willReturn(new Recipients($this->recipient1, $this->recipient2));
 
         $recipientStrategyReturn1Item = $this->createMock(RecipientStrategy::class);
-        $recipientStrategyReturn1Item->method('getRecipients')->with($this->ownershipItem)->willReturn([$this->recipient3]);
+        $recipientStrategyReturn1Item->method('getRecipients')->with($this->ownershipItem)->willReturn(new Recipients($this->recipient3));
 
         $combinedStrategy = new CombinedRecipientStrategy($strategyReturns2Items, $recipientStrategyReturn1Item);
         $recipients = $combinedStrategy->getRecipients($this->ownershipItem);
 
         $this->assertCount(3, $recipients);
-        $this->assertSame([$this->recipient1, $this->recipient2, $this->recipient3], $recipients);
+        $this->assertEquals((new Recipients($this->recipient1, $this->recipient2, $this->recipient3))->getRecipients(), $recipients->getRecipients());
     }
 
     /** @test */
     public function make_sure_nobody_gets_email_double(): void
     {
         $strategyReturns2Items = $this->createMock(RecipientStrategy::class);
-        $strategyReturns2Items->method('getRecipients')->with($this->ownershipItem)->willReturn([$this->recipient1, $this->recipient2]);
+        $strategyReturns2Items->method('getRecipients')->with($this->ownershipItem)->willReturn(new Recipients($this->recipient1, $this->recipient2));
 
         $recipientStrategyReturn1Item = $this->createMock(RecipientStrategy::class);
-        $recipientStrategyReturn1Item->method('getRecipients')->with($this->ownershipItem)->willReturn([$this->recipient1]);
+        $recipientStrategyReturn1Item->method('getRecipients')->with($this->ownershipItem)->willReturn(new Recipients($this->recipient1));
 
         $combinedStrategy = new CombinedRecipientStrategy($strategyReturns2Items, $recipientStrategyReturn1Item);
         $recipients = $combinedStrategy->getRecipients($this->ownershipItem);
 
         $this->assertCount(2, $recipients);
-        $this->assertSame([$this->recipient1, $this->recipient2], $recipients);
+        $this->assertEquals((new Recipients($this->recipient1, $this->recipient2))->getRecipients(), $recipients->getRecipients());
     }
 
     /** @test */
@@ -83,12 +84,12 @@ final class CombinedRecipientStrategyTest extends TestCase
         $failingStrategy->method('getRecipients')->with($this->ownershipItem)->willThrowException(new DocumentDoesNotExist());
 
         $workingStrategy = $this->createMock(RecipientStrategy::class);
-        $workingStrategy->method('getRecipients')->with($this->ownershipItem)->willReturn([$this->recipient1]);
+        $workingStrategy->method('getRecipients')->with($this->ownershipItem)->willReturn(new Recipients($this->recipient1));
 
         $combinedStrategy = new CombinedRecipientStrategy($failingStrategy, $workingStrategy);
         $recipients = $combinedStrategy->getRecipients($this->ownershipItem);
 
         $this->assertCount(1, $recipients);
-        $this->assertSame([$this->recipient1], $recipients);
+        $this->assertEquals((new Recipients($this->recipient1))->getRecipients(), $recipients->getRecipients());
     }
 }

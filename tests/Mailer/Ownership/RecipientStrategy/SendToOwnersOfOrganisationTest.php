@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\DBALOwnershipSearchRepository;
+use CultuurNet\UDB3\User\Recipients;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -77,19 +78,19 @@ class SendToOwnersOfOrganisationTest extends TestCase
             OwnershipState::approved()->toString(),
         );
 
+        $userIdentityDetails = new UserIdentityDetails(
+            $ownerId,
+            'Grote smurf',
+            'grotesmurf@publiq.be'
+        );
         $this->identityResolver->expects($this->once())
             ->method('getUserById')
             ->with($ownerId)
-            ->willReturn(new UserIdentityDetails(
-                $ownerId,
-                'Grote smurf',
-                'grotesmurf@publiq.be'
-            ));
+            ->willReturn($userIdentityDetails);
 
         $recipients = $this->sendToOwnersOfOrganisation->getRecipients($ownershipItem);
 
         $this->assertCount(1, $recipients);
-        $this->assertEquals($ownerId, $recipients[0]->getUserId());
-        $this->assertEquals('grotesmurf@publiq.be', $recipients[0]->getEmailAddress());
+        $this->assertEquals(new Recipients($userIdentityDetails), $recipients);
     }
 }

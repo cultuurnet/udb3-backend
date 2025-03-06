@@ -5,40 +5,35 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy;
 
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\User\UserIdentityDetails;
+use CultuurNet\UDB3\User\Recipients;
 use CultuurNet\UDB3\User\UserIdentityResolver;
-use Psr\Log\LoggerInterface;
 
 class SendToCreatorOfOrganisation implements RecipientStrategy
 {
     private UserIdentityResolver $identityResolver;
     private DocumentRepository $organizerRepository;
-    private LoggerInterface $logger;
 
-    public function __construct(UserIdentityResolver $identityResolver, DocumentRepository $organizerRepository, LoggerInterface $logger)
+    public function __construct(UserIdentityResolver $identityResolver, DocumentRepository $organizerRepository)
     {
         $this->identityResolver = $identityResolver;
         $this->organizerRepository = $organizerRepository;
-        $this->logger = $logger;
     }
 
-    /**
-     * @return UserIdentityDetails[]
-     * @throws DocumentDoesNotExist
-     */
-    public function getRecipients(OwnershipItem $item): array
+    public function getRecipients(OwnershipItem $item): Recipients
     {
         $organizer = $this->organizerRepository->fetch($item->getItemId())->getAssocBody();
 
-        $ownerDetails = $this->identityResolver->getUserById($organizer['creator'] ?? '');
-
-        if ($ownerDetails === null) {
-            $this->logger->warning(sprintf('Could not load owner details for %s', (empty($organizer['creator']) ? 'unknown' : $organizer['creator'])));
-            return [];
+        if (empty($organizer['creator'])) {
+            return new Recipients();
         }
 
-        return [$ownerDetails];
+        $ownerDetails = $this->identityResolver->getUserById($organizer['creator']);
+
+        if ($ownerDetails === null) {
+            return new Recipients();
+        }
+
+        return new Recipients($ownerDetails);
     }
 }

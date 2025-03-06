@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\User\Recipients;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -109,7 +110,7 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getRecipients')
             ->with($ownershipItem)
-            ->willReturn([$userIdentityDetails]);
+            ->willReturn(new Recipients($userIdentityDetails));
 
         $this->ownershipMailParamExtractor
             ->expects($this->once())
@@ -246,7 +247,7 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getRecipients')
             ->with($ownershipItem)
-            ->willReturn([$userIdentityDetails]);
+            ->willReturn(new Recipients($userIdentityDetails));
 
         $this->ownershipMailParamExtractor
             ->expects($this->once())
@@ -299,7 +300,7 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getRecipients')
             ->with($ownershipItem)
-            ->willReturn([]);
+            ->willReturn(new Recipients());
 
         $this->mailer
             ->expects($this->never())
@@ -360,7 +361,7 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             ->expects($this->once())
             ->method('getRecipients')
             ->with($ownershipItem)
-            ->willReturn([new UserIdentityDetails($ownerId, $name, $email->toString())]);
+            ->willReturn(new Recipients(new UserIdentityDetails($ownerId, $name, $email->toString())));
 
         $expectedParams = [
             'organisationName' => $organizerName,
