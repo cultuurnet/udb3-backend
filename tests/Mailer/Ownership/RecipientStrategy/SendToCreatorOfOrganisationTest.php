@@ -51,7 +51,7 @@ class SendToCreatorOfOrganisationTest extends TestCase
     }
 
     /** @test */
-    public function it_gets_owner_details(): void
+    public function it_gets_creator_details(): void
     {
         $ownerDetails = new UserIdentityDetails(
             $this->creator,
