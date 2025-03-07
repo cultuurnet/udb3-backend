@@ -43,7 +43,7 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
         TwigEnvironment $twig,
         OwnershipSearchRepository $ownershipSearchRepository,
         OwnershipMailParamExtractor $paramExtractor,
-        RecipientStrategy $sendToCreatorOfOrganisation,
+        RecipientStrategy $sendToOwnersAndCreatorOfOrganisation,
         LoggerInterface $logger
     ) {
         $this->mailer = $mailer;
@@ -51,7 +51,7 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
         $this->twig = $twig;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->paramExtractor = $paramExtractor;
-        $this->sendToOwnersOfOrganizer = $sendToCreatorOfOrganisation;
+        $this->sendToOwnersOfOrganizer = $sendToOwnersAndCreatorOfOrganisation;
         $this->logger = $logger;
     }
 
