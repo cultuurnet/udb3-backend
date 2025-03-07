@@ -9,6 +9,9 @@ down:
 bash:
 	docker-compose exec php bash
 
+bash-xdebug:
+	docker-compose exec php-xdebug bash
+
 config:
 	sh ./docker/config.sh
 
@@ -21,7 +24,7 @@ migrate:
 init: install migrate
 
 ci:
-	docker-compose exec php composer ci
+	docker-compose exec php-cli composer ci
 
 stan:
 	docker-compose exec php composer phpstan
