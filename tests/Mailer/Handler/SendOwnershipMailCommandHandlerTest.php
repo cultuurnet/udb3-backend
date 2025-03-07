@@ -8,14 +8,15 @@ use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
 use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Mailer\MailsSentRepository;
+use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\RecipientStrategy;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\User\Recipients;
 use CultuurNet\UDB3\User\UserIdentityDetails;
-use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -25,22 +26,17 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
 {
     /** @var Mailer|MockObject */
     private $mailer;
-
     /** @var MailsSentRepository|MockObject */
     private $mailsSentRepository;
     private SendOwnershipMailCommandHandler $commandHandler;
     /** @var OwnershipSearchRepository|MockObject */
     private $ownershipSearchRepository;
-
-    /** @var UserIdentityResolver|MockObject */
-    private $identityResolver;
-
     /** @var TwigEnvironment|MockObject */
     private $twig;
-
     /** @var OwnershipMailParamExtractor|MockObject */
     private $ownershipMailParamExtractor;
-
+    /** @var RecipientStrategy|MockObject */
+    private $recipientStrategy;
     /** @var LoggerInterface|MockObject */
     private $logger;
 
@@ -50,18 +46,17 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
         $this->mailsSentRepository = $this->createMock(MailsSentRepository::class);
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
         $this->twig = $this->createMock(TwigEnvironment::class);
-        $this->identityResolver = $this->createMock(UserIdentityResolver::class);
         $this->logger = $this->createMock(LoggerInterface::class);
-        $this->identityResolver = $this->createMock(UserIdentityResolver::class);
         $this->ownershipMailParamExtractor = $this->createMock(OwnershipMailParamExtractor::class);
+        $this->recipientStrategy = $this->createMock(RecipientStrategy::class);
 
         $this->commandHandler = new SendOwnershipMailCommandHandler(
             $this->mailer,
             $this->mailsSentRepository,
-            $this->identityResolver,
             $this->twig,
             $this->ownershipSearchRepository,
             $this->ownershipMailParamExtractor,
+            $this->recipientStrategy,
             $this->logger
         );
     }
@@ -110,11 +105,12 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             ->willReturn($ownershipItem);
 
         $userIdentityDetails = new UserIdentityDetails($ownerId, $name, $email->toString());
-        $this->identityResolver
+
+        $this->recipientStrategy
             ->expects($this->once())
-            ->method('getUserById')
-            ->with($ownerId)
-            ->willReturn($userIdentityDetails);
+            ->method('getRecipients')
+            ->with($ownershipItem)
+            ->willReturn(new Recipients($userIdentityDetails));
 
         $this->ownershipMailParamExtractor
             ->expects($this->once())
@@ -246,11 +242,12 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             ->willReturn($ownershipItem);
 
         $userIdentityDetails = new UserIdentityDetails($ownerId, 'Grote smurf', 'info@publiq.be');
-        $this->identityResolver
+
+        $this->recipientStrategy
             ->expects($this->once())
-            ->method('getUserById')
-            ->with($ownerId)
-            ->willReturn($userIdentityDetails);
+            ->method('getRecipients')
+            ->with($ownershipItem)
+            ->willReturn(new Recipients($userIdentityDetails));
 
         $this->ownershipMailParamExtractor
             ->expects($this->once())
@@ -281,34 +278,33 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             ->with(new Uuid($id), SendOwnershipRequestedMail::class)
             ->willReturn(false);
 
+        $ownershipItem = new OwnershipItem(
+            $id,
+            $organizerId,
+            'organizer',
+            $ownerId,
+            'requested'
+        );
+
         $this->ownershipSearchRepository
             ->expects($this->once())
             ->method('getById')
             ->with($id)
-            ->willReturn(new OwnershipItem(
-                $id,
-                $organizerId,
-                'organizer',
-                $ownerId,
-                'requested'
-            ));
+            ->willReturn($ownershipItem);
 
         $this->ownershipMailParamExtractor
             ->expects($this->never())
             ->method('fetchParams');
 
-        $this->identityResolver
+        $this->recipientStrategy
             ->expects($this->once())
-            ->method('getUserById')
-            ->with($ownerId)
-            ->willReturn(null);
+            ->method('getRecipients')
+            ->with($ownershipItem)
+            ->willReturn(new Recipients());
 
         $this->mailer
             ->expects($this->never())
             ->method('send');
-
-        $this->logger->expects($this->once())
-            ->method('warning');
 
         $this->commandHandler->handle(new SendOwnershipRequestedMail($id));
     }
@@ -338,17 +334,19 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             ->expects($this->never())
             ->method('addMailSent');
 
+        $ownershipItem = new OwnershipItem(
+            $id,
+            $organizerId,
+            'organizer',
+            $ownerId,
+            'requested'
+        );
+
         $this->ownershipSearchRepository
             ->expects($this->once())
             ->method('getById')
             ->with($id)
-            ->willReturn(new OwnershipItem(
-                $id,
-                $organizerId,
-                'organizer',
-                $ownerId,
-                'requested'
-            ));
+            ->willReturn($ownershipItem);
 
         $this->ownershipMailParamExtractor
             ->expects($this->once())
@@ -359,11 +357,11 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
                 'organisationUrl' => 'http://localhost/organizers/' . $organizerId . '/preview',
             ]);
 
-        $this->identityResolver
+        $this->recipientStrategy
             ->expects($this->once())
-            ->method('getUserById')
-            ->with($ownerId)
-            ->willReturn(new UserIdentityDetails($ownerId, $name, $email->toString()));
+            ->method('getRecipients')
+            ->with($ownershipItem)
+            ->willReturn(new Recipients(new UserIdentityDetails($ownerId, $name, $email->toString())));
 
         $expectedParams = [
             'organisationName' => $organizerName,

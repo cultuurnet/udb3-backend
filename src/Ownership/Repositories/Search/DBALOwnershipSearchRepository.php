@@ -21,6 +21,7 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         'itemId' => 'item_id',
         'state' => 'state',
         'ownerId' => 'owner_id',
+        'itemType' => 'item_type',
     ];
 
     private const URL_PARAMETER_WITH_MULTIPLE_VALUES = [

@@ -9,12 +9,14 @@ use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
 use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Mailer\MailsSentRepository;
+use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\RecipientStrategy;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
-use CultuurNet\UDB3\User\UserIdentityResolver;
+use CultuurNet\UDB3\User\UserIdentityDetails;
 use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 use Twig\Environment as TwigEnvironment;
@@ -22,34 +24,34 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class SendOwnershipMailCommandHandler implements CommandHandler
+final class SendOwnershipMailCommandHandler implements CommandHandler
 {
     private const SUBJECT_OWNERSHIP_REQUESTED = 'Beheers aanvraag voor organisatie {{ organisationName }}';
     private const TEMPLATE_OWNERSHIP_REQUESTED = 'ownershipRequested';
 
     private Mailer $mailer;
     private MailsSentRepository $mailsSentRepository;
-    private UserIdentityResolver $identityResolver;
     private TwigEnvironment $twig;
     private OwnershipSearchRepository $ownershipSearchRepository;
     private OwnershipMailParamExtractor $paramExtractor;
+    private RecipientStrategy $sendToOwnersOfOrganizer;
     private LoggerInterface $logger;
 
     public function __construct(
         Mailer $mailer,
         MailsSentRepository $mailsSentRepository,
-        UserIdentityResolver $identityResolver,
         TwigEnvironment $twig,
         OwnershipSearchRepository $ownershipSearchRepository,
         OwnershipMailParamExtractor $paramExtractor,
+        RecipientStrategy $sendToOwnersAndCreatorOfOrganisation,
         LoggerInterface $logger
     ) {
         $this->mailer = $mailer;
         $this->mailsSentRepository = $mailsSentRepository;
-        $this->identityResolver = $identityResolver;
         $this->twig = $twig;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->paramExtractor = $paramExtractor;
+        $this->sendToOwnersOfOrganizer = $sendToOwnersAndCreatorOfOrganisation;
         $this->logger = $logger;
     }
 
@@ -57,17 +59,17 @@ class SendOwnershipMailCommandHandler implements CommandHandler
     {
         switch (true) {
             case $command instanceof SendOwnershipRequestedMail:
-                $this->sentMail(
+                $this->processCommand(
                     $command,
                     self::SUBJECT_OWNERSHIP_REQUESTED,
-                    self::TEMPLATE_OWNERSHIP_REQUESTED
+                    self::TEMPLATE_OWNERSHIP_REQUESTED,
+                    $this->sendToOwnersOfOrganizer,
                 );
                 break;
-
         }
     }
 
-    public function sentMail(SendOwnershipRequestedMail $command, string $rawSubject, string $template): void
+    private function processCommand(SendOwnershipRequestedMail $command, string $rawSubject, string $template, RecipientStrategy $recipientStrategy): void
     {
         $uuid = new Uuid($command->getUuid());
 
@@ -83,24 +85,35 @@ class SendOwnershipMailCommandHandler implements CommandHandler
             return;
         }
 
-        //@todo loop over ALL owners of organisation
-        $ownerId = $ownershipItem->getOwnerId();
-        $ownerDetails = $this->identityResolver->getUserById($ownerId);
+        $recipients = $recipientStrategy->getRecipients($ownershipItem);
 
-        if ($ownerDetails === null) {
-            $this->logger->warning(sprintf('[ownership-mail] Could not load owner details for %s', $ownerId));
-            return;
+        foreach ($recipients as $userIdentityDetails) {
+            $this->sendMail(
+                $userIdentityDetails,
+                $ownershipItem,
+                $rawSubject,
+                $template,
+                $command
+            );
         }
+    }
 
+    public function sendMail(
+        UserIdentityDetails $userIdentityDetails,
+        OwnershipItem $ownershipItem,
+        string $rawSubject,
+        string $template,
+        SendOwnershipRequestedMail $command
+    ): void {
         try {
-            $params = $this->paramExtractor->fetchParams($ownershipItem, $ownerDetails);
+            $params = $this->paramExtractor->fetchParams($ownershipItem, $userIdentityDetails);
         } catch (DocumentDoesNotExist $e) {
             $this->logger->warning(sprintf('[ownership-mail] Could not load organizer: %s', $e->getMessage()));
             return;
         }
 
         $subject = $this->parseSubject($rawSubject, $params['organisationName']);
-        $to = new EmailAddress($ownerDetails->getEmailAddress());
+        $to = new EmailAddress($userIdentityDetails->getEmailAddress());
 
         try {
             $success = $this->mailer->send(
@@ -119,7 +132,7 @@ class SendOwnershipMailCommandHandler implements CommandHandler
             return;
         }
 
-        $this->mailsSentRepository->addMailSent($uuid, $to, get_class($command), new DateTimeImmutable());
+        $this->mailsSentRepository->addMailSent(new Uuid($ownershipItem->getId()), $to, get_class($command), new DateTimeImmutable());
 
         $this->logger->info(sprintf('[ownership-mail] Mail "%s" sent to %s', $subject, $to->toString()));
     }
