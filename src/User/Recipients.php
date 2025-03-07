@@ -38,9 +38,4 @@ class Recipients implements IteratorAggregate
     {
         return new ArrayIterator($this->recipients);
     }
-
-    public function setRecipients(array $recipients): void
-    {
-        $this->recipients = $recipients;
-    }
 }
