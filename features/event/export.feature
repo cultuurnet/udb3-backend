@@ -82,3 +82,8 @@ Feature: Test the UDB3 events export API
       "detail": "Given string is not a valid e-mail address."
     }
     """
+
+  Scenario: Export events to a valid email
+    Given I set the JSON request payload from "exports/event-export-valid-email.json"
+    When I send a POST request to "/events/export/ooxml"
+    Then the response status should be "200"
