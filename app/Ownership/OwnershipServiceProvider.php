@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Ownership\Readmodels\OwnershipPermissionProjector;
 use CultuurNet\UDB3\Ownership\Readmodels\OwnershipSearchProjector;
 use CultuurNet\UDB3\Ownership\Repositories\Search\DBALOwnershipSearchRepository;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
+use CultuurNet\UDB3\Role\ReadModel\Search\SearchByRoleIdAndPermissions;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 
 final class OwnershipServiceProvider extends AbstractServiceProvider
@@ -71,7 +72,9 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
         $container->addShared(
             OwnershipSearchProjector::class,
             fn () => new OwnershipSearchProjector(
-                $container->get(OwnershipSearchRepository::class)
+                $container->get(OwnershipSearchRepository::class),
+                $this->container->get('organizer_jsonld_repository'),
+                $container->get(SearchByRoleIdAndPermissions::class)
             )
         );
 

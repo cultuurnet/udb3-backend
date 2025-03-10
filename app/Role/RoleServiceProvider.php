@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Role\ReadModel\Detail\Projector;
 use CultuurNet\UDB3\Role\ReadModel\Labels\LabelRolesProjector;
 use CultuurNet\UDB3\Role\ReadModel\Labels\RoleLabelsProjector;
 use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository;
+use CultuurNet\UDB3\Role\ReadModel\Search\SearchByRoleIdAndPermissions;
 use CultuurNet\UDB3\Role\ReadModel\Users\RoleUsersProjector;
 use CultuurNet\UDB3\Role\ReadModel\Users\UserRolesProjector;
 use CultuurNet\UDB3\User\UserIdentityResolver;
@@ -41,6 +42,7 @@ final class RoleServiceProvider extends AbstractServiceProvider
             'label_roles_projector',
             'role_users_read_repository',
             'role_users_projector',
+            SearchByRoleIdAndPermissions::class
         ];
     }
 
@@ -148,6 +150,13 @@ final class RoleServiceProvider extends AbstractServiceProvider
             fn () => new RoleUsersProjector(
                 $container->get('role_users_read_repository'),
                 $container->get(UserIdentityResolver::class),
+            )
+        );
+
+        $container->addShared(
+            SearchByRoleIdAndPermissions::class,
+            fn () => new SearchByRoleIdAndPermissions(
+                $container->get('dbal_connection')
             )
         );
     }
