@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Mailer\Handler\SendMailsForOwnershipEventHandler;
 use CultuurNet\UDB3\Mailer\Handler\SendOwnershipMailCommandHandler;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\CombinedRecipientStrategy;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToCreatorOfOrganisation;
+use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToOwnerOfOwnership;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToOwnersOfOrganisation;
 use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
@@ -84,6 +85,7 @@ class MailerServiceProvider extends AbstractServiceProvider
                             $this->container->get('organizer_jsonld_repository')
                         ),
                     ),
+                    new SendToOwnerOfOwnership($this->container->get(UserIdentityResolver::class)),
                     $logger,
                 );
             }

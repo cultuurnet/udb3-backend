@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailer\Handler;
 
-use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
 use CultuurNet\UDB3\CommandHandling\ContextDecoratedCommandBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
@@ -19,6 +18,7 @@ use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Broadway\Serializer\Serializable;
 
 class SendMailsForOwnershipEventHandlerTest extends TestCase
 {
@@ -42,13 +42,14 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
         );
     }
 
-    /** @test
+    /**
+     * @test
      * @dataProvider dataProvider
      * This is the happy path
      * */
     public function it_converts_the_event_to_the_correct_command(Serializable $event, AbstractSendOwnershipMail $command): void
     {
-        $domainMessage = (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($event);
+        $domainMessage = (new DomainMessageBuilder())->create($event);
 
         $this->domainMessageSpecification
             ->expects($this->once())
