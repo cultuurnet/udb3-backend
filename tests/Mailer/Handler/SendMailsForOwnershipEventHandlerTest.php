@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Mailer\Ownership;
+namespace CultuurNet\UDB3\Mailer\Handler;
 
 use Broadway\Serializer\Serializable;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
@@ -12,6 +12,8 @@ use CultuurNet\UDB3\Mailer\Command\AbstractSendOwnershipMail;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipAcceptedMail;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRejectedMail;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
+use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Offer\Item\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
@@ -91,11 +93,13 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
     /** @test */
     public function it_blocks_replays(): void
     {
-        $itemId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
+        $id = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
+        $organizerId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
         $ownerId = 'auth0|63e22626e39a8ca1264bd29b';
 
-        $event = $this->getEvent($itemId, $ownerId);
-        $domainMessage = (new DomainMessageBuilder())->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)->create($event);
+        $domainMessage = (new DomainMessageBuilder())
+            ->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)
+            ->create($this->givenAnOwnershipRequested($id, $organizerId, $ownerId));
 
         $this->domainMessageSpecification
             ->expects($this->once())
@@ -110,11 +114,34 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
         );
     }
 
-    private function getEvent(string $itemId, string $ownerId): OwnershipRequested
+    /** @test */
+    public function it_does_not_dispatch_with_an_invalid_event(): void
+    {
+        $domainMessage = (new DomainMessageBuilder())
+            ->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)
+            ->create(new DescriptionUpdated(
+                'event-123',
+                new Description('description-456')
+            ));
+
+        $this->domainMessageSpecification
+            ->expects($this->once())
+            ->method('isSatisfiedBy')
+            ->with($domainMessage)
+            ->willReturn(true);
+
+        $this->commandBus->expects($this->never())->method('dispatch');
+
+        $this->sendMailsForOwnership->handle(
+            $domainMessage
+        );
+    }
+
+    private function givenAnOwnershipRequested(string $id, string $organizerId, string $ownerId): OwnershipRequested
     {
         return new OwnershipRequested(
-            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-            $itemId,
+            $id,
+            $organizerId,
             'organizer',
             $ownerId,
             'google-oauth2|102486314601596809843'

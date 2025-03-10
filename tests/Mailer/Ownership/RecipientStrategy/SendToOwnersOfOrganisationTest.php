@@ -4,79 +4,93 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy;
 
+use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
+use CultuurNet\UDB3\Ownership\Repositories\Search\DBALOwnershipSearchRepository;
+use CultuurNet\UDB3\User\Recipients;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 
 class SendToOwnersOfOrganisationTest extends TestCase
 {
-    private MockObject $identityResolver;
-    private MockObject $logger;
-    private SendToOwnersOfOrganisation $strategy;
-    private OwnershipItem $ownershipItem;
-    private string $creator;
-    private string $ownerId;
+    use DBALTestConnectionTrait;
+
+    /**
+     * @var UserIdentityResolver|MockObject
+     */
+    private $identityResolver;
+    private SendToOwnersOfOrganisation $sendToOwnersOfOrganisation;
 
     protected function setUp(): void
     {
-        $this->creator = Uuid::uuid4()->toString();
-        $this->ownerId = Uuid::uuid4()->toString();
-        $this->ownershipItem = new OwnershipItem(
-            Uuid::uuid4()->toString(),
-            Uuid::uuid4()->toString(),
-            'organizer',
-            $this->ownerId,
-            'requested'
-        );
+        $this->setUpDatabase();
 
         $this->identityResolver = $this->createMock(UserIdentityResolver::class);
-        $this->logger = $this->createMock(LoggerInterface::class);
-        $this->strategy = new SendToOwnersOfOrganisation($this->identityResolver, $this->logger);
+
+        $this->sendToOwnersOfOrganisation = new SendToOwnersOfOrganisation(
+            $this->identityResolver,
+            new DBALOwnershipSearchRepository($this->getConnection())
+        );
     }
 
     /** @test */
-    public function it_gets_owner_details(): void
+    public function it_should_return_the_correct_and_valid_users(): void
     {
-        $ownerDetails = new UserIdentityDetails(
-            $this->ownerId,
-            'Grote smurf',
-            'grotesmurf@public.be'
-        );
-        $this->identityResolver->method('getUserById')->with($this->creator)->willReturn($ownerDetails);
+        $itemId = '42e1829f-19d9-4b03-a5f6-b1938283df98 ';
+        $ownerId = '4f850240-4f7f-4a7f-9828-f574da6f97d0';
 
-        $recipients = $this->strategy->getRecipients($this->ownershipItem, ['creator' => $this->creator]);
+        $this->connection->insert('ownership_search', [
+            'id' => '94f8f4a1-440e-4ed3-9f52-c27be945f27f',
+            'item_id' => $itemId,
+            'item_type' => 'organizer',
+            'owner_id' => $ownerId,
+            'state' => OwnershipState::approved()->toString(),
+            'role_id' => Uuid::uuid4()->toString(),
+        ]);
+
+        $this->connection->insert('ownership_search', [
+            'id' => Uuid::uuid4()->toString(),
+            'item_id' => Uuid::uuid4()->toString(),//wrong item id
+            'item_type' => 'organizer',
+            'owner_id' => Uuid::uuid4()->toString(),
+            'state' => OwnershipState::approved()->toString(),
+            'role_id' => Uuid::uuid4()->toString(),
+        ]);
+
+        $this->connection->insert('ownership_search', [
+            'id' => Uuid::uuid4()->toString(),
+            'item_id' => $itemId,
+            'item_type' => 'organizer',
+            'owner_id' => $ownerId,
+            'state' => OwnershipState::rejected()->toString(),//wrong state
+            'role_id' => Uuid::uuid4()->toString(),
+        ]);
+
+        $ownershipItem = new OwnershipItem(
+            Uuid::uuid4()->toString(),
+            $itemId,
+            'organizer',
+            Uuid::uuid4()->toString(),
+            OwnershipState::approved()->toString(),
+        );
+
+        $userIdentityDetails = new UserIdentityDetails(
+            $ownerId,
+            'Grote smurf',
+            'grotesmurf@publiq.be'
+        );
+        $this->identityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with($ownerId)
+            ->willReturn($userIdentityDetails);
+
+        $recipients = $this->sendToOwnersOfOrganisation->getRecipients($ownershipItem);
 
         $this->assertCount(1, $recipients);
-        $this->assertSame($ownerDetails, $recipients[0]);
-    }
-
-    /** @test */
-    public function it_logs_warning_and_returns_nothing_when_owner_not_found(): void
-    {
-        $this->identityResolver->method('getUserById')->with($this->creator)->willReturn(null);
-
-        $this->logger
-            ->expects($this->once())
-            ->method('warning')
-            ->with($this->stringContains('Could not load owner details for ' . $this->creator));
-
-        $this->assertEmpty($this->strategy->getRecipients($this->ownershipItem, ['creator' => $this->creator]));
-    }
-
-    /** @test */
-    public function it_logs_warning_and_returns_nothing_when_organizer_array_is_invalid(): void
-    {
-        $this->identityResolver->method('getUserById')->with('')->willReturn(null);
-
-        $this->logger
-            ->expects($this->once())
-            ->method('warning')
-            ->with($this->stringContains('Could not load owner details for unknown'));
-
-        $this->assertEmpty($this->strategy->getRecipients($this->ownershipItem, []));
+        $this->assertEquals(new Recipients($userIdentityDetails), $recipients);
     }
 }

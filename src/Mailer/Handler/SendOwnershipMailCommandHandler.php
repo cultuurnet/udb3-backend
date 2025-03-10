@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Mailer\Ownership;
+namespace CultuurNet\UDB3\Mailer\Handler;
 
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Mailer\Command\AbstractSendOwnershipMail;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipAcceptedMail;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRejectedMail;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
+use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Mailer\MailsSentRepository;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\RecipientStrategy;
@@ -21,9 +22,7 @@ use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\User\UserIdentityDetails;
-use CultuurNet\UDB3\User\UserIdentityResolver;
 use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 use Twig\Environment as TwigEnvironment;
@@ -31,7 +30,7 @@ use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 
-class SendOwnershipMailCommandHandler implements CommandHandler
+final class SendOwnershipMailCommandHandler implements CommandHandler
 {
     private const SUBJECT_OWNERSHIP_REQUESTED = 'Beheers aanvraag voor organisatie {{ organisationName }}';
     private const TEMPLATE_OWNERSHIP_REQUESTED = 'ownershipRequested';
@@ -44,31 +43,28 @@ class SendOwnershipMailCommandHandler implements CommandHandler
 
     private Mailer $mailer;
     private MailsSentRepository $mailsSentRepository;
-    private LoggerInterface $logger;
-    private DocumentRepository $organizerRepository;
-    private UserIdentityResolver $identityResolver;
-    private IriGeneratorInterface $organizerIriGenerator;
     private TwigEnvironment $twig;
     private OwnershipSearchRepository $ownershipSearchRepository;
+    private OwnershipMailParamExtractor $paramExtractor;
+    private RecipientStrategy $sendToOwnersOfOrganizer;
+    private LoggerInterface $logger;
 
     public function __construct(
         Mailer $mailer,
         MailsSentRepository $mailsSentRepository,
-        DocumentRepository $organizerRepository,
-        UserIdentityResolver $identityResolver,
-        IriGeneratorInterface $organizerIriGenerator,
         TwigEnvironment $twig,
         OwnershipSearchRepository $ownershipSearchRepository,
+        OwnershipMailParamExtractor $paramExtractor,
+        RecipientStrategy $sendToOwnersAndCreatorOfOrganisation,
         LoggerInterface $logger
     ) {
         $this->mailer = $mailer;
         $this->mailsSentRepository = $mailsSentRepository;
-        $this->logger = $logger;
-        $this->organizerRepository = $organizerRepository;
-        $this->identityResolver = $identityResolver;
-        $this->organizerIriGenerator = $organizerIriGenerator;
         $this->twig = $twig;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
+        $this->paramExtractor = $paramExtractor;
+        $this->sendToOwnersOfOrganizer = $sendToOwnersAndCreatorOfOrganisation;
+        $this->logger = $logger;
     }
 
     public function handle($command): void
@@ -106,6 +102,7 @@ class SendOwnershipMailCommandHandler implements CommandHandler
         $uuid = new Uuid($command->getUuid());
 
         if ($this->mailsSentRepository->isMailSent($uuid, get_class($command))) {
+            $this->logger->info(sprintf('[ownership-mail] Mail %s about %s was already sent', $uuid->toString(), get_class($command)));
             return;
         }
 
@@ -116,19 +113,10 @@ class SendOwnershipMailCommandHandler implements CommandHandler
             return;
         }
 
-        try {
-            $organizerProjection = $this->organizerRepository->fetch($ownershipItem->getItemId());
-        } catch (DocumentDoesNotExist $e) {
-            $this->logger->warning(sprintf('[ownership-mail] Could not load organizer: %s', $e->getMessage()));
-            return;
-        }
+        $recipients = $recipientStrategy->getRecipients($ownershipItem);
 
-        $organizer = $organizerProjection->getAssocBody();
-
-        /** @var UserIdentityDetails $userIdentityDetails */
-        foreach ($recipients->getRecipients($ownershipItem, $organizer) as $userIdentityDetails) {
+        foreach ($recipients as $userIdentityDetails) {
             $this->sendMail(
-                $organizer['name']['nl'],
                 $userIdentityDetails,
                 $ownershipItem,
                 $rawSubject,
@@ -139,20 +127,20 @@ class SendOwnershipMailCommandHandler implements CommandHandler
     }
 
     public function sendMail(
-        string $organisationName,
         UserIdentityDetails $userIdentityDetails,
         OwnershipItem $ownershipItem,
         string $rawSubject,
         string $template,
         AbstractSendOwnershipMail $command
     ): void {
-        $params = [
-            'organisationName' => $organisationName,
-            'firstName' => $userIdentityDetails->getUserName(),
-            'organisationUrl' => $this->organizerIriGenerator->iri($ownershipItem->getItemId()),
-        ];
+        try {
+            $params = $this->paramExtractor->fetchParams($ownershipItem, $userIdentityDetails);
+        } catch (DocumentDoesNotExist $e) {
+            $this->logger->warning(sprintf('[ownership-mail] Could not load organizer: %s', $e->getMessage()));
+            return;
+        }
 
-        $subject = $this->parseSubject($rawSubject, $organisationName);
+        $subject = $this->parseSubject($rawSubject, $params['organisationName']);
         $to = new EmailAddress($userIdentityDetails->getEmailAddress());
 
         try {
@@ -163,17 +151,18 @@ class SendOwnershipMailCommandHandler implements CommandHandler
                 $this->twig->render($template . '.txt.twig', $params),
             );
         } catch (LoaderError|RuntimeError|SyntaxError $e) {
-            $this->logger->error($e->getMessage());
+            $this->logger->error('[ownership-mail] ' . $e->getMessage());
             return;
         }
 
         if (!$success) {
+            $this->logger->error(sprintf('[ownership-mail] Mail "%s" failed to sent to %s', $subject, $to->toString()));
             return;
         }
 
         $this->mailsSentRepository->addMailSent(new Uuid($ownershipItem->getId()), $to, get_class($command), new DateTimeImmutable());
 
-        $this->logger->info(sprintf('Mail "%s" sent to %s', $subject, $to->toString()));
+        $this->logger->info(sprintf('[ownership-mail] Mail "%s" sent to %s', $subject, $to->toString()));
     }
 
     private function parseSubject(string $subject, string $name): string
