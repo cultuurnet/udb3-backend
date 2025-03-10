@@ -44,7 +44,7 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider dataProvider
+     * @dataProvider eventWithCorrespondingCommandProvider
      * This is the happy path
      * */
     public function it_converts_the_event_to_the_correct_command(Serializable $event, AbstractSendOwnershipMail $command): void
@@ -66,7 +66,7 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
         );
     }
 
-    public function dataProvider(): array
+    public function eventWithCorrespondingCommandProvider(): array
     {
         $id = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
         return [
