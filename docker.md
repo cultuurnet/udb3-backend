@@ -44,6 +44,7 @@ Login to the management console on http://io.uitdatabank.local:15672/ with usern
 ### Mailpit
 
 You can check send mails of UiTdatabank on http://localhost:8025
+The API of Mailpit can be found on http://localhost:8025/api/v1/
 
 ### Acceptance tests
 
