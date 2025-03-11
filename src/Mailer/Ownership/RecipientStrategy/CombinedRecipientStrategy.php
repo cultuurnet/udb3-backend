@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy;
 
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\User\Recipients;
 
 final class CombinedRecipientStrategy implements RecipientStrategy
@@ -22,12 +21,8 @@ final class CombinedRecipientStrategy implements RecipientStrategy
     {
         $recipients = new Recipients();
         foreach ($this->recipientStrategies as $voter) {
-            try {
-                foreach ($voter->getRecipients($item) as $recipient) {
-                    $recipients->add($recipient);
-                }
-            } catch (DocumentDoesNotExist $e) {
-                // Do nothing
+            foreach ($voter->getRecipients($item) as $recipient) {
+                $recipients->add($recipient);
             }
         }
 

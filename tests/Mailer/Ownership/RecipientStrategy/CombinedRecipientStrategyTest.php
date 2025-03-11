@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\User\Recipients;
 use CultuurNet\UDB3\User\UserIdentityDetails;
 use PHPUnit\Framework\TestCase;
@@ -75,21 +74,5 @@ final class CombinedRecipientStrategyTest extends TestCase
 
         $this->assertCount(2, $recipients);
         $this->assertEquals((new Recipients($this->recipient1, $this->recipient2))->getRecipients(), $recipients->getRecipients());
-    }
-
-    /** @test */
-    public function get_recipients_handles_exception_gracefully(): void
-    {
-        $failingStrategy = $this->createMock(RecipientStrategy::class);
-        $failingStrategy->method('getRecipients')->with($this->ownershipItem)->willThrowException(new DocumentDoesNotExist());
-
-        $workingStrategy = $this->createMock(RecipientStrategy::class);
-        $workingStrategy->method('getRecipients')->with($this->ownershipItem)->willReturn(new Recipients($this->recipient1));
-
-        $combinedStrategy = new CombinedRecipientStrategy($failingStrategy, $workingStrategy);
-        $recipients = $combinedStrategy->getRecipients($this->ownershipItem);
-
-        $this->assertCount(1, $recipients);
-        $this->assertEquals((new Recipients($this->recipient1))->getRecipients(), $recipients->getRecipients());
     }
 }
