@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Mailer\Handler;
 
 use Broadway\CommandHandling\CommandHandler;
+use CultuurNet\UDB3\Mailer\Command\AbstractSendOwnershipMail;
+use CultuurNet\UDB3\Mailer\Command\SendOwnershipAcceptedMail;
+use CultuurNet\UDB3\Mailer\Command\SendOwnershipRejectedMail;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
 use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Mailer;
@@ -27,7 +30,13 @@ use Twig\Error\SyntaxError;
 final class SendOwnershipMailCommandHandler implements CommandHandler
 {
     private const SUBJECT_OWNERSHIP_REQUESTED = 'Beheers aanvraag voor organisatie {{ organisationName }}';
-    private const TEMPLATE_OWNERSHIP_REQUESTED = 'ownershipRequested';
+    private const TEMPLATE_OWNERSHIP_REQUESTED = 'ownership/requested';
+
+    private const SUBJECT_OWNERSHIP_APPROVED = 'Je bent nu beheerder van organisatie {{ organisationName }}!';
+    private const TEMPLATE_OWNERSHIP_APPROVED = 'ownership/approved';
+
+    private const SUBJECT_OWNERSHIP_REJECTED = 'Je beheersaanvraag voor organisatie {{ organisationName }} is geweigerd';
+    private const TEMPLATE_OWNERSHIP_REJECTED = 'ownership/rejected';
 
     private Mailer $mailer;
     private MailsSentRepository $mailsSentRepository;
@@ -35,6 +44,7 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
     private OwnershipSearchRepository $ownershipSearchRepository;
     private OwnershipMailParamExtractor $paramExtractor;
     private RecipientStrategy $sendToOwnersOfOrganizer;
+    private RecipientStrategy $sendToOwnerOfOwnership;
     private LoggerInterface $logger;
 
     public function __construct(
@@ -44,6 +54,7 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
         OwnershipSearchRepository $ownershipSearchRepository,
         OwnershipMailParamExtractor $paramExtractor,
         RecipientStrategy $sendToOwnersAndCreatorOfOrganisation,
+        RecipientStrategy $sendToOwnerOfOwnership,
         LoggerInterface $logger
     ) {
         $this->mailer = $mailer;
@@ -52,6 +63,7 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->paramExtractor = $paramExtractor;
         $this->sendToOwnersOfOrganizer = $sendToOwnersAndCreatorOfOrganisation;
+        $this->sendToOwnerOfOwnership = $sendToOwnerOfOwnership;
         $this->logger = $logger;
     }
 
@@ -66,10 +78,26 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
                     $this->sendToOwnersOfOrganizer,
                 );
                 break;
+            case $command instanceof SendOwnershipAcceptedMail:
+                $this->processCommand(
+                    $command,
+                    self::SUBJECT_OWNERSHIP_APPROVED,
+                    self::TEMPLATE_OWNERSHIP_APPROVED,
+                    $this->sendToOwnerOfOwnership,
+                );
+                break;
+            case $command instanceof SendOwnershipRejectedMail:
+                $this->processCommand(
+                    $command,
+                    self::SUBJECT_OWNERSHIP_REJECTED,
+                    self::TEMPLATE_OWNERSHIP_REJECTED,
+                    $this->sendToOwnerOfOwnership,
+                );
+                break;
         }
     }
 
-    private function processCommand(SendOwnershipRequestedMail $command, string $rawSubject, string $template, RecipientStrategy $recipientStrategy): void
+    private function processCommand(AbstractSendOwnershipMail $command, string $rawSubject, string $template, RecipientStrategy $recipientStrategy): void
     {
         $uuid = new Uuid($command->getUuid());
 
@@ -87,23 +115,27 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
 
         $recipients = $recipientStrategy->getRecipients($ownershipItem);
 
+        if (!count($recipients->getRecipients())) {
+            $this->logger->warning(sprintf('[ownership-mail] No recipients found to send mail for ownership %s', $command->getUuid()));
+        }
+
         foreach ($recipients as $userIdentityDetails) {
             $this->sendMail(
+                $command,
                 $userIdentityDetails,
                 $ownershipItem,
                 $rawSubject,
                 $template,
-                $command
             );
         }
     }
 
     public function sendMail(
+        AbstractSendOwnershipMail $command,
         UserIdentityDetails $userIdentityDetails,
         OwnershipItem $ownershipItem,
         string $rawSubject,
-        string $template,
-        SendOwnershipRequestedMail $command
+        string $template
     ): void {
         try {
             $params = $this->paramExtractor->fetchParams($ownershipItem, $userIdentityDetails);

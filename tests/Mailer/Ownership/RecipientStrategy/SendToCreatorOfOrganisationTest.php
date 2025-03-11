@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\User\Recipients;
@@ -29,20 +30,19 @@ class SendToCreatorOfOrganisationTest extends TestCase
     private OwnershipItem $ownershipItem;
     private string $itemId;
     private string $creator;
-    private string $ownerId;
 
     protected function setUp(): void
     {
         $this->itemId = Uuid::uuid4()->toString();
         $this->creator = Uuid::uuid4()->toString();
-        $this->ownerId = Uuid::uuid4()->toString();
+        $ownerId = Uuid::uuid4()->toString();
         $this->organizerRepository = $this->createMock(DocumentRepository::class);
 
         $this->ownershipItem = new OwnershipItem(
             Uuid::uuid4()->toString(),
             $this->itemId,
             'organizer',
-            $this->ownerId,
+            $ownerId,
             'requested'
         );
 
@@ -69,5 +69,25 @@ class SendToCreatorOfOrganisationTest extends TestCase
 
         $this->assertCount(1, $recipients);
         $this->assertSame((new Recipients($ownerDetails))->getRecipients(), $recipients->getRecipients());
+    }
+
+    /** @test */
+    public function get_recipients_handles_exception_gracefully(): void
+    {
+        $ownerDetails = new UserIdentityDetails(
+            $this->creator,
+            'Grote smurf',
+            'grotesmurf@publiq.be'
+        );
+        $this->identityResolver->method('getUserById')->with($this->creator)->willReturn($ownerDetails);
+
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
+            ->with($this->itemId)
+            ->willThrowException(new DocumentDoesNotExist());
+
+        $recipients = $this->strategy->getRecipients($this->ownershipItem);
+
+        $this->assertCount(0, $recipients);
     }
 }
