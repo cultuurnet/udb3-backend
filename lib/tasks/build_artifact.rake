@@ -21,8 +21,8 @@ task :build_artifact do |task|
   FileUtils.rm('web/uploads/.gitignore')
 
   system("fpm -s dir -t deb -n #{artifact_name} -v #{version} -a all -p pkg \
-    -x '.git*' -x pkg -x lib -x Rakefile -x Gemfile -x Gemfile.lock \
-    -x .bundle -x Jenkinsfile -x vendor/bundle \
+    -x '.git*' -x pkg -x lib -x Rakefile -x Gemfile -x Gemfile.lock -x .bundle \
+    -x Jenkinsfile -x vendor/bundle -x 'docker*' -x features -x tests \
     --prefix /var/www/udb3-backend \
     --config-files /var/www/udb3-backend/config.php \
     --deb-user www-data --deb-group www-data \
