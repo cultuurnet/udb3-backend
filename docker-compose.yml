@@ -25,6 +25,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      mailpit:
+        condition: service_healthy
 
   mysql:
     image: 'bitnami/mysql:8.0'
@@ -92,11 +94,21 @@ services:
     ports:
       - 8025:8025
       - 1025:1025
+    networks:
+      uitdatabank-backend:
+        aliases:
+          - mailpit.uitdatabank.local
     environment:
       MP_MAX_MESSAGES: 5000
       MP_DATABASE: /data/mailpit.db
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    healthcheck:
+      test: curl http://127.0.0.1:1025/
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 10
 
 networks:
   uitdatabank-backend:
