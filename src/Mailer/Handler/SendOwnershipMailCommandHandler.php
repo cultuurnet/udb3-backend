@@ -115,6 +115,10 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
 
         $recipients = $recipientStrategy->getRecipients($ownershipItem);
 
+        if (!count($recipients->getRecipients())) {
+            $this->logger->warning(sprintf('[ownership-mail] No recipients found to send mail for ownership %s', $command->getUuid()));
+        }
+
         foreach ($recipients as $userIdentityDetails) {
             $this->sendMail(
                 $command,
