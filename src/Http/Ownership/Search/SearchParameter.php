@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Ownership\Search;
 
 final class SearchParameter
 {
-    public const SUPPORTED_URL_PARAMETERS = ['itemId', 'state', 'ownerId'];
+    public const SUPPORTED_URL_PARAMETERS = ['itemId', 'state', 'ownerId', 'roleId'];
 
     private string $urlParameter;
     private string $value;
