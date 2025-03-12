@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Role\ReadModel\Exception\RoleNotFound;
+use CultuurNet\UDB3\Role\ValueObjects\Query;
 use PHPUnit\Framework\TestCase;
 
 class DBALRepositoryTest extends TestCase
@@ -196,6 +199,36 @@ class DBALRepositoryTest extends TestCase
             2,
             $actualResults->getTotalItems()
         );
+    }
+
+    /** @test */
+    public function it_returns_a_role_with_a_role_id(): void
+    {
+        $roleId = Uuid::uuid4();
+        $name = 'my secret club';
+        $constraint = 'foo:bar';
+
+        $this->dbalRepository->save(
+            $roleId->toString(),
+            $name,
+            $constraint
+        );
+
+        $role = $this->dbalRepository->load($roleId);
+
+        $this->assertEquals($roleId, $role->getUuid());
+        $this->assertEquals($name, $role->getName());
+        $this->assertEquals(new Query($constraint), $role->getConstraintQuery());
+    }
+
+    /** @test */
+    public function it_throws_an_exception_when_it_cannot_load_a_role(): void
+    {
+        $roleId = Uuid::uuid4();
+
+        $this->expectException(RoleNotFound::class);
+
+        $this->dbalRepository->load($roleId);
     }
 
     protected function getLastRole(): ?array

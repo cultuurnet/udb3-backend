@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Role\ReadModel\Exception\RoleNotFound;
+use CultuurNet\UDB3\Role\ValueObjects\Query;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
+use CultuurNet\UDB3\Role\ValueObjects\Role;
 use Doctrine\DBAL\Connection;
 
 class DBALRepository implements RepositoryInterface
@@ -116,5 +120,28 @@ class DBALRepository implements RepositoryInterface
             ->setParameter('role_id', $uuid)
             ->setParameter('constraint', $constraint);
         $q->execute();
+    }
+
+    /** @throw RoleNotFound */
+    public function load(Uuid $uuid): Role
+    {
+        $q = $this->connection->createQueryBuilder();
+        $expr = $this->connection->getExpressionBuilder();
+        $q->select('*')
+            ->from($this->tableName)
+            ->where($expr->eq(ColumnNames::UUID_COLUMN, ':role_id'))
+            ->setParameter('role_id', $uuid->toString());
+
+        $data = $q->execute()->fetchAssociative();
+
+        if (empty($data['uuid'])) {
+            throw RoleNotFound::fromUuid($uuid);
+        }
+
+        return new Role(
+            new Uuid($data[ColumnNames::UUID_COLUMN]),
+            $data[ColumnNames::NAME_COLUMN],
+            !empty($data[ColumnNames::CONSTRAINT_COLUMN]) ? new Query($data[ColumnNames::CONSTRAINT_COLUMN]) : null
+        );
     }
 }
