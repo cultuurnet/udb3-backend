@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy;
 
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
-use CultuurNet\UDB3\User\UserIdentityDetails;
+use CultuurNet\UDB3\User\Recipients;
 
 interface RecipientStrategy
 {
-    /** @return UserIdentityDetails[] */
-    public function getRecipients(OwnershipItem $item, array $organizer): array;
+    public function getRecipients(OwnershipItem $item): Recipients;
 }

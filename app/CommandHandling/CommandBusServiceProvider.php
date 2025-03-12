@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Event\EventCommandHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionCommandHandler;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Log\SocketIOEmitterHandler;
-use CultuurNet\UDB3\Mailer\Ownership\SendOwnershipMailCommandHandler;
+use CultuurNet\UDB3\Mailer\Handler\SendOwnershipMailCommandHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\ApproveOwnershipHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\DeleteOwnershipHandler;
 use CultuurNet\UDB3\Ownership\CommandHandlers\RejectOwnershipHandler;
