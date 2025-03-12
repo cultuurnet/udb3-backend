@@ -125,16 +125,12 @@ final class OwnershipSearchProjector implements EventListener
         $organizerId = $this->extractUuid($query);
 
         if ($organizerId === null) {
-            $this->logger->error(sprintf('regex failed'));
-
             return;
         }
 
         try {
             $this->organizerRepository->fetch($organizerId);
         } catch (DocumentDoesNotExist $e) {
-            $this->logger->error(sprintf('DocumentDoesNotExist'));
-
             // This uuid does not belong to an organizer, so we don't have to save them into the ownership_search table
             return;
         }
