@@ -74,7 +74,8 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
             fn () => new OwnershipSearchProjector(
                 $container->get(OwnershipSearchRepository::class),
                 $this->container->get('organizer_jsonld_repository'),
-                $container->get(SearchByRoleIdAndPermissions::class)
+                $container->get(SearchByRoleIdAndPermissions::class),
+                $this->container->get('dbal_connection')
             )
         );
 

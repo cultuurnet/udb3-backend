@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Role\Events\ConstraintUpdated;
 use CultuurNet\UDB3\Role\ReadModel\Search\SearchByRoleIdAndPermissions;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
+use Doctrine\DBAL\Connection;
 
 final class OwnershipSearchProjector implements EventListener
 {
@@ -33,12 +34,14 @@ final class OwnershipSearchProjector implements EventListener
     private OwnershipSearchRepository $ownershipSearchRepository;
     private DocumentRepository $organizerRepository;
     private SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions;
+    private Connection $connection;
 
-    public function __construct(OwnershipSearchRepository $ownershipSearchRepository, DocumentRepository $organizerRepository, SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions)
+    public function __construct(OwnershipSearchRepository $ownershipSearchRepository, DocumentRepository $organizerRepository, SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions, Connection $connection)
     {
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->organizerRepository = $organizerRepository;
         $this->searchByRoleIdAndPermissions = $searchByRoleIdAndPermissions;
+        $this->connection = $connection;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -97,8 +100,16 @@ final class OwnershipSearchProjector implements EventListener
 
     protected function applyConstraintUpdated(ConstraintUpdated $constraintEvent): void
     {
-        //@todo cleanup before update
-        $this->processConstraint($constraintEvent->getUuid(), $constraintEvent->getQuery());
+        $roleId = $constraintEvent->getUuid();
+
+        $this->connection->beginTransaction();
+
+        // First clear all existing owners for this role, because if the constraint is changed some users might no longer be valid.
+        $this->ownershipSearchRepository->deleteByRole($roleId);
+
+        $this->processConstraint($roleId, $constraintEvent->getQuery());
+
+        $this->connection->commit();
     }
 
     protected function applyConstraintRemoved(ConstraintRemoved $constraintEvent): void

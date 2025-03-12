@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Role\Events\ConstraintUpdated;
 use CultuurNet\UDB3\Role\ReadModel\Search\SearchByRoleIdAndPermissions;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -37,6 +38,9 @@ class OwnershipSearchProjectorTest extends TestCase
     /** @var SearchByRoleIdAndPermissions & MockObject */
     private $searchByRoleIdAndPermissions;
 
+    /** @var Connection & MockObject */
+    private $connection;
+
     private OwnershipSearchProjector $ownershipSearchProjector;
 
     public function setUp(): void
@@ -44,11 +48,13 @@ class OwnershipSearchProjectorTest extends TestCase
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
         $this->organizerRepository = $this->createMock(DocumentRepository::class);
         $this->searchByRoleIdAndPermissions = $this->createMock(SearchByRoleIdAndPermissions::class);
+        $this->connection = $this->createMock(Connection::class);
 
         $this->ownershipSearchProjector = new OwnershipSearchProjector(
             $this->ownershipSearchRepository,
             $this->organizerRepository,
             $this->searchByRoleIdAndPermissions,
+            $this->connection
         );
     }
 
@@ -144,13 +150,77 @@ class OwnershipSearchProjectorTest extends TestCase
         $organizerId = 'b90d7a0d-73c9-47d5-a0ae-ebf2f99d1f6a';
         $roleId = new Uuid('ea1e3f06-b3dd-428f-b205-09c376d0cf12');
 
-        $userId1 = '177e737d-27ed-4156-ae86-57b87030ed02';
-        $userId2 = '8452a083-bfe8-4cd3-bea8-19bb322d7fd1';
-
         $constraintAdded = new ConstraintAdded(
             $roleId,
             new Query('id:' . $organizerId)
         );
+
+        $this->mockConstraintEvent($organizerId, $roleId);
+
+        $this->ownershipSearchProjector->handle($this->createDomainMessage($constraintAdded));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_constraint_updated(): void
+    {
+        $organizerId = 'b90d7a0d-73c9-47d5-a0ae-ebf2f99d1f6a';
+        $roleId = new Uuid('ea1e3f06-b3dd-428f-b205-09c376d0cf12');
+
+        $constraintAdded = new ConstraintUpdated(
+            $roleId,
+            new Query('id:' . $organizerId)
+        );
+
+        $this->connection->expects($this->once())
+            ->method('beginTransaction');
+
+        $this->connection->expects($this->once())
+            ->method('commit');
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('deleteByRole')
+            ->with($roleId);
+
+        $this->mockConstraintEvent($organizerId, $roleId);
+
+        $this->ownershipSearchProjector->handle($this->createDomainMessage($constraintAdded));
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_constraint_removed(): void
+    {
+        $roleId = Uuid::uuid4();
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('deleteByRole')
+            ->with($roleId);
+
+        $constraintRemoved = new ConstraintRemoved($roleId);
+        $this->ownershipSearchProjector->handle($this->createDomainMessage($constraintRemoved));
+    }
+
+    /**
+     * @param OwnershipRequested|OwnershipApproved|OwnershipRejected|OwnershipDeleted|ConstraintAdded|ConstraintUpdated|ConstraintRemoved $event
+     */
+    private function createDomainMessage($event): DomainMessage
+    {
+        return new DomainMessage(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            0,
+            new Metadata(),
+            $event,
+            DateTime::now()
+        );
+    }
+
+    public function mockConstraintEvent(string $organizerId, Uuid $roleId): void
+    {
+        $userId1 = '177e737d-27ed-4156-ae86-57b87030ed02';
+        $userId2 = '8452a083-bfe8-4cd3-bea8-19bb322d7fd1';
 
         $this->organizerRepository->expects($this->once())
             ->method('fetch')
@@ -177,33 +247,5 @@ class OwnershipSearchProjectorTest extends TestCase
                     && $item->getOwnerId() === $userId2
                     && $item->getRoleId() === $roleId;
             }));
-
-        $this->ownershipSearchProjector->handle($this->createDomainMessage($constraintAdded));
-    }
-
-    public function it_handles_constraint_removed(): void
-    {
-        $roleId = Uuid::uuid4();
-
-        $this->ownershipSearchRepository->expects($this->once())
-            ->method('deleteByRole')
-            ->with($roleId);
-
-        $constraintRemoved = new ConstraintRemoved($roleId);
-        $this->ownershipSearchProjector->handle($this->createDomainMessage($constraintRemoved));
-    }
-
-    /**
-     * @param OwnershipRequested|OwnershipApproved|OwnershipRejected|OwnershipDeleted|ConstraintAdded|ConstraintUpdated|ConstraintRemoved $event
-     */
-    private function createDomainMessage($event): DomainMessage
-    {
-        return new DomainMessage(
-            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
-            0,
-            new Metadata(),
-            $event,
-            DateTime::now()
-        );
     }
 }
