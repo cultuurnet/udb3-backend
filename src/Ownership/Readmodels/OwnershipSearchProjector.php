@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Role\ReadModel\Search\SearchByRoleIdAndPermissions;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
 use Doctrine\DBAL\Connection;
+use Psr\Log\LoggerInterface;
 
 final class OwnershipSearchProjector implements EventListener
 {
@@ -35,13 +36,15 @@ final class OwnershipSearchProjector implements EventListener
     private DocumentRepository $organizerRepository;
     private SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions;
     private Connection $connection;
+    private LoggerInterface $logger;
 
-    public function __construct(OwnershipSearchRepository $ownershipSearchRepository, DocumentRepository $organizerRepository, SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions, Connection $connection)
+    public function __construct(OwnershipSearchRepository $ownershipSearchRepository, DocumentRepository $organizerRepository, SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions, Connection $connection, LoggerInterface $logger)
     {
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->organizerRepository = $organizerRepository;
         $this->searchByRoleIdAndPermissions = $searchByRoleIdAndPermissions;
         $this->connection = $connection;
+        $this->logger = $logger;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -122,12 +125,16 @@ final class OwnershipSearchProjector implements EventListener
         $organizerId = $this->extractUuid($query);
 
         if ($organizerId === null) {
+            $this->logger->error(sprintf('regex failed'));
+
             return;
         }
 
         try {
             $this->organizerRepository->fetch($organizerId);
         } catch (DocumentDoesNotExist $e) {
+            $this->logger->error(sprintf('DocumentDoesNotExist'));
+
             // This uuid does not belong to an organizer, so we don't have to save them into the ownership_search table
             return;
         }
@@ -135,6 +142,8 @@ final class OwnershipSearchProjector implements EventListener
         $users = $this->searchByRoleIdAndPermissions->findAllUsers($roleId, [Permission::organisatiesBewerken()->toString()]);
 
         foreach ($users as $userId) {
+            //@todo: when more then one userid belongs to a group, mark it as "cannot be deleted) - future pr
+
             if ($this->ownershipSearchRepository->doesUserForOrganisationExist(new Uuid($organizerId), $userId)) {
                 continue;
             }
@@ -146,6 +155,8 @@ final class OwnershipSearchProjector implements EventListener
                 $userId,
                 OwnershipState::approved()->toString()
             );
+
+            $this->logger->info(sprintf('Created ownership for user %s on organisation %s', $userId, $organizerId));
 
             $this->ownershipSearchRepository->save(
                 $ownershipItem->withRoleId($roleId)

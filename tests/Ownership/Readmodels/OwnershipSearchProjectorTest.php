@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Role\ValueObjects\Query;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 class OwnershipSearchProjectorTest extends TestCase
 {
@@ -54,7 +55,8 @@ class OwnershipSearchProjectorTest extends TestCase
             $this->ownershipSearchRepository,
             $this->organizerRepository,
             $this->searchByRoleIdAndPermissions,
-            $this->connection
+            $this->connection,
+            $this->createMock(LoggerInterface::class)
         );
     }
 
