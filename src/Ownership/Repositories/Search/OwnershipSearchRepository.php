@@ -27,4 +27,6 @@ interface OwnershipSearchRepository
     public function searchTotal(SearchQuery $searchQuery): int;
 
     public function doesUserForOrganisationExist(Uuid $organizerId, string $ownerId): bool;
+
+    public function deleteByRole(Uuid $roleId): void;
 }

@@ -143,7 +143,6 @@ class OwnershipSearchProjectorTest extends TestCase
     {
         $organizerId = 'b90d7a0d-73c9-47d5-a0ae-ebf2f99d1f6a';
         $roleId = new Uuid('ea1e3f06-b3dd-428f-b205-09c376d0cf12');
-        $ownerId = 'auth0|63e22626e39a8ca1264bd29b';
 
         $userId1 = '177e737d-27ed-4156-ae86-57b87030ed02';
         $userId2 = '8452a083-bfe8-4cd3-bea8-19bb322d7fd1';
@@ -180,6 +179,18 @@ class OwnershipSearchProjectorTest extends TestCase
             }));
 
         $this->ownershipSearchProjector->handle($this->createDomainMessage($constraintAdded));
+    }
+
+    public function it_handles_constraint_removed(): void
+    {
+        $roleId = Uuid::uuid4();
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('deleteByRole')
+            ->with($roleId);
+
+        $constraintRemoved = new ConstraintRemoved($roleId);
+        $this->ownershipSearchProjector->handle($this->createDomainMessage($constraintRemoved));
     }
 
     /**

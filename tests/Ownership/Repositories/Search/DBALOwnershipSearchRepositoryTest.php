@@ -493,4 +493,55 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
             '778c3bdd-d0c8-416e-b967-9d92b31de26e' // wrong owner id
         ));
     }
+
+    /**
+     * @test
+     */
+    public function does_it_delete_all_ownerships_for_a_role(): void
+    {
+        $roleId = Uuid::uuid4();
+        $ownershipItems = [
+            (new OwnershipItem(
+                Uuid::uuid4()->toString(),
+                Uuid::uuid4()->toString(),
+                'organizer',
+                'auth0|63e22626e39a8ca1264bd29a',
+                OwnershipState::approved()->toString()
+            ))->withRoleId($roleId),
+            (new OwnershipItem(
+                Uuid::uuid4()->toString(),
+                Uuid::uuid4()->toString(),
+                'organizer',
+                'auth0|63e22626e39a8ca1264bd29b',
+                OwnershipState::approved()->toString()
+            ))->withRoleId($roleId),
+            (new OwnershipItem(
+                Uuid::uuid4()->toString(),
+                Uuid::uuid4()->toString(),
+                'organizer',
+                'auth0|63e22626e39a8ca1264bd29c',
+                OwnershipState::approved()->toString()
+            ))->withRoleId(Uuid::uuid4()),
+        ];
+        foreach ($ownershipItems as $ownershipItem) {
+            $this->ownershipSearchRepository->save($ownershipItem);
+        }
+
+        $totalBeforeDelete = $this->connection->createQueryBuilder()
+            ->select('count(*)')
+            ->from('ownership_search')
+            ->execute()
+            ->fetchOne();
+
+        $this->ownershipSearchRepository->deleteByRole($roleId);
+
+        $totalAfterDelete = $this->connection->createQueryBuilder()
+            ->select('count(*)')
+            ->from('ownership_search')
+            ->execute()
+            ->fetchOne();
+
+        $this->assertEquals(3, $totalBeforeDelete);
+        $this->assertEquals(1, $totalAfterDelete);
+    }
 }

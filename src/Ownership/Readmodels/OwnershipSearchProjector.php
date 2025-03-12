@@ -103,7 +103,7 @@ final class OwnershipSearchProjector implements EventListener
 
     protected function applyConstraintRemoved(ConstraintRemoved $constraintEvent): void
     {
-        $roleId = $constraintEvent->getUuid()->toString();
+        $this->ownershipSearchRepository->deleteByRole($constraintEvent->getUuid());
     }
 
     private function processConstraint(Uuid $roleId, Query $query): void

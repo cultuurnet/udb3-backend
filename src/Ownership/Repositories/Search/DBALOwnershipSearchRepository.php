@@ -32,7 +32,6 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
     {
         $this->connection = $connection;
     }
-
     public function save(OwnershipItem $ownershipSearchItem): void
     {
         $this->connection->insert('ownership_search', [
@@ -176,5 +175,10 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         }
 
         return $ownershipItem;
+    }
+
+    public function deleteByRole(Uuid $roleId): void
+    {
+        $this->connection->delete('ownership_search', ['role_id' => $roleId->toString()]);
     }
 }
