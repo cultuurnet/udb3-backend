@@ -219,7 +219,7 @@ class OwnershipSearchProjectorTest extends TestCase
         );
     }
 
-    public function mockConstraintEvent(string $organizerId, Uuid $roleId): void
+    private function mockConstraintEvent(string $organizerId, Uuid $roleId): void
     {
         $userId1 = '177e737d-27ed-4156-ae86-57b87030ed02';
         $userId2 = '8452a083-bfe8-4cd3-bea8-19bb322d7fd1';
