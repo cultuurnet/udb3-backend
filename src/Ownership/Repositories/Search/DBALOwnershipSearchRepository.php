@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Ownership\Repositories\Search;
 
+use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\OwnershipState;
@@ -113,6 +114,16 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         return (int) $queryBuilder
             ->execute()
             ->fetchOne();
+    }
+
+    public function doesUserForOrganisationExist(Uuid $organizerId, string $ownerId): bool
+    {
+        $ownerships = $this->search(new SearchQuery([
+            new SearchParameter('itemId', $organizerId->toString()),
+            new SearchParameter('ownerId', $ownerId),
+        ], 0, 1));
+
+        return count($ownerships) > 0;
     }
 
     private function createSearchQueryBuilder(SearchQuery $searchQuery): QueryBuilder
