@@ -42,7 +42,7 @@ final class RoleServiceProvider extends AbstractServiceProvider
             'label_roles_projector',
             'role_users_read_repository',
             'role_users_projector',
-            SearchByRoleIdAndPermissions::class
+            SearchByRoleIdAndPermissions::class,
         ];
     }
 
