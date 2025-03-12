@@ -16,7 +16,7 @@ class SearchByRoleIdAndPermissions
         $this->connection = $connection;
     }
 
-    public function findAllUsers(Uuid $roleId, array $permissions) : array
+    public function findAllUsers(Uuid $roleId, array $permissions): array
     {
         $qb = $this->connection->createQueryBuilder();
         $q = $qb
@@ -28,6 +28,6 @@ class SearchByRoleIdAndPermissions
             ->setParameter('roleId', $roleId->toString())
             ->setParameter('permissions', $permissions, Connection::PARAM_STR_ARRAY);
 
-        return $q->execute()->fetchAllAssociative();
+        return array_map(fn ($row) => $row['user_id'], $q->execute()->fetchAllAssociative());
     }
 }
