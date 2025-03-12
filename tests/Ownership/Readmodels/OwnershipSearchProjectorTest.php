@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Ownership\Readmodels;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
@@ -14,6 +15,14 @@ use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Role\Events\ConstraintAdded;
+use CultuurNet\UDB3\Role\Events\ConstraintRemoved;
+use CultuurNet\UDB3\Role\Events\ConstraintUpdated;
+use CultuurNet\UDB3\Role\ReadModel\Search\SearchByRoleIdAndPermissions;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Role\ValueObjects\Query;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -22,12 +31,25 @@ class OwnershipSearchProjectorTest extends TestCase
     /** @var OwnershipSearchRepository & MockObject */
     private $ownershipSearchRepository;
 
+    /** @var DocumentRepository & MockObject */
+    private $organizerRepository;
+
+    /** @var SearchByRoleIdAndPermissions & MockObject */
+    private $searchByRoleIdAndPermissions;
+
     private OwnershipSearchProjector $ownershipSearchProjector;
 
     public function setUp(): void
     {
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
-        $this->ownershipSearchProjector = new OwnershipSearchProjector($this->ownershipSearchRepository);
+        $this->organizerRepository = $this->createMock(DocumentRepository::class);
+        $this->searchByRoleIdAndPermissions = $this->createMock(SearchByRoleIdAndPermissions::class);
+
+        $this->ownershipSearchProjector = new OwnershipSearchProjector(
+            $this->ownershipSearchRepository,
+            $this->organizerRepository,
+            $this->searchByRoleIdAndPermissions,
+        );
     }
 
     /**
@@ -111,8 +133,57 @@ class OwnershipSearchProjectorTest extends TestCase
         $this->ownershipSearchProjector->handle($this->createDomainMessage($ownershipDeleted));
     }
 
+
+
+
     /**
-     * @param OwnershipRequested|OwnershipApproved|OwnershipRejected|OwnershipDeleted $event
+     * @test
+     */
+    public function it_handles_constraint_added(): void
+    {
+        $organizerId = 'b90d7a0d-73c9-47d5-a0ae-ebf2f99d1f6a';
+        $roleId = new Uuid('ea1e3f06-b3dd-428f-b205-09c376d0cf12');
+        $ownerId = 'auth0|63e22626e39a8ca1264bd29b';
+
+        $userId1 = '177e737d-27ed-4156-ae86-57b87030ed02';
+        $userId2 = '8452a083-bfe8-4cd3-bea8-19bb322d7fd1';
+
+        $constraintAdded = new ConstraintAdded(
+            $roleId,
+            new Query('id:' . $organizerId)
+        );
+
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
+            ->with($organizerId)
+            ->willReturn(new JsonDocument($organizerId, json_encode(['name' => 'Publiq vzw'], JSON_THROW_ON_ERROR)));
+
+        $this->searchByRoleIdAndPermissions->expects($this->once())
+            ->method('findAllUsers')
+            ->with($roleId, [Permission::organisatiesBewerken()->toString()])
+            ->willReturn([$userId1, $userId2]);
+
+        $this->ownershipSearchRepository->expects($this->exactly(2))
+            ->method('doesUserForOrganisationExist')
+            ->willReturnCallback(function ($organizerIdInput, $ownerIdInput) use ($organizerId, $userId1) {
+                $this->assertEquals(new Uuid($organizerId), $organizerIdInput);
+                return $ownerIdInput === $userId1;
+            });
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('save')
+            ->with($this->callback(function ($item) use ($organizerId, $userId2, $roleId) {
+                return $item instanceof OwnershipItem
+                    && $item->getItemId() === $organizerId
+                    && $item->getOwnerId() === $userId2
+                    && $item->getRoleId() === $roleId;
+            }));
+
+        $this->ownershipSearchProjector->handle($this->createDomainMessage($constraintAdded));
+    }
+
+    /**
+     * @param OwnershipRequested|OwnershipApproved|OwnershipRejected|OwnershipDeleted|ConstraintAdded|ConstraintUpdated|ConstraintRemoved $event
      */
     private function createDomainMessage($event): DomainMessage
     {

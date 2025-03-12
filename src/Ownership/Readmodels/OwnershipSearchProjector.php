@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Ownership\Readmodels;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
-use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
-use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\Events\OwnershipApproved;
 use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
@@ -36,7 +34,7 @@ final class OwnershipSearchProjector implements EventListener
     private DocumentRepository $organizerRepository;
     private SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions;
 
-    public function __construct(OwnershipSearchRepository $ownershipSearchRepository, DocumentRepository $organizerRepository, $searchByRoleIdAndPermissions)
+    public function __construct(OwnershipSearchRepository $ownershipSearchRepository, DocumentRepository $organizerRepository, SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions)
     {
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->organizerRepository = $organizerRepository;
@@ -99,10 +97,13 @@ final class OwnershipSearchProjector implements EventListener
 
     protected function applyConstraintUpdated(ConstraintUpdated $constraintEvent): void
     {
-        //@todo delete everything with the role because constraitn might have been changed
-
-
+        //@todo cleanup before update
         $this->processConstraint($constraintEvent->getUuid(), $constraintEvent->getQuery());
+    }
+
+    protected function applyConstraintRemoved(ConstraintRemoved $constraintEvent): void
+    {
+        $roleId = $constraintEvent->getUuid()->toString();
     }
 
     private function processConstraint(Uuid $roleId, Query $query): void
@@ -123,15 +124,15 @@ final class OwnershipSearchProjector implements EventListener
         $users = $this->searchByRoleIdAndPermissions->findAllUsers($roleId, [Permission::organisatiesBewerken()->toString()]);
 
         foreach ($users as $userId) {
-            if($this->doesUserExistAlready($organizerId, $userId['user_id'])) {
-                return;
+            if ($this->ownershipSearchRepository->doesUserForOrganisationExist(new Uuid($organizerId), $userId)) {
+                continue;
             }
 
             $ownershipItem = new OwnershipItem(
                 Uuid::uuid4()->toString(),
                 $organizerId,
                 'organizer',
-                $userId['user_id'],
+                $userId,
                 OwnershipState::approved()->toString()
             );
 
@@ -141,27 +142,9 @@ final class OwnershipSearchProjector implements EventListener
         }
     }
 
-    protected function applyConstraintRemoved(ConstraintRemoved $constraintEvent): void
-    {
-        $roleId = $constraintEvent->getUuid()->toString();
-
-        die($roleId);
-    }
-
     private function extractUuid(Query $query): ?string
     {
         preg_match('/id:([a-f0-9\-]{36})/', $query->toString(), $matches);
         return $matches[1] ?? null;
-    }
-
-    private function doesUserExistAlready(string $organizerId, string $userId) : bool
-    {
-        $ownerships = $this->ownershipSearchRepository
-            ->search(new SearchQuery([
-                new SearchParameter('itemId', $organizerId),
-                new SearchParameter('ownerId', $userId),
-            ], 0, 1));
-
-        return count($ownerships) > 0;
     }
 }
