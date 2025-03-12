@@ -17,9 +17,14 @@ use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\Role\Events\AbstractPermissionEvent;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\Role\Events\ConstraintRemoved;
 use CultuurNet\UDB3\Role\Events\ConstraintUpdated;
+use CultuurNet\UDB3\Role\Events\PermissionAdded;
+use CultuurNet\UDB3\Role\Events\PermissionRemoved;
+use CultuurNet\UDB3\Role\ReadModel\Exception\RoleNotFound;
+use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository;
 use CultuurNet\UDB3\Role\ReadModel\Search\SearchByRoleIdAndPermissions;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
@@ -36,14 +41,22 @@ final class OwnershipSearchProjector implements EventListener
     private DocumentRepository $organizerRepository;
     private SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions;
     private Connection $connection;
+    private DBALRepository $roleRepository;
     private LoggerInterface $logger;
 
-    public function __construct(OwnershipSearchRepository $ownershipSearchRepository, DocumentRepository $organizerRepository, SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions, Connection $connection, LoggerInterface $logger)
-    {
+    public function __construct(
+        OwnershipSearchRepository $ownershipSearchRepository,
+        DocumentRepository $organizerRepository,
+        SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions,
+        Connection $connection,
+        DBALRepository $roleRepository,
+        LoggerInterface $logger
+    ) {
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->organizerRepository = $organizerRepository;
         $this->searchByRoleIdAndPermissions = $searchByRoleIdAndPermissions;
         $this->connection = $connection;
+        $this->roleRepository = $roleRepository;
         $this->logger = $logger;
     }
 
@@ -158,6 +171,33 @@ final class OwnershipSearchProjector implements EventListener
                 $ownershipItem->withRoleId($roleId)
             );
         }
+    }
+
+    public function applyPermissionAdded(PermissionAdded $event): void
+    {
+        $this->processPermissionChange($event);
+    }
+
+    public function applyPermissionRemoved(PermissionRemoved $event): void
+    {
+        $this->processPermissionChange($event);
+    }
+
+    private function processPermissionChange(AbstractPermissionEvent $event): void
+    {
+        if (!$event->getPermission()->sameAs(Permission::organisatiesBewerken())) {
+            return;
+        }
+
+        $roleId = $event->getUuid();
+
+        try {
+            $role = $this->roleRepository->load($roleId);
+        } catch (RoleNotFound $e) {
+            return;
+        }
+
+        $this->processConstraint($roleId, $role->getConstraintQuery());
     }
 
     private function extractUuid(Query $query): ?string

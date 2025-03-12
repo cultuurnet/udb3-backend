@@ -17,12 +17,17 @@ use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Role\Events\AbstractPermissionEvent;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\Role\Events\ConstraintRemoved;
 use CultuurNet\UDB3\Role\Events\ConstraintUpdated;
+use CultuurNet\UDB3\Role\Events\PermissionAdded;
+use CultuurNet\UDB3\Role\Events\PermissionRemoved;
+use CultuurNet\UDB3\Role\ReadModel\Search\Doctrine\DBALRepository;
 use CultuurNet\UDB3\Role\ReadModel\Search\SearchByRoleIdAndPermissions;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
+use CultuurNet\UDB3\Role\ValueObjects\Role;
 use Doctrine\DBAL\Connection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -42,6 +47,9 @@ class OwnershipSearchProjectorTest extends TestCase
     /** @var Connection & MockObject */
     private $connection;
 
+    /** @var DBALRepository & MockObject */
+    private $roleRepository;
+
     private OwnershipSearchProjector $ownershipSearchProjector;
 
     public function setUp(): void
@@ -50,12 +58,14 @@ class OwnershipSearchProjectorTest extends TestCase
         $this->organizerRepository = $this->createMock(DocumentRepository::class);
         $this->searchByRoleIdAndPermissions = $this->createMock(SearchByRoleIdAndPermissions::class);
         $this->connection = $this->createMock(Connection::class);
+        $this->roleRepository = $this->createMock(DBALRepository::class);
 
         $this->ownershipSearchProjector = new OwnershipSearchProjector(
             $this->ownershipSearchRepository,
             $this->organizerRepository,
             $this->searchByRoleIdAndPermissions,
             $this->connection,
+            $this->roleRepository,
             $this->createMock(LoggerInterface::class)
         );
     }
@@ -142,8 +152,6 @@ class OwnershipSearchProjectorTest extends TestCase
     }
 
 
-
-
     /**
      * @test
      */
@@ -206,7 +214,51 @@ class OwnershipSearchProjectorTest extends TestCase
     }
 
     /**
-     * @param OwnershipRequested|OwnershipApproved|OwnershipRejected|OwnershipDeleted|ConstraintAdded|ConstraintUpdated|ConstraintRemoved $event
+     * @dataProvider permissionDataProvider
+     * @test
+     */
+    public function it_handles_permission_added_for_org_bewerken(Uuid $roleId, AbstractPermissionEvent $event): void
+    {
+        $organizerId = 'b90d7a0d-73c9-47d5-a0ae-ebf2f99d1f6a';
+
+        $this->roleRepository->expects($this->once())
+            ->method('load')
+            ->with($roleId)
+            ->willReturn(new Role($roleId, 'Secret club', new Query('id:' . $organizerId)));
+
+        $this->mockConstraintEvent($organizerId, $roleId);
+
+        $this->ownershipSearchProjector->handle($this->createDomainMessage($event));
+    }
+
+    public function permissionDataProvider(): array
+    {
+        $roleId = Uuid::uuid4();
+
+        return [
+            [$roleId, new PermissionAdded($roleId, Permission::organisatiesBewerken())],
+            [$roleId, new PermissionRemoved($roleId, Permission::organisatiesBewerken())],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_permission_added_but_for_other_permissions(): void
+    {
+        $roleId = Uuid::uuid4();
+
+        $this->roleRepository->expects($this->never())
+            ->method('load');
+        $this->ownershipSearchRepository->expects($this->never())
+            ->method('save');
+
+        $event = new PermissionAdded($roleId, Permission::filmsAanmaken());
+        $this->ownershipSearchProjector->handle($this->createDomainMessage($event));
+    }
+
+    /**
+     * @param OwnershipRequested|OwnershipApproved|OwnershipRejected|OwnershipDeleted|ConstraintAdded|ConstraintUpdated|ConstraintRemoved|PermissionAdded|PermissionRemoved|AbstractPermissionEvent $event
      */
     private function createDomainMessage($event): DomainMessage
     {
