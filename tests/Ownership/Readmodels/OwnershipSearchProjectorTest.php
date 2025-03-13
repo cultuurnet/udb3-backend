@@ -47,7 +47,7 @@ class OwnershipSearchProjectorTest extends TestCase
     /** @var Connection & MockObject */
     private $connection;
 
-    /** @var DBALRepository & MockObject */
+    /** @var DocumentRepository & MockObject */
     private $roleRepository;
 
     private OwnershipSearchProjector $ownershipSearchProjector;
@@ -58,7 +58,7 @@ class OwnershipSearchProjectorTest extends TestCase
         $this->organizerRepository = $this->createMock(DocumentRepository::class);
         $this->searchByRoleIdAndPermissions = $this->createMock(SearchByRoleIdAndPermissions::class);
         $this->connection = $this->createMock(Connection::class);
-        $this->roleRepository = $this->createMock(DBALRepository::class);
+        $this->roleRepository = $this->createMock(DocumentRepository::class);
 
         $this->ownershipSearchProjector = new OwnershipSearchProjector(
             $this->ownershipSearchRepository,
@@ -222,9 +222,14 @@ class OwnershipSearchProjectorTest extends TestCase
         $organizerId = 'b90d7a0d-73c9-47d5-a0ae-ebf2f99d1f6a';
 
         $this->roleRepository->expects($this->once())
-            ->method('load')
-            ->with($roleId)
-            ->willReturn(new Role($roleId, 'Secret club', new Query('id:' . $organizerId)));
+            ->method('fetch')
+            ->with($roleId->toString())
+            ->willReturn(
+                new JsonDocument(
+                    $roleId->toString(),
+                    json_encode(['query_constraint' => 'id:' . $organizerId, 'name' => 'Secret club'])
+                )
+            );
 
         $this->mockConstraintEvent($organizerId, $roleId);
 
@@ -249,7 +254,7 @@ class OwnershipSearchProjectorTest extends TestCase
         $roleId = Uuid::uuid4();
 
         $this->roleRepository->expects($this->never())
-            ->method('load');
+            ->method('fetch');
         $this->ownershipSearchRepository->expects($this->never())
             ->method('save');
 

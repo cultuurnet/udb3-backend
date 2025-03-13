@@ -201,36 +201,6 @@ class DBALRepositoryTest extends TestCase
         );
     }
 
-    /** @test */
-    public function it_returns_a_role_with_a_role_id(): void
-    {
-        $roleId = Uuid::uuid4();
-        $name = 'my secret club';
-        $constraint = 'foo:bar';
-
-        $this->dbalRepository->save(
-            $roleId->toString(),
-            $name,
-            $constraint
-        );
-
-        $role = $this->dbalRepository->load($roleId);
-
-        $this->assertEquals($roleId, $role->getUuid());
-        $this->assertEquals($name, $role->getName());
-        $this->assertEquals(new Query($constraint), $role->getConstraintQuery());
-    }
-
-    /** @test */
-    public function it_throws_an_exception_when_it_cannot_load_a_role(): void
-    {
-        $roleId = Uuid::uuid4();
-
-        $this->expectException(RoleNotFound::class);
-
-        $this->dbalRepository->load($roleId);
-    }
-
     protected function getLastRole(): ?array
     {
         $sql = 'SELECT * FROM ' . $this->tableName;

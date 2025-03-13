@@ -121,27 +121,4 @@ class DBALRepository implements RepositoryInterface
             ->setParameter('constraint', $constraint);
         $q->execute();
     }
-
-    /** @throw RoleNotFound */
-    public function load(Uuid $uuid): Role
-    {
-        $q = $this->connection->createQueryBuilder();
-        $expr = $this->connection->getExpressionBuilder();
-        $q->select('*')
-            ->from($this->tableName)
-            ->where($expr->eq(ColumnNames::UUID_COLUMN, ':role_id'))
-            ->setParameter('role_id', $uuid->toString());
-
-        $data = $q->execute()->fetchAssociative();
-
-        if (empty($data['uuid'])) {
-            throw RoleNotFound::fromUuid($uuid);
-        }
-
-        return new Role(
-            new Uuid($data[ColumnNames::UUID_COLUMN]),
-            $data[ColumnNames::NAME_COLUMN],
-            !empty($data[ColumnNames::CONSTRAINT_COLUMN]) ? new Query($data[ColumnNames::CONSTRAINT_COLUMN]) : null
-        );
-    }
 }

@@ -10,9 +10,6 @@ use CultuurNet\UDB3\Role\ValueObjects\Role;
 
 interface RepositoryInterface
 {
-    /** @throw RoleNotFound */
-    public function load(Uuid $uuid): Role;
-
     public function remove(string $uuid): void;
 
     public function save(string $uuid, string $name, ?string $constraint = null): void;
