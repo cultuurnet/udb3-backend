@@ -78,6 +78,7 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
                 $this->container->get('organizer_jsonld_repository'),
                 $container->get(SearchByRoleIdAndPermissions::class),
                 $this->container->get('dbal_connection'),
+                $this->container->get('role_read_repository'),
                 LoggerFactory::create($container, LoggerName::forWeb())
             )
         );

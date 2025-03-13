@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Role\ReadModel\Exception\RoleNotFound;
+use CultuurNet\UDB3\Role\ValueObjects\Query;
 use PHPUnit\Framework\TestCase;
 
 class DBALRepositoryTest extends TestCase

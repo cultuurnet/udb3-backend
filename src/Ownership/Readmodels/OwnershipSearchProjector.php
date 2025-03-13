@@ -13,13 +13,18 @@ use CultuurNet\UDB3\Ownership\Events\OwnershipDeleted;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRejected;
 use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 use CultuurNet\UDB3\Ownership\OwnershipState;
+use CultuurNet\UDB3\Ownership\Readmodels\Helper\ExtraUuidFromConstraint;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\Role\Events\AbstractPermissionEvent;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\Role\Events\ConstraintRemoved;
 use CultuurNet\UDB3\Role\Events\ConstraintUpdated;
+use CultuurNet\UDB3\Role\Events\PermissionAdded;
+use CultuurNet\UDB3\Role\Events\PermissionRemoved;
+use CultuurNet\UDB3\Role\ReadModel\Exception\RoleNotFound;
 use CultuurNet\UDB3\Role\ReadModel\Search\SearchByRoleIdAndPermissions;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
@@ -36,14 +41,22 @@ final class OwnershipSearchProjector implements EventListener
     private DocumentRepository $organizerRepository;
     private SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions;
     private Connection $connection;
+    private DocumentRepository $roleRepository;
     private LoggerInterface $logger;
 
-    public function __construct(OwnershipSearchRepository $ownershipSearchRepository, DocumentRepository $organizerRepository, SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions, Connection $connection, LoggerInterface $logger)
-    {
+    public function __construct(
+        OwnershipSearchRepository $ownershipSearchRepository,
+        DocumentRepository $organizerRepository,
+        SearchByRoleIdAndPermissions $searchByRoleIdAndPermissions,
+        Connection $connection,
+        DocumentRepository $roleRepository,
+        LoggerInterface $logger
+    ) {
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->organizerRepository = $organizerRepository;
         $this->searchByRoleIdAndPermissions = $searchByRoleIdAndPermissions;
         $this->connection = $connection;
+        $this->roleRepository = $roleRepository;
         $this->logger = $logger;
     }
 
@@ -122,7 +135,7 @@ final class OwnershipSearchProjector implements EventListener
 
     private function processConstraint(Uuid $roleId, Query $query): void
     {
-        $organizerId = $this->extractUuid($query);
+        $organizerId = ExtraUuidFromConstraint::extractUuid($query);
 
         if ($organizerId === null) {
             return;
@@ -160,9 +173,35 @@ final class OwnershipSearchProjector implements EventListener
         }
     }
 
-    private function extractUuid(Query $query): ?string
+    public function applyPermissionAdded(PermissionAdded $event): void
     {
-        preg_match('/id:([a-f0-9\-]{36})/', $query->toString(), $matches);
-        return $matches[1] ?? null;
+        $this->processPermissionChange($event);
+    }
+
+    public function applyPermissionRemoved(PermissionRemoved $event): void
+    {
+        $this->processPermissionChange($event);
+    }
+
+    private function processPermissionChange(AbstractPermissionEvent $event): void
+    {
+        if (!$event->getPermission()->sameAs(Permission::organisatiesBewerken())) {
+            return;
+        }
+
+        $roleId = $event->getUuid();
+
+        try {
+            $role = $this->roleRepository->fetch($roleId->toString())->getAssocBody();
+        } catch (DocumentDoesNotExist $e) {
+            return;
+        }
+
+        if (empty($role['constraint'])) {
+            $this->logger->error(sprintf('Tried to fetch constraint for role %s but failed', $roleId->toString()));
+            return;
+        }
+
+        $this->processConstraint($roleId, new Query($role['constraint']));
     }
 }

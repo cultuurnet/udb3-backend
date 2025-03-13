@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Role\ReadModel\Exception\RoleNotFound;
+use CultuurNet\UDB3\Role\ValueObjects\Query;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
+use CultuurNet\UDB3\Role\ValueObjects\Role;
 use Doctrine\DBAL\Connection;
 
 class DBALRepository implements RepositoryInterface

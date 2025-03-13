@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Search;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Role\ReadModel\Exception\RoleNotFound;
+use CultuurNet\UDB3\Role\ValueObjects\Role;
+
 interface RepositoryInterface
 {
     public function remove(string $uuid): void;
