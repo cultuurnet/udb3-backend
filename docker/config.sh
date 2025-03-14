@@ -10,7 +10,6 @@ if [ "$UPDATE_HOSTS" = "true" ]; then
   set -- $HOSTS
   for HOST; do
     if ! grep -q "$HOST" /etc/hosts; then
-      echo "$HOST is missing from /etc/hosts"
       MISSING_HOSTS="$MISSING_HOSTS $HOST"
     fi
   done
