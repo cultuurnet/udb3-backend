@@ -2,9 +2,23 @@
 
 UPDATE_HOSTS=${HAS_SUDO:-true}
 
-if [ "$UPDATE_HOSTS" = "true" ] && ! grep -q "io.uitdatabank.local" /etc/hosts; then
-  echo "io.uitdatabank.local has to be in your hosts-file, to add you need sudo privileges"
-  sudo sh -c 'echo "127.0.0.1 io.uitdatabank.local" >> /etc/hosts'
+HOSTS="io.uitdatabank.local mailpit.uitdatabank.local"
+
+if [ "$UPDATE_HOSTS" = "true" ]; then
+  MISSING_HOSTS=""
+
+  set -- $HOSTS
+  for HOST; do
+    if ! grep -q "$HOST" /etc/hosts; then
+      echo "$HOST is missing from /etc/hosts"
+      MISSING_HOSTS="$MISSING_HOSTS\n127.0.0.1 $HOST"
+    fi
+  done
+
+  if [ -n "$MISSING_HOSTS" ]; then
+    echo "Adding missing entries to /etc/hosts (requires sudo)"
+    printf "%s\n" "$MISSING_HOSTS" | sudo tee -a /etc/hosts > /dev/null
+  fi
 fi
 
 APPCONFIG_ROOTDIR=${APPCONFIG:-'../appconfig'}
