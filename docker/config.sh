@@ -11,14 +11,15 @@ if [ "$UPDATE_HOSTS" = "true" ]; then
   for HOST; do
     if ! grep -q "$HOST" /etc/hosts; then
       echo "$HOST is missing from /etc/hosts"
-      MISSING_HOSTS="$MISSING_HOSTS\n127.0.0.1 $HOST"
+      MISSING_HOSTS="$MISSING_HOSTS $HOST"
     fi
   done
 
-  if [ -n "$MISSING_HOSTS" ]; then
-    echo "Adding missing entries to /etc/hosts (requires sudo)"
-    printf "%s\n" "$MISSING_HOSTS" | sudo tee -a /etc/hosts > /dev/null
-  fi
+  set -- $MISSING_HOSTS
+  for MISSING_HOST; do
+    echo "$MISSING_HOST has to be in your hosts-file, to add you need sudo privileges"
+    sudo sh -c "echo '127.0.0.1 $MISSING_HOST' >> /etc/hosts"
+  done
 fi
 
 APPCONFIG_ROOTDIR=${APPCONFIG:-'../appconfig'}
