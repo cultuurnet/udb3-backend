@@ -1,4 +1,5 @@
 {
+  "email": "export@publiq.be",
   "query": "_type:event AND creator:7a583ed3-cbc1-481d-93b1-d80fff0174dd AND workflowStatus:(\"APPROVED\" OR \"READY_FOR_VALIDATION\")",
   "selection": [
     "%{baseUrl}/event/%{uuid_testevent_export}"
