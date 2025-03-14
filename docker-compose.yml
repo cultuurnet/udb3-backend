@@ -104,7 +104,7 @@ services:
       MP_SMTP_AUTH_ACCEPT_ANY: 1
       MP_SMTP_AUTH_ALLOW_INSECURE: 1
     healthcheck:
-      test: curl http://127.0.0.1:1025/
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:8025/api/v1/info"]
       start_period: 5s
       interval: 5s
       timeout: 5s
