@@ -8,6 +8,8 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use CultuurNet\UDB3\Ownership\Readmodels\Name\DocumentItemNameResolver;
 use CultuurNet\UDB3\Ownership\Readmodels\OwnershipLDProjector;
@@ -15,6 +17,7 @@ use CultuurNet\UDB3\Ownership\Readmodels\OwnershipPermissionProjector;
 use CultuurNet\UDB3\Ownership\Readmodels\OwnershipSearchProjector;
 use CultuurNet\UDB3\Ownership\Repositories\Search\DBALOwnershipSearchRepository;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
+use CultuurNet\UDB3\Role\ReadModel\Search\SearchByRoleIdAndPermissions;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 
 final class OwnershipServiceProvider extends AbstractServiceProvider
@@ -71,7 +74,11 @@ final class OwnershipServiceProvider extends AbstractServiceProvider
         $container->addShared(
             OwnershipSearchProjector::class,
             fn () => new OwnershipSearchProjector(
-                $container->get(OwnershipSearchRepository::class)
+                $container->get(OwnershipSearchRepository::class),
+                $this->container->get('organizer_jsonld_repository'),
+                $container->get(SearchByRoleIdAndPermissions::class),
+                $this->container->get('dbal_connection'),
+                LoggerFactory::create($container, LoggerName::forWeb())
             )
         );
 

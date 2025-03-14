@@ -16,9 +16,6 @@ class RoleProjector implements EventListener
 
     protected DocumentRepository $repository;
 
-    /**
-     * Projector constructor.
-     */
     public function __construct(DocumentRepository $repository)
     {
         $this->repository = $repository;

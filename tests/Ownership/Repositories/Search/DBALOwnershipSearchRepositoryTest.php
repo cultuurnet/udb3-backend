@@ -461,4 +461,87 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
 
         $this->ownershipSearchRepository->getById('wrong-id');
     }
+
+    /**
+     * @test
+     */
+    public function checks_if_user_for_organisation_already_exists(): void
+    {
+        $itemId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
+        $ownerId = 'auth0|63e22626e39a8ca1264bd29b';
+        $ownershipItem = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            $itemId,
+            'organizer',
+            $ownerId,
+            OwnershipState::approved()->toString()
+        );
+        $this->ownershipSearchRepository->save($ownershipItem);
+
+        $this->assertTrue($this->ownershipSearchRepository->doesUserForOrganisationExist(
+            new Uuid($itemId),
+            $ownerId
+        ));
+
+        $this->assertFalse($this->ownershipSearchRepository->doesUserForOrganisationExist(
+            new Uuid('778c3bdd-d0c8-416e-b967-9d92b31de26e'),// wrong item id
+            $ownerId
+        ));
+
+        $this->assertFalse($this->ownershipSearchRepository->doesUserForOrganisationExist(
+            new Uuid($itemId),
+            '778c3bdd-d0c8-416e-b967-9d92b31de26e' // wrong owner id
+        ));
+    }
+
+    /**
+     * @test
+     */
+    public function does_it_delete_all_ownerships_for_a_role(): void
+    {
+        $roleId = Uuid::uuid4();
+        $ownershipItems = [
+            (new OwnershipItem(
+                Uuid::uuid4()->toString(),
+                Uuid::uuid4()->toString(),
+                'organizer',
+                'auth0|63e22626e39a8ca1264bd29a',
+                OwnershipState::approved()->toString()
+            ))->withRoleId($roleId),
+            (new OwnershipItem(
+                Uuid::uuid4()->toString(),
+                Uuid::uuid4()->toString(),
+                'organizer',
+                'auth0|63e22626e39a8ca1264bd29b',
+                OwnershipState::approved()->toString()
+            ))->withRoleId($roleId),
+            (new OwnershipItem(
+                Uuid::uuid4()->toString(),
+                Uuid::uuid4()->toString(),
+                'organizer',
+                'auth0|63e22626e39a8ca1264bd29c',
+                OwnershipState::approved()->toString()
+            ))->withRoleId(Uuid::uuid4()),
+        ];
+        foreach ($ownershipItems as $ownershipItem) {
+            $this->ownershipSearchRepository->save($ownershipItem);
+        }
+
+        $totalBeforeDelete = $this->connection->createQueryBuilder()
+            ->select('count(*)')
+            ->from('ownership_search')
+            ->execute()
+            ->fetchOne();
+
+        $this->ownershipSearchRepository->deleteByRole($roleId);
+
+        $totalAfterDelete = $this->connection->createQueryBuilder()
+            ->select('count(*)')
+            ->from('ownership_search')
+            ->execute()
+            ->fetchOne();
+
+        $this->assertEquals(3, $totalBeforeDelete);
+        $this->assertEquals(1, $totalAfterDelete);
+    }
 }
