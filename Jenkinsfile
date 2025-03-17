@@ -61,7 +61,7 @@ pipeline {
         }
 
         stage('Deploy to development') {
-            agent any
+            agent { label 'ubuntu && 20.04' }
             options { skipDefaultCheckout() }
             environment {
                 APPLICATION_ENVIRONMENT = 'development'
@@ -72,7 +72,7 @@ pipeline {
         }
 
         stage('Deploy to acceptance') {
-            agent any
+            agent { label 'ubuntu && 20.04' }
             options { skipDefaultCheckout() }
             environment {
                 APPLICATION_ENVIRONMENT = 'acceptance'
@@ -90,7 +90,7 @@ pipeline {
 
         stage('Deploy to testing') {
             input { message "Deploy to Testing?" }
-            agent any
+            agent { label 'ubuntu && 20.04' }
             options { skipDefaultCheckout() }
             environment {
                 APPLICATION_ENVIRONMENT = 'testing'
@@ -109,7 +109,7 @@ pipeline {
 
         stage('Deploy to production') {
             input { message "Deploy to Production?" }
-            agent any
+            agent { label 'ubuntu && 20.04' }
             options { skipDefaultCheckout() }
             environment {
                 APPLICATION_ENVIRONMENT = 'production'
