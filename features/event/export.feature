@@ -23,6 +23,7 @@ Feature: Test the UDB3 events export API
     And I keep the value of the JSON response at "commandId" as "id_ooxml-basic"
     And I wait for the command with id "%{id_ooxml-basic}" to complete
     And I check if one "xlsx" file has been created in the "downloads" folder
+    And a mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen" and "sdf"
 
   Scenario: Export events to OOXML - full
     Given I store the count of the "xlsx" files in the "downloads" folder
