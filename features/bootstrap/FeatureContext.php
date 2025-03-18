@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Steps\AuthorizationSteps;
 use CultuurNet\UDB3\Steps\CuratorSteps;
 use CultuurNet\UDB3\Steps\EventSteps;
 use CultuurNet\UDB3\Steps\LabelSteps;
+use CultuurNet\UDB3\Steps\MailSteps;
 use CultuurNet\UDB3\Steps\OrganizerSteps;
 use CultuurNet\UDB3\Steps\OwnershipSteps;
 use CultuurNet\UDB3\Steps\PlaceSteps;
@@ -22,6 +23,7 @@ use CultuurNet\UDB3\Steps\RoleSteps;
 use CultuurNet\UDB3\Steps\UtilitySteps;
 use CultuurNet\UDB3\Support\Fixtures;
 use CultuurNet\UDB3\Support\HttpClient;
+use CultuurNet\UDB3\Support\MailPitClient;
 
 final class FeatureContext implements Context
 {
@@ -37,6 +39,7 @@ final class FeatureContext implements Context
     use PlaceSteps;
     use LabelSteps;
     use RoleSteps;
+    use MailSteps;
 
     private array $config;
     private Fixtures $fixtures;
@@ -66,6 +69,11 @@ final class FeatureContext implements Context
             $this->requestState->getAcceptHeader(),
             $this->requestState->getBaseUrl()
         );
+    }
+
+    private function getMailPitClient(): MailPitClient
+    {
+        return new MailPitClient($this->config['base_url_mailpit']);
     }
 
     private static function disablePreventDuplicatePlaceCreation(): void
