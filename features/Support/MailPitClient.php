@@ -9,7 +9,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 
-final class MailPitClient
+final class MailPitClient implements MailClient
 {
     private Client $client;
     public function __construct(string $baseUrl)
