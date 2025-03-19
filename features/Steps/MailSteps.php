@@ -19,7 +19,7 @@ trait MailSteps
     /**
      * When I get the latest mail
      */
-    public function iGetTheLatestMail()
+    public function iGetTheLatestMail(): void
     {
         $this->getMailPitClient()->get();
     }
@@ -27,7 +27,7 @@ trait MailSteps
     /**
      * @When a mail has been sent from :from to :to with :subject and :messageType
      */
-    public function aMailHasBeenSentFromToWithAnd(string $from, string $to, string $subject, string $messageType)
+    public function aMailHasBeenSentFromToWithAnd(string $from, string $to, string $subject, string $messageType): void
     {
         $mailobject = $this->getMailPitClient()->get();
         assertEquals($from, $mailobject->getFrom()->toString());
