@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Support;
 
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 
 final class EmailMessage
 {
@@ -12,25 +13,29 @@ final class EmailMessage
 
     private EmailAddress $from;
 
-    /**
-     * @var EmailAddress[]
-     */
-    private array $to;
+    private EmailAddresses $to;
 
     private string $subject;
 
-    private string $html;
+    private string $content;
 
     private array $attachments;
 
-    public function __construct(array $data)
+    public function __construct(
+        string $id,
+        EmailAddress $from,
+        EmailAddresses $to,
+        string $subject,
+        string $content,
+        array $attachments
+    )
     {
-        $this->id = $data['ID'];
-        $this->from = new EmailAddress($data['From']['Address']);
-        $this->to = $this->getAddressesTo($data['To']);
-        $this->subject = $data['Subject'];
-        $this->html = $data['HTML'];
-        $this->attachments = $data['Attachments'];
+        $this->id = $id;
+        $this->from = $from;
+        $this->to = $to;
+        $this->subject = $subject;
+        $this->content = $content;
+        $this->attachments = $attachments;
     }
 
     public function getId(): string
@@ -43,10 +48,7 @@ final class EmailMessage
         return $this->from;
     }
 
-    /**
-     * @return EmailAddress[]
-     */
-    public function getTo(): array
+    public function getTo(): EmailAddresses
     {
         return $this->to;
     }
@@ -56,9 +58,9 @@ final class EmailMessage
         return $this->subject;
     }
 
-    public function getHtml(): string
+    public function getContent(): string
     {
-        return $this->html;
+        return $this->content;
     }
 
     public function getAttachments(): array
@@ -66,8 +68,20 @@ final class EmailMessage
         return $this->attachments;
     }
 
-    private function getAddressesTo(array $data): array
+    private static function getAddressesTo(array $data): EmailAddresses
     {
-        return array_map(fn ($contact) => new EmailAddress($contact['Address']), $data);
+        return EmailAddresses::fromArray(array_map(fn ($contact) => new EmailAddress($contact['Address']), $data));
+    }
+
+    public static function createFromMailPitData(array $data): self
+    {
+        return new self(
+            $data['ID'],
+            new EmailAddress($data['From']['Address']),
+            self::getAddressesTo($data['To']),
+            $data['Subject'],
+            $data['HTML'],
+            $data['Attachments']
+        );
     }
 }

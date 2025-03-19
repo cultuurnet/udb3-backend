@@ -33,7 +33,7 @@ final class MailPitClient
                 '/api/v1/message/' . $messageId,
             );
 
-            return new EmailMessage(Json::decodeAssociatively($response->getBody()->getContents()));
+            return EmailMessage::createFromMailPitData(Json::decodeAssociatively($response->getBody()->getContents()));
         }
     }
 

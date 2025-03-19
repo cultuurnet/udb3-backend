@@ -35,7 +35,7 @@ trait MailSteps
         assertEquals($subject, $mailobject->getSubject());
         assertEquals(
             $this->fixtures->loadMail($messageType),
-            $this->removeUuidFilePattern($mailobject->getHtml())
+            $this->removeUuidFilePattern($mailobject->getContent())
         );
     }
 
