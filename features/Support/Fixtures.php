@@ -25,4 +25,9 @@ final class Fixtures
         $turtle = file_get_contents(__DIR__ . '/../data/' . $filename);
         return $variableState->replaceVariables($turtle);
     }
+
+    public function loadMail(string $mailType): string
+    {
+        return file_get_contents(__DIR__ . '/../data/mails/' . $mailType . '.html');
+    }
 }
