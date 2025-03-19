@@ -26,7 +26,7 @@ final class MailPitClient implements MailClient
         );
     }
 
-    public function get(string $messageId = 'latest'): EmailMessage
+    public function getEmailById(string $messageId): EmailMessage
     {
         {
             $response = $this->client->get(
@@ -37,16 +37,9 @@ final class MailPitClient implements MailClient
         }
     }
 
-    public function search(string $query): ResponseInterface
+    public function getLatestEmail(): EmailMessage
     {
-        {
-            return $this->client->get(
-                '/api/v1/messages/search',
-                [
-                    RequestOptions::QUERY => $query,
-                ]
-            );
-        }
+        return $this->getEmailById('latest');
     }
 
     /**

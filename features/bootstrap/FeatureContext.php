@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Steps\RoleSteps;
 use CultuurNet\UDB3\Steps\UtilitySteps;
 use CultuurNet\UDB3\Support\Fixtures;
 use CultuurNet\UDB3\Support\HttpClient;
+use CultuurNet\UDB3\Support\MailClient;
 use CultuurNet\UDB3\Support\MailPitClient;
 
 final class FeatureContext implements Context
@@ -71,7 +72,7 @@ final class FeatureContext implements Context
         );
     }
 
-    private function getMailPitClient(): MailPitClient
+    private function getMailClient(): MailClient
     {
         return new MailPitClient($this->config['base_url_mailpit']);
     }
