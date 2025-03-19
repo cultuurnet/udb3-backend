@@ -67,17 +67,12 @@ final class EmailMessage
         return $this->attachments;
     }
 
-    private static function getAddressesTo(array $data): EmailAddresses
-    {
-        return EmailAddresses::fromArray(array_map(fn ($contact) => new EmailAddress($contact['Address']), $data));
-    }
-
     public static function createFromMailPitData(array $data): self
     {
         return new self(
             $data['ID'],
             new EmailAddress($data['From']['Address']),
-            self::getAddressesTo($data['To']),
+            EmailAddresses::fromArray(array_map(fn ($contact) => new EmailAddress($contact['Address']), $data['To'])),
             $data['Subject'],
             $data['HTML'],
             $data['Attachments']
