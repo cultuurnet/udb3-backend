@@ -41,25 +41,4 @@ final class MailPitClient implements MailClient
     {
         return $this->getEmailById('latest');
     }
-
-    /**
-     * @param string[] $messageIds
-     */
-    public function delete(array $messageIds): ResponseInterface
-    {
-        return $this->client->delete(
-            '/api/v1/messages',
-            [
-                RequestOptions::BODY => $this->formatMessageIds($messageIds),
-            ]
-        );
-    }
-
-    /**
-     * @param string[] $messageIds
-     */
-    private function formatMessageIds(array $messageIds): string
-    {
-        return Json::encode(['IDs' => $messageIds]);
-    }
 }

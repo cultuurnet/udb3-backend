@@ -9,14 +9,6 @@ use function PHPUnit\Framework\assertEquals;
 trait MailSteps
 {
     /**
-     * @When I delete all mails
-     */
-    public function iDeleteAllMails(): void
-    {
-        $this->getMailClient()->delete([]);
-    }
-
-    /**
      * @When a mail has been sent from :from to :to with :subject and :messageType
      */
     public function aMailHasBeenSentFromToWithAnd(string $from, string $to, string $subject, string $messageType): void
