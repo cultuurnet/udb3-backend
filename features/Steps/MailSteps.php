@@ -17,14 +17,6 @@ trait MailSteps
     }
 
     /**
-     * When I get the latest mail
-     */
-    public function iGetTheLatestMail(): void
-    {
-        $this->getMailPitClient()->get();
-    }
-
-    /**
      * @When a mail has been sent from :from to :to with :subject and :messageType
      */
     public function aMailHasBeenSentFromToWithAnd(string $from, string $to, string $subject, string $messageType): void
