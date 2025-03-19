@@ -23,7 +23,7 @@ Feature: Test the UDB3 events export API
     And I keep the value of the JSON response at "commandId" as "id_ooxml-basic"
     And I wait for the command with id "%{id_ooxml-basic}" to complete
     And I check if one "xlsx" file has been created in the "downloads" folder
-    And a mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen" and "export"
+    And an "export" mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen"
 
   Scenario: Export events to OOXML - full
     Given I store the count of the "xlsx" files in the "downloads" folder
@@ -33,7 +33,7 @@ Feature: Test the UDB3 events export API
     And I keep the value of the JSON response at "commandId" as "id_ooxml-full"
     And I wait for the command with id "%{id_ooxml-full}" to complete
     And I check if one "xlsx" file has been created in the "downloads" folder
-    And a mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen" and "export"
+    And an "export" mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen"
 
   Scenario: Export events to PDF - tipsrapport
     Given I store the count of the "pdf" files in the "downloads" folder
@@ -43,7 +43,7 @@ Feature: Test the UDB3 events export API
     And I keep the value of the JSON response at "commandId" as "id_pdf-tips"
     And I wait for the command with id "%{id_pdf-tips}" to complete
     And I check if one "pdf" file has been created in the "downloads" folder
-    And a mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen" and "export"
+    And an "export" mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen"
 
   Scenario: Export events to PDF - mapview
     Given I store the count of the "pdf" files in the "downloads" folder
@@ -53,7 +53,7 @@ Feature: Test the UDB3 events export API
     And I keep the value of the JSON response at "commandId" as "id_pdf-map"
     And I wait for the command with id "%{id_pdf-map}" to complete
     And I check if one "pdf" file has been created in the "downloads" folder
-    And a mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen" and "export"
+    And an "export" mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen"
 
   Scenario: Export events to JSON - basic
     Given I store the count of the "json" files in the "downloads" folder
@@ -63,7 +63,7 @@ Feature: Test the UDB3 events export API
     And I keep the value of the JSON response at "commandId" as "id_json-basic"
     And I wait for the command with id "%{id_json-basic}" to complete
     And I check if one "json" file has been created in the "downloads" folder
-    And a mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen" and "export"
+    And an "export" mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen"
 
   Scenario: Export events to JSON - full
     Given I store the count of the "json" files in the "downloads" folder
@@ -73,7 +73,7 @@ Feature: Test the UDB3 events export API
     And I keep the value of the JSON response at "commandId" as "id_json-full"
     And I wait for the command with id "%{id_json-full}" to complete
     And I check if one "json" file has been created in the "downloads" folder
-    And a mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen" and "export"
+    And an "export" mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with "Uw export van evenementen"
 
   Scenario: Export events to an invalid email
     Given I set the JSON request payload from "exports/event-export-invalid-email.json"

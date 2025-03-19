@@ -9,9 +9,9 @@ use function PHPUnit\Framework\assertEquals;
 trait MailSteps
 {
     /**
-     * @When a mail has been sent from :from to :to with :subject and :messageType
+     * @When an :messageType mail has been sent from :from to :to with :subject
      */
-    public function aMailHasBeenSentFromToWithAnd(string $from, string $to, string $subject, string $messageType): void
+    public function aMailHasBeenSentFromToWith(string $messageType, string $from, string $to, string $subject): void
     {
         $mailobject = $this->getMailClient()->getLatestEmail();
         assertEquals($from, $mailobject->getFrom()->toString());
