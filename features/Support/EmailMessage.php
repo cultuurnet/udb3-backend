@@ -69,10 +69,5 @@ final class EmailMessage
     private function getAddressesTo(array $data): array
     {
         return array_map(fn ($contact) => new EmailAddress($contact['Address']), $data);
-        $addressesTo = [];
-        foreach ($data as $contact) {
-            $addressesTo[] = new EmailAddress($contact['Address']);
-        }
-        return $addressesTo;
     }
 }
