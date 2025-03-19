@@ -25,14 +25,23 @@ trait MailSteps
     }
 
     /**
-     * @When a mail has been sent from :from to :to with :subject and :message
+     * @When a mail has been sent from :from to :to with :subject and :messageType
      */
-    public function aMailHasBeenSentFromToWithAnd(string $from, string $to, string $subject, string $message)
+    public function aMailHasBeenSentFromToWithAnd(string $from, string $to, string $subject, string $messageType)
     {
         $mailobject = $this->getMailPitClient()->get();
-        assertEquals($from, $mailobject->getFrom()->getAddress()->toString());
-        assertEquals($to, $mailobject->getTo()[0]->getAddress()->toString());
+        assertEquals($from, $mailobject->getFrom()->toString());
+        assertEquals($to, $mailobject->getTo()[0]->toString());
         assertEquals($subject, $mailobject->getSubject());
-        assertEquals($message, $message); // TEMP Till better solution
+        assertEquals(
+            $this->fixtures->loadMail($messageType),
+            $this->removeUuidFilePattern($mailobject->getHtml())
+        );
+    }
+
+    private function removeUuidFilePattern(string $value): string
+    {
+        $uuidFilePattern = '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(pdf|xlsx|json)/i';
+        return preg_replace($uuidFilePattern, '', $value);
     }
 }
