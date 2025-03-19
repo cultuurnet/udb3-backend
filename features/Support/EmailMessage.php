@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Support;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+
 final class EmailMessage
 {
     private string $id;
 
-    private ?EmailContact $from;
+    private EmailAddress $from;
 
     /**
-     * @var EmailContact[]
+     * @var EmailAddress[]
      */
     private array $to;
 
@@ -24,7 +26,7 @@ final class EmailMessage
     public function __construct(array $data)
     {
         $this->id = $data['ID'];
-        $this->from = EmailContact::deserialize($data['From']);
+        $this->from = new EmailAddress($data['From']['Address']);
         $this->to = $this->getAddressesTo($data['To']);
         $this->subject = $data['Subject'];
         $this->html = $data['HTML'];
@@ -36,13 +38,13 @@ final class EmailMessage
         return $this->id;
     }
 
-    public function getFrom(): EmailContact
+    public function getFrom(): EmailAddress
     {
         return $this->from;
     }
 
     /**
-     * @return EmailContact[]
+     * @return EmailAddress[]
      */
     public function getTo(): array
     {
@@ -66,9 +68,10 @@ final class EmailMessage
 
     private function getAddressesTo(array $data): array
     {
+        return array_map(fn ($contact) => new EmailAddress($contact['Address']), $data);
         $addressesTo = [];
-        foreach ($data as $addressTo) {
-            $addressesTo[] = EmailContact::deserialize($addressTo);
+        foreach ($data as $contact) {
+            $addressesTo[] = new EmailAddress($contact['Address']);
         }
         return $addressesTo;
     }
