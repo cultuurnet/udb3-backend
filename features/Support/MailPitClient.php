@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Support;
 use CultuurNet\UDB3\Json;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
-use Psr\Http\Message\ResponseInterface;
 
 final class MailPitClient implements MailClient
 {

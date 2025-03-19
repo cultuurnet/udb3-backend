@@ -28,8 +28,7 @@ final class EmailMessage
         string $subject,
         string $content,
         array $attachments
-    )
-    {
+    ) {
         $this->id = $id;
         $this->from = $from;
         $this->to = $to;
