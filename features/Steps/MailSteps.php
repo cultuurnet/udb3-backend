@@ -13,7 +13,7 @@ trait MailSteps
      */
     public function iDeleteAllMails(): void
     {
-        $this->getMailPitClient()->delete([]);
+        $this->getMailClient()->delete([]);
     }
 
     /**
@@ -21,7 +21,7 @@ trait MailSteps
      */
     public function aMailHasBeenSentFromToWithAnd(string $from, string $to, string $subject, string $messageType): void
     {
-        $mailobject = $this->getMailPitClient()->get();
+        $mailobject = $this->getMailClient()->getLatestEmail();
         assertEquals($from, $mailobject->getFrom()->toString());
         assertEquals($to, $mailobject->getTo()[0]->toString());
         assertEquals($subject, $mailobject->getSubject());
