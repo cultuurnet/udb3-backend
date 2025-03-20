@@ -1,10 +1,54 @@
-<h2>Beheers aanvraag voor organisatie {{ organisationName }}</h2>
+<div style="margin:0px auto;max-width:600px;
+    color: #535a63;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 22px;
+    ">
 
-<p>Beste {{ firstName }},</p>
+    <img src="https://assets.uit.be/uitdatabank/entry_api/header.png" alt="Beheers aanvraag voor organisatie {{ organisationName }}" style="width: 100%">
 
-<p>Er is een beheer aanvraag voor je organisatie {{ organisationName }} in de UiTdatabank. Ga naar de beheerderspagina om de aanvraag goed- of af te keuren. Beheerders kunnen zowel de organisatie informatie, als de informatie van de gelinkte evenementen aan deze organisatie bewerken.</p>
+    <p style="border-top:solid 1px #9ec6db;font-size:1px;margin:10px auto;width:100%;">&nbsp;</p>
 
-<p><a href="{{ organisationUrl }}">Ga naar de beheerpagina voor meer informatie.</a></p>
+    <h2 style="line-height:22px;color:#029fdf;font-size:25px;font-family:Roboto;">Beheers aanvraag voor organisatie {{
+        organisationName }}</h2>
 
-<p>Vriendelijke groet,<br />
-    Het UiTdatabank team.</p>
+    <p>Beste {{ firstName }},</p>
+
+    <p>Er is een beheer aanvraag voor je organisatie {{ organisationName }} in de UiTdatabank. <a
+            href="{{ organisationUrl }}">Ga naar de beheerderspagina</a> om de aanvraag goed- of af te keuren.</p>
+
+    <p>Als beheerder in UiTdatabank heb je de nodige rechten om:</p>
+    <ul>
+        <li>
+            De organisatie informatie te bewerken zoals de afbeelding, beschrijving, en contactinformatie van de organisatie.
+        </li>
+        <li>Evenementen georganiseerd door je organisatie aan te maken, te bewerken en te verwijderen.</li>
+    </ul>
+
+    <div style="margin: 0 auto; width: 40%;">
+        <a style="display:inline-block;background:#029fdf;color:#ffffff;font-family:Verdana,Helvetica,Arial,sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px 10px 25px;border-radius:3px"
+           href="{{ organisationUrl }}">Ga naar je beheerspagina</a>
+    </div>
+
+    <p style="border-top:solid 1px #9ec6db;font-size:1px;margin:10px auto;width:100%;">&nbsp;</p>
+
+    <p>Vriendelijke groet,<br/>
+        Het UiTdatabank team.
+    </p>
+
+    <table width="100%">
+        <tr>
+            <td>
+                <p>UiTdatabank<br />
+                    <a href="mailto:vragen@uitdatabank.be" target="_blank">vragen@uitdatabank.be</a></p>
+            </td>
+            <td style="text-align: right;">
+                <img alt="Publiq VZW" src="https://assets.uit.be/uitdatabank/entry_api/logo.png" style="float: right;" />
+            </td>
+        </tr>
+    </table>
+
+    <p style="text-align:center;margin:10px 0;margin-top:10px;margin-bottom:10px"><span
+            style="font-family:Verdana;font-size:16px;line-height:22px">publiq vzw - Henegouwenkaai 41-43 1080 Molenbeek BE</span>
+    </p>
+</div>
