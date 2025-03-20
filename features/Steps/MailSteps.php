@@ -18,8 +18,8 @@ trait MailSteps
         assertEquals($to, $mailobject->getTo()->getByIndex(0) ->toString());
         assertEquals($subject, $mailobject->getSubject());
         assertEquals(
-            $this->fixtures->loadMail($messageType),
-            $this->removeUuidFilePattern($mailobject->getContent())
+            $this->fixNewLines($this->fixtures->loadMail($messageType)),
+            $this->fixNewLines($this->removeUuidFilePattern($mailobject->getContent()))
         );
     }
 
@@ -27,5 +27,10 @@ trait MailSteps
     {
         $uuidFilePattern = '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(pdf|xlsx|json)/i';
         return preg_replace($uuidFilePattern, '', $value);
+    }
+
+    private function fixNewLines(string $value): string
+    {
+       return str_replace("\r\n", "\n", $value);
     }
 }
