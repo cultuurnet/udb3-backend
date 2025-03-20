@@ -15,7 +15,7 @@ trait MailSteps
     {
         $mailobject = $this->getMailClient()->getLatestEmail();
         assertEquals($from, $mailobject->getFrom()->toString());
-        assertEquals($to, $mailobject->getTo()->getByIndex(0) ->toString());
+        assertEquals($to, $mailobject->getTo()->getByIndex(0)->toString());
         assertEquals($subject, $mailobject->getSubject());
         assertEquals(
             $this->fixNewLines($this->fixtures->loadMail($messageType)),
