@@ -31,6 +31,6 @@ trait MailSteps
 
     private function fixNewLines(string $value): string
     {
-       return str_replace("\r\n", "\n", $value);
+        return str_replace("\r\n", "\n", $value);
     }
 }
