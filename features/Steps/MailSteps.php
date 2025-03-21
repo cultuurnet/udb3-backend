@@ -15,11 +15,11 @@ trait MailSteps
     {
         $mailobject = $this->getMailClient()->getLatestEmail();
         assertEquals($from, $mailobject->getFrom()->toString());
-        assertEquals($to, $mailobject->getTo()->getByIndex(0) ->toString());
+        assertEquals($to, $mailobject->getTo()->getByIndex(0)->toString());
         assertEquals($subject, $mailobject->getSubject());
         assertEquals(
-            $this->fixtures->loadMail($messageType),
-            $this->removeUuidFilePattern($mailobject->getContent())
+            $this->removeCarriageReturn($this->fixtures->loadMail($messageType)),
+            $this->removeCarriageReturn($this->removeUuidFilePattern($mailobject->getContent()))
         );
     }
 
@@ -27,5 +27,12 @@ trait MailSteps
     {
         $uuidFilePattern = '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(pdf|xlsx|json)/i';
         return preg_replace($uuidFilePattern, '', $value);
+    }
+
+    // This is needed the handle some quirky differences
+    // between MacOS & Jenkins/Linux on the CI-pipeline.
+    private function removeCarriageReturn(string $value): string
+    {
+        return str_replace("\r\n", "\n", $value);
     }
 }
