@@ -1,10 +1,9 @@
-<h2>Je bent nu beheerder van organisatie {{ organisationName }}!</h2>
-
-<p>Beste {{ firstName }},</p>
+{% set title = 'Je bent nu beheerder van organisatie ' ~ organisationName %}
+{% include 'ownership/partials/_header.html.twig' with {'firstName': firstName, 'title': title } %}
 
 <p>Je bent vanaf nu beheerder van de organisatie {{ organisationName }} in de UiTdatabank. Dit wil zeggen dat je zowel de organisatie informatie kan bewerken, als de informatie van de gelinkte evenementen aan deze organisatie.</p>
+<p>Ga naar <a href="{{ organisationUrl }}">de beheerpagina</a> voor meer informatie.</p>
 
-<p><a href="{{ organisationUrl }}">Ga naar de beheerpagina voor meer informatie.</a></p>
+{% include 'ownership/partials/_button.html.twig' with {'organisationUrl': organisationUrl, 'buttonText': 'Ga naar je beheerspagina'} %}
 
-<p>Vriendelijke groet,<br />
-    Het UiTdatabank team.</p>
+{% include 'ownership/partials/_footer.html.twig' %}
