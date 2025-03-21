@@ -1,47 +1,9 @@
-<div style="margin:0px auto;max-width:600px;
-    color: #535a63;
-    font-family: Helvetica, Arial, sans-serif;
-    font-size: 14px;
-    line-height: 22px;
-    ">
+{% set title = 'Je bent nu beheerder van organisatie ' ~ organisationName %}
+{% include 'ownership/partials/_header.html.twig' with {'firstName': firstName, 'title': title } %}
 
-    <img src="https://assets.uit.be/uitdatabank/entry_api/header.png" alt="Beheers aanvraag voor organisatie {{ organisationName }}" style="width: 100%">
+<p>Je bent vanaf nu beheerder van de organisatie {{ organisationName }} in de UiTdatabank. Dit wil zeggen dat je zowel de organisatie informatie kan bewerken, als de informatie van de gelinkte evenementen aan deze organisatie.</p>
+<p>Ga naar <a href="{{ organisationUrl }}">de beheerpagina</a> voor meer informatie.</p>
 
-    <p style="border-top:solid 1px #9ec6db;font-size:1px;margin:10px auto;width:100%;">&nbsp;</p>
+{% include 'ownership/partials/_button.html.twig' with {'organisationUrl': organisationUrl, 'buttonText': 'Ga naar je beheerspagina'} %}
 
-    <h2 style="line-height:22px;color:#029fdf;font-size:25px;font-family:Roboto;">Je bent nu beheerder van organisatie {{
-        organisationName }}</h2>
-
-    <p>Beste {{ firstName }},</p>
-
-    <p>Je bent vanaf nu beheerder van de organisatie {{ organisationName }} in de UiTdatabank. Dit wil zeggen dat je zowel de organisatie informatie kan bewerken, als de informatie van de gelinkte evenementen aan deze organisatie.
-    </p>
-    <p>Ga naar <a href="{{ organisationUrl }}">de beheerpagina</a> voor meer informatie.</p>
-
-    <div style="margin: 0 auto; width: 40%;">
-        <a style="display:inline-block;background:#029fdf;color:#ffffff;font-family:Verdana,Helvetica,Arial,sans-serif;font-size:13px;font-weight:normal;line-height:120%;margin:0;text-decoration:none;text-transform:none;padding:10px 25px 10px 25px;border-radius:3px"
-           href="{{ organisationUrl }}">Ga naar je beheerspagina</a>
-    </div>
-
-    <p>Vriendelijke groet,<br/>
-        Het UiTdatabank team.
-    </p>
-
-    <p style="border-top:solid 1px #9ec6db;font-size:1px;margin:10px auto;width:100%;">&nbsp;</p>
-
-    <table width="100%">
-        <tr>
-            <td>
-                <p>UiTdatabank<br />
-                    <a href="mailto:vragen@uitdatabank.be" target="_blank">vragen@uitdatabank.be</a></p>
-            </td>
-            <td style="text-align: right;">
-                <img alt="Publiq VZW" src="https://assets.uit.be/uitdatabank/entry_api/logo.png" style="float: right;" />
-            </td>
-        </tr>
-    </table>
-
-    <p style="text-align:center;margin:10px 0;margin-top:10px;margin-bottom:10px"><span
-            style="font-family:Verdana;font-size:16px;line-height:22px">publiq vzw - Henegouwenkaai 41-43 1080 Molenbeek BE</span>
-    </p>
-</div>
+{% include 'ownership/partials/_footer.html.twig' %}
