@@ -18,8 +18,8 @@ trait MailSteps
         assertEquals($to, $mailobject->getTo()->getByIndex(0)->toString());
         assertEquals($subject, $mailobject->getSubject());
         assertEquals(
-            $this->fixNewLines($this->fixtures->loadMail($messageType)),
-            $this->fixNewLines($this->removeUuidFilePattern($mailobject->getContent()))
+            $this->removeCarriageReturn($this->fixtures->loadMail($messageType)),
+            $this->removeCarriageReturn($this->removeUuidFilePattern($mailobject->getContent()))
         );
     }
 
@@ -29,7 +29,9 @@ trait MailSteps
         return preg_replace($uuidFilePattern, '', $value);
     }
 
-    private function fixNewLines(string $value): string
+    // This is needed the handle some quirky differences
+    // between MacOS & Jenkins/Linux on the CI-pipeline.
+    private function removeCarriageReturn(string $value): string
     {
         return str_replace("\r\n", "\n", $value);
     }
