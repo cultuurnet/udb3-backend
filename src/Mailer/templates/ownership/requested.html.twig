@@ -1,10 +1,17 @@
-<h2>Beheers aanvraag voor organisatie {{ organisationName }}</h2>
+{% set title = 'Beheers aanvraag voor organisatie ' ~ organisationName %}
+{% include 'ownership/partials/_header.html.twig' with {'firstName': firstName, 'title': title } %}
 
-<p>Beste {{ firstName }},</p>
+<p>Er is een beheer aanvraag voor je organisatie {{ organisationName }} in de UiTdatabank. <a
+        href="{{ organisationUrl }}">Ga naar de beheerderspagina</a> om de aanvraag goed- of af te keuren.</p>
 
-<p>Er is een beheer aanvraag voor je organisatie {{ organisationName }} in de UiTdatabank. Ga naar de beheerderspagina om de aanvraag goed- of af te keuren. Beheerders kunnen zowel de organisatie informatie, als de informatie van de gelinkte evenementen aan deze organisatie bewerken.</p>
+<p>Als beheerder in UiTdatabank heb je de nodige rechten om:</p>
+<ul>
+    <li>
+        De organisatie informatie te bewerken zoals de afbeelding, beschrijving, en contactinformatie van de organisatie.
+    </li>
+    <li>Evenementen georganiseerd door je organisatie aan te maken, te bewerken en te verwijderen.</li>
+</ul>
 
-<p><a href="{{ organisationUrl }}">Ga naar de beheerpagina voor meer informatie.</a></p>
+{% include 'ownership/partials/_button.html.twig' with {'organisationUrl': organisationUrl, 'buttonText': 'Ga naar je beheerspagina'} %}
 
-<p>Vriendelijke groet,<br />
-    Het UiTdatabank team.</p>
+{% include 'ownership/partials/_footer.html.twig' %}
