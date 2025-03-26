@@ -21,7 +21,7 @@ Feature: Test getting a single ownership by ID
   Scenario: Get the ownership as owner
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
-    When I am authorized as JWT provider v2 user "udbtestinvoerder_ownerships"
+    When I am authorized as JWT provider v2 user "invoerder_ownerships"
     And I send a GET request to '/ownerships/%{ownershipId}'
     Then the response status should be 200
     And the JSON response at id should be "%{ownershipId}"
