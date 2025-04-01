@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81db03c4e7157cb73aeb1b9cb959c7c4",
+    "content-hash": "f45fb070fe469b6b64f0277d1f8baa57",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5968,19 +5968,18 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-main",
+            "version": "dev-III-6581-add-groupprice",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "15e2a28a2c63d46823613cb7a4dc8e86dfe7dffe"
+                "reference": "c6c549af0903fc2201f3c36f0d9747242aca4cb4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/15e2a28a2c63d46823613cb7a4dc8e86dfe7dffe",
-                "reference": "15e2a28a2c63d46823613cb7a4dc8e86dfe7dffe",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/c6c549af0903fc2201f3c36f0d9747242aca4cb4",
+                "reference": "c6c549af0903fc2201f3c36f0d9747242aca4cb4",
                 "shasum": ""
             },
-            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5995,9 +5994,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6312-allow-encoded-space"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6581-add-groupprice"
             },
-            "time": "2024-11-06T13:09:26+00:00"
+            "time": "2025-04-01T11:39:12+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
