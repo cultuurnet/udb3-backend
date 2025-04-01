@@ -13,10 +13,13 @@ class Tariff
 
     private Money $price;
 
-    public function __construct(TranslatedTariffName $name, Money $price)
+    private bool $isGroupPrice;
+
+    public function __construct(TranslatedTariffName $name, Money $price, bool $isGroupPrice = false)
     {
         $this->name = $name;
         $this->price = $price;
+        $this->isGroupPrice = $isGroupPrice;
     }
 
     public function getName(): TranslatedTariffName
@@ -40,6 +43,18 @@ class Tariff
     {
         $c = clone $this;
         $c->price = $price;
+        return $c;
+    }
+
+    public function isGroupPrice(): bool
+    {
+        return $this->isGroupPrice;
+    }
+
+    public function withGroupPrice(bool $isGroupPrice): self
+    {
+        $c = clone $this;
+        $c->isGroupPrice = $isGroupPrice;
         return $c;
     }
 
