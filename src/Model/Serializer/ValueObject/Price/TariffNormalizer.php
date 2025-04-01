@@ -19,6 +19,7 @@ class TariffNormalizer implements NormalizerInterface
         return [
             'price' => (new MoneyNormalizer())->normalize($object->getPrice()),
             'names' => $this->getNames($object),
+            'groupPrice' => $object->isGroupPrice()
         ];
     }
 
