@@ -9,14 +9,21 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 final class ApproveOwnership
 {
     private Uuid $id;
+    private string $userId;
 
-    public function __construct(Uuid $id)
+    public function __construct(Uuid $id, string $userId)
     {
         $this->id = $id;
+        $this->userId = $userId;
     }
 
     public function getId(): Uuid
     {
         return $this->id;
+    }
+
+    public function getUserId(): string
+    {
+        return $this->userId;
     }
 }
