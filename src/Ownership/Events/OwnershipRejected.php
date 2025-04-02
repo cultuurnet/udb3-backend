@@ -36,7 +36,7 @@ final class OwnershipRejected implements Serializable
     {
         return [
             'ownershipId' => $this->id,
-            'userId' => $this->userId
+            'userId' => $this->userId,
         ];
     }
 }

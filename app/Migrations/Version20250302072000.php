@@ -14,7 +14,7 @@ class Version20250302072000 extends AbstractMigration
         $table = $schema->getTable('ownership_search');
         $table->addColumn('approved_by', 'string', ['notnull' => false])->setLength(100);
         $table->addColumn('rejected_by', 'string', ['notnull' => false])->setLength(100);
-        $table->addColumn('deleted_by', 'string',  ['notnull' => false])->setLength(100);
+        $table->addColumn('deleted_by', 'string', ['notnull' => false])->setLength(100);
     }
 
     public function down(Schema $schema): void

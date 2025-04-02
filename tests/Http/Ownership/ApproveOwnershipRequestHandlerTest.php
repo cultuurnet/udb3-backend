@@ -21,9 +21,8 @@ use PHPUnit\Framework\TestCase;
 
 class ApproveOwnershipRequestHandlerTest extends TestCase
 {
-    private const USER_ID = 'auth0|63e22626e39a8ca1264bd29b';
-
     use AssertApiProblemTrait;
+    private const USER_ID = 'auth0|63e22626e39a8ca1264bd29b';
 
     private TraceableCommandBus $commandBus;
 

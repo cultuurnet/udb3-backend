@@ -44,7 +44,7 @@ class DeleteOwnershipHandlerTest extends CommandHandlerScenarioTestCase
                 self::USER_ID,
             ))
             ->then([
-                new OwnershipDeleted('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',  self::USER_ID),
+                new OwnershipDeleted('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', self::USER_ID),
             ]);
     }
 }

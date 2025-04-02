@@ -47,10 +47,10 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
 
     public function updateState(string $id, OwnershipState $state, string $actionBy): void
     {
-        $params = ['state' => $state->toString(), ];
+        $params = ['state' => $state->toString()];
 
         $actionByField = $this->getActionByField($state);
-        if(!empty($actionByField)) {
+        if (!empty($actionByField)) {
             $params[$actionByField] = $actionBy;
         }
 
@@ -63,7 +63,7 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
 
     private function getActionByField(OwnershipState $state): string
     {
-        switch($state->toString()) {
+        switch ($state->toString()) {
             case OwnershipState::approved()->toString():
                 return 'approved_by';
             case OwnershipState::rejected()->toString():

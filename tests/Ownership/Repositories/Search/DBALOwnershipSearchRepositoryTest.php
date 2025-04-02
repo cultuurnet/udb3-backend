@@ -80,7 +80,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
             $ownershipState->toString()
         );
 
-        switch($ownershipState->toString()) {
+        switch ($ownershipState->toString()) {
             case OwnershipState::approved()->toString():
                 $updatedOwnershipItem = $updatedOwnershipItem->withApprovedBy(self::OWNER_USER_ID);
                 break;

@@ -36,6 +36,6 @@ final class OwnershipApproved implements Serializable
     {
         return [
             'ownershipId' => $this->id,
-            'userId' => $this->userId        ];
+            'userId' => $this->userId,        ];
     }
 }
