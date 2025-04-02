@@ -25,7 +25,7 @@ final class RejectOwnershipHandler implements CommandHandler
 
         $ownership = $this->ownershipRepository->load($command->getId()->toString());
 
-        $ownership->reject();
+        $ownership->reject($command->getUserId());
 
         $this->ownershipRepository->save($ownership);
     }

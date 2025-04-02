@@ -25,7 +25,7 @@ final class ApproveOwnershipHandler implements CommandHandler
 
         $ownership = $this->ownershipRepository->load($command->getId()->toString());
 
-        $ownership->approve();
+        $ownership->approve($command->getUserId());
 
         $this->ownershipRepository->save($ownership);
     }

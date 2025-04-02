@@ -21,6 +21,8 @@ use PHPUnit\Framework\TestCase;
 
 class RejectOwnershipRequestHandlerTest extends TestCase
 {
+    private const USER_ID = 'auth0|63e22626e39a8ca1264bd29b';
+
     use AssertApiProblemTrait;
 
     private TraceableCommandBus $commandBus;
@@ -83,7 +85,7 @@ class RejectOwnershipRequestHandlerTest extends TestCase
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
             [
-                new RejectOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
+                new RejectOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'), self::USER_ID),
             ],
             $this->commandBus->getRecordedCommands()
         );
@@ -119,7 +121,7 @@ class RejectOwnershipRequestHandlerTest extends TestCase
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
             [
-                new RejectOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
+                new RejectOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'), self::USER_ID),
             ],
             $this->commandBus->getRecordedCommands()
         );

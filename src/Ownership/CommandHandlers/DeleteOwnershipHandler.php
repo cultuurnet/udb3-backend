@@ -25,7 +25,7 @@ final class DeleteOwnershipHandler implements CommandHandler
 
         $ownership = $this->ownershipRepository->load($command->getId()->toString());
 
-        $ownership->delete();
+        $ownership->delete($command->getUserId());
 
         $this->ownershipRepository->save($ownership);
     }
