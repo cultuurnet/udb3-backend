@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "590af3020309d79d586ac6dbcb82011a",
+    "content-hash": "f45fb070fe469b6b64f0277d1f8baa57",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5968,16 +5968,16 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-6582-fix-stoplight-ownerships",
+            "version": "dev-III-6581-add-groupprice",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "96e211580206525933d79a731a380b35481579fe"
+                "reference": "22fcea669207d8a572c72174259147913959358b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/96e211580206525933d79a731a380b35481579fe",
-                "reference": "96e211580206525933d79a731a380b35481579fe",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/22fcea669207d8a572c72174259147913959358b",
+                "reference": "22fcea669207d8a572c72174259147913959358b",
                 "shasum": ""
             },
             "type": "library",
@@ -5994,9 +5994,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6582-fix-stoplight-ownerships"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6581-add-groupprice"
             },
-            "time": "2025-04-02T11:25:10+00:00"
+            "time": "2025-04-02T11:41:45+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
