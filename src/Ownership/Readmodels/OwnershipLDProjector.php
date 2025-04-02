@@ -70,11 +70,19 @@ final class OwnershipLDProjector implements EventListener
         $body->requesterId = $ownershipRequested->getRequesterId();
         $body->requesterEmail = $requesterDetails !== null ? $requesterDetails->getEmailAddress() : null;
         $body->state = OwnershipState::requested()->toString();
-
         $body->created = DateTimeFactory::fromFormat(
             DateTime::FORMAT_STRING,
             $domainMessage->getRecordedOn()->toString()
         )->format('c');
+
+        $body->approvedById = null;
+        $body->approvedByEmail = null;
+
+        $body->rejectedById = null;
+        $body->rejectedByEmail = null;
+
+        $body->deletedById = null;
+        $body->deletedByEmail = null;
 
         return $jsonDocument->withBody($body);
     }
@@ -86,6 +94,10 @@ final class OwnershipLDProjector implements EventListener
         $body = $jsonDocument->getBody();
         $body->state = OwnershipState::approved()->toString();
 
+        $approverDetails = $this->userIdentityResolver->getUserById($ownershipApproved->getUserId());
+        $body->approvedById = $ownershipApproved->getUserId();
+        $body->approvedByEmail = $approverDetails !== null ? $approverDetails->getEmailAddress() : null;
+
         return $jsonDocument->withBody($body);
     }
 
@@ -96,6 +108,10 @@ final class OwnershipLDProjector implements EventListener
         $body = $jsonDocument->getBody();
         $body->state = OwnershipState::rejected()->toString();
 
+        $rejecterDetails = $this->userIdentityResolver->getUserById($ownershipRejected->getUserId());
+        $body->rejectedById = $ownershipRejected->getUserId();
+        $body->rejectedByEmail = $rejecterDetails !== null ? $rejecterDetails->getEmailAddress() : null;
+
         return $jsonDocument->withBody($body);
     }
 
@@ -105,6 +121,10 @@ final class OwnershipLDProjector implements EventListener
 
         $body = $jsonDocument->getBody();
         $body->state = OwnershipState::deleted()->toString();
+
+        $deleterDetails = $this->userIdentityResolver->getUserById($ownershipDeleted->getUserId());
+        $body->deletedById = $ownershipDeleted->getUserId();
+        $body->deletedByEmail = $deleterDetails !== null ? $deleterDetails->getEmailAddress() : null;
 
         return $jsonDocument->withBody($body);
     }

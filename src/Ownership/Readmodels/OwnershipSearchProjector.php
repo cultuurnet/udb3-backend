@@ -57,7 +57,8 @@ final class OwnershipSearchProjector implements EventListener
     {
         $this->ownershipSearchRepository->updateState(
             $ownershipApproved->getId(),
-            OwnershipState::approved()
+            OwnershipState::approved(),
+            $ownershipApproved->getUserId(),
         );
     }
 
@@ -65,7 +66,8 @@ final class OwnershipSearchProjector implements EventListener
     {
         $this->ownershipSearchRepository->updateState(
             $ownershipRejected->getId(),
-            OwnershipState::rejected()
+            OwnershipState::rejected(),
+            $ownershipRejected->getUserId(),
         );
     }
 
@@ -73,7 +75,8 @@ final class OwnershipSearchProjector implements EventListener
     {
         $this->ownershipSearchRepository->updateState(
             $ownershipDeleted->getId(),
-            OwnershipState::deleted()
+            OwnershipState::deleted(),
+            $ownershipDeleted->getUserId(),
         );
     }
 }

@@ -65,7 +65,7 @@ class OwnershipSearchProjectorTest extends TestCase
      */
     public function it_handles_ownership_approved(): void
     {
-        $ownershipApproved = new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e');
+        $ownershipApproved = new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', 'auth0|63e22626e39a8ca1264bd29b');
 
         $this->ownershipSearchRepository->expects($this->once())
             ->method('updateState')
@@ -82,7 +82,7 @@ class OwnershipSearchProjectorTest extends TestCase
      */
     public function it_handles_ownership_rejected(): void
     {
-        $ownershipRejected = new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e');
+        $ownershipRejected = new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', 'auth0|63e22626e39a8ca1264bd29b');
 
         $this->ownershipSearchRepository->expects($this->once())
             ->method('updateState')
@@ -99,7 +99,7 @@ class OwnershipSearchProjectorTest extends TestCase
      */
     public function it_handles_ownership_deleted(): void
     {
-        $ownershipDeleted = new OwnershipDeleted('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e');
+        $ownershipDeleted = new OwnershipDeleted('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', 'auth0|63e22626e39a8ca1264bd29b');
 
         $this->ownershipSearchRepository->expects($this->once())
             ->method('updateState')

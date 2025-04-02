@@ -32,6 +32,7 @@ use PHPUnit\Framework\TestCase;
 
 class OwnershipPermissionProjectorTest extends TestCase
 {
+    private const USER_ID = 'auth0|63e22626e39a8ca1264bd29b';
     private const ROLE_ID = '8d17cffe-6f28-459c-8627-1f6345f8b296';
     private TraceableAuthorizedCommandBus $commandBus;
 
@@ -71,7 +72,7 @@ class OwnershipPermissionProjectorTest extends TestCase
         $roleId = new Uuid(self::ROLE_ID);
         $recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::fromString('2024-02-19T14:15:16Z'));
 
-        $ownershipRequested = new OwnershipApproved($ownershipId);
+        $ownershipRequested = new OwnershipApproved($ownershipId, self::USER_ID);
 
         $domainMessage = new DomainMessage(
             $ownershipId,
@@ -150,7 +151,7 @@ class OwnershipPermissionProjectorTest extends TestCase
         $roleId = new Uuid(self::ROLE_ID);
         $recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::fromString('2024-02-19T14:15:16Z'));
 
-        $ownershipRequested = new OwnershipApproved($ownershipId);
+        $ownershipRequested = new OwnershipApproved($ownershipId, self::USER_ID);
 
         $domainMessage = new DomainMessage(
             $ownershipId,
@@ -222,7 +223,7 @@ class OwnershipPermissionProjectorTest extends TestCase
         $itemId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
         $recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::fromString('2024-02-19T14:15:16Z'));
 
-        $ownershipRequested = new OwnershipDeleted($ownershipId);
+        $ownershipRequested = new OwnershipDeleted($ownershipId, self::USER_ID);
 
         $domainMessage = new DomainMessage(
             $ownershipId,

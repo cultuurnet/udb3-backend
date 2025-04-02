@@ -21,6 +21,10 @@ use PHPUnit\Framework\TestCase;
 
 class OwnershipLDProjectorTest extends TestCase
 {
+    private const APPROVER_ID = 'auth0|8ca1264bd29b63e22626e39a';
+    private const REJECTER_ID = 'auth0|63e22626e8ca1264bd29b39b';
+    private const DELETER_ID = 'auth0|a1229b63e264bd8c2626e39c';
+
     private InMemoryDocumentRepository $ownershipRepository;
 
     private OwnershipLDProjector $ownershipLDProjector;
@@ -41,6 +45,15 @@ class OwnershipLDProjectorTest extends TestCase
                     }
                     if ($userId === 'google-oauth2|102486314601596809843') {
                         return new UserIdentityDetails($userId, 'google', 'info@google.be');
+                    }
+                    if ($userId === self::APPROVER_ID) {
+                        return new UserIdentityDetails($userId, 'koen', 'approver@public.be');
+                    }
+                    if ($userId === self::REJECTER_ID) {
+                        return new UserIdentityDetails($userId, 'koen', 'rejecter@public.be');
+                    }
+                    if ($userId === self::DELETER_ID) {
+                        return new UserIdentityDetails($userId, 'koen', 'deleter@public.be');
                     }
                     return null;
                 }
@@ -106,7 +119,7 @@ class OwnershipLDProjectorTest extends TestCase
             )
         );
 
-        $ownershipApproved = new OwnershipApproved($ownershipId);
+        $ownershipApproved = new OwnershipApproved($ownershipId, self::APPROVER_ID);
 
         $domainMessage = new DomainMessage(
             $ownershipId,
@@ -146,7 +159,7 @@ class OwnershipLDProjectorTest extends TestCase
             )
         );
 
-        $ownershipRejected = new OwnershipRejected($ownershipId);
+        $ownershipRejected = new OwnershipRejected($ownershipId, self::REJECTER_ID);
 
         $domainMessage = new DomainMessage(
             $ownershipId,
@@ -186,7 +199,7 @@ class OwnershipLDProjectorTest extends TestCase
             )
         );
 
-        $ownershipRejected = new OwnershipDeleted($ownershipId);
+        $ownershipRejected = new OwnershipDeleted($ownershipId, self::DELETER_ID);
 
         $domainMessage = new DomainMessage(
             $ownershipId,
@@ -225,6 +238,27 @@ class OwnershipLDProjectorTest extends TestCase
         $jsonLD->{'requesterEmail'} = 'info@google.be';
         $jsonLD->{'state'} = $state->toString();
         $jsonLD->{'created'} = $recordedOn->toString();
+
+        $jsonLD->{'approvedById'} = null;
+        $jsonLD->{'approvedByEmail'} = null;
+        $jsonLD->{'rejectedById'} = null;
+        $jsonLD->{'rejectedByEmail'} = null;
+        $jsonLD->{'deletedById'} = null;
+        $jsonLD->{'deletedByEmail'} = null;
+
+        if($state->sameAs(OwnershipState::approved())) {
+            $jsonLD->{'approvedById'} = self::APPROVER_ID;
+            $jsonLD->{'approvedByEmail'} = 'approver@public.be';
+        }
+        else if($state->sameAs(OwnershipState::rejected())) {
+            $jsonLD->{'rejectedById'} = self::REJECTER_ID;
+            $jsonLD->{'rejectedByEmail'} = 'rejecter@public.be';
+        }
+        else if($state->sameAs(OwnershipState::deleted())) {
+            $jsonLD->{'deletedById'} = self::DELETER_ID;
+            $jsonLD->{'deletedByEmail'} = 'deleter@public.be';
+        }
+
         $jsonLD->{'modified'} = $recordedOn->toString();
 
         return (new JsonDocument($ownershipId))->withBody($jsonLD);
