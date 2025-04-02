@@ -16,6 +16,8 @@ use CultuurNet\UDB3\Ownership\OwnershipRepository;
 
 class RejectOwnershipHandlerTest extends CommandHandlerScenarioTestCase
 {
+    private const USER_ID = 'auth0|63e22626e39a8ca1264bd29b';
+
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
         return new RejectOwnershipHandler(new OwnershipRepository($eventStore, $eventBus));
@@ -38,10 +40,10 @@ class RejectOwnershipHandlerTest extends CommandHandlerScenarioTestCase
                 ),
             ])
             ->when(
-                new RejectOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'))
+                new RejectOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'), self::USER_ID)
             )
             ->then([
-                new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', self::USER_ID),
             ]);
     }
 }
