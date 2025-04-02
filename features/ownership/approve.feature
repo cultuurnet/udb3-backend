@@ -65,3 +65,23 @@ Feature: Test approving ownership
         "detail": "You are not allowed to approve this ownership"
       }
       """
+
+  Scenario: Re approve a rejected ownership
+    Given I create a minimal organizer and save the "id" as "organizerId"
+    And I am authorized as JWT provider v2 user "invoerder_ownerships"
+    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    When I approve the ownership with ownershipId "%{ownershipId}"
+
+    When I reject the ownership with ownershipId "%{ownershipId}"
+
+    When I approve the ownership with ownershipId "%{ownershipId}"
+    And I get the ownership with ownershipId "%{ownershipId}"
+    Then the JSON response at "id" should be "%{ownershipId}"
+    And the JSON response at "itemId" should be "%{organizerId}"
+    And the JSON response at "itemType" should be "organizer"
+    And the JSON response at "ownerId" should be "auth0|64089494e980aedd96740212"
+    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
+    And the JSON response at "state" should be "approved"
+    And the JSON response at "approvedById" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
