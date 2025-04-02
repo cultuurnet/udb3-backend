@@ -9,10 +9,12 @@ use Broadway\Serializer\Serializable;
 final class OwnershipDeleted implements Serializable
 {
     private string $id;
+    private string $userId;
 
-    public function __construct(string $id)
+    public function __construct(string $id, string $userId)
     {
         $this->id = $id;
+        $this->userId = $userId;
     }
 
     public function getId(): string
@@ -20,15 +22,21 @@ final class OwnershipDeleted implements Serializable
         return $this->id;
     }
 
+    public function getUserId(): string
+    {
+        return $this->userId;
+    }
+
     public static function deserialize(array $data): self
     {
-        return new OwnershipDeleted($data['ownershipId']);
+        return new OwnershipDeleted($data['ownershipId'], $data['userId']);
     }
 
     public function serialize(): array
     {
         return [
             'ownershipId' => $this->id,
+            'userId' => $this->userId
         ];
     }
 }

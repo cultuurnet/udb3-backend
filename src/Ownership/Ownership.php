@@ -45,26 +45,26 @@ final class Ownership extends EventSourcedAggregateRoot
         return $ownership;
     }
 
-    public function approve(): void
+    public function approve(string $userId): void
     {
         if ($this->state->sameAs(OwnershipState::requested())) {
             $this->apply(
-                new OwnershipApproved($this->id)
+                new OwnershipApproved($this->id, $userId)
             );
         }
     }
 
-    public function reject(): void
+    public function reject(string $userId): void
     {
         if ($this->state->sameAs(OwnershipState::requested())) {
-            $this->apply(new OwnershipRejected($this->id));
+            $this->apply(new OwnershipRejected($this->id, $userId));
         }
     }
 
-    public function delete(): void
+    public function delete(string $userId): void
     {
         if (!$this->state->sameAs(OwnershipState::deleted())) {
-            $this->apply(new OwnershipDeleted($this->id));
+            $this->apply(new OwnershipDeleted($this->id, $userId));
         }
     }
 

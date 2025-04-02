@@ -15,6 +15,8 @@ use CultuurNet\UDB3\Ownership\Events\OwnershipRequested;
 
 class OwnershipTest extends AggregateRootScenarioTestCase
 {
+    private const USER_ID = 'auth0|63e22626e39a8ca1264bd29b';
+
     protected function getAggregateRootClass(): string
     {
         return Ownership::class;
@@ -63,10 +65,10 @@ class OwnershipTest extends AggregateRootScenarioTestCase
                 ),
             ])
             ->when(function (Ownership $ownership) {
-                $ownership->approve();
+                $ownership->approve(self::USER_ID);
             })
             ->then([
-                new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', self::USER_ID),
             ]);
     }
 
@@ -85,10 +87,10 @@ class OwnershipTest extends AggregateRootScenarioTestCase
                     'auth0|63e22626e39a8ca1264bd29b',
                     'google-oauth2|102486314601596809843'
                 ),
-                new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', self::USER_ID),
             ])
             ->when(function (Ownership $ownership) {
-                $ownership->approve();
+                $ownership->approve(self::USER_ID);
             })
             ->then([]);
     }
@@ -110,10 +112,10 @@ class OwnershipTest extends AggregateRootScenarioTestCase
                 ),
             ])
             ->when(function (Ownership $ownership) {
-                $ownership->reject();
+                $ownership->reject(self::USER_ID);
             })
             ->then([
-                new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', self::USER_ID),
             ]);
     }
 
@@ -132,10 +134,10 @@ class OwnershipTest extends AggregateRootScenarioTestCase
                     'auth0|63e22626e39a8ca1264bd29b',
                     'google-oauth2|102486314601596809843'
                 ),
-                new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', self::USER_ID),
             ])
             ->when(function (Ownership $ownership) {
-                $ownership->reject();
+                $ownership->reject(self::USER_ID);
             })
             ->then([]);
     }
@@ -150,10 +152,10 @@ class OwnershipTest extends AggregateRootScenarioTestCase
             ->withAggregateId('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
             ->given($givens)
             ->when(function (Ownership $ownership) {
-                $ownership->delete();
+                $ownership->delete(self::USER_ID);
             })
             ->then([
-                new OwnershipDeleted('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                new OwnershipDeleted('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', self::USER_ID),
             ]);
     }
 
@@ -176,13 +178,13 @@ class OwnershipTest extends AggregateRootScenarioTestCase
             'approved' => [
                 [
                     $ownershipRequested,
-                    new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new OwnershipApproved('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', self::USER_ID),
                 ],
             ],
             'rejected' => [
                 [
                     $ownershipRequested,
-                    new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', self::USER_ID),
                 ],
             ],
         ];
@@ -203,10 +205,10 @@ class OwnershipTest extends AggregateRootScenarioTestCase
                     'auth0|63e22626e39a8ca1264bd29b',
                     'google-oauth2|102486314601596809843'
                 ),
-                new OwnershipDeleted('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                new OwnershipDeleted('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', self::USER_ID),
             ])
             ->when(function (Ownership $ownership) {
-                $ownership->delete();
+                $ownership->delete(self::USER_ID);
             })
             ->then([]);
     }
