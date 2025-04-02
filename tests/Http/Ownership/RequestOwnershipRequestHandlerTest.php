@@ -580,7 +580,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/',
-                    'The required properties (itemId) are missing'
+                    'The data should match exactly one schema'
                 ),
             ),
             fn () => $this->requestOwnershipRequestHandler->handle($request)
@@ -603,7 +603,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/',
-                    'The required properties (itemType) are missing'
+                    'The data should match exactly one schema'
                 ),
             ),
             fn () => $this->requestOwnershipRequestHandler->handle($request)
@@ -626,7 +626,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/',
-                    'The required properties (ownerId) are missing'
+                    'The data should match exactly one schema'
                 ),
             ),
             fn () => $this->requestOwnershipRequestHandler->handle($request)
