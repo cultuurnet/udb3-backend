@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "590af3020309d79d586ac6dbcb82011a",
+    "content-hash": "81db03c4e7157cb73aeb1b9cb959c7c4",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5968,18 +5968,19 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-6582-fix-stoplight-ownerships",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "96e211580206525933d79a731a380b35481579fe"
+                "reference": "8165c648a58cc94b5afd66c119e44efdd72aecfa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/96e211580206525933d79a731a380b35481579fe",
-                "reference": "96e211580206525933d79a731a380b35481579fe",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/8165c648a58cc94b5afd66c119e44efdd72aecfa",
+                "reference": "8165c648a58cc94b5afd66c119e44efdd72aecfa",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5996,7 +5997,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6582-fix-stoplight-ownerships"
             },
-            "time": "2025-04-02T11:25:10+00:00"
+            "time": "2025-04-02T12:40:50+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
