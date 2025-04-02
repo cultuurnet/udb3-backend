@@ -101,11 +101,6 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
     {
         $uuid = new Uuid($command->getUuid());
 
-        if ($this->mailsSentRepository->isMailSent($uuid, get_class($command))) {
-            $this->logger->info(sprintf('[ownership-mail] Mail %s about %s was already sent', $uuid->toString(), get_class($command)));
-            return;
-        }
-
         try {
             $ownershipItem = $this->ownershipSearchRepository->getById($uuid->toString());
         } catch (OwnershipItemNotFound $e) {

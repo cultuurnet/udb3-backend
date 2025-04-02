@@ -85,12 +85,6 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
 
         $this->mailsSentRepository
             ->expects($this->once())
-            ->method('isMailSent')
-            ->with(new Uuid(self::OWNERSHIP_ITEM_ID), get_class($command))
-            ->willReturn(false);
-
-        $this->mailsSentRepository
-            ->expects($this->once())
             ->method('addMailSent')
             ->with(
                 new Uuid(self::OWNERSHIP_ITEM_ID),
@@ -202,41 +196,8 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
     }
 
     /** @test */
-    public function it_handles_mail_already_sent(): void
-    {
-        $id = self::OWNERSHIP_ITEM_ID;
-
-        $this->mailsSentRepository
-            ->expects($this->once())
-            ->method('isMailSent')
-            ->with(new Uuid(self::OWNERSHIP_ITEM_ID), SendOwnershipRequestedMail::class)
-            ->willReturn(true);
-
-        $this->mailsSentRepository
-            ->expects($this->never())
-            ->method('addMailSent');
-
-        $this->mailer
-            ->expects($this->never())
-            ->method('send');
-
-        $this->logger
-            ->expects($this->once())
-            ->method('info')
-            ->with(sprintf('[ownership-mail] Mail %s about %s was already sent', $id, SendOwnershipRequestedMail::class));
-
-        $this->commandHandler->handle(new SendOwnershipRequestedMail($id));
-    }
-
-    /** @test */
     public function it_fails_when_it_cannot_find_ownership_request(): void
     {
-        $this->mailsSentRepository
-            ->expects($this->once())
-            ->method('isMailSent')
-            ->with(new Uuid(self::OWNERSHIP_ITEM_ID), SendOwnershipRequestedMail::class)
-            ->willReturn(false);
-
         $this->ownershipSearchRepository
             ->expects($this->once())
             ->method('getById')
@@ -256,12 +217,6 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
     /** @test */
     public function it_fails_when_organiser_is_not_found(): void
     {
-        $this->mailsSentRepository
-            ->expects($this->once())
-            ->method('isMailSent')
-            ->with(new Uuid(self::OWNERSHIP_ITEM_ID), SendOwnershipRequestedMail::class)
-            ->willReturn(false);
-
         $ownershipItem = new OwnershipItem(
             self::OWNERSHIP_ITEM_ID,
             self::ORGANIZER_ID,
@@ -305,12 +260,6 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
         $id = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
         $ownerId = 'd6e21fa4-8d8d-4f23-b0cc-c63e34e43a01';
         $organizerId = 'd146a8cb-14c8-4364-9207-9d32d36f6959';
-
-        $this->mailsSentRepository
-            ->expects($this->once())
-            ->method('isMailSent')
-            ->with(new Uuid($id), SendOwnershipRequestedMail::class)
-            ->willReturn(false);
 
         $ownershipItem = new OwnershipItem(
             $id,
@@ -357,12 +306,6 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
         $subject = 'Beheers aanvraag voor organisatie Publiq VZW';
         $html = '<p>body</p>';
         $text = 'body';
-
-        $this->mailsSentRepository
-            ->expects($this->once())
-            ->method('isMailSent')
-            ->with(new Uuid($id), SendOwnershipRequestedMail::class)
-            ->willReturn(false);
 
         $this->mailsSentRepository
             ->expects($this->never())
