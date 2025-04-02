@@ -5972,12 +5972,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "a093123b650ca12b1b0c466d3eda8c7a9539aba1"
+                "reference": "a03d8a43d507779b7ac73e5e182fca5f181d234c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/a093123b650ca12b1b0c466d3eda8c7a9539aba1",
-                "reference": "a093123b650ca12b1b0c466d3eda8c7a9539aba1",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/a03d8a43d507779b7ac73e5e182fca5f181d234c",
+                "reference": "a03d8a43d507779b7ac73e5e182fca5f181d234c",
                 "shasum": ""
             },
             "type": "library",
@@ -5996,7 +5996,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6582-fix-stoplight-ownerships"
             },
-            "time": "2025-04-02T09:05:31+00:00"
+            "time": "2025-04-02T09:13:10+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
