@@ -9,6 +9,8 @@ use PHPUnit\Framework\TestCase;
 
 class DeleteOwnershipTest extends TestCase
 {
+    private const USER_ID = 'auth0|63e22626e39a8ca1264bd29b';
+
     private DeleteOwnership $deleteOwnership;
 
     protected function setUp(): void
@@ -16,7 +18,8 @@ class DeleteOwnershipTest extends TestCase
         parent::setUp();
 
         $this->deleteOwnership = new DeleteOwnership(
-            new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')
+            new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+            self::USER_ID
         );
     }
 
@@ -28,6 +31,15 @@ class DeleteOwnershipTest extends TestCase
         $this->assertEquals(
             new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
             $this->deleteOwnership->getId()
+        );
+    }
+
+    /** @test */
+    public function it_stores_a_user_id(): void
+    {
+        $this->assertEquals(
+            self::USER_ID,
+            $this->deleteOwnership->getUserId()
         );
     }
 }

@@ -8,13 +8,15 @@ use PHPUnit\Framework\TestCase;
 
 class OwnershipRejectedTest extends TestCase
 {
+    private const USER_ID = 'auth0|63e22626e39a8ca1264bd29b';
+
     private OwnershipRejected $ownershipRejected;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->ownershipRejected = new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e');
+        $this->ownershipRejected = new OwnershipRejected('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e', self::USER_ID);
     }
 
     /**
@@ -28,6 +30,15 @@ class OwnershipRejectedTest extends TestCase
         );
     }
 
+    /** @test */
+    public function it_stores_a_user_id(): void
+    {
+        $this->assertEquals(
+            self::USER_ID,
+            $this->ownershipRejected->getUserId()
+        );
+    }
+
     /**
      * @test
      */
@@ -36,6 +47,7 @@ class OwnershipRejectedTest extends TestCase
         $this->assertEquals(
             [
                 'ownershipId' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+                'userId' => self::USER_ID,
             ],
             $this->ownershipRejected->serialize()
         );
@@ -48,6 +60,7 @@ class OwnershipRejectedTest extends TestCase
     {
         $serialized = [
             'ownershipId' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            'userId' => self::USER_ID,
         ];
 
         $this->assertEquals($this->ownershipRejected, OwnershipRejected::deserialize($serialized));
