@@ -39,7 +39,7 @@ final class DeleteOwnershipRequestHandler implements RequestHandlerInterface
         $this->ownershipStatusGuard->isAllowedToDelete($ownershipId, $this->currentUser);
 
         $this->commandBus->dispatch(
-            new DeleteOwnership(new Uuid($ownershipId))
+            new DeleteOwnership(new Uuid($ownershipId), $this->currentUser->getId())
         );
 
         return new JsonResponse(

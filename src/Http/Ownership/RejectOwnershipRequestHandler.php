@@ -38,7 +38,7 @@ final class RejectOwnershipRequestHandler implements RequestHandlerInterface
 
         $this->ownershipStatusGuard->isAllowedToReject($ownershipId, $this->currentUser);
 
-        $this->commandBus->dispatch(new RejectOwnership(new Uuid($ownershipId)));
+        $this->commandBus->dispatch(new RejectOwnership(new Uuid($ownershipId), $this->currentUser->getId()));
 
         return new JsonResponse(
             [],

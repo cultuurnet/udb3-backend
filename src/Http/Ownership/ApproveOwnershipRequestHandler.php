@@ -39,7 +39,7 @@ final class ApproveOwnershipRequestHandler implements RequestHandlerInterface
         $this->ownershipStatusGuard->isAllowedToApprove($ownershipId, $this->currentUser);
 
         $this->commandBus->dispatch(
-            new ApproveOwnership(new Uuid($ownershipId))
+            new ApproveOwnership(new Uuid($ownershipId), $this->currentUser->getId())
         );
 
         return new JsonResponse(
