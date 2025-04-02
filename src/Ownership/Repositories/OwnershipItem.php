@@ -13,7 +13,10 @@ final class OwnershipItem
     private string $itemType;
     private string $ownerId;
     private string $state;
-    private ?Uuid $roleId;
+    private ?Uuid $roleId = null;
+    private ?string $approvedBy = null;
+    private ?string $rejectedBy = null;
+    private ?string $deletedBy = null;
 
     public function __construct(
         string $id,
@@ -27,7 +30,6 @@ final class OwnershipItem
         $this->itemType = $itemType;
         $this->ownerId = $ownerId;
         $this->state = $state;
-        $this->roleId = null;
     }
 
     public function withRoleId(Uuid $roleId): self
@@ -65,5 +67,41 @@ final class OwnershipItem
     public function getRoleId(): ?Uuid
     {
         return $this->roleId;
+    }
+
+    public function getApprovedBy(): ?string
+    {
+        return $this->approvedBy;
+    }
+
+    public function getRejectedBy(): ?string
+    {
+        return $this->rejectedBy;
+    }
+
+    public function getDeletedBy(): ?string
+    {
+        return $this->deletedBy;
+    }
+
+    public function withApprovedBy(string $userId): self
+    {
+        $ownershipItem = clone $this;
+        $ownershipItem->approvedBy = $userId;
+        return $ownershipItem;
+    }
+
+    public function withRejectedBy(string $userId): self
+    {
+        $ownershipItem = clone $this;
+        $ownershipItem->rejectedBy = $userId;
+        return $ownershipItem;
+    }
+
+    public function withDeletedBy(string $userId): self
+    {
+        $ownershipItem = clone $this;
+        $ownershipItem->deletedBy = $userId;
+        return $ownershipItem;
     }
 }

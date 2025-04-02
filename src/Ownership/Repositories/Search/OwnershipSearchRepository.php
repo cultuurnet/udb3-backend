@@ -15,7 +15,7 @@ interface OwnershipSearchRepository
 {
     public function save(OwnershipItem $ownershipSearchItem): void;
 
-    public function updateState(string $id, OwnershipState $state): void;
+    public function updateState(string $id, OwnershipState $state, string $actionBy): void;
 
     public function updateRoleId(string $id, ?Uuid $roleId): void;
 

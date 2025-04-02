@@ -45,13 +45,34 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         ]);
     }
 
-    public function updateState(string $id, OwnershipState $state): void
+    public function updateState(string $id, OwnershipState $state, string $actionBy): void
     {
+        $params = ['state' => $state->toString(), ];
+
+        $actionByField = $this->getActionByField($state);
+        if(!empty($actionByField)) {
+            $params[$actionByField] = $actionBy;
+        }
+
         $this->connection->update(
             'ownership_search',
-            ['state' => $state->toString()],
+            $params,
             ['id' => $id]
         );
+    }
+
+    private function getActionByField(OwnershipState $state): string
+    {
+        switch($state->toString()) {
+            case OwnershipState::approved()->toString():
+                return 'approved_by';
+            case OwnershipState::rejected()->toString():
+                return 'rejected_by';
+            case OwnershipState::deleted()->toString():
+                return 'deleted_by';
+        }
+
+        return '';
     }
 
     public function updateRoleId(string $id, ?Uuid $roleId): void
@@ -163,6 +184,15 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
 
         if ($ownershipSearchRow['role_id']) {
             $ownershipItem = $ownershipItem->withRoleId(new Uuid($ownershipSearchRow['role_id']));
+        }
+        if ($ownershipSearchRow['approved_by']) {
+            $ownershipItem = $ownershipItem->withApprovedBy($ownershipSearchRow['approved_by']);
+        }
+        if ($ownershipSearchRow['rejected_by']) {
+            $ownershipItem = $ownershipItem->withRejectedBy($ownershipSearchRow['rejected_by']);
+        }
+        if ($ownershipSearchRow['deleted_by']) {
+            $ownershipItem = $ownershipItem->withDeletedBy($ownershipSearchRow['deleted_by']);
         }
 
         return $ownershipItem;

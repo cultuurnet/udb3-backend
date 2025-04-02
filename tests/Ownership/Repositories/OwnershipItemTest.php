@@ -64,4 +64,28 @@ class OwnershipItemTest extends TestCase
             $this->ownershipItem->getState()
         );
     }
+
+    public function it_can_set_approved_by(): void
+    {
+        $this->assertEquals(
+            'auth0|63e22626e39a8ca1264bd29b',
+            $this->ownershipItem->withApprovedBy('auth0|63e22626e39a8ca1264bd29b')
+        );
+    }
+
+    public function it_can_set_denied_by(): void
+    {
+        $this->assertEquals(
+            'auth0|63e22626e39a8ca1264bd29b',
+            $this->ownershipItem->withRejectedBy('auth0|63e22626e39a8ca1264bd29b')
+        );
+    }
+
+    public function it_can_set_deleted_by(): void
+    {
+        $this->assertEquals(
+            'auth0|63e22626e39a8ca1264bd29b',
+            $this->ownershipItem->withDeletedBy('auth0|63e22626e39a8ca1264bd29b')
+        );
+    }
 }

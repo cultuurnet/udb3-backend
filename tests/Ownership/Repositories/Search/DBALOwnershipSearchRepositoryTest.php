@@ -18,6 +18,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
+    private const OWNER_USER_ID = 'auth0|a8ca1264bd29b63e22626e39';
     private DBALOwnershipSearchRepository $ownershipSearchRepository;
 
     protected function setUp(): void
@@ -54,18 +55,21 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
      */
     public function it_can_update_ownership_state(OwnershipState $ownershipState): void
     {
+        $userId = 'auth0|63e22626e39a8ca1264bd29b';
+
         $ownershipItem = new OwnershipItem(
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
             '9e68dafc-01d8-4c1c-9612-599c918b981d',
             'organizer',
-            'auth0|63e22626e39a8ca1264bd29b',
+            $userId,
             OwnershipState::requested()->toString()
         );
         $this->ownershipSearchRepository->save($ownershipItem);
 
         $this->ownershipSearchRepository->updateState(
             $ownershipItem->getId(),
-            $ownershipState
+            $ownershipState,
+            self::OWNER_USER_ID
         );
 
         $updatedOwnershipItem = new OwnershipItem(
@@ -75,6 +79,17 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
             $ownershipItem->getOwnerId(),
             $ownershipState->toString()
         );
+
+        switch($ownershipState->toString()) {
+            case OwnershipState::approved()->toString():
+                $updatedOwnershipItem = $updatedOwnershipItem->withApprovedBy(self::OWNER_USER_ID);
+                break;
+            case OwnershipState::rejected()->toString():
+                $updatedOwnershipItem = $updatedOwnershipItem->withRejectedBy(self::OWNER_USER_ID);
+                break;
+            case OwnershipState::deleted()->toString():
+                $updatedOwnershipItem = $updatedOwnershipItem->withDeletedBy(self::OWNER_USER_ID);
+        }
 
         $this->assertEquals(
             $updatedOwnershipItem,
