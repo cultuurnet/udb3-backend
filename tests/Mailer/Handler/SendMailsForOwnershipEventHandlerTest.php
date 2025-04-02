@@ -22,6 +22,7 @@ use Broadway\Serializer\Serializable;
 
 class SendMailsForOwnershipEventHandlerTest extends TestCase
 {
+    private const USER_ID = 'auth0|63e22626e39a8ca1264bd29b';
     private const DATE_TIME_VALUE = '2025-1-1T12:30:00+00:00';
 
     private SendMailsForOwnershipEventHandler $sendMailsForOwnership;
@@ -81,11 +82,11 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
                 new SendOwnershipRequestedMail($id),
             ],
             'OwnershipApproved' => [
-                new OwnershipApproved($id),
+                new OwnershipApproved($id, self::USER_ID),
                 new SendOwnershipAcceptedMail($id),
             ],
             'OwnershipRejected' => [
-                new OwnershipRejected($id),
+                new OwnershipRejected($id, self::USER_ID),
                 new SendOwnershipRejectedMail($id),
             ],
         ];
