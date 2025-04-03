@@ -31,6 +31,7 @@ use CultuurNet\UDB3\Geocoding\GeocodingServiceProvider;
 use CultuurNet\UDB3\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Keycloak\KeycloakServiceProvider;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Mailer\MailerServiceProvider;
 use CultuurNet\UDB3\Mailinglist\MailinglistServiceProvider;
 use CultuurNet\UDB3\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Media\MediaImportServiceProvider;
@@ -219,6 +220,8 @@ $container->addServiceProvider(new OwnershipRequestHandlerServiceProvider());
 
 /** Mailinglist */
 $container->addServiceProvider(new MailinglistServiceProvider());
+
+$container->addServiceProvider(new MailerServiceProvider());
 
 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);

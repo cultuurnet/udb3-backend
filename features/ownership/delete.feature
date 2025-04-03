@@ -7,7 +7,7 @@ Feature: Test deleting ownership
 
   Scenario: Deleting ownership of an organizer as admin
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I am authorized as JWT provider v2 user "dev_e2e_test"
+    And I am authorized as JWT provider v2 user "invoerder_ownerships"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     When I delete the ownership with ownershipId "%{ownershipId}"
@@ -22,7 +22,7 @@ Feature: Test deleting ownership
 
   Scenario: Deleting an approved ownership of an organizer as admin
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I am authorized as JWT provider v2 user "dev_e2e_test"
+    And I am authorized as JWT provider v2 user "invoerder_ownerships"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     And I approve the ownership with ownershipId "%{ownershipId}"
@@ -38,7 +38,7 @@ Feature: Test deleting ownership
 
   Scenario: Deleting a rejected ownership of an organizer as admin
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I am authorized as JWT provider v2 user "dev_e2e_test"
+    And I am authorized as JWT provider v2 user "invoerder_ownerships"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     And I reject the ownership with ownershipId "%{ownershipId}"
@@ -53,7 +53,7 @@ Feature: Test deleting ownership
     And the JSON response at "state" should be "deleted"
 
   Scenario: Deleting ownership of an organizer as creator
-    And I am authorized as JWT provider v2 user "dev_e2e_test"
+    And I am authorized as JWT provider v2 user "invoerder_ownerships"
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I delete the ownership with ownershipId "%{ownershipId}"
@@ -67,7 +67,7 @@ Feature: Test deleting ownership
     And the JSON response at "state" should be "deleted"
 
   Scenario: Deleting an approved ownership of an organizer as creator
-    And I am authorized as JWT provider v2 user "dev_e2e_test"
+    And I am authorized as JWT provider v2 user "invoerder_ownerships"
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I approve the ownership with ownershipId "%{ownershipId}"
@@ -82,7 +82,7 @@ Feature: Test deleting ownership
     And the JSON response at "state" should be "deleted"
 
   Scenario: Deleting a rejected ownership of an organizer as creator
-    And I am authorized as JWT provider v2 user "dev_e2e_test"
+    And I am authorized as JWT provider v2 user "invoerder_ownerships"
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I reject the ownership with ownershipId "%{ownershipId}"
@@ -111,7 +111,7 @@ Feature: Test deleting ownership
 
   Scenario: Deleting an organizer as non-authorized user
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I am authorized as JWT provider v2 user "dev_e2e_test"
+    And I am authorized as JWT provider v2 user "invoerder_ownerships"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I send a DELETE request to '/ownerships/%{ownershipId}'
     Then the response status should be 403

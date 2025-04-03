@@ -41,6 +41,11 @@ $ make ci
 
 Login to the management console on http://io.uitdatabank.local:15672/ with username `vagrant` and password `vagrant` 
 
+### Mailpit
+
+You can check send mails of UiTdatabank on http://mailpit.uitdatabank.local:8025/
+The API of Mailpit can be found on http://mailpit.uitdatabank.local:8025/api/v1/
+
 ### Acceptance tests
 
 To run the acceptance tests for the very first time you need to initialize test data. This required test data contains several fixed labels and roles which are used by various acceptance tests.

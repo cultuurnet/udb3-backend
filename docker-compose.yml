@@ -22,6 +22,8 @@ services:
         condition: service_healthy
       rabbitmq:
         condition: service_healthy
+      mailpit:
+        condition: service_healthy
 
   php-cli:
       container_name: php.uitdatabank
@@ -104,6 +106,32 @@ services:
       retries: 3
       timeout: 5s
 
+  mailpit:
+    image: axllent/mailpit:latest
+    hostname: 'mailpit'
+    container_name: mailpit.uitdatabank
+    restart: unless-stopped
+    volumes:
+      - 'udb3-mailpit:/data'
+    ports:
+      - 8025:8025
+      - 1025:1025
+    networks:
+      uitdatabank-backend:
+        aliases:
+          - mailpit.uitdatabank.local
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATABASE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:8025/api/v1/info"]
+      start_period: 5s
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
 networks:
   uitdatabank-backend:
     name: uitdatabank
@@ -113,4 +141,6 @@ volumes:
   udb3-redis:
     driver: local
   udb3-mysql:
+    driver: local
+  udb3-mailpit:
     driver: local

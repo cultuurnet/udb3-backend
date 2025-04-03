@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 
 interface OwnershipSearchRepository
 {
@@ -18,6 +19,7 @@ interface OwnershipSearchRepository
 
     public function updateRoleId(string $id, ?Uuid $roleId): void;
 
+    /** @throws OwnershipItemNotFound */
     public function getById(string $id): OwnershipItem;
 
     public function search(SearchQuery $searchQuery): OwnershipItemCollection;
