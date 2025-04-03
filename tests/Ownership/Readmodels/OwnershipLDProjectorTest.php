@@ -242,15 +242,15 @@ class OwnershipLDProjectorTest extends TestCase
 
         if ($state->sameAs(OwnershipState::approved())) {
             $jsonLD->{'approvedById'} = self::APPROVER_ID;
-            $jsonLD->{'approvedByEmail'} = 'approver@public.be';
+            $jsonLD->{'approvedByEmail'} = 'approver@publiq.be';
             $jsonLD->{'approvedDate'} = $recordedOn->toString();
         } elseif ($state->sameAs(OwnershipState::rejected())) {
             $jsonLD->{'rejectedById'} = self::REJECTER_ID;
-            $jsonLD->{'rejectedByEmail'} = 'rejecter@public.be';
+            $jsonLD->{'rejectedByEmail'} = 'rejecter@publiq.be';
             $jsonLD->{'rejectedDate'} = $recordedOn->toString();
         } elseif ($state->sameAs(OwnershipState::deleted())) {
             $jsonLD->{'deletedById'} = self::DELETER_ID;
-            $jsonLD->{'deletedByEmail'} = 'deleter@public.be';
+            $jsonLD->{'deletedByEmail'} = 'deleter@publiq.be';
             $jsonLD->{'deletedDate'} = $recordedOn->toString();
         }
 
