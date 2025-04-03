@@ -1,5 +1,5 @@
 services:
-  php:
+  php-base:
     build: docker/php
     volumes:
       - .:/var/www/html:cached
@@ -25,19 +25,17 @@ services:
       mailpit:
         condition: service_healthy
 
-  php-cli:
+  php:
       container_name: php.uitdatabank
       extends:
-          service: php
-      profiles:
-          - xdebug
+          service: php-base
       ports:
           - '8000:80'
 
   php-xdebug:
       container_name: php-xdebug.uitdatabank
       extends:
-          service: php
+          service: php-base
       profiles:
           - xdebug
       build:

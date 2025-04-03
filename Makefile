@@ -24,7 +24,7 @@ migrate:
 init: install migrate
 
 ci:
-	docker-compose exec php-cli composer ci
+	docker-compose exec php composer ci
 
 stan:
 	docker-compose exec php composer phpstan

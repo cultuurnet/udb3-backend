@@ -41,16 +41,17 @@ The first time you have to build both versions:
 ### Install without Xdebug
 
 ```
-docker-compose up
+docker-compose up -d
 ```
 
 ### Install profile with Xdebug
 
 ```
-docker-compose --profile xdebug up
+docker-compose --profile xdebug up -d
 ```
 
 You don't have to rebuild to switch, *you can just switch between versions in your docker engine*.
+Both version are running at the same time, the image without xdebug at port 8000 and the image with xdebug at port 8001.
 
 ### Using xdebug
 To bash inside the xdebug enable container, use 
@@ -60,8 +61,9 @@ make bash-xdebug
 
 Xdebug is configured to run with trigger mode, meaning you have to modify the request to enable xdebug: 
 
-- API: ADD XDEBUG_TRIGGER as a GET or POST variable
-- CLI (useful with unit tests):
+- *API*: ADD XDEBUG_TRIGGER as a GET or POST variable, for example in Postman.
+- *Browser*: install a [browser debugging extension](https://www.jetbrains.com/help/phpstorm/browser-debugging-extensions.html#xdebug-helper-extension)
+- *CLI*: (useful with unit tests):
 ```
 make bash-xdebug
 source ./start-xdebug.sh

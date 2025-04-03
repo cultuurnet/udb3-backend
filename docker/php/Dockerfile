@@ -36,11 +36,10 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-COPY xdebug-empty.ini /usr/local/etc/php/conf.d/xdebug-empty.ini
 
 RUN if [ "$ENABLE_XDEBUG" = "true" ] ; then \
       pecl install xdebug-3.1.5 && \
       docker-php-ext-enable xdebug ; \
   else \
-      cp /usr/local/etc/php/conf.d/xdebug-empty.ini /usr/local/etc/php/conf.d/xdebug.ini ; \
+      rm /usr/local/etc/php/conf.d/xdebug.ini ; \
   fi
