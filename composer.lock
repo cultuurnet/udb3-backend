@@ -5972,12 +5972,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "22fcea669207d8a572c72174259147913959358b"
+                "reference": "5199c700f6e465b241a4ea8797b39176dbffea60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/22fcea669207d8a572c72174259147913959358b",
-                "reference": "22fcea669207d8a572c72174259147913959358b",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/5199c700f6e465b241a4ea8797b39176dbffea60",
+                "reference": "5199c700f6e465b241a4ea8797b39176dbffea60",
                 "shasum": ""
             },
             "type": "library",
@@ -5996,7 +5996,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6581-add-groupprice"
             },
-            "time": "2025-04-02T11:41:45+00:00"
+            "time": "2025-04-03T07:58:21+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
