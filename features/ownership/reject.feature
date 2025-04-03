@@ -19,6 +19,7 @@ Feature: Test rejecting ownership
     And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "state" should be "rejected"
+    And the JSON response at "rejectedById" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
 
   Scenario: Rejecting ownership of an organizer as creator
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
@@ -33,6 +34,8 @@ Feature: Test rejecting ownership
     And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "state" should be "rejected"
+    And the JSON response at "rejectedById" should be "auth0|64089494e980aedd96740212"
+    And the JSON response at "rejectedByEmail" should be "dev+e2etest@publiq.be"
 
   Scenario: Rejecting a non-existing ownership
     When I send a POST request to '/ownerships/21a5c45b-78f8-4034-ab4d-5528847860b3/reject'
