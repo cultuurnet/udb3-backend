@@ -86,6 +86,14 @@ final class OwnershipLDProjector implements EventListener
         $body = $jsonDocument->getBody();
         $body->state = OwnershipState::approved()->toString();
 
+        $userId = $domainMessage->getMetadata()->get('user_id');
+        $approverDetails = $this->userIdentityResolver->getUserById($userId);
+        $body->approvedById = $userId;
+        $body->approvedByEmail = $approverDetails !== null ? $approverDetails->getEmailAddress() : null;
+
+        $recordedDateTime = RecordedOn::fromDomainMessage($domainMessage);
+        $body->approvedDate = $recordedDateTime->toString();
+
         return $jsonDocument->withBody($body);
     }
 
@@ -96,6 +104,14 @@ final class OwnershipLDProjector implements EventListener
         $body = $jsonDocument->getBody();
         $body->state = OwnershipState::rejected()->toString();
 
+        $userId = $domainMessage->getMetadata()->get('user_id');
+        $rejecterDetails = $this->userIdentityResolver->getUserById($userId);
+        $body->rejectedById = $userId;
+        $body->rejectedByEmail = $rejecterDetails !== null ? $rejecterDetails->getEmailAddress() : null;
+
+        $recordedDateTime = RecordedOn::fromDomainMessage($domainMessage);
+        $body->rejectedDate = $recordedDateTime->toString();
+
         return $jsonDocument->withBody($body);
     }
 
@@ -105,6 +121,14 @@ final class OwnershipLDProjector implements EventListener
 
         $body = $jsonDocument->getBody();
         $body->state = OwnershipState::deleted()->toString();
+
+        $userId = $domainMessage->getMetadata()->get('user_id');
+        $deleterDetails = $this->userIdentityResolver->getUserById($userId);
+        $body->deletedById = $userId;
+        $body->deletedByEmail = $deleterDetails !== null ? $deleterDetails->getEmailAddress() : null;
+
+        $recordedDateTime = RecordedOn::fromDomainMessage($domainMessage);
+        $body->deletedDate = $recordedDateTime->toString();
 
         return $jsonDocument->withBody($body);
     }
