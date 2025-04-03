@@ -47,13 +47,13 @@ class OwnershipLDProjectorTest extends TestCase
                         return new UserIdentityDetails($userId, 'google', 'info@google.be');
                     }
                     if ($userId === self::APPROVER_ID) {
-                        return new UserIdentityDetails($userId, 'koen', 'approver@public.be');
+                        return new UserIdentityDetails($userId, 'koen', 'approver@publiq.be');
                     }
                     if ($userId === self::REJECTER_ID) {
-                        return new UserIdentityDetails($userId, 'koen', 'rejecter@public.be');
+                        return new UserIdentityDetails($userId, 'koen', 'rejecter@publiq.be');
                     }
                     if ($userId === self::DELETER_ID) {
-                        return new UserIdentityDetails($userId, 'koen', 'deleter@public.be');
+                        return new UserIdentityDetails($userId, 'koen', 'deleter@publiq.be');
                     }
                     return null;
                 }
