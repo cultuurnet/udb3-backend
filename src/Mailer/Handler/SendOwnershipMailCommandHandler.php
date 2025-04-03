@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Mailer\Command\SendOwnershipRejectedMail;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
 use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Mailer;
-use CultuurNet\UDB3\Mailer\MailsSentRepository;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\RecipientStrategy;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -20,7 +19,6 @@ use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\User\UserIdentityDetails;
-use DateTimeImmutable;
 use Psr\Log\LoggerInterface;
 use Twig\Environment as TwigEnvironment;
 use Twig\Error\LoaderError;
@@ -39,7 +37,6 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
     private const TEMPLATE_OWNERSHIP_REJECTED = 'ownership/rejected';
 
     private Mailer $mailer;
-    private MailsSentRepository $mailsSentRepository;
     private TwigEnvironment $twig;
     private OwnershipSearchRepository $ownershipSearchRepository;
     private OwnershipMailParamExtractor $paramExtractor;
@@ -49,7 +46,6 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
 
     public function __construct(
         Mailer $mailer,
-        MailsSentRepository $mailsSentRepository,
         TwigEnvironment $twig,
         OwnershipSearchRepository $ownershipSearchRepository,
         OwnershipMailParamExtractor $paramExtractor,
@@ -58,7 +54,6 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
         LoggerInterface $logger
     ) {
         $this->mailer = $mailer;
-        $this->mailsSentRepository = $mailsSentRepository;
         $this->twig = $twig;
         $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->paramExtractor = $paramExtractor;
@@ -100,11 +95,6 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
     private function processCommand(AbstractSendOwnershipMail $command, string $rawSubject, string $template, RecipientStrategy $recipientStrategy): void
     {
         $uuid = new Uuid($command->getUuid());
-
-        if ($this->mailsSentRepository->isMailSent($uuid, get_class($command))) {
-            $this->logger->info(sprintf('[ownership-mail] Mail %s about %s was already sent', $uuid->toString(), get_class($command)));
-            return;
-        }
 
         try {
             $ownershipItem = $this->ownershipSearchRepository->getById($uuid->toString());
@@ -163,8 +153,6 @@ final class SendOwnershipMailCommandHandler implements CommandHandler
             $this->logger->error(sprintf('[ownership-mail] Mail "%s" failed to sent to %s', $subject, $to->toString()));
             return;
         }
-
-        $this->mailsSentRepository->addMailSent(new Uuid($ownershipItem->getId()), $to, get_class($command), new DateTimeImmutable());
 
         $this->logger->info(sprintf('[ownership-mail] Mail "%s" sent to %s', $subject, $to->toString()));
     }
