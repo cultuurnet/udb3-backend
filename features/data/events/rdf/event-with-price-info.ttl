@@ -43,7 +43,7 @@
   schema:currency "EUR" ;
   schema:value "59.99"^^schema:Number .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#priceSpecification-e9f05748>
+<http://data.uitdatabank.local:80/events/%{eventId}#priceSpecification-2daf745e>
   a schema:PriceSpecification ;
   schema:price <http://data.uitdatabank.local:80/events/%{eventId}#monetaryAmount-5b5b7793> ;
   skos:prefLabel "Reductie"@nl ;
