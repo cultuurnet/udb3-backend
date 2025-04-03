@@ -20,13 +20,14 @@ final class TariffDenormalizer implements DenormalizerInterface
             TranslatedTariffName::class
         );
 
-        return new Tariff(
+        $tariff = new Tariff(
             $tariffName,
-            MoneyFactory::create($data['price'],
+            MoneyFactory::create(
+                $data['price'],
                 new Currency($data['priceCurrency'])
-            ),
-            $data['groupPrice']
+            )
         );
+        return isset($data['groupPrice']) ? $tariff->withGroupPrice($data['groupPrice']) : $tariff;
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool
