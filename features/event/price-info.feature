@@ -493,3 +493,89 @@ Feature: Test event priceInfo property
       }
     ]
     """
+
+  Scenario: Update event with group price category
+    When I set the JSON request payload to:
+    """
+    [
+      {
+       "category": "base",
+       "name": {
+         "nl": "Basistarief",
+         "fr": "Tarif de base",
+         "en": "Base tariff",
+         "de": "Basisrate"
+       },
+       "price": 300,
+       "priceCurrency": "EUR",
+       "groupPrice": true
+      },
+      {
+       "category": "tariff",
+       "name": {
+         "nl": "Individuen",
+         "fr": "Individus",
+         "en": "Individuals",
+         "de": "Einzelpersonen"
+       },
+       "price": 20,
+       "priceCurrency": "EUR"
+      },
+      {
+       "category": "tariff",
+       "name": {
+         "nl": "Leraren",
+         "fr": "Enseignants",
+         "en": "Teachers",
+         "de": "Lehrer"
+       },
+       "price": 150,
+       "priceCurrency": "EUR",
+       "groupPrice": true
+      }
+    ]
+    """
+    And I send a PUT request to "%{eventUrl}/priceInfo"
+    Then the response status should be "204"
+    When I get the event at "%{eventUrl}"
+    And show me the unparsed response
+    Then the JSON response at "priceInfo" should be:
+    """
+    [
+      {
+       "category": "base",
+       "name": {
+         "nl": "Basistarief",
+         "fr": "Tarif de base",
+         "en": "Base tariff",
+         "de": "Basisrate"
+       },
+       "price": 300,
+       "priceCurrency": "EUR",
+       "groupPrice": true
+      },
+      {
+       "category": "tariff",
+       "name": {
+         "nl": "Individuen",
+         "fr": "Individus",
+         "en": "Individuals",
+         "de": "Einzelpersonen"
+       },
+       "price": 20,
+       "priceCurrency": "EUR"
+      },
+      {
+       "category": "tariff",
+       "name": {
+         "nl": "Leraren",
+         "fr": "Enseignants",
+         "en": "Teachers",
+         "de": "Lehrer"
+       },
+       "price": 150,
+       "priceCurrency": "EUR"
+       "groupPrice": true
+      }
+    ]
+    """
