@@ -18,6 +18,7 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\RecordedOn;
 use CultuurNet\UDB3\User\UserIdentityResolver;
+use stdClass;
 
 final class OwnershipLDProjector implements EventListener
 {
@@ -86,6 +87,8 @@ final class OwnershipLDProjector implements EventListener
         $body = $jsonDocument->getBody();
         $body->state = OwnershipState::approved()->toString();
 
+        $body = $this->addUserData($body, $domainMessage, 'approved');
+
         return $jsonDocument->withBody($body);
     }
 
@@ -96,6 +99,8 @@ final class OwnershipLDProjector implements EventListener
         $body = $jsonDocument->getBody();
         $body->state = OwnershipState::rejected()->toString();
 
+        $body = $this->addUserData($body, $domainMessage, 'rejected');
+
         return $jsonDocument->withBody($body);
     }
 
@@ -105,6 +110,8 @@ final class OwnershipLDProjector implements EventListener
 
         $body = $jsonDocument->getBody();
         $body->state = OwnershipState::deleted()->toString();
+
+        $body = $this->addUserData($body, $domainMessage, 'deleted');
 
         return $jsonDocument->withBody($body);
     }
@@ -117,5 +124,18 @@ final class OwnershipLDProjector implements EventListener
         $body->modified = $recordedDateTime->toString();
 
         return $jsonDocument->withBody($body);
+    }
+
+    private function addUserData(stdClass $body, DomainMessage $domainMessage, string $property): stdClass
+    {
+        $userId = $domainMessage->getMetadata()->get('user_id');
+        $details = $this->userIdentityResolver->getUserById($userId);
+        $body->{$property . 'ById'} = $userId;
+        $body->{$property . 'ByEmail'} = $details !== null ? $details->getEmailAddress() : null;
+
+        $recordedDateTime = RecordedOn::fromDomainMessage($domainMessage);
+        $body->{$property . 'Date'} = $recordedDateTime->toString();
+
+        return $body;
     }
 }

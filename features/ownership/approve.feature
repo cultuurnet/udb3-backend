@@ -19,6 +19,7 @@ Feature: Test approving ownership
     And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "state" should be "approved"
+    And the JSON response at "approvedById" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
 
   Scenario: Approving ownership of an organizer as creator
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
@@ -33,6 +34,8 @@ Feature: Test approving ownership
     And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "state" should be "approved"
+    And the JSON response at "approvedById" should be "auth0|64089494e980aedd96740212"
+    And the JSON response at "approvedByEmail" should be "dev+e2etest@publiq.be"
 
   Scenario: Approving a non-existing ownership
     When I send a POST request to '/ownerships/21a5c45b-78f8-4034-ab4d-5528847860b3/approve'
