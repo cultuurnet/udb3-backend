@@ -205,7 +205,7 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
                 'price' => 100,
                 'priceCurrency' => 'EUR',
                 'groupPrice' => true,
-            ]
+            ],
         ];
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('offerType', $offerType)
