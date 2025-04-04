@@ -40,6 +40,10 @@ final class ExtractOfferNameTest extends TestCase
                 ['invalidKey' => 'Invalid Value'],
                 '',
             ],
+            'name is a string' => [
+                ['name' => 'My name'],
+                'My name',
+            ],
         ];
     }
 }
