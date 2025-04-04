@@ -9,6 +9,9 @@ down:
 bash:
 	docker-compose exec php bash
 
+bash-xdebug:
+	docker-compose exec php-xdebug bash
+
 config:
 	sh ./docker/config.sh
 

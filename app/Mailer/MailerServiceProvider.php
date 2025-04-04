@@ -32,7 +32,6 @@ class MailerServiceProvider extends AbstractServiceProvider
             Mailer::class,
             SendOwnershipMailCommandHandler::class,
             SendMailsForOwnershipEventHandler::class,
-            MailsSentRepository::class,
         ];
     }
 
@@ -55,13 +54,6 @@ class MailerServiceProvider extends AbstractServiceProvider
             }
         );
 
-        $container->addShared(
-            MailsSentRepository::class,
-            function () use ($container): MailsSentRepository {
-                return new DBALMailsSentRepository($container->get('dbal_connection'));
-            }
-        );
-
         $logger = LoggerFactory::create($this->container, LoggerName::forResqueWorker('mails'));
 
         $container->addShared(
@@ -69,7 +61,6 @@ class MailerServiceProvider extends AbstractServiceProvider
             function () use ($logger): SendOwnershipMailCommandHandler {
                 return new SendOwnershipMailCommandHandler(
                     $this->container->get(Mailer::class),
-                    $this->container->get(MailsSentRepository::class),
                     new TwigEnvironment(
                         new FilesystemLoader(__DIR__ . '/../../src/Mailer/templates'),
                     ),
