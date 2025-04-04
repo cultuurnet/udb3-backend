@@ -71,4 +71,23 @@ class TariffTest extends TestCase
         $this->assertEquals($price, $tariff->getPrice());
         $this->assertEquals($updatedPrice, $updatedTariff->getPrice());
     }
+
+    /**
+     * @test
+     */
+    public function it_should_return_a_copy_with_a_group_price(): void
+    {
+        $name = new TranslatedTariffName(
+            new Language('nl'),
+            new TariffName('Leerlingen')
+        );
+        $price = new Money(1000, new Currency('EUR'));
+        $tariff = new Tariff($name, $price);
+
+        $updatedTariff = $tariff->withGroupPrice(true);
+
+        $this->assertNotEquals($tariff, $updatedTariff);
+        $this->assertFalse($tariff->isGroupPrice());
+        $this->assertTrue($updatedTariff->isGroupPrice());
+    }
 }

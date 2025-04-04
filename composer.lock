@@ -5972,12 +5972,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "8165c648a58cc94b5afd66c119e44efdd72aecfa"
+                "reference": "ae283a294a124c3d18f40fc37ffb72f35f4633c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/8165c648a58cc94b5afd66c119e44efdd72aecfa",
-                "reference": "8165c648a58cc94b5afd66c119e44efdd72aecfa",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/ae283a294a124c3d18f40fc37ffb72f35f4633c1",
+                "reference": "ae283a294a124c3d18f40fc37ffb72f35f4633c1",
                 "shasum": ""
             },
             "default-branch": true,
@@ -5995,9 +5995,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6582-fix-stoplight-ownerships"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6581-add-groupprice"
             },
-            "time": "2025-04-02T12:40:50+00:00"
+            "time": "2025-04-04T12:49:46+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
