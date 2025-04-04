@@ -683,13 +683,18 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $translatedTariffNameNormalizer = new TranslatedTariffNameNormalizer();
 
         foreach ($priceInfoUpdated->getPriceInfo()->getTariffs() as $tariff) {
-            $offerLd->priceInfo[] = [
+            $priceInfo = [
                 'category' => 'tariff',
                 'name' => $translatedTariffNameNormalizer->normalize($tariff->getName()),
                 'price' => $tariff->getPrice()->getAmount() / 100,
                 'priceCurrency' => $tariff->getPrice()->getCurrency()->getName(),
-                'groupPrice' => $tariff->isGroupPrice(),
             ];
+
+            if ($tariff->isGroupPrice()) {
+                $priceInfo['groupPrice'] = true;
+            }
+
+            $offerLd->priceInfo[] = $priceInfo;
         }
 
         foreach ($priceInfoUpdated->getPriceInfo()->getUiTPASTariffs() as $tariff) {
