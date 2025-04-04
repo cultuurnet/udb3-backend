@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f45fb070fe469b6b64f0277d1f8baa57",
+    "content-hash": "81db03c4e7157cb73aeb1b9cb959c7c4",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5968,18 +5968,19 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-6581-add-groupprice",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "5199c700f6e465b241a4ea8797b39176dbffea60"
+                "reference": "ae283a294a124c3d18f40fc37ffb72f35f4633c1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/5199c700f6e465b241a4ea8797b39176dbffea60",
-                "reference": "5199c700f6e465b241a4ea8797b39176dbffea60",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/ae283a294a124c3d18f40fc37ffb72f35f4633c1",
+                "reference": "ae283a294a124c3d18f40fc37ffb72f35f4633c1",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -5996,7 +5997,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6581-add-groupprice"
             },
-            "time": "2025-04-03T07:58:21+00:00"
+            "time": "2025-04-04T12:49:46+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
