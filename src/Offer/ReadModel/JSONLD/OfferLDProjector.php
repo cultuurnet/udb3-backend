@@ -672,6 +672,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             'name' => $this->basePriceTranslations,
             'price' => $basePrice->getPrice()->getAmount() / 100,
             'priceCurrency' => $basePrice->getPrice()->getCurrency()->getName(),
+            'groupPrice' => $basePrice->isGroupPrice()
         ];
 
         $translatedTariffNameNormalizer = new TranslatedTariffNameNormalizer();
@@ -682,6 +683,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 'name' => $translatedTariffNameNormalizer->normalize($tariff->getName()),
                 'price' => $tariff->getPrice()->getAmount() / 100,
                 'priceCurrency' => $tariff->getPrice()->getCurrency()->getName(),
+                'groupPrice' => $tariff->isGroupPrice()
             ];
         }
 
