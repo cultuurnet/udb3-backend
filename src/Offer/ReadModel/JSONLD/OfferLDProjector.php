@@ -667,13 +667,18 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $basePrice = $priceInfoUpdated->getPriceInfo()->getBasePrice();
 
-        $offerLd->priceInfo[] = [
+        $basePriceInfo = [
             'category' => 'base',
             'name' => $this->basePriceTranslations,
             'price' => $basePrice->getPrice()->getAmount() / 100,
             'priceCurrency' => $basePrice->getPrice()->getCurrency()->getName(),
-            'groupPrice' => $basePrice->isGroupPrice(),
         ];
+
+        if ($basePrice->isGroupPrice()) {
+            $basePriceInfo['groupPrice'] = true;
+        }
+
+        $offerLd->priceInfo[] = $basePriceInfo;
 
         $translatedTariffNameNormalizer = new TranslatedTariffNameNormalizer();
 
