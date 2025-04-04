@@ -103,10 +103,7 @@ class PriceInfo
                 $tariffName,
                 MoneyFactory::createFromCents($tariffData['price'], new Currency($tariffData['currency']))
             );
-            if (isset($tariffData['groupPrice'])) {
-                $tariff = $tariff->withGroupPrice($tariffData['groupPrice']);
-            }
-            return $tariff;
+            return isset($tariffData['groupPrice']) ? $tariff->withGroupPrice($tariffData['groupPrice']) : $tariff;
         };
 
         $tarrifs = [];
