@@ -809,14 +809,12 @@ class OfferLDProjectorTest extends TestCase
                     ],
                     'price' => 10.5,
                     'priceCurrency' => 'EUR',
-                    'groupPrice' => false,
                 ],
                 (object) [
                     'category' => 'tariff',
                     'name' => (object) ['nl' => 'Tarief inwoners'],
                     'price' => 9.50,
                     'priceCurrency' => 'EUR',
-                    'groupPrice' => false,
                 ],
                 (object) [
                     'category' => 'uitpas',
