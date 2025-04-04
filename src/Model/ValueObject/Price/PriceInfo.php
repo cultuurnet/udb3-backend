@@ -111,10 +111,15 @@ class PriceInfo
             $tarrifs[] = $denormalize($tariffData);
         }
 
+        $baseTariff = Tariff::createBasePrice(
+            MoneyFactory::createFromCents($data['base']['price'], new Currency($data['base']['currency']))
+        );
+        if (isset($data['base']['groupPrice'])) {
+            $baseTariff = $baseTariff->withGroupPrice($data['base']['groupPrice']);
+        }
+
         $priceInfo = new PriceInfo(
-            Tariff::createBasePrice(
-                MoneyFactory::createFromCents($data['base']['price'], new Currency($data['base']['currency']))
-            ),
+            $baseTariff,
             new Tariffs(...$tarrifs)
         );
 
