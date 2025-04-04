@@ -538,7 +538,6 @@ Feature: Test event priceInfo property
     And I send a PUT request to "%{eventUrl}/priceInfo"
     Then the response status should be "204"
     When I get the event at "%{eventUrl}"
-    And show me the unparsed response
     Then the JSON response at "priceInfo" should be:
     """
     [
@@ -563,7 +562,8 @@ Feature: Test event priceInfo property
          "de": "Einzelpersonen"
        },
        "price": 20,
-       "priceCurrency": "EUR"
+       "priceCurrency": "EUR",
+       "groupPrice": false
       },
       {
        "category": "tariff",
@@ -574,7 +574,7 @@ Feature: Test event priceInfo property
          "de": "Lehrer"
        },
        "price": 150,
-       "priceCurrency": "EUR"
+       "priceCurrency": "EUR",
        "groupPrice": true
       }
     ]
