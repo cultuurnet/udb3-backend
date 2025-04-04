@@ -562,8 +562,7 @@ Feature: Test event priceInfo property
          "de": "Einzelpersonen"
        },
        "price": 20,
-       "priceCurrency": "EUR",
-       "groupPrice": false
+       "priceCurrency": "EUR"
       },
       {
        "category": "tariff",

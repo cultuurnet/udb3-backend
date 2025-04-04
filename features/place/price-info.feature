@@ -475,8 +475,7 @@ Feature: Test place priceInfo property
          "de": "Lehrer"
        },
        "price": 150,
-       "priceCurrency": "EUR",
-       "groupPrice": false
+       "priceCurrency": "EUR"
       }
     ]
     """
