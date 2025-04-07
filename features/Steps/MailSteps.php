@@ -23,6 +23,14 @@ trait MailSteps
         );
     }
 
+    /**
+     * @When I delete all mails
+     */
+    public function iDeleteAllMails(): void
+    {
+        $this->getMailClient()->deleteAllMails();
+    }
+
     private function removeUuidFilePattern(string $value): string
     {
         $uuidFilePattern = '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(pdf|xlsx|json)/i';
