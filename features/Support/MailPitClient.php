@@ -40,4 +40,9 @@ final class MailPitClient implements MailClient
     {
         return $this->getEmailById('latest');
     }
+
+    public function deleteAllMails(): void
+    {
+        $this->client->delete('/api/v1/messages');
+    }
 }
