@@ -18,6 +18,7 @@ Feature: Test requesting ownership
     And the JSON response at "requesterId" should be "d759fd36-fb28-4fe3-8ec6-b4aaf990371d"
     And the JSON response at "requesterEmail" should be "dev+udbtestinvoerder@publiq.be"
     And the JSON response at "state" should be "requested"
+    And an "ownership-request" mail has been sent from "no-reply@uitdatabank.be" to "dev+udbtestinvoerder@publiq.be" with subject "Beheers aanvraag voor organisatie"
 
   Scenario: Requesting ownership of an organizer for yourself
     Given I am authorized as JWT provider v1 user "centraal_beheerder"
