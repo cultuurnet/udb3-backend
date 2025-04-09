@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Steps;
 
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertStringMatchesFormat;
 
 trait MailSteps
 {
@@ -16,10 +17,10 @@ trait MailSteps
         $mailobject = $this->getMailClient()->getLatestEmail();
         assertEquals($from, $mailobject->getFrom()->toString());
         assertEquals($to, $mailobject->getTo()->getByIndex(0)->toString());
-        assertEquals($subject, $mailobject->getSubject());
-        assertEquals(
-            $this->removeCarriageReturn($this->fixtures->loadMail($messageType)),
-            $this->removeCarriageReturn($this->removeUuidFilePattern($mailobject->getContent()))
+        assertStringMatchesFormat('%A' . $subject . '%A', $mailobject->getSubject());
+        assertStringMatchesFormat(
+            $this->fixtures->loadMail($messageType),
+            $mailobject->getContent()
         );
     }
 
@@ -29,18 +30,5 @@ trait MailSteps
     public function iDeleteAllMails(): void
     {
         $this->getMailClient()->deleteAllMails();
-    }
-
-    private function removeUuidFilePattern(string $value): string
-    {
-        $uuidFilePattern = '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(pdf|xlsx|json)/i';
-        return preg_replace($uuidFilePattern, '', $value);
-    }
-
-    // This is needed the handle some quirky differences
-    // between MacOS & Jenkins/Linux on the CI-pipeline.
-    private function removeCarriageReturn(string $value): string
-    {
-        return str_replace("\r\n", "\n", $value);
     }
 }
