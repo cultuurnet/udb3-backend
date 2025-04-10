@@ -114,7 +114,6 @@ Feature: Test searching ownerships
     And I request ownership for "d759fd36-fb28-4fe3-8ec6-b4aaf990371d" on the organizer with organizerId "%{organizerId2}" and save the "id" as "ownershipId3"
     When I am authorized as JWT provider v2 user "invoerder"
     When I send a GET request to '/ownerships/?itemId=%{organizerId2}'
-    And show me the unparsed response
     Then the response status should be 200
     And the JSON response at "itemsPerPage" should be 1
     And the JSON response at "totalItems" should be 1
