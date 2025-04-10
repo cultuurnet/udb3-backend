@@ -23,12 +23,4 @@ trait MailSteps
             $mailobject->getContent()
         );
     }
-
-    /**
-     * @When I delete all mails
-     */
-    public function iDeleteAllMails(): void
-    {
-        $this->getMailClient()->deleteAllMails();
-    }
 }
