@@ -23,4 +23,19 @@ trait MailSteps
             $mailobject->getContent()
         );
     }
+
+    /**
+     * @When I wait till there are :count mails in the mailbox
+     */
+    private function iWaitTillThereAreMailsInTheMailbox(int $count): void
+    {
+        $elapsedTime = 0;
+        do {
+            $messagesCount = $this->getMailClient()->getMailCount();
+            if ($messagesCount != $count) {
+                sleep(1);
+                $elapsedTime++;
+            }
+        } while ($this->responseState->getTotalItems() != 1 && $elapsedTime++ < 5);
+    }
 }
