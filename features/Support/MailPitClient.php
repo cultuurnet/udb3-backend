@@ -44,6 +44,7 @@ final class MailPitClient implements MailClient
     public function getMailCount(): int
     {
         $response = $this->client->get('/api/v1/messages');
-        return $response['messages_count'];
+        $body = Json::decodeAssociatively($response->getBody()->getContents());
+        return $body['messages_count'];
     }
 }
