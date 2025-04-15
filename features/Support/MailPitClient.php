@@ -40,4 +40,10 @@ final class MailPitClient implements MailClient
     {
         return $this->getEmailById('latest');
     }
+
+    public function getMailCount(): int
+    {
+        $response = $this->client->get('/api/v1/messages');
+        return $response['messages_count'];
+    }
 }
