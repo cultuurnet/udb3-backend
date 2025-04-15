@@ -165,7 +165,7 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             'OwnershipRequested' => [
                 new SendOwnershipRequestedMail(self::OWNERSHIP_ITEM_ID),
                 self::CREATOR_ID,
-                'Beheers aanvraag voor organisatie Publiq VZW',
+                'Beheeraanvraag voor organisatie Publiq VZW',
             ],
             'OwnershipApproved' => [
                 new SendOwnershipAcceptedMail(self::OWNERSHIP_ITEM_ID),
@@ -175,7 +175,7 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             'OwnershipRejected' => [
                 new SendOwnershipRejectedMail(self::OWNERSHIP_ITEM_ID),
                 self::REQUESTER_ID,
-                'Je beheersaanvraag voor organisatie Publiq VZW is geweigerd',
+                'Je beheeraanvraag voor organisatie Publiq VZW is geweigerd',
             ],
         ];
     }
@@ -288,7 +288,7 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
         $name = 'Grote smurf';
 
         $email = new EmailAddress('grotesmurf@publiq.be');
-        $subject = 'Beheers aanvraag voor organisatie Publiq VZW';
+        $subject = 'Beheeraanvraag voor organisatie Publiq VZW';
         $html = '<p>body</p>';
         $text = 'body';
 

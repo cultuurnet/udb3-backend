@@ -27,13 +27,13 @@ use Twig\Error\SyntaxError;
 
 final class SendOwnershipMailCommandHandler implements CommandHandler
 {
-    private const SUBJECT_OWNERSHIP_REQUESTED = 'Beheers aanvraag voor organisatie {{ organisationName }}';
+    private const SUBJECT_OWNERSHIP_REQUESTED = 'Beheeraanvraag voor organisatie {{ organisationName }}';
     private const TEMPLATE_OWNERSHIP_REQUESTED = 'ownership/requested';
 
     private const SUBJECT_OWNERSHIP_APPROVED = 'Je bent nu beheerder van organisatie {{ organisationName }}!';
     private const TEMPLATE_OWNERSHIP_APPROVED = 'ownership/approved';
 
-    private const SUBJECT_OWNERSHIP_REJECTED = 'Je beheersaanvraag voor organisatie {{ organisationName }} is geweigerd';
+    private const SUBJECT_OWNERSHIP_REJECTED = 'Je beheeraanvraag voor organisatie {{ organisationName }} is geweigerd';
     private const TEMPLATE_OWNERSHIP_REJECTED = 'ownership/rejected';
 
     private Mailer $mailer;
