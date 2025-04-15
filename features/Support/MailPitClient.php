@@ -41,6 +41,28 @@ final class MailPitClient implements MailClient
         return $this->getEmailById('latest');
     }
 
+    /**
+     * @return EmailMessage[]
+     */
+    public function searchMail(string $query): array
+    {
+        $response = $this->client->get(
+            '/api/v1/search',
+            [
+                'query' => [
+                    'query' => $query,
+                ],
+            ]
+        );
+        $messages = Json::decodeAssociatively($response->getBody()->getContents())['messages'];
+
+        $emailMessages = [];
+        foreach ($messages as $message) {
+            $emailMessages[]= EmailMessage::createFromMailPitData($message);
+        }
+        return $emailMessages;
+    }
+
     public function getMailCount(): int
     {
         $response = $this->client->get('/api/v1/messages');
