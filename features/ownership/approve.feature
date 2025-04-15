@@ -25,12 +25,14 @@ Feature: Test approving ownership
     And the JSON response at "approvedById" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
     And an "ownership-approved" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je bent nu beheerder van organisatie %A"
 
+  @mails
   Scenario: Approving ownership of an organizer as creator
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I wait till there are 1 mails in the mailbox
     When I approve the ownership with ownershipId "%{ownershipId}"
-    And I wait 4 seconds
+    And I wait till there are 2 mails in the mailbox
     And I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
     And the JSON response at "itemId" should be "%{organizerId}"
