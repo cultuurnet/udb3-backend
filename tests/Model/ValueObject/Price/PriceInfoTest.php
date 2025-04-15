@@ -73,4 +73,206 @@ class PriceInfoTest extends TestCase
         $this->assertEquals($tariffs, $priceInfo->getTariffs());
         $this->assertEquals($updatedTariffs, $updatedPriceInfo->getTariffs());
     }
+
+    /**
+     * @test
+     * @dataProvider priceInfos
+     */
+    public function it_can_serialize(PriceInfo $priceInfo, array $serializedPriceInfo): void
+    {
+        $this->assertEquals(
+            $serializedPriceInfo,
+            $priceInfo->serialize()
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider serializedPriceInfos
+     */
+    public function it_can_deserialize(array $serializedPriceInfo, PriceInfo $priceInfo): void
+    {
+        $this->assertEquals(
+            $priceInfo,
+            PriceInfo::deserialize($serializedPriceInfo)
+        );
+    }
+
+    public function priceInfos(): array
+    {
+        return [
+            'originalPriceInfo' => [
+                new PriceInfo(
+                    Tariff::createBasePrice(
+                        new Money(1000, new Currency('EUR'))
+                    ),
+                    new Tariffs(
+                        new Tariff(
+                            new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('Senioren')
+                            ),
+                            new Money(500, new Currency('EUR'))
+                        )
+                    )
+                ),
+                [
+                    'base' => [
+                        'price' => 1000,
+                        'currency' => 'EUR',
+                        'groupPrice' => false,
+                    ],
+                    'tariffs' => [
+                        0 => [
+                            'price' => 500,
+                            'currency' => 'EUR',
+                            'name' => [
+                                'nl' => 'Senioren',
+                            ],
+                            'groupPrice' => false,
+                        ],
+                    ],
+                    'uitpas_tariffs' => [],
+                ],
+            ],
+           'priceInfoWithGroupPrice' => [
+               new PriceInfo(
+                   (Tariff::createBasePrice(
+                       new Money(1000, new Currency('EUR'))
+                   ))->withGroupPrice(true),
+                   new Tariffs(
+                       new Tariff(
+                           new TranslatedTariffName(
+                               new Language('nl'),
+                               new TariffName('Senioren')
+                           ),
+                           new Money(500, new Currency('EUR'))
+                       ),
+                       (new Tariff(
+                           new TranslatedTariffName(
+                               new Language('nl'),
+                               new TariffName('Jongeren')
+                           ),
+                           new Money(750, new Currency('EUR'))
+                       ))->withGroupPrice(true)
+                   )
+               ),
+               [
+                   'base' => [
+                       'price' => 1000,
+                       'currency' => 'EUR',
+                       'groupPrice' => true,
+                   ],
+                   'tariffs' => [
+                       0 => [
+                           'price' => 500,
+                           'currency' => 'EUR',
+                           'name' => [
+                               'nl' => 'Senioren',
+                           ],
+                           'groupPrice' => false,
+                       ],
+                       1 => [
+                           'price' => 750,
+                           'currency' => 'EUR',
+                           'name' => [
+                               'nl' => 'Jongeren',
+                           ],
+                           'groupPrice' => true,
+                       ],
+                   ],
+                   'uitpas_tariffs' => [],
+               ],
+           ],
+        ];
+    }
+
+    public function serializedPriceInfos(): array
+    {
+        return [
+            'originalPriceInfo' => [
+                [
+                    'base' => [
+                        'price' => 1000,
+                        'currency' => 'EUR',
+                        'groupPrice' => false,
+                    ],
+                    'tariffs' => [
+                        0 => [
+                            'price' => 500,
+                            'currency' => 'EUR',
+                            'name' => [
+                                'nl' => 'Senioren',
+                            ],
+                            'groupPrice' => false,
+                        ],
+                    ],
+                    'uitpas_tariffs' => [],
+                ],
+                new PriceInfo(
+                    (Tariff::createBasePrice(
+                        new Money(1000, new Currency('EUR'))
+                    ))->withGroupPrice(false),
+                    new Tariffs(
+                        (new Tariff(
+                            new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('Senioren')
+                            ),
+                            new Money(500, new Currency('EUR'))
+                        ))->withGroupPrice(false)
+                    )
+                ),
+            ],
+            'priceInfoWithGroupPrice' => [
+                [
+                    'base' => [
+                        'price' => 1000,
+                        'currency' => 'EUR',
+                        'groupPrice' => true,
+                    ],
+                    'tariffs' => [
+                        0 => [
+                            'price' => 500,
+                            'currency' => 'EUR',
+                            'name' => [
+                                'nl' => 'Senioren',
+                            ],
+                            'groupPrice' => false,
+                        ],
+                        1 => [
+                            'price' => 750,
+                            'currency' => 'EUR',
+                            'name' => [
+                                'nl' => 'Jongeren',
+                            ],
+                            'groupPrice' => true,
+                        ],
+                    ],
+                    'uitpas_tariffs' => [],
+                ],
+                new PriceInfo(
+                    (Tariff::createBasePrice(
+                        new Money(1000, new Currency('EUR'))
+                    ))->withGroupPrice(true),
+                    new Tariffs(
+                        (new Tariff(
+                            new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('Senioren')
+                            ),
+                            new Money(500, new Currency('EUR'))
+                        ))->withGroupPrice(false),
+                        (new Tariff(
+                            new TranslatedTariffName(
+                                new Language('nl'),
+                                new TariffName('Jongeren')
+                            ),
+                            new Money(750, new Currency('EUR'))
+                        ))->withGroupPrice(true)
+                    )
+                ),
+            ],
+        ];
+    }
 }

@@ -66,6 +66,7 @@ class PriceInfo
             'base' => [
                 'price' => $this->basePrice->getPrice()->getAmount(),
                 'currency' => $this->basePrice->getPrice()->getCurrency()->getName(),
+                'groupPrice' => $this->basePrice->isGroupPrice(),
             ],
             'tariffs' => [],
             'uitpas_tariffs' => [],
@@ -75,6 +76,7 @@ class PriceInfo
             'price' => $tariff->getPrice()->getAmount(),
             'currency' => $tariff->getPrice()->getCurrency()->getName(),
             'name' => (new TranslatedTariffNameNormalizer())->normalize($tariff->getName()),
+            'groupPrice' => $tariff->isGroupPrice(),
         ];
 
         foreach ($this->tariffs as $tariff) {
@@ -97,10 +99,11 @@ class PriceInfo
                 TranslatedTariffName::class
             );
 
-            return new Tariff(
+            $tariff = new Tariff(
                 $tariffName,
                 MoneyFactory::createFromCents($tariffData['price'], new Currency($tariffData['currency']))
             );
+            return isset($tariffData['groupPrice']) ? $tariff->withGroupPrice($tariffData['groupPrice']) : $tariff;
         };
 
         $tarrifs = [];
@@ -108,10 +111,15 @@ class PriceInfo
             $tarrifs[] = $denormalize($tariffData);
         }
 
+        $baseTariff = Tariff::createBasePrice(
+            MoneyFactory::createFromCents($data['base']['price'], new Currency($data['base']['currency']))
+        );
+        if (isset($data['base']['groupPrice'])) {
+            $baseTariff = $baseTariff->withGroupPrice($data['base']['groupPrice']);
+        }
+
         $priceInfo = new PriceInfo(
-            Tariff::createBasePrice(
-                MoneyFactory::createFromCents($data['base']['price'], new Currency($data['base']['currency']))
-            ),
+            $baseTariff,
             new Tariffs(...$tarrifs)
         );
 

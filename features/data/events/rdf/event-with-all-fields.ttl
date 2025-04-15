@@ -28,7 +28,7 @@
   schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-f20d8319>, <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-35306b47>, <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-2a082adb> ;
   cpa:boeking <http://data.uitdatabank.local:80/events/%{eventId}#boekingsinfo-1cb41cc5> ;
   dcat:keyword "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen ;
-  cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#priceSpecification-594fd7be> ;
+  cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#priceSpecification-1603670f> ;
   schema:video <http://data.uitdatabank.local:80/events/%{eventId}#videoObject-8c7c2146> ;
   schema:image <http://data.uitdatabank.local:80/events/%{eventId}#imageObject-%{imageHash}> .
 
@@ -84,7 +84,7 @@
   schema:telephone "string" ;
   schema:email "info@example.com" .
 
-<http://data.uitdatabank.local:80/events/%{eventId}#priceSpecification-594fd7be>
+<http://data.uitdatabank.local:80/events/%{eventId}#priceSpecification-1603670f>
   a schema:PriceSpecification ;
   schema:price <http://data.uitdatabank.local:80/events/%{eventId}#monetaryAmount-3b58504c> ;
   skos:prefLabel "Basistarief"@nl, "Tarif de base"@fr, "Base tariff"@en, "Basisrate"@de ;

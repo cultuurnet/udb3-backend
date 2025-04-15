@@ -177,6 +177,84 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
      * @test
      * @dataProvider offerTypeDataProvider
      */
+    public function it_supports_group_prices(string $offerType): void
+    {
+        $body = [
+            [
+                'category' => 'base',
+                'name' => [
+                    'nl' => 'Basistarief',
+                ],
+                'price' => 250,
+                'priceCurrency' => 'EUR',
+                'groupPrice' => true,
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Individuen',
+                ],
+                'price' => 15,
+                'priceCurrency' => 'EUR',
+            ],
+            [
+                'category' => 'tariff',
+                'name' => [
+                    'nl' => 'Leraren',
+                ],
+                'price' => 100,
+                'priceCurrency' => 'EUR',
+                'groupPrice' => true,
+            ],
+        ];
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', 'a91bc028-c44a-4429-9784-8641c9858eed')
+            ->withJsonBodyFromArray($body)
+            ->build('PUT');
+
+        $priceInfo = new PriceInfo(
+            (new Tariff(
+                new TranslatedTariffName(
+                    new Language('nl'),
+                    new TariffName('Basistarief')
+                ),
+                new Money(25000, new Currency('EUR'))
+            ))->withGroupPrice(true),
+            new Tariffs(
+                new Tariff(
+                    new TranslatedTariffName(
+                        new Language('nl'),
+                        new TariffName('Individuen')
+                    ),
+                    new Money(1500, new Currency('EUR'))
+                ),
+                (new Tariff(
+                    new TranslatedTariffName(
+                        new Language('nl'),
+                        new TariffName('Leraren')
+                    ),
+                    new Money(10000, new Currency('EUR'))
+                ))->withGroupPrice(true),
+            )
+        );
+
+        $expected = new UpdatePriceInfo(
+            'a91bc028-c44a-4429-9784-8641c9858eed',
+            $priceInfo
+        );
+
+        $this->commandBus->expects($this->once())
+            ->method('dispatch')
+            ->with($expected);
+
+        $this->updatePriceInfoRequestHandler->handle($request);
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeDataProvider
+     */
     public function it_throws_an_api_problem_if_the_price_info_contains_duplicate_names(string $offerType): void
     {
         $body = [
