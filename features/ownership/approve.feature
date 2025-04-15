@@ -5,13 +5,14 @@ Feature: Test approving ownership
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     And I send and accept "application/json"
 
+  @mails
   Scenario: Approving ownership of an organizer as admin
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     When I approve the ownership with ownershipId "%{ownershipId}"
-    And I wait 4 seconds
+    And I wait till there are 2 mails in the mailbox
     And I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
     And the JSON response at "itemId" should be "%{organizerId}"
