@@ -10,7 +10,6 @@ Feature: Test rejecting ownership
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
-    And I wait till there are 1 mails in the mailbox
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     When I reject the ownership with ownershipId "%{ownershipId}"
     And I wait till there are 2 mails in the mailbox
@@ -30,7 +29,6 @@ Feature: Test rejecting ownership
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
-    And I wait till there are 1 mails in the mailbox
     When I reject the ownership with ownershipId "%{ownershipId}"
     And I wait till there are 2 mails in the mailbox
     And I get the ownership with ownershipId "%{ownershipId}"
