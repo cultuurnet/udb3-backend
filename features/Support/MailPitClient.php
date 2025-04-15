@@ -47,4 +47,9 @@ final class MailPitClient implements MailClient
         $body = Json::decodeAssociatively($response->getBody()->getContents());
         return $body['messages_count'];
     }
+
+    public function deleteAllMails(): void
+    {
+        $this->client->delete('/api/v1/messages');
+    }
 }

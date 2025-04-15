@@ -9,4 +9,6 @@ interface MailClient
     public function getLatestEmail(): EmailMessage;
 
     public function getMailCount(): int;
+
+    public function deleteAllMails(): void;
 }
