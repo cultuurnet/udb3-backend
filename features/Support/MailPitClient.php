@@ -46,7 +46,6 @@ final class MailPitClient implements MailClient
      */
     public function searchMails(string $query): array
     {
-        echo $query;
         $response = $this->client->get(
             '/api/v1/search',
             [
