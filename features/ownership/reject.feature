@@ -9,6 +9,7 @@ Feature: Test rejecting ownership
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I wait 3 seconds
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     When I reject the ownership with ownershipId "%{ownershipId}"
     And I get the ownership with ownershipId "%{ownershipId}"
@@ -26,6 +27,7 @@ Feature: Test rejecting ownership
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I wait 3 seconds
     When I reject the ownership with ownershipId "%{ownershipId}"
     And I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"

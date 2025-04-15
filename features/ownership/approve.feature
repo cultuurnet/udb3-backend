@@ -9,6 +9,7 @@ Feature: Test approving ownership
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I wait 3 seconds
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     When I approve the ownership with ownershipId "%{ownershipId}"
     And I get the ownership with ownershipId "%{ownershipId}"
@@ -20,11 +21,13 @@ Feature: Test approving ownership
     And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "state" should be "approved"
     And the JSON response at "approvedById" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
+    And an "ownership-approved" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je bent nu beheerder van organisatie %A"
 
   Scenario: Approving ownership of an organizer as creator
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I wait 3 seconds
     When I approve the ownership with ownershipId "%{ownershipId}"
     And I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
@@ -36,6 +39,7 @@ Feature: Test approving ownership
     And the JSON response at "state" should be "approved"
     And the JSON response at "approvedById" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "approvedByEmail" should be "dev+e2etest@publiq.be"
+    And an "ownership-approved" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je bent nu beheerder van organisatie %A"
 
   Scenario: Approving a non-existing ownership
     When I send a POST request to '/ownerships/21a5c45b-78f8-4034-ab4d-5528847860b3/approve'

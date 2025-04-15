@@ -14,7 +14,6 @@ trait MailSteps
      */
     public function aMailHasBeenSentFromToWith(string $messageType, string $from, string $to, string $subject): void
     {
-        sleep(1);
         $mailobject = $this->getMailClient()->getLatestEmail();
         assertEquals($from, $mailobject->getFrom()->toString());
         assertEquals($to, $mailobject->getTo()->getByIndex(0)->toString());
