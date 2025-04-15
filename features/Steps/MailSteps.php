@@ -27,7 +27,7 @@ trait MailSteps
     /**
      * @When I wait till there are :count mails in the mailbox
      */
-    private function iWaitTillThereAreMailsInTheMailbox(int $count): void
+    public function iWaitTillThereAreMailsInTheMailbox(int $count): void
     {
         $elapsedTime = 0;
         do {
