@@ -44,8 +44,9 @@ final class MailPitClient implements MailClient
     /**
      * @return EmailMessage[]
      */
-    public function searchMail(string $query): array
+    public function searchMails(string $query): array
     {
+        echo $query;
         $response = $this->client->get(
             '/api/v1/search',
             [
@@ -58,7 +59,7 @@ final class MailPitClient implements MailClient
 
         $emailMessages = [];
         foreach ($messages as $message) {
-            $emailMessages[]= EmailMessage::createFromMailPitData($message);
+            $emailMessages[] = $this->getEmailById($message['ID']);
         }
         return $emailMessages;
     }

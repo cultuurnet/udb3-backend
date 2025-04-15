@@ -11,7 +11,7 @@ interface MailClient
     /**
      * @return EmailMessage[]
      */
-    public function searchMail(string $query): array;
+    public function searchMails(string $query): array;
 
     public function getMailCount(): int;
 
