@@ -123,7 +123,7 @@ final class UpdateMunicipalName extends AbstractCommand
                     ),
                     new Language('nl')
                 );
-                $output->writeln('Dispatching UpdateLocation for place with id ' . $command->getItemId());
+                $output->writeln('Dispatching UpdateAddress for place with id ' . $command->getItemId());
 
                 if (!$input->getOption(self::DRY_RUN)) {
                     $this->commandBus->dispatch($command);
