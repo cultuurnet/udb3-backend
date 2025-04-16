@@ -25,11 +25,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-final class UpdateLocalityName extends AbstractCommand
+final class UpdateLocality extends AbstractCommand
 {
     private const QUERY = 'query';
 
-    private const NEW_LOCALITY_NAME = 'new-locality-name';
+    private const NEW_LOCALITY = 'new-locality';
 
     private const DRY_RUN = 'dry-run';
 
@@ -54,17 +54,17 @@ final class UpdateLocalityName extends AbstractCommand
     public function configure(): void
     {
         $this
-            ->setName('place:update-locality-name')
-            ->setDescription('Update the locality name of the places found by the sapi3 query')
+            ->setName('place:update-locality')
+            ->setDescription('Update the locality of the places found by the sapi3 query')
             ->addArgument(
                 self::QUERY,
                 null,
                 'SAPI3 query for which places to update.'
             )
             ->addArgument(
-                self::NEW_LOCALITY_NAME,
+                self::NEW_LOCALITY,
                 null,
-                'The new name of the locality in Dutch.'
+                'The new locality in Dutch.'
             )
             ->addOption(
                 self::DRY_RUN,
@@ -77,10 +77,10 @@ final class UpdateLocalityName extends AbstractCommand
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
         $query = $input->getArgument(self::QUERY);
-        $newLocalityName = $input->getArgument(self::NEW_LOCALITY_NAME);
+        $newLocality = $input->getArgument(self::NEW_LOCALITY);
 
-        if ($query === null || $newLocalityName === null) {
-            $output->writeln('<error>Missing argument, the correct syntax is: place:update-locality-name "sapi3_query" "new_locality_name"</error>');
+        if ($query === null || $newLocality === null) {
+            $output->writeln('<error>Missing argument, the correct syntax is: place:update-locality "sapi3_query" "new_locality"</error>');
             return self::FAILURE;
         }
 
@@ -118,7 +118,7 @@ final class UpdateLocalityName extends AbstractCommand
                     new Address(
                         new Street($jsonLd['address']['nl']['streetAddress']),
                         new PostalCode($jsonLd['address']['nl']['postalCode']),
-                        new Locality($newLocalityName),
+                        new Locality($newLocality),
                         new CountryCode($jsonLd['address']['nl']['addressCountry'])
                     ),
                     new Language('nl')
@@ -147,7 +147,7 @@ final class UpdateLocalityName extends AbstractCommand
                 $input,
                 $output,
                 new ConfirmationQuestion(
-                    sprintf('This action will update the locality name of %d places, continue? [y/N] ', $count),
+                    sprintf('This action will update the locality of %d places, continue? [y/N] ', $count),
                     true
                 )
             );
