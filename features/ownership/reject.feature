@@ -41,7 +41,7 @@ Feature: Test rejecting ownership
     And the JSON response at "rejectedById" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "rejectedByEmail" should be "dev+e2etest@publiq.be"
     And I wait till there are 2 mails in the mailbox
-    And an "ownership-rejected" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je beheeraanvraag voor organisatie %A is geweigerd"
+    And an "ownership-rejected" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je beheeraanvraag voor organisatie %{name} is geweigerd"
 
   Scenario: Rejecting a non-existing ownership
     When I send a POST request to '/ownerships/21a5c45b-78f8-4034-ab4d-5528847860b3/reject'
