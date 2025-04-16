@@ -67,7 +67,7 @@ Feature: Test requesting ownership
     And the JSON response at "requesterId" should be "d759fd36-fb28-4fe3-8ec6-b4aaf990371d"
     And the JSON response at "state" should be "requested"
     And I wait till there are 1 mails in the mailbox
-    And an "ownership-request" mail has been sent from "no-reply@uitdatabank.be" to "dev+udbtestinvoerder@publiq.be" with subject "Beheeraanvraag voor organisatie"
+    And an "ownership-request" mail has been sent from "no-reply@uitdatabank.be" to "dev+udbtestinvoerder@publiq.be" with subject "Beheeraanvraag voor organisatie %{name}"
     
   Scenario: Requesting the same ownership of an organizer is not allowed
     Given I create a minimal organizer and save the "id" as "organizerId"

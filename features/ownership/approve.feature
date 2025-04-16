@@ -41,7 +41,7 @@ Feature: Test approving ownership
     And the JSON response at "approvedById" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "approvedByEmail" should be "dev+e2etest@publiq.be"
     And I wait till there are 2 mails in the mailbox
-    And an "ownership-approved" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je bent nu beheerder van organisatie %{name}"
+    And an "ownership-approved" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je bent nu beheerder van organisatie %{name}!"
 
   Scenario: Approving a non-existing ownership
     When I send a POST request to '/ownerships/21a5c45b-78f8-4034-ab4d-5528847860b3/approve'
