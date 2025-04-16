@@ -434,10 +434,11 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            'place:place:update-municipal-name',
+            'console.place:update-municipal-name',
             fn () => new UpdateMunicipalName(
                 $container->get('event_command_bus'),
-                $container->get(PlacesSapi3SearchService::class)
+                $container->get(PlacesSapi3SearchService::class),
+                $container->get('place_jsonld_repository')
             )
         );
 
