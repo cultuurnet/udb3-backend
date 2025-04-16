@@ -28,6 +28,6 @@ final class Fixtures
 
     public function loadMail(string $mailType): string
     {
-        return file_get_contents(__DIR__ . '/../data/mails/' . $mailType . '.html');
+        return file_get_contents(__DIR__ . '/../data/mails/' . $mailType . '.txt');
     }
 }

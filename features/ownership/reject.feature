@@ -11,6 +11,7 @@ Feature: Test rejecting ownership
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I am authorized as JWT provider v1 user "centraal_beheerder"
     When I reject the ownership with ownershipId "%{ownershipId}"
+    And I wait 4 seconds
     And I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
     And the JSON response at "itemId" should be "%{organizerId}"
@@ -20,12 +21,14 @@ Feature: Test rejecting ownership
     And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "state" should be "rejected"
     And the JSON response at "rejectedById" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
+    And an "ownership-rejected" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je beheeraanvraag voor organisatie %A is geweigerd"
 
   Scenario: Rejecting ownership of an organizer as creator
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I reject the ownership with ownershipId "%{ownershipId}"
+    And I wait 4 seconds
     And I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
     And the JSON response at "itemId" should be "%{organizerId}"
@@ -36,6 +39,7 @@ Feature: Test rejecting ownership
     And the JSON response at "state" should be "rejected"
     And the JSON response at "rejectedById" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "rejectedByEmail" should be "dev+e2etest@publiq.be"
+    And an "ownership-rejected" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je beheeraanvraag voor organisatie %A is geweigerd"
 
   Scenario: Rejecting a non-existing ownership
     When I send a POST request to '/ownerships/21a5c45b-78f8-4034-ab4d-5528847860b3/reject'

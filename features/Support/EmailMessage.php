@@ -74,7 +74,7 @@ final class EmailMessage
             new EmailAddress($data['From']['Address']),
             EmailAddresses::fromArray(array_map(fn ($contact) => new EmailAddress($contact['Address']), $data['To'])),
             $data['Subject'],
-            $data['HTML'],
+            $data['Text'],
             $data['Attachments']
         );
     }
