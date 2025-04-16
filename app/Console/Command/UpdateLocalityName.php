@@ -55,7 +55,7 @@ final class UpdateLocalityName extends AbstractCommand
     {
         $this
             ->setName('place:update-locality-name')
-            ->setDescription('Update the location of all events from the given SAPI3 query to the given new location')
+            ->setDescription('Update the locality name of the places found by the sapi3 query')
             ->addArgument(
                 self::QUERY,
                 null,
