@@ -39,6 +39,6 @@ trait MailSteps
                 sleep(1);
                 $elapsedTime++;
             }
-        } while ($this->responseState->getTotalItems() != 1 && $elapsedTime++ < 5);
+        } while ($messagesCount != $count && $elapsedTime++ < 5);
     }
 }
