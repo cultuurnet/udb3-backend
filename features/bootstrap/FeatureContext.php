@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Behat\Behat\Hook\Scope\BeforeFeatureScope;
+use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\State\ResponseState;
@@ -125,6 +126,14 @@ final class FeatureContext implements Context
     public static function afterFeatureDuplicate(AfterFeatureScope $scope): void
     {
         self::disablePreventDuplicatePlaceCreation();
+    }
+
+    /**
+     * @BeforeScenario @mails
+     */
+    public function beforeScenarioMails(BeforeScenarioScope $scope): void
+    {
+        $this->getMailClient()->deleteAllMails();
     }
 
     /**

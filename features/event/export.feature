@@ -15,6 +15,7 @@ Feature: Test the UDB3 events export API
     And the response body should be valid JSON
     And I keep the value of the JSON response at "eventId" as "uuid_testevent_export"
 
+  @mails
   Scenario: Export events to OOXML - basic
     Given I store the count of the "xlsx" files in the "downloads" folder
     And I set the JSON request payload from "exports/event-export-ooxml-basic.json"
@@ -25,6 +26,7 @@ Feature: Test the UDB3 events export API
     And I check if one "xlsx" file has been created in the "downloads" folder
     And an "export" mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with subject "Uw export van evenementen"
 
+  @mails
   Scenario: Export events to OOXML - full
     Given I store the count of the "xlsx" files in the "downloads" folder
     And I set the JSON request payload from "exports/event-export-ooxml-full.json"
@@ -35,6 +37,7 @@ Feature: Test the UDB3 events export API
     And I check if one "xlsx" file has been created in the "downloads" folder
     And an "export" mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with subject "Uw export van evenementen"
 
+  @mails
   Scenario: Export events to PDF - tipsrapport
     Given I store the count of the "pdf" files in the "downloads" folder
     And I set the JSON request payload from "exports/event-export-pdf-tips.json"
@@ -45,6 +48,7 @@ Feature: Test the UDB3 events export API
     And I check if one "pdf" file has been created in the "downloads" folder
     And an "export" mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with subject "Uw export van evenementen"
 
+  @mails
   Scenario: Export events to PDF - mapview
     Given I store the count of the "pdf" files in the "downloads" folder
     And I set the JSON request payload from "exports/event-export-pdf-map.json"
@@ -55,6 +59,7 @@ Feature: Test the UDB3 events export API
     And I check if one "pdf" file has been created in the "downloads" folder
     And an "export" mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with subject "Uw export van evenementen"
 
+  @mails
   Scenario: Export events to JSON - basic
     Given I store the count of the "json" files in the "downloads" folder
     And I set the JSON request payload from "exports/event-export-json-basic.json"
@@ -65,6 +70,7 @@ Feature: Test the UDB3 events export API
     And I check if one "json" file has been created in the "downloads" folder
     And an "export" mail has been sent from "no-reply@uitdatabank.be" to "export@publiq.be" with subject "Uw export van evenementen"
 
+  @mails
   Scenario: Export events to JSON - full
     Given I store the count of the "json" files in the "downloads" folder
     And I set the JSON request payload from "exports/event-export-json-full.json"
