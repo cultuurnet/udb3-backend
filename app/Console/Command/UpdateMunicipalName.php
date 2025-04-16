@@ -9,13 +9,15 @@ use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\ResultsGeneratorInterface;
 use CultuurNet\UDB3\Search\SearchServiceInterface;
 use CultuurNet\UDB3\Search\Sorting;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 final class UpdateMunicipalName extends AbstractCommand
 {
     private const QUERY = 'query';
 
-    private const OLD_MUNICIPAL_NAME = 'old-place-name';
+    private const NEW_MUNICIPAL_NAME = 'new-municipal-name';
 
     private const DRY_RUN = 'dry-run';
 
@@ -44,9 +46,9 @@ final class UpdateMunicipalName extends AbstractCommand
                 'SAPI3 query for which places to update.'
             )
             ->addArgument(
-                self::OLD_MUNICIPAL_NAME,
+                self::NEW_MUNICIPAL_NAME,
                 null,
-                'The current name of the municipality in Dutch.'
+                'The new name of the municipality in Dutch.'
             )
             ->addOption(
                 self::DRY_RUN,
@@ -54,5 +56,19 @@ final class UpdateMunicipalName extends AbstractCommand
                 InputOption::VALUE_NONE,
                 'Execute the script as a dry run.'
             );
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    {
+        $query = $input->getArgument(self::QUERY);
+        $newMunicipalName = $input->getArgument(self::NEW_MUNICIPAL_NAME);
+
+        if ($query === null || $newMunicipalName === null) {
+            $output->writeln('<error>Missing argument, the correct syntax is: place:update-municipal-name "sapi3_query" "new_municipal_name"</error>');
+            return self::FAILURE;
+        }
+
+
+        return self::SUCCESS;
     }
 }
