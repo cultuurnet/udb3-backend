@@ -15,16 +15,19 @@ trait MailSteps
      */
     public function aMailHasBeenSentFromToWith(string $messageType, string $from, string $to, string $subject): void
     {
-        $variableState = str_starts_with($messageType, 'ownership') ? $this->variableState : null;
         $subject = $this->variableState->replaceVariables($subject);
-        $mailObjects = $this->getMailClient()->searchMails('from:' . $from . ' to:' . $to . ' subject:' . $subject);
+        $mailObjects = $this->getMailClient()->searchMails(
+            'from:' . $from .
+            ' to:' . $to .
+            ' subject:' . $subject
+        );
         assertCount(1, $mailObjects);
         $mailobject = $mailObjects[0];
         assertEquals($from, $mailobject->getFrom()->toString());
         assertEquals($to, $mailobject->getTo()->getByIndex(0)->toString());
-        assertStringMatchesFormat('%A' . $subject . '%A', $mailobject->getSubject());
+        assertEquals($subject, $mailobject->getSubject());
         assertStringMatchesFormat(
-            $this->fixtures->loadMail($messageType, $variableState),
+            $this->fixtures->loadMail($messageType, $this->variableState),
             $mailobject->getContent()
         );
     }

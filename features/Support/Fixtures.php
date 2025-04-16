@@ -26,12 +26,9 @@ final class Fixtures
         return $variableState->replaceVariables($turtle);
     }
 
-    public function loadMail(string $mailType, ?VariableState $variableState = null): string
+    public function loadMail(string $mailType, VariableState $variableState = null): string
     {
         $mail = file_get_contents(__DIR__ . '/../data/mails/' . $mailType . '.txt');
-        if ($variableState !== null) {
-            $mail = $variableState->replaceVariables($mail);
-        }
-        return $mail;
+        return $variableState->replaceVariables($mail);
     }
 }
