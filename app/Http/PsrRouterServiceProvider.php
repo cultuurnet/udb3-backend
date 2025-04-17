@@ -145,6 +145,8 @@ use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
 use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
 use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
 use CultuurNet\UDB3\Mailinglist\SubscribeUserToMailinglistRequestHandler;
+use CultuurNet\UDB3\Taxonomy\GetEducationLevelsRequestHandler;
+use CultuurNet\UDB3\Taxonomy\GetRegionsRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
@@ -224,6 +226,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
                 $this->bindUiTPASOrganizers($router);
 
                 $this->bindMailinglist($router);
+
+                $this->bindTaxonomyEndpoints($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
@@ -595,5 +599,12 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
     private function bindMailinglist(Router $router): void
     {
         $router->put('mailing-list/{mailingListId}/', SubscribeUserToMailinglistRequestHandler::class);
+    }
+
+    private function bindTaxonomyEndpoints(Router $router): void
+    {
+        $router->get('regions/', GetRegionsRequestHandler::class);
+
+        $router->get('education-levels/', GetEducationLevelsRequestHandler::class);
     }
 }

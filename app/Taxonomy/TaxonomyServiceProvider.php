@@ -1,0 +1,37 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Taxonomy;
+
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
+
+final class TaxonomyServiceProvider extends AbstractServiceProvider
+{
+    protected function getProvidedServiceNames(): array
+    {
+        return [
+            GetRegionsRequestHandler::class,
+            GetEducationLevelsRequestHandler::class,
+        ];
+    }
+
+    public function register(): void
+    {
+        $container = $this->getContainer();
+
+        $container->addShared(
+            GetRegionsRequestHandler::class,
+            function () {
+                return new GetRegionsRequestHandler();
+            }
+        );
+
+        $container->addShared(
+            GetEducationLevelsRequestHandler::class,
+            function () {
+                return new GetEducationLevelsRequestHandler();
+            }
+        );
+    }
+}
