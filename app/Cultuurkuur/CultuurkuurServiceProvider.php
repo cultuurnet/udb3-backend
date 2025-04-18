@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Cultuurkuur;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 
-final class TaxonomyServiceProvider extends AbstractServiceProvider
+final class CultuurkuurServiceProvider extends AbstractServiceProvider
 {
     protected function getProvidedServiceNames(): array
     {

@@ -69,7 +69,7 @@ use CultuurNet\UDB3\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\SwiftMailer\SwiftMailerServiceProvider;
-use CultuurNet\UDB3\Cultuurkuur\TaxonomyServiceProvider;
+use CultuurNet\UDB3\Cultuurkuur\CultuurkuurServiceProvider;
 use CultuurNet\UDB3\Term\TermServiceProvider;
 use CultuurNet\UDB3\UDB2\UDB2EventServicesProvider;
 use CultuurNet\UDB3\UiTPAS\UiTPASIncomingEventServicesProvider;
@@ -222,7 +222,7 @@ $container->addServiceProvider(new OwnershipRequestHandlerServiceProvider());
 /** Mailinglist */
 $container->addServiceProvider(new MailinglistServiceProvider());
 
-$container->addServiceProvider(new TaxonomyServiceProvider());
+$container->addServiceProvider(new CultuurkuurServiceProvider());
 $container->addServiceProvider(new MailerServiceProvider());
 
 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
