@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Taxonomy;
+namespace CultuurNet\UDB3\Cultuurkuur;
 
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Json;
 use PHPUnit\Framework\TestCase;
 
 class GetEducationLevelsRequestHandlerTest extends TestCase
@@ -19,7 +20,7 @@ class GetEducationLevelsRequestHandlerTest extends TestCase
 
         $this->assertSame('application/json', $response->getHeaderLine('Content-Type'));
 
-        $json = json_decode((string)$response->getBody(), true, 512, JSON_THROW_ON_ERROR);
+        $json = Json::decodeAssociatively($response->getBody()->getContents());
 
         $this->assertIsArray($json);
 

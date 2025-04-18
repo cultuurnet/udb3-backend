@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Taxonomy;
+namespace CultuurNet\UDB3\Cultuurkuur;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 
