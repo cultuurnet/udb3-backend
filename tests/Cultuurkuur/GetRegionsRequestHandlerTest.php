@@ -24,11 +24,12 @@ class GetRegionsRequestHandlerTest extends TestCase
 
         $this->assertIsArray($json);
 
+        $this->assertArrayHasKey('name', $json[0]);
         $this->assertArrayHasKey('label', $json[0]);
-        $this->assertArrayHasKey('value', $json[0]);
+        $this->assertArrayHasKey('nl', $json[0]['name']);
         $this->assertArrayHasKey('children', $json[0]);
-        $this->assertEquals('nis-01000', $json[0]['value']);
-        $this->assertEquals('Brussels Hoofdstedelijk Gewest', $json[0]['label']);
+        $this->assertEquals('cultuurkuur_werkingsregio_provincie_nis-01000', $json[0]['label']);
+        $this->assertEquals('Brussels Hoofdstedelijk Gewest', $json[0]['name']['nl']);
         $this->assertIsArray($json[0]['children']);
     }
 }
