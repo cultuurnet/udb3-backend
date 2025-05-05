@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Place\Commands\UpdateAddress;
+use CultuurNet\UDB3\Organizer\Commands\UpdateAddress;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ResultsGenerator;
@@ -25,7 +25,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-final class UpdateLocality extends AbstractCommand
+final class UpdateOrganizerLocality extends AbstractCommand
 {
     private const QUERY = 'query';
 
@@ -54,12 +54,12 @@ final class UpdateLocality extends AbstractCommand
     public function configure(): void
     {
         $this
-            ->setName('place:update-locality')
-            ->setDescription('Update the locality of the places found by the sapi3 query')
+            ->setName('organizer:update-locality')
+            ->setDescription('Update the locality of the organizers found by the sapi3 query')
             ->addArgument(
                 self::QUERY,
                 null,
-                'SAPI3 query for which places to update.'
+                'SAPI3 query for which organizers to update.'
             )
             ->addArgument(
                 self::NEW_LOCALITY,
@@ -80,7 +80,7 @@ final class UpdateLocality extends AbstractCommand
         $newLocality = $input->getArgument(self::NEW_LOCALITY);
 
         if ($query === null || $newLocality === null) {
-            $output->writeln('<error>Missing argument, the correct syntax is: place:update-locality "sapi3_query" "new_locality"</error>');
+            $output->writeln('<error>Missing argument, the correct syntax is: organizer:update-locality "sapi3_query" "new_locality"</error>');
             return self::FAILURE;
         }
 
@@ -89,7 +89,7 @@ final class UpdateLocality extends AbstractCommand
         $count = $this->searchResultsGenerator->count($query);
 
         if ($count <= 0) {
-            $output->writeln('<error>No places found</error>');
+            $output->writeln('<error>No organizers found</error>');
             return self::SUCCESS;
         }
 
@@ -98,11 +98,11 @@ final class UpdateLocality extends AbstractCommand
             return self::SUCCESS;
         }
 
-        foreach ($this->searchResultsGenerator->search($query) as $place) {
+        foreach ($this->searchResultsGenerator->search($query) as $organizer) {
             try {
-                $placeId = $place->getId();
+                $organizerId = $organizer->getId();
 
-                $document = $this->documentRepository->fetch($placeId);
+                $document = $this->documentRepository->fetch($organizerId);
                 $jsonLd = Json::decodeAssociatively($document->getRawBody());
 
                 if (!isset(
@@ -114,7 +114,7 @@ final class UpdateLocality extends AbstractCommand
                 }
 
                 $command = new UpdateAddress(
-                    $place->getId(),
+                    $organizer->getId(),
                     new Address(
                         new Street($jsonLd['address']['nl']['streetAddress']),
                         new PostalCode($jsonLd['address']['nl']['postalCode']),
@@ -123,16 +123,16 @@ final class UpdateLocality extends AbstractCommand
                     ),
                     new Language('nl')
                 );
-                $output->writeln('Dispatching UpdateAddress for place with id ' . $command->getItemId());
+                $output->writeln('Dispatching UpdateAddress for organizer with id ' . $command->getItemId());
 
                 if (!$input->getOption(self::DRY_RUN)) {
                     $this->commandBus->dispatch($command);
                 }
             } catch (DocumentDoesNotExist $e) {
-                $output->writeln("Skipping {$placeId}. (Could not find JSON-LD in local repository.)");
+                $output->writeln("Skipping {$organizerId}. (Could not find JSON-LD in local repository.)");
                 return null;
             } catch (Exception $exception) {
-                $output->writeln(sprintf('<error>Place with id: %s caused an exception: %s</error>', $place->getId(), $exception->getMessage()));
+                $output->writeln(sprintf('<error>Organizer with id: %s caused an exception: %s</error>', $organizer->getId(), $exception->getMessage()));
             }
         }
 
@@ -147,7 +147,7 @@ final class UpdateLocality extends AbstractCommand
                 $input,
                 $output,
                 new ConfirmationQuestion(
-                    sprintf('This action will update the locality of %d places, continue? [y/N] ', $count),
+                    sprintf('This action will update the locality of %d organizers, continue? [y/N] ', $count),
                     true
                 )
             );
