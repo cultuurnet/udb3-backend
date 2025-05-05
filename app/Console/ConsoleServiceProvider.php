@@ -44,6 +44,7 @@ use CultuurNet\UDB3\Console\Command\ReplaceNewsArticlePublisher;
 use CultuurNet\UDB3\Console\Command\ReplayCommand;
 use CultuurNet\UDB3\Console\Command\UpdateBookingAvailabilityCommand;
 use CultuurNet\UDB3\Console\Command\UpdateEventsAttendanceMode;
+use CultuurNet\UDB3\Console\Command\UpdateOrganizerLocality;
 use CultuurNet\UDB3\Console\Command\UpdatePlaceLocality;
 use CultuurNet\UDB3\Console\Command\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueLabels;
@@ -114,6 +115,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.organizer:update-unique',
         'console.place:facilities:remove',
         'console.place:update-locality',
+        'console.organizer:update-locality',
         'console.offer:remove-label',
         'console.organizer:remove-label',
         'console.offer:import-auto-classification-labels',
@@ -438,6 +440,15 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new UpdatePlaceLocality(
                 $container->get('event_command_bus'),
                 $container->get(PlacesSapi3SearchService::class),
+                $container->get('place_jsonld_repository')
+            )
+        );
+
+        $container->addShared(
+            'console.organizer:update-locality',
+            fn () => new UpdateOrganizerLocality(
+                $container->get('event_command_bus'),
+                $container->get(OrganizersSapi3SearchService::class),
                 $container->get('place_jsonld_repository')
             )
         );
