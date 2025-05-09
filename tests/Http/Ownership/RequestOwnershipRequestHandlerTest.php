@@ -147,6 +147,17 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     {
         CurrentUser::configureGodUserIds([]);
 
+        $this->identityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with('google-oauth2|102486314601596809843')
+            ->willReturn(
+                new UserIdentityDetails(
+                    'google-oauth2|102486314601596809843',
+                    'John Doe',
+                    'john.doe@mail.com'
+                )
+            );
+
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray([
                 'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
@@ -310,6 +321,17 @@ class RequestOwnershipRequestHandlerTest extends TestCase
      */
     public function it_prevents_requesting_same_ownership(): void
     {
+        $this->identityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with('auth0|63e22626e39a8ca1264bd29b')
+            ->willReturn(
+                new UserIdentityDetails(
+                    'auth0|63e22626e39a8ca1264bd29b',
+                    'Jane Doe',
+                    'jane.doe@mail.com'
+                )
+            );
+
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray([
                 'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
@@ -364,6 +386,17 @@ class RequestOwnershipRequestHandlerTest extends TestCase
      */
     public function it_prevents_requesting_same_ownership_when_approved(): void
     {
+        $this->identityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with('auth0|63e22626e39a8ca1264bd29b')
+            ->willReturn(
+                new UserIdentityDetails(
+                    'auth0|63e22626e39a8ca1264bd29b',
+                    'Jane Doe',
+                    'jane.doe@mail.com'
+                )
+            );
+
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray([
                 'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
@@ -473,6 +506,16 @@ class RequestOwnershipRequestHandlerTest extends TestCase
      */
     public function it_allows_requesting_same_ownership_when_deleted(): void
     {
+        $this->identityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with('auth0|63e22626e39a8ca1264bd29b')
+            ->willReturn(
+                new UserIdentityDetails(
+                    'auth0|63e22626e39a8ca1264bd29b',
+                    'Jane Doe',
+                    'jane.doe@mail.com'
+                )
+            );
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray([
                 'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
@@ -528,6 +571,17 @@ class RequestOwnershipRequestHandlerTest extends TestCase
      */
     public function it_prevents_requesting_ownership_for_non_existing_organizer(): void
     {
+        $this->identityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with('auth0|63e22626e39a8ca1264bd29b')
+            ->willReturn(
+                new UserIdentityDetails(
+                    'auth0|63e22626e39a8ca1264bd29b',
+                    'Jane Doe',
+                    'jane.doe@mail.com'
+                )
+            );
+
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray([
                 'itemId' => 'fc93ceb0-e170-4d92-b496-846b2a194f1c',
