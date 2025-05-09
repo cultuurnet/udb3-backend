@@ -152,3 +152,24 @@ Feature: Test requesting ownership
       "detail": "The Organizer with id \"b192b05f-9294-4c07-a3f9-6a15e267d746\" was not found."
     }
     """
+
+  Scenario: Requesting the ownership with a non-existing email
+    When I set the JSON request payload to:
+    """
+    {
+      "itemId": "b192b05f-9294-4c07-a3f9-6a15e267d746",
+      "itemType": "organizer",
+      "ownerEmail": "nobody@null.com"
+    }
+    """
+    When I send a POST request to '/ownerships'
+    Then the response status should be 400
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/body/invalid-data",
+      "title": "Invalid body data",
+      "status": 400,
+      "detail": "No user with email nobody@null.com was found in our system."
+    }
+    """
