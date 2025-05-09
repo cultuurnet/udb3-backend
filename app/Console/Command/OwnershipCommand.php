@@ -133,14 +133,11 @@ final class OwnershipCommand extends AbstractCommand
     {
         try {
             $userEmail = new EmailAddress($user);
-            $user = $this->userIdentityResolver->getUserByEmail($userEmail);
-            if (!$user) {
-                return null;
-            }
-            return new UserId($user->getUserId());
+            $userDetails = $this->userIdentityResolver->getUserByEmail($userEmail);
         } catch (InvalidEmailAddress $exception) {
-            return new UserId($user);
+            $userDetails = $this->userIdentityResolver->getUserById($user);
         }
+        return $userDetails !== null ? new UserId($userDetails->getUserId()) : null;
     }
 
     private function itemExists(string $itemId): bool
