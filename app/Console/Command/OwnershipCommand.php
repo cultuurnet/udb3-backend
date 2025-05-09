@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
+use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UserId;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -13,10 +15,11 @@ use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\InvalidEmailAddress;
 use CultuurNet\UDB3\Ownership\Commands\ApproveOwnership;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
+use CultuurNet\UDB3\Ownership\OwnershipState;
+use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\User\UserIdentityResolver;
-use Google\Service\Keep\User;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -33,17 +36,21 @@ final class OwnershipCommand extends AbstractCommand
 
     private UserIdentityResolver $userIdentityResolver;
 
+    private OwnershipSearchRepository $ownershipSearchRepository;
+
     private DocumentRepository $organizerRepository;
 
     public function __construct(
         CommandBus $commandBus,
         UuidFactory $uuidFactory,
         UserIdentityResolver $userIdentityResolver,
+        OwnershipSearchRepository $ownershipSearchRepository,
         DocumentRepository $organizerRepository
     ) {
         parent::__construct($commandBus);
         $this->uuidFactory = $uuidFactory;
         $this->userIdentityResolver = $userIdentityResolver;
+        $this->ownershipSearchRepository = $ownershipSearchRepository;
         $this->organizerRepository = $organizerRepository;
     }
 
@@ -75,7 +82,7 @@ final class OwnershipCommand extends AbstractCommand
         $user = $input->getArgument(self::USER);
 
         if (!$this->itemExists($itemId)) {
-            $output->writeln('Organizer does not exist');
+            $output->writeln('Organizer does not exist.');
             return self::FAILURE;
         }
 
@@ -85,13 +92,18 @@ final class OwnershipCommand extends AbstractCommand
             return self::FAILURE;
         }
 
+        if ($this->ownershipExist($itemId, $userId)) {
+            $output->writeln('Ownership already exists.');
+            return self::FAILURE;
+        }
+
         $ownerShipId = new Uuid($this->uuidFactory->uuid4()->toString());
 
         $requestOwnership = new RequestOwnership(
             $ownerShipId,
             new Uuid($itemId),
             new ItemType($itemType),
-            new $userId,
+            $userId,
             new UserId(UUID::NIL)
         );
 
@@ -102,6 +114,19 @@ final class OwnershipCommand extends AbstractCommand
         $this->commandBus->dispatch($approveOwnership);
 
         return self::SUCCESS;
+    }
+
+    private function ownershipExist(string $itemId, UserId $ownerId): bool
+    {
+        $existingOwnershipItems = $this->ownershipSearchRepository->search(
+            new SearchQuery([
+                new SearchParameter('itemId', $itemId),
+                new SearchParameter('ownerId', $ownerId->toString()),
+                new SearchParameter('state', OwnershipState::requested()->toString()),
+                new SearchParameter('state', OwnershipState::approved()->toString()),
+            ])
+        );
+        return $existingOwnershipItems->count() > 0;
     }
 
     private function getUserId(string $user): ?UserId
