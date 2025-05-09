@@ -83,6 +83,17 @@ class RequestOwnershipRequestHandlerTest extends TestCase
      */
     public function it_handles_requesting_ownership(): void
     {
+        $this->identityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with('auth0|63e22626e39a8ca1264bd29b')
+            ->willReturn(
+                new UserIdentityDetails(
+                    'auth0|63e22626e39a8ca1264bd29b',
+                    'Jane Doe',
+                    'jane.doe@mail.com'
+                )
+            );
+
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray([
                 'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
@@ -265,6 +276,17 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     public function it_allows_requesting_ownership_for_yourself_even_without_permission(): void
     {
         CurrentUser::configureGodUserIds([]);
+
+        $this->identityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with('auth0|63e22626e39a8ca1264bd29b')
+            ->willReturn(
+                new UserIdentityDetails(
+                    'auth0|63e22626e39a8ca1264bd29b',
+                    'Jane Doe',
+                    'jane.doe@mail.com'
+                )
+            );
 
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray([
@@ -451,6 +473,17 @@ class RequestOwnershipRequestHandlerTest extends TestCase
      */
     public function it_allows_requesting_same_ownership_when_rejected(): void
     {
+        $this->identityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with('auth0|63e22626e39a8ca1264bd29b')
+            ->willReturn(
+                new UserIdentityDetails(
+                    'auth0|63e22626e39a8ca1264bd29b',
+                    'Jane Doe',
+                    'jane.doe@mail.com'
+                )
+            );
+
         $request = (new Psr7RequestBuilder())
             ->withJsonBodyFromArray([
                 'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
