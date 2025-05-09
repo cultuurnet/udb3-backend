@@ -200,6 +200,38 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_prevents_requesting_ownership_for_non_existing_user_id(): void
+    {
+        $this->identityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with('ffffffff-ffff-ffff-ffff-ffffffffffff')
+            ->willReturn(null);
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => 'fc93ceb0-e170-4d92-b496-846b2a194f1c',
+                'itemType' => 'organizer',
+                'ownerId' => 'ffffffff-ffff-ffff-ffff-ffffffffffff',
+            ])
+            ->build('POST');
+
+        $this->permissionVoter->expects($this->never())
+            ->method('isAllowed');
+
+        $this->ownerShipSearchRepository->expects($this->never())
+            ->method('search');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidDataWithDetail('No user with id ffffffff-ffff-ffff-ffff-ffffffffffff was found in our system.'),
+            fn () => $this->requestOwnershipRequestHandler->handle($request)
+        );
+
+        $this->assertEquals([], $this->commandBus->getRecordedCommands());
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_requesting_ownership_with_email(): void
     {
         CurrentUser::configureGodUserIds([]);
