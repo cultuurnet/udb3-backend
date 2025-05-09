@@ -30,6 +30,12 @@ final class RequestOwnershipDenormalizer implements DenormalizerInterface
 
     public function denormalize($data, $class, $format = null, array $context = []): RequestOwnership
     {
+        if ($userId = $data['ownerId'] ?? null) {
+            $userDetails = $this->identityResolver->getUserById($userId);
+            if ($userDetails === null) {
+                throw ApiProblem::bodyInvalidDataWithDetail('No user with id ' . $userId . ' was found in our system.');
+            }
+        }
         if ($email = $data['ownerEmail'] ?? null) {
             $user = $this->identityResolver->getUserByEmail(new EmailAddress($email));
             if (!$user) {
