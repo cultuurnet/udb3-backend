@@ -16,6 +16,8 @@ use CultuurNet\UDB3\Model\ValueObject\Web\InvalidEmailAddress;
 use CultuurNet\UDB3\Ownership\Commands\ApproveOwnership;
 use CultuurNet\UDB3\Ownership\Commands\RequestOwnership;
 use CultuurNet\UDB3\Ownership\OwnershipState;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
+use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -92,8 +94,12 @@ final class OwnershipCommand extends AbstractCommand
             return self::FAILURE;
         }
 
-        if ($this->ownershipExist($itemId, $userId)) {
-            $output->writeln('Ownership already exists.');
+        $ownershipItemCollection = $this->ownershipExist($itemId, $userId);
+
+        if ($ownershipItemCollection->count() > 0) {
+            /** @var OwnershipItem $ownershipItem */
+            $ownershipItem = $ownershipItemCollection->getFirst();
+            $output->writeln('Ownership already exists: ' . $ownershipItem->getId());
             return self::FAILURE;
         }
 
@@ -116,9 +122,9 @@ final class OwnershipCommand extends AbstractCommand
         return self::SUCCESS;
     }
 
-    private function ownershipExist(string $itemId, UserId $ownerId): bool
+    private function ownershipExist(string $itemId, UserId $ownerId): OwnershipItemCollection
     {
-        $existingOwnershipItems = $this->ownershipSearchRepository->search(
+        return $this->ownershipSearchRepository->search(
             new SearchQuery([
                 new SearchParameter('itemId', $itemId),
                 new SearchParameter('ownerId', $ownerId->toString()),
@@ -126,7 +132,6 @@ final class OwnershipCommand extends AbstractCommand
                 new SearchParameter('state', OwnershipState::approved()->toString()),
             ])
         );
-        return $existingOwnershipItems->count() > 0;
     }
 
     private function getUserId(string $user): ?UserId
