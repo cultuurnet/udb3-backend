@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailer\Handler;
 
+use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
 use CultuurNet\UDB3\CommandHandling\ContextDecoratedCommandBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
@@ -107,6 +108,34 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
             ->method('isSatisfiedBy')
             ->with($domainMessage)
             ->willReturn(true);
+
+        $this->commandBus->expects($this->never())->method('dispatch');
+
+        $this->sendMailsForOwnership->handle(
+            $domainMessage
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_send_mails_when_disabled_in_middleware(): void
+    {
+        $domainMessage = (new DomainMessageBuilder())
+            ->create(
+                $this->givenAnOwnershipRequested(
+                    'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+                    '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                    'auth0|63e22626e39a8ca1264bd29b'
+                )
+            )
+            ->andMetadata(new Metadata(['disable_mails' => true]));
+
+        $this->domainMessageSpecification
+            ->expects($this->once())
+            ->method('isSatisfiedBy')
+            ->with($domainMessage)
+            ->willReturn(false);
 
         $this->commandBus->expects($this->never())->method('dispatch');
 
