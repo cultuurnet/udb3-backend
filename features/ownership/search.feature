@@ -72,8 +72,8 @@ Feature: Test searching ownerships
     And I request ownership for "02566c96-8fd3-4b7e-aa35-cbebe6663b2d" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId1"
     And I request ownership for "79dd2821-3b89-4dbb-9143-920ff2edfa34" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId2"
     And I request ownership for "92650bd8-037f-4722-a40e-7e0a0bf39a8e" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId3"
-    And I request ownership for "auth0|631748dba64ea78e3983b204" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId4"
-    And I request ownership for "auth0|631748dba64ea78e3983b205" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId5"
+    And I request ownership for "c9f2a19f-3dd7-401c-ad4d-73db7a9d1748" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId4"
+    And I request ownership for "edf305f8-69b6-4553-914e-9ecedcba418e" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId5"
     And I approve the ownership with ownershipId "%{ownershipId1}"
     And I approve the ownership with ownershipId "%{ownershipId2}"
     When I send a GET request to '/ownerships/?state=requested&itemId=%{organizerId}&imit=2&start=1'
@@ -81,10 +81,10 @@ Feature: Test searching ownerships
     And the JSON response at "itemsPerPage" should be 2
     And the JSON response at "totalItems" should be 3
     And the JSON response at "member/0/id" should be "%{ownershipId4}"
-    And the JSON response at "member/0/ownerId" should be "auth0|631748dba64ea78e3983b204"
+    And the JSON response at "member/0/ownerId" should be "c9f2a19f-3dd7-401c-ad4d-73db7a9d1748"
     And the JSON response at "member/0/state" should be "requested"
     And the JSON response at "member/1/id" should be "%{ownershipId5}"
-    And the JSON response at "member/1/ownerId" should be "auth0|631748dba64ea78e3983b205"
+    And the JSON response at "member/1/ownerId" should be "edf305f8-69b6-4553-914e-9ecedcba418e"
     And the JSON response at "member/1/state" should be "requested"
 
   Scenario: Searching ownership of an organizer takes into permission organisaties bewerken
