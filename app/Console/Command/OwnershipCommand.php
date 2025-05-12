@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Console\Command;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\EventBus\Middleware\DisableMailsMiddleware;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
@@ -33,6 +34,8 @@ final class OwnershipCommand extends AbstractCommand
     private const ITEM_ID = 'item-id';
 
     private const USER = 'user';
+
+    private const SEND_MAILS = 'send-mails';
 
     private UuidFactory $uuidFactory;
 
@@ -74,6 +77,11 @@ final class OwnershipCommand extends AbstractCommand
                 self::USER,
                 InputOption::VALUE_REQUIRED,
                 'The id or email of a user give ownership to.'
+            )->AddOption(
+                self::SEND_MAILS,
+                null,
+                InputOption::VALUE_NONE,
+                'Option to send mails during the CLI Command, default is not sending mails.'
             );
     }
 
@@ -82,6 +90,7 @@ final class OwnershipCommand extends AbstractCommand
         $itemType = $input->getArgument(self::ITEM_TYPE);
         $itemId = $input->getArgument(self::ITEM_ID);
         $user = $input->getArgument(self::USER);
+        $sendMails = $input->getOption(self::SEND_MAILS);
 
         if (!$this->itemExists($itemId)) {
             $output->writeln('Organizer does not exist.');
@@ -113,11 +122,19 @@ final class OwnershipCommand extends AbstractCommand
             new UserId(UUID::NIL)
         );
 
+        if (!$sendMails) {
+            DisableMailsMiddleware::disableMails();
+        }
+
         $this->commandBus->dispatch($requestOwnership);
 
         $approveOwnership = new ApproveOwnership($ownerShipId);
 
         $this->commandBus->dispatch($approveOwnership);
+
+        if (!$sendMails) {
+            DisableMailsMiddleware::enableMails();
+        }
 
         return self::SUCCESS;
     }
