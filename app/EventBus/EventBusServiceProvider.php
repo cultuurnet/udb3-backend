@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventBus;
 
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
@@ -101,7 +102,7 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                             $eventBus->subscribe($container->get($subscriberServiceId));
                         }
 
-                        if ($this->container->get('config')['mail']['send_ownernship_mails'] ?? false) {
+                        if ($container->get(ApiName::class) !== ApiName::CLI && $this->container->get('config')['mail']['send_ownernship_mails'] ?? false ) {
                             $eventBus->subscribe($container->get(SendMailsForOwnershipEventHandler::class));
                         }
                     }
