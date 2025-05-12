@@ -102,7 +102,7 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                             $eventBus->subscribe($container->get($subscriberServiceId));
                         }
 
-                        if (($this->container->get('config')['mail']['send_ownernship_mails'] ?? false) && ($container->get(ApiName::class) !== ApiName::CLI)) {
+                        if ($this->container->get('config')['mail']['send_ownernship_mails'] ?? false) {
                             $eventBus->subscribe($container->get(SendMailsForOwnershipEventHandler::class));
                         }
                     }
