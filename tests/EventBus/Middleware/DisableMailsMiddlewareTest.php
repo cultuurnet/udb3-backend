@@ -23,7 +23,7 @@ final class DisableMailsMiddlewareTest extends TestCase
     /**
      * @test
      */
-    public function it_works(): void
+    public function it_can_enable_and_disable_mails(): void
     {
         $stream1 = new DomainEventStream([$this->createDomainMessage(1)]);
         $stream2 = new DomainEventStream([$this->createDomainMessage(2)]);
