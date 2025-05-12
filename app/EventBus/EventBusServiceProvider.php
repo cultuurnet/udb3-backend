@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventBus;
 
 use Broadway\EventHandling\EventBus;
-use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
