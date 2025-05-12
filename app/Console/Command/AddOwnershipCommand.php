@@ -27,7 +27,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class OwnershipCommand extends AbstractCommand
+final class AddOwnershipCommand extends AbstractCommand
 {
     private const ITEM_TYPE = 'item-type';
 

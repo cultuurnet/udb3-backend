@@ -33,7 +33,7 @@ use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Console\Command\IncludeLabel;
 use CultuurNet\UDB3\Console\Command\KeycloakCommand;
 use CultuurNet\UDB3\Console\Command\MoveEvents;
-use CultuurNet\UDB3\Console\Command\OwnershipCommand;
+use CultuurNet\UDB3\Console\Command\AddOwnershipCommand;
 use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
@@ -492,7 +492,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'console.ownership:add-ownership',
-            fn () => new OwnershipCommand(
+            fn () => new AddOwnershipCommand(
                 $container->get('event_command_bus'),
                 new GeneratedUuidFactory(),
                 $container->get(CachedUserIdentityResolver::class),
