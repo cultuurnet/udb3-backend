@@ -37,6 +37,10 @@ final class SendMailsForOwnershipEventHandler implements EventListener
             return;
         }
 
+        if ($domainMessage->getMetadata()->get('disable_mails')) {
+            return;
+        }
+
         $event = $domainMessage->getPayload();
         switch (true) {
             case $event instanceof OwnershipRequested:
