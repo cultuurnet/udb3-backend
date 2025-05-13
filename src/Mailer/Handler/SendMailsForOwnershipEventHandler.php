@@ -22,25 +22,26 @@ final class SendMailsForOwnershipEventHandler implements EventListener
 
     private ContextDecoratedCommandBus $mailerCommandBus;
 
-    /**
-     * @var DomainMessageSpecificationInterface[]
-     */
-    private array $domainMessageSpecifications;
+    private DomainMessageSpecificationInterface $isReplay;
+
+    private DomainMessageSpecificationInterface $mailsDisabled;
 
     public function __construct(
         ContextDecoratedCommandBus $mailerCommandBus,
-        DomainMessageSpecificationInterface ...$domainMessageSpecification
+        DomainMessageSpecificationInterface $isReplay,
+        DomainMessageSpecificationInterface $mailsDisabled
     ) {
         $this->mailerCommandBus = $mailerCommandBus;
-        $this->domainMessageSpecifications = $domainMessageSpecification;
+        $this->isReplay = $isReplay;
+        $this->mailsDisabled = $mailsDisabled;
     }
 
     public function handle(DomainMessage $domainMessage): void
     {
-        foreach ($this->domainMessageSpecifications as $domainMessageSpecification) {
-            if ($domainMessageSpecification->isSatisfiedBy($domainMessage)) {
-                return;
-            }
+        if (
+            $this->isReplay->isSatisfiedBy($domainMessage) ||
+            $this->mailsDisabled->isSatisfiedBy($domainMessage)) {
+            return;
         }
 
         $event = $domainMessage->getPayload();
