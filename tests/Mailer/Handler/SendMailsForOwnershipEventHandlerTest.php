@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailer\Handler;
 
-use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
 use CultuurNet\UDB3\CommandHandling\ContextDecoratedCommandBus;
 use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
@@ -28,7 +27,10 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
     private SendMailsForOwnershipEventHandler $sendMailsForOwnership;
 
     /** @var DomainMessageSpecificationInterface|MockObject */
-    private $domainMessageSpecification;
+    private $domainMessageSpecificationForReplays;
+
+    /** @var DomainMessageSpecificationInterface|MockObject */
+    private $domainMessageSpecificationForMails;
 
     /** @var ContextDecoratedCommandBus|MockObject */
     private $commandBus;
@@ -36,10 +38,12 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->commandBus = $this->createMock(ContextDecoratedCommandBus::class);
-        $this->domainMessageSpecification = $this->createMock(DomainMessageSpecificationInterface::class);
+        $this->domainMessageSpecificationForReplays = $this->createMock(DomainMessageSpecificationInterface::class);
+        $this->domainMessageSpecificationForMails = $this->createMock(DomainMessageSpecificationInterface::class);
         $this->sendMailsForOwnership = new SendMailsForOwnershipEventHandler(
             $this->commandBus,
-            $this->domainMessageSpecification,
+            $this->domainMessageSpecificationForReplays,
+            $this->domainMessageSpecificationForMails
         );
     }
 
@@ -52,7 +56,7 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
     {
         $domainMessage = (new DomainMessageBuilder())->create($event);
 
-        $this->domainMessageSpecification
+        $this->domainMessageSpecificationForReplays
             ->expects($this->once())
             ->method('isSatisfiedBy')
             ->with($domainMessage)
@@ -103,7 +107,7 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
             ->setRecordedOnFromDateTimeString(self::DATE_TIME_VALUE)
             ->create($this->givenAnOwnershipRequested($id, $organizerId, $ownerId));
 
-        $this->domainMessageSpecification
+        $this->domainMessageSpecificationForReplays
             ->expects($this->once())
             ->method('isSatisfiedBy')
             ->with($domainMessage)
@@ -128,14 +132,19 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
                     '9e68dafc-01d8-4c1c-9612-599c918b981d',
                     'auth0|63e22626e39a8ca1264bd29b'
                 )
-            )
-            ->andMetadata(new Metadata(['disable_mails' => true]));
+            );
 
-        $this->domainMessageSpecification
+        $this->domainMessageSpecificationForReplays
             ->expects($this->once())
             ->method('isSatisfiedBy')
             ->with($domainMessage)
             ->willReturn(false);
+
+        $this->domainMessageSpecificationForMails
+            ->expects($this->once())
+            ->method('isSatisfiedBy')
+            ->with($domainMessage)
+            ->willReturn(true);
 
         $this->commandBus->expects($this->never())->method('dispatch');
 
@@ -154,7 +163,7 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
                 new Description('description-456')
             ));
 
-        $this->domainMessageSpecification
+        $this->domainMessageSpecificationForReplays
             ->expects($this->once())
             ->method('isSatisfiedBy')
             ->with($domainMessage)

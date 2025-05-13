@@ -21,25 +21,28 @@ final class SendMailsForOwnershipEventHandler implements EventListener
     use AsyncDispatchTrait;
 
     private ContextDecoratedCommandBus $mailerCommandBus;
-    private DomainMessageSpecificationInterface $isReplay;
+
+    /**
+     * @var DomainMessageSpecificationInterface[]
+     */
+    private array $domainMessageSpecifications;
 
     public function __construct(
         ContextDecoratedCommandBus $mailerCommandBus,
-        DomainMessageSpecificationInterface $domainMessageSpecification
+        DomainMessageSpecificationInterface ...$domainMessageSpecification
     ) {
         $this->mailerCommandBus = $mailerCommandBus;
-        $this->isReplay = $domainMessageSpecification;
+        $this->domainMessageSpecifications = $domainMessageSpecification;
     }
 
     public function handle(DomainMessage $domainMessage): void
     {
-        if ($this->isReplay->isSatisfiedBy($domainMessage)) {
-            return;
+        foreach ($this->domainMessageSpecifications as $domainMessageSpecification) {
+            if ($domainMessageSpecification->isSatisfiedBy($domainMessage)) {
+                return;
+            }
         }
 
-        if ($domainMessage->getMetadata()->get('disable_mails')) {
-            return;
-        }
 
         $event = $domainMessage->getPayload();
         switch (true) {
