@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector as EventHistoryProj
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsProjector;
 use CultuurNet\UDB3\Event\RelocateEventToCanonicalPlace;
 use CultuurNet\UDB3\EventBus\Middleware\CallbackOnFirstPublicationMiddleware;
+use CultuurNet\UDB3\EventBus\Middleware\DisableMailsMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\InterceptingMiddleware;
 use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
@@ -110,6 +111,7 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                 $eventBus->registerMiddleware($callbackMiddleware);
                 $eventBus->registerMiddleware(new ReplayFlaggingMiddleware());
                 $eventBus->registerMiddleware(new InterceptingMiddleware());
+                $eventBus->registerMiddleware(new DisableMailsMiddleware());
 
                 return $eventBus;
             }

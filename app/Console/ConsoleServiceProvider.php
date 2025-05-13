@@ -33,6 +33,7 @@ use CultuurNet\UDB3\Console\Command\ImportOfferAutoClassificationLabels;
 use CultuurNet\UDB3\Console\Command\IncludeLabel;
 use CultuurNet\UDB3\Console\Command\KeycloakCommand;
 use CultuurNet\UDB3\Console\Command\MoveEvents;
+use CultuurNet\UDB3\Console\Command\AddOwnershipCommand;
 use CultuurNet\UDB3\Console\Command\ProcessDuplicatePlaces;
 use CultuurNet\UDB3\Console\Command\PurgeModelCommand;
 use CultuurNet\UDB3\Console\Command\ReindexEventsWithRecommendations;
@@ -61,8 +62,10 @@ use CultuurNet\UDB3\Kinepolis\Parser\KinepolisDateParser;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisMovieParser;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisPriceParser;
 use CultuurNet\UDB3\Kinepolis\Trailer\YoutubeTrailerRepository;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
+use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\Place\Canonical\ImportDuplicatePlacesProcessor;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
@@ -121,6 +124,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.offer:import-auto-classification-labels',
         'console.article:replace-publisher',
         'console.organizer:convert-educational-description',
+        'console.ownership:add-ownership',
         'console.execute-command-from-csv',
         'console.movies:fetch',
         'console.movies:add-trailers',
@@ -494,6 +498,17 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('event_command_bus'),
                 $container->get(EventRelationsRepository::class),
                 $container->get('place_jsonld_repository'),
+            )
+        );
+
+        $container->addShared(
+            'console.ownership:add-ownership',
+            fn () => new AddOwnershipCommand(
+                $container->get('event_command_bus'),
+                new GeneratedUuidFactory(),
+                $container->get(CachedUserIdentityResolver::class),
+                $container->get(OwnershipSearchRepository::class),
+                $container->get('organizer_jsonld_repository'),
             )
         );
 
