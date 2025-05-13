@@ -35,7 +35,7 @@ final class AddOwnershipCommand extends AbstractCommand
 
     private const USER = 'user';
 
-    private const SEND_MAILS = 'send-mails';
+    private const ENABLE_MAILS = 'enable-mails';
 
     private UuidFactory $uuidFactory;
 
@@ -78,10 +78,10 @@ final class AddOwnershipCommand extends AbstractCommand
                 InputOption::VALUE_REQUIRED,
                 'The id or email of a user give ownership to.'
             )->AddOption(
-                self::SEND_MAILS,
+                self::ENABLE_MAILS,
                 null,
                 InputOption::VALUE_NONE,
-                'Option to send mails during the CLI Command, default is not sending mails.'
+                'Option to enable mailing during the CLI Command, default is not sending mails.'
             );
     }
 
@@ -90,7 +90,7 @@ final class AddOwnershipCommand extends AbstractCommand
         $itemType = $input->getArgument(self::ITEM_TYPE);
         $itemId = $input->getArgument(self::ITEM_ID);
         $user = $input->getArgument(self::USER);
-        $sendMails = $input->getOption(self::SEND_MAILS);
+        $sendMails = $input->getOption(self::ENABLE_MAILS);
 
         if (!$this->itemExists($itemId)) {
             $output->writeln('Organizer does not exist.');
