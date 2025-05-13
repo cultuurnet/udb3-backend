@@ -12,7 +12,7 @@ class DomainMessageHasMailsDisabled implements DomainMessageSpecificationInterfa
 
     public function isSatisfiedBy(DomainMessage $domainMessage): bool
     {
-        $metadata = $domainMessage->getMetadata()->serialize();
-        return isset($metadata[self::METADATA_MAILS_DISABLED_KEY]) && $metadata[self::METADATA_MAILS_DISABLED_KEY];
+        $metadata = $domainMessage->getMetadata();
+        return $metadata->get(self::METADATA_MAILS_DISABLED_KEY) ?? false;
     }
 }
