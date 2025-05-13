@@ -43,7 +43,6 @@ final class SendMailsForOwnershipEventHandler implements EventListener
             }
         }
 
-
         $event = $domainMessage->getPayload();
         switch (true) {
             case $event instanceof OwnershipRequested:
