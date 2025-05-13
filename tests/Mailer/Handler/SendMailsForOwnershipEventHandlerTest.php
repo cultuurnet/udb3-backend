@@ -163,12 +163,6 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
                 new Description('description-456')
             ));
 
-        $this->domainMessageSpecificationForReplays
-            ->expects($this->once())
-            ->method('isSatisfiedBy')
-            ->with($domainMessage)
-            ->willReturn(true);
-
         $this->commandBus->expects($this->never())->method('dispatch');
 
         $this->sendMailsForOwnership->handle(
