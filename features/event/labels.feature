@@ -384,3 +384,64 @@ Feature: Test labelling events
     """
     ["%{name}"]
     """
+
+  Scenario: Bulk update labels on an event with initially no labels
+    Given I create a minimal place and save the "url" as "placeUrl"
+    And the response status should be "201"
+    And I create a minimal permanent event and save the "id" as "eventId"
+    And I keep the value of the JSON response at "url" as "eventUrl"
+    And the response status should be "201"
+    When I set the JSON request payload to:
+    """
+    {
+      "labels": [
+        "public-visible",
+        "private-visible",
+        "public-invisible",
+        "private-invisible"
+      ]
+    }
+    """
+    And I send a PUT request to "/events/%{eventId}/labels/"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "labels" should be:
+    """
+    ["public-visible", "private-visible"]
+    """
+    And the JSON response at "hiddenLabels" should be:
+    """
+    ["public-invisible", "private-invisible"]
+    """
+
+  Scenario: Bulk update labels on an event with initial labels
+    Given I create a minimal place and save the "url" as "placeUrl"
+    And the response status should be "201"
+    And I create a minimal permanent event and save the "id" as "eventId"
+    And the response status should be "201"
+    And I keep the value of the JSON response at "url" as "eventUrl"
+    And I create a random name of 10 characters
+    And I send a PUT request to "/events/%{eventId}/labels/%{name}"
+    Then the response status should be "204"
+    When I set the JSON request payload to:
+    """
+    {
+      "labels": [
+        "public-visible",
+        "private-visible",
+        "public-invisible",
+        "private-invisible"
+      ]
+    }
+    """
+    And I send a PUT request to "/events/%{eventId}/labels/"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "labels" should be:
+    """
+    ["%{name}", "public-visible", "private-visible"]
+    """
+    And the JSON response at "hiddenLabels" should be:
+    """
+    ["public-invisible", "private-invisible"]
+    """
