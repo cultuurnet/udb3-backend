@@ -107,7 +107,7 @@ final class UpdateLocality extends AbstractCommand
         $newLocality = $input->getArgument(self::NEW_LOCALITY);
 
         if ($query === null || $newLocality === null) {
-            $output->writeln('<error>Missing argument, the correct syntax is: place:update-locality "item_type" "sapi3_query" "new_locality"</error>');
+            $output->writeln('<error>Missing argument, the correct syntax is: update-locality "item_type" "sapi3_query" "new_locality"</error>');
             return self::FAILURE;
         }
 
