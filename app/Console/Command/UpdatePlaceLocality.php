@@ -11,8 +11,10 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Place\Commands\UpdateAddress;
+use CultuurNet\UDB3\Organizer\Commands\UpdateAddress as UpdateOrganizerAddress;
+use CultuurNet\UDB3\Place\Commands\UpdateAddress as UpdatePlaceAddress;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Search\ResultsGenerator;
@@ -27,39 +29,59 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 
 final class UpdatePlaceLocality extends AbstractCommand
 {
+    private const ITEM_TYPE = 'item-type';
+
     private const QUERY = 'query';
 
     private const NEW_LOCALITY = 'new-locality';
 
     private const DRY_RUN = 'dry-run';
 
-    private ResultsGeneratorInterface $searchResultsGenerator;
+    private ResultsGeneratorInterface $searchPlaceResultsGenerator;
 
-    private DocumentRepository $documentRepository;
+    private DocumentRepository $documentPlaceRepository;
+
+    private ResultsGeneratorInterface $searchOrganizerResultsGenerator;
+
+    private DocumentRepository $documentOrganizerRepository;
 
     public function __construct(
         CommandBus $commandBus,
-        SearchServiceInterface $searchService,
-        DocumentRepository $documentRepository
+        SearchServiceInterface $searchPlaceService,
+        DocumentRepository $documentPlaceRepository,
+        SearchServiceInterface $searchOrganizerService,
+        DocumentRepository $documentOrganizerRepository
     ) {
         parent::__construct($commandBus);
-        $this->searchResultsGenerator = new ResultsGenerator(
-            $searchService,
+        $this->searchPlaceResultsGenerator = new ResultsGenerator(
+            $searchPlaceService,
             new Sorting('created', 'asc'),
             100
         );
-        $this->documentRepository = $documentRepository;
+        $this->documentPlaceRepository = $documentPlaceRepository;
+
+        $this->searchOrganizerResultsGenerator = new ResultsGenerator(
+            $searchOrganizerService,
+            new Sorting('created', 'asc'),
+            100
+        );
+        $this->documentOrganizerRepository = $documentOrganizerRepository;
     }
 
     public function configure(): void
     {
         $this
             ->setName('place:update-locality')
-            ->setDescription('Update the locality of the places found by the sapi3 query')
+            ->setDescription('Update the locality of the places or organizer found by the sapi3 query')
+            ->addArgument(
+                self::ITEM_TYPE,
+                null,
+                'The ItemType which you wish to update. Only place or Organizer are accepted.'
+            )
             ->addArgument(
                 self::QUERY,
                 null,
-                'SAPI3 query for which places to update.'
+                'SAPI3 query for which places or organizers to update.'
             )
             ->addArgument(
                 self::NEW_LOCALITY,
@@ -76,33 +98,42 @@ final class UpdatePlaceLocality extends AbstractCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): ?int
     {
+        $itemType = new ItemType($input->getArgument(self::ITEM_TYPE));
+        if ($itemType->sameAs($itemType::event())) {
+            $output->writeln('<error>Only itemType place or organizer are accepted.</error>');
+            return self::FAILURE;
+        }
         $query = $input->getArgument(self::QUERY);
         $newLocality = $input->getArgument(self::NEW_LOCALITY);
 
         if ($query === null || $newLocality === null) {
-            $output->writeln('<error>Missing argument, the correct syntax is: place:update-locality "sapi3_query" "new_locality"</error>');
+            $output->writeln('<error>Missing argument, the correct syntax is: place:update-locality "item_type" "sapi3_query" "new_locality"</error>');
             return self::FAILURE;
         }
 
         $query = str_replace('q=', '', $query);
 
-        $count = $this->searchResultsGenerator->count($query);
+        $count = $this->searchPlaceResultsGenerator->count($query);
 
         if ($count <= 0) {
-            $output->writeln('<error>No places found</error>');
+            $output->writeln(sprintf('<error>No %ss found</error>', $itemType->toString()));
             return self::SUCCESS;
         }
-
 
         if (!$this->askConfirmation($input, $output, $count)) {
             return self::SUCCESS;
         }
 
-        foreach ($this->searchResultsGenerator->search($query) as $place) {
-            try {
-                $placeId = $place->getId();
+        $searchResultsGenerator = $itemType->sameAs(ItemType::place()) ?
+            $this->searchPlaceResultsGenerator : $this->searchOrganizerResultsGenerator;
 
-                $document = $this->documentRepository->fetch($placeId);
+        foreach ($searchResultsGenerator->search($query) as $item) {
+            try {
+                $itemId = $item->getId();
+
+                $document = $itemType->sameAs(ItemType::place()) ?
+                    $this->documentPlaceRepository->fetch($itemId) :
+                $this->documentOrganizerRepository->fetch($itemId);
                 $jsonLd = Json::decodeAssociatively($document->getRawBody());
 
                 if (!isset(
@@ -113,26 +144,34 @@ final class UpdatePlaceLocality extends AbstractCommand
                     throw new Exception('Address is incomplete in Json');
                 }
 
-                $command = new UpdateAddress(
-                    $place->getId(),
-                    new Address(
-                        new Street($jsonLd['address']['nl']['streetAddress']),
-                        new PostalCode($jsonLd['address']['nl']['postalCode']),
-                        new Locality($newLocality),
-                        new CountryCode($jsonLd['address']['nl']['addressCountry'])
-                    ),
-                    new Language('nl')
+                $address = new Address(
+                    new Street($jsonLd['address']['nl']['streetAddress']),
+                    new PostalCode($jsonLd['address']['nl']['postalCode']),
+                    new Locality($newLocality),
+                    new CountryCode($jsonLd['address']['nl']['addressCountry'])
                 );
+
+                $command = $itemType->sameAs(ItemType::place()) ? new UpdatePlaceAddress(
+                    $item->getId(),
+                    $address,
+                    new Language('nl')
+                ) :
+                    new UpdateOrganizerAddress(
+                        $item->getId(),
+                        $address,
+                        new Language('nl')
+                    )
+                ;
                 $output->writeln('Dispatching UpdateAddress for place with id ' . $command->getItemId());
 
                 if (!$input->getOption(self::DRY_RUN)) {
                     $this->commandBus->dispatch($command);
                 }
             } catch (DocumentDoesNotExist $e) {
-                $output->writeln("Skipping {$placeId}. (Could not find JSON-LD in local repository.)");
+                $output->writeln("Skipping {$itemId}. (Could not find JSON-LD in local repository.)");
                 return null;
             } catch (Exception $exception) {
-                $output->writeln(sprintf('<error>Place with id: %s caused an exception: %s</error>', $place->getId(), $exception->getMessage()));
+                $output->writeln(sprintf('<error>%s with id: %s caused an exception: %s</error>', $itemType->toString(), $item->getId(), $exception->getMessage()));
             }
         }
 
@@ -147,7 +186,7 @@ final class UpdatePlaceLocality extends AbstractCommand
                 $input,
                 $output,
                 new ConfirmationQuestion(
-                    sprintf('This action will update the locality of %d places, continue? [y/N] ', $count),
+                    sprintf('This action will update the locality of %d items, continue? [y/N] ', $count),
                     true
                 )
             );

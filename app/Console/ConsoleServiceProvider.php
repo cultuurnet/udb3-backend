@@ -444,7 +444,9 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             fn () => new UpdatePlaceLocality(
                 $container->get('event_command_bus'),
                 $container->get(PlacesSapi3SearchService::class),
-                $container->get('place_jsonld_repository')
+                $container->get('place_jsonld_repository'),
+                $container->get(OrganizersSapi3SearchService::class),
+                $container->get('organizer_jsonld_repository'),
             )
         );
 
