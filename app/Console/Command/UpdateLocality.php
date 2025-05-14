@@ -124,16 +124,11 @@ final class UpdateLocality extends AbstractCommand
             return self::SUCCESS;
         }
 
-        $searchResultsGenerator = $itemType->sameAs(ItemType::place()) ?
-            $this->searchPlaceResultsGenerator : $this->searchOrganizerResultsGenerator;
-
-        foreach ($searchResultsGenerator->search($query) as $item) {
+        foreach ($this->getSearchResultsGenerator($itemType)->search($query) as $item) {
             try {
                 $itemId = $item->getId();
 
-                $document = $itemType->sameAs(ItemType::place()) ?
-                    $this->documentPlaceRepository->fetch($itemId) :
-                $this->documentOrganizerRepository->fetch($itemId);
+                $document = $this->getDocumentRepository($itemType)->fetch($itemId);
                 $jsonLd = Json::decodeAssociatively($document->getRawBody());
 
                 if (!isset(
@@ -151,18 +146,8 @@ final class UpdateLocality extends AbstractCommand
                     new CountryCode($jsonLd['address']['nl']['addressCountry'])
                 );
 
-                $command = $itemType->sameAs(ItemType::place()) ? new UpdatePlaceAddress(
-                    $item->getId(),
-                    $address,
-                    new Language('nl')
-                ) :
-                    new UpdateOrganizerAddress(
-                        $item->getId(),
-                        $address,
-                        new Language('nl')
-                    )
-                ;
-                $output->writeln('Dispatching UpdateAddress for place with id ' . $command->getItemId());
+                $command = $this->getUpdateAddress($itemType, $itemId, $address);
+                $output->writeln('Dispatching UpdateAddress for ' . $itemType->toString() . ' with id ' . $command->getItemId());
 
                 if (!$input->getOption(self::DRY_RUN)) {
                     $this->commandBus->dispatch($command);
@@ -190,5 +175,33 @@ final class UpdateLocality extends AbstractCommand
                     true
                 )
             );
+    }
+
+    private function getSearchResultsGenerator(ItemType $itemType): ResultsGeneratorInterface
+    {
+        return $itemType->sameAs(ItemType::place()) ? $this->searchPlaceResultsGenerator : $this->searchOrganizerResultsGenerator;
+    }
+
+    private function getDocumentRepository(ItemType $itemType): DocumentRepository
+    {
+        return $itemType->sameAs(ItemType::place()) ? $this->documentPlaceRepository : $this->documentOrganizerRepository;
+    }
+
+    /**
+     * @return UpdatePlaceAddress|UpdateOrganizerAddress
+     */
+    private function getUpdateAddress(ItemType $itemType, string $itemId, Address $address)
+    {
+        return $itemType->sameAs(ItemType::place()) ? new UpdatePlaceAddress(
+            $itemId,
+            $address,
+            new Language('nl')
+        ) :
+            new UpdateOrganizerAddress(
+                $itemId,
+                $address,
+                new Language('nl')
+            )
+        ;
     }
 }
