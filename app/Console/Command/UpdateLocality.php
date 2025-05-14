@@ -27,7 +27,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 
-final class UpdatePlaceLocality extends AbstractCommand
+final class UpdateLocality extends AbstractCommand
 {
     private const ITEM_TYPE = 'item-type';
 
