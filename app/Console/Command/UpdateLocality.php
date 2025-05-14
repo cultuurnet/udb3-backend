@@ -192,16 +192,16 @@ final class UpdateLocality extends AbstractCommand
      */
     private function getUpdateAddress(ItemType $itemType, string $itemId, Address $address)
     {
-        return $itemType->sameAs(ItemType::place()) ? new UpdatePlaceAddress(
-            $itemId,
-            $address,
-            new Language('nl')
-        ) :
+        return $itemType->sameAs(ItemType::place()) ?
+            new UpdatePlaceAddress(
+                $itemId,
+                $address,
+                new Language('nl')
+            ) :
             new UpdateOrganizerAddress(
                 $itemId,
                 $address,
                 new Language('nl')
-            )
-        ;
+            );
     }
 }
