@@ -117,8 +117,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.label:update-unique',
         'console.organizer:update-unique',
         'console.place:facilities:remove',
-        'console.place:update-locality',
-        'console.organizer:update-locality',
+        'console.update-locality',
         'console.offer:remove-label',
         'console.organizer:remove-label',
         'console.offer:import-auto-classification-labels',
@@ -440,7 +439,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            'console.place:update-locality',
+            'console.update-locality',
             fn () => new UpdateLocality(
                 $container->get('event_command_bus'),
                 $container->get(PlacesSapi3SearchService::class),

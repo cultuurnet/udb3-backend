@@ -71,7 +71,7 @@ final class UpdateLocality extends AbstractCommand
     public function configure(): void
     {
         $this
-            ->setName('place:update-locality')
+            ->setName('update-locality')
             ->setDescription('Update the locality of the places or organizer found by the sapi3 query')
             ->addArgument(
                 self::ITEM_TYPE,
