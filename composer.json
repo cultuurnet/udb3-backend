@@ -61,7 +61,7 @@
     "predis/predis": "~1.0",
     "psr/http-server-middleware": "^1.0",
     "psr/log": "^1.0",
-    "publiq/udb3-json-schemas": "dev-main",
+    "publiq/udb3-json-schemas": "dev-III-6634-bulk-update-labels",
     "ramsey/uuid": "^3.2.0",
     "rase/socket.io-emitter": "0.6.1",
     "sentry/sentry": "^3.6",
