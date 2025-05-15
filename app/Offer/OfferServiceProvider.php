@@ -44,6 +44,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerFromJsonBodyRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
@@ -135,6 +136,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             AddLabelRequestHandler::class,
             RemoveLabelRequestHandler::class,
             AddLabelFromJsonBodyRequestHandler::class,
+            UpdateLabelsRequestHandler::class,
             UpdateBookingInfoRequestHandler::class,
             UpdateContactPointRequestHandler::class,
             UpdateTitleRequestHandler::class,
@@ -419,6 +421,11 @@ final class OfferServiceProvider extends AbstractServiceProvider
                 $container->get('event_command_bus'),
                 new LabelJSONDeserializer()
             )
+        );
+
+        $container->addShared(
+            UpdateLabelsRequestHandler::class,
+            fn () => new UpdateLabelsRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
