@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
@@ -28,10 +30,18 @@ final class UpdateLabelsRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $routeParameters = new RouteParameters($request);
+        $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
 
         /** @var Labels $labels */
         $labels = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(
+                JsonSchemaLocator::getSchemaFileByOfferType(
+                    $offerType,
+                    JsonSchemaLocator::EVENT_LABELS_PUT,
+                    JsonSchemaLocator::PLACE_LABELS_PUT
+                )
+            ),
             new DenormalizingRequestBodyParser(new LabelsDenormalizer(), Labels::class)
         )
             ->parse($request)
