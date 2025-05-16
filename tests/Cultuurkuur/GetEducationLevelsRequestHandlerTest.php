@@ -28,8 +28,8 @@ class GetEducationLevelsRequestHandlerTest extends TestCase
         $this->assertArrayHasKey('nl', $json[0]['name']);
         $this->assertArrayHasKey('label', $json[0]);
         $this->assertArrayHasKey('children', $json[0]);
-        $this->assertEquals('Basisonderwijs', $json[0]['name']['nl']);
-        $this->assertEquals('cultuurkuur_basisonderwijs', $json[0]['label']);
+        $this->assertEquals('Gewoon basisonderwijs (kleuter- en basis)', $json[0]['name']['nl']);
+        $this->assertEquals('cultuurkuur_Gewoon-basisonderwijs', $json[0]['label']);
         $this->assertIsArray($json[0]['children']);
     }
 }
