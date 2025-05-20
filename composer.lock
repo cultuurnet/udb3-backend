@@ -5972,12 +5972,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "ae283a294a124c3d18f40fc37ffb72f35f4633c1"
+                "reference": "93ee43fb377d8c3e379d2b04f9cb3d88e9b6ef73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/ae283a294a124c3d18f40fc37ffb72f35f4633c1",
-                "reference": "ae283a294a124c3d18f40fc37ffb72f35f4633c1",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/93ee43fb377d8c3e379d2b04f9cb3d88e9b6ef73",
+                "reference": "93ee43fb377d8c3e379d2b04f9cb3d88e9b6ef73",
                 "shasum": ""
             },
             "default-branch": true,
@@ -5995,9 +5995,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6581-add-groupprice"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6634-bulk-update-labels"
             },
-            "time": "2025-04-04T12:49:46+00:00"
+            "time": "2025-05-14T11:47:06+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailer;
 
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageHasMailsDisabled;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -99,6 +100,7 @@ class MailerServiceProvider extends AbstractServiceProvider
                 return new SendMailsForOwnershipEventHandler(
                     $this->container->get('mails_command_bus'),
                     new DomainMessageIsReplayed(),
+                    new DomainMessageHasMailsDisabled()
                 );
             }
         );
