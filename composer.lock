@@ -5972,12 +5972,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "93ee43fb377d8c3e379d2b04f9cb3d88e9b6ef73"
+                "reference": "7ba9b1590dae5b03c72522badcb4e650d5c469f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/93ee43fb377d8c3e379d2b04f9cb3d88e9b6ef73",
-                "reference": "93ee43fb377d8c3e379d2b04f9cb3d88e9b6ef73",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/7ba9b1590dae5b03c72522badcb4e650d5c469f9",
+                "reference": "7ba9b1590dae5b03c72522badcb4e650d5c469f9",
                 "shasum": ""
             },
             "default-branch": true,
@@ -5995,9 +5995,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6634-bulk-update-labels"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6634/make-labels-optional"
             },
-            "time": "2025-05-14T11:47:06+00:00"
+            "time": "2025-05-27T09:28:29+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
