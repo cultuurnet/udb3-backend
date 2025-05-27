@@ -14,11 +14,12 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Label\LabelsDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
+use CultuurNet\UDB3\Offer\Commands\ReplaceLabels;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class UpdateLabelsRequestHandler implements RequestHandlerInterface
+final class ReplaceLabelsRequestHandler implements RequestHandlerInterface
 {
     private CommandBus $commandBus;
 
@@ -36,6 +37,7 @@ final class UpdateLabelsRequestHandler implements RequestHandlerInterface
         /** @var Labels $labels */
         $labels = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(
+                // Deze validate moet nu ook werken met een lege lijst om alle labels te verwijderen.
                 JsonSchemaLocator::getSchemaFileByOfferType(
                     $offerType,
                     JsonSchemaLocator::EVENT_LABELS_PUT,
@@ -47,7 +49,8 @@ final class UpdateLabelsRequestHandler implements RequestHandlerInterface
             ->parse($request)
             ->getParsedBody();
 
-        $this->commandBus->dispatch(new ImportLabels($offerId, $labels));
+        // Fire hier een nieuw ReplaceLabels commando
+        $this->commandBus->dispatch(new ReplaceLabels($offerId, $labels));
 
         return new NoContentResponse();
     }

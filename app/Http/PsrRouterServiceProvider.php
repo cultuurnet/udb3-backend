@@ -66,7 +66,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
-use CultuurNet\UDB3\Http\Offer\UpdateLabelsRequestHandler;
+use CultuurNet\UDB3\Http\Offer\ReplaceLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerFromJsonBodyRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
@@ -436,7 +436,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
         $router->put('/{offerType:events|places}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
 
-        $router->put('/{offerType:events|places}/{offerId}/labels/', UpdateLabelsRequestHandler::class);
+        $router->put('/{offerType:events|places}/{offerId}/labels/', ReplaceLabelsRequestHandler::class);
         $router->put('/{offerType:events|places}/{offerId}/labels/{labelName}/', AddLabelRequestHandler::class);
         $router->delete('/{offerType:events|places}/{offerId}/labels/{labelName}/', RemoveLabelRequestHandler::class);
 

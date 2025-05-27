@@ -17,14 +17,14 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use PHPUnit\Framework\TestCase;
 
-class UpdateLabelsRequestHandlerTest extends TestCase
+class ReplaceLabelsRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
     use AssertApiProblemTrait;
 
     private TraceableCommandBus $commandBus;
 
-    private UpdateLabelsRequestHandler $updateLabelsRequestHandler;
+    private ReplaceLabelsRequestHandler $updateLabelsRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -34,7 +34,7 @@ class UpdateLabelsRequestHandlerTest extends TestCase
 
         $this->commandBus = new TraceableCommandBus();
 
-        $this->updateLabelsRequestHandler = new UpdateLabelsRequestHandler($this->commandBus);
+        $this->updateLabelsRequestHandler = new ReplaceLabelsRequestHandler($this->commandBus);
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
 
