@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\Offer\Commands\ReplaceLabels;
 use CultuurNet\UDB3\Offer\OfferRepository;
 
-// We hebben een nieuwe ReplaceLabelsHandler nodig
 final class ReplaceLabelsHandler implements CommandHandler
 {
     private OfferRepository $offerRepository;
