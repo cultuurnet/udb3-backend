@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
-use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Offer\Commands\ReplaceLabels;
 use CultuurNet\UDB3\Offer\OfferRepository;
 
