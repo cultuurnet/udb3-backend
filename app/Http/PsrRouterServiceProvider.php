@@ -96,6 +96,7 @@ use CultuurNet\UDB3\Http\Organizer\UpdateContributorsRequestHandler as UpdateCon
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler as UpdateOrganizerDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateEducationalDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateLabelsRequestHandler as UpdateOrganizerLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler as UpdateOrganizerTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
@@ -373,6 +374,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->patch('{organizerId}/images/', UpdateImagesRequestHandler::class);
             $routeGroup->delete('{organizerId}/images/{imageId}/', DeleteImageRequestHandler::class);
 
+            $routeGroup->put('{organizerId}/labels/', UpdateOrganizerLabelsRequestHandler::class);
             $routeGroup->put('{organizerId}/labels/{labelName}/', AddOrganizerLabelRequestHandler::class);
             $routeGroup->delete('{organizerId}/labels/{labelName}/', DeleteLabelRequestHandler::class);
 
