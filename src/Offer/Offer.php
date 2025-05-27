@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
@@ -68,7 +69,6 @@ use CultuurNet\UDB3\Offer\Events\Moderation\AbstractFlaggedAsDuplicate;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractFlaggedAsInappropriate;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractPublished;
 use CultuurNet\UDB3\Offer\Events\Moderation\AbstractRejected;
-use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
@@ -277,15 +277,27 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
+    public function replaceLabels(Labels $importLabelsCollection): void
+    {
+        $this->processLabels($importLabelsCollection, false);
+    }
+
     public function importLabels(Labels $importLabelsCollection): void
     {
+        $this->processLabels($importLabelsCollection, true);
+    }
+
+    private function processLabels(Labels $importLabelsCollection, bool $importFlag): void
+    {
         // Always keep non-imported labels that are already on the offer
-        $keepLabelsCollection = new Labels();
-        foreach ($this->labels->toArray() as $label) {
-            if (!in_array($label['labelName'], $this->importedLabelNames, true)) {
-                $keepLabelsCollection = $keepLabelsCollection->with(
-                    new Label(new LabelName($label['labelName']), $label['isVisible'])
-                );
+        if ($importFlag === true) {
+            $keepLabelsCollection = new Labels();
+            foreach ($this->labels->toArray() as $label) {
+                if (!in_array($label['labelName'], $this->importedLabelNames, true)) {
+                    $keepLabelsCollection = $keepLabelsCollection->with(
+                        new Label(new LabelName($label['labelName']), $label['isVisible'])
+                    );
+                }
             }
         }
 
