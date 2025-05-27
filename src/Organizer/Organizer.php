@@ -476,13 +476,25 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
 
     public function importLabels(Labels $importLabelsCollection): void
     {
-        // Always keep non-imported labels that are already on the organizer.
+        $this->updateLabels($importLabelsCollection, true);
+    }
+
+    public function replaceLabels(Labels $replaceLabelsCollection): void
+    {
+        $this->updateLabels($replaceLabelsCollection, false);
+    }
+
+    private function updateLabels(Labels $importLabelsCollection, bool $keepManualLabels): void
+    {
         $keepLabelsCollection = new Labels();
-        foreach ($this->labels->toArray() as $label) {
-            if (!in_array($label['labelName'], $this->importedLabelNames, true)) {
-                $keepLabelsCollection = $keepLabelsCollection->with(
-                    new Label(new LabelName($label['labelName']), $label['isVisible'])
-                );
+        if ($keepManualLabels) {
+            // Always keep non-imported labels that are already on the organizer.
+            foreach ($this->labels->toArray() as $label) {
+                if (!in_array($label['labelName'], $this->importedLabelNames, true)) {
+                    $keepLabelsCollection = $keepLabelsCollection->with(
+                        new Label(new LabelName($label['labelName']), $label['isVisible'])
+                    );
+                }
             }
         }
 
