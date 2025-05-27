@@ -289,9 +289,11 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
     private function processLabels(Labels $importLabelsCollection, bool $importFlag): void
     {
-        // Always keep non-imported labels that are already on the offer
+        $keepLabelsCollection = new Labels();
+
         if ($importFlag === true) {
-            $keepLabelsCollection = new Labels();
+            // Always keep non-imported labels that are already on the offer
+
             foreach ($this->labels->toArray() as $label) {
                 if (!in_array($label['labelName'], $this->importedLabelNames, true)) {
                     $keepLabelsCollection = $keepLabelsCollection->with(

@@ -70,6 +70,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportVideosHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\ReplaceLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
@@ -314,6 +315,18 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             ImportLabelsHandler::class,
             fn () => new ImportLabelsHandler(
+                $container->get(OfferRepository::class),
+                new LabelImportPreProcessor(
+                    $container->get('labels.constraint_aware_service'),
+                    $container->get(LabelServiceProvider::JSON_READ_REPOSITORY),
+                    $container->get(CurrentUser::class)->getId()
+                )
+            )
+        );
+
+        $container->addShared(
+            ReplaceLabelsHandler::class,
+            fn () => new ReplaceLabelsHandler(
                 $container->get(OfferRepository::class),
                 new LabelImportPreProcessor(
                     $container->get('labels.constraint_aware_service'),
