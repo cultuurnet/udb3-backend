@@ -41,6 +41,7 @@ use CultuurNet\UDB3\Organizer\Events\ImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
+use CultuurNet\UDB3\Organizer\Events\LabelsReplaced;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Organizer\Events\OrganizerImportedFromUDB2;
@@ -247,6 +248,78 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             );
     }
 
+    /**
+     * @test
+     */
+    public function it_replaces_labels(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->id)
+            ->given(
+                [
+                    $this->organizerCreatedWithUniqueWebsite,
+                    new LabelAdded($this->id, 'existing_label_1'),
+                    new LabelAdded($this->id, 'existing_label_2'),
+                ]
+            )
+            ->when(
+                function (Organizer $organizer): void {
+                    $organizer->replaceLabels(
+                        new Labels(
+                            new Label(new LabelName('new_label_1')),
+                            new Label(new LabelName('new_label_2')),
+                            new Label(new LabelName('existing_label_1')),
+                        )
+                    );
+                }
+            )
+            ->then(
+                [
+                    new LabelsReplaced(
+                        $this->id,
+                        ['new_label_1', 'new_label_2'],
+                        []
+                    ),
+                    new LabelRemoved($this->id, 'existing_label_2'),
+                    new LabelAdded($this->id, 'new_label_1'),
+                    new LabelAdded($this->id, 'new_label_2'),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_all_labels(): void
+    {
+        $this->scenario
+            ->withAggregateId($this->id)
+            ->given(
+                [
+                    $this->organizerCreatedWithUniqueWebsite,
+                    new LabelAdded($this->id, 'existing_label_1'),
+                    new LabelAdded($this->id, 'existing_label_2'),
+                ]
+            )
+            ->when(
+                function (Organizer $organizer): void {
+                    $organizer->replaceLabels(
+                        new Labels()
+                    );
+                }
+            )
+            ->then(
+                [
+                    new LabelsReplaced(
+                        $this->id,
+                        [],
+                        []
+                    ),
+                    new LabelRemoved($this->id, 'existing_label_1'),
+                    new LabelRemoved($this->id, 'existing_label_2'),
+                ]
+            );
+    }
 
     /**
      * @test
