@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Offer\Commands\ImportLabels;
+use CultuurNet\UDB3\Offer\Commands\ReplaceLabels;
 use PHPUnit\Framework\TestCase;
 
 class ReplaceLabelsRequestHandlerTest extends TestCase
@@ -57,7 +57,7 @@ class ReplaceLabelsRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             [
-                new ImportLabels(
+                new ReplaceLabels(
                     'd2a039e9-f4d6-4080-ae33-a106b5d3d47b',
                     new Labels(
                         new Label(new LabelName('label1')),
