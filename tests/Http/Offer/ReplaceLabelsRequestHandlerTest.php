@@ -112,7 +112,7 @@ class ReplaceLabelsRequestHandlerTest extends TestCase
      * @test
      * @dataProvider offerTypeProvider
      */
-    public function it_throws_if_no_labels_are_provided(string $offerType): void
+    public function it_handles_if_no_labels_are_provided(string $offerType): void
     {
         $updateLabelsRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
@@ -120,12 +120,8 @@ class ReplaceLabelsRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray(['labels' => []])
             ->build('PUT');
 
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData(
-                new SchemaError('/labels', 'Array should have at least 1 items, 0 found'),
-            ),
-            fn () => $this->updateLabelsRequestHandler->handle($updateLabelsRequest)
-        );
+        $response = $this->updateLabelsRequestHandler->handle($updateLabelsRequest);
+        $this->assertEquals(204, $response->getStatusCode());
     }
 
     public function offerTypeProvider(): array
