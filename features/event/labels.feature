@@ -439,7 +439,7 @@ Feature: Test labelling events
     And I get the event at "%{eventUrl}"
     And the JSON response at "labels" should be:
     """
-    ["%{name}", "public-visible", "private-visible"]
+    ["public-visible", "private-visible"]
     """
     And the JSON response at "hiddenLabels" should be:
     """
