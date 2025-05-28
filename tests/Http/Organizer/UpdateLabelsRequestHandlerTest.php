@@ -14,7 +14,6 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Offer\Commands\ImportLabels;
 use CultuurNet\UDB3\Organizer\Commands\ReplaceLabels;
 use PHPUnit\Framework\TestCase;
 

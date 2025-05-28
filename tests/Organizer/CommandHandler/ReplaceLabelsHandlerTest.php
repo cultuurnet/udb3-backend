@@ -147,7 +147,7 @@ class ReplaceLabelsHandlerTest extends CommandHandlerScenarioTestCase
             )
             ->then([
                 new LabelsReplaced($id, [], []),
-                new LabelRemoved($id, 'allowed')
+                new LabelRemoved($id, 'allowed'),
             ]);
     }
 
