@@ -70,6 +70,7 @@ final class JsonSchemaLocator
     public const ORGANIZER_URL_PUT = 'organizer-url-put.json';
     public const ORGANIZER_CONTACT_POINT_PUT = 'organizer-contactPoint-put.json';
     public const ORGANIZER_IMAGE_POST = 'organizer-image-post.json';
+    public const ORGANIZER_LABELS_PUT = 'organizer-labels-put.json';
     public const ORGANIZER_MAIN_IMAGE_PUT = 'organizer-main-image-put.json';
     public const ORGANIZER_IMAGES_PATCH = 'organizer-images-patch.json';
     public const ORGANIZER_CONTRIBUTORS_PUT = 'organizer-contributors-put.json';
