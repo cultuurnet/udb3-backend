@@ -92,4 +92,9 @@ class Projector extends AbstractProjector
     {
         // This projector does not handle this event, but it is part of abstract projector.
     }
+
+    public function applyLabelsReplaced(LabelsImportedEventInterface $labelsImported, Metadata $metadata): void
+    {
+        // This projector does not handle this event, but it is part of abstract projector.
+    }
 }

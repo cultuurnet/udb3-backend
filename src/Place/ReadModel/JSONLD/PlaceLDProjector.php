@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
 use CultuurNet\UDB3\Completeness\Completeness;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Place\Events\LabelsReplaced;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarNormalizer;
@@ -373,6 +374,11 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     protected function getLabelsImportedClassName(): string
     {
         return LabelsImported::class;
+    }
+
+    protected function getLabelsReplacedClassName(): string
+    {
+        return LabelsReplaced::class;
     }
 
     protected function getImageAddedClassName(): string

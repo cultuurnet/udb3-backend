@@ -83,6 +83,22 @@ class Projector extends AbstractProjector
         }
     }
 
+    public function applyLabelsReplaced(LabelsImportedEventInterface $labelsReplaced, Metadata $metadata): void
+    {
+        foreach ($labelsReplaced->getAllLabelNames() as $labelName) {
+            try {
+                $this->writeRepository->save(
+                    $labelName,
+                    $this->offerTypeResolver->getRelationTypeForReplaceLabel($labelsReplaced),
+                    $labelsReplaced->getItemId(),
+                    true
+                );
+            } catch (UniqueConstraintViolationException $exception) {
+                // By design to catch unique exception.
+            }
+        }
+    }
+
     public function applyEventImportedFromUDB2(
         EventImportedFromUDB2 $eventImportedFromUDB2
     ): void {

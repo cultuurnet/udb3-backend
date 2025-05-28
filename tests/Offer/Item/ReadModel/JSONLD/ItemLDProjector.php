@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Item\ReadModel\JSONLD;
 
+use CultuurNet\UDB3\Event\Events\LabelsReplaced;
 use CultuurNet\UDB3\Offer\Item\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\CalendarUpdated;
@@ -59,6 +60,11 @@ class ItemLDProjector extends OfferLDProjector
     protected function getLabelsImportedClassName(): string
     {
         return LabelsImported::class;
+    }
+
+    protected function getLabelsReplacedClassName(): string
+    {
+        return LabelsReplaced::class;
     }
 
     protected function getImageRemovedClassName(): string

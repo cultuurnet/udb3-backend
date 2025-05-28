@@ -8,15 +8,18 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Event\Events\LabelsImported as LabelsImportedEvent;
+use CultuurNet\UDB3\Event\Events\LabelsReplaced as LabelsReplacedEvent;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded as OfferAbstractLabelAdded;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved as OfferAbstractLabelRemoved;
-use CultuurNet\UDB3\Offer\Events\AbstractLabelsImported;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded as OrganizerLabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved as OrganizerLabelRemoved;
-use CultuurNet\UDB3\Organizer\Events\LabelsImported;
+use CultuurNet\UDB3\Organizer\Events\LabelsImported as OrganizerLabelsImported;
+use CultuurNet\UDB3\Place\Events\LabelsImported as LabelsImportedPlace;
+use CultuurNet\UDB3\Place\Events\LabelsReplaced as LabelsReplacedPlace;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 
 abstract class AbstractProjector implements EventListener
@@ -39,6 +42,11 @@ abstract class AbstractProjector implements EventListener
                 $domainMessage->getPayload(),
                 $domainMessage->getMetadata()
             );
+        } elseif ($this->isLabelsReplaced($payload)) {
+            $this->applyLabelsReplaced(
+                $domainMessage->getPayload(),
+                $domainMessage->getMetadata()
+            );
         } elseif ($this->isLabelsImported($payload)) {
             $this->applyLabelsImported(
                 $domainMessage->getPayload(),
@@ -54,6 +62,7 @@ abstract class AbstractProjector implements EventListener
     abstract public function applyLabelRemoved(LabelEventInterface $labelRemoved, Metadata $metadata): void;
 
     abstract public function applyLabelsImported(LabelsImportedEventInterface $labelsImported, Metadata $metadata): void;
+    abstract public function applyLabelsReplaced(LabelsImportedEventInterface $labelsReplaced, Metadata $metadata): void;
 
     /**
      * @param Serializable|EventCardSystemsUpdated $payload
@@ -78,7 +87,18 @@ abstract class AbstractProjector implements EventListener
      */
     private function isLabelsImported($payload): bool
     {
-        return ($payload instanceof AbstractLabelsImported ||
-            $payload instanceof LabelsImported);
+        return ($payload instanceof LabelsImportedEvent ||
+            $payload instanceof LabelsImportedPlace ||
+            $payload instanceof  OrganizerLabelsImported
+        );
+    }
+
+    /**
+     * @param Serializable|EventCardSystemsUpdated $payload
+     */
+    private function isLabelsReplaced($payload): bool
+    {
+        return ($payload instanceof LabelsReplacedEvent ||
+            $payload instanceof LabelsReplacedPlace);
     }
 }
