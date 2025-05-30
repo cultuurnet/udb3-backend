@@ -241,6 +241,14 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectLabelsReplaced(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Labels vervangen uit JSON-LD')
+        );
+    }
+
     private function projectMainImageSelected(DomainMessage $domainMessage): void
     {
         /* @var MainImageSelected $event */
