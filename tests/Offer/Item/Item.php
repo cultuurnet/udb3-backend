@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Item;
 
-use CultuurNet\UDB3\Event\Events\LabelsReplaced;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -109,11 +108,6 @@ final class Item extends Offer
     protected function createLabelsImportedEvent(Labels $labels): LabelsImported
     {
         return new LabelsImported($this->id, $labels->getVisibleLabels()->toArrayOfStringNames(), $labels->getHiddenLabels()->toArrayOfStringNames());
-    }
-
-    protected function createLabelsReplacedEvent(Labels $labels): LabelsReplaced
-    {
-        return new LabelsReplaced($this->id, $labels->getVisibleLabels()->toArrayOfStringNames(), $labels->getHiddenLabels()->toArrayOfStringNames());
     }
 
     protected function createImageAddedEvent(Image $image): ImageAdded

@@ -16,5 +16,4 @@ interface LabelEventRelationTypeResolverInterface
     public function getRelationType(LabelEventInterface $labelEvent): RelationType;
 
     public function getRelationTypeForImport(LabelsImportedEventInterface $labelsImported): RelationType;
-    public function getRelationTypeForReplaceLabel(LabelsImportedEventInterface $labelsReplaced): RelationType;
 }
