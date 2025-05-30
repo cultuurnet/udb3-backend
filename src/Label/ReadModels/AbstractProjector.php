@@ -13,10 +13,11 @@ use CultuurNet\UDB3\LabelEventInterface;
 use CultuurNet\UDB3\LabelsImportedEventInterface;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelAdded as OfferAbstractLabelAdded;
 use CultuurNet\UDB3\Offer\Events\AbstractLabelRemoved as OfferAbstractLabelRemoved;
-use CultuurNet\UDB3\Offer\Events\AbstractLabelsImported;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded as OrganizerLabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved as OrganizerLabelRemoved;
-use CultuurNet\UDB3\Organizer\Events\LabelsImported;
+use CultuurNet\UDB3\Organizer\Events\LabelsImported as OrganizerLabelsImported;
+use CultuurNet\UDB3\Place\Events\LabelsImported as LabelsImportedPlace;
+use CultuurNet\UDB3\Event\Events\LabelsImported as LabelsImportedEvent;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 
 abstract class AbstractProjector implements EventListener
@@ -78,7 +79,8 @@ abstract class AbstractProjector implements EventListener
      */
     private function isLabelsImported($payload): bool
     {
-        return ($payload instanceof AbstractLabelsImported ||
-            $payload instanceof LabelsImported);
+        return ($payload instanceof LabelsImportedEvent ||
+            $payload instanceof LabelsImportedPlace ||
+            $payload instanceof OrganizerLabelsImported);
     }
 }
