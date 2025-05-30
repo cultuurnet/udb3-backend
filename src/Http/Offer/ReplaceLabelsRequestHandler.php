@@ -36,7 +36,6 @@ final class ReplaceLabelsRequestHandler implements RequestHandlerInterface
         /** @var Labels $labels */
         $labels = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(
-                // Deze validate moet nu ook werken met een lege lijst om alle labels te verwijderen.
                 JsonSchemaLocator::getSchemaFileByOfferType(
                     $offerType,
                     JsonSchemaLocator::EVENT_LABELS_PUT,
@@ -48,7 +47,6 @@ final class ReplaceLabelsRequestHandler implements RequestHandlerInterface
             ->parse($request)
             ->getParsedBody();
 
-        // Fire hier een nieuw ReplaceLabels commando
         $this->commandBus->dispatch(new ReplaceLabels($offerId, $labels));
 
         return new NoContentResponse();
