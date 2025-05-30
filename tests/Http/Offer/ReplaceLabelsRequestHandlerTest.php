@@ -14,17 +14,17 @@ use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Offer\Commands\ImportLabels;
+use CultuurNet\UDB3\Offer\Commands\ReplaceLabels;
 use PHPUnit\Framework\TestCase;
 
-class UpdateLabelsRequestHandlerTest extends TestCase
+class ReplaceLabelsRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
     use AssertApiProblemTrait;
 
     private TraceableCommandBus $commandBus;
 
-    private UpdateLabelsRequestHandler $updateLabelsRequestHandler;
+    private ReplaceLabelsRequestHandler $updateLabelsRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -34,7 +34,7 @@ class UpdateLabelsRequestHandlerTest extends TestCase
 
         $this->commandBus = new TraceableCommandBus();
 
-        $this->updateLabelsRequestHandler = new UpdateLabelsRequestHandler($this->commandBus);
+        $this->updateLabelsRequestHandler = new ReplaceLabelsRequestHandler($this->commandBus);
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
 
@@ -57,7 +57,7 @@ class UpdateLabelsRequestHandlerTest extends TestCase
 
         $this->assertEquals(
             [
-                new ImportLabels(
+                new ReplaceLabels(
                     'd2a039e9-f4d6-4080-ae33-a106b5d3d47b',
                     new Labels(
                         new Label(new LabelName('label1')),
@@ -112,7 +112,7 @@ class UpdateLabelsRequestHandlerTest extends TestCase
      * @test
      * @dataProvider offerTypeProvider
      */
-    public function it_throws_if_no_labels_are_provided(string $offerType): void
+    public function it_handles_if_no_labels_are_provided(string $offerType): void
     {
         $updateLabelsRequest = $this->psr7RequestBuilder
             ->withRouteParameter('offerType', $offerType)
@@ -120,12 +120,8 @@ class UpdateLabelsRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray(['labels' => []])
             ->build('PUT');
 
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData(
-                new SchemaError('/labels', 'Array should have at least 1 items, 0 found'),
-            ),
-            fn () => $this->updateLabelsRequestHandler->handle($updateLabelsRequest)
-        );
+        $response = $this->updateLabelsRequestHandler->handle($updateLabelsRequest);
+        $this->assertEquals(204, $response->getStatusCode());
     }
 
     public function offerTypeProvider(): array

@@ -36,6 +36,7 @@ use CultuurNet\UDB3\Event\Events\ImageUpdated;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LabelsImported;
+use CultuurNet\UDB3\Event\Events\LabelsReplaced;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MainImageSelected;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
@@ -540,6 +541,11 @@ final class Event extends Offer
     protected function createLabelsImportedEvent(Labels $labels): LabelsImported
     {
         return new LabelsImported($this->eventId, $labels->getVisibleLabels()->toArrayOfStringNames(), $labels->getHiddenLabels()->toArrayOfStringNames());
+    }
+
+    protected function createLabelsReplacedEvent(Labels $labels): LabelsReplaced
+    {
+        return new LabelsReplaced($this->eventId, $labels->getVisibleLabels()->toArrayOfStringNames(), $labels->getHiddenLabels()->toArrayOfStringNames());
     }
 
     protected function createImageAddedEvent(Image $image): ImageAdded

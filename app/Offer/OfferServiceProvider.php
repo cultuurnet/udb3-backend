@@ -44,7 +44,7 @@ use CultuurNet\UDB3\Http\Offer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
-use CultuurNet\UDB3\Http\Offer\UpdateLabelsRequestHandler;
+use CultuurNet\UDB3\Http\Offer\ReplaceLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerFromJsonBodyRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
@@ -70,6 +70,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\ImportVideosHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\ReplaceLabelsHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
@@ -136,7 +137,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             AddLabelRequestHandler::class,
             RemoveLabelRequestHandler::class,
             AddLabelFromJsonBodyRequestHandler::class,
-            UpdateLabelsRequestHandler::class,
+            ReplaceLabelsRequestHandler::class,
             UpdateBookingInfoRequestHandler::class,
             UpdateContactPointRequestHandler::class,
             UpdateTitleRequestHandler::class,
@@ -324,6 +325,18 @@ final class OfferServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
+            ReplaceLabelsHandler::class,
+            fn () => new ReplaceLabelsHandler(
+                $container->get(OfferRepository::class),
+                new LabelImportPreProcessor(
+                    $container->get('labels.constraint_aware_service'),
+                    $container->get(LabelServiceProvider::JSON_READ_REPOSITORY),
+                    $container->get(CurrentUser::class)->getId()
+                )
+            )
+        );
+
+        $container->addShared(
             AddVideoHandler::class,
             fn () => new AddVideoHandler($container->get(OfferRepository::class))
         );
@@ -424,8 +437,8 @@ final class OfferServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            UpdateLabelsRequestHandler::class,
-            fn () => new UpdateLabelsRequestHandler($container->get('event_command_bus'))
+            ReplaceLabelsRequestHandler::class,
+            fn () => new ReplaceLabelsRequestHandler($container->get('event_command_bus'))
         );
 
         $container->addShared(
