@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
+use CultuurNet\UDB3\Event\Events\LabelsReplaced;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
@@ -505,6 +506,62 @@ class OfferTest extends AggregateRootScenarioTestCase
                 ),
                 new LabelRemoved($itemId, 'existing_label_4_added_via_import'),
                 new LabelAdded($itemId, 'new_label_1'),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_replace_labels(): void
+    {
+        $itemId = '9538e4b6-2b8c-404c-93dc-e0dccf8eb175';
+
+        $labels = new Labels(
+            new Label(
+                new LabelName('new_label_1'),
+                true
+            ),
+            new Label(
+                new LabelName('existing_label_1_added_via_ui_and_also_in_new_replace'),
+                true
+            ),
+        );
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+                new LabelAdded($itemId, 'existing_label_1_added_via_ui_and_also_in_new_replace'),
+                new LabelAdded($itemId, 'existing_label_2_added_via_ui'),
+                new LabelsReplaced(
+                    $itemId,
+                    [
+                        'existing_label_3_added_via_replace_and_also_in_new_replace',
+                        'existing_label_4_added_via_replace',
+                    ],
+                    []
+                ),
+                new LabelAdded($itemId, 'existing_label_3_added_via_replace'),
+            ])
+            ->when(
+                function (Item $item) use ($labels): void {
+                    $item->replaceLabels($labels);
+                    $item->replaceLabels($labels);
+                }
+            )
+            ->then([
+                new LabelsReplaced(
+                    $itemId,
+                    ['new_label_1'],
+                    []
+                ),
+                new LabelRemoved($itemId, 'existing_label_2_added_via_ui'),
+                new LabelRemoved($itemId, 'existing_label_3_added_via_replace'),
+                new LabelAdded($itemId, 'new_label_1'),
+                new LabelsReplaced(
+                    $itemId,
+                    [],
+                    []
+                ),
             ]);
     }
 
