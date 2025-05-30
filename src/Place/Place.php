@@ -47,6 +47,7 @@ use CultuurNet\UDB3\Place\Events\ImageUpdated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\LabelsImported;
+use CultuurNet\UDB3\Place\Events\LabelsReplaced;
 use CultuurNet\UDB3\Place\Events\MainImageSelected;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
@@ -341,6 +342,15 @@ class Place extends Offer
     protected function createLabelsImportedEvent(Labels $labels): LabelsImported
     {
         return new LabelsImported(
+            $this->placeId,
+            $labels->getVisibleLabels()->toArrayOfStringNames(),
+            $labels->getHiddenLabels()->toArrayOfStringNames()
+        );
+    }
+
+    protected function createLabelsReplacedEvent(Labels $labels): LabelsReplaced
+    {
+        return new LabelsReplaced(
             $this->placeId,
             $labels->getVisibleLabels()->toArrayOfStringNames(),
             $labels->getHiddenLabels()->toArrayOfStringNames()
