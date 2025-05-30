@@ -354,3 +354,140 @@ Feature: Test organizer labels property
       ]
     }
     """
+
+  Scenario: Replace labels as normal user on an organizer without initial labels
+    Given I am authorized as JWT provider v1 user "validator_diest"
+    And I create a minimal organizer and save the "url" as "organizerUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "labels": [
+        "public-visible",
+        "private-visible",
+        "public-invisible",
+        "private-invisible"
+      ]
+    }
+    """
+    And I send a PUT request to "%{organizerUrl}/labels/"
+    Then the response status should be "204"
+    And I get the event at "%{organizerUrl}"
+    And the JSON response at "labels" should be:
+    """
+    ["public-visible"]
+    """
+    And the JSON response at "hiddenLabels" should be:
+    """
+    ["public-invisible"]
+    """
+
+  Scenario: Replace labels as admin on an organizer without initial labels
+    And I create a minimal organizer and save the "url" as "organizerUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "labels": [
+        "public-visible",
+        "private-visible",
+        "public-invisible",
+        "private-invisible"
+      ]
+    }
+    """
+    And I send a PUT request to "%{organizerUrl}/labels/"
+    Then the response status should be "204"
+    And I get the event at "%{organizerUrl}"
+    And the JSON response at "labels" should be:
+    """
+    ["public-visible", "private-visible"]
+    """
+    And the JSON response at "hiddenLabels" should be:
+    """
+    ["public-invisible", "private-invisible"]
+    """
+
+  Scenario: Replace initial manual labels as normal user on an organizer
+    Given I am authorized as JWT provider v1 user "validator_diest"
+    And I create a minimal organizer and save the "url" as "organizerUrl"
+    And I create a random name of 10 characters and keep it as "label1"
+    And I send a PUT request to "%{organizerUrl}/labels/%{label1}"
+    And I create a random name of 10 characters and keep it as "label2"
+    And I send a PUT request to "%{organizerUrl}/labels/%{label2}"
+    And I create a random name of 10 characters and keep it as "label3"
+    And I send a PUT request to "%{organizerUrl}/labels/%{label3}"
+    When I set the JSON request payload to:
+    """
+    {
+      "labels": [
+        "public-visible",
+        "private-visible",
+        "public-invisible",
+        "private-invisible",
+        "%{label3}"
+      ]
+    }
+    """
+    And I send a PUT request to "%{organizerUrl}/labels/"
+    Then the response status should be "204"
+    And I get the event at "%{organizerUrl}"
+    And the JSON response at "labels" should be:
+    """
+    ["%{label3}", "public-visible"]
+    """
+    And the JSON response at "hiddenLabels" should be:
+    """
+    ["public-invisible"]
+    """
+
+  Scenario: Replace initial manual labels but keep private labels as normal user on an organizer
+    Given I am authorized as JWT provider v1 user "validator_diest"
+    And I create a minimal organizer and save the "url" as "organizerUrl"
+    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I send a PUT request to "%{organizerUrl}/labels/private-visible"
+    And I send a PUT request to "%{organizerUrl}/labels/private-invisible"
+    And I create a random name of 10 characters and keep it as "label1"
+    And I send a PUT request to "%{organizerUrl}/labels/%{label1}"
+    And I am authorized as JWT provider v1 user "validator_diest"
+    When I set the JSON request payload to:
+    """
+    {
+      "labels": [
+        "public-visible",
+        "public-invisible",
+        "%{label1}"
+      ]
+    }
+    """
+    And I send a PUT request to "%{organizerUrl}/labels/"
+    Then the response status should be "204"
+    And I get the event at "%{organizerUrl}"
+    And the JSON response at "labels" should be:
+    """
+    ["private-visible", "%{label1}", "public-visible"]
+    """
+    And the JSON response at "hiddenLabels" should be:
+    """
+    ["private-invisible", "public-invisible"]
+    """
+
+  Scenario: Remove all initial manual labels as normal user on an organizer
+    Given I am authorized as JWT provider v1 user "validator_diest"
+    And I create a minimal organizer and save the "url" as "organizerUrl"
+    And I create a random name of 10 characters and keep it as "label1"
+    And I send a PUT request to "%{organizerUrl}/labels/%{label1}"
+    And I create a random name of 10 characters and keep it as "label2"
+    And I send a PUT request to "%{organizerUrl}/labels/%{label2}"
+    And I create a random name of 10 characters and keep it as "label3"
+    And I send a PUT request to "%{organizerUrl}/labels/%{label3}"
+    When I set the JSON request payload to:
+    """
+    {
+      "labels": [
+      ]
+    }
+    """
+    And I send a PUT request to "%{organizerUrl}/labels/"
+    Then the response status should be "204"
+    And I get the event at "%{organizerUrl}"
+    And the JSON response should not have "labels"
+    And the JSON response should not have "hiddenLabels"

@@ -29,6 +29,7 @@ use CultuurNet\UDB3\Http\Organizer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateEducationalDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
@@ -62,6 +63,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             UpdateMainImageRequestHandler::class,
             DeleteImageRequestHandler::class,
             AddLabelRequestHandler::class,
+            UpdateLabelsRequestHandler::class,
             DeleteLabelRequestHandler::class,
             GetPermissionsForCurrentUserRequestHandler::class,
             GetContributorsRequestHandler::class,
@@ -221,6 +223,13 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             AddLabelRequestHandler::class,
             function () use ($container) {
                 return new AddLabelRequestHandler($container->get('event_command_bus'));
+            }
+        );
+
+        $container->addShared(
+            UpdateLabelsRequestHandler::class,
+            function () use ($container) {
+                return new UpdateLabelsRequestHandler($container->get('event_command_bus'));
             }
         );
 
