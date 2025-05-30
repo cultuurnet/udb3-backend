@@ -43,6 +43,7 @@ use CultuurNet\UDB3\Place\Events\ImageUpdated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\LabelsImported;
+use CultuurNet\UDB3\Place\Events\LabelsReplaced;
 use CultuurNet\UDB3\Place\Events\MainImageSelected;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
@@ -373,6 +374,11 @@ class PlaceLDProjector extends OfferLDProjector implements EventListener
     protected function getLabelsImportedClassName(): string
     {
         return LabelsImported::class;
+    }
+
+    protected function getLabelsReplacedClassName(): string
+    {
+        return LabelsReplaced::class;
     }
 
     protected function getImageAddedClassName(): string

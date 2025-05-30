@@ -38,6 +38,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\Item\Events\ImageAdded;
 use CultuurNet\UDB3\Offer\Item\Events\ImageRemoved;
 use CultuurNet\UDB3\Offer\Item\Events\ImageUpdated;
+use CultuurNet\UDB3\Offer\Item\Events\LabelsReplaced;
 
 class ItemLDProjector extends OfferLDProjector
 {
@@ -59,6 +60,11 @@ class ItemLDProjector extends OfferLDProjector
     protected function getLabelsImportedClassName(): string
     {
         return LabelsImported::class;
+    }
+
+    protected function getLabelsReplacedClassName(): string
+    {
+        return LabelsReplaced::class;
     }
 
     protected function getImageRemovedClassName(): string
