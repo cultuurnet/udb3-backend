@@ -219,6 +219,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     abstract protected function getLabelsImportedClassName(): string;
 
+    abstract protected function getLabelsReplacedClassName(): string;
+
     abstract protected function getImageAddedClassName(): string;
 
     abstract protected function getImageRemovedClassName(): string;
@@ -383,6 +385,12 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     protected function applyLabelsImported(AbstractLabelsImported $labelsImported): JsonDocument
+    {
+        // Just return the JSON body without any changes, but this triggers a playhead update.
+        return $this->loadDocumentFromRepository($labelsImported);
+    }
+
+    protected function applyLabelsReplaced(AbstractLabelsImported $labelsImported): JsonDocument
     {
         // Just return the JSON body without any changes, but this triggers a playhead update.
         return $this->loadDocumentFromRepository($labelsImported);
