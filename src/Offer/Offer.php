@@ -319,16 +319,17 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         foreach ($addedLabels->toArray() as $addedLabel) {
             $importLabels = $importLabels->with($addedLabel);
         }
-        if ($importFlag || $importLabels->count() > 0) {
-            if ($importFlag) {
-                $this->apply(
-                    $this->createLabelsImportedEvent($importLabels)
-                );
-            } else {
-                $this->apply(
-                    $this->createLabelsReplacedEvent($importLabels)
-                );
-            }
+
+        if ($importFlag && $importLabels->count() > 0) {
+            $this->apply(
+                $this->createLabelsImportedEvent($importLabels)
+            );
+        }
+
+        if (!$importFlag) {
+            $this->apply(
+                $this->createLabelsReplacedEvent($importLabels)
+            );
         }
 
         // What are the deleted labels?
