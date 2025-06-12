@@ -522,7 +522,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 true
             ),
             new Label(
-                new LabelName('existing_label_1_added_via_ui_and_also_in_new_replace'),
+                new LabelName('existing_label_1_added_via_ui_and_also_added_in_new_replace_command'),
                 true
             ),
         );
@@ -535,7 +535,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                 new LabelsReplaced(
                     $itemId,
                     [
-                        'existing_label_1_added_via_ui_and_also_added_in_new_replace_command',
+                        'existing_label_3_added_via_replace_and_also_in_new_replace',
                         'existing_label_4_added_via_replace',
                     ],
                     []
