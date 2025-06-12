@@ -530,12 +530,12 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 new ItemCreated($itemId),
-                new LabelAdded($itemId, 'existing_label_1_added_via_ui_and_also_in_new_replace'),
+                new LabelAdded($itemId, 'existing_label_1_added_via_ui_and_also_added_in_new_replace_command'),
                 new LabelAdded($itemId, 'existing_label_2_added_via_ui'),
                 new LabelsReplaced(
                     $itemId,
                     [
-                        'existing_label_3_added_via_replace_and_also_in_new_replace',
+                        'existing_label_1_added_via_ui_and_also_added_in_new_replace_command',
                         'existing_label_4_added_via_replace',
                     ],
                     []
