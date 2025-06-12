@@ -463,15 +463,15 @@ class OfferTest extends AggregateRootScenarioTestCase
 
         $labels = new Labels(
             new Label(
-                new LabelName('new_label_1'),
+                new LabelName('new_label'),
                 true
             ),
             new Label(
-                new LabelName('existing_label_1_added_via_ui_and_also_in_new_import'),
+                new LabelName('existing_label_added_via_ui_and_also_in_new_import'),
                 true
             ),
             new Label(
-                new LabelName('existing_label_3_added_via_import_and_also_in_new_import'),
+                new LabelName('existing_label_added_via_import_and_also_in_new_import'),
                 true
             )
         );
@@ -479,18 +479,18 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 new ItemCreated($itemId),
-                new LabelAdded($itemId, 'existing_label_1_added_via_ui_and_also_in_new_import'),
-                new LabelAdded($itemId, 'existing_label_2_added_via_ui'),
+                new LabelAdded($itemId, 'existing_label_added_via_ui_and_also_in_new_import'),
+                new LabelAdded($itemId, 'existing_label_added_via_ui'),
                 new LabelsImported(
                     $itemId,
                     [
-                        'existing_label_3_added_via_import_and_also_in_new_import',
-                        'existing_label_4_added_via_import',
+                        'existing_label_added_via_import_and_also_in_new_import',
+                        'existing_label_added_via_import',
                     ],
                     []
                 ),
-                new LabelAdded($itemId, 'existing_label_3_added_via_import_and_also_in_new_import'),
-                new LabelAdded($itemId, 'existing_label_4_added_via_import'),
+                new LabelAdded($itemId, 'existing_label_added_via_import_and_also_in_new_import'),
+                new LabelAdded($itemId, 'existing_label_added_via_import'),
             ])
             ->when(
                 function (Item $item) use ($labels): void {
@@ -500,11 +500,11 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->then([
                 new LabelsImported(
                     $itemId,
-                    ['new_label_1'],
+                    ['new_label'],
                     []
                 ),
-                new LabelRemoved($itemId, 'existing_label_4_added_via_import'),
-                new LabelAdded($itemId, 'new_label_1'),
+                new LabelRemoved($itemId, 'existing_label_added_via_import'),
+                new LabelAdded($itemId, 'new_label'),
             ]);
     }
 
