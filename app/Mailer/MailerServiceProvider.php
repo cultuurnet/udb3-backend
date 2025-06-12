@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Mailer;
 
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageHasMailsDisabled;
 use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -32,7 +33,6 @@ class MailerServiceProvider extends AbstractServiceProvider
             Mailer::class,
             SendOwnershipMailCommandHandler::class,
             SendMailsForOwnershipEventHandler::class,
-            MailsSentRepository::class,
         ];
     }
 
@@ -55,13 +55,6 @@ class MailerServiceProvider extends AbstractServiceProvider
             }
         );
 
-        $container->addShared(
-            MailsSentRepository::class,
-            function () use ($container): MailsSentRepository {
-                return new DBALMailsSentRepository($container->get('dbal_connection'));
-            }
-        );
-
         $logger = LoggerFactory::create($this->container, LoggerName::forResqueWorker('mails'));
 
         $container->addShared(
@@ -69,7 +62,6 @@ class MailerServiceProvider extends AbstractServiceProvider
             function () use ($logger): SendOwnershipMailCommandHandler {
                 return new SendOwnershipMailCommandHandler(
                     $this->container->get(Mailer::class),
-                    $this->container->get(MailsSentRepository::class),
                     new TwigEnvironment(
                         new FilesystemLoader(__DIR__ . '/../../src/Mailer/templates'),
                     ),
@@ -108,6 +100,7 @@ class MailerServiceProvider extends AbstractServiceProvider
                 return new SendMailsForOwnershipEventHandler(
                     $this->container->get('mails_command_bus'),
                     new DomainMessageIsReplayed(),
+                    new DomainMessageHasMailsDisabled()
                 );
             }
         );

@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\ReplaceLabelsHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContributorsHandler;
@@ -41,6 +42,7 @@ final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
             AddLabelHandler::class,
             RemoveLabelHandler::class,
             ImportLabelsHandler::class,
+            ReplaceLabelsHandler::class,
             UpdateTitleHandler::class,
             UpdateDescriptionHandler::class,
             DeleteDescriptionHandler::class,
@@ -96,6 +98,20 @@ final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
             ImportLabelsHandler::class,
             function () use ($container) {
                 return new ImportLabelsHandler(
+                    $container->get('organizer_repository'),
+                    new LabelImportPreProcessor(
+                        $container->get('labels.constraint_aware_service'),
+                        $container->get(LabelServiceProvider::JSON_READ_REPOSITORY),
+                        $container->get(CurrentUser::class)->getId()
+                    )
+                );
+            }
+        );
+
+        $container->addShared(
+            ReplaceLabelsHandler::class,
+            function () use ($container) {
+                return new ReplaceLabelsHandler(
                     $container->get('organizer_repository'),
                     new LabelImportPreProcessor(
                         $container->get('labels.constraint_aware_service'),

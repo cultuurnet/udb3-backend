@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use function PHPUnit\Framework\assertCount;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertStringMatchesFormat;
 
 trait MailSteps
 {
@@ -13,26 +15,35 @@ trait MailSteps
      */
     public function aMailHasBeenSentFromToWith(string $messageType, string $from, string $to, string $subject): void
     {
-        $mailobject = $this->getMailClient()->getLatestEmail();
+        $subject = $this->variableState->replaceVariables($subject);
+        $mailObjects = $this->getMailClient()->searchMails(
+            'from:' . $from .
+            ' to:' . $to .
+            ' subject:' . $subject
+        );
+        assertCount(1, $mailObjects);
+        $mailobject = $mailObjects[0];
         assertEquals($from, $mailobject->getFrom()->toString());
         assertEquals($to, $mailobject->getTo()->getByIndex(0)->toString());
         assertEquals($subject, $mailobject->getSubject());
-        assertEquals(
-            $this->removeCarriageReturn($this->fixtures->loadMail($messageType)),
-            $this->removeCarriageReturn($this->removeUuidFilePattern($mailobject->getContent()))
+        assertStringMatchesFormat(
+            $this->fixtures->loadMail($messageType, $this->variableState),
+            $mailobject->getContent()
         );
     }
 
-    private function removeUuidFilePattern(string $value): string
+    /**
+     * @When I wait till there are :count mails in the mailbox
+     */
+    public function iWaitTillThereAreMailsInTheMailbox(int $count): void
     {
-        $uuidFilePattern = '/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(pdf|xlsx|json)/i';
-        return preg_replace($uuidFilePattern, '', $value);
-    }
-
-    // This is needed the handle some quirky differences
-    // between MacOS & Jenkins/Linux on the CI-pipeline.
-    private function removeCarriageReturn(string $value): string
-    {
-        return str_replace("\r\n", "\n", $value);
+        $elapsedTime = 0;
+        do {
+            $messagesCount = $this->getMailClient()->getMailCount();
+            if ($messagesCount != $count) {
+                sleep(1);
+                $elapsedTime++;
+            }
+        } while ($messagesCount != $count && $elapsedTime++ < 5);
     }
 }

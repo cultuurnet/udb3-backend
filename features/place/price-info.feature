@@ -394,6 +394,92 @@ Feature: Test place priceInfo property
     ]
     """
 
+  Scenario: Update place with group price category
+    When I set the JSON request payload to:
+    """
+    [
+      {
+       "category": "base",
+       "name": {
+         "nl": "Basistarief",
+         "fr": "Tarif de base",
+         "en": "Base tariff",
+         "de": "Basisrate"
+       },
+       "price": 300,
+       "priceCurrency": "EUR",
+       "groupPrice": true
+      },
+      {
+       "category": "tariff",
+       "name": {
+         "nl": "Individuen",
+         "fr": "Individus",
+         "en": "Individuals",
+         "de": "Einzelpersonen"
+       },
+       "price": 20,
+       "priceCurrency": "EUR",
+       "groupPrice": true
+      },
+      {
+       "category": "tariff",
+       "name": {
+         "nl": "Leraren",
+         "fr": "Enseignants",
+         "en": "Teachers",
+         "de": "Lehrer"
+       },
+       "price": 150,
+       "priceCurrency": "EUR",
+       "groupPrice": false
+      }
+    ]
+    """
+    And I send a PUT request to "%{placeUrl}/priceInfo"
+    Then the response status should be "204"
+    When I get the place at "%{placeUrl}"
+    Then the JSON response at "priceInfo" should be:
+    """
+    [
+      {
+       "category": "base",
+       "name": {
+         "nl": "Basistarief",
+         "fr": "Tarif de base",
+         "en": "Base tariff",
+         "de": "Basisrate"
+       },
+       "price": 300,
+       "priceCurrency": "EUR",
+       "groupPrice": true
+      },
+      {
+       "category": "tariff",
+       "name": {
+         "nl": "Individuen",
+         "fr": "Individus",
+         "en": "Individuals",
+         "de": "Einzelpersonen"
+       },
+       "price": 20,
+       "priceCurrency": "EUR",
+       "groupPrice": true
+      },
+      {
+       "category": "tariff",
+       "name": {
+         "nl": "Leraren",
+         "fr": "Enseignants",
+         "en": "Teachers",
+         "de": "Lehrer"
+       },
+       "price": 150,
+       "priceCurrency": "EUR"
+      }
+    ]
+    """
+
   Scenario: Try creating an place with duplicate tariff names
     Given I set the JSON request payload from "places/place-with-duplicate-tariff-names.json"
     When I send a POST request to "/places/"

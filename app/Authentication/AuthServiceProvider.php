@@ -85,6 +85,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                 $authenticator->addPublicRoute('~^/jobs~', ['GET']);
                 $authenticator->addPublicRoute('~^/uitpas~', ['GET']);
                 $authenticator->addPublicRoute('~^/news-articles~', ['GET', 'DELETE', 'POST', 'PUT']);
+                $authenticator->addPublicRoute('~^/cultuurkuur~', ['GET']);
 
                 // Legacy URLs that get rewritten. Still needed when we're still using the Silex router because in Silex
                 // the rewrite happens after the auth check. But can be removed once we use the new PSR router for all

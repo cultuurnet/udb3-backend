@@ -52,6 +52,7 @@ use CultuurNet\UDB3\Offer\Item\Events\ImageRemoved;
 use CultuurNet\UDB3\Offer\Item\Events\LabelAdded;
 use CultuurNet\UDB3\Offer\Item\Events\LabelRemoved;
 use CultuurNet\UDB3\Offer\Item\Events\LabelsImported;
+use CultuurNet\UDB3\Offer\Item\Events\LabelsReplaced;
 use CultuurNet\UDB3\Offer\Item\Events\MainImageSelected;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\Approved;
 use CultuurNet\UDB3\Offer\Item\Events\Moderation\FlaggedAsDuplicate;
@@ -516,6 +517,41 @@ class OfferLDProjectorTest extends TestCase
         $this->documentRepository->save($initialDocument);
 
         $labelsImported = new LabelsImported(
+            'foo',
+            ['label B'],
+            ['label D']
+        );
+
+        $body = $this->project($labelsImported, 'foo', null, $this->recordedOn->toBroadwayDateTime());
+
+        $this->assertEquals(
+            (object) [
+                'labels' => ['label A'],
+                'hiddenLabels' => ['label C'],
+                'modified' => $this->recordedOn->toString(),
+                'playhead' => 1,
+                'completeness' => 0,
+            ],
+            $body
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_playhead_on_labels_replaced(): void
+    {
+        $initialDocument = new JsonDocument(
+            'foo',
+            Json::encode([
+                'labels' => ['label A'],
+                'hiddenLabels' => ['label C'],
+            ])
+        );
+
+        $this->documentRepository->save($initialDocument);
+
+        $labelsImported = new LabelsReplaced(
             'foo',
             ['label B'],
             ['label D']

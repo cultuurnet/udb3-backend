@@ -43,6 +43,7 @@ use CultuurNet\UDB3\Organizer\Events\ImageUpdated;
 use CultuurNet\UDB3\Organizer\Events\LabelAdded;
 use CultuurNet\UDB3\Organizer\Events\LabelRemoved;
 use CultuurNet\UDB3\Organizer\Events\LabelsImported;
+use CultuurNet\UDB3\Organizer\Events\LabelsReplaced;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreated;
 use CultuurNet\UDB3\Organizer\Events\OrganizerCreatedWithUniqueWebsite;
 use CultuurNet\UDB3\Organizer\Events\OrganizerDeleted;
@@ -476,13 +477,25 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
 
     public function importLabels(Labels $importLabelsCollection): void
     {
-        // Always keep non-imported labels that are already on the organizer.
+        $this->updateLabels($importLabelsCollection, true);
+    }
+
+    public function replaceLabels(Labels $replaceLabelsCollection): void
+    {
+        $this->updateLabels($replaceLabelsCollection, false);
+    }
+
+    private function updateLabels(Labels $importLabelsCollection, bool $keepManualLabels): void
+    {
         $keepLabelsCollection = new Labels();
-        foreach ($this->labels->toArray() as $label) {
-            if (!in_array($label['labelName'], $this->importedLabelNames, true)) {
-                $keepLabelsCollection = $keepLabelsCollection->with(
-                    new Label(new LabelName($label['labelName']), $label['isVisible'])
-                );
+        if ($keepManualLabels) {
+            // Always keep non-imported labels that are already on the organizer.
+            foreach ($this->labels->toArray() as $label) {
+                if (!in_array($label['labelName'], $this->importedLabelNames, true)) {
+                    $keepLabelsCollection = $keepLabelsCollection->with(
+                        new Label(new LabelName($label['labelName']), $label['isVisible'])
+                    );
+                }
             }
         }
 
@@ -502,12 +515,21 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         foreach ($addedLabels->toArray() as $addedLabel) {
             $importLabels = $importLabels->with($addedLabel);
         }
-        if ($importLabels->count() > 0) {
+        if ($keepManualLabels && $importLabels->count() > 0) {
             $this->apply(new LabelsImported(
                 $this->actorId,
                 $importLabels->getVisibleLabels()->toArrayOfStringNames(),
                 $importLabels->getHiddenLabels()->toArrayOfStringNames()
             ));
+        }
+        if (!$keepManualLabels) {
+            $this->apply(
+                new LabelsReplaced(
+                    $this->actorId,
+                    $importLabels->getVisibleLabels()->toArrayOfStringNames(),
+                    $importLabels->getHiddenLabels()->toArrayOfStringNames()
+                )
+            );
         }
 
         // What are the deleted labels?

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http;
 
 use Broadway\EventHandling\EventBus;
+use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Http\Curators\CreateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\DeleteNewsArticleRequestHandler;
@@ -25,6 +27,13 @@ use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
+use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
+use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
+use CultuurNet\UDB3\Http\Label\GetLabelRequestHandler;
+use CultuurNet\UDB3\Http\Label\PatchLabelRequestHandler;
+use CultuurNet\UDB3\Http\Label\SearchLabelsRequestHandler;
+use CultuurNet\UDB3\Http\Media\GetMediaRequestHandler;
+use CultuurNet\UDB3\Http\Media\UploadMediaRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelRequestHandler;
@@ -33,17 +42,17 @@ use CultuurNet\UDB3\Http\Offer\AddLabelToQueryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\CurrentUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteDescriptionRequestHandler as DeleteDescriptionOfferRequestHandler;
-use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteOrganizerRequestHandler as DeleteOfferOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Offer\DeleteRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\DeleteVideoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetCalendarSummaryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetContributorsRequestHandler;
+use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetHistoryRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GetPermissionsForGivenUserRequestHandler;
 use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
-use CultuurNet\UDB3\Http\Offer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveLabelRequestHandler;
@@ -53,9 +62,11 @@ use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingInfoRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Offer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
+use CultuurNet\UDB3\Http\Offer\ReplaceLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerFromJsonBodyRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
@@ -65,19 +76,50 @@ use CultuurNet\UDB3\Http\Offer\UpdateTypeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateTypicalAgeRangeRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateVideosRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateWorkflowStatusRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler as AddOrganizerImageRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler as AddOrganizerLabelRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteEducationalDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetContributorsRequestHandler as GetContributorsOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetCreatorRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler as GetOrganizerPermissionsForCurrentUserRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler as GetOrganizerPermissionsForGivenUserRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler as UpdateOrganizerAddressRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler as UpdateOrganizerContactPointRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateContributorsRequestHandler as UpdateContributorsOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler as UpdateOrganizerDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateEducationalDescriptionRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateLabelsRequestHandler as UpdateOrganizerLabelsRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler as UpdateOrganizerTitleRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\ApproveOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\DeleteOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\GetOwnershipRequestHandler;
-use CultuurNet\UDB3\Http\Ownership\SuggestOwnershipsRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\RejectOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\RequestOwnershipRequestHandler;
 use CultuurNet\UDB3\Http\Ownership\SearchOwnershipRequestHandler;
+use CultuurNet\UDB3\Http\Ownership\SuggestOwnershipsRequestHandler;
 use CultuurNet\UDB3\Http\Place\GetEventsRequestHandler;
+use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateAddressRequestHandler as UpdatePlaceAddressRequestHandler;
 use CultuurNet\UDB3\Http\Place\UpdateMajorInfoRequestHandler as UpdatePlaceMajorInfoRequestHandler;
+use CultuurNet\UDB3\Http\Productions\AddEventToProductionRequestHandler;
+use CultuurNet\UDB3\Http\Productions\CreateProductionRequestHandler;
+use CultuurNet\UDB3\Http\Productions\MergeProductionsRequestHandler;
+use CultuurNet\UDB3\Http\Productions\RemoveEventFromProductionRequestHandler;
+use CultuurNet\UDB3\Http\Productions\RenameProductionRequestHandler;
+use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
+use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
+use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
+use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
 use CultuurNet\UDB3\Http\Role\AddConstraintRequestHandler;
 use CultuurNet\UDB3\Http\Role\AddLabelToRoleRequestHandler;
 use CultuurNet\UDB3\Http\Role\AddPermissionToRoleRequestHandler;
@@ -104,47 +146,9 @@ use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\UpdateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
-use CultuurNet\UDB3\Container\AbstractServiceProvider;
-use CultuurNet\UDB3\Error\WebErrorHandler;
-use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
-use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
-use CultuurNet\UDB3\Http\Label\GetLabelRequestHandler;
-use CultuurNet\UDB3\Http\Label\PatchLabelRequestHandler;
-use CultuurNet\UDB3\Http\Label\SearchLabelsRequestHandler;
-use CultuurNet\UDB3\Http\Media\GetMediaRequestHandler;
-use CultuurNet\UDB3\Http\Media\UploadMediaRequestHandler;
-use CultuurNet\UDB3\Http\Offer\GetDetailRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\AddImageRequestHandler as AddOrganizerImageRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\AddLabelRequestHandler as AddOrganizerLabelRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\DeleteAddressRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\DeleteDescriptionRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\GetContributorsRequestHandler as GetContributorsOrganizerRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler as GetOrganizerPermissionsForCurrentUserRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler as GetOrganizerPermissionsForGivenUserRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\UpdateContributorsRequestHandler as UpdateContributorsOrganizerRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler as UpdateOrganizerAddressRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\UpdateContactPointRequestHandler as UpdateOrganizerContactPointRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\UpdateDescriptionRequestHandler as UpdateOrganizerDescriptionRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\UpdateImagesRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler as UpdateOrganizerTitleRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
-use CultuurNet\UDB3\Http\Place\ImportPlaceRequestHandler;
-use CultuurNet\UDB3\Http\Productions\AddEventToProductionRequestHandler;
-use CultuurNet\UDB3\Http\Productions\CreateProductionRequestHandler;
-use CultuurNet\UDB3\Http\Productions\MergeProductionsRequestHandler;
-use CultuurNet\UDB3\Http\Productions\RemoveEventFromProductionRequestHandler;
-use CultuurNet\UDB3\Http\Productions\RenameProductionRequestHandler;
-use CultuurNet\UDB3\Http\Productions\SearchProductionsRequestHandler;
-use CultuurNet\UDB3\Http\Productions\SkipEventsRequestHandler;
-use CultuurNet\UDB3\Http\Productions\SuggestProductionRequestHandler;
-use CultuurNet\UDB3\Http\Proxy\ProxyRequestHandler;
 use CultuurNet\UDB3\Mailinglist\SubscribeUserToMailinglistRequestHandler;
+use CultuurNet\UDB3\Cultuurkuur\GetEducationLevelsRequestHandler;
+use CultuurNet\UDB3\Cultuurkuur\GetRegionsRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
@@ -224,6 +228,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
                 $this->bindUiTPASOrganizers($router);
 
                 $this->bindMailinglist($router);
+
+                $this->bindCultuurkuurEndpoints($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
@@ -368,6 +374,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->patch('{organizerId}/images/', UpdateImagesRequestHandler::class);
             $routeGroup->delete('{organizerId}/images/{imageId}/', DeleteImageRequestHandler::class);
 
+            $routeGroup->put('{organizerId}/labels/', UpdateOrganizerLabelsRequestHandler::class);
             $routeGroup->put('{organizerId}/labels/{labelName}/', AddOrganizerLabelRequestHandler::class);
             $routeGroup->delete('{organizerId}/labels/{labelName}/', DeleteLabelRequestHandler::class);
 
@@ -431,6 +438,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
         $router->put('/{offerType:events|places}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
 
+        $router->put('/{offerType:events|places}/{offerId}/labels/', ReplaceLabelsRequestHandler::class);
         $router->put('/{offerType:events|places}/{offerId}/labels/{labelName}/', AddLabelRequestHandler::class);
         $router->delete('/{offerType:events|places}/{offerId}/labels/{labelName}/', RemoveLabelRequestHandler::class);
 
@@ -595,5 +603,13 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
     private function bindMailinglist(Router $router): void
     {
         $router->put('mailing-list/{mailingListId}/', SubscribeUserToMailinglistRequestHandler::class);
+    }
+
+    private function bindCultuurkuurEndpoints(Router $router): void
+    {
+        $router->group('cultuurkuur', function (RouteGroup $routeGroup): void {
+            $routeGroup->get('regions/', GetRegionsRequestHandler::class);
+            $routeGroup->get('education-levels/', GetEducationLevelsRequestHandler::class);
+        });
     }
 }

@@ -10,9 +10,7 @@ use CultuurNet\UDB3\Mailer\Command\SendOwnershipRejectedMail;
 use CultuurNet\UDB3\Mailer\Command\SendOwnershipRequestedMail;
 use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Mailer;
-use CultuurNet\UDB3\Mailer\MailsSentRepository;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\RecipientStrategy;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
@@ -34,8 +32,6 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
 
     /** @var Mailer|MockObject */
     private $mailer;
-    /** @var MailsSentRepository|MockObject */
-    private $mailsSentRepository;
     private SendOwnershipMailCommandHandler $commandHandler;
     /** @var OwnershipSearchRepository|MockObject */
     private $ownershipSearchRepository;
@@ -53,7 +49,6 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->mailer = $this->createMock(Mailer::class);
-        $this->mailsSentRepository = $this->createMock(MailsSentRepository::class);
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
         $this->twig = $this->createMock(TwigEnvironment::class);
         $this->logger = $this->createMock(LoggerInterface::class);
@@ -63,7 +58,6 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
 
         $this->commandHandler = new SendOwnershipMailCommandHandler(
             $this->mailer,
-            $this->mailsSentRepository,
             $this->twig,
             $this->ownershipSearchRepository,
             $this->ownershipMailParamExtractor,
@@ -82,21 +76,6 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
         $organizerName = 'Publiq VZW';
         $name = 'Grote smurf';
         $email = new EmailAddress('grotesmurf@publiq.be');
-
-        $this->mailsSentRepository
-            ->expects($this->once())
-            ->method('isMailSent')
-            ->with(new Uuid(self::OWNERSHIP_ITEM_ID), get_class($command))
-            ->willReturn(false);
-
-        $this->mailsSentRepository
-            ->expects($this->once())
-            ->method('addMailSent')
-            ->with(
-                new Uuid(self::OWNERSHIP_ITEM_ID),
-                $email,
-                get_class($command)
-            );
 
         $ownershipItem = new OwnershipItem(
             self::OWNERSHIP_ITEM_ID,
@@ -186,7 +165,7 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             'OwnershipRequested' => [
                 new SendOwnershipRequestedMail(self::OWNERSHIP_ITEM_ID),
                 self::CREATOR_ID,
-                'Beheers aanvraag voor organisatie Publiq VZW',
+                'Beheeraanvraag voor organisatie Publiq VZW',
             ],
             'OwnershipApproved' => [
                 new SendOwnershipAcceptedMail(self::OWNERSHIP_ITEM_ID),
@@ -196,47 +175,14 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
             'OwnershipRejected' => [
                 new SendOwnershipRejectedMail(self::OWNERSHIP_ITEM_ID),
                 self::REQUESTER_ID,
-                'Je beheersaanvraag voor organisatie Publiq VZW is geweigerd',
+                'Je beheeraanvraag voor organisatie Publiq VZW is geweigerd',
             ],
         ];
     }
 
     /** @test */
-    public function it_handles_mail_already_sent(): void
-    {
-        $id = self::OWNERSHIP_ITEM_ID;
-
-        $this->mailsSentRepository
-            ->expects($this->once())
-            ->method('isMailSent')
-            ->with(new Uuid(self::OWNERSHIP_ITEM_ID), SendOwnershipRequestedMail::class)
-            ->willReturn(true);
-
-        $this->mailsSentRepository
-            ->expects($this->never())
-            ->method('addMailSent');
-
-        $this->mailer
-            ->expects($this->never())
-            ->method('send');
-
-        $this->logger
-            ->expects($this->once())
-            ->method('info')
-            ->with(sprintf('[ownership-mail] Mail %s about %s was already sent', $id, SendOwnershipRequestedMail::class));
-
-        $this->commandHandler->handle(new SendOwnershipRequestedMail($id));
-    }
-
-    /** @test */
     public function it_fails_when_it_cannot_find_ownership_request(): void
     {
-        $this->mailsSentRepository
-            ->expects($this->once())
-            ->method('isMailSent')
-            ->with(new Uuid(self::OWNERSHIP_ITEM_ID), SendOwnershipRequestedMail::class)
-            ->willReturn(false);
-
         $this->ownershipSearchRepository
             ->expects($this->once())
             ->method('getById')
@@ -256,12 +202,6 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
     /** @test */
     public function it_fails_when_organiser_is_not_found(): void
     {
-        $this->mailsSentRepository
-            ->expects($this->once())
-            ->method('isMailSent')
-            ->with(new Uuid(self::OWNERSHIP_ITEM_ID), SendOwnershipRequestedMail::class)
-            ->willReturn(false);
-
         $ownershipItem = new OwnershipItem(
             self::OWNERSHIP_ITEM_ID,
             self::ORGANIZER_ID,
@@ -306,12 +246,6 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
         $ownerId = 'd6e21fa4-8d8d-4f23-b0cc-c63e34e43a01';
         $organizerId = 'd146a8cb-14c8-4364-9207-9d32d36f6959';
 
-        $this->mailsSentRepository
-            ->expects($this->once())
-            ->method('isMailSent')
-            ->with(new Uuid($id), SendOwnershipRequestedMail::class)
-            ->willReturn(false);
-
         $ownershipItem = new OwnershipItem(
             $id,
             $organizerId,
@@ -354,19 +288,9 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
         $name = 'Grote smurf';
 
         $email = new EmailAddress('grotesmurf@publiq.be');
-        $subject = 'Beheers aanvraag voor organisatie Publiq VZW';
+        $subject = 'Beheeraanvraag voor organisatie Publiq VZW';
         $html = '<p>body</p>';
         $text = 'body';
-
-        $this->mailsSentRepository
-            ->expects($this->once())
-            ->method('isMailSent')
-            ->with(new Uuid($id), SendOwnershipRequestedMail::class)
-            ->willReturn(false);
-
-        $this->mailsSentRepository
-            ->expects($this->never())
-            ->method('addMailSent');
 
         $ownershipItem = new OwnershipItem(
             $id,

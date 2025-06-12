@@ -1,0 +1,236 @@
+[
+    {
+        "name": {
+            "nl": "Gewoon basisonderwijs (kleuter- en basis)"
+        },
+        "label": "cultuurkuur_Gewoon-basisonderwijs",
+        "children": [
+            {
+                "name": {
+                    "nl": "Gewoon kleuteronderwijs"
+                },
+                "label": "cultuurkuur_Gewoon-kleuteronderwijs",
+                "children": [
+                    {
+                        "name": {
+                            "nl": "Kleuter (2-3 jaar)"
+                        },
+                        "label": "cultuurkuur_Kleuter-2-3-jaar"
+                    },
+                    {
+                        "name": {
+                            "nl": "Kleuter (3-4 jaar)"
+                        },
+                        "label": "cultuurkuur_Kleuter-3-4-jaar"
+                    },
+                    {
+                        "name": {
+                            "nl": "Kleuter (4-5 jaar)"
+                        },
+                        "label": "cultuurkuur_Kleuter-4-5-jaar"
+                    }
+                ]
+            },
+            {
+                "name": {
+                    "nl": "Gewoon lager onderwijs"
+                },
+                "label": "cultuurkuur_Gewoon-lager-onderwijs",
+                "children": [
+                    {
+                        "name": {
+                            "nl": "Eerste graad"
+                        },
+                        "label": "cultuurkuur_1ste-graad"
+                    },
+                    {
+                        "name": {
+                            "nl": "Tweede graad"
+                        },
+                        "label": "cultuurkuur_2de-graad"
+                    },
+                    {
+                        "name": {
+                            "nl": "Derde graad"
+                        },
+                        "label": "cultuurkuur_3de-graad"
+                    }
+                ]
+            },
+            {
+                "name": {
+                    "nl": "Onthaalonderwijs voor anderstalige nieuwkomers (OKAN)"
+                },
+                "label": "cultuurkuur_Onthaalonderwijs-voor-anderstalige-nieuwkomers (OKAN)"
+            }
+        ]
+    },
+    {
+        "name": {
+            "nl": "Buitengewoon basisonderwijs"
+        },
+        "label": "cultuurkuur_Buitengewoon-basisonderwijs",
+        "children": [
+            {
+                "name": {
+                    "nl": "Buitengewoon kleuteronderwijs"
+                },
+                "label": "cultuurkuur_Buitengewoon-kleuteronderwijs"
+            },
+            {
+                "name": {
+                    "nl": "Buitengewoon lager onderwijs"
+                },
+                "label": "cultuurkuur_Buitengewoon-lager-onderwijs"
+            }
+        ]
+    },
+    {
+        "name": {
+            "nl": "Gewoon secundair onderwijs"
+        },
+        "label": "cultuurkuur_Voltijds-gewoon-secundair-onderwijs",
+        "children": [
+            {
+                "name": {
+                    "nl": "Eerste graad"
+                },
+                "label": "cultuurkuur_eerste-graad",
+                "children": [
+                    {
+                        "name": {
+                            "nl": "A-stroom"
+                        },
+                        "label": "cultuurkuur_eerste-graad-A-stroom"
+                    },
+                    {
+                        "name": {
+                            "nl": "B-stroom"
+                        },
+                        "label": "cultuurkuur_eerste-graad-B-stroom"
+                    }
+                ]
+            },
+            {
+                "name": {
+                    "nl": "Tweede graad"
+                },
+                "label": "cultuurkuur_tweede-graad",
+                "children": [
+                    {
+                        "name": {
+                            "nl": "Finaliteit doorstroom"
+                        },
+                        "label": "cultuurkuur_tweede-graad-finaliteit-doorstroom"
+                    },
+                    {
+                        "name": {
+                            "nl": "Finaliteit arbeidsmarkt"
+                        },
+                        "label": "cultuurkuur_tweede-graad-finaliteit-arbeidsmarkt"
+                    },
+                    {
+                        "name": {
+                            "nl": "Dubbele finaliteit"
+                        },
+                        "label": "cultuurkuur_tweede-graad-dubbele-finaliteit"
+                    }
+                ]
+            },
+            {
+                "name": {
+                    "nl": "Derde graad"
+                },
+                "label": "cultuurkuur_derde-graad",
+                "children": [
+                    {
+                        "name": {
+                            "nl": "Finaliteit doorstroom"
+                        },
+                        "label": "cultuurkuur_derde-graad-finaliteit-doorstroom"
+                    },
+                    {
+                        "name": {
+                            "nl": "Finaliteit arbeidsmarkt"
+                        },
+                        "label": "cultuurkuur_derde-graad-finaliteit-arbeidsmarkt"
+                    },
+                    {
+                        "name": {
+                            "nl": "Dubbele finaliteit"
+                        },
+                        "label": "cultuurkuur_derde-graad-dubbele-finaliteit"
+                    }
+                ]
+            },
+            {
+                "name": {
+                    "nl": "Secundair na Secundair (Se-n-Se)"
+                },
+                "label": "cultuurkuur_Secundair-na-secundair-(Se-n-Se)"
+            },
+            {
+                "name": {
+                    "nl": "Onthaalonderwijs voor anderstalige nieuwkomers (OKAN)"
+                },
+                "label": "cultuurkuur_Onthaalonderwijs-voor-anderstalige-nieuwkomers-OKAN"
+            }
+        ]
+    },
+    {
+        "name": {
+            "nl": "Buitengewoon secundair onderwijs"
+        },
+        "label": "cultuurkuur_Buitengewoon-secundair-onderwijs"
+    },
+    {
+        "name": {
+            "nl": "Deeltijds leren en werken"
+        },
+        "label": "cultuurkuur_Deeltijds-leren-en-werken"
+    },
+    {
+        "name": {
+            "nl": "Hoger onderwijs"
+        },
+        "label": "cultuurkuur_Hoger-onderwijs"
+    },
+    {
+        "name": {
+            "nl": "Volwassenenonderwijs"
+        },
+        "label": "cultuurkuur_Volwassenenonderwijs"
+    },
+    {
+        "name": {
+            "nl": "Deeltijds kunstonderwijs"
+        },
+        "label": "cultuurkuur_Deeltijds-kunstonderwijs-DKO",
+        "children": [
+            {
+                "name": {
+                    "nl": "Beeldende en audiovisuele kunst"
+                },
+                "label": "cultuurkuur_Beeldende-en-audiovisuele-kunst"
+            },
+            {
+                "name": {
+                    "nl": "Dans"
+                },
+                "label": "cultuurkuur_dans"
+            },
+            {
+                "name": {
+                    "nl": "Muziek"
+                },
+                "label": "cultuurkuur_muziek"
+            },
+            {
+                "name": {
+                    "nl": "Woordkunst & drama"
+                },
+                "label": "cultuurkuur_Woordkunst-drama"
+            }
+        ]
+    }
+]

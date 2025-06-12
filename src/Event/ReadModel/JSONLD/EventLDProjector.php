@@ -84,6 +84,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
+use CultuurNet\UDB3\Place\Events\LabelsReplaced;
 use CultuurNet\UDB3\Place\LocalPlaceService;
 use CultuurNet\UDB3\Place\PlaceTypeResolver;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -630,6 +631,11 @@ final class EventLDProjector extends OfferLDProjector implements
     protected function getLabelsImportedClassName(): string
     {
         return LabelsImported::class;
+    }
+
+    protected function getLabelsReplacedClassName(): string
+    {
+        return LabelsReplaced::class;
     }
 
     protected function getImageAddedClassName(): string

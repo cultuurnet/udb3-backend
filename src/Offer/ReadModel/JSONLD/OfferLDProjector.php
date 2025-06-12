@@ -219,6 +219,8 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
     abstract protected function getLabelsImportedClassName(): string;
 
+    abstract protected function getLabelsReplacedClassName(): string;
+
     abstract protected function getImageAddedClassName(): string;
 
     abstract protected function getImageRemovedClassName(): string;
@@ -383,6 +385,12 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
     }
 
     protected function applyLabelsImported(AbstractLabelsImported $labelsImported): JsonDocument
+    {
+        // Just return the JSON body without any changes, but this triggers a playhead update.
+        return $this->loadDocumentFromRepository($labelsImported);
+    }
+
+    protected function applyLabelsReplaced(AbstractLabelsImported $labelsImported): JsonDocument
     {
         // Just return the JSON body without any changes, but this triggers a playhead update.
         return $this->loadDocumentFromRepository($labelsImported);
@@ -667,22 +675,34 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
 
         $basePrice = $priceInfoUpdated->getPriceInfo()->getBasePrice();
 
-        $offerLd->priceInfo[] = [
+        $basePriceInfo = [
             'category' => 'base',
             'name' => $this->basePriceTranslations,
             'price' => $basePrice->getPrice()->getAmount() / 100,
             'priceCurrency' => $basePrice->getPrice()->getCurrency()->getName(),
         ];
 
+        if ($basePrice->isGroupPrice()) {
+            $basePriceInfo['groupPrice'] = true;
+        }
+
+        $offerLd->priceInfo[] = $basePriceInfo;
+
         $translatedTariffNameNormalizer = new TranslatedTariffNameNormalizer();
 
         foreach ($priceInfoUpdated->getPriceInfo()->getTariffs() as $tariff) {
-            $offerLd->priceInfo[] = [
+            $priceInfo = [
                 'category' => 'tariff',
                 'name' => $translatedTariffNameNormalizer->normalize($tariff->getName()),
                 'price' => $tariff->getPrice()->getAmount() / 100,
                 'priceCurrency' => $tariff->getPrice()->getCurrency()->getName(),
             ];
+
+            if ($tariff->isGroupPrice()) {
+                $priceInfo['groupPrice'] = true;
+            }
+
+            $offerLd->priceInfo[] = $priceInfo;
         }
 
         foreach ($priceInfoUpdated->getPriceInfo()->getUiTPASTariffs() as $tariff) {

@@ -174,6 +174,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler::class));
+                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\ReplaceLabelsHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler::class));
@@ -202,6 +203,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\AddLabelHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\RemoveLabelHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler::class));
+                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\ReplaceLabelsHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\DeleteDescriptionHandler::class));

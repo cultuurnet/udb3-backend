@@ -5972,12 +5972,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "15e2a28a2c63d46823613cb7a4dc8e86dfe7dffe"
+                "reference": "e5d81bd1e8633fa7a8db18183b2753d4a211b019"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/15e2a28a2c63d46823613cb7a4dc8e86dfe7dffe",
-                "reference": "15e2a28a2c63d46823613cb7a4dc8e86dfe7dffe",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/e5d81bd1e8633fa7a8db18183b2753d4a211b019",
+                "reference": "e5d81bd1e8633fa7a8db18183b2753d4a211b019",
                 "shasum": ""
             },
             "default-branch": true,
@@ -5995,9 +5995,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6312-allow-encoded-space"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6638-replace-organizer-labels"
             },
-            "time": "2024-11-06T13:09:26+00:00"
+            "time": "2025-05-28T05:51:12+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

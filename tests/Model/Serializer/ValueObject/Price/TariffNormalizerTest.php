@@ -45,6 +45,7 @@ class TariffNormalizerTest extends TestCase
                 'en' => 'Base tariff',
                 'nl' => 'Basistarief',
             ],
+            'groupPrice' => false,
         ];
 
         $this->assertEquals($expected, $this->normalizer->normalize($this->tariff));

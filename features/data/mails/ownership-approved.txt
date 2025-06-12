@@ -1,0 +1,14 @@
+Beste dev+e2etest,
+
+Je bent vanaf nu beheerder van de organisatie %{name} in de UiTdatabank. Dit wil zeggen dat je zowel de organisatie informatie kan bewerken, als de informatie van de gelinkte evenementen aan deze organisatie.
+
+Ga naar de beheerpagina voor meer informatie.
+
+http://uitdatabank.local:80/organizers/%{organizerId}/preview
+
+Vriendelijke groet,
+Het UiTdatabank team.
+
+
+E-mail: vragen@uitdatabank.be
+publiq vzw - Henegouwenkaai 41-43 1080 Molenbeek BE

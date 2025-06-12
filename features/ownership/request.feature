@@ -6,6 +6,7 @@ Feature: Test requesting ownership
     And I am authorized as JWT provider v2 user "invoerder"
     And I send and accept "application/json"
 
+  @mails
   Scenario: Requesting ownership of an organizer as creator of the organizer
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
@@ -18,6 +19,8 @@ Feature: Test requesting ownership
     And the JSON response at "requesterId" should be "d759fd36-fb28-4fe3-8ec6-b4aaf990371d"
     And the JSON response at "requesterEmail" should be "dev+udbtestinvoerder@publiq.be"
     And the JSON response at "state" should be "requested"
+    And I wait till there are 1 mails in the mailbox
+    And an "ownership-request" mail has been sent from "no-reply@uitdatabank.be" to "dev+udbtestinvoerder@publiq.be" with subject "Beheeraanvraag voor organisatie %{name}"
 
   Scenario: Requesting ownership of an organizer for yourself
     Given I am authorized as JWT provider v1 user "centraal_beheerder"
@@ -27,7 +30,7 @@ Feature: Test requesting ownership
     When I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
 
-  Scenario: Requesting ownership of an organizer for someone else is not allowened if you are not an owner
+  Scenario: Requesting ownership of an organizer for someone else is not allowed if you are not an owner
     Given I am authorized as JWT provider v1 user "centraal_beheerder"
     And I create a minimal organizer and save the "id" as "organizerId"
     And I am authorized as JWT provider v2 user "invoerder"
@@ -51,6 +54,7 @@ Feature: Test requesting ownership
     }
     """
 
+  @mails
   Scenario: Requesting ownership of an organizer via email
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for email "dev+e2etest@publiq.be" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
@@ -62,8 +66,9 @@ Feature: Test requesting ownership
     And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "d759fd36-fb28-4fe3-8ec6-b4aaf990371d"
     And the JSON response at "state" should be "requested"
-
-
+    And I wait till there are 1 mails in the mailbox
+    And an "ownership-request" mail has been sent from "no-reply@uitdatabank.be" to "dev+udbtestinvoerder@publiq.be" with subject "Beheeraanvraag voor organisatie %{name}"
+    
   Scenario: Requesting the same ownership of an organizer is not allowed
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
@@ -145,5 +150,47 @@ Feature: Test requesting ownership
       "title": "Not Found",
       "status": 404,
       "detail": "The Organizer with id \"b192b05f-9294-4c07-a3f9-6a15e267d746\" was not found."
+    }
+    """
+
+  Scenario: Requesting the ownership with a non-existing email
+    When I set the JSON request payload to:
+    """
+    {
+      "itemId": "b192b05f-9294-4c07-a3f9-6a15e267d746",
+      "itemType": "organizer",
+      "ownerEmail": "nobody@null.com"
+    }
+    """
+    When I send a POST request to '/ownerships'
+    Then the response status should be 400
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/body/invalid-data",
+      "title": "Invalid body data",
+      "status": 400,
+      "detail": "No user with email nobody@null.com was found in our system."
+    }
+    """
+
+  Scenario: Requesting the ownership with a non-existing userId
+    When I set the JSON request payload to:
+    """
+    {
+      "itemId": "b192b05f-9294-4c07-a3f9-6a15e267d746",
+      "itemType": "organizer",
+      "ownerId": "ffffffff-ffff-ffff-ffff-ffffffffffff"
+    }
+    """
+    When I send a POST request to '/ownerships'
+    Then the response status should be 400
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/body/invalid-data",
+      "title": "Invalid body data",
+      "status": 400,
+      "detail": "No user with id ffffffff-ffff-ffff-ffff-ffffffffffff was found in our system."
     }
     """

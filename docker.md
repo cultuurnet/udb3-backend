@@ -57,3 +57,13 @@ You can run the actual acceptance tests with:
 ```
 $ make feature
 ```
+We created some dummy users that can be used in tests:
+
+| E-mail               | UserId                               | Notes                                     |
+| -------------------- | ------------------------------------ |-------------------------------------------| 
+| dummyuser1@publiq.be | 02566c96-8fd3-4b7e-aa35-cbebe6663b2d |                                           |
+| dummyuser2@publiq.be | 79dd2821-3b89-4dbb-9143-920ff2edfa34 |                                           |
+| dummyuser3@publiq.be | 92650bd8-037f-4722-a40e-7e0a0bf39a8e |                                           |
+| dummyuser4@publiq.be | c9f2a19f-3dd7-401c-ad4d-73db7a9d1748 |                                           |
+| dummyuser5@publiq.be | edf305f8-69b6-4553-914e-9ecedcba418e |                                           |
+| dummyuser6@publiq.be | 67aebd9b-3033-459c-818e-ca684b3a27b3 | Cannot be used to create extra Ownerships |

@@ -29,6 +29,8 @@ use CultuurNet\UDB3\Event\Events\ImageUpdated;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LabelsImported;
+use CultuurNet\UDB3\Event\Events\LabelsReplaced as LabelsReplacedEvent;
+use CultuurNet\UDB3\Place\Events\LabelsReplaced as LabelsReplacedPlace;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MainImageSelected;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
@@ -153,6 +155,11 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof LabelRemoved:
                 $this->projectLabelRemoved($domainMessage);
+                break;
+            case $event instanceof LabelsReplacedEvent:
+            case $event instanceof LabelsReplacedPlace:
+                // Needs to above LabelsImported
+                $this->projectLabelsReplaced($domainMessage);
                 break;
             case $event instanceof LabelsImported:
                 $this->projectLabelsImported($domainMessage);

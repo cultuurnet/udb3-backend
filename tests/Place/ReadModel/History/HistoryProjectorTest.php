@@ -57,6 +57,7 @@ use CultuurNet\UDB3\Place\Events\ImageUpdated;
 use CultuurNet\UDB3\Place\Events\LabelAdded;
 use CultuurNet\UDB3\Place\Events\LabelRemoved;
 use CultuurNet\UDB3\Place\Events\LabelsImported;
+use CultuurNet\UDB3\Place\Events\LabelsReplaced;
 use CultuurNet\UDB3\Place\Events\MainImageSelected;
 use CultuurNet\UDB3\Place\Events\MajorInfoUpdated;
 use CultuurNet\UDB3\Place\Events\Moderation\Approved;
@@ -715,6 +716,22 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $event->getItemId(),
             'Labels geïmporteerd uit JSON-LD'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_LabelsReplaced_event(): void
+    {
+        $event = new LabelsReplaced('a0ee7b1c-a9c1-4da1-af7e-d15496014656', [], []);
+
+        $domainMessage = $this->aDomainMessageForEvent($event->getItemId(), $event);
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $event->getItemId(),
+            'Labels vervangen uit JSON-LD'
         );
     }
 

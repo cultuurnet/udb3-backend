@@ -1,5 +1,7 @@
 FROM php:8.0-apache
 
+ARG ENABLE_XDEBUG
+
 RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev zlib1g-dev libpng-dev libzip-dev supervisor fontconfig-config fonts-dejavu-core libdeflate0 libfontconfig1 libfreetype6 libgif7 libjbig0 libjpeg62-turbo liblcms2-2 libtiff5 libwebp6 libwebpdemux2 sensible-utils ucf
 
 RUN docker-php-ext-install mysqli pdo_mysql bcmath tidy sockets
@@ -32,3 +34,12 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+
+COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+
+RUN if [ "$ENABLE_XDEBUG" = "true" ] ; then \
+      pecl install xdebug-3.1.5 && \
+      docker-php-ext-enable xdebug ; \
+  else \
+      rm /usr/local/etc/php/conf.d/xdebug.ini ; \
+  fi
