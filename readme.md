@@ -66,7 +66,7 @@ Xdebug is configured to run with trigger mode, meaning you have to modify the re
 - *CLI*: (useful with unit tests):
 ```
 make bash-xdebug
-source ./start-xdebug.sh
+source ./docker/start-xdebug.sh
 ```
 
 ## Logs
