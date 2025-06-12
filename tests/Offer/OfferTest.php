@@ -495,7 +495,6 @@ class OfferTest extends AggregateRootScenarioTestCase
             ->when(
                 function (Item $item) use ($labels): void {
                     $item->importLabels($labels);
-                    $item->importLabels($labels);
                 }
             )
             ->then([
