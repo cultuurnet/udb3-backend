@@ -60,7 +60,7 @@ services:
       - 'udb3-mysql:/bitnami/mysql/data'
       - ./docker/mysql:/docker-entrypoint-initdb.d
     ports:
-      - '3306:3306'
+      - '${MYSQL_PORT:-3306}:3306'
     networks:
       uitdatabank-backend:
         aliases:
