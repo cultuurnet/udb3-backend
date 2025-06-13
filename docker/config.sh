@@ -23,7 +23,7 @@ fi
 
 APPCONFIG_ROOTDIR=${APPCONFIG:-'../appconfig'}
 
-DIR="${APPCONFIG_ROOTDIR}/files/uitdatabank/docker/udb3-backend/"
+DIR="${APPCONFIG_ROOTDIR}/templates/docker/uitdatabank/udb3-backend/"
 if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
   cp "$DIR"/.env .
@@ -32,7 +32,7 @@ else
   exit 1
 fi
 
-DIR="${APPCONFIG_ROOTDIR}/files/uitdatabank/docker/keys/"
+DIR="${APPCONFIG_ROOTDIR}/templates/docker/uitdatabank/keys/"
 if [ -d "$DIR" ]; then
   cp -R "$DIR"/* .
 else
