@@ -25,6 +25,10 @@ RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o prince.deb https://www.princex
 RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_15.4.1-1_debian11_arm64.deb; fi
 RUN if [ -f prince.deb ]; then dpkg -i prince.deb; fi
 
+RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_16-1_debian11_amd64.deb; fi
+RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_16-1_debian11_arm64.deb; fi
+RUN if [ -f prince.deb ]; then gdebi --non-interactive prince.deb; fi
+
 RUN echo "memory_limit=4096M" > $PHP_INI_DIR/conf.d/memory-limit.ini
 RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" > $PHP_INI_DIR/conf.d/error_reporting.ini
 
