@@ -2,7 +2,10 @@ FROM php:8.1-apache
 
 ARG ENABLE_XDEBUG
 
-RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev zlib1g-dev libpng-dev libzip-dev supervisor fontconfig-config fonts-dejavu-core libdeflate0 libfontconfig1 libfreetype6 libgif7 libjbig0 libjpeg62-turbo liblcms2-2 libtiff5 libwebp6 libwebpdemux2 sensible-utils ucf
+# Packages can be found here https://www.debian.org/distrib/packages#search_packages
+RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev zlib1g-dev \
+    libpng-dev libzip-dev supervisor fontconfig-config fonts-dejavu-core libdeflate0 libfontconfig1 libfreetype6 \
+    libgif7 libjbig0 libjpeg62-turbo liblcms2-2 libwebpdemux2 sensible-utils ucf gdebi-core
 
 RUN docker-php-ext-install mysqli pdo_mysql bcmath tidy sockets
 
