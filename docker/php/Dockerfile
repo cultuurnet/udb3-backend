@@ -21,9 +21,17 @@ RUN pecl install -o -f redis &&  rm -rf /tmp/pear &&  docker-php-ext-enable redi
 
 RUN curl https://getcomposer.org/download/2.6.6/composer.phar -o /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
-RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_15.4.1-1_debian11_amd64.deb; fi
-RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_15.4.1-1_debian11_arm64.deb; fi
-RUN if [ -f prince.deb ]; then dpkg -i prince.deb; fi
+RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o libssl1.1.deb http://archive.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.0l-1~deb9u1_amd64.deb; fi
+RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o libssl1.1.deb http://archive.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.0l-1~deb9u1_arm64.deb; fi
+RUN file libssl1.1.deb && dpkg -i libssl1.1.deb && rm libssl1.1.deb
+
+RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o libtiff5.deb http://archive.debian.org/debian/pool/main/t/tiff/libtiff5_4.0.8-2+deb9u5_amd64.deb; fi
+RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o libtiff5.deb http://archive.debian.org/debian/pool/main/t/tiff/libtiff5_4.0.8-2+deb9u5_arm64.deb; fi
+RUN file libtiff5.deb && dpkg -i libtiff5.deb && rm libtiff5.deb
+
+RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o libwebp6.deb http://archive.debian.org/debian/pool/main/libw/libwebp/libwebp6_0.6.1-2+deb10u1_amd64.deb; fi
+RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o libwebp6.deb http://archive.debian.org/debian/pool/main/libw/libwebp/libwebp6_0.6.1-2+deb10u1_arm64.deb; fi
+RUN file libtiff5.deb && dpkg -i libwebp6.deb && rm libwebp6.deb
 
 RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_16-1_debian11_amd64.deb; fi
 RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_16-1_debian11_arm64.deb; fi
