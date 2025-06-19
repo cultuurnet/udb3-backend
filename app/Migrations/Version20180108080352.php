@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Migrations;
 
+use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\Migrations\AbstractMigration;
@@ -29,7 +30,7 @@ class Version20180108080352 extends AbstractMigration
     }
 
     /**
-     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws SchemaException
      */
     private function getLabelsRelationsTable(Schema $schema): Table
     {

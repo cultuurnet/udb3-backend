@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer;
 
+use CultuurNet\UDB3\DateTimeFactory;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
@@ -210,7 +211,7 @@ class OrganizerLDProjector implements EventListener
         $jsonLD->url = $organizerCreated->getUrls();
 
         $recordedOn = $domainMessage->getRecordedOn()->toString();
-        $jsonLD->created = \CultuurNet\UDB3\DateTimeFactory::fromFormat(
+        $jsonLD->created = DateTimeFactory::fromFormat(
             DateTime::FORMAT_STRING,
             $recordedOn
         )->format('c');
@@ -258,7 +259,7 @@ class OrganizerLDProjector implements EventListener
         ];
 
         $recordedOn = $domainMessage->getRecordedOn()->toString();
-        $jsonLD->created = \CultuurNet\UDB3\DateTimeFactory::fromFormat(
+        $jsonLD->created = DateTimeFactory::fromFormat(
             DateTime::FORMAT_STRING,
             $recordedOn
         )->format('c');
