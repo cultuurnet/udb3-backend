@@ -77,9 +77,27 @@ pipeline {
             environment {
                 APPLICATION_ENVIRONMENT = 'acceptance'
             }
-            steps {
-                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'focal'
-                triggerDeployment nodeName: 'uitdatabank-web-acc01'
+
+            stages {
+                stage('Publish snapshot') {
+                    steps {
+                        publishAptlySnapshot snapshotName: "${env.JOB_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'focal'
+                    }
+                }
+                stage('Deploy') {
+                    parallel {
+                        stage('Deploy to UiTdatabank entry API node') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-web-acc01'
+                            }
+                        }
+                        stage('Deploy to UiTdatabank RDF node') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-rdf-acc01'
+                            }
+                        }
+                    }
+                }
             }
             post {
                 always {
@@ -96,9 +114,26 @@ pipeline {
                 APPLICATION_ENVIRONMENT = 'testing'
             }
 
-            steps {
-                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'focal'
-                triggerDeployment nodeName: 'uitdatabank-web-test01'
+            stages {
+                stage('Publish snapshot') {
+                    steps {
+                        publishAptlySnapshot snapshotName: "${env.JOB_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'focal'
+                    }
+                }
+                stage('Deploy') {
+                    parallel {
+                        stage('Deploy to UiTdatabank entry API node') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-web-test01'
+                            }
+                        }
+                        stage('Deploy to UiTdatabank RDF node') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-rdf-test01'
+                            }
+                        }
+                    }
+                }
             }
             post {
                 always {
@@ -115,9 +150,26 @@ pipeline {
                 APPLICATION_ENVIRONMENT = 'production'
             }
 
-            steps {
-                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'focal'
-                triggerDeployment nodeName: 'uitdatabank-web-prod01'
+            stages {
+                stage('Publish snapshot') {
+                    steps {
+                        publishAptlySnapshot snapshotName: "${env.JOB_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'focal'
+                    }
+                }
+                stage('Deploy') {
+                    parallel {
+                        stage('Deploy to UiTdatabank entry API node') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-web-prod01'
+                            }
+                        }
+                        stage('Deploy to UiTdatabank RDF node') {
+                            steps {
+                                triggerDeployment nodeName: 'uitdatabank-rdf-prod01'
+                            }
+                        }
+                    }
+                }
             }
             post {
                 always {
