@@ -1,8 +1,11 @@
-FROM php:8.0-apache
+FROM php:8.1-apache
 
 ARG ENABLE_XDEBUG
 
-RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev zlib1g-dev libpng-dev libzip-dev supervisor fontconfig-config fonts-dejavu-core libdeflate0 libfontconfig1 libfreetype6 libgif7 libjbig0 libjpeg62-turbo liblcms2-2 libtiff5 libwebp6 libwebpdemux2 sensible-utils ucf
+# Packages can be found here https://www.debian.org/distrib/packages#search_packages
+RUN apt-get update && apt-get install -y --no-install-recommends git zip unzip libicu-dev libtidy-dev zlib1g-dev \
+    libpng-dev libzip-dev supervisor fontconfig-config fonts-dejavu-core libdeflate0 libfontconfig1 libfreetype6 \
+    libgif7 libjbig0 libjpeg62-turbo liblcms2-2 libwebpdemux2 sensible-utils ucf gdebi-core
 
 RUN docker-php-ext-install mysqli pdo_mysql bcmath tidy sockets
 
@@ -18,9 +21,21 @@ RUN pecl install -o -f redis &&  rm -rf /tmp/pear &&  docker-php-ext-enable redi
 
 RUN curl https://getcomposer.org/download/2.6.6/composer.phar -o /usr/local/bin/composer && chmod +x /usr/local/bin/composer
 
-RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_15.4.1-1_debian11_amd64.deb; fi
-RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_15.4.1-1_debian11_arm64.deb; fi
-RUN if [ -f prince.deb ]; then dpkg -i prince.deb; fi
+RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o libssl1.1.deb http://archive.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.0l-1~deb9u1_amd64.deb; fi
+RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o libssl1.1.deb http://archive.debian.org/debian/pool/main/o/openssl/libssl1.1_1.1.0l-1~deb9u1_arm64.deb; fi
+RUN file libssl1.1.deb && dpkg -i libssl1.1.deb && rm libssl1.1.deb
+
+RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o libtiff5.deb http://archive.debian.org/debian/pool/main/t/tiff/libtiff5_4.0.8-2+deb9u5_amd64.deb; fi
+RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o libtiff5.deb http://archive.debian.org/debian/pool/main/t/tiff/libtiff5_4.0.8-2+deb9u5_arm64.deb; fi
+RUN file libtiff5.deb && dpkg -i libtiff5.deb && rm libtiff5.deb
+
+RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o libwebp6.deb http://archive.debian.org/debian/pool/main/libw/libwebp/libwebp6_0.6.1-2+deb10u1_amd64.deb; fi
+RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o libwebp6.deb http://archive.debian.org/debian/pool/main/libw/libwebp/libwebp6_0.6.1-2+deb10u1_arm64.deb; fi
+RUN file libtiff5.deb && dpkg -i libwebp6.deb && rm libwebp6.deb
+
+RUN if [ "$(uname -m)" = "x86_64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_16-1_debian11_amd64.deb; fi
+RUN if [ "$(uname -m)" = "aarch64" ]; then curl -o prince.deb https://www.princexml.com/download/prince_16-1_debian11_arm64.deb; fi
+RUN if [ -f prince.deb ]; then gdebi --non-interactive prince.deb; fi
 
 RUN echo "memory_limit=4096M" > $PHP_INI_DIR/conf.d/memory-limit.ini
 RUN echo "error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT" > $PHP_INI_DIR/conf.d/error_reporting.ini
