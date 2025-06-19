@@ -23,10 +23,7 @@ use Psr\Log\NullLogger;
 
 class GeoCoordinatesProcessManagerTest extends TestCase
 {
-    /**
-     * @var CommandBus&MockObject
-     */
-    private $commandBus;
+    private CommandBus&MockObject $commandBus;
 
     private GeoCoordinatesProcessManager $processManager;
 

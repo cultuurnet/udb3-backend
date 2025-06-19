@@ -30,15 +30,9 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class CompositeDomainMessageEnricherTest extends TestCase
 {
-    /**
-     * @var DomainMessageEnricherInterface&MockObject
-     */
-    private $eventCreatedEnricher;
+    private DomainMessageEnricherInterface&MockObject $eventCreatedEnricher;
 
-    /**
-     * @var DomainMessageEnricherInterface&MockObject
-     */
-    private $placeCreatedEnricher;
+    private DomainMessageEnricherInterface&MockObject $placeCreatedEnricher;
 
     private CompositeDomainMessageEnricher $compositeEnricher;
 

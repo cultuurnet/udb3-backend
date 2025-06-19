@@ -15,10 +15,7 @@ use Psr\Http\Message\RequestInterface;
 
 class KeycloakUserIdentityResolverTest extends TestCase
 {
-    /**
-     * @var ClientInterface&MockObject
-     */
-    private $client;
+    private ClientInterface&MockObject $client;
 
     private UserIdentityDetails $userIdentityDetails;
 

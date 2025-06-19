@@ -24,10 +24,7 @@ class MoveEventsTest extends TestCase
 {
     private TraceableCommandBus $commandBus;
 
-    /**
-     * @var SearchServiceInterface&MockObject
-     */
-    private $searchService;
+    private SearchServiceInterface&MockObject $searchService;
 
     private MoveEvents $moveEvents;
 

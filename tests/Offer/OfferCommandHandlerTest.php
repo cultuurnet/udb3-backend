@@ -38,16 +38,8 @@ final class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     protected string $description;
     protected PriceInfo $priceInfo;
     protected ItemCreated $itemCreated;
-
-    /**
-     * @var Repository&MockObject
-     */
-    protected $organizerRepository;
-
-    /**
-     * @var MediaManagerInterface&MockObject
-     */
-    protected $mediaManager;
+    protected Repository&MockObject $organizerRepository;
+    protected MediaManagerInterface&MockObject $mediaManager;
 
     public function setUp(): void
     {

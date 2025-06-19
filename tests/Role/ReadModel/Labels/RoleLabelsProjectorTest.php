@@ -26,22 +26,13 @@ use PHPUnit\Framework\TestCase;
 
 class RoleLabelsProjectorTest extends TestCase
 {
-    /**
-     * @var ReadRepositoryInterface&MockObject
-     */
-    private $labelJsonRepository;
+    private ReadRepositoryInterface&MockObject $labelJsonRepository;
 
-    /**
-     * @var DocumentRepository&MockObject
-     */
-    private $labelRolesRepository;
+    private DocumentRepository&MockObject $labelRolesRepository;
 
     private RoleLabelsProjector $roleLabelsProjector;
 
-    /**
-     * @var DocumentRepository&MockObject
-     */
-    private $roleLabelsRepository;
+    private DocumentRepository&MockObject $roleLabelsRepository;
 
     public function setUp(): void
     {

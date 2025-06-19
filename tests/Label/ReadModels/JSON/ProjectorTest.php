@@ -35,10 +35,7 @@ final class ProjectorTest extends TestCase
 
     private string $unknownLabelName;
 
-    /**
-     * @var WriteRepositoryInterface&MockObject
-     */
-    private $writeRepository;
+    private WriteRepositoryInterface&MockObject $writeRepository;
 
     private Entity $entity;
 

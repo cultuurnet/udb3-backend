@@ -28,10 +28,7 @@ final class RemoveLabelFromRoleRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    /**
-     * @var ReadRepositoryInterface&MockObject
-     */
-    private $labelRepository;
+    private ReadRepositoryInterface&MockObject $labelRepository;
 
     protected function setUp(): void
     {

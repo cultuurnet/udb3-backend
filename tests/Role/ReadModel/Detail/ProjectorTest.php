@@ -28,10 +28,7 @@ class ProjectorTest extends TestCase
 {
     private Query $query;
 
-    /**
-     * @var DocumentRepository&MockObject
-     */
-    private $repository;
+    private DocumentRepository&MockObject $repository;
 
     private Uuid $uuid;
 

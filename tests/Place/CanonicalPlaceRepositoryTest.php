@@ -11,10 +11,7 @@ class CanonicalPlaceRepositoryTest extends TestCase
 {
     private CanonicalPlaceRepository $canonicalPlaceRepository;
 
-    /**
-     * @var PlaceRepository&MockObject
-     */
-    private $placeRepository;
+    private PlaceRepository&MockObject $placeRepository;
 
     protected function setUp(): void
     {

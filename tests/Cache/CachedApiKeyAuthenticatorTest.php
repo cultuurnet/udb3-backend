@@ -13,10 +13,7 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 final class CachedApiKeyAuthenticatorTest extends TestCase
 {
-    /**
-     * @var ApiKeyAuthenticator&MockObject
-     */
-    private $fallbackApiKeyAuthenticator;
+    private ApiKeyAuthenticator&MockObject $fallbackApiKeyAuthenticator;
 
     private ApiKey $cachedApiKey;
 

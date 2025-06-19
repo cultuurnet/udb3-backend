@@ -16,10 +16,7 @@ final class GetUiTPASDetailRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
 
-    /**
-     * @var CultureFeed_Uitpas&MockObject
-     */
-    private $uitpas;
+    private \CultureFeed_Uitpas&MockObject $uitpas;
 
     private GetUiTPASDetailRequestHandler $getUiTPASDetailController;
 

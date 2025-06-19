@@ -35,8 +35,7 @@ class OwnershipPermissionProjectorTest extends TestCase
     private const ROLE_ID = '8d17cffe-6f28-459c-8627-1f6345f8b296';
     private TraceableAuthorizedCommandBus $commandBus;
 
-    /** @var OwnershipSearchRepository&MockObject */
-    private $ownershipSearchRepository;
+    private OwnershipSearchRepository&MockObject $ownershipSearchRepository;
 
     private OwnershipPermissionProjector $ownershipPermissionProjector;
 

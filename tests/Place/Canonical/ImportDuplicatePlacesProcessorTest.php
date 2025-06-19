@@ -10,8 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class ImportDuplicatePlacesProcessorTest extends TestCase
 {
-    /** @var DuplicatePlaceRepository&MockObject */
-    private $duplicatePlaceRepository;
+    private DuplicatePlaceRepository&MockObject $duplicatePlaceRepository;
     /** @var DuplicatePlaceRemovedFromClusterRepository&MockObject */
     private DuplicatePlaceRemovedFromClusterRepository $duplicatePlacesRemovedFromClusterRepository;
     private ImportDuplicatePlacesProcessor $importDuplicatePlacesProcessor;

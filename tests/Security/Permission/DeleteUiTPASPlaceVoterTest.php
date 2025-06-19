@@ -14,8 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class DeleteUiTPASPlaceVoterTest extends TestCase
 {
-    /** @var DocumentRepository&MockObject */
-    private $documentRepository;
+    private DocumentRepository&MockObject $documentRepository;
     private array $uitpasLabels;
     private string $userId;
 

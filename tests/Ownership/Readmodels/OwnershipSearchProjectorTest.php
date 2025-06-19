@@ -19,8 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 class OwnershipSearchProjectorTest extends TestCase
 {
-    /** @var OwnershipSearchRepository & MockObject */
-    private $ownershipSearchRepository;
+    private OwnershipSearchRepository&MockObject $ownershipSearchRepository;
 
     private OwnershipSearchProjector $ownershipSearchProjector;
 

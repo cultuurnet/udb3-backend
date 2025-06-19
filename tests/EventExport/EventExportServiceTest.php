@@ -35,32 +35,17 @@ final class EventExportServiceTest extends TestCase
 
     private EventExportService $eventExportService;
 
-    /**
-     * @var DocumentRepository&MockObject
-     */
-    private $eventRepository;
+    private DocumentRepository&MockObject $eventRepository;
 
     private ItemIdentifierFactory $itemIdentifierFactory;
 
-    /**
-     * @var SearchServiceInterface&MockObject
-     */
-    private $searchService;
+    private SearchServiceInterface&MockObject $searchService;
 
-    /**
-     * @var UuidGeneratorInterface&MockObject
-     */
-    private $uuidGenerator;
+    private UuidGeneratorInterface&MockObject $uuidGenerator;
 
-    /**
-     * @var IriGeneratorInterface&MockObject
-     */
-    private $iriGenerator;
+    private IriGeneratorInterface&MockObject $iriGenerator;
 
-    /**
-     * @var NotificationMailerInterface&MockObject
-     */
-    private $mailer;
+    private NotificationMailerInterface&MockObject $mailer;
 
     private vfsStreamDirectory $publicDirectory;
 
@@ -68,10 +53,7 @@ final class EventExportServiceTest extends TestCase
 
     private array $searchResultsDetails;
 
-    /**
-     * @var ResultsGeneratorInterface&MockObject
-     */
-    private $resultsGenerator;
+    private ResultsGeneratorInterface&MockObject $resultsGenerator;
 
     public function setUp(): void
     {

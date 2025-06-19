@@ -16,12 +16,12 @@ class ImageStorageTest extends TestCase
     /**
      * @var FilesystemOperator&MockObject;
      */
-    private $localFilesystem;
+    private FilesystemOperator&MockObject $localFilesystem;
 
     /**
      * @var FilesystemOperator&MockObject;
      */
-    private $s3Filesystem;
+    private FilesystemOperator&MockObject $s3Filesystem;
 
     private ImageStorage $imageStorage;
 

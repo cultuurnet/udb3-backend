@@ -56,10 +56,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 {
     protected Serializer $serializer;
 
-    /**
-     * @var ReadRepositoryInterface&MockObject
-     */
-    private $labelRepository;
+    private ReadRepositoryInterface&MockObject $labelRepository;
 
     private string $sampleDir;
 

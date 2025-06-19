@@ -17,15 +17,9 @@ use PHPUnit\Framework\TestCase;
 
 class SendToCreatorOfOrganisationTest extends TestCase
 {
-    /**
-     * @var UserIdentityResolver&MockObject
-     */
-    private $identityResolver;
+    private UserIdentityResolver&MockObject $identityResolver;
 
-    /**
-     * @var DocumentRepository&MockObject
-     */
-    private $organizerRepository;
+    private DocumentRepository&MockObject $organizerRepository;
     private SendToCreatorOfOrganisation $strategy;
     private OwnershipItem $ownershipItem;
     private string $itemId;

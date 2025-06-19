@@ -26,8 +26,7 @@ final class CreateNewsArticleRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var NewsArticleRepository&MockObject */
-    private $newsArticleRepository;
+    private NewsArticleRepository&MockObject $newsArticleRepository;
 
     private CreateNewsArticleRequestHandler $createNewsArticleRequestHandler;
 

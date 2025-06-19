@@ -12,10 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GodUserReadRepositoryDecoratorTest extends TestCase
 {
-    /**
-     * @var ReadRepositoryInterface&MockObject
-     */
-    private $mockRepository;
+    private ReadRepositoryInterface&MockObject $mockRepository;
 
     private GodUserReadRepositoryDecorator $repository;
 

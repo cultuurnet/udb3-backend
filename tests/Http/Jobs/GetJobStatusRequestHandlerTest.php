@@ -17,10 +17,7 @@ final class GetJobStatusRequestHandlerTest extends TestCase
     use AssertJsonResponseTrait;
     use AssertApiProblemTrait;
 
-    /**
-     * @var JobsStatusFactory&MockObject
-     */
-    private $jobsStatusFactory;
+    private JobsStatusFactory&MockObject $jobsStatusFactory;
 
     private GetJobStatusRequestHandler $getJobStatusRequestHandler;
 

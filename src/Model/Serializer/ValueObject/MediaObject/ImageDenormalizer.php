@@ -16,10 +16,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ImageDenormalizer implements DenormalizerInterface
 {
-    /**
-     * @var UuidParser
-     */
-    private $imageIdParser;
+    private UuidParser $imageIdParser;
 
     public function __construct(UuidParser $imageIdParser = null)
     {

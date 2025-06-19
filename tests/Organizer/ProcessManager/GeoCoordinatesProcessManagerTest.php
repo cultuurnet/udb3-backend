@@ -27,15 +27,9 @@ use Psr\Log\LoggerInterface;
 
 class GeoCoordinatesProcessManagerTest extends TestCase
 {
-    /**
-     * @var CommandBus&MockObject
-     */
-    private $commandBus;
+    private CommandBus&MockObject $commandBus;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private $logger;
+    private LoggerInterface&MockObject $logger;
 
     private GeoCoordinatesProcessManager $processManager;
 

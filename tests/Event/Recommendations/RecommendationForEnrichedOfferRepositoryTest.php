@@ -14,8 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 final class RecommendationForEnrichedOfferRepositoryTest extends TestCase
 {
-    /** @var RecommendationsRepository&MockObject  */
-    private $recommendationsRepository;
+    private RecommendationsRepository&MockObject $recommendationsRepository;
 
     private InMemoryDocumentRepository $offerRepository;
 

@@ -13,10 +13,7 @@ class AbstractPermissionCommandTest extends TestCase
 {
     private Permission $rolePermission;
 
-    /**
-     * @var AbstractPermissionCommand&MockObject
-     */
-    private $abstractPermissionCommand;
+    private AbstractPermissionCommand&MockObject $abstractPermissionCommand;
 
     protected function setUp(): void
     {

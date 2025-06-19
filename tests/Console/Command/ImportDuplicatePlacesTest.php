@@ -16,14 +16,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ImportDuplicatePlacesTest extends TestCase
 {
-    /** @var DBALDuplicatePlaceRepository|MockObject  */
-    private $dbalDuplicatePlaceRepository;
-    /** @var ImportDuplicatePlacesProcessor|MockObject  */
-    private $importDuplicatePlacesProcessor;
-    /** @var InputInterface|MockObject  */
-    private $input;
-    /** @var OutputInterface|MockObject  */
-    private $output;
+    private DBALDuplicatePlaceRepository&MockObject $dbalDuplicatePlaceRepository;
+    private ImportDuplicatePlacesProcessor&MockObject $importDuplicatePlacesProcessor;
+    private InputInterface&MockObject $input;
+    private OutputInterface&MockObject $output;
     private ImportDuplicatePlaces $command;
 
     protected function setUp(): void

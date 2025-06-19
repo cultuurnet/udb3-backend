@@ -24,10 +24,7 @@ class LabelRolesProjectorTest extends TestCase
 {
     private LabelRolesProjector $labelRolesProjector;
 
-    /**
-     * @var DocumentRepository&MockObject
-     */
-    private $labelRolesRepository;
+    private DocumentRepository&MockObject $labelRolesRepository;
 
     public function setUp(): void
     {

@@ -22,20 +22,11 @@ use PHPUnit\Framework\TestCase;
 
 class UserRolesProjectorTest extends TestCase
 {
-    /**
-     * @var DocumentRepository&MockObject
-     */
-    private $userRolesDocumentRepository;
+    private DocumentRepository&MockObject $userRolesDocumentRepository;
 
-    /**
-     * @var DocumentRepository&MockObject
-     */
-    private $roleDetailsDocumentRepository;
+    private DocumentRepository&MockObject $roleDetailsDocumentRepository;
 
-    /**
-     * @var DocumentRepository&MockObject
-     */
-    private $roleUsersDocumentRepository;
+    private DocumentRepository&MockObject $roleUsersDocumentRepository;
 
     private UserRolesProjector $userRolesProjector;
 

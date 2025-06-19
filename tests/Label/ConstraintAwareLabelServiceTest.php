@@ -20,10 +20,7 @@ use PHPUnit\Framework\TestCase;
 
 class ConstraintAwareLabelServiceTest extends TestCase
 {
-    /**
-     * @var UuidGeneratorInterface&MockObject
-     */
-    private $uuidGenerator;
+    private UuidGeneratorInterface&MockObject $uuidGenerator;
 
     public function setUp(): void
     {

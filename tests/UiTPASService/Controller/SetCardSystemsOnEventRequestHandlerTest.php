@@ -15,10 +15,7 @@ final class SetCardSystemsOnEventRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /**
-     * @var CultureFeed_Uitpas&MockObject
-     */
-    private $uitpas;
+    private \CultureFeed_Uitpas&MockObject $uitpas;
 
     private SetCardSystemsOnEventRequestHandler $setCardSystemsOnEventRequestHandler;
 

@@ -86,10 +86,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 {
     public const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
-    /**
-     * @var LocalPlaceService&MockObject
-     */
-    private $placeService;
+    private LocalPlaceService&MockObject $placeService;
 
     private CdbXMLEventFactory $cdbXMLEventFactory;
 

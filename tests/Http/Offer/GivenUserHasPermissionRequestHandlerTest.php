@@ -19,10 +19,7 @@ final class GivenUserHasPermissionRequestHandlerTest extends TestCase
     private const OFFER_ID = 'd67e5cbc-c085-4ee0-a97b-c3795d480bd4';
     private const GIVEN_USER_ID = 'cd8d2005-e978-4f4c-9eb6-a0c0104fd8d0';
 
-    /**
-     * @var PermissionVoter&MockObject
-     */
-    private $voter;
+    private PermissionVoter&MockObject $voter;
 
     private GivenUserHasPermissionRequestHandler $givenUserHasPermissionRequestHandler;
 

@@ -32,8 +32,7 @@ use Psr\Log\LoggerInterface;
 class PlaceJsonToTurtleConverterTest extends TestCase
 {
     private PlaceJsonToTurtleConverter $placeJsonToTurtleConverter;
-    /** @var LoggerInterface&MockObject */
-    private $logger;
+    private LoggerInterface&MockObject $logger;
     private DocumentRepository $documentRepository;
     private array $expectedParsedAddresses;
     private string $placeId;

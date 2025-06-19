@@ -13,10 +13,7 @@ class AbstractCommandTest extends TestCase
 {
     private Uuid $uuid;
 
-    /**
-     * @var AbstractCommand&MockObject
-     */
-    private $abstractCommand;
+    private AbstractCommand&MockObject $abstractCommand;
 
     protected function setUp(): void
     {

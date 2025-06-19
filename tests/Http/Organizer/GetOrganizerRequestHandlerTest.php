@@ -22,13 +22,11 @@ class GetOrganizerRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var DocumentRepository&MockObject */
-    private $organizerRepository;
+    private DocumentRepository&MockObject $organizerRepository;
 
     private GetOrganizerRequestHandler $getOrganizerRequestHandler;
 
-    /** @var JsonToTurtleConverter&MockObject */
-    private $jsonToTurtleConverter;
+    private JsonToTurtleConverter&MockObject $jsonToTurtleConverter;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 

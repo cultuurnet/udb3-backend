@@ -25,15 +25,9 @@ use Psr\Log\LoggerInterface;
  */
 class AMQPPublisherTest extends TestCase
 {
-    /**
-     * @var AMQPChannel&MockObject
-     */
-    private $amqpChannel;
+    private AMQPChannel&MockObject $amqpChannel;
 
-    /**
-     * @var SpecificationInterface&MockObject
-     */
-    private $specification;
+    private SpecificationInterface&MockObject $specification;
 
     private AMQPPublisher $amqpPublisher;
 

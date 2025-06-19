@@ -16,10 +16,7 @@ class AbstractLabelCommandTest extends TestCase
 
     private Label $label;
 
-    /**
-     * @var AbstractLabelCommand&MockObject
-     */
-    private $abstractLabelCommand;
+    private AbstractLabelCommand&MockObject $abstractLabelCommand;
 
     protected function setUp(): void
     {

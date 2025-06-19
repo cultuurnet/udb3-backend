@@ -16,15 +16,9 @@ use PHPUnit\Framework\TestCase;
 
 class DelegatingAMQPMessageFactoryTest extends TestCase
 {
-    /**
-     * @var BodyFactoryInterface&MockObject
-     */
-    private $bodyFactory;
+    private BodyFactoryInterface&MockObject $bodyFactory;
 
-    /**
-     * @var PropertiesFactoryInterface&MockObject
-     */
-    private $propertiesFactory;
+    private PropertiesFactoryInterface&MockObject $propertiesFactory;
 
     private DelegatingAMQPMessageFactory $messageFactory;
 

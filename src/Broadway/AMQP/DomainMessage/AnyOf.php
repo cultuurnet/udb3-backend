@@ -8,10 +8,7 @@ use Broadway\Domain\DomainMessage;
 
 class AnyOf implements SpecificationInterface
 {
-    /**
-     * @var SpecificationCollection|SpecificationInterface[]
-     */
-    private $specifications;
+    private SpecificationCollection $specifications;
 
     public function __construct(SpecificationCollection $specifications)
     {

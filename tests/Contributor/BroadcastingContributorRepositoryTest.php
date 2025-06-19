@@ -21,10 +21,7 @@ use PHPUnit\Framework\TestCase;
 
 final class BroadcastingContributorRepositoryTest extends TestCase
 {
-    /**
-     * @var ContributorRepository&MockObject
-     */
-    private $decoratee;
+    private ContributorRepository&MockObject $decoratee;
 
     private TraceableEventBus $eventBus;
 

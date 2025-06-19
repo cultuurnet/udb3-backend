@@ -20,10 +20,7 @@ use Psr\Log\LoggerInterface;
 
 final class EventBusForwardingConsumerTest extends TestCase
 {
-    /**
-     * @var AMQPStreamConnection&MockObject
-     */
-    private $connection;
+    private AMQPStreamConnection&MockObject $connection;
 
     private string $queueName;
 
@@ -31,32 +28,17 @@ final class EventBusForwardingConsumerTest extends TestCase
 
     private string $consumerTag;
 
-    /**
-     * @var EventBus&MockObject
-     */
-    private $eventBus;
+    private EventBus&MockObject $eventBus;
 
-    /**
-     * @var DeserializerLocatorInterface&MockObject
-     */
-    private $deserializerLocator;
+    private DeserializerLocatorInterface&MockObject $deserializerLocator;
 
-    /**
-     * @var AMQPChannel&MockObject
-     */
-    private $channel;
+    private AMQPChannel&MockObject $channel;
 
     private EventBusForwardingConsumer $eventBusForwardingConsumer;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private $logger;
+    private LoggerInterface&MockObject $logger;
 
-    /**
-     * @var DeserializerInterface&MockObject
-     */
-    private $deserializer;
+    private DeserializerInterface&MockObject $deserializer;
 
 
     public function setUp(): void

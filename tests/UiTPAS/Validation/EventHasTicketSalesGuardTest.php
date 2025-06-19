@@ -17,20 +17,11 @@ use Psr\Log\LoggerInterface;
 
 final class EventHasTicketSalesGuardTest extends TestCase
 {
-    /**
-     * @var \CultureFeed_Uitpas&MockObject
-     */
-    private $uitpas;
+    private \CultureFeed_Uitpas&MockObject $uitpas;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private $logger;
+    private LoggerInterface&MockObject $logger;
 
-    /**
-     * @var Offer&MockObject
-     */
-    private $event;
+    private Offer&MockObject $event;
 
     private string $placeId;
 

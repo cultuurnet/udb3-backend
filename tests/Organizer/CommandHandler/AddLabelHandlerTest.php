@@ -19,10 +19,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var LabelServiceInterface&MockObject
-     */
-    private $labelService;
+    private LabelServiceInterface&MockObject $labelService;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): AddLabelHandler
     {

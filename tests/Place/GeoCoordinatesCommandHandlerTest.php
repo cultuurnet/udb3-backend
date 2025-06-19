@@ -37,10 +37,7 @@ class GeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
     private const PLACE_ID = 'b9ec8a0a-ec9d-4dd3-9aaa-6d5b41b69d7c';
 
-    /**
-     * @var GeocodingService&MockObject
-     */
-    private $geocodingService;
+    private GeocodingService&MockObject $geocodingService;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): GeoCoordinatesCommandHandler
     {

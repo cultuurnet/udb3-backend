@@ -30,21 +30,14 @@ class SendOwnershipMailCommandHandlerTest extends TestCase
     private const REQUESTER_ID = 'd6e21fa4-8d8d-4f23-b0cc-c63e34e43a01';
     private const ORGANIZER_ID = 'd146a8cb-14c8-4364-9207-9d32d36f6959';
 
-    /** @var Mailer|MockObject */
-    private $mailer;
+    private Mailer&MockObject $mailer;
     private SendOwnershipMailCommandHandler $commandHandler;
-    /** @var OwnershipSearchRepository|MockObject */
-    private $ownershipSearchRepository;
-    /** @var TwigEnvironment|MockObject */
-    private $twig;
-    /** @var OwnershipMailParamExtractor|MockObject */
-    private $ownershipMailParamExtractor;
-    /** @var RecipientStrategy|MockObject */
-    private $sendToOwnersAndCreatorOfOrganisation;
-    /** @var LoggerInterface|MockObject */
-    private $sendToOwnerOfOwnership;
-    /** @var LoggerInterface|MockObject */
-    private $logger;
+    private OwnershipSearchRepository&MockObject $ownershipSearchRepository;
+    private TwigEnvironment&MockObject $twig;
+    private OwnershipMailParamExtractor&MockObject $ownershipMailParamExtractor;
+    private RecipientStrategy&MockObject $sendToOwnersAndCreatorOfOrganisation;
+    private RecipientStrategy&MockObject $sendToOwnerOfOwnership;
+    private LoggerInterface&MockObject $logger;
 
     protected function setUp(): void
     {

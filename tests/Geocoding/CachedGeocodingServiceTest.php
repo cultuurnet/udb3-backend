@@ -15,10 +15,7 @@ use Doctrine\Common\Cache\Cache;
 
 class CachedGeocodingServiceTest extends TestCase
 {
-    /**
-     * @var GeocodingService&MockObject
-     */
-    private $decoratee;
+    private GeocodingService&MockObject $decoratee;
 
     private CachedGeocodingService $service;
 

@@ -16,10 +16,7 @@ class CommandAuthorizationExceptionTest extends TestCase
 
     private string $itemId;
 
-    /**
-     * @var AuthorizableCommand&MockObject
-     */
-    private $command;
+    private AuthorizableCommand&MockObject $command;
 
     private CommandAuthorizationException $commandAuthorizationException;
 

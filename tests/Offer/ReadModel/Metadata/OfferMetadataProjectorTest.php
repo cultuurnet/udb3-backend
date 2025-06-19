@@ -37,10 +37,7 @@ class OfferMetadataProjectorTest extends TestCase
         'auth0_client_id' => 'uitdatabank-ui-auth0',
     ];
 
-    /**
-     * @var MockObject
-     */
-    private $repository;
+    private MockObject $repository;
 
     private OfferMetadataProjector $projector;
 

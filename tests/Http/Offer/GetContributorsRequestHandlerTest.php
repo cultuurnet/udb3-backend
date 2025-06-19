@@ -30,20 +30,11 @@ final class GetContributorsRequestHandlerTest extends TestCase
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
-    /**
-     * @var OfferRepository&MockObject
-     */
-    private $offerRepository;
+    private OfferRepository&MockObject $offerRepository;
 
-    /**
-     * @var ContributorRepository&MockObject
-     */
-    private $contributorRepository;
+    private ContributorRepository&MockObject $contributorRepository;
 
-    /**
-     * @var PermissionVoter&MockObject
-     */
-    private $permissionVoter;
+    private PermissionVoter&MockObject $permissionVoter;
 
     private ?string $currentUserId;
 

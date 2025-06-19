@@ -22,10 +22,7 @@ final class GetUserByEmailRequestHandlerTest extends TestCase
 
     private GetUserByEmailRequestHandler $getUserByEmailRequestHandler;
 
-    /**
-     * @var UserIdentityResolver&MockObject
-     */
-    private $userIdentityResolver;
+    private UserIdentityResolver&MockObject $userIdentityResolver;
 
     protected function setUp(): void
     {

@@ -22,10 +22,8 @@ class DeletePlaceTest extends TestCase
 {
     private TraceableCommandBus $commandBus;
 
-    /** @var EventRelationsRepository|MockObject */
-    private $eventRelationsRepository;
-    /** @var DocumentRepository|MockObject */
-    private $placeDocumentRepository;
+    private EventRelationsRepository&MockObject $eventRelationsRepository;
+    private DocumentRepository&MockObject $placeDocumentRepository;
 
     private CommandTester $commandTester;
 

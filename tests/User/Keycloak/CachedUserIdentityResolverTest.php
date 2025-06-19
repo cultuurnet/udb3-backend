@@ -13,10 +13,7 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 final class CachedUserIdentityResolverTest extends TestCase
 {
-    /**
-     * @var UserIdentityResolver&MockObject
-     */
-    private $fallbackUserIdentityResolver;
+    private UserIdentityResolver&MockObject $fallbackUserIdentityResolver;
 
     private CachedUserIdentityResolver $cachedUserIdentityResolver;
 

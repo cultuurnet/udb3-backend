@@ -30,10 +30,7 @@ class EventRelationsProjectorTest extends TestCase
 {
     public const CDBXML_NAMESPACE_33 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
-    /**
-     * @var EventRelationsRepository&MockObject
-     */
-    private $repository;
+    private EventRelationsRepository&MockObject $repository;
 
 
     private EventRelationsProjector $projector;

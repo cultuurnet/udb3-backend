@@ -26,19 +26,10 @@ class GetCreatorRequestHandlerTest extends TestCase
 
     private GetCreatorRequestHandler $getCreatorRequestHandler;
 
-    /**
-     * @var DocumentRepository&MockObject
-     */
-    private $organizerRepository;
-    /**
-     * @var UserIdentityResolver&MockObject
-     */
-    private $userIdentityResolver;
+    private DocumentRepository&MockObject $organizerRepository;
+    private UserIdentityResolver&MockObject $userIdentityResolver;
     private CurrentUser $currentUser;
-    /**
-     * @var PermissionVoter&MockObject
-     */
-    private $permissionVoter;
+    private PermissionVoter&MockObject $permissionVoter;
 
     protected function setUp(): void
     {

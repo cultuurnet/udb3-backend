@@ -22,10 +22,7 @@ final class GetLabelRequestHandlerTest extends TestCase
     use AssertJsonResponseTrait;
     use AssertApiProblemTrait;
 
-    /**
-     * @var ReadRepositoryInterface&MockObject
-     */
-    private $labelRepository;
+    private ReadRepositoryInterface&MockObject $labelRepository;
 
     private Entity $label;
 

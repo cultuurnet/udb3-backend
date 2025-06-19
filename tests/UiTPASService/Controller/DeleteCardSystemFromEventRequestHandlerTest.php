@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 final class DeleteCardSystemFromEventRequestHandlerTest extends TestCase
 {
-    /**
-     * @var CultureFeed_Uitpas&MockObject
-     */
-    private $uitpas;
+    private \CultureFeed_Uitpas&MockObject $uitpas;
 
     private DeleteCardSystemFromEventRequestHandler $deleteCardSystemFromEventRequestHandler;
 

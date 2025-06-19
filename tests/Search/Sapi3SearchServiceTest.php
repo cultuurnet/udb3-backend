@@ -20,10 +20,7 @@ use Psr\Http\Message\UriInterface;
 
 class Sapi3SearchServiceTest extends TestCase
 {
-    /**
-     * @var HttpClient&MockObject
-     */
-    private $httpClient;
+    private HttpClient&MockObject $httpClient;
 
     private Sapi3SearchService $searchService;
 

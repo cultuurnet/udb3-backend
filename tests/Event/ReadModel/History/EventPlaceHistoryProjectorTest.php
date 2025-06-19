@@ -40,17 +40,13 @@ class EventPlaceHistoryProjectorTest extends TestCase
     private const DATE_TIME_FORMAT = DateTimeInterface::ATOM;
     private const DATE_TIME_VALUE = '2024-1-1T12:30:00+00:00';
 
-    /** @var EventPlaceHistoryRepository|MockObject */
-    private $repository;
+    private EventPlaceHistoryRepository&MockObject $repository;
 
-    /** @var DocumentRepository|MockObject */
-    private $eventRepository;
+    private DocumentRepository&MockObject $eventRepository;
 
-    /** @var LoggerInterface|MockObject */
-    private $logger;
+    private LoggerInterface&MockObject $logger;
 
-    /** @var EventCdbIdExtractorInterface|MockObject */
-    private $eventCdbIdExtractor;
+    private EventCdbIdExtractorInterface&MockObject $eventCdbIdExtractor;
 
     private EventPlaceHistoryProjector $projector;
 
