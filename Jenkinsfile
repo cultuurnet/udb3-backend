@@ -120,8 +120,8 @@ pipeline {
 
             steps {
                 publishAptlySnapshot snapshotName: "${env.JOB_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.JOB_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'focal'
-                triggerDeployment nodeName: 'uitdatabank-web-test01'
-                triggerDeployment nodeName: 'uitdatabank-rdf-test01'
+                triggerDeployment nodeName: 'uitdatabank-web-prod01'
+                triggerDeployment nodeName: 'uitdatabank-rdf-prod01'
             }
             post {
                 always {
