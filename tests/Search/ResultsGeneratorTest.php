@@ -14,19 +14,13 @@ use Psr\Log\LoggerInterface;
 
 class ResultsGeneratorTest extends TestCase
 {
-    /**
-     * @var SearchServiceInterface&MockObject
-     */
-    private $searchService;
+    private SearchServiceInterface&MockObject $searchService;
 
     private Sorting $sorting;
 
     private ResultsGenerator $generator;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private $logger;
+    private LoggerInterface&MockObject $logger;
 
     private string $query;
 

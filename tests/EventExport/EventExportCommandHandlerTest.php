@@ -20,25 +20,16 @@ use Psr\Log\LoggerInterface;
 
 class EventExportCommandHandlerTest extends TestCase
 {
-    /**
-     * @var EventExportServiceInterface&MockObject
-     */
-    private $eventExportService;
+    private EventExportServiceInterface&MockObject $eventExportService;
 
     private string $princeXMLBinaryPath;
 
     private EventExportCommandHandler $eventExportCommandHandler;
 
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private $logger;
+    private LoggerInterface&MockObject $logger;
 
-    /**
-     * @var CalendarSummaryRepositoryInterface&MockObject
-     */
-    private $calendarSummary;
+    private CalendarSummaryRepositoryInterface&MockObject $calendarSummary;
 
     protected function setUp(): void
     {

@@ -20,15 +20,9 @@ use Psr\Log\LoggerInterface;
 
 final class BulkLabelCommandHandlerTest extends TestCase
 {
-    /**
-     * @var ResultsGeneratorInterface&MockObject
-     */
-    private $resultGenerator;
+    private ResultsGeneratorInterface&MockObject $resultGenerator;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private $logger;
+    private LoggerInterface&MockObject $logger;
 
     private BulkLabelCommandHandler $commandHandler;
 
@@ -46,10 +40,7 @@ final class BulkLabelCommandHandlerTest extends TestCase
      */
     private array $itemIdentifiers;
 
-    /**
-     * @var CommandBus&MockObject
-     */
-    private $commandBus;
+    private CommandBus&MockObject $commandBus;
 
     protected function setUp(): void
     {

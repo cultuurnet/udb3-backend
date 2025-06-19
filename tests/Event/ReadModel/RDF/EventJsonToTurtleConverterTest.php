@@ -32,15 +32,11 @@ class EventJsonToTurtleConverterTest extends TestCase
 
     private DocumentRepository $documentRepository;
 
-    /** @var LoggerInterface&MockObject */
-    private $logger;
+    private LoggerInterface&MockObject $logger;
 
     private EventJsonToTurtleConverter $eventJsonToTurtleConverter;
 
-    /**
-     * @var NormalizerInterface|MockObject
-     */
-    private $imageNormalizer;
+    private NormalizerInterface&MockObject $imageNormalizer;
 
     protected function setUp(): void
     {

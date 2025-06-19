@@ -17,17 +17,14 @@ use PHPUnit\Framework\TestCase;
 
 final class ContributorEnrichedRepositoryTest extends TestCase
 {
-    /**
-     * @var ContributorRepository&MockObject
-     */
-    private $contributorRepository;
+    private ContributorRepository&MockObject $contributorRepository;
 
     private InMemoryDocumentRepository $documentRepository;
 
     /**
      * @var PermissionVoter&MockObject;
      */
-    private $permissionVoter;
+    private PermissionVoter&MockObject $permissionVoter;
 
     private ?string $currentUserId;
 

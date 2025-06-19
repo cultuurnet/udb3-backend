@@ -16,15 +16,9 @@ use PHPUnit\Framework\TestCase;
 
 class LabelCommandBusSecurityTest extends TestCase
 {
-    /**
-     * @var CommandBusSecurity&MockObject
-     */
-    private $securityDecoratee;
+    private CommandBusSecurity&MockObject $securityDecoratee;
 
-    /**
-     * @var ReadRepositoryInterface&MockObject
-     */
-    private $labelReadRepository;
+    private ReadRepositoryInterface&MockObject $labelReadRepository;
 
     private LabelCommandBusSecurity $securityWithLabelPrivacy;
 

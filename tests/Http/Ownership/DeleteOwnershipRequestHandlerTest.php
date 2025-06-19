@@ -25,11 +25,9 @@ class DeleteOwnershipRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    /** @var OwnershipSearchRepository&MockObject */
-    private $ownerShipSearchRepository;
+    private OwnershipSearchRepository&MockObject $ownerShipSearchRepository;
 
-    /** @var PermissionVoter&MockObject */
-    private $permissionVoter;
+    private PermissionVoter&MockObject $permissionVoter;
 
     private DeleteOwnershipRequestHandler $deleteOwnershipRequestHandler;
 

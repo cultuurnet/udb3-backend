@@ -13,10 +13,7 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 final class CachedConsumerReadRepositoryTest extends TestCase
 {
-    /**
-     * @var ConsumerReadRepository&MockObject
-     */
-    private $fallbackConsumerReadRepository;
+    private ConsumerReadRepository&MockObject $fallbackConsumerReadRepository;
 
     private ApiKey $cachedApiKey;
 

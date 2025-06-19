@@ -15,10 +15,7 @@ class AbstractDBALRepositoryTest extends TestCase
 
     private string $tableName;
 
-    /**
-     * @var AbstractDBALRepository&MockObject
-     */
-    private $abstractDBALRepository;
+    private AbstractDBALRepository&MockObject $abstractDBALRepository;
 
     protected function setUp(): void
     {

@@ -30,10 +30,7 @@ class OrganizerJsonToTurtleConverterTest extends TestCase
     private string $organizerId;
     private array $organizer;
 
-    /**
-     * @var NormalizerInterface|MockObject
-     */
-    private $imageNormalizer;
+    private NormalizerInterface&MockObject $imageNormalizer;
 
     protected function setUp(): void
     {

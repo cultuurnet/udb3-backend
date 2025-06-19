@@ -22,25 +22,13 @@ final class MediaManagerTest extends TestCase
 {
     private MediaManager $mediaManager;
 
-    /**
-     * @var Repository&MockObject
-     */
-    private $repository;
+    private Repository&MockObject $repository;
 
-    /**
-     * @var IriGeneratorInterface&MockObject
-     */
-    private $iriGenerator;
+    private IriGeneratorInterface&MockObject $iriGenerator;
 
-    /**
-     * @var PathGeneratorInterface&MockObject
-     */
-    private $pathGenerator;
+    private PathGeneratorInterface&MockObject $pathGenerator;
 
-    /**
-     * @var ImageStorage&MockObject
-     */
-    private $imageStorage;
+    private ImageStorage&MockObject $imageStorage;
 
     public function setUp(): void
     {

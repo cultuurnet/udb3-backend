@@ -15,10 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 final class SearchProductionsRequestHandlerTest extends TestCase
 {
-    /**
-     * @var ProductionRepository&MockObject
-     */
-    private $repository;
+    private ProductionRepository&MockObject $repository;
 
     private SearchProductionsRequestHandler $searchProductionsRequestHandler;
 

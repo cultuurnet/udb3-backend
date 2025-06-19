@@ -13,15 +13,9 @@ use PHPUnit\Framework\TestCase;
 
 class ReplayFilteringEventListenerTest extends TestCase
 {
-    /**
-     * @var EventListener&MockObject
-     */
-    private $eventListener;
+    private EventListener&MockObject $eventListener;
 
-    /**
-     * @var FilteringEventListener
-     */
-    private $filteringEventListener;
+    private FilteringEventListener $filteringEventListener;
 
     public function setUp(): void
     {

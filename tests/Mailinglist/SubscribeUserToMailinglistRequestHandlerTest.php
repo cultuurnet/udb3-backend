@@ -25,10 +25,7 @@ class SubscribeUserToMailinglistRequestHandlerTest extends TestCase
 
     private SubscribeUserToMailinglistRequestHandler $handler;
 
-    /**
-     * @var MailinglistClient&MockObject
-     */
-    private $mailinglistClient;
+    private MailinglistClient&MockObject $mailinglistClient;
 
     private ServerRequestInterface $request;
 

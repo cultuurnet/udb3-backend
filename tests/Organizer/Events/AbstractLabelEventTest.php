@@ -15,10 +15,7 @@ class AbstractLabelEventTest extends TestCase
 
     private Label $label;
 
-    /**
-     * @var AbstractLabelEvent&MockObject
-     */
-    private $abstractLabelEvent;
+    private AbstractLabelEvent&MockObject $abstractLabelEvent;
 
     protected function setUp(): void
     {

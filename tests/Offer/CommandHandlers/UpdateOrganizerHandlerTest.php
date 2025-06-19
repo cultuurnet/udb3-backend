@@ -29,8 +29,7 @@ use Psr\Log\LoggerInterface;
 
 final class UpdateOrganizerHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /** @var CultureFeed_Uitpas&MockObject */
-    private $cultureFeedUitpas;
+    private CultureFeed_Uitpas&MockObject $cultureFeedUitpas;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): UpdateOrganizerHandler
     {

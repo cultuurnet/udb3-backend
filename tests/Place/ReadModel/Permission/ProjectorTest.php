@@ -30,17 +30,11 @@ use PHPUnit\Framework\TestCase;
 
 final class ProjectorTest extends TestCase
 {
-    /**
-     * @var ResourceOwnerRepository&MockObject
-     */
-    private $repository;
+    private ResourceOwnerRepository&MockObject $repository;
 
     private Projector $projector;
 
-    /**
-     * @var CreatedByToUserIdResolverInterface&MockObject
-     */
-    private $userIdResolver;
+    private CreatedByToUserIdResolverInterface&MockObject $userIdResolver;
 
     public function setUp(): void
     {

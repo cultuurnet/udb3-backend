@@ -10,15 +10,9 @@ use CultuurNet\UDB3\Cdb\ExternalId\MappingServiceInterface;
 
 class EventCdbIdExtractor implements EventCdbIdExtractorInterface
 {
-    /**
-     * @var MappingServiceInterface
-     */
-    private $placeExternalIdMappingService;
+    private MappingServiceInterface $placeExternalIdMappingService;
 
-    /**
-     * @var MappingServiceInterface
-     */
-    private $organizerExternalIdMappingService;
+    private MappingServiceInterface $organizerExternalIdMappingService;
 
     /**
      * @param MappingServiceInterface $organizerExternalIdMappingService

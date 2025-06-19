@@ -14,10 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class SendToOwnerOfOwnershipTest extends TestCase
 {
-    /**
-     * @var UserIdentityResolver&MockObject
-     */
-    private $identityResolver;
+    private UserIdentityResolver&MockObject $identityResolver;
 
     private SendToOwnerOfOwnership $strategy;
     private OwnershipItem $ownershipItem;

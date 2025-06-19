@@ -38,8 +38,7 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
 {
     private LookupDuplicatePlaceWithSapi3 $lookupDuplicatePlaceWithSapi3;
 
-    /** @var Sapi3SearchService & MockObject */
-    private $sapi3SearchService;
+    private Sapi3SearchService&MockObject $sapi3SearchService;
 
     protected function setUp(): void
     {

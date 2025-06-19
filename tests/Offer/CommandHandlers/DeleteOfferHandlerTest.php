@@ -34,10 +34,7 @@ class DeleteOfferHandlerTest extends CommandHandlerScenarioTestCase
 {
     private const EVENT_ID = '208dbe98-ffaa-41cb-9ada-7ec8e0651f48';
 
-    /**
-     * @var DeleteUiTPASPlaceVoter&MockObject
-     */
-    private $validator;
+    private DeleteUiTPASPlaceVoter&MockObject $validator;
     private string $userId;
 
     public function setUp(): void

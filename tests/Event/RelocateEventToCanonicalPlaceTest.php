@@ -30,10 +30,7 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    /**
-     * @var CanonicalPlaceRepository&MockObject
-     */
-    private $canonicalPlaceRepository;
+    private CanonicalPlaceRepository&MockObject $canonicalPlaceRepository;
 
     protected function setUp(): void
     {

@@ -30,10 +30,7 @@ final class Psr7RequestBuilder
 
     private array $routeParameters = [];
 
-    /**
-     * @var array|object|null
-     */
-    private $parsedBody = null;
+    private null|array|object $parsedBody = null;
 
     public function withUriFromString(string $uri): self
     {
