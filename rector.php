@@ -18,4 +18,7 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->sets([
         PHPUnitSetList::PHPUNIT_90,
     ]);
+
+    $rectorConfig->importNames();
+    $rectorConfig->importShortClasses(false);
 };

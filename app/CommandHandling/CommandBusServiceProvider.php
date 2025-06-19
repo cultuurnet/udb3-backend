@@ -4,6 +4,51 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\CommandHandling;
 
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTitleHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\ReplaceLabelsHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\ImportVideosHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteOfferHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdatePriceInfoHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateOrganizerHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteOrganizerHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteCurrentOrganizerHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateContributorsHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\DeleteDescriptionHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateAttendanceModeHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateOnlineUrlHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\DeleteOnlineUrlHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateEducationalDescriptionHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\DeleteEducationalDescriptionHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\RemoveImageHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\ImportImagesHandler;
+use League\Container\Argument\Literal\CallableArgument;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\CompositeCommandValidator;
 use CultuurNet\UDB3\Broadway\CommandHandling\Validation\ValidatingCommandBusDecorator;
@@ -163,40 +208,40 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         // Offer command handlers
                         // @todo can we auto-discover these and register them automatically?
                         // @see https://jira.uitdatabank.be/browse/III-4176
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateTitleHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateAvailableFromHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateCalendarHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateBookingAvailabilityHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateFacilitiesHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\ChangeOwnerHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\RemoveLabelHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\ImportLabelsHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\ReplaceLabelsHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\DeleteVideoHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\ImportVideosHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\DeleteOfferHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdatePriceInfoHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateOrganizerHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\DeleteOrganizerHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\DeleteCurrentOrganizerHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\UpdateContributorsHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Offer\CommandHandlers\DeleteDescriptionHandler::class));
+                        $commandBus->subscribe($container->get(UpdateTitleHandler::class));
+                        $commandBus->subscribe($container->get(UpdateAvailableFromHandler::class));
+                        $commandBus->subscribe($container->get(UpdateCalendarHandler::class));
+                        $commandBus->subscribe($container->get(UpdateStatusHandler::class));
+                        $commandBus->subscribe($container->get(UpdateBookingAvailabilityHandler::class));
+                        $commandBus->subscribe($container->get(UpdateTypeHandler::class));
+                        $commandBus->subscribe($container->get(UpdateFacilitiesHandler::class));
+                        $commandBus->subscribe($container->get(ChangeOwnerHandler::class));
+                        $commandBus->subscribe($container->get(AddLabelHandler::class));
+                        $commandBus->subscribe($container->get(RemoveLabelHandler::class));
+                        $commandBus->subscribe($container->get(ImportLabelsHandler::class));
+                        $commandBus->subscribe($container->get(ReplaceLabelsHandler::class));
+                        $commandBus->subscribe($container->get(AddVideoHandler::class));
+                        $commandBus->subscribe($container->get(UpdateVideoHandler::class));
+                        $commandBus->subscribe($container->get(DeleteVideoHandler::class));
+                        $commandBus->subscribe($container->get(ImportVideosHandler::class));
+                        $commandBus->subscribe($container->get(DeleteOfferHandler::class));
+                        $commandBus->subscribe($container->get(UpdatePriceInfoHandler::class));
+                        $commandBus->subscribe($container->get(UpdateOrganizerHandler::class));
+                        $commandBus->subscribe($container->get(DeleteOrganizerHandler::class));
+                        $commandBus->subscribe($container->get(DeleteCurrentOrganizerHandler::class));
+                        $commandBus->subscribe($container->get(UpdateContributorsHandler::class));
+                        $commandBus->subscribe($container->get(DeleteDescriptionHandler::class));
 
                         // Event command handlers
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Event\CommandHandlers\UpdateAttendanceModeHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Event\CommandHandlers\UpdateOnlineUrlHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Event\CommandHandlers\DeleteOnlineUrlHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler::class));
+                        $commandBus->subscribe($container->get(UpdateSubEventsHandler::class));
+                        $commandBus->subscribe($container->get(UpdateThemeHandler::class));
+                        $commandBus->subscribe($container->get(RemoveThemeHandler::class));
+                        $commandBus->subscribe($container->get(UpdateAttendanceModeHandler::class));
+                        $commandBus->subscribe($container->get(UpdateOnlineUrlHandler::class));
+                        $commandBus->subscribe($container->get(DeleteOnlineUrlHandler::class));
+                        $commandBus->subscribe($container->get(UpdateAudienceHandler::class));
+                        $commandBus->subscribe($container->get(UpdateUiTPASPricesHandler::class));
+                        $commandBus->subscribe($container->get(CopyEventHandler::class));
 
                         // Organizer command handlers
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler::class));
@@ -205,19 +250,19 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\ImportLabelsHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\ReplaceLabelsHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler::class));
+                        $commandBus->subscribe($container->get(UpdateDescriptionHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\DeleteDescriptionHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateEducationalDescriptionHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\DeleteEducationalDescriptionHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateAddressHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\RemoveAddressHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateContactPointHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\AddImageHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\RemoveImageHandler::class));
-                        $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\ImportImagesHandler::class));
+                        $commandBus->subscribe($container->get(UpdateEducationalDescriptionHandler::class));
+                        $commandBus->subscribe($container->get(DeleteEducationalDescriptionHandler::class));
+                        $commandBus->subscribe($container->get(UpdateAddressHandler::class));
+                        $commandBus->subscribe($container->get(RemoveAddressHandler::class));
+                        $commandBus->subscribe($container->get(UpdateWebsiteHandler::class));
+                        $commandBus->subscribe($container->get(UpdateContactPointHandler::class));
+                        $commandBus->subscribe($container->get(AddImageHandler::class));
+                        $commandBus->subscribe($container->get(UpdateMainImageHandler::class));
+                        $commandBus->subscribe($container->get(UpdateImageHandler::class));
+                        $commandBus->subscribe($container->get(RemoveImageHandler::class));
+                        $commandBus->subscribe($container->get(ImportImagesHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\ChangeOwnerHandler::class));
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\UpdateContributorsHandler::class));
 
@@ -299,7 +344,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'logger_factory.resque_worker',
-            new \League\Container\Argument\Literal\CallableArgument(
+            new CallableArgument(
                 function ($queueName) use ($container) {
                     $redisConfig = [
                         'host' => $container->get('config')['resque']['host'] ?? '127.0.0.1',

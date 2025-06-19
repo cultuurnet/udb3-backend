@@ -61,3 +61,9 @@ feature-filter:
 
 feature-random:
 	docker-compose exec php composer feature -- --order=random --tags "~@init&&~@external"
+
+rector:
+	docker-compose exec php composer rector
+
+rector-fix:
+	docker-compose exec php composer rector-fix

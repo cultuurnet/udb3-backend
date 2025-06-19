@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Label\ReadModels\JSON\Repository;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class AppConfigReadRepositoryDecoratorTest extends TestCase
 {
-    /** @var ReadRepositoryInterface&\PHPUnit\Framework\MockObject\MockObject */
+    /** @var ReadRepositoryInterface&MockObject */
     private ReadRepositoryInterface $decoratee;
     private AppConfigReadRepositoryDecorator $appConfigReadRepositoryDecorator;
 
