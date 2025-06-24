@@ -1,6 +1,6 @@
 services:
   php-base:
-    build: docker/php8.0
+    build: docker/php8.1
     volumes:
       - .:/var/www/html:cached
     working_dir: /var/www/html
