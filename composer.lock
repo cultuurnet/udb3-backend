@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e7f74628876852458c279b9c839f3eab",
+    "content-hash": "bb00cac4edd7baae456f15ded49f5c0f",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -794,16 +794,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "dev-master",
+            "version": "dev-php-8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "dc4aa79d42801e557794834e590ec2454f9d06f2"
+                "reference": "38b194af4a5a265932c13ab68e8e38c92fe2c475"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/dc4aa79d42801e557794834e590ec2454f9d06f2",
-                "reference": "dc4aa79d42801e557794834e590ec2454f9d06f2",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/38b194af4a5a265932c13ab68e8e38c92fe2c475",
+                "reference": "38b194af4a5a265932c13ab68e8e38c92fe2c475",
                 "shasum": ""
             },
             "require": {
@@ -813,7 +813,6 @@
                 "phpunit/phpunit": "~5.7",
                 "satooshi/php-coveralls": "~0.7"
             },
-            "default-branch": true,
             "type": "library",
             "extra": {
                 "branch-alias": {
@@ -840,9 +839,9 @@
             "description": "Culturefeed PHP library",
             "support": {
                 "issues": "https://github.com/cultuurnet/culturefeed-php/issues",
-                "source": "https://github.com/cultuurnet/culturefeed-php/tree/v1.14"
+                "source": "https://github.com/cultuurnet/culturefeed-php/tree/php-8.1"
             },
-            "time": "2021-02-01T15:03:11+00:00"
+            "time": "2025-06-25T14:45:44+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",

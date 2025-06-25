@@ -28,7 +28,7 @@
     "commerceguys/intl": "^0.7",
     "cultuurnet/calendar-summary-v3": "^4.0.8",
     "cultuurnet/cdb": "~2.2.0",
-    "cultuurnet/culturefeed-php": "dev-master",
+    "cultuurnet/culturefeed-php": "dev-php-8.1",
     "cultuurnet/udb3-api-guard": "^5.0",
     "danielstjules/stringy": "^3.1",
     "doctrine/cache": "~1.3",
