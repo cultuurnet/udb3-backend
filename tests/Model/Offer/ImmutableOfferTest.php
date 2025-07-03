@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Offer;
 
+use Money\UnknownCurrencyException;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\Organizer\OrganizerReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
@@ -330,7 +331,7 @@ class ImmutableOfferTest extends TestCase
 
     /**
      * @test
-     * @throws \Money\UnknownCurrencyException
+     * @throws UnknownCurrencyException
      */
     public function it_should_return_a_copy_with_updated_price_info(): void
     {
@@ -351,7 +352,7 @@ class ImmutableOfferTest extends TestCase
 
     /**
      * @test
-     * @throws \Money\UnknownCurrencyException
+     * @throws UnknownCurrencyException
      */
     public function it_should_return_a_copy_without_price_info(): void
     {

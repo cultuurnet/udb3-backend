@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Migrations;
 
+use Doctrine\DBAL\Schema\SchemaException;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 class Version20200526130622 extends AbstractMigration
 {
     /**
-     * @throws \Doctrine\DBAL\Schema\SchemaException
+     * @throws SchemaException
      */
     public function up(Schema $schema): void
     {
