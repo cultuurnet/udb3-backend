@@ -41,4 +41,9 @@ final class CurrentUser
     {
         return $this->id === null;
     }
+
+    public function isMatch(string $userId): bool
+    {
+        return $userId === $this->id;
+    }
 }
