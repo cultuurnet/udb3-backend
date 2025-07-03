@@ -39,7 +39,7 @@ services:
       profiles:
           - xdebug
       build:
-          context: docker/php
+          context: docker/php8.1
           args:
               ENABLE_XDEBUG: "true"
       environment:
