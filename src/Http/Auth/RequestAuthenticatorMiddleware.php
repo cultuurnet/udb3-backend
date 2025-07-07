@@ -111,7 +111,9 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     public function getCurrentUser(): CurrentUser
     {
         $userId = $this->token?->getUserId();
-        return new CurrentUser($userId);
+        $currentUser = new CurrentUser($userId);
+
+        return $this->token->getV2UserId() !== null ? $currentUser->withv2Id($this->token->getV2UserId()) : $currentUser;
     }
 
     private function authenticateToken(ServerRequestInterface $request): void

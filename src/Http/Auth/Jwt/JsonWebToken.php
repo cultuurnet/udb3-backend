@@ -95,6 +95,14 @@ final class JsonWebToken
         return $this->token->claims()->get('sub');
     }
 
+    public function getV2UserId(): ?string
+    {
+        if ($this->getType() !== self::UIT_ID_V2_CLIENT_ACCESS_TOKEN && $this->token->claims()->has('sub')) {
+            return $this->token->claims()->get('sub');
+        }
+        return null;
+    }
+
     public function getUserIdentityDetails(UserIdentityResolver $userIdentityResolver): ?UserIdentityDetails
     {
         if ($this->getType() === self::UIT_ID_V2_CLIENT_ACCESS_TOKEN) {
