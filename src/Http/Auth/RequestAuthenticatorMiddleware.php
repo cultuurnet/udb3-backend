@@ -110,7 +110,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 
     public function getCurrentUser(): CurrentUser
     {
-        $userId = $this->token ? $this->token->getUserId() : null;
+        $userId = $this->token?->getUserId();
         return new CurrentUser($userId);
     }
 
