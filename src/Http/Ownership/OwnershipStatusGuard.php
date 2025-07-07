@@ -46,7 +46,7 @@ final class OwnershipStatusGuard
             return;
         }
 
-        if ($ownership->getOwnerId() === $currentUser->getId()) {
+        if ($currentUser->isMatch($ownership->getOwnerId())) {
             return;
         }
 
@@ -61,7 +61,7 @@ final class OwnershipStatusGuard
             $currentUser->getId()
         );
 
-        if (!$isOwner && $currentUser->getId() !== $requesterId) {
+        if (!$isOwner && !$currentUser->isMatch($requesterId)) {
             throw ApiProblem::forbidden('You are not allowed to request ownership for this item');
         }
     }
