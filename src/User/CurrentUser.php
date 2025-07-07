@@ -11,6 +11,8 @@ final class CurrentUser
     private static ?array $godUserIds = null;
     private ?string $id;
 
+    private ?string $v2Id;
+
     public function __construct(?string $id)
     {
         $this->id = $id;
@@ -44,6 +46,6 @@ final class CurrentUser
 
     public function isMatch(string $userId): bool
     {
-        return $userId === $this->id;
+        return $userId === $this->id || $userId === $this->v2Id;
     }
 }
