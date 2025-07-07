@@ -11,11 +11,18 @@ final class CurrentUser
     private static ?array $godUserIds = null;
     private ?string $id;
 
-    private ?string $v2Id;
+    private ?string $v2Id = null;
 
     public function __construct(?string $id)
     {
         $this->id = $id;
+    }
+
+    public function withv2Id(string $v2Id): self
+    {
+        $c = clone $this;
+        $this->v2Id = $v2Id;
+        return $c;
     }
 
     public static function configureGodUserIds(array $godUserIds): void
