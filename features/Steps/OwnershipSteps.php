@@ -9,6 +9,25 @@ use CultuurNet\UDB3\Json;
 trait OwnershipSteps
 {
     /**
+     * @When I request ownership for the current user on the organizer with organizerId :organizerId and save the :jsonPath as :variableName
+     */
+    public function iRequestOwnershipForTheCurrentUserOnTheOrganizerWithOrganizerIdAndSaveTheAs(
+        string $organizerId,
+        string $jsonPath,
+        string $variableName
+    ): void {
+        $this->requestOwnership(
+            '/ownerships',
+            $this->variableState->replaceVariables(Json::encode([
+                'itemId' => $organizerId,
+                'itemType' => 'organizer',
+            ])),
+            $jsonPath,
+            $variableName
+        );
+    }
+
+    /**
      * @When I request ownership for :ownerId on the organizer with organizerId :organizerId and save the :jsonPath as :variableName
      */
     public function iRequestOwnershipForOnTheOrganizerWithOrganizerIdAndSaveTheAs(

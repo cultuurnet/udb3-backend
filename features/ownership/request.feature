@@ -30,6 +30,15 @@ Feature: Test requesting ownership
     When I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
 
+  Scenario: Requesting ownership of an organizer for current user
+    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I create a minimal organizer and save the "id" as "organizerId"
+    And I am authorized as JWT provider v2 user "invoerder"
+    And I request ownership for the current user on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    When I get the ownership with ownershipId "%{ownershipId}"
+    Then the JSON response at "id" should be "%{ownershipId}"
+    And the JSON response at "requesterId" should be "d759fd36-fb28-4fe3-8ec6-b4aaf990371d"
+
   Scenario: Requesting ownership of an organizer for someone else is not allowed if you are not an owner
     Given I am authorized as JWT provider v1 user "centraal_beheerder"
     And I create a minimal organizer and save the "id" as "organizerId"

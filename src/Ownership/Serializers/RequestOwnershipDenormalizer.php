@@ -45,6 +45,10 @@ final class RequestOwnershipDenormalizer implements DenormalizerInterface
             $data['ownerId'] = $user->getUserId();
         }
 
+        if (!isset($data['ownerId']) && !isset($data['ownerEmail'])) {
+            $data['ownerId'] = $this->currentUser->getId();
+        }
+
         return new RequestOwnership(
             new Uuid($this->uuidFactory->uuid4()->toString()),
             new Uuid($data['itemId']),
