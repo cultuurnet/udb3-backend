@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
-use CultuurNet\UDB3\Place\Place;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
