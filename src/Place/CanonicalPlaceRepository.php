@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Place;
 
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 
-class CanonicalPlaceRepository
+final class CanonicalPlaceRepository
 {
     private DuplicatePlaceRepository $duplicatePlaceRepository;
 
