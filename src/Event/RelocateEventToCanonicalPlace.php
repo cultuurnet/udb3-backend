@@ -56,12 +56,11 @@ final class RelocateEventToCanonicalPlace implements EventListener
             return;
         }
 
-        $place = $this->canonicalPlaceRepository->findCanonicalFor($locationId->toString());
-        $canonicalPlace = new LocationId($place->getAggregateRootId());
-        if ($locationId->sameAs($canonicalPlace)) {
+        $canonicalId = $this->canonicalPlaceRepository->findCanonicalIdFor($locationId->toString());
+        if ($canonicalId === null || $canonicalId === $locationId->toString()) {
             return;
         }
 
-        $this->commandBus->dispatch(new UpdateLocation($eventId, $canonicalPlace));
+        $this->commandBus->dispatch(new UpdateLocation($eventId, new LocationId($canonicalId)));
     }
 }
