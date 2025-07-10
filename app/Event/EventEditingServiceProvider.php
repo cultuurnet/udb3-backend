@@ -40,7 +40,7 @@ final class EventEditingServiceProvider extends AbstractServiceProvider
                 return new ReplayFilteringEventListener(
                     new RelocateEventToCanonicalPlace(
                         $container->get('event_command_bus'),
-                        new CanonicalPlaceRepository($container->get(DuplicatePlaceRepository::class))
+                        $container->get(DuplicatePlaceRepository::class)
                     )
                 );
             }

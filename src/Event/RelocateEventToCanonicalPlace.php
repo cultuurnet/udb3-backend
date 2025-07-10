@@ -11,18 +11,19 @@ use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
 
 final class RelocateEventToCanonicalPlace implements EventListener
 {
     private CommandBus $commandBus;
 
-    private CanonicalPlaceRepository $canonicalPlaceRepository;
+    private DuplicatePlaceRepository $duplicatePlaceRepository;
 
-    public function __construct(CommandBus $commandBus, CanonicalPlaceRepository $canonicalPlaceRepository)
+    public function __construct(CommandBus $commandBus, DuplicatePlaceRepository $duplicatePlaceRepository)
     {
         $this->commandBus = $commandBus;
-        $this->canonicalPlaceRepository = $canonicalPlaceRepository;
+        $this->duplicatePlaceRepository = $duplicatePlaceRepository;
     }
 
     public function handle(DomainMessage $domainMessage): void
@@ -56,7 +57,7 @@ final class RelocateEventToCanonicalPlace implements EventListener
             return;
         }
 
-        $canonicalId = $this->canonicalPlaceRepository->findCanonicalIdFor($locationId->toString());
+        $canonicalId = $this->duplicatePlaceRepository->getCanonicalOfPlace($locationId->toString());
         if ($canonicalId === null || $canonicalId === $locationId->toString()) {
             return;
         }

@@ -24,12 +24,11 @@ use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class RelocateEventToCanonicalPlaceTest extends TestCase
+final class RelocateEventToCanonicalPlaceTest extends TestCase
 {
     private RelocateEventToCanonicalPlace $processManager;
 
     private TraceableCommandBus $commandBus;
-    private CanonicalPlaceRepository $canonicalPlaceRepository;
 
     /**
      * @var DuplicatePlaceRepository&MockObject
@@ -40,11 +39,10 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
         $this->duplicatePlaceRepository = $this->createMock(DuplicatePlaceRepository::class);
-        $this->canonicalPlaceRepository = new CanonicalPlaceRepository($this->duplicatePlaceRepository);
 
         $this->processManager = new RelocateEventToCanonicalPlace(
             $this->commandBus,
-            $this->canonicalPlaceRepository
+            $this->duplicatePlaceRepository
         );
     }
 
