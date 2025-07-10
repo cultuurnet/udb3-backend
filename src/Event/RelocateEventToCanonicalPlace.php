@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
-use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
 
 final class RelocateEventToCanonicalPlace implements EventListener
 {

@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
-use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
 
 final class EventEditingServiceProvider extends AbstractServiceProvider
 {
