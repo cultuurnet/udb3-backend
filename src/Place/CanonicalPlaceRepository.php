@@ -4,24 +4,20 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
+
 class CanonicalPlaceRepository
 {
-    private PlaceRepository $repository;
+    private DuplicatePlaceRepository $duplicatePlaceRepository;
 
-    public function __construct(PlaceRepository $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        DuplicatePlaceRepository $duplicatePlaceRepository
+    ) {
+        $this->duplicatePlaceRepository = $duplicatePlaceRepository;
     }
 
-    public function findCanonicalFor(string $placeId): Place
+    public function findCanonicalIdFor(string $placeId): ?string
     {
-        /** @var Place $place */
-        $place = $this->repository->load($placeId);
-        while ($place->getCanonicalPlaceId()) {
-            /** @var Place $place */
-            $place = $this->repository->load($place->getCanonicalPlaceId());
-        }
-
-        return $place;
+        return $this->duplicatePlaceRepository->getCanonicalOfPlace($placeId);
     }
 }
