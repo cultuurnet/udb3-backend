@@ -65,6 +65,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\ImportDuplicatePlacesProcessor;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
@@ -265,7 +266,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.place:process-duplicates',
             fn () => new ProcessDuplicatePlaces(
                 $container->get('event_command_bus'),
-                $container->get('duplicate_place_repository'),
+                $container->get(DuplicatePlaceRepository::class),
                 $container->get(DuplicatePlaceRemovedFromClusterRepository::class),
                 $container->get('canonical_service'),
                 $container->get(EventBus::class),
@@ -277,9 +278,9 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.place:duplicate-places:import',
             fn () => new ImportDuplicatePlaces(
-                $container->get('duplicate_place_repository'),
+                $container->get(DuplicatePlaceRepository::class),
                 new ImportDuplicatePlacesProcessor(
-                    $container->get('duplicate_place_repository'),
+                    $container->get(DuplicatePlaceRepository::class),
                     $container->get(DuplicatePlaceRemovedFromClusterRepository::class)
                 )
             )

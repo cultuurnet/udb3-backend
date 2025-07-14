@@ -19,30 +19,29 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Place\CanonicalPlaceRepository;
-use CultuurNet\UDB3\Place\Place;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class RelocateEventToCanonicalPlaceTest extends TestCase
+final class RelocateEventToCanonicalPlaceTest extends TestCase
 {
     private RelocateEventToCanonicalPlace $processManager;
 
     private TraceableCommandBus $commandBus;
 
     /**
-     * @var CanonicalPlaceRepository&MockObject
+     * @var DuplicatePlaceRepository&MockObject
      */
-    private $canonicalPlaceRepository;
+    private $duplicatePlaceRepository;
 
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
-        $this->canonicalPlaceRepository = $this->createMock(CanonicalPlaceRepository::class);
+        $this->duplicatePlaceRepository = $this->createMock(DuplicatePlaceRepository::class);
 
         $this->processManager = new RelocateEventToCanonicalPlace(
             $this->commandBus,
-            $this->canonicalPlaceRepository
+            $this->duplicatePlaceRepository
         );
     }
 
@@ -53,10 +52,10 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
     {
         $eventId = '0317e74b-62fd-45c7-a5c2-cb5ffacac042';
         $locationId = new LocationId('facccc5f-beac-496d-9cde-09c65608144b');
-        $place = $this->createMock(Place::class);
-        $place->method('getCanonicalPlaceId')->willReturn(null);
-        $place->method('getAggregateRootId')->willReturn($locationId->toString());
-        $this->canonicalPlaceRepository->method('findCanonicalFor')->with($locationId->toString())->willReturn($place);
+        $this->duplicatePlaceRepository
+            ->expects($this->once())
+            ->method('getCanonicalOfPlace')
+            ->willReturn(null);
 
         $this->commandBus->record();
         $this->broadcastNow(
@@ -81,10 +80,11 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
         $eventId = '6e5fde00-7320-4601-a5da-811e387d9cfd';
         $locationId = new LocationId('4fc598b7-fba1-4f86-80cb-093b82112085');
         $canonicalPlaceId = 'fbe65c44-1925-4b6e-9ae7-f5491718f997';
-        $place = $this->createMock(Place::class);
-        $place->method('getCanonicalPlaceId')->willReturn($canonicalPlaceId);
-        $place->method('getAggregateRootId')->willReturn($canonicalPlaceId);
-        $this->canonicalPlaceRepository->method('findCanonicalFor')->with($locationId->toString())->willReturn($place);
+
+        $this->duplicatePlaceRepository
+            ->expects($this->once())
+            ->method('getCanonicalOfPlace')
+            ->willReturn($canonicalPlaceId);
 
         $this->commandBus->record();
         $this->broadcastNow(
@@ -114,10 +114,11 @@ class RelocateEventToCanonicalPlaceTest extends TestCase
         $eventId = 'cc70de68-c08f-44b4-b78c-5d9330d14eba';
         $locationId = new LocationId('1c82a6b7-f3ff-4a8a-adfa-a918cb490949');
         $canonicalPlaceId = '17ce529d-bf7c-4ae4-9cac-365add2ea4c8';
-        $place = $this->createMock(Place::class);
-        $place->method('getCanonicalPlaceId')->willReturn($canonicalPlaceId);
-        $place->method('getAggregateRootId')->willReturn($canonicalPlaceId);
-        $this->canonicalPlaceRepository->method('findCanonicalFor')->with($locationId->toString())->willReturn($place);
+
+        $this->duplicatePlaceRepository
+            ->expects($this->once())
+            ->method('getCanonicalOfPlace')
+            ->willReturn($canonicalPlaceId);
 
         $this->commandBus->record();
         $this->broadcastNow(new LocationUpdated($eventId, $locationId));
