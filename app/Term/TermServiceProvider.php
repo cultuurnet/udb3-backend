@@ -30,9 +30,9 @@ final class TermServiceProvider extends AbstractServiceProvider
         $mapping = [];
 
         $files = [
-            __DIR__ . '/../../config.term_mapping_facilities.php',
-            __DIR__ . '/../../config.term_mapping_themes.php',
-            __DIR__ . '/../../config.term_mapping_types.php',
+            __DIR__ . '/../../term_mapping_facilities.php',
+            __DIR__ . '/../../term_mapping_themes.php',
+            __DIR__ . '/../../term_mapping_types.php',
         ];
 
         foreach ($files as $file) {
