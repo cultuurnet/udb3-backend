@@ -35,3 +35,25 @@ Feature: Test the Search API v3 facets
     }
     """
 
+  Scenario: Search for theme facets
+    Given I send a GET request to "/events" with parameters:
+      | limit                 | 1 |
+      | disableDefaultFilters | true |
+      | q                     | id:%{eventId} |
+      | facets[]              | themes        |
+    Then the JSON response at "facet" should be:
+    """
+    {
+       "themes":{
+         "1.51.12.0.0":{
+           "name":{
+             "nl":"Omnisport en andere",
+             "fr":"Omnisports et autres",
+             "de":"Omnisport und andere",
+             "en":"Other sports"
+           },
+           "count":1
+        }
+      }
+    }
+    """
