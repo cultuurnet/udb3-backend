@@ -12,6 +12,52 @@ Feature: Test the Search API v3 facets
     And I am using the Search API v3 base URL
     And I am not authorized
 
+  Scenario: Search for region facets
+    Given I send a GET request to "/events" with parameters:
+      | limit                 | 1 |
+      | disableDefaultFilters | true |
+      | q                     | id:%{eventId} |
+      | facets[]              | regions       |
+    Then the JSON response at "facet" should be:
+    """
+    {
+      "regions":{
+        "nis-20001":{
+          "name":{
+            "nl":"Provincie Vlaams-Brabant",
+            "fr":"Province du Brabant flamand",
+            "de":"Provinz Fl\u00e4misch-Brabant"
+          },
+          "count":1,
+          "children":{
+            "reg-hageland":{
+              "name":{
+                "nl":"Hageland"
+              },
+              "count":1,
+              "children":{
+                "nis-24134":{
+                  "name":{
+                    "nl":"Scherpenheuvel-Zichem"
+                  },
+                  "count":1,
+                  "children":{
+                    "nis-24134B":{
+                      "name":{
+                        "nl":"Zichem"
+                      },
+                      "count":1
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    """
+
   Scenario: Search for type facets
     Given I send a GET request to "/events" with parameters:
       | limit                 | 1 |
