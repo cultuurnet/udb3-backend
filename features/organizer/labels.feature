@@ -3,7 +3,7 @@ Feature: Test organizer labels property
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I am authorized as JWT provider v2 user "centraal_beheerder"
     And I send and accept "application/json"
     And I create a minimal organizer and save the "url" as "organizerUrl"
 
@@ -87,7 +87,7 @@ Feature: Test organizer labels property
     Given I am authorized as JWT provider v1 user "validator_diest"
     And I create a minimal organizer and save the "url" as "organizerUrl"
 
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I send a PUT request to "%{organizerUrl}/labels/private-visible"
     And the response status should be "204"
     And I send a PUT request to "%{organizerUrl}/labels/private-invisible"
@@ -132,7 +132,7 @@ Feature: Test organizer labels property
     Given I am authorized as JWT provider v1 user "validator_diest"
     And I create a minimal organizer and save the "url" as "organizerUrl"
 
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     When I set the JSON request payload to:
     """
     {
@@ -442,7 +442,7 @@ Feature: Test organizer labels property
   Scenario: Replace initial manual labels but keep private labels as normal user on an organizer
     Given I am authorized as JWT provider v1 user "validator_diest"
     And I create a minimal organizer and save the "url" as "organizerUrl"
-    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I am authorized as JWT provider v2 user "centraal_beheerder"
     And I send a PUT request to "%{organizerUrl}/labels/private-visible"
     And I send a PUT request to "%{organizerUrl}/labels/private-invisible"
     And I create a random name of 10 characters and keep it as "label1"

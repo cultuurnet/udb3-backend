@@ -34,7 +34,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "403"
 
   Scenario: As an anonymous user I cannot update a role
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am not authorized
@@ -49,7 +49,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "401"
 
   Scenario: As a regular user I cannot update a role
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am authorized as JWT provider v1 user "invoerder_lgm"
@@ -74,7 +74,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "403"
 
   Scenario: As an anonymous user I cannot set a constraint on a role
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am not authorized
@@ -88,7 +88,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "401"
 
   Scenario: As a regular user I cannot set a constraint on a role
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am authorized as JWT provider v1 user "invoerder_lgm"
@@ -102,7 +102,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "403"
 
   Scenario: As an anonymous user I cannot update a constraint on a role
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am not authorized
@@ -116,7 +116,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "401"
 
   Scenario: As a regular user I cannot update a constraint on a role
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am authorized as JWT provider v1 user "invoerder_lgm"
@@ -130,7 +130,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "403"
 
   Scenario: As an anonymous user I cannot delete a constraint from a role
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am not authorized
@@ -138,7 +138,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "401"
 
   Scenario: As a regular user I cannot delete a constraint from a role
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am authorized as JWT provider v1 user "invoerder_lgm"
@@ -146,7 +146,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "403"
 
   Scenario: As an anonymous user I cannot delete a role
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am not authorized
@@ -154,7 +154,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "401"
 
   Scenario: As a regular user I cannot delete a role
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am authorized as JWT provider v1 user "invoerder_lgm"
@@ -162,7 +162,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "403"
 
   Scenario: As an anonymous user I cannot get a role's users
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am not authorized
@@ -170,7 +170,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "401"
 
   Scenario: As a regular user I cannot get a role's users
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am authorized as JWT provider v1 user "invoerder_lgm"

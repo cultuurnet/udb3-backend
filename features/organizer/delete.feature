@@ -3,7 +3,7 @@ Feature: Test deleting organizers
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a minimal organizer and save the "url" as "organizerUrl"
     And I keep the value of the JSON response at "id" as "organizerId"
 

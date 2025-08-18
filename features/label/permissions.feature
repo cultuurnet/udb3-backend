@@ -16,7 +16,7 @@ Feature: Test the UDB3 labels API permissions
     Then the response status should be "403"
 
   Scenario: As an anonymous user I cannot update a label's settings
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a label with a random name of 10 characters
     And I keep the value of the JSON response at "uuid" as "uuid"
     And I am not authorized
@@ -28,7 +28,7 @@ Feature: Test the UDB3 labels API permissions
     Then the response status should be "401"
 
   Scenario: As a regular user I cannot update a label's settings
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a label with a random name of 10 characters
     And I keep the value of the JSON response at "uuid" as "uuid"
     And I am authorized as JWT provider v1 user "invoerder_lgm"

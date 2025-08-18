@@ -67,15 +67,15 @@ Feature: Test the Search API v3 facets
     Then the JSON response at "facet" should be:
     """
     {
-       "types":{
-         "0.3.1.0.0":{
-           "name":{
-             "nl":"Lessenreeks",
-             "fr":"S\u00e9rie de cours",
-             "de":"Unterrichtsreihe",
-             "en":"Course series"
-           },
-           "count":1
+      "types":{
+        "0.3.1.0.0":{
+          "name":{
+            "nl":"Lessenreeks",
+            "fr":"S\u00e9rie de cours",
+            "de":"Unterrichtsreihe",
+            "en":"Course series"
+          },
+          "count":1
         }
       }
     }
@@ -90,15 +90,15 @@ Feature: Test the Search API v3 facets
     Then the JSON response at "facet" should be:
     """
     {
-       "themes":{
-         "1.51.12.0.0":{
-           "name":{
-             "nl":"Omnisport en andere",
-             "fr":"Omnisports et autres",
-             "de":"Omnisport und andere",
-             "en":"Other sports"
-           },
-           "count":1
+      "themes":{
+        "1.51.12.0.0":{
+          "name":{
+            "nl":"Omnisport en andere",
+            "fr":"Omnisports et autres",
+            "de":"Omnisport und andere",
+            "en":"Other sports"
+          },
+          "count":1
         }
       }
     }

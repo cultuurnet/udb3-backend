@@ -3,7 +3,7 @@ Feature: Test the UDB3 roles API
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I am authorized as JWT provider v2 user "centraal_beheerder"
 
   Scenario: An error is thrown when deleting a role with invalid id
     When I send a DELETE request to "/roles/not-a-uuid"

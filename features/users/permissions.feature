@@ -26,7 +26,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "403"
 
   Scenario: As a god user I can search users by their email address
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     When I send a GET request to "/users/emails/stan.vertessen+validatorDiest@cultuurnet.be"
     Then the response status should be "200"
     And the JSON response should be:
@@ -79,7 +79,7 @@ Feature: Test the UDB3 roles API permissions
     And the JSON response at "0/name" should be "Diest validatoren"
 
   Scenario: As a god user I can get my roles
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     When I send a GET request to "/user/roles"
     Then the response status should be "200"
     And the JSON response should be:
@@ -118,7 +118,7 @@ Feature: Test the UDB3 roles API permissions
     """
 
   Scenario: As a god user I can get my permissions
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     When I send a GET request to "/user/permissions"
     Then the response status should be "200"
     And the JSON response should be:

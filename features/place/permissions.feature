@@ -71,7 +71,7 @@ Feature: Test the permissions for places in UDB3
         """
 
   Scenario: get legacy permissions of a given user who is the creator
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     When I send a GET request to "/places/%{placeId}/permission/f9045efa-5954-498b-864c-457eb9da6e0b"
     Then the response status should be "200"
     And the JSON response should be:
@@ -82,7 +82,7 @@ Feature: Test the permissions for places in UDB3
         """
 
   Scenario: get permissions of a given user who is not the creator
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     When I send a GET request to "/places/%{placeId}/permissions/40fadfd3-c4a6-4936-b1fe-20542ac56610"
     Then the response status should be "200"
     And the JSON response should be:
@@ -93,7 +93,7 @@ Feature: Test the permissions for places in UDB3
         """
 
   Scenario: get legacy permissions of a given user who is not the creator
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider v2 user "centraal_beheerder"
     When I send a GET request to "/places/%{placeId}/permission/40fadfd3-c4a6-4936-b1fe-20542ac56610"
     Then the response status should be "200"
     And the JSON response should be:
