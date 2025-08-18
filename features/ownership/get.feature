@@ -15,7 +15,7 @@ Feature: Test getting a single ownership by ID
     And the JSON response at itemId should be "%{organizerId}"
     And the JSON response at state should be "requested"
     And the JSON response at itemType should be "organizer"
-    And the JSON response at requesterId should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
+    And the JSON response at requesterId should be "edcee0f7-5906-4e92-8551-a7f5d37ba453"
     And the JSON response at ownerEmail should be "dev+e2etest@publiq.be"
 
   Scenario: Get the ownership as owner
@@ -29,7 +29,7 @@ Feature: Test getting a single ownership by ID
     And the JSON response at itemId should be "%{organizerId}"
     And the JSON response at state should be "requested"
     And the JSON response at itemType should be "organizer"
-    And the JSON response at requesterId should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
+    And the JSON response at requesterId should be "edcee0f7-5906-4e92-8551-a7f5d37ba453"
     And the JSON response at ownerEmail should be "dev+e2etest@publiq.be"
 
   Scenario: Not allowed to get the ownership as an unrelated user

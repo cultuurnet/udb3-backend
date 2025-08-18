@@ -20,7 +20,7 @@ Feature: Test approving ownership
     And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "state" should be "approved"
-    And the JSON response at "approvedById" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
+    And the JSON response at "approvedById" should be "edcee0f7-5906-4e92-8551-a7f5d37ba453"
     And I wait till there are 2 mails in the mailbox
     And an "ownership-approved" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je bent nu beheerder van organisatie %{name}!"
 

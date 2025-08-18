@@ -19,7 +19,7 @@ Feature: Test deleting ownership
     And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "state" should be "deleted"
-    And the JSON response at "deletedById" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
+    And the JSON response at "deletedById" should be "edcee0f7-5906-4e92-8551-a7f5d37ba453"
 
   Scenario: Deleting an approved ownership of an organizer as admin
     Given I create a minimal organizer and save the "id" as "organizerId"
@@ -36,7 +36,7 @@ Feature: Test deleting ownership
     And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "state" should be "deleted"
-    And the JSON response at "deletedById" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
+    And the JSON response at "deletedById" should be "edcee0f7-5906-4e92-8551-a7f5d37ba453"
 
   Scenario: Deleting a rejected ownership of an organizer as admin
     Given I create a minimal organizer and save the "id" as "organizerId"
@@ -53,7 +53,7 @@ Feature: Test deleting ownership
     And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "auth0|64089494e980aedd96740212"
     And the JSON response at "state" should be "deleted"
-    And the JSON response at "deletedById" should be "7a583ed3-cbc1-481d-93b1-d80fff0174dd"
+    And the JSON response at "deletedById" should be "edcee0f7-5906-4e92-8551-a7f5d37ba453"
 
   Scenario: Deleting ownership of an organizer as creator
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
