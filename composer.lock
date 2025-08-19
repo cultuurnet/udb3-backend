@@ -738,26 +738,27 @@
         },
         {
             "name": "cultuurnet/cdb",
-            "version": "2.2.x-dev",
+            "version": "v2.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "b81eb171edb1bc80651a28dd57f3427de1c4ec7e"
+                "reference": "94768c6839a24af68786151d045af455edb069fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/b81eb171edb1bc80651a28dd57f3427de1c4ec7e",
-                "reference": "b81eb171edb1bc80651a28dd57f3427de1c4ec7e",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/94768c6839a24af68786151d045af455edb069fa",
+                "reference": "94768c6839a24af68786151d045af455edb069fa",
                 "shasum": ""
             },
             "require": {
-                "ext-mbstring": "*"
+                "ext-dom": "*",
+                "ext-simplexml": "*",
+                "php": ">=7.4"
             },
             "require-dev": {
-                "phing/phing": "~2.11",
-                "phpunit/phpunit": "~4.8",
-                "satooshi/php-coveralls": "~0.7",
-                "squizlabs/php_codesniffer": "~2.3"
+                "phpstan/phpstan": "^2.1",
+                "phpunit/phpunit": "^9.0",
+                "publiq/php-cs-fixer-config": "^2.1"
             },
             "type": "library",
             "autoload": {
@@ -772,7 +773,11 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2018-10-17T12:47:54+00:00"
+            "support": {
+                "issues": "https://github.com/cultuurnet/Cdb/issues",
+                "source": "https://github.com/cultuurnet/Cdb/tree/v2.2.0"
+            },
+            "time": "2025-08-19T12:21:17+00:00"
         },
         {
             "name": "cultuurnet/culturefeed-php",
