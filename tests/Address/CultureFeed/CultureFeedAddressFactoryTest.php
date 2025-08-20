@@ -27,7 +27,7 @@ class CultureFeedAddressFactoryTest extends TestCase
     {
         $cdbPhysicalAddress = new \CultureFeed_Cdb_Data_Address_PhysicalAddress();
         $cdbPhysicalAddress->setStreet('Jeugdlaan');
-        $cdbPhysicalAddress->setHouseNumber(2);
+        $cdbPhysicalAddress->setHouseNumber('2');
         $cdbPhysicalAddress->setZip('3900');
         $cdbPhysicalAddress->setCity('Overpelt');
         $cdbPhysicalAddress->setCountry('BE');
@@ -61,32 +61,32 @@ class CultureFeedAddressFactoryTest extends TestCase
     public function incompletePhysicalAddressDataProvider(): array
     {
         $withoutStreet = new \CultureFeed_Cdb_Data_Address_PhysicalAddress();
-        $withoutStreet->setHouseNumber(2);
+        $withoutStreet->setHouseNumber('2');
         $withoutStreet->setZip('3900');
         $withoutStreet->setCity('Overpelt');
         $withoutStreet->setCountry('BE');
 
         $withoutZip = new \CultureFeed_Cdb_Data_Address_PhysicalAddress();
         $withoutZip->setStreet('Jeugdlaan');
-        $withoutZip->setHouseNumber(2);
+        $withoutZip->setHouseNumber('2');
         $withoutZip->setCity('Overpelt');
         $withoutZip->setCountry('BE');
 
         $withoutCity = new \CultureFeed_Cdb_Data_Address_PhysicalAddress();
         $withoutCity->setStreet('Jeugdlaan');
-        $withoutCity->setHouseNumber(2);
+        $withoutCity->setHouseNumber('2');
         $withoutCity->setZip('3900');
         $withoutCity->setCountry('BE');
 
         $withoutCountry = new \CultureFeed_Cdb_Data_Address_PhysicalAddress();
         $withoutCountry->setStreet('Jeugdlaan');
-        $withoutCountry->setHouseNumber(2);
+        $withoutCountry->setHouseNumber('2');
         $withoutCountry->setZip('3900');
         $withoutCountry->setCity('Overpelt');
 
         $withoutCityAndCountry = new \CultureFeed_Cdb_Data_Address_PhysicalAddress();
         $withoutCityAndCountry->setStreet('Jeugdlaan');
-        $withoutCityAndCountry->setHouseNumber(2);
+        $withoutCityAndCountry->setHouseNumber('2');
         $withoutCityAndCountry->setZip('3900');
 
         return [
