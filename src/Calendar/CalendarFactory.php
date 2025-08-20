@@ -38,7 +38,9 @@ final class CalendarFactory implements CalendarFactoryInterface
             $period = $cdbCalendar->current();
             $startDateString = $period->getDateFrom() . 'T00:00:00';
         } elseif ($cdbCalendar instanceof \CultureFeed_Cdb_Data_Calendar_TimestampList) {
+            /** @var CultureFeed_Cdb_Data_Calendar_Timestamp $firstTimestamp */
             $firstTimestamp = $cdbCalendar->current();
+            /** @var CultureFeed_Cdb_Data_Calendar_Timestamp[] $cdbCalendarAsArray */
             $cdbCalendarAsArray = iterator_to_array($cdbCalendar);
             $timestamp = $this->getFirstTimestamp($cdbCalendarAsArray, $firstTimestamp);
             if ($timestamp->getStartTime()) {
@@ -59,8 +61,9 @@ final class CalendarFactory implements CalendarFactoryInterface
             $period = $cdbCalendar->current();
             $endDateString = $period->getDateTo() . 'T00:00:00';
         } elseif ($cdbCalendar instanceof \CultureFeed_Cdb_Data_Calendar_TimestampList) {
+            /** @var CultureFeed_Cdb_Data_Calendar_Timestamp $firstTimestamp */
             $firstTimestamp = $cdbCalendar->current();
-            /** @var \CultureFeed_Cdb_Data_Calendar_Timestamp $timestamp */
+            /** @var CultureFeed_Cdb_Data_Calendar_Timestamp[] $cdbCalendarAsArray */
             $cdbCalendarAsArray = iterator_to_array($cdbCalendar);
             $timestamp = $this->getLastTimestamp($cdbCalendarAsArray, $firstTimestamp);
             if ($timestamp->getEndTime()) {
@@ -132,6 +135,7 @@ final class CalendarFactory implements CalendarFactoryInterface
 
         $weekSchema = null;
         if ($cdbCalendar instanceof \CultureFeed_Cdb_Data_Calendar_PeriodList) {
+            /** @var \CultureFeed_Cdb_Data_Calendar_Period $period */
             $period = $cdbCalendar->current();
             $weekSchema = $period->getWeekScheme();
         } elseif ($cdbCalendar instanceof  \CultureFeed_Cdb_Data_Calendar_Permanent) {
