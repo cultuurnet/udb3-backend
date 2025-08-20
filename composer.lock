@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aac077501f8aaf1110c04b9002ae18d1",
+    "content-hash": "2a649f488d596ad8370a2b02f6dd745c",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -738,16 +738,16 @@
         },
         {
             "name": "cultuurnet/cdb",
-            "version": "v2.2.0",
+            "version": "dev-add-2.2.0-branch-missing-code",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "94768c6839a24af68786151d045af455edb069fa"
+                "reference": "99555cd9ce10cc1061f7596d85c537ec60aa21a6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/94768c6839a24af68786151d045af455edb069fa",
-                "reference": "94768c6839a24af68786151d045af455edb069fa",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/99555cd9ce10cc1061f7596d85c537ec60aa21a6",
+                "reference": "99555cd9ce10cc1061f7596d85c537ec60aa21a6",
                 "shasum": ""
             },
             "require": {
@@ -775,9 +775,9 @@
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
             "support": {
                 "issues": "https://github.com/cultuurnet/Cdb/issues",
-                "source": "https://github.com/cultuurnet/Cdb/tree/v2.2.0"
+                "source": "https://github.com/cultuurnet/Cdb/tree/add-2.2.0-branch-missing-code"
             },
-            "time": "2025-08-19T12:21:17+00:00"
+            "time": "2025-08-20T08:22:26+00:00"
         },
         {
             "name": "cultuurnet/culturefeed-php",
@@ -12687,6 +12687,12 @@
             "alias_normalized": "1.2.0.0"
         },
         {
+            "package": "cultuurnet/cdb",
+            "version": "dev-add-2.2.0-branch-missing-code",
+            "alias": "2.2.1",
+            "alias_normalized": "2.2.1.0"
+        },
+        {
             "package": "jeremykendall/php-domain-parser",
             "version": "4.0.3.0-alpha",
             "alias": "1.3.1",
@@ -12696,6 +12702,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "chrisboulton/php-resque": 20,
+        "cultuurnet/cdb": 20,
         "cultuurnet/culturefeed-php": 20,
         "publiq/udb3-json-schemas": 20
     },
