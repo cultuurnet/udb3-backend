@@ -8,6 +8,7 @@
         <cdb:activity count="0" type="facebook_share"/>
         <cdb:activity count="0" type="review"/>
     </cdb:activities>
+    <cdb:ageto>65</cdb:ageto>
     <cdb:calendar>
         <cdb:timestamps>
             <cdb:timestamp>
