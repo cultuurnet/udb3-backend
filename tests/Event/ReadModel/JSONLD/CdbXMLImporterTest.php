@@ -93,14 +93,9 @@ class CdbXMLImporterTest extends TestCase
         );
     }
 
-    private function createJsonEventFromCdbXmlWithAgeRange(?int $ageFrom = null, ?int $ageTo = null): \stdClass
+    private function createJsonEventFromCdbXmlWithAgeRange(string $filename): \stdClass
     {
-        $event = $this->createEventFromCdbXml(
-            '../../samples/event_with_age_from.cdbxml.xml'
-        );
-
-        $event->setAgeFrom($ageFrom);
-        $event->setAgeTo($ageTo);
+        $event = $this->createEventFromCdbXml('../../samples/' . $filename);
 
         return $this->importer->documentWithCdbXML(
             new \stdClass(),
@@ -114,7 +109,7 @@ class CdbXMLImporterTest extends TestCase
     private function createJsonEventFromCdbXmlWithoutAgeFrom(): \stdClass
     {
         return $this->createJsonEventFromCdbXml(
-            '../../samples/event_without_age_from.cdbxml.xml'
+            '../../samples/event_with_age_to.cdbxml.xml'
         );
     }
 
@@ -1055,7 +1050,7 @@ class CdbXMLImporterTest extends TestCase
      */
     public function it_imports_events_with_all_age_range_by_default(): void
     {
-        $jsonEvent = $this->createJsonEventFromCdbXmlWithAgeRange(null, null);
+        $jsonEvent = $this->createJsonEventFromCdbXmlWithAgeRange('event_without_age.cdbxml.xml');
 
         $this->assertObjectHasProperty('typicalAgeRange', $jsonEvent, '-');
     }
@@ -1065,9 +1060,9 @@ class CdbXMLImporterTest extends TestCase
      */
     public function it_should_import_an_event_with_a_lower_boundary_when_only_age_from_is_set(): void
     {
-        $jsonEvent = $this->createJsonEventFromCdbXmlWithAgeRange(3, null);
+        $jsonEvent = $this->createJsonEventFromCdbXmlWithAgeRange('event_with_age_from.cdbxml.xml');
 
-        $this->assertEquals('3-', $jsonEvent->typicalAgeRange);
+        $this->assertEquals('10-', $jsonEvent->typicalAgeRange);
     }
 
     /**
@@ -1075,7 +1070,7 @@ class CdbXMLImporterTest extends TestCase
      */
     public function it_should_import_an_event_with_an_upper_boundary_when__only_age_to_is_set(): void
     {
-        $jsonEvent = $this->createJsonEventFromCdbXmlWithAgeRange(null, 65);
+        $jsonEvent = $this->createJsonEventFromCdbXmlWithAgeRange('event_with_age_to.cdbxml.xml');
 
         $this->assertEquals('-65', $jsonEvent->typicalAgeRange);
     }
@@ -1083,11 +1078,11 @@ class CdbXMLImporterTest extends TestCase
     /**
      * @test
      */
-    public function it_should_import_an_event_with_an_upper_and_lower_boundary_when_age_to_or_from_are_set_to_zero(): void
+    public function it_should_import_an_event_with_an_upper_and_lower_boundary_when_age_to_or_from_are_set(): void
     {
-        $jsonEvent = $this->createJsonEventFromCdbXmlWithAgeRange(0, 0);
+        $jsonEvent = $this->createJsonEventFromCdbXmlWithAgeRange('event_with_age_from_to.cdbxml.xml');
 
-        $this->assertEquals('0-0', $jsonEvent->typicalAgeRange);
+        $this->assertEquals('10-65', $jsonEvent->typicalAgeRange);
     }
 
     /**
