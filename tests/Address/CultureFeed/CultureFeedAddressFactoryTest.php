@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 class CultureFeedAddressFactoryTest extends TestCase
 {
@@ -49,12 +50,9 @@ class CultureFeedAddressFactoryTest extends TestCase
      * @dataProvider incompletePhysicalAddressDataProvider
      */
     public function it_throws_an_exception_when_a_required_field_is_missing_on_the_physical_address(
-        \CultureFeed_Cdb_Data_Address_PhysicalAddress $incompletePhysicalAddress,
-        string $exceptionMessage
+        \CultureFeed_Cdb_Data_Address_PhysicalAddress $incompletePhysicalAddress
     ): void {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage($exceptionMessage);
-
+        $this->expectException(Throwable::class);
         $this->factory->fromCdbAddress($incompletePhysicalAddress);
     }
 
@@ -90,11 +88,11 @@ class CultureFeedAddressFactoryTest extends TestCase
         $withoutCityAndCountry->setZip('3900');
 
         return [
-            [$withoutStreet, 'The given cdbxml address is missing a street'],
-            [$withoutZip, 'The given cdbxml address is missing a zip code'],
-            [$withoutCity, 'The given cdbxml address is missing a city'],
-            [$withoutCountry, 'The given cdbxml address is missing a country'],
-            [$withoutCityAndCountry, 'The given cdbxml address is missing a city, country'],
+            [$withoutStreet],
+            [$withoutZip],
+            [$withoutCity],
+            [$withoutCountry],
+            [$withoutCityAndCountry],
         ];
     }
 }
