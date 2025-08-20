@@ -742,12 +742,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "99555cd9ce10cc1061f7596d85c537ec60aa21a6"
+                "reference": "6e40e67c0024d24dcf44e181e113fd5503c07890"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/99555cd9ce10cc1061f7596d85c537ec60aa21a6",
-                "reference": "99555cd9ce10cc1061f7596d85c537ec60aa21a6",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/6e40e67c0024d24dcf44e181e113fd5503c07890",
+                "reference": "6e40e67c0024d24dcf44e181e113fd5503c07890",
                 "shasum": ""
             },
             "require": {
@@ -777,7 +777,7 @@
                 "issues": "https://github.com/cultuurnet/Cdb/issues",
                 "source": "https://github.com/cultuurnet/Cdb/tree/add-2.2.0-branch-missing-code"
             },
-            "time": "2025-08-20T08:22:26+00:00"
+            "time": "2025-08-20T08:33:38+00:00"
         },
         {
             "name": "cultuurnet/culturefeed-php",
