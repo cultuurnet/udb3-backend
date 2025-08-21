@@ -227,7 +227,7 @@ Feature: Test updating organizers via complete overwrite
     """
 
   Scenario: Trying to update an organizer that does not exist
-    Given I am authorized as JWT provider v1 user "invoerder_lgm"
+    Given I am authorized as JWT provider v2 user "invoerder_lgm"
     And I set the JSON request payload to:
     """
         {"name": "madewithlove"}

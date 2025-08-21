@@ -5,7 +5,7 @@ Feature: Test the permissions in UDB3
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I send and accept "application/json"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     And I create a place from "places/molenhuis.json" and save the "id" as "uuid_place_molenhuis"
 
     And I am authorized as JWT provider v2 user "invoerder_dfm"
@@ -18,7 +18,7 @@ Feature: Test the permissions in UDB3
     And I wait for the event with url "/events/%{uuid_event_rondleiding}" to be indexed
 
   Scenario: update place WITH permission - owner
-    Given I am authorized as JWT provider v1 user "invoerder_lgm"
+    Given I am authorized as JWT provider v2 user "invoerder_lgm"
      When I set the JSON request payload to:
         """
         { "description": "Het Molenhuis is de place to be in Diest - update invoerder_lgm" }
@@ -151,7 +151,7 @@ Feature: Test the permissions in UDB3
         """
 
   Scenario: update event WITHOUT permission - invoerder_lgm
-    Given I am authorized as JWT provider v1 user "invoerder_lgm"
+    Given I am authorized as JWT provider v2 user "invoerder_lgm"
       And I send a GET request to "/events/%{uuid_event_rondleiding}"
       And I keep the value of the JSON response at "name/nl" as "jsonld_name_nl_event_rondleiding"
     When I set the JSON request payload to:

@@ -11,7 +11,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "401"
 
   Scenario: As a regular user I cannot get a list of all permissions
-    Given I am authorized as JWT provider v1 user "invoerder_lgm"
+    Given I am authorized as JWT provider v2 user "invoerder_lgm"
     When I send a GET request to "/permissions"
     Then the response status should be "403"
 
@@ -25,7 +25,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "401"
 
   Scenario: As a regular user I cannot create a role
-    Given I am authorized as JWT provider v1 user "invoerder_lgm"
+    Given I am authorized as JWT provider v2 user "invoerder_lgm"
     When I set the JSON request payload to:
     """
     { "name": "test role" }
@@ -52,7 +52,7 @@ Feature: Test the UDB3 roles API permissions
     Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I set the JSON request payload to:
     """
     {
@@ -69,7 +69,7 @@ Feature: Test the UDB3 roles API permissions
     Then the response status should be "401"
 
   Scenario: As a regular user I cannot search roles
-    Given I am authorized as JWT provider v1 user "invoerder_lgm"
+    Given I am authorized as JWT provider v2 user "invoerder_lgm"
     When I send a GET request to "/roles"
     Then the response status should be "403"
 
@@ -91,7 +91,7 @@ Feature: Test the UDB3 roles API permissions
     Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I set the JSON request payload to:
     """
     {
@@ -119,7 +119,7 @@ Feature: Test the UDB3 roles API permissions
     Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I set the JSON request payload to:
     """
     {
@@ -141,7 +141,7 @@ Feature: Test the UDB3 roles API permissions
     Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I send a DELETE request to "/roles/%{roleId}/constraints"
     Then the response status should be "403"
 
@@ -157,7 +157,7 @@ Feature: Test the UDB3 roles API permissions
     Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I send a DELETE request to "/roles/%{roleId}"
     Then the response status should be "403"
 
@@ -173,7 +173,7 @@ Feature: Test the UDB3 roles API permissions
     Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I send a GET request to "/roles/%{roleId}/users"
     Then the response status should be "403"
 
@@ -182,15 +182,15 @@ Feature: Test the UDB3 roles API permissions
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am not authorized
-    When I send a PUT request to "/roles/%{roleId}/users/40fadfd3-c4a6-4936-b1fe-20542ac56610"
+    When I send a PUT request to "/roles/%{roleId}/users/269a8217-57a5-46b1-90e3-e9d2f91d45e5"
     Then the response status should be "401"
 
   Scenario: As a regular user I cannot get add a user to a role
     Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
-    When I send a PUT request to "/roles/%{roleId}/users/40fadfd3-c4a6-4936-b1fe-20542ac56610"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
+    When I send a PUT request to "/roles/%{roleId}/users/269a8217-57a5-46b1-90e3-e9d2f91d45e5"
     Then the response status should be "403"
 
   Scenario: As an anonymous user I cannot delete a user from a role
@@ -198,15 +198,15 @@ Feature: Test the UDB3 roles API permissions
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I am not authorized
-    When I send a DELETE request to "/roles/%{roleId}/users/40fadfd3-c4a6-4936-b1fe-20542ac56610"
+    When I send a DELETE request to "/roles/%{roleId}/users/269a8217-57a5-46b1-90e3-e9d2f91d45e5"
     Then the response status should be "401"
 
   Scenario: As a regular user I cannot get delete a user from a role
     Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
-    When I send a DELETE request to "/roles/%{roleId}/users/40fadfd3-c4a6-4936-b1fe-20542ac56610"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
+    When I send a DELETE request to "/roles/%{roleId}/users/269a8217-57a5-46b1-90e3-e9d2f91d45e5"
     Then the response status should be "403"
 
   Scenario: As an anonymous user I cannot add a permission to a role
@@ -221,7 +221,7 @@ Feature: Test the UDB3 roles API permissions
     Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I send a PUT request to "/roles/%{roleId}/permissions/AANBOD_BEWERKEN"
     Then the response status should be "403"
 
@@ -237,7 +237,7 @@ Feature: Test the UDB3 roles API permissions
     Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I send a DELETE request to "/roles/%{roleId}/permissions/AANBOD_BEWERKEN"
     Then the response status should be "403"
 
@@ -253,7 +253,7 @@ Feature: Test the UDB3 roles API permissions
     Given I am authorized as JWT provider v2 user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I send a GET request to "/roles/%{roleId}/labels"
     Then the response status should be "403"
 
@@ -273,7 +273,7 @@ Feature: Test the UDB3 roles API permissions
     And I keep the value of the JSON response at "uuid" as "labelId"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I send a PUT request to "/roles/%{roleId}/labels/%{labelId}"
     Then the response status should be "403"
 
@@ -295,7 +295,7 @@ Feature: Test the UDB3 roles API permissions
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I send a PUT request to "/roles/%{roleId}/labels/%{labelId}"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I send a DELETE request to "/roles/%{roleId}/labels/%{labelId}"
     Then the response status should be "403"
 

@@ -85,7 +85,7 @@ Feature: Test the UDB3 places contributors endpoint
     And I send a PUT request to "%{placeUrl}/contributors"
     And the response status should be "204"
     And I send a PUT request to "%{placeUrl}/labels/randomLabel"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I get the place at "%{placeUrl}"
     Then the JSON response should not have "contributors"
 
@@ -99,7 +99,7 @@ Feature: Test the UDB3 places contributors endpoint
     """
     And I send a PUT request to "%{placeUrl}/contributors"
     And the response status should be "204"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     When I get the place at "%{placeUrl}"
     Then the JSON response should not have "contributors"
 
@@ -188,7 +188,7 @@ Feature: Test the UDB3 places contributors endpoint
     ]
     """
     And I send a PUT request to "%{placeUrl}/contributors"
-    And I am authorized as JWT provider v1 user "invoerder_lgm"
+    And I am authorized as JWT provider v2 user "invoerder_lgm"
     And I send a GET request to "%{placeUrl}/contributors"
     Then the response status should be "403"
     And the JSON response at "detail" should include 'has no permission "Aanbod bewerken" on resource'
