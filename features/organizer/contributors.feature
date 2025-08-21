@@ -197,18 +197,18 @@ Feature: Test the UDB3 organizers contributors endpoint
     Given I set the JSON request payload to:
     """
     [
-      "stan.vertessen+DFM@cultuurnet.be",
+      "dev+invoerder_dfm@publiq.be",
       "information@example.com"
     ]
     """
     And I send a PUT request to "%{organizerUrl}/contributors"
-    And I am authorized as JWT provider v1 user "invoerder_dfm"
+    And I am authorized as JWT provider v2 user "invoerder_dfm"
     And I send a GET request to "%{organizerUrl}/contributors"
     Then the response status should be "200"
     And the JSON response should be:
     """
     [
-      "stan.vertessen+DFM@cultuurnet.be",
+      "dev+invoerder_dfm@publiq.be",
       "information@example.com"
     ]
     """
@@ -217,7 +217,7 @@ Feature: Test the UDB3 organizers contributors endpoint
     Given I set the JSON request payload to:
     """
     [
-      "stan.vertessen+DFM@cultuurnet.be",
+      "dev+invoerder_dfm@publiq.be",
       "information@example.com"
     ]
     """
@@ -234,13 +234,13 @@ Feature: Test the UDB3 organizers contributors endpoint
     And the JSON response at "name/nl" should be "Contributor updated title"
 
   Scenario: Users should be able to edit organizers when they are a contributor
-    Given I am authorized as JWT provider v1 user "invoerder_dfm"
+    Given I am authorized as JWT provider v2 user "invoerder_dfm"
     And I send and accept "application/json"
     And I create a minimal organizer and save the "url" as "organizerUrl"
     Given I set the JSON request payload to:
     """
     [
-      "stan.vertessen+DFM@cultuurnet.be",
+      "dev+invoerder_dfm@publiq.be",
       "test@example.com"
     ]
     """
@@ -251,7 +251,7 @@ Feature: Test the UDB3 organizers contributors endpoint
     And the JSON response should be:
     """
     [
-      "stan.vertessen+DFM@cultuurnet.be",
+      "dev+invoerder_dfm@publiq.be",
       "test@example.com"
     ]
     """

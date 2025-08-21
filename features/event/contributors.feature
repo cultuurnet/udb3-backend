@@ -209,18 +209,18 @@ Feature: Test the UDB3 events contributors endpoint
     And I set the JSON request payload to:
     """
     [
-      "stan.vertessen+DFM@cultuurnet.be",
+      "dev+invoerder_dfm@publiq.be",
       "information@example.com"
     ]
     """
     And I send a PUT request to "%{eventUrl}/contributors"
-    And I am authorized as JWT provider v1 user "invoerder_dfm"
+    And I am authorized as JWT provider v2 user "invoerder_dfm"
     And I send a GET request to "%{eventUrl}/contributors"
     Then the response status should be "200"
     And the JSON response should be:
     """
     [
-      "stan.vertessen+DFM@cultuurnet.be",
+      "dev+invoerder_dfm@publiq.be",
       "information@example.com"
     ]
     """
@@ -230,12 +230,12 @@ Feature: Test the UDB3 events contributors endpoint
     And I set the JSON request payload to:
     """
     [
-      "stan.vertessen+DFM@cultuurnet.be",
+      "dev+invoerder_dfm@publiq.be",
       "information@example.com"
     ]
     """
     And I send a PUT request to "%{eventUrl}/contributors"
-    And I am authorized as JWT provider v1 user "invoerder_dfm"
+    And I am authorized as JWT provider v2 user "invoerder_dfm"
     And I set the JSON request payload to:
     """
     {

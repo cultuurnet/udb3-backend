@@ -8,7 +8,7 @@ Feature: Test the permissions in UDB3
     And I am authorized as JWT provider v1 user "invoerder_lgm"
     And I create a place from "places/molenhuis.json" and save the "id" as "uuid_place_molenhuis"
 
-    And I am authorized as JWT provider v1 user "invoerder_dfm"
+    And I am authorized as JWT provider v2 user "invoerder_dfm"
     And I set the JSON request payload from "places/citadel.json"
     And I send a POST request to "/imports/places/"
     And I keep the value of the JSON response at "id" as "uuid_place_citadel"
@@ -63,7 +63,7 @@ Feature: Test the permissions in UDB3
         """
 
   Scenario: update place WITHOUT permission - invoerder_dfm
-    Given I am authorized as JWT provider v1 user "invoerder_dfm"
+    Given I am authorized as JWT provider v2 user "invoerder_dfm"
       And I send a GET request to "/places/%{uuid_place_molenhuis}"
       And I keep the value of the JSON response at "name/nl" as "jsonld_name_nl_place_molenhuis"
      When I set the JSON request payload to:
@@ -106,7 +106,7 @@ Feature: Test the permissions in UDB3
 
 
   Scenario: update event WITH permission - owner
-    Given I am authorized as JWT provider v1 user "invoerder_dfm"
+    Given I am authorized as JWT provider v2 user "invoerder_dfm"
     When I set the JSON request payload to:
       """
       { "description": "Rondleiding in de citadel te Diest onder deskundige leiding van Davidsfonds Molenstede - update invoerder_dfm" }
