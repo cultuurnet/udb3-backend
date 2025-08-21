@@ -104,7 +104,7 @@ Feature: Test permissions based on ownership
     And I send a PUT request to "/places/%{placeId}/name/nl"
     And the response status should be "403"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
-    When I am authorized as JWT provider v1 user "centraal_beheerder"
+    When I am authorized as JWT provider v2 user "centraal_beheerder"
     And I approve the ownership with ownershipId "%{ownershipId}"
     And I am authorized as JWT provider v2 user "invoerder_ownerships"
     And I set the JSON request payload to:
