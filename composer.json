@@ -27,7 +27,7 @@
     "chrisboulton/php-resque": "dev-compat-1-2 as 1.2",
     "commerceguys/intl": "^0.7",
     "cultuurnet/calendar-summary-v3": "^4.0.8",
-    "cultuurnet/cdb": "dev-legacy-2.2 as 2.2",
+    "cultuurnet/cdb": "~2.2.0",
     "cultuurnet/culturefeed-php": "dev-master",
     "cultuurnet/udb3-api-guard": "^5.0",
     "danielstjules/stringy": "^3.1",
