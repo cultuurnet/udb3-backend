@@ -33,7 +33,7 @@ Feature: Test the UDB3 roles API permissions
     """
     {
       "email": "dev+validator_diest@publiq.be",
-      "username": "validatorDiest",
+      "username": "dev+validator_diest@publiq.be",
       "uuid": "26808daa-e194-4ca8-ac93-2b69e3c722bd"
     }
     """
@@ -54,7 +54,7 @@ Feature: Test the UDB3 roles API permissions
       "email":"dev+invoerder_lgm@publiq.be",
       "username":"Testuser-LGM",
       "id":"269a8217-57a5-46b1-90e3-e9d2f91d45e5",
-      "nick":"Testuser-LGM"
+      "nick":"dev+invoerder_lgm@publiq.be"
     }
     """
 
