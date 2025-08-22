@@ -91,7 +91,7 @@ Feature: Test the permissions in UDB3
     And the JSON response at "name/nl" should be "%{jsonld_name_nl_place_molenhuis}"
 
   Scenario: update place WITHOUT permission - validator_scherpenheuvel
-    Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
       And I send a GET request to "/places/%{uuid_place_molenhuis}"
     And I keep the value of the JSON response at "name/nl" as "jsonld_name_nl_place_molenhuis"
      When I set the JSON request payload to:
@@ -179,7 +179,7 @@ Feature: Test the permissions in UDB3
     And the JSON response at "name/nl" should be "%{jsonld_name_nl_event_rondleiding}"
 
   Scenario: update event WITHOUT permission - validator_scherpenheuvel
-    Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
       And I send a GET request to "/events/%{uuid_event_rondleiding}"
       And I keep the value of the JSON response at "name/nl" as "jsonld_name_nl_event_rondleiding"
     When I set the JSON request payload to:
@@ -213,11 +213,11 @@ Feature: Test the permissions in UDB3
    """
 
   Scenario: add private label to event WITHOUT permission - validator_scherpenheuvel
-    Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
     When I send a PUT request to "/events/%{uuid_event_rondleiding}/labels/private-diest"
     Then the response status should be "403"
 
   Scenario: add private label to place WITHOUT permission - validator_scherpenheuvel
-    Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
     When I send a PUT request to "/places/%{uuid_place_molenhuis}/labels/private-diest"
     Then the response status should be "403"

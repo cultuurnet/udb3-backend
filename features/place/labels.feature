@@ -45,7 +45,7 @@ Feature: Test labelling places
     """
 
   Scenario: Ignore a new forbidden private visible or hidden label on a place when updating via complete overwrite
-    Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
     And I create a place from "places/place-with-required-fields.json" and save the "url" as "placeUrl"
     When I set the JSON request payload to:
     """
@@ -84,7 +84,7 @@ Feature: Test labelling places
     """
 
   Scenario: Update private labels added by UI on a place via complete overwrite
-    Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
     And I create a place from "places/place-with-required-fields.json" and save the "url" as "placeUrl"
     And I am authorized as JWT provider v2 user "centraal_beheerder"
     When I send a PUT request to "%{placeUrl}/labels/private-visible"
@@ -100,7 +100,7 @@ Feature: Test labelling places
     """
     [ "private-invisible" ]
     """
-    Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
     When I set the JSON request payload to:
     """
     {
@@ -138,7 +138,7 @@ Feature: Test labelling places
     """
 
   Scenario: Update private labels added by UI on a place via complete overwrite and avoid remove
-    Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
     And I create a place from "places/place-with-required-fields.json" and save the "url" as "placeUrl"
     And I am authorized as JWT provider v2 user "centraal_beheerder"
     When I send a PUT request to "%{placeUrl}/labels/private-visible"
@@ -154,7 +154,7 @@ Feature: Test labelling places
     """
     [ "private-invisible" ]
     """
-    Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
     When I set the JSON request payload to:
     """
     {
@@ -265,7 +265,7 @@ Feature: Test labelling places
     """
 
   Scenario: Keep a label added via the UI on a place when not included in complete overwrite
-    Given I am authorized as JWT provider v1 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
     And I create a place from "places/place-with-required-fields.json" and save the "url" as "placeUrl"
     When I send a PUT request to "%{placeUrl}/labels/udb3label"
     Then the response status should be "204"

@@ -51,7 +51,7 @@ Feature: Test the UDB3 roles API permissions
     """
     {
       "uuid":"269a8217-57a5-46b1-90e3-e9d2f91d45e5",
-      "email":"stan.vertessen+LGM@cultuurnet.be",
+      "email":"dev+invoerder_lgm@publiq.be",
       "username":"Testuser-LGM",
       "id":"269a8217-57a5-46b1-90e3-e9d2f91d45e5",
       "nick":"Testuser-LGM"
