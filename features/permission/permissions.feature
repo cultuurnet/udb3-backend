@@ -48,7 +48,7 @@ Feature: Test the permissions in UDB3
         """
 
   Scenario: update place WITH permission - validator_pvb
-    Given I am authorized as JWT provider v1 user "validator_pvb"
+    Given I am authorized as JWT provider v2 user "validator_pvb"
      When I set the JSON request payload to:
         """
         { "description": "Het Molenhuis is de place to be in Molenstede, maar ga zeker eens kijken in het Provinciedomein de Halve Maan - update validator_pvb" }
@@ -136,7 +136,7 @@ Feature: Test the permissions in UDB3
       """
 
   Scenario: update event WITH permission - validator_pvb
-    Given I am authorized as JWT provider v1 user "validator_pvb"
+    Given I am authorized as JWT provider v2 user "validator_pvb"
     When I set the JSON request payload to:
     """
     { "description": "Rondleiding in de citadel te Diest - update validator_pvb" }

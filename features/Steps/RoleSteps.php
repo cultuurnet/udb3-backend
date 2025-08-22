@@ -99,7 +99,7 @@ trait RoleSteps
             $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_BEWERKEN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_VERWIJDEREN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_MODEREREN');
-            $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorPVB@cultuurnet.be');
+            $this->iSendAGetRequestTo('/users/emails/dev+validator_pvb@publiq.be');
             $uuidValidatorPvb = $this->responseState->getJsonContent()['uuid'];
             $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/users/' . $uuidValidatorPvb);
         }
