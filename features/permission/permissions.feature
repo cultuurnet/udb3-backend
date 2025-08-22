@@ -33,7 +33,7 @@ Feature: Test the permissions in UDB3
         """
 
    Scenario: update place WITH permission - validator_diest
-    Given I am authorized as JWT provider v1 user "validator_diest"
+    Given I am authorized as JWT provider v2 user "validator_diest"
      When I set the JSON request payload to:
         """
         { "description": "Het Molenhuis is de place to be in Molenstede, maar verbleekt in het niets tegenover de Gildenzaal van Diest - update validator_diest" }
@@ -121,7 +121,7 @@ Feature: Test the permissions in UDB3
       """
 
   Scenario: update event WITH permission - validator_diest
-    Given I am authorized as JWT provider v1 user "validator_diest"
+    Given I am authorized as JWT provider v2 user "validator_diest"
     When I set the JSON request payload to:
     """
     { "description": "Rondleiding in de citadel te Diest onder deskundige leiding van Davidsfonds Molenstede - update validator_diest" }
@@ -193,7 +193,7 @@ Feature: Test the permissions in UDB3
     And the JSON response at "name/nl" should be "%{jsonld_name_nl_event_rondleiding}"
 
   Scenario: add private label to event WITH permission - validator_diest
-    Given I am authorized as JWT provider v1 user "validator_diest"
+    Given I am authorized as JWT provider v2 user "validator_diest"
     When I send a PUT request to "/events/%{uuid_event_rondleiding}/labels/private-diest"
     Then the response status should be "204"
     When I send a GET request to "/events/%{uuid_event_rondleiding}"
@@ -203,7 +203,7 @@ Feature: Test the permissions in UDB3
     """
 
   Scenario: add private label to place WITH permission - validator_diest
-    Given I am authorized as JWT provider v1 user "validator_diest"
+    Given I am authorized as JWT provider v2 user "validator_diest"
     When I send a PUT request to "/places/%{uuid_place_citadel}/labels/private-diest"
     Then the response status should be "204"
    When I send a GET request to "/places/%{uuid_place_citadel}"

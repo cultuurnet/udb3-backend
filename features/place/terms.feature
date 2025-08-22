@@ -104,7 +104,7 @@ Feature: Test place terms property
     And the JSON response should not have "terms/1"
 
   Scenario: Update place facilities without permissions
-    Given I am authorized as JWT provider v1 user "validator_diest"
+    Given I am authorized as JWT provider v2 user "validator_diest"
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
     When I set the JSON request payload to:
     """

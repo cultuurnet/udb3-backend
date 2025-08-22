@@ -62,7 +62,7 @@ trait RoleSteps
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_BEWERKEN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_VERWIJDEREN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_MODEREREN');
-            $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorDiest@cultuurnet.be');
+            $this->iSendAGetRequestTo('/users/emails/dev+validator_diest@publiq.be');
             $uuidValidatorDiest = $this->responseState->getJsonContent()['uuid'];
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/users/' . $uuidValidatorDiest);
             $this->getLabel('private-diest');

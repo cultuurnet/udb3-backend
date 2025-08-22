@@ -27,14 +27,14 @@ Feature: Test the UDB3 roles API permissions
 
   Scenario: As a god user I can search users by their email address
     Given I am authorized as JWT provider v2 user "centraal_beheerder"
-    When I send a GET request to "/users/emails/stan.vertessen+validatorDiest@cultuurnet.be"
+    When I send a GET request to "/users/emails/dev+validator_diest@publiq.be"
     Then the response status should be "200"
     And the JSON response should be:
     """
     {
-      "email": "stan.vertessen+validatordiest@cultuurnet.be",
+      "email": "dev+validator_diest@publiq.be",
       "username": "validatorDiest",
-      "uuid": "50cc85fa-f278-44c5-a16b-b9db50ee93f6"
+      "uuid": "26808daa-e194-4ca8-ac93-2b69e3c722bd"
     }
     """
 
@@ -73,7 +73,7 @@ Feature: Test the UDB3 roles API permissions
     """
 
   Scenario: As a user with at least one role I can get my roles
-    Given I am authorized as JWT provider v1 user "validator_diest"
+    Given I am authorized as JWT provider v2 user "validator_diest"
     When I send a GET request to "/user/roles"
     Then the response status should be "200"
     And the JSON response at "0/name" should be "Diest validatoren"
@@ -104,7 +104,7 @@ Feature: Test the UDB3 roles API permissions
     """
 
   Scenario: As a user with at least one role I can get my permissions
-    Given I am authorized as JWT provider v1 user "validator_diest"
+    Given I am authorized as JWT provider v2 user "validator_diest"
     When I send a GET request to "/user/permissions"
     Then the response status should be "200"
     And the JSON response should be:

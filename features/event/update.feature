@@ -624,7 +624,7 @@ Feature: Test the UDB3 events API
     And the JSON response at "terms/1/id" should be "1.8.2.0.0"
 
   Scenario: Update event facilities without permissions
-    Given I am authorized as JWT provider v1 user "validator_diest"
+    Given I am authorized as JWT provider v2 user "validator_diest"
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
@@ -648,7 +648,7 @@ Feature: Test the UDB3 events API
         "type": "https://api.publiq.be/probs/auth/forbidden",
         "title": "Forbidden",
         "status": 403,
-        "detail": "User 50cc85fa-f278-44c5-a16b-b9db50ee93f6 has no permission \"Voorzieningen bewerken\" on resource %{uuid_testevent}"
+        "detail": "User 26808daa-e194-4ca8-ac93-2b69e3c722bd has no permission \"Voorzieningen bewerken\" on resource %{uuid_testevent}"
       }
       """
 

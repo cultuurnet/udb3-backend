@@ -74,7 +74,7 @@ Feature: Test the UDB3 saved searches API
     Then the response status should be "201"
     And I keep the value of the JSON response at "id" as "id"
 
-    And I am authorized as JWT provider v1 user "validator_diest"
+    And I am authorized as JWT provider v2 user "validator_diest"
 
     And I set the JSON request payload to:
        """
