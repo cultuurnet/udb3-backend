@@ -55,14 +55,6 @@ trait AuthorizationSteps
     }
 
     /**
-     * @Given I am authorized as JWT provider v1 user :userName
-     */
-    public function iAmAuthorizedAsJwtProviderV1User(string $userName): void
-    {
-        $this->requestState->setJwt($this->config['users']['uitid_v1'][$userName]['jwt']);
-    }
-
-    /**
      * @Given I am authorized as JWT provider v2 user :userName
      */
     public function iAmAuthorizedAsJwtProviderV2User(string $userName): void
