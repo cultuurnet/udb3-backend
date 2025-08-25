@@ -91,7 +91,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         // Requests that use a token that they got directly from Auth0 do not require an API key.
         // The difference can be checked by checking if the token has a client id, which is always missing in tokens
         // from the JWT providers.
-        if ($this->token->getClientId() === null) {
+        if ($this->token->getClientId() === null || $this->token->getType() === JsonWebToken::UIT_ID_V2_JWT_PROVIDER_TOKEN) {
             $this->authenticateApiKey($request);
         }
 
