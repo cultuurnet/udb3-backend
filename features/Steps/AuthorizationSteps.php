@@ -64,8 +64,8 @@ trait AuthorizationSteps
         $response = $this->getHttpClient()->postJSON(
             '/oauth/token',
             Json::encode([
-                'username' => $this->config['users']['uitid_v2'][$userName]['username'],
-                'password' => $this->config['users']['uitid_v2'][$userName]['password'],
+                'username' => $this->config['users'][$userName]['username'],
+                'password' => $this->config['users'][$userName]['password'],
                 'client_id' => $this->config['clients']['jwt_provider_v2']['client_id'],
                 'client_secret' => $this->config['clients']['jwt_provider_v2']['client_secret'],
                 'grant_type' => 'password',
@@ -115,8 +115,8 @@ trait AuthorizationSteps
         $response = $this->getHttpClient()->postJSON(
             '/oauth/token',
             Json::encode([
-                'username' => $this->config['users']['uitid_v2'][$userName]['username'],
-                'password' => $this->config['users']['uitid_v2'][$userName]['password'],
+                'username' => $this->config['users'][$userName]['username'],
+                'password' => $this->config['users'][$userName]['password'],
                 'client_id' => $this->config['clients'][$clientName]['client_id'],
                 'client_secret' => $this->config['clients'][$clientName]['client_secret'],
                 'grant_type' => 'password',
