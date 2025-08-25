@@ -58,7 +58,7 @@ final class JsonWebToken
             return self::UIT_ID_V1_JWT_PROVIDER_TOKEN;
         }
 
-        // Because ID tokens from Keycloak always have a `azp` claim the `typ` claim can be used to verify if a Keycloak ID token is passed. Note: this `typ` field is missing for Auth0, so we need to a check for Auth0 and a check for Keycloak.
+        // Because ID tokens from Keycloak always have a `azp` claim the `typ` claim can be used to verify if a Keycloak ID token is passed.
         if ($this->token->claims()->get('typ', '') === 'ID') {
             return self::UIT_ID_V2_JWT_PROVIDER_TOKEN;
         }
