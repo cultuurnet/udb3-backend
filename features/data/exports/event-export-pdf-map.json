@@ -12,7 +12,7 @@
   "include": [],
   "order": {},
   "perDay": false,
-  "query": "_type:event AND creator:7a583ed3-cbc1-481d-93b1-d80fff0174dd AND workflowStatus:(\"APPROVED\" OR \"READY_FOR_VALIDATION\")",
+  "query": "_type:event AND creator:edcee0f7-5906-4e92-8551-a7f5d37ba453 AND workflowStatus:(\"APPROVED\" OR \"READY_FOR_VALIDATION\")",
   "selection": [
     "%{baseUrl}/event/165df6a4-1fc7-4eda-ae3a-6980f6d5b369"
   ]

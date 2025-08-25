@@ -62,7 +62,7 @@ trait RoleSteps
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_BEWERKEN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_VERWIJDEREN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/permissions/AANBOD_MODEREREN');
-            $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorDiest@cultuurnet.be');
+            $this->iSendAGetRequestTo('/users/emails/dev+validator_diest@publiq.be');
             $uuidValidatorDiest = $this->responseState->getJsonContent()['uuid'];
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleDiest . '/users/' . $uuidValidatorDiest);
             $this->getLabel('private-diest');
@@ -84,7 +84,7 @@ trait RoleSteps
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_BEWERKEN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_VERWIJDEREN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/permissions/AANBOD_MODEREREN');
-            $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorScherpenheuvel@cultuurnet.be');
+            $this->iSendAGetRequestTo('/users/emails/dev+validator_scherpenheuvel@publiq.be');
             $uuidValidatorScherpenheuvel = $this->responseState->getJsonContent()['uuid'];
             $this->iSendAPutRequestTo('/roles/' . $uuidRoleScherpenheuvel . '/users/' . $uuidValidatorScherpenheuvel);
         }
@@ -99,7 +99,7 @@ trait RoleSteps
             $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_BEWERKEN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_VERWIJDEREN');
             $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/permissions/AANBOD_MODEREREN');
-            $this->iSendAGetRequestTo('/users/emails/stan.vertessen+validatorPVB@cultuurnet.be');
+            $this->iSendAGetRequestTo('/users/emails/dev+validator_pvb@publiq.be');
             $uuidValidatorPvb = $this->responseState->getJsonContent()['uuid'];
             $this->iSendAPutRequestTo('/roles/' . $uuidRolePvb . '/users/' . $uuidValidatorPvb);
         }
