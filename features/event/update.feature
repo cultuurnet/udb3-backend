@@ -3,7 +3,7 @@ Feature: Test the UDB3 events API
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
 
     Given I set the form data properties to:
@@ -624,7 +624,7 @@ Feature: Test the UDB3 events API
     And the JSON response at "terms/1/id" should be "1.8.2.0.0"
 
   Scenario: Update event facilities without permissions
-    Given I am authorized as JWT provider v2 user "validator_diest"
+    Given I am authorized as JWT provider user "validator_diest"
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"

@@ -3,7 +3,7 @@ Feature: Test the UDB3 roles API
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "role_uuid"
 

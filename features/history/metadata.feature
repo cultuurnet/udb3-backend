@@ -10,7 +10,7 @@ Feature: Test the metadata in the history API
     
   Scenario: test metaData place
     Given I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
     And I send a GET request to "%{placeUrl}/history"
     And the JSON response at "0/author" should be "pjeOqgEYI0Y4gmr8DWMpUrpTMXrvjgpc@clients"
@@ -20,7 +20,7 @@ Feature: Test the metadata in the history API
 
   Scenario: test metaData event
     Given I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
     And I send a GET request to "%{eventUrl}/history"
     And the JSON response at "0/author" should be "pjeOqgEYI0Y4gmr8DWMpUrpTMXrvjgpc@clients"

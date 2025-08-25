@@ -3,7 +3,7 @@ Feature: Test the UDB3 roles API
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
 
   Scenario: Get all roles with a specific name
     Given I set the JSON request payload to:

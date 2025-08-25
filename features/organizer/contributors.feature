@@ -3,7 +3,7 @@ Feature: Test the UDB3 organizers contributors endpoint
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
     And I create a minimal organizer and save the "url" as "organizerUrl"
 
@@ -85,7 +85,7 @@ Feature: Test the UDB3 organizers contributors endpoint
     And I send a PUT request to "%{organizerUrl}/contributors"
     And the response status should be "204"
     And I send a PUT request to "%{organizerUrl}/labels/randomLabel"
-    And I am authorized as JWT provider v2 user "invoerder_lgm"
+    And I am authorized as JWT provider user "invoerder_lgm"
     When I get the organizer at "%{organizerUrl}"
     Then the JSON response should not have "contributors"
 
@@ -99,7 +99,7 @@ Feature: Test the UDB3 organizers contributors endpoint
     """
     And I send a PUT request to "%{organizerUrl}/contributors"
     And the response status should be "204"
-    And I am authorized as JWT provider v2 user "invoerder_lgm"
+    And I am authorized as JWT provider user "invoerder_lgm"
     When I get the organizer at "%{organizerUrl}"
     Then the JSON response should not have "contributors"
 
@@ -188,7 +188,7 @@ Feature: Test the UDB3 organizers contributors endpoint
     ]
     """
     And I send a PUT request to "%{organizerUrl}/contributors"
-    And I am authorized as JWT provider v2 user "invoerder_lgm"
+    And I am authorized as JWT provider user "invoerder_lgm"
     And I send a GET request to "%{organizerUrl}/contributors"
     Then the response status should be "403"
     And the JSON response at "detail" should include 'has no permission "Aanbod bewerken" on resource'
@@ -202,7 +202,7 @@ Feature: Test the UDB3 organizers contributors endpoint
     ]
     """
     And I send a PUT request to "%{organizerUrl}/contributors"
-    And I am authorized as JWT provider v2 user "invoerder_dfm"
+    And I am authorized as JWT provider user "invoerder_dfm"
     And I send a GET request to "%{organizerUrl}/contributors"
     Then the response status should be "200"
     And the JSON response should be:
@@ -234,7 +234,7 @@ Feature: Test the UDB3 organizers contributors endpoint
     And the JSON response at "name/nl" should be "Contributor updated title"
 
   Scenario: Users should be able to edit organizers when they are a contributor
-    Given I am authorized as JWT provider v2 user "invoerder_dfm"
+    Given I am authorized as JWT provider user "invoerder_dfm"
     And I send and accept "application/json"
     And I create a minimal organizer and save the "url" as "organizerUrl"
     Given I set the JSON request payload to:

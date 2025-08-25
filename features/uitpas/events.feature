@@ -4,7 +4,7 @@ Feature: Test the UiTPAS events
     Given I am using the UDB3 base URL
     And I send and accept "application/json"
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
 
   Scenario: Get details of an event that is not an UiTPAS event
     When I send a GET request to "/uitpas/events/18827e56-mock-4961-a5c8-7acd5dcfed9a"

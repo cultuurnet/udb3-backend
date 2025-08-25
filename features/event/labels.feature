@@ -3,7 +3,7 @@ Feature: Test labelling events
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
 
   Scenario: Create event with only public labels
@@ -60,7 +60,7 @@ Feature: Test labelling events
     Then the response status should be "201"
     And I keep the value of the JSON response at "placeId" as "uuid_place"
 
-    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider user "validator_scherpenheuvel"
 
     Given I set the JSON request payload from "events/labels/event-with-public-and-private-labels.json"
     When I send a POST request to "/imports/events/"
@@ -153,7 +153,7 @@ Feature: Test labelling events
     And the JSON response should not have "hiddenLabels"
 
   Scenario: Prevent removing labels added via UI when updating via complete overwrite
-    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider user "validator_scherpenheuvel"
 
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
@@ -232,7 +232,7 @@ Feature: Test labelling events
     [ "public-invisible", "private-invisible" ]
     """
 
-    Given I am authorized as JWT provider v2 user "validator_scherpenheuvel"
+    Given I am authorized as JWT provider user "validator_scherpenheuvel"
 
     Given I set the JSON request payload from "events/labels/event-without-labels.json"
     When I send a PUT request to "/imports/events/%{eventId}"

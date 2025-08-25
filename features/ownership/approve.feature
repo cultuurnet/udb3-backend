@@ -2,15 +2,15 @@ Feature: Test approving ownership
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
 
   @mails
   Scenario: Approving ownership of an organizer as admin
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I am authorized as JWT provider v2 user "invoerder_ownerships"
+    And I am authorized as JWT provider user "invoerder_ownerships"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     When I approve the ownership with ownershipId "%{ownershipId}"
     And I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
@@ -26,7 +26,7 @@ Feature: Test approving ownership
 
   @mails
   Scenario: Approving ownership of an organizer as creator
-    And I am authorized as JWT provider v2 user "invoerder_ownerships"
+    And I am authorized as JWT provider user "invoerder_ownerships"
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I approve the ownership with ownershipId "%{ownershipId}"
@@ -58,7 +58,7 @@ Feature: Test approving ownership
 
   Scenario: Approving an organizer as non-authorized user
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I am authorized as JWT provider v2 user "invoerder_ownerships"
+    And I am authorized as JWT provider user "invoerder_ownerships"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I send a POST request to '/ownerships/%{ownershipId}/approve'
     Then the response status should be 403

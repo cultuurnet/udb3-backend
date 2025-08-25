@@ -53,7 +53,7 @@ Feature: Test the Search API v3 authentication
     Then the response status should be "403"
 
   Scenario: Search with a JWT provider v2 token
-    Given I am authorized as JWT provider v2 user "invoerder"
+    Given I am authorized as JWT provider user "invoerder"
     And I am using the Search API v3 base URL
     When I send a GET request to "/events"
     Then the response status should be "200"

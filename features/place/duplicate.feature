@@ -4,7 +4,7 @@ Feature: Test creating places
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
 
   Scenario: Allow creating a new place, if a "duplicate" place before was rejected

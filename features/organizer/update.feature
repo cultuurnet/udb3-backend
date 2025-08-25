@@ -3,7 +3,7 @@ Feature: Test updating organizers via complete overwrite
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
 
   Scenario: Update an organizer with extra fields via complete overwrite
@@ -227,7 +227,7 @@ Feature: Test updating organizers via complete overwrite
     """
 
   Scenario: Trying to update an organizer that does not exist
-    Given I am authorized as JWT provider v2 user "invoerder_lgm"
+    Given I am authorized as JWT provider user "invoerder_lgm"
     And I set the JSON request payload to:
     """
         {"name": "madewithlove"}

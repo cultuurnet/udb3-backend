@@ -3,7 +3,7 @@ Feature: Test the UDB3 events export API
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
     And I set the JSON request payload from "places/place.json"
     And I send a POST request to "/places/"

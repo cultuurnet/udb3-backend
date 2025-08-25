@@ -55,9 +55,9 @@ trait AuthorizationSteps
     }
 
     /**
-     * @Given I am authorized as JWT provider v2 user :userName
+     * @Given I am authorized as JWT provider user :userName
      */
-    public function iAmAuthorizedAsJwtProviderV2User(string $userName): void
+    public function iAmAuthorizedAsJwtProviderUser(string $userName): void
     {
         $this->iAmUsingTheUiTiDBaseURL();
 

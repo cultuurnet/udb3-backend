@@ -3,7 +3,7 @@ Feature: Test the UDB3 events contributors endpoint
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
 
@@ -91,7 +91,7 @@ Feature: Test the UDB3 events contributors endpoint
     And I send a PUT request to "%{eventUrl}/contributors"
     And the response status should be "204"
     And I send a PUT request to "%{eventUrl}/labels/randomLabel"
-    And I am authorized as JWT provider v2 user "invoerder_lgm"
+    And I am authorized as JWT provider user "invoerder_lgm"
     When I get the event at "%{eventUrl}"
     Then the JSON response should not have "contributors"
 
@@ -106,7 +106,7 @@ Feature: Test the UDB3 events contributors endpoint
     """
     And I send a PUT request to "%{eventUrl}/contributors"
     And the response status should be "204"
-    And I am authorized as JWT provider v2 user "invoerder_lgm"
+    And I am authorized as JWT provider user "invoerder_lgm"
     When I get the event at "%{eventUrl}"
     Then the JSON response should not have "contributors"
 
@@ -199,7 +199,7 @@ Feature: Test the UDB3 events contributors endpoint
     ]
     """
     And I send a PUT request to "%{eventUrl}/contributors"
-    And I am authorized as JWT provider v2 user "invoerder_lgm"
+    And I am authorized as JWT provider user "invoerder_lgm"
     And I send a GET request to "%{eventUrl}/contributors"
     Then the response status should be "403"
     And the JSON response at "detail" should include 'has no permission "Aanbod bewerken" on resource'
@@ -214,7 +214,7 @@ Feature: Test the UDB3 events contributors endpoint
     ]
     """
     And I send a PUT request to "%{eventUrl}/contributors"
-    And I am authorized as JWT provider v2 user "invoerder_dfm"
+    And I am authorized as JWT provider user "invoerder_dfm"
     And I send a GET request to "%{eventUrl}/contributors"
     Then the response status should be "200"
     And the JSON response should be:
@@ -235,7 +235,7 @@ Feature: Test the UDB3 events contributors endpoint
     ]
     """
     And I send a PUT request to "%{eventUrl}/contributors"
-    And I am authorized as JWT provider v2 user "invoerder_dfm"
+    And I am authorized as JWT provider user "invoerder_dfm"
     And I set the JSON request payload to:
     """
     {

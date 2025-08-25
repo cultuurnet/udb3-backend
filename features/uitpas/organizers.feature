@@ -4,7 +4,7 @@ Feature: Test the UiTPAS organizers
     Given I am using the UDB3 base URL
     And I send and accept "application/json"
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I create a minimal organizer and save the "id" as "organizerId"
 
   Scenario: Get card systems of an organizer that is not an UiTPAS organizer
