@@ -52,7 +52,7 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
      * @test
      * @dataProvider SavedSearchDataprovider
      */
-    public function it_returns_an_empty_ownership_collection_if_no_were_found(array $jsonDocuments, OwnershipItemCollection $ownershipItemCollection, array $savedSearches): void
+    public function it_returns_ownerships(array $jsonDocuments, OwnershipItemCollection $ownershipItemCollection, array $savedSearches): void
     {
         foreach ($jsonDocuments as $jsonDocument) {
             $this->organizerDocumentRepository->save($jsonDocument);
