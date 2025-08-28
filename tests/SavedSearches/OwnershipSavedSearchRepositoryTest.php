@@ -93,8 +93,10 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
                         Json::encode(
                             [
                                 '@type' => 'organizer',
+                                'mainLanguage' => 'nl',
                                 'name' => [
                                     'nl' => 'Foobar NL',
+                                    'fr' => 'Foobar FR',
                                 ],
                             ]
                         )
@@ -104,53 +106,9 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
                         Json::encode(
                             [
                                 '@type' => 'organizer',
+                                'mainLanguage' => 'fr',
                                 'name' => [
                                     'nl' => 'Bar Foo NL',
-                                ],
-                            ]
-                        )
-                    ),
-                ],
-                new OwnershipItemCollection(
-                    new OwnershipItem(
-                        $ownershipItemId1,
-                        $itemId1,
-                        'organizer',
-                        self::USER_ID,
-                        OwnershipState::approved()->toString()
-                    ),
-                    new OwnershipItem(
-                        $ownershipItem2,
-                        $itemId2,
-                        'organizer',
-                        self::USER_ID,
-                        OwnershipState::approved()->toString()
-                    )
-                ),
-                [
-                    new SavedSearch('Aanbod Foobar NL', new QueryString('organizer.id:' . $itemId1)),
-                    new SavedSearch('Aanbod Bar Foo NL', new QueryString('organizer.id:' . $itemId2)),
-                ],
-            ],
-            'fallback_if_dutch_is_not_present' => [
-                [
-                    new JsonDocument(
-                        $itemId1,
-                        Json::encode(
-                            [
-                                '@type' => 'organizer',
-                                'name' => [
-                                    'en' => 'Foobar EN',
-                                ],
-                            ]
-                        )
-                    ),
-                    new JsonDocument(
-                        $itemId2,
-                        Json::encode(
-                            [
-                                '@type' => 'organizer',
-                                'name' => [
                                     'fr' => 'Bar Foo FR',
                                 ],
                             ]
@@ -174,7 +132,7 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
                     )
                 ),
                 [
-                    new SavedSearch('Aanbod Foobar EN', new QueryString('organizer.id:' . $itemId1)),
+                    new SavedSearch('Aanbod Foobar NL', new QueryString('organizer.id:' . $itemId1)),
                     new SavedSearch('Aanbod Bar Foo FR', new QueryString('organizer.id:' . $itemId2)),
                 ],
             ],
