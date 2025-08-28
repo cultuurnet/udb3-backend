@@ -67,10 +67,24 @@ class OwnershipSavedSearchRepository implements SavedSearchesOwnedByCurrentUser
                 $organizerId = $ownershipItem->getItemId();
                 $organizerAsJson = $this->organizerDocumentRepository->fetch($organizerId);
                 $body = $organizerAsJson->getAssocBody();
-                $organizerName = $body['name']['nl'];
+                $organizerName = $this->getName($body);
                 $ownershipQueries[$organizerName] = new QueryString('organizer.id:' . $organizerId);
             }
         }
         return $ownershipQueries;
+    }
+
+    private function getName(array $body): string
+    {
+        $preferredLanguages = ['nl', 'fr', 'de', 'en'];
+
+        foreach ($preferredLanguages as $lang) {
+            if (!empty($body['name'][$lang])) {
+                return $body['name'][$lang];
+            }
+        }
+
+        // fallback if no language match is found
+        return '';
     }
 }
