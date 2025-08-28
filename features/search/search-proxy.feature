@@ -4,7 +4,7 @@ Feature: Test the UDB3 search proxy
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I create a minimal place and save the "url" as "placeUrl"
     And I wait for the place with url "%{placeUrl}" to be indexed
     And I create a minimal permanent event and save the "url" as "eventUrl"

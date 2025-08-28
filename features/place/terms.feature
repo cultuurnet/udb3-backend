@@ -3,7 +3,7 @@ Feature: Test place terms property
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
 
@@ -104,7 +104,7 @@ Feature: Test place terms property
     And the JSON response should not have "terms/1"
 
   Scenario: Update place facilities without permissions
-    Given I am authorized as JWT provider v1 user "validator_diest"
+    Given I am authorized as JWT provider user "validator_diest"
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
     When I set the JSON request payload to:
     """

@@ -3,7 +3,7 @@ Feature: Test place workflowStatus property
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
 
@@ -98,7 +98,7 @@ Feature: Test place workflowStatus property
 
   Scenario: Trying to publish a place as a moderator without sufficient permissions
     Given I create a place from "places/place.json" and save the "url" as "placeUrl"
-    And I am authorized as JWT provider v1 user "validator_diest"
+    And I am authorized as JWT provider user "validator_diest"
     When I set the JSON request payload to:
     """
     {"workflowStatus": "APPROVED"}
@@ -109,7 +109,7 @@ Feature: Test place workflowStatus property
 
   Scenario: Trying to publish a place as a moderator without sufficient permissions via legacy PATCH
     Given I create a place from "places/place.json" and save the "url" as "placeUrl"
-    And I am authorized as JWT provider v1 user "validator_diest"
+    And I am authorized as JWT provider user "validator_diest"
     When I send "application/ld+json;domain-model=Publish"
     And I send a PATCH request to "%{placeUrl}"
     Then the response status should be "403"

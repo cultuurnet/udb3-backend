@@ -4,7 +4,7 @@ Feature: Test the Search API v3 facets
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "invoerder"
+    And I am authorized as JWT provider user "invoerder"
     And I create a place from "places/place.json" and save the "placeId" as "uuid_place"
     And I keep the value of the JSON response at "url" as "placeUrl"
     And I create an event from "/events/event-with-eventtype-lessenreeks.json" and save the "id" as "eventId"
@@ -67,15 +67,15 @@ Feature: Test the Search API v3 facets
     Then the JSON response at "facet" should be:
     """
     {
-       "types":{
-         "0.3.1.0.0":{
-           "name":{
-             "nl":"Lessenreeks",
-             "fr":"S\u00e9rie de cours",
-             "de":"Unterrichtsreihe",
-             "en":"Course series"
-           },
-           "count":1
+      "types":{
+        "0.3.1.0.0":{
+          "name":{
+            "nl":"Lessenreeks",
+            "fr":"S\u00e9rie de cours",
+            "de":"Unterrichtsreihe",
+            "en":"Course series"
+          },
+          "count":1
         }
       }
     }
@@ -90,15 +90,15 @@ Feature: Test the Search API v3 facets
     Then the JSON response at "facet" should be:
     """
     {
-       "themes":{
-         "1.51.12.0.0":{
-           "name":{
-             "nl":"Omnisport en andere",
-             "fr":"Omnisports et autres",
-             "de":"Omnisport und andere",
-             "en":"Other sports"
-           },
-           "count":1
+      "themes":{
+        "1.51.12.0.0":{
+          "name":{
+            "nl":"Omnisport en andere",
+            "fr":"Omnisports et autres",
+            "de":"Omnisport und andere",
+            "en":"Other sports"
+          },
+          "count":1
         }
       }
     }
