@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches;
 
-use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebTokenFactory;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
@@ -25,8 +24,6 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
 {
     private const USER_ID = 'e2a78b6e-6eba-42a4-a366-248c5a8df792';
 
-    private JsonWebToken $token;
-
     private DocumentRepository $organizerDocumentRepository;
 
     /**
@@ -37,17 +34,15 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->token = JsonWebTokenFactory::createWithClaims(
-            [
-                'sub' => self::USER_ID,
-            ]
-        );
-
         $this->organizerDocumentRepository = new InMemoryDocumentRepository();
         $this->ownershipSearchRepository = $this->createMock(OwnershipSearchRepository::class);
 
         $this->ownershipSavedSearchRepository = new OwnershipSavedSearchRepository(
-            $this->token,
+            JsonWebTokenFactory::createWithClaims(
+                [
+                    'sub' => self::USER_ID,
+                ]
+            ),
             $this->organizerDocumentRepository,
             $this->ownershipSearchRepository
         );
