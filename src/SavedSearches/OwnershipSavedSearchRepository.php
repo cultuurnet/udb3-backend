@@ -65,9 +65,9 @@ class OwnershipSavedSearchRepository implements SavedSearchesOwnedByCurrentUser
 
         foreach ($ownershipItemCollection as $ownershipItem) {
             $organizerId = $ownershipItem->getItemId();
-            $organizerAsJson = $this->organizerDocumentRepository->fetch($organizerId);
-            $body = $organizerAsJson->getAssocBody();
-            $organizerName = $this->getNameInMainLanguage($body);
+            $organizerName = $this->getNameInMainLanguage(
+                $this->organizerDocumentRepository->fetch($organizerId)->getAssocBody()
+            );
             $ownershipQueries[$organizerName] = new QueryString('organizer.id:' . $organizerId);
         }
         return $ownershipQueries;
