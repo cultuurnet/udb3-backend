@@ -51,12 +51,12 @@ class OwnershipSavedSearchRepository implements SavedSearchesOwnedByCurrentUser
      */
     private function getOwnershipQueryStrings(): array
     {
-        $token = $this->token->getUserId();
+        $userId = $this->token->getUserId();
 
         $ownershipItemCollection = $this->ownershipSearchRepository->search(
             new SearchQuery([
                 new SearchParameter('state', OwnershipState::approved()->toString()),
-                new SearchParameter('ownerId', $token),
+                new SearchParameter('ownerId', $userId),
             ])
         );
 
