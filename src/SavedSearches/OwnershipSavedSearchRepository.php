@@ -40,8 +40,8 @@ class OwnershipSavedSearchRepository implements SavedSearchesOwnedByCurrentUser
         $ownershipQueryStrings = $this->getOwnershipQueryStrings();
 
         $savedSearches = [];
-        foreach ($ownershipQueryStrings as $ownershipName => $ownershipQueryString) {
-            $savedSearches[] = new SavedSearch('Aanbod ' . $ownershipName, $ownershipQueryString);
+        foreach ($ownershipQueryStrings as $organizerName => $ownershipQueryString) {
+            $savedSearches[] = new SavedSearch('Aanbod ' . $organizerName, $ownershipQueryString);
         }
         return $savedSearches;
     }
