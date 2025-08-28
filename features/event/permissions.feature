@@ -3,13 +3,13 @@ Feature: Test the permissions for events in UDB3
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v1 user "invoerder_gbm"
+    And I am authorized as JWT provider user "invoerder_gbm"
     And I send and accept "application/json"
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
     And I create a minimal permanent event and save the "id" as "eventId"
 
   Scenario: get permissions of the current user who is the creator
-    Given I am authorized as JWT provider v1 user "invoerder_gbm"
+    Given I am authorized as JWT provider user "invoerder_gbm"
     When I send a GET request to "/events/%{eventId}/permissions/"
     Then the response status should be "200"
     And the JSON response should be:
@@ -24,7 +24,7 @@ Feature: Test the permissions for events in UDB3
         """
 
   Scenario: get legacy permissions of the current user who is the creator
-    Given I am authorized as JWT provider v1 user "invoerder_gbm"
+    Given I am authorized as JWT provider user "invoerder_gbm"
     When I send a GET request to "/events/%{eventId}/permission/"
     Then the response status should be "200"
     And the JSON response should be:
@@ -35,7 +35,7 @@ Feature: Test the permissions for events in UDB3
         """
 
   Scenario: get permissions of the current user who is not the creator
-    Given I am authorized as JWT provider v1 user "invoerder_lgm"
+    Given I am authorized as JWT provider user "invoerder_lgm"
     When I send a GET request to "/events/%{eventId}/permissions/"
     Then the response status should be "200"
     And the JSON response should be:
@@ -46,7 +46,7 @@ Feature: Test the permissions for events in UDB3
         """
 
   Scenario: get legacy permissions of the current user who is not the creator
-    Given I am authorized as JWT provider v1 user "invoerder_lgm"
+    Given I am authorized as JWT provider user "invoerder_lgm"
     When I send a GET request to "/events/%{eventId}/permission/"
     Then the response status should be "200"
     And the JSON response should be:
@@ -57,8 +57,8 @@ Feature: Test the permissions for events in UDB3
         """
 
   Scenario: get permissions of a given user who is the creator
-    Given I am authorized as JWT provider v1 user "invoerder_gbm"
-    When I send a GET request to "/events/%{eventId}/permissions/f9045efa-5954-498b-864c-457eb9da6e0b"
+    Given I am authorized as JWT provider user "invoerder_gbm"
+    When I send a GET request to "/events/%{eventId}/permissions/1963c5ab-7e2c-416d-a269-243790019f7d"
     Then the response status should be "200"
     And the JSON response should be:
         """
@@ -72,8 +72,8 @@ Feature: Test the permissions for events in UDB3
         """
 
   Scenario: get legacy permissions of a given user who is the creator
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
-    When I send a GET request to "/events/%{eventId}/permission/f9045efa-5954-498b-864c-457eb9da6e0b"
+    Given I am authorized as JWT provider user "centraal_beheerder"
+    When I send a GET request to "/events/%{eventId}/permission/1963c5ab-7e2c-416d-a269-243790019f7d"
     Then the response status should be "200"
     And the JSON response should be:
         """
@@ -83,8 +83,8 @@ Feature: Test the permissions for events in UDB3
         """
 
   Scenario: get permissions of a given user who is not the creator
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
-    When I send a GET request to "/events/%{eventId}/permissions/40fadfd3-c4a6-4936-b1fe-20542ac56610"
+    Given I am authorized as JWT provider user "centraal_beheerder"
+    When I send a GET request to "/events/%{eventId}/permissions/269a8217-57a5-46b1-90e3-e9d2f91d45e5"
     Then the response status should be "200"
     And the JSON response should be:
         """
@@ -94,8 +94,8 @@ Feature: Test the permissions for events in UDB3
         """
 
   Scenario: get legacy permissions of a given user who is not the creator
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
-    When I send a GET request to "/events/%{eventId}/permission/40fadfd3-c4a6-4936-b1fe-20542ac56610"
+    Given I am authorized as JWT provider user "centraal_beheerder"
+    When I send a GET request to "/events/%{eventId}/permission/269a8217-57a5-46b1-90e3-e9d2f91d45e5"
     Then the response status should be "200"
     And the JSON response should be:
         """

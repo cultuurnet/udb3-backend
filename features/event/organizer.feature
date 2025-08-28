@@ -3,7 +3,7 @@ Feature: Test updating organizers of events
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
     And I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
