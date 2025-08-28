@@ -56,6 +56,7 @@ class OwnershipSavedSearchRepository implements SavedSearchesOwnedByCurrentUser
         $ownershipItemCollection = $this->ownershipSearchRepository->search(
             new SearchQuery([
                 new SearchParameter('state', OwnershipState::approved()->toString()),
+                new SearchParameter('itemType', 'organizer'),
                 new SearchParameter('ownerId', $userId),
             ])
         );
@@ -63,13 +64,11 @@ class OwnershipSavedSearchRepository implements SavedSearchesOwnedByCurrentUser
         $ownershipQueries = [];
 
         foreach ($ownershipItemCollection as $ownershipItem) {
-            if ($ownershipItem->getItemType() === 'organizer') {
-                $organizerId = $ownershipItem->getItemId();
-                $organizerAsJson = $this->organizerDocumentRepository->fetch($organizerId);
-                $body = $organizerAsJson->getAssocBody();
-                $organizerName = $this->getName($body);
-                $ownershipQueries[$organizerName] = new QueryString('organizer.id:' . $organizerId);
-            }
+            $organizerId = $ownershipItem->getItemId();
+            $organizerAsJson = $this->organizerDocumentRepository->fetch($organizerId);
+            $body = $organizerAsJson->getAssocBody();
+            $organizerName = $this->getName($body);
+            $ownershipQueries[$organizerName] = new QueryString('organizer.id:' . $organizerId);
         }
         return $ownershipQueries;
     }
