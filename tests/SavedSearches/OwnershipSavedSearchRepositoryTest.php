@@ -62,6 +62,7 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
         ->method('search')
             ->with(new SearchQuery([
                 new SearchParameter('state', OwnershipState::approved()->toString()),
+                new SearchParameter('itemType', 'organizer'),
                 new SearchParameter('ownerId', self::USER_ID),
             ]))
             ->willReturn($ownershipItemCollection);
@@ -176,49 +177,6 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
                     new SavedSearch('Aanbod Foobar EN', new QueryString('organizer.id:' . $itemId1)),
                     new SavedSearch('Aanbod Bar Foo FR', new QueryString('organizer.id:' . $itemId2)),
                 ],
-            ],
-            'no_organizers' => [
-                [
-                    new JsonDocument(
-                        $itemId1,
-                        Json::encode(
-                            [
-                                '@type' => 'event',
-                                'name' => [
-                                    'nl' => 'Foobar EN',
-                                ],
-                            ]
-                        )
-                    ),
-                    new JsonDocument(
-                        $itemId2,
-                        Json::encode(
-                            [
-                                '@type' => 'place',
-                                'name' => [
-                                    'nl' => 'Bar Foo FR',
-                                ],
-                            ]
-                        )
-                    ),
-                ],
-                new OwnershipItemCollection(
-                    new OwnershipItem(
-                        $ownershipItemId1,
-                        $itemId1,
-                        'event',
-                        self::USER_ID,
-                        OwnershipState::approved()->toString()
-                    ),
-                    new OwnershipItem(
-                        $ownershipItem2,
-                        $itemId2,
-                        'place',
-                        self::USER_ID,
-                        OwnershipState::approved()->toString()
-                    )
-                ),
-                [],
             ],
         ];
     }
