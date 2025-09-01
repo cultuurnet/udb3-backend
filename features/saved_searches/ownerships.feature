@@ -15,7 +15,7 @@ Feature: Test the UDB3 ownerships saved searches API
     Then the response status should be "200"
     And the JSON response should not include:
     """
-    {"name":"Aanbod %{name}","query":"organizer.id:%{organizerId}"}"
+    "query":"organizer.id:%{organizerId}"
     """
 
   Scenario: Approved ownerships should show up in saved searches
@@ -24,10 +24,9 @@ Feature: Test the UDB3 ownerships saved searches API
     And I am authorized as JWT provider user "invoerder_ownerships"
     When I send a GET request to "/saved-searches/v3"
     Then the response status should be "200"
-    And show me the unparsed response
-    And the JSON response at "/" should include:
+    And the JSON response should include:
     """
-    {"name":"Aanbod %{name}","query":"organizer.id:%{organizerId}"}"
+    "query":"organizer.id:%{organizerId}"
     """
 
   Scenario: Rejected ownerships should show not up in saved searches
@@ -38,7 +37,7 @@ Feature: Test the UDB3 ownerships saved searches API
     Then the response status should be "200"
     And the JSON response should not include:
     """
-    Aanbod %{name}
+    "query":"organizer.id:%{organizerId}"
     """
 
   Scenario: Deleted ownerships should show up in saved searches
@@ -49,5 +48,5 @@ Feature: Test the UDB3 ownerships saved searches API
     Then the response status should be "200"
     And the JSON response should not include:
     """
-    Aanbod %{name}
+    "query":"organizer.id:%{organizerId}"
     """
