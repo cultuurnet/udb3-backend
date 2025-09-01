@@ -54,17 +54,17 @@ final class SavedSearchesServiceProvider extends AbstractServiceProvider
             SavedSearchesOwnedByCurrentUser::class,
             function () use ($container) {
                 return new CombinedSavedSearchRepository(
-                    new OwnershipSavedSearchRepository(
-                        $container->get(JsonWebToken::class),
-                        $container->get('organizer_jsonld_repository'),
-                        $container->get(OwnershipSearchRepository::class)
-                    ),
                     new Sapi3FixedSavedSearchRepository(
                         $container->get(JsonWebToken::class),
                         $container->get(UserIdentityResolver::class),
                         $this->getCreatedByQueryMode($container)
                     ),
-                    $container->get('udb3_saved_searches_repo_sapi3')
+                    $container->get('udb3_saved_searches_repo_sapi3'),
+                    new OwnershipSavedSearchRepository(
+                        $container->get(JsonWebToken::class),
+                        $container->get('organizer_jsonld_repository'),
+                        $container->get(OwnershipSearchRepository::class)
+                    ),
                 );
             }
         );
