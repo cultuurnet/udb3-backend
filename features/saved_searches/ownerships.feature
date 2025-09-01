@@ -9,7 +9,7 @@ Feature: Test the UDB3 ownerships saved searches API
     And I am authorized as JWT provider user "invoerder_ownerships"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
 
-  Scenario: Requested ownerships should show not up in saved searches
+  Scenario: Requested ownerships should not show up in saved searches
     Given I am authorized as JWT provider user "invoerder_ownerships"
     When I send a GET request to "/saved-searches/v3"
     Then the response status should be "200"
@@ -29,7 +29,7 @@ Feature: Test the UDB3 ownerships saved searches API
     "query":"organizer.id:%{organizerId}"
     """
 
-  Scenario: Rejected ownerships should show not up in saved searches
+  Scenario: Rejected ownerships should not show up in saved searches
     Given I am authorized as JWT provider user "centraal_beheerder"
     And I reject the ownership with ownershipId "%{ownershipId}"
     Given I am authorized as JWT provider user "invoerder_ownerships"
@@ -40,7 +40,7 @@ Feature: Test the UDB3 ownerships saved searches API
     "query":"organizer.id:%{organizerId}"
     """
 
-  Scenario: Deleted ownerships should show up in saved searches
+  Scenario: Deleted ownerships should not show up in saved searches
     Given I am authorized as JWT provider user "centraal_beheerder"
     And I delete the ownership with ownershipId "%{ownershipId}"
     Given I am authorized as JWT provider user "invoerder_ownerships"

@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\SavedSearches;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
+use CultuurNet\UDB3\Offer\ExtractOfferName;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -65,17 +66,11 @@ class OwnershipSavedSearchRepository implements SavedSearchesOwnedByCurrentUser
 
         foreach ($ownershipItemCollection as $ownershipItem) {
             $organizerId = $ownershipItem->getItemId();
-            $organizerName = $this->getNameInMainLanguage(
+            $organizerName = ExtractOfferName::extract(
                 $this->organizerDocumentRepository->fetch($organizerId)->getAssocBody()
             );
             $ownershipQueries[$organizerName] = new QueryString('organizer.id:' . $organizerId);
         }
         return $ownershipQueries;
-    }
-
-    private function getNameInMainLanguage(array $body): string
-    {
-        $mainLanguage = $body['mainLanguage'];
-        return $body['name'][$mainLanguage];
     }
 }
