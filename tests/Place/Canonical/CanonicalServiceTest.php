@@ -8,6 +8,8 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventRelationsRepository;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -24,6 +26,7 @@ class CanonicalServiceTest extends TestCase
     private string $mostEventsPlaceId;
 
     private string $oldestPlaceId;
+    private string $approvedPlaceId;
 
     public function setUp(): void
     {
@@ -33,6 +36,23 @@ class CanonicalServiceTest extends TestCase
         $this->museumPassPlaceId = '901e23fe-b393-4cc6-9307-8e3e3f2ea77f';
         $anotherMuseumPassPlaceId = '526605d3-7cc4-4607-97a4-065896253f42';
         $this->mostEventsPlaceId = '34621f3b-b626-4672-be7c-33972ac13791';
+
+        $this->approvedPlaceId = Uuid::uuid4()->toString();
+
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => 'cluster_with_draft_and_approved_places',
+                'place_uuid' => $this->approvedPlaceId,
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => 'cluster_with_draft_and_approved_places',
+                'place_uuid' => $this->oldestPlaceId,
+            ]
+        );
 
         $this->getConnection()->insert(
             'duplicate_places',
@@ -173,14 +193,32 @@ class CanonicalServiceTest extends TestCase
 
             $jsonDocument = new JsonDocument(
                 $placeId,
-                Json::encode(['@id' => $placeId, 'created' => '2018-12-0' . $i . 'T19:40:58+00:00'])
+                Json::encode([
+                    '@id' => $placeId,
+                    'created' => '2018-12-0' . $i . 'T19:40:58+00:00',
+                    'workflowStatus' => WorkflowStatus::DRAFT()->toString()
+                ])
             );
             $documentRepository->save($jsonDocument);
         }
 
         $oldestJsonDocument = new JsonDocument(
             $this->oldestPlaceId,
-            Json::encode(['@id' => $this->oldestPlaceId, 'created' => '2017-12-09T19:40:58+00:00'])
+            Json::encode([
+                '@id' => $this->oldestPlaceId,
+                'created' => '2017-12-09T19:40:58+00:00',
+                'workflowStatus' => WorkflowStatus::DRAFT()->toString()
+            ])
+        );
+        $documentRepository->save($oldestJsonDocument);
+
+        $oldestJsonDocument = new JsonDocument(
+            $this->approvedPlaceId,
+            Json::encode([
+                '@id' => $this->approvedPlaceId,
+                'created' => '2022-12-09T19:40:58+00:00',
+                'workflowStatus' => WorkflowStatus::APPROVED()->toString()
+            ])
         );
         $documentRepository->save($oldestJsonDocument);
 
@@ -244,6 +282,19 @@ class CanonicalServiceTest extends TestCase
 
         $this->assertEquals(
             $this->oldestPlaceId,
+            $canonicalId
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_prioritize_approved_places(): void
+    {
+        $canonicalId = $this->canonicalService->getCanonical('cluster_with_draft_and_approved_places');
+
+        $this->assertEquals(
+            $this->approvedPlaceId,
             $canonicalId
         );
     }
