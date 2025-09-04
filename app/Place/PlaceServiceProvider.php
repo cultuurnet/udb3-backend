@@ -99,6 +99,7 @@ final class PlaceServiceProvider extends AbstractServiceProvider
             'canonical_service',
             fn () => new CanonicalService(
                 $container->get('config')['museumpas']['label'],
+                $container->get('config')['uitpas']['labels'],
                 $container->get(DuplicatePlaceRepository::class),
                 $container->get(EventRelationsRepository::class),
                 new DBALReadRepository(
