@@ -196,7 +196,7 @@ class CanonicalServiceTest extends TestCase
                 Json::encode([
                     '@id' => $placeId,
                     'created' => '2018-12-0' . $i . 'T19:40:58+00:00',
-                    'workflowStatus' => WorkflowStatus::DRAFT()->toString()
+                    'workflowStatus' => WorkflowStatus::DRAFT()->toString(),
                 ])
             );
             $documentRepository->save($jsonDocument);
@@ -207,7 +207,7 @@ class CanonicalServiceTest extends TestCase
             Json::encode([
                 '@id' => $this->oldestPlaceId,
                 'created' => '2017-12-09T19:40:58+00:00',
-                'workflowStatus' => WorkflowStatus::DRAFT()->toString()
+                'workflowStatus' => WorkflowStatus::DRAFT()->toString(),
             ])
         );
         $documentRepository->save($oldestJsonDocument);
@@ -217,7 +217,7 @@ class CanonicalServiceTest extends TestCase
             Json::encode([
                 '@id' => $this->approvedPlaceId,
                 'created' => '2022-12-09T19:40:58+00:00',
-                'workflowStatus' => WorkflowStatus::APPROVED()->toString()
+                'workflowStatus' => WorkflowStatus::APPROVED()->toString(),
             ])
         );
         $documentRepository->save($oldestJsonDocument);
