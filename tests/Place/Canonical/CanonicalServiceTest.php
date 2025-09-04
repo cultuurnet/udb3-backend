@@ -8,21 +8,25 @@ use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\Event\ReadModel\Relations\Doctrine\DBALEventRelationsRepository;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
+use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassAndUiTPassInSameCluster;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
+use CultuurNet\UDB3\Place\Canonical\Exception\UiTPassNotUniqueInCluster;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class CanonicalServiceTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
+    private const UITPAS_LABEL = 'UiTPas';
+    private const UITPAS_LABEL_GENT = 'UiTPAS Gent';
     private CanonicalService $canonicalService;
 
     private string $museumPassPlaceId;
-
     private string $mostEventsPlaceId;
-
+    private string $UiTPASPlaceId;
     private string $oldestPlaceId;
 
     public function setUp(): void
@@ -33,6 +37,53 @@ class CanonicalServiceTest extends TestCase
         $this->museumPassPlaceId = '901e23fe-b393-4cc6-9307-8e3e3f2ea77f';
         $anotherMuseumPassPlaceId = '526605d3-7cc4-4607-97a4-065896253f42';
         $this->mostEventsPlaceId = '34621f3b-b626-4672-be7c-33972ac13791';
+        $this->UiTPASPlaceId = Uuid::uuid4()->toString();
+        $anotherUiTPASPlaceId = Uuid::uuid4()->toString();
+
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => 'cluster_with_one_uitpas_location',
+                'place_uuid' => $this->UiTPASPlaceId,
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => 'cluster_with_one_uitpas_location',
+                'place_uuid' => $this->oldestPlaceId,
+            ]
+        );
+
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => 'cluster_uitpas',
+                'place_uuid' => $this->UiTPASPlaceId,
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => 'cluster_uitpas',
+                'place_uuid' => $anotherUiTPASPlaceId,
+            ]
+        );
+
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => 'cluster_mpm_and_uitpas',
+                'place_uuid' => $this->museumPassPlaceId,
+            ]
+        );
+        $this->getConnection()->insert(
+            'duplicate_places',
+            [
+                'cluster_id' => 'cluster_mpm_and_uitpas',
+                'place_uuid' => $this->UiTPASPlaceId,
+            ]
+        );
 
         $this->getConnection()->insert(
             'duplicate_places',
@@ -118,6 +169,26 @@ class CanonicalServiceTest extends TestCase
         $this->getConnection()->insert(
             'labels_relations',
             [
+                'labelName' => self::UITPAS_LABEL,
+                'relationType' => 'Place',
+                'relationId'=> $this->UiTPASPlaceId,
+                'imported' => '0',
+            ]
+        );
+
+        $this->getConnection()->insert(
+            'labels_relations',
+            [
+                'labelName' => self::UITPAS_LABEL_GENT,
+                'relationType' => 'Place',
+                'relationId'=> $anotherUiTPASPlaceId,
+                'imported' => '0',
+            ]
+        );
+
+        $this->getConnection()->insert(
+            'labels_relations',
+            [
                 'labelName' => 'museumPASSmusees',
                 'relationType' => 'Place',
                 'relationId'=> $this->museumPassPlaceId,
@@ -186,6 +257,7 @@ class CanonicalServiceTest extends TestCase
 
         $this->canonicalService = new CanonicalService(
             'museumPASSmusees',
+            [self::UITPAS_LABEL, self::UITPAS_LABEL_GENT],
             new DBALDuplicatePlaceRepository($this->getConnection()),
             new DBALEventRelationsRepository(
                 $this->getConnection()
@@ -238,12 +310,46 @@ class CanonicalServiceTest extends TestCase
     /**
      * @test
      */
+    public function it_will_throw_an_exception_when_cluster_contains_2_UITPAS_places(): void
+    {
+        $this->expectException(UiTPassNotUniqueInCluster::class);
+        $this->expectExceptionMessage('Cluster cluster_uitpas contains 2 UiTPAS places');
+
+        $this->canonicalService->getCanonical('cluster_uitpas');
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_throw_an_exception_when_cluster_contains_an_UITPAS_AND_MPM_place(): void
+    {
+        $this->expectException(MuseumPassAndUiTPassInSameCluster::class);
+        $this->expectExceptionMessage('Cluster cluster_mpm_and_uitpas contains 1 MuseumPass places and 1 UiTPAS places');
+        $this->canonicalService->getCanonical('cluster_mpm_and_uitpas');
+    }
+
+    /**
+     * @test
+     */
     public function it_will_get_the_oldest_place_if_equal_nr_of_events(): void
     {
         $canonicalId = $this->canonicalService->getCanonical('cluster_4');
 
         $this->assertEquals(
             $this->oldestPlaceId,
+            $canonicalId
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_get_uitpas_location(): void
+    {
+        $canonicalId = $this->canonicalService->getCanonical('cluster_with_one_uitpas_location');
+
+        $this->assertEquals(
+            $this->UiTPASPlaceId,
             $canonicalId
         );
     }

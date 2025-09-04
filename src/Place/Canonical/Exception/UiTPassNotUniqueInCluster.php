@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\Canonical\Exception;
 
-class MuseumPassNotUniqueInCluster extends \Exception
+class UiTPassNotUniqueInCluster extends \Exception
 {
     public function __construct(string $clusterId, int $amountMuseumpass)
     {
-        parent::__construct(sprintf('Cluster %s contains %d MuseumPass places', $clusterId, $amountMuseumpass));
+        parent::__construct(sprintf('Cluster %s contains %d UiTPAS places', $clusterId, $amountMuseumpass));
     }
 }

@@ -29,6 +29,24 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
         }
     }
 
+    public function getLabelRelationsForTypes(array $labelNames, RelationType $relationType): array
+    {
+        if (empty($labelNames)) {
+            return [];
+        }
+
+        $placeholders = implode(',', array_fill(0, count($labelNames), '?'));
+        $whereLabelNames = ColumnNames::LABEL_NAME . " IN ($placeholders)";
+
+        return $this->createQueryBuilder()->select(ColumnNames::RELATION_ID)
+            ->from($this->getTableName())
+            ->where($whereLabelNames)
+            ->andWhere(ColumnNames::RELATION_TYPE . ' = ?')
+            ->setParameters(array_merge($labelNames, [$relationType->toString()]))
+            ->execute()
+            ->fetchFirstColumn();
+    }
+
     public function getLabelRelationsForType(string $labelName, RelationType $relationType): array
     {
         $whereLabelName = ColumnNames::LABEL_NAME . ' = ?';
