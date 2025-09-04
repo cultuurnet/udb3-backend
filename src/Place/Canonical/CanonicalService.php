@@ -7,7 +7,9 @@ namespace CultuurNet\UDB3\Place\Canonical;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class CanonicalService
@@ -50,6 +52,8 @@ class CanonicalService
         if (count($placesWithMuseumpas) > 1) {
             throw new MuseumPassNotUniqueInCluster($clusterId, count($placesWithMuseumpas));
         }
+
+        $placeIds = $this->prioritizeApprovedPlaces($placeIds);
 
         $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
         if (count($placesWithMostEvents) === 1) {
@@ -108,5 +112,21 @@ class CanonicalService
         }
 
         return $oldestPlaceId;
+    }
+
+    private function prioritizeApprovedPlaces(array $placeIds): array
+    {
+        $approved = array_filter($placeIds, function (string $placeId): bool {
+            try {
+                $body = $this->placeRepository->fetch($placeId)->getAssocBody();
+            } catch (DocumentDoesNotExist $e) {
+                return false;
+            }
+
+            return !isset($body['workflowStatus']) || $body['workflowStatus'] === WorkflowStatus::APPROVED()->toString();
+        });
+
+        // Prefer approved places, but if none are approved, fall back to all places.
+        return !empty($approved) ? array_values($approved) : $placeIds;
     }
 }
