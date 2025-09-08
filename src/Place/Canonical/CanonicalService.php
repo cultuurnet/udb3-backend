@@ -86,7 +86,7 @@ class CanonicalService
 
     private function getPlacesWithUiTPasInCluster(array $placeIds): array
     {
-        $result = $this->labelRelationsRepository->getLabelRelationsForTypes(
+        $result = $this->labelRelationsRepository->getLabelsRelationsForType(
             $this->uitpasLabels,
             RelationType::place()
         );
