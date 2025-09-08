@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\SavedSearches;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
-use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Offer\ExtractOfferName;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
@@ -69,8 +69,7 @@ class OwnershipSavedSearchRepository implements SavedSearchesOwnedByCurrentUser
             $organizerId = $ownershipItem->getItemId();
             $organizer = $this->organizerDocumentRepository->fetch($organizerId)->getAssocBody();
 
-            if ($organizer['workflowStatus'] === WorkflowStatus::DELETED()->toString() ||
-               $organizer['workflowStatus'] === WorkflowStatus::REJECTED()->toString()) {
+            if ($organizer['workflowStatus'] !== WorkflowStatus::ACTIVE()->toString()) {
                 continue;
             }
 
