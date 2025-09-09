@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Label\ReadModels\Doctrine\AbstractDBALRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\LabelRelation;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
+use Doctrine\DBAL\Connection;
 
 class DBALReadRepository extends AbstractDBALRepository implements ReadRepositoryInterface
 {
@@ -31,33 +32,30 @@ class DBALReadRepository extends AbstractDBALRepository implements ReadRepositor
 
     public function getLabelsRelationsForType(array $labelNames, RelationType $relationType): array
     {
-       if (empty($labelNames)) {
+        if (empty($labelNames)) {
             return [];
         }
 
-        return $this->createQueryBuilder()->select(ColumnNames::RELATION_ID)
+        $qb = $this->createQueryBuilder();
+
+        return $qb->select(ColumnNames::RELATION_ID)
             ->from($this->getTableName())
-            ->where($this->createQueryBuilder()->expr()->in(ColumnNames::LABEL_NAME, ':labelNames'))
-            ->andWhere(ColumnNames::RELATION_TYPE . ' = :relationType')
-            ->setParameters([
-                'labelNames' => $labelNames,
-                'relationType' => $relationType->toString()
-            ])
+            ->where(
+                $qb->expr()->in(
+                    ColumnNames::LABEL_NAME,
+                    $qb->createNamedParameter($labelNames, Connection::PARAM_STR_ARRAY)
+                )
+            )
+            ->andWhere($qb->expr()->eq(ColumnNames::RELATION_TYPE, ':relationType'))
+            ->setParameter('relationType', $relationType->toString())
             ->execute()
             ->fetchFirstColumn();
     }
 
+    // Alias for single label lookup
     public function getLabelRelationsForType(string $labelName, RelationType $relationType): array
     {
-        $whereLabelName = ColumnNames::LABEL_NAME . ' = ?';
-
-        return $this->createQueryBuilder()->select(ColumnNames::RELATION_ID)
-            ->from($this->getTableName())
-            ->where($whereLabelName)
-            ->andWhere(ColumnNames::RELATION_TYPE . ' = ?')
-            ->setParameters([$labelName, $relationType->toString()])
-            ->execute()
-            ->fetchFirstColumn();
+        return $this->getLabelsRelationsForType([$labelName], $relationType);
     }
 
     public function getLabelRelationsForItem(string $relationId): array
