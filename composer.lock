@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aac077501f8aaf1110c04b9002ae18d1",
+    "content-hash": "a4fd530803a3fc0ece13807511c7d94c",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -780,32 +780,28 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "dev-master",
+            "version": "dev-III-6747-typehinting-for-udb3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "dc4aa79d42801e557794834e590ec2454f9d06f2"
+                "reference": "2fe327e0cb34af607a67a4fa3ccef586e4893302"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/dc4aa79d42801e557794834e590ec2454f9d06f2",
-                "reference": "dc4aa79d42801e557794834e590ec2454f9d06f2",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/2fe327e0cb34af607a67a4fa3ccef586e4893302",
+                "reference": "2fe327e0cb34af607a67a4fa3ccef586e4893302",
                 "shasum": ""
             },
             "require": {
-                "cultuurnet/cdb": "~2.1"
+                "cultuurnet/cdb": "^2.1",
+                "ext-simplexml": "*",
+                "php": ">=7.4"
             },
             "require-dev": {
-                "phpunit/phpunit": "~5.7",
-                "satooshi/php-coveralls": "~0.7"
+                "phpstan/phpstan": "^2.0",
+                "phpunit/phpunit": "^9.0"
             },
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.9.x-dev",
-                    "dev-develop": "1.2.x-dev"
-                }
-            },
             "autoload": {
                 "classmap": [
                     "CultureFeed",
@@ -823,7 +819,11 @@
                 }
             ],
             "description": "Culturefeed PHP library",
-            "time": "2021-02-01T15:03:11+00:00"
+            "support": {
+                "issues": "https://github.com/cultuurnet/culturefeed-php/issues",
+                "source": "https://github.com/cultuurnet/culturefeed-php/tree/III-6747-typehinting-for-udb3"
+            },
+            "time": "2025-09-11T08:21:56+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
