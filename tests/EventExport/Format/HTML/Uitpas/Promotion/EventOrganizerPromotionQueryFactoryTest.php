@@ -73,12 +73,16 @@ class EventOrganizerPromotionQueryFactoryTest extends TestCase
     {
         $eventCalendar = new CultureFeed_Uitpas_Calendar();
 
-        $period = new \CultureFeed_Uitpas_Calendar_Period();
+        $period = new \CultureFeed_Uitpas_Calendar_Period(
+            1420070400
+        );
         $period->datefrom = 1420070400;
         $period->dateto = 1422748800;
         $eventCalendar->addPeriod($period);
 
-        $secondPeriod = new \CultureFeed_Uitpas_Calendar_Period();
+        $secondPeriod = new \CultureFeed_Uitpas_Calendar_Period(
+            1425168000
+        );
         $secondPeriod->datefrom = 1425168000;
         $secondPeriod->dateto = 1427846400;
 

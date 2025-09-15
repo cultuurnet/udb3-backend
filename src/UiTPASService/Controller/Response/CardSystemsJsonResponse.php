@@ -19,7 +19,7 @@ class CardSystemsJsonResponse extends JsonResponse
     {
         $data = [];
         foreach ($cardSystems as $cardSystem) {
-            $data[$cardSystem->id] = $this->convertCardSystemToArray($cardSystem);
+            $data[$cardSystem->getId()] = $this->convertCardSystemToArray($cardSystem);
         }
 
         $content = Json::encode($data);
@@ -35,8 +35,8 @@ class CardSystemsJsonResponse extends JsonResponse
         }
 
         return [
-            'id' => $cardSystem->id,
-            'name' => $cardSystem->name,
+            'id' => $cardSystem->getId(),
+            'name' => $cardSystem->getName(),
             'distributionKeys' => $distributionKeys,
         ];
     }

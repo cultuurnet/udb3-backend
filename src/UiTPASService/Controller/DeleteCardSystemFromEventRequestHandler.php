@@ -26,7 +26,7 @@ final class DeleteCardSystemFromEventRequestHandler implements RequestHandlerInt
         $eventId = $routeParameters->getEventId();
         $cardSystemId = $routeParameters->get('cardSystemId');
 
-        $this->uitpas->deleteCardSystemFromEvent($eventId, $cardSystemId);
+        $this->uitpas->deleteCardSystemFromEvent($eventId, (int) $cardSystemId);
 
         return new Response(200);
     }
