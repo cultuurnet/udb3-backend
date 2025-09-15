@@ -41,6 +41,7 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
         $promotionsQuery->max = 2;
 
         return $promotionsQuery;
+
     }
 
     private function getDateRangeFromUitpasCalendar(CultureFeed_Uitpas_Calendar $uitpasCalendar): CultureFeed_Uitpas_Calendar_Period

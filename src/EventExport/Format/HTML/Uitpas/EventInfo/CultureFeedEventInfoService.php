@@ -176,7 +176,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         if ($this->kansenTariefForCurrentCardSystem->isSatisfiedBy($key)) {
             $uitpasPrices[] = [
                 'price' => $tariffAsNumeric,
-                'cardSystem' => $cardSystem->name,
+                'cardSystem' => $cardSystem->getName(),
                 'forOtherCardSystems' => false,
             ];
         }
@@ -184,7 +184,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         if ($this->kansenTariefForOtherCardSystems->isSatisfiedBy($key)) {
             $uitpasPrices[] = [
                 'price' => $tariffAsNumeric,
-                'cardSystem' => $cardSystem->name,
+                'cardSystem' => $cardSystem->getName(),
                 'forOtherCardSystems' => true,
             ];
         }

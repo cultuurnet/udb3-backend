@@ -17,33 +17,36 @@ class CardSystemsJsonResponseTest extends TestCase
      */
     public function it_should_encode_the_injected_card_systems_to_json(): void
     {
-        $cardSystem1 = new CultureFeed_Uitpas_CardSystem();
-        $cardSystem1->id = 1;
-        $cardSystem1->name = 'Card system 1';
+        $cardSystem1 = new CultureFeed_Uitpas_CardSystem(
+            1,
+            'Card system 1'
+        );
 
         $dk1 = new CultureFeed_Uitpas_DistributionKey();
-        $dk1->id = 1;
+        $dk1->id = '1';
         $dk1->name = 'Distribution key 1';
 
         $dk2 = new CultureFeed_Uitpas_DistributionKey();
-        $dk2->id = 2;
+        $dk2->id = '2';
         $dk2->name = 'Distribution key 2';
 
         $cardSystem1->distributionKeys = [$dk1, $dk2];
 
-        $cardSystem2 = new CultureFeed_Uitpas_CardSystem();
-        $cardSystem2->id = 2;
-        $cardSystem2->name = 'Card system 2';
+        $cardSystem2 = new CultureFeed_Uitpas_CardSystem(
+            2,
+            'Card system 2'
+        );
 
         $dk3 = new CultureFeed_Uitpas_DistributionKey();
-        $dk3->id = 3;
+        $dk3->id = '3';
         $dk3->name = 'Distribution key 3';
 
         $cardSystem2->distributionKeys = [$dk3];
 
-        $cardSystem3 = new CultureFeed_Uitpas_CardSystem();
-        $cardSystem3->id = 3;
-        $cardSystem3->name = 'Card system 3';
+        $cardSystem3 = new CultureFeed_Uitpas_CardSystem(
+            3,
+            'Card system 3'
+        );
 
         $cardSystems = [
             $cardSystem1,
