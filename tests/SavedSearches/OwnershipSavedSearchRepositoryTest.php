@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebTokenFactory;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchParameter;
 use CultuurNet\UDB3\Http\Ownership\Search\SearchQuery;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Moderation\Organizer\WorkflowStatus;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
@@ -75,10 +76,14 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
 
     public function SavedSearchDataprovider(): array
     {
-        $itemId1 = 'c84d6167-5e71-4f2c-aedf-ad346e569e03';
-        $itemId2 = '24bc3c50-5c9e-4e34-8bc7-1c9826352775';
+        $approvedOrganizer = 'c84d6167-5e71-4f2c-aedf-ad346e569e03';
+        $approvedOrganizer2 = '24bc3c50-5c9e-4e34-8bc7-1c9826352775';
+        $deletedOrganizer = '68b84192-487c-832a-a344-86f8e3f29c38';
+
         $ownershipItemId1 = 'a700c463-1401-4d91-a85c-fa289b6d8d8e';
         $ownershipItemId2 = '8ba5ee51-8e0c-4179-8516-3942ac4ab6d2';
+        $ownershipItemId3 = '35217a9e-18fd-4a6c-864d-468bce1bc9a7';
+        $ownershipItemId4 = 'e05fec06-64c6-4acd-be4a-c7757a6974ab';
 
         return [
             'no_approved_ownerships' => [
@@ -89,11 +94,12 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
             'approved_ownership_were_found' => [
                 [
                     new JsonDocument(
-                        $itemId1,
+                        $approvedOrganizer,
                         Json::encode(
                             [
                                 '@type' => 'organizer',
                                 'mainLanguage' => 'nl',
+                                'workflowStatus' => WorkflowStatus::ACTIVE()->toString(),
                                 'name' => [
                                     'nl' => 'Foobar NL',
                                     'fr' => 'Foobar FR',
@@ -102,14 +108,29 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
                         )
                     ),
                     new JsonDocument(
-                        $itemId2,
+                        $approvedOrganizer2,
                         Json::encode(
                             [
                                 '@type' => 'organizer',
                                 'mainLanguage' => 'fr',
+                                'workflowStatus' => WorkflowStatus::ACTIVE()->toString(),
                                 'name' => [
                                     'nl' => 'Bar Foo NL',
                                     'fr' => 'Bar Foo FR',
+                                ],
+                            ]
+                        )
+                    ),
+                    new JsonDocument(
+                        $deletedOrganizer,
+                        Json::encode(
+                            [
+                                '@type' => 'organizer',
+                                'mainLanguage' => 'fr',
+                                'workflowStatus' => WorkflowStatus::DELETED()->toString(),
+                                'name' => [
+                                    'nl' => 'Deleted Bar Foo NL',
+                                    'fr' => 'Deleted Bar Foo FR',
                                 ],
                             ]
                         )
@@ -118,32 +139,40 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
                 new OwnershipItemCollection(
                     new OwnershipItem(
                         $ownershipItemId1,
-                        $itemId1,
+                        $approvedOrganizer,
                         'organizer',
                         self::USER_ID,
                         OwnershipState::approved()->toString()
                     ),
                     new OwnershipItem(
                         $ownershipItemId2,
-                        $itemId2,
+                        $approvedOrganizer2,
                         'organizer',
                         self::USER_ID,
                         OwnershipState::approved()->toString()
-                    )
+                    ),
+                    new OwnershipItem(
+                        $ownershipItemId3,
+                        $deletedOrganizer,
+                        'organizer',
+                        self::USER_ID,
+                        OwnershipState::approved()->toString()
+                    ),
                 ),
                 [
-                    new SavedSearch('Aanbod Foobar NL', new QueryString('organizer.id:' . $itemId1)),
-                    new SavedSearch('Aanbod Bar Foo FR', new QueryString('organizer.id:' . $itemId2)),
+                    new SavedSearch('Aanbod Foobar NL', new QueryString('organizer.id:' . $approvedOrganizer)),
+                    new SavedSearch('Aanbod Bar Foo FR', new QueryString('organizer.id:' . $approvedOrganizer2)),
                 ],
             ],
             'faulty_data' => [
                 [
                     new JsonDocument(
-                        $itemId1,
+                        $approvedOrganizer,
                         Json::encode(
                             [
                                 '@type' => 'organizer',
                                 'mainLanguage' => 'en',
+                                'workflowStatus' => WorkflowStatus::ACTIVE()->toString(),
                                 'name' => [
                                     'nl' => 'Wrong mainlangue NL',
                                     'fr' => 'Wrong mainlangue FR',
@@ -152,10 +181,11 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
                         )
                     ),
                     new JsonDocument(
-                        $itemId2,
+                        $approvedOrganizer2,
                         Json::encode(
                             [
                                 '@type' => 'organizer',
+                                'workflowStatus' => WorkflowStatus::ACTIVE()->toString(),
                                 'name' => [
                                     'nl' => 'No Mainlanguage NL',
                                     'fr' => 'No Mainlanguage FR',
@@ -167,22 +197,22 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
                 new OwnershipItemCollection(
                     new OwnershipItem(
                         $ownershipItemId1,
-                        $itemId1,
+                        $approvedOrganizer,
                         'organizer',
                         self::USER_ID,
                         OwnershipState::approved()->toString()
                     ),
                     new OwnershipItem(
                         $ownershipItemId2,
-                        $itemId2,
+                        $approvedOrganizer2,
                         'organizer',
                         self::USER_ID,
                         OwnershipState::approved()->toString()
                     ),
                 ),
                 [
-                    new SavedSearch('Aanbod Wrong mainlangue NL', new QueryString('organizer.id:' . $itemId1)),
-                    new SavedSearch('Aanbod No Mainlanguage NL', new QueryString('organizer.id:' . $itemId2)),
+                    new SavedSearch('Aanbod Wrong mainlangue NL', new QueryString('organizer.id:' . $approvedOrganizer)),
+                    new SavedSearch('Aanbod No Mainlanguage NL', new QueryString('organizer.id:' . $approvedOrganizer2)),
                 ],
             ],
         ];
