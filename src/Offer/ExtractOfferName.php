@@ -16,6 +16,10 @@ final class ExtractOfferName
             $offer['mainLanguage'] = 'nl';
         }
 
+        if (is_string($offer['name'])) {
+            return $offer['name'];
+        }
+
         return $offer['name'][$offer['mainLanguage']] ?? current($offer['name']);
     }
 }
