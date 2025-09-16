@@ -47,7 +47,7 @@ final class DBALResourceRelatedOwnerRepository implements ResourceOwnerQuery
 
         $events = [];
         while ($id = $results->fetchColumn(0)) {
-            $events[] =$id;
+            $events[] = $id;
         }
 
         return $events;
