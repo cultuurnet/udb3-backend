@@ -363,7 +363,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.offer:change-owner-bulk',
             fn () => new ChangeOfferOwnerInBulk(
                 $container->get('event_command_bus'),
-                $container->get('offer_owner_query')
+                $container->get('offer_creator_query')
             )
         );
 

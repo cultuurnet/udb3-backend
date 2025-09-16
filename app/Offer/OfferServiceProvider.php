@@ -294,7 +294,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             ChangeOwnerHandler::class,
             fn () => new ChangeOwnerHandler(
                 $container->get(OfferRepository::class),
-                $container->get('offer_owner_query')
+                $container->get('offer_creator_query')
             )
         );
 

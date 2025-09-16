@@ -22,7 +22,7 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
-            'offer_owner_query',
+            'offer_creator_query',
             'offer_permission_voter',
             DeleteUiTPASPlaceVoter::class,
         ];
@@ -33,7 +33,7 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->addShared(
-            'offer_owner_query',
+            'offer_creator_query',
             fn () => new CombinedResourceOwnerQuery([
                 $container->get(EventPermissionServiceProvider::EVENT_OWNER_REPOSITORY),
                 $container->get(EventPermissionServiceProvider::EVENT_ORGANIZER_OWNER_REPOSITORY),
