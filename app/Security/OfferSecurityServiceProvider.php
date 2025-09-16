@@ -35,6 +35,7 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
             'offer_owner_query',
             fn () => new CombinedResourceOwnerQuery([
                 $container->get('event_owner.repository'),
+                $container->get('event_organizer_owner.repository'),
                 $container->get('place_owner.repository'),
             ])
         );
