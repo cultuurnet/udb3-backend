@@ -97,9 +97,10 @@ class CultureFeedEventInfoServiceTest extends TestCase
         foreach ($distributionKeys as $distributionKey) {
             $cardSystemId++;
 
-            $cardSystem = new CardSystem();
-            $cardSystem->id = $cardSystemId;
-            $cardSystem->name = 'UiTPAS regio ' . $cardSystemId;
+            $cardSystem = new CardSystem(
+                $cardSystemId,
+                'UiTPAS regio ' . $cardSystemId
+            );
             $cardSystem->distributionKeys = [$distributionKey];
 
             $event->cardSystems[] = $cardSystem;

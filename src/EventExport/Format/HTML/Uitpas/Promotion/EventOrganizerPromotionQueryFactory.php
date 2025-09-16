@@ -27,7 +27,9 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
         if ($eventCalendar) {
             $dateRange = $this->getDateRangeFromUitpasCalendar($eventCalendar);
         } else {
-            $dateRange = new CultureFeed_Uitpas_Calendar_Period();
+            $dateRange = new CultureFeed_Uitpas_Calendar_Period(
+                time()
+            );
             $dateRange->datefrom = time();
         }
 
@@ -45,7 +47,7 @@ class EventOrganizerPromotionQueryFactory implements PromotionQueryFactoryInterf
 
     private function getDateRangeFromUitpasCalendar(CultureFeed_Uitpas_Calendar $uitpasCalendar): CultureFeed_Uitpas_Calendar_Period
     {
-        $dateRange = new CultureFeed_Uitpas_Calendar_Period();
+        $dateRange = new CultureFeed_Uitpas_Calendar_Period(time());
 
         if (!empty($uitpasCalendar->periods)) {
             $firstPeriod = reset($uitpasCalendar->periods);
