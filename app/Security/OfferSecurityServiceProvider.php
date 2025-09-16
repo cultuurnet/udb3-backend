@@ -20,12 +20,13 @@ use Http\Adapter\Guzzle7\Client;
 final class OfferSecurityServiceProvider extends AbstractServiceProvider
 {
     public const OFFER_CREATOR_QUERY = 'offer_creator_query';
-    public const OFFER_CREATOR_WITH_ORGANIZERS_QUERY = 'offer_creator_with_organizers_query';
+    private const OFFER_CREATOR_WITH_ORGANIZERS_QUERY = 'offer_creator_with_organizers_query';
 
     protected function getProvidedServiceNames(): array
     {
         return [
             self::OFFER_CREATOR_QUERY,
+            self::OFFER_CREATOR_WITH_ORGANIZERS_QUERY,
             'offer_permission_voter',
             DeleteUiTPASPlaceVoter::class,
         ];
