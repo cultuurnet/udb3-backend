@@ -148,6 +148,40 @@ class GetCreatorRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_an_api_problem_when_creator_is_not_stored_in_projection(): void
+    {
+        $creatorId = Uuid::uuid4()->toString();
+        $organizerId = Uuid::uuid4()->toString();
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', $organizerId)
+            ->build('GET');
+
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
+            ->with($organizerId)
+            ->willReturn(
+                new JsonDocument($organizerId, Json::encode([]))
+            );
+
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBewerken(),
+                $organizerId,
+                $this->currentUser->getId()
+            )
+            ->willReturn(true);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::resourceNotFound('Creator', 'unknown'),
+            fn () => $this->getCreatorRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_an_api_problem_when_organizer_is_not_found(): void
     {
         $organizerId = Uuid::uuid4()->toString();
