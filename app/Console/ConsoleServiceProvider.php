@@ -72,6 +72,7 @@ use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use CultuurNet\UDB3\Search\OffersSapi3SearchService;
 use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
+use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\User\Keycloak\CachedUserIdentityResolver;
 use Google_Client;
 use Google_Service_YouTube;
@@ -363,7 +364,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
             'console.offer:change-owner-bulk',
             fn () => new ChangeOfferOwnerInBulk(
                 $container->get('event_command_bus'),
-                $container->get('offer_creator_query')
+                $container->get(OfferSecurityServiceProvider::OFFER_CREATOR_QUERY)
             )
         );
 

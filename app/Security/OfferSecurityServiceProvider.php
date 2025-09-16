@@ -19,10 +19,12 @@ use Http\Adapter\Guzzle7\Client;
 
 final class OfferSecurityServiceProvider extends AbstractServiceProvider
 {
+    public const OFFER_CREATOR_QUERY = 'offer_creator_query';
+
     protected function getProvidedServiceNames(): array
     {
         return [
-            'offer_creator_query',
+            self::OFFER_CREATOR_QUERY,
             'offer_permission_voter',
             DeleteUiTPASPlaceVoter::class,
         ];
@@ -33,7 +35,7 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->addShared(
-            'offer_creator_query',
+            self::OFFER_CREATOR_QUERY,
             fn () => new CombinedResourceOwnerQuery([
                 $container->get(EventPermissionServiceProvider::EVENT_OWNER_REPOSITORY),
                 $container->get(EventPermissionServiceProvider::EVENT_ORGANIZER_OWNER_REPOSITORY),
@@ -46,7 +48,7 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
             fn () => new AnyOfVoter(
                 $container->get('god_user_voter'),
                 new ResourceOwnerVoter(
-                    $container->get('offer_owner_query'),
+                    $container->get(self::OFFER_CREATOR_QUERY),
                     $container->get(ApiName::class) !== ApiName::CLI
                 ),
                 new ContributorVoter(
