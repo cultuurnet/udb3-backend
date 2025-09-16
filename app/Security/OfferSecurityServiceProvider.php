@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Security;
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Contributor\ContributorRepository;
+use CultuurNet\UDB3\Event\EventPermissionServiceProvider;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\ContributorVoter;
 use CultuurNet\UDB3\Security\Permission\DeleteUiTPASPlaceVoter;
@@ -18,10 +19,14 @@ use Http\Adapter\Guzzle7\Client;
 
 final class OfferSecurityServiceProvider extends AbstractServiceProvider
 {
+    public const OFFER_CREATOR_QUERY = 'offer_creator_query';
+    private const OFFER_CREATOR_WITH_ORGANIZERS_QUERY = 'offer_creator_with_organizers_query';
+
     protected function getProvidedServiceNames(): array
     {
         return [
-            'offer_owner_query',
+            self::OFFER_CREATOR_QUERY,
+            self::OFFER_CREATOR_WITH_ORGANIZERS_QUERY,
             'offer_permission_voter',
             DeleteUiTPASPlaceVoter::class,
         ];
@@ -32,10 +37,18 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->addShared(
-            'offer_owner_query',
+            self::OFFER_CREATOR_QUERY,
             fn () => new CombinedResourceOwnerQuery([
-                $container->get('event_owner.repository'),
+                $container->get(EventPermissionServiceProvider::EVENT_OWNER_REPOSITORY),
                 $container->get('place_owner.repository'),
+            ])
+        );
+
+        $container->addShared(
+            self::OFFER_CREATOR_WITH_ORGANIZERS_QUERY,
+            fn () => new CombinedResourceOwnerQuery([
+                $container->get(self::OFFER_CREATOR_QUERY),
+                $container->get(EventPermissionServiceProvider::EVENT_ORGANIZER_OWNER_REPOSITORY),
             ])
         );
 
@@ -44,7 +57,7 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
             fn () => new AnyOfVoter(
                 $container->get('god_user_voter'),
                 new ResourceOwnerVoter(
-                    $container->get('offer_owner_query'),
+                    $container->get(self::OFFER_CREATOR_WITH_ORGANIZERS_QUERY),
                     $container->get(ApiName::class) !== ApiName::CLI
                 ),
                 new ContributorVoter(
