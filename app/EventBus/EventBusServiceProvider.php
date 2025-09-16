@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Broadway\AMQP\AMQPPublisher;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
+use CultuurNet\UDB3\Event\EventPermissionServiceProvider;
 use CultuurNet\UDB3\Event\ReadModel\History\EventPlaceHistoryProjector;
 use CultuurNet\UDB3\Event\ReadModel\History\HistoryProjector as EventHistoryProjector;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsProjector;
@@ -64,7 +65,7 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                             OrganizerJSONLDServiceProvider::PROJECTOR,
                             RelatedDocumentProjectedToJSONLDDispatcher::class,
                             'event_calendar_projector',
-                            'event_permission.projector',
+                            EventPermissionServiceProvider::EVENT_PERMISSION_PROJECTOR,
                             'place_permission.projector',
                             OrganizerPermissionServiceProvider::PERMISSION_PROJECTOR,
                             AMQPPublisher::class,

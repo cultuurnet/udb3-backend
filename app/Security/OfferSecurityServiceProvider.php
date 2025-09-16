@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Security;
 use CultuurNet\UDB3\ApiName;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Contributor\ContributorRepository;
+use CultuurNet\UDB3\Event\EventPermissionServiceProvider;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\ContributorVoter;
 use CultuurNet\UDB3\Security\Permission\DeleteUiTPASPlaceVoter;
@@ -34,8 +35,8 @@ final class OfferSecurityServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'offer_owner_query',
             fn () => new CombinedResourceOwnerQuery([
-                $container->get('event_owner.repository'),
-                $container->get('event_organizer_owner.repository'),
+                $container->get(EventPermissionServiceProvider::EVENT_OWNER_REPOSITORY),
+                $container->get(EventPermissionServiceProvider::EVENT_ORGANIZER_OWNER_REPOSITORY),
                 $container->get('place_owner.repository'),
             ])
         );
