@@ -128,13 +128,13 @@ final class FeatureContext implements Context
         self::disablePreventDuplicatePlaceCreation();
     }
 
-    /**
-     * @BeforeScenario @mails
-     */
-    public function beforeScenarioMails(BeforeScenarioScope $scope): void
-    {
-        $this->getMailClient()->deleteAllMails();
-    }
+//    /**
+//     * @BeforeScenario @mails
+//     */
+//    public function beforeScenarioMails(BeforeScenarioScope $scope): void
+//    {
+//        $this->getMailClient()->deleteAllMails();
+//    }
 
     /**
      * @Transform :url
