@@ -6,7 +6,6 @@ Feature: Test requesting ownership
     And I am authorized as JWT provider user "invoerder"
     And I send and accept "application/json"
 
-  @mails
   Scenario: Requesting ownership of an organizer as creator of the organizer
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
@@ -63,7 +62,6 @@ Feature: Test requesting ownership
     }
     """
 
-  @mails
   Scenario: Requesting ownership of an organizer via email
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for email "dev+e2etest@publiq.be" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"

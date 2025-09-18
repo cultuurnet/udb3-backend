@@ -5,7 +5,6 @@ Feature: Test approving ownership
     And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
 
-  @mails
   Scenario: Approving ownership of an organizer as admin
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I am authorized as JWT provider user "invoerder_ownerships"
@@ -24,7 +23,6 @@ Feature: Test approving ownership
     And I wait till there are 2 mails in the mailbox
     And an "ownership-approved" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je bent nu beheerder van organisatie %{name}!"
 
-  @mails
   Scenario: Approving ownership of an organizer as creator
     And I am authorized as JWT provider user "invoerder_ownerships"
     Given I create a minimal organizer and save the "id" as "organizerId"
