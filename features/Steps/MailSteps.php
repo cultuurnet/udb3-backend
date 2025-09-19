@@ -44,6 +44,6 @@ trait MailSteps
                 sleep(1);
                 $elapsedTime++;
             }
-        } while ($messagesCount != $count && $elapsedTime++ < 5);
+        } while ($messagesCount != $count && $elapsedTime < 5);
     }
 }
