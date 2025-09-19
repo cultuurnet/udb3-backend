@@ -73,5 +73,11 @@ final class MailPitClient implements MailClient
     public function deleteAllMails(): void
     {
         $this->client->delete('/api/v1/messages');
+        $elapsedTime = 0;
+
+        while ($this->getMailCount() !== 0 && $elapsedTime < 5) {
+            sleep(1);
+            $elapsedTime++;
+        }
     }
 }
