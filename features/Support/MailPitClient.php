@@ -74,13 +74,10 @@ final class MailPitClient implements MailClient
     {
         $this->client->delete('/api/v1/messages');
         $elapsedTime = 0;
-        do {
-            $mailCount = $this->getLatestEmail();
 
-            if ($mailCount !== 0) {
-                sleep(1);
-                $elapsedTime++;
-            }
-        } while ($mailCount !== 0 && $elapsedTime++ < 5);
+        while ($this->getMailCount() !== 0 && $elapsedTime < 5) {
+            sleep(1);
+            $elapsedTime++;
+        }
     }
 }
