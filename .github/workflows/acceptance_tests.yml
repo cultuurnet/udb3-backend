@@ -5,15 +5,14 @@ on:
     branches: [master]
 
 jobs:
-  trigger:
+  trigger_acceptance_tests:
+    name: Trigger acceptance tests pipeline
     runs-on: ubuntu-24.04
     steps:
       - name: Trigger acceptance tests pipeline on Jenkins
-        uses: fjogeleit/http-request-action@v1
         env:
           JENKINS_URL: ${{ secrets.JENKINS_URL }}
           PIPELINE: ${{ secrets.JENKINS_ACCEPTANCE_TESTS_PIPELINE }}
           AUTH_TOKEN: ${{ secrets.JENKINS_ACCEPTANCE_TESTS_PIPELINE_AUTH_TOKEN }}
-        with:
-          url: "${JENKINS_URL}/buildByToken/build?job=${PIPELINE}&token=${AUTH_TOKEN}"
-          method: 'POST'
+        run: curl -XPOST "${JENKINS_URL}/buildByToken/buildWithParameters?job=${PIPELINE}&token=${AUTH_TOKEN}"
+
