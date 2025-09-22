@@ -40,8 +40,8 @@ trait MailSteps
         $elapsedTime = 0;
         do {
             $messagesCount = $this->getMailClient()->getMailCount();
+            sleep(5);
             if ($messagesCount != $count) {
-                sleep(1);
                 $elapsedTime++;
             }
         } while ($messagesCount != $count && $elapsedTime < 5);
