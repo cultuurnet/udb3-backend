@@ -70,31 +70,4 @@ class UitIdV2JwtValidatorTest extends TestCase
         $this->expectException(ApiProblem::class);
         $this->v2Validator->validateClaims($tokenWithoutPermission);
     }
-
-    /**
-     * @test
-     */
-    public function it_verifies_that_the_aud_is_the_v2_jwt_provider_if_no_azp_is_present(): void
-    {
-        $tokenFromV2JwtProvider = JsonWebTokenFactory::createWithClaims(
-            [
-                'iss' => 'mock-issuer',
-                'sub' => 'mock',
-                'aud' => 'vsCe0hXlLaR255wOrW56Fau7vYO5qvqD',
-            ]
-        );
-        $tokenWithUnknownAud = JsonWebTokenFactory::createWithClaims(
-            [
-                'iss' => 'mock-issuer',
-                'sub' => 'mock',
-                'aud' => 'foobar',
-            ]
-        );
-
-        $this->v2Validator->validateClaims($tokenFromV2JwtProvider);
-        $this->addToAssertionCount(1);
-
-        $this->expectException(ApiProblem::class);
-        $this->v2Validator->validateClaims($tokenWithUnknownAud);
-    }
 }

@@ -88,10 +88,8 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         $this->authenticateToken($request);
 
         // Requests that use a token from the JWT provider (v1 or v2) require an API key from UiTID v1.
-        // Requests that use a token that they got directly from Auth0 do not require an API key.
-        // The difference can be checked by checking if the token has a client id, which is always missing in tokens
-        // from the JWT providers.
-        if ($this->token->getClientId() === null) {
+        // Requests that use a token that they got from a clientId do not require an API key.
+        if ($this->token->getType() === JsonWebToken::UIT_ID_V1_JWT_PROVIDER_TOKEN || $this->token->getType() === JsonWebToken::UIT_ID_V2_JWT_PROVIDER_TOKEN) {
             $this->authenticateApiKey($request);
         }
 

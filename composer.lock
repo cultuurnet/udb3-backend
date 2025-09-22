@@ -738,16 +738,16 @@
         },
         {
             "name": "cultuurnet/cdb",
-            "version": "2.2.x-dev",
+            "version": "v2.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/Cdb.git",
-                "reference": "b81eb171edb1bc80651a28dd57f3427de1c4ec7e"
+                "reference": "6c1624751671b9349b59b88745cbe7404d6330cf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/b81eb171edb1bc80651a28dd57f3427de1c4ec7e",
-                "reference": "b81eb171edb1bc80651a28dd57f3427de1c4ec7e",
+                "url": "https://api.github.com/repos/cultuurnet/Cdb/zipball/6c1624751671b9349b59b88745cbe7404d6330cf",
+                "reference": "6c1624751671b9349b59b88745cbe7404d6330cf",
                 "shasum": ""
             },
             "require": {
@@ -772,7 +772,11 @@
                 "Apache-2.0"
             ],
             "description": "PHP library for hydrating/manipulating CultuurNet's Cdb XML documents",
-            "time": "2018-10-17T12:47:54+00:00"
+            "support": {
+                "issues": "https://github.com/cultuurnet/Cdb/issues",
+                "source": "https://github.com/cultuurnet/Cdb/tree/v2.2.1"
+            },
+            "time": "2025-08-20T13:46:18+00:00"
         },
         {
             "name": "cultuurnet/culturefeed-php",
@@ -5972,12 +5976,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "e5d81bd1e8633fa7a8db18183b2753d4a211b019"
+                "reference": "dde134c3b73c19be44c243df73fc049a6e2dd1a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/e5d81bd1e8633fa7a8db18183b2753d4a211b019",
-                "reference": "e5d81bd1e8633fa7a8db18183b2753d4a211b019",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/dde134c3b73c19be44c243df73fc049a6e2dd1a1",
+                "reference": "dde134c3b73c19be44c243df73fc049a6e2dd1a1",
                 "shasum": ""
             },
             "default-branch": true,
@@ -5995,9 +5999,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6638-replace-organizer-labels"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-6702-owner-make-optional"
             },
-            "time": "2025-05-28T05:51:12+00:00"
+            "time": "2025-07-08T12:15:07+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

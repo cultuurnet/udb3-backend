@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlacesRemovedFromClusterRepository;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 
 final class PlaceServiceProvider extends AbstractServiceProvider
@@ -28,7 +29,7 @@ final class PlaceServiceProvider extends AbstractServiceProvider
             'place_repository',
             PlaceRepository::class,
             'place_service',
-            'duplicate_place_repository',
+            DuplicatePlaceRepository::class,
             DuplicatePlaceRemovedFromClusterRepository::class,
             'canonical_service',
         ];
@@ -85,7 +86,7 @@ final class PlaceServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            'duplicate_place_repository',
+            DuplicatePlaceRepository::class,
             fn () => new DBALDuplicatePlaceRepository($container->get('dbal_connection'))
         );
 
@@ -98,7 +99,8 @@ final class PlaceServiceProvider extends AbstractServiceProvider
             'canonical_service',
             fn () => new CanonicalService(
                 $container->get('config')['museumpas']['label'],
-                $container->get('duplicate_place_repository'),
+                $container->get('config')['uitpas']['labels'],
+                $container->get(DuplicatePlaceRepository::class),
                 $container->get(EventRelationsRepository::class),
                 new DBALReadRepository(
                     $container->get('dbal_connection'),

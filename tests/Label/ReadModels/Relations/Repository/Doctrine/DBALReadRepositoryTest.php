@@ -105,6 +105,27 @@ class DBALReadRepositoryTest extends BaseDBALRepositoryTest
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_should_return_offers_by_multiple_labels_for_type(): void
+    {
+        $labelRelationsForType = $this->readRepository->getLabelsRelationsForType(
+            ['cultuurnet', '2dotstwice'],
+            RelationType::place()
+        );
+
+        $this->assertEquals(
+            [
+                '99A78F44-A45B-40E2-A1E3-7632D2F3B1C6',
+                'A9B3FA7B-9AF5-49F4-8BB5-2B169CE83107',
+                '298A39A1-8D1E-4F5D-B05E-811B6459EA36',
+                '99A78F44-A45B-40E2-A1E3-7632D2F3B1C6',
+            ],
+            $labelRelationsForType
+        );
+    }
+
     private function saveOfferLabelRelations(): void
     {
         $labelName = '2dotstwice';

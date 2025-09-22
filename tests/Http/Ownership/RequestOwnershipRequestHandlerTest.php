@@ -154,6 +154,67 @@ class RequestOwnershipRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_uses_current_user_when_missing_owner_id(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'itemType' => 'organizer',
+            ])
+            ->build('POST');
+
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(
+                Permission::organisatiesBewerken(),
+                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                'auth0|63e22626e39a8ca1264bd29b'
+            )
+            ->willReturn(true);
+
+        $this->ownerShipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new SearchQuery([
+                    new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    new SearchParameter('ownerId', 'auth0|63e22626e39a8ca1264bd29b'),
+                    new SearchParameter('state', OwnershipState::requested()->toString()),
+                    new SearchParameter('state', OwnershipState::approved()->toString()),
+                ])
+            )
+            ->willReturn(new OwnershipItemCollection());
+
+        $response = $this->requestOwnershipRequestHandler->handle($request);
+
+        $this->assertEquals(
+            [
+                'id' => 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            ],
+            Json::decodeAssociatively((string)$response->getBody())
+        );
+
+        $this->assertEquals(
+            201,
+            $response->getStatusCode()
+        );
+
+        $this->assertEquals(
+            [
+                new RequestOwnership(
+                    new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e'),
+                    new Uuid('9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                    ItemType::organizer(),
+                    new UserId('auth0|63e22626e39a8ca1264bd29b'),
+                    new UserId('auth0|63e22626e39a8ca1264bd29b')
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_prevents_requesting_ownership_when_no_permission(): void
     {
         CurrentUser::configureGodUserIds([]);
@@ -731,7 +792,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/',
-                    'The data should match exactly one schema'
+                    'The required properties (itemId) are missing'
                 ),
             ),
             fn () => $this->requestOwnershipRequestHandler->handle($request)
@@ -754,30 +815,7 @@ class RequestOwnershipRequestHandlerTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/',
-                    'The data should match exactly one schema'
-                ),
-            ),
-            fn () => $this->requestOwnershipRequestHandler->handle($request)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_on_missing_owner_id(): void
-    {
-        $request = (new Psr7RequestBuilder())
-            ->withJsonBodyFromArray([
-                'itemId' => '9e68dafc-01d8-4c1c-9612-599c918b981d',
-                'itemType' => 'organizer',
-            ])
-            ->build('POST');
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData(
-                new SchemaError(
-                    '/',
-                    'The data should match exactly one schema'
+                    'The required properties (itemType) are missing'
                 ),
             ),
             fn () => $this->requestOwnershipRequestHandler->handle($request)
