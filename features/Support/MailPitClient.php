@@ -79,6 +79,6 @@ final class MailPitClient implements MailClient
             sleep(5);
             $elapsedTime++;
             $mailCount = $this->getMailCount();
-        } while($mailCount !== 0 && $elapsedTime < 5);
+        } while ($mailCount !== 0 && $elapsedTime < 5);
     }
 }
