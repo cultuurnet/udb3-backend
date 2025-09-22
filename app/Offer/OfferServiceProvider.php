@@ -91,6 +91,7 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Place\ReadModel\RDF\PlaceJsonToTurtleConverter;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\Security\Permission\DeleteUiTPASPlaceVoter;
 use CultuurNet\UDB3\UiTPAS\Validation\EventHasTicketSalesGuard;
 use CultuurNet\UDB3\User\CurrentUser;
@@ -294,7 +295,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             ChangeOwnerHandler::class,
             fn () => new ChangeOwnerHandler(
                 $container->get(OfferRepository::class),
-                $container->get('offer_owner_query')
+                $container->get(OfferSecurityServiceProvider::OFFER_CREATOR_QUERY)
             )
         );
 

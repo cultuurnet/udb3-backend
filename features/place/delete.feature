@@ -3,7 +3,7 @@ Feature: Test deleting places
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
 
    Scenario: Delete place
@@ -30,12 +30,12 @@ Feature: Test deleting places
 
     Scenario: An admin creates a place, a normal users tries to delete this place, this should fail
         When I create a minimal place and save the "url" as "placeUrl"
-        Given I am authorized as JWT provider v2 user "invoerder"
+        Given I am authorized as JWT provider user "invoerder"
         And I send a DELETE request to "%{placeUrl}"
         Then the response status should be "403"
 
     Scenario: A normal user creates a place, this users tries to delete this place, this should work
-        Given I am authorized as JWT provider v2 user "invoerder"
+        Given I am authorized as JWT provider user "invoerder"
         When I create a minimal place and save the "url" as "placeUrl"
         And I delete the place at "%{placeUrl}"
         And I get the place at "%{placeUrl}"

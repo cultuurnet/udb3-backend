@@ -17,7 +17,7 @@ Feature: Test the client permissions in UDB3
 
   Scenario: update place not created by the client but WITHOUT permission
     Given I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v1 user "invoerder_gbm"
+    And I am authorized as JWT provider user "invoerder_gbm"
     And I set the JSON request payload from "places/hemmekes.json"
     And I send a POST request to "/imports/places/"
     And I keep the value of the JSON response at "id" as "uuid_place_hemmekes"

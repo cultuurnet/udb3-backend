@@ -125,15 +125,6 @@ class JsonWebTokenTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_v2_jwt_provider_token_type_if_an_azp_claim_is_missing(): void
-    {
-        $jwt = JsonWebTokenFactory::createWithClaims(['sub' => 'auth0|mock-user-id']);
-        $this->assertEquals(JsonWebToken::UIT_ID_V2_JWT_PROVIDER_TOKEN, $jwt->getType());
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_v2_jwt_provider_token_type_when_typ_is_id(): void
     {
         $jwt = JsonWebTokenFactory::createWithClaims([
