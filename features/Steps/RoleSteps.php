@@ -17,6 +17,7 @@ trait RoleSteps
         $response = $this->getHttpClient()->get(
             '/roles?query=' . $name,
         );
+        $this->showMeTheUnparsedResponse();
         $this->responseState->setResponse($response);
 
         $this->theResponseStatusShouldBe(200);
