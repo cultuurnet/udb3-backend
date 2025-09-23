@@ -144,7 +144,7 @@ trait RequestSteps
                 sleep(1);
                 $elapsedTime++;
             }
-        } while ($this->responseState->getContent() !== 'complete' && $elapsedTime++ < 5);
+        } while ($this->responseState->getContent() !== 'complete' && $elapsedTime < 5);
     }
 
     /**
@@ -188,6 +188,6 @@ trait RequestSteps
                 sleep(1);
                 $elapsedTime++;
             }
-        } while ($this->responseState->getTotalItems() != 1 && $elapsedTime++ < 5);
+        } while ($this->responseState->getTotalItems() != 1 && $elapsedTime < 5);
     }
 }
