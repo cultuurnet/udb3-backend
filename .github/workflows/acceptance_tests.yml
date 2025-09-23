@@ -1,0 +1,18 @@
+name: Acceptance tests
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  trigger_acceptance_tests:
+    name: Trigger acceptance tests pipeline
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Trigger acceptance tests pipeline on Jenkins
+        env:
+          JENKINS_URL: ${{ secrets.JENKINS_URL }}
+          PIPELINE: ${{ secrets.JENKINS_ACCEPTANCE_TESTS_PIPELINE }}
+          AUTH_TOKEN: ${{ secrets.JENKINS_ACCEPTANCE_TESTS_PIPELINE_AUTH_TOKEN }}
+        run: curl -XPOST "${JENKINS_URL}/buildByToken/buildWithParameters?job=${PIPELINE}&token=${AUTH_TOKEN}"
+
