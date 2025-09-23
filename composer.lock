@@ -784,12 +784,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "2fe327e0cb34af607a67a4fa3ccef586e4893302"
+                "reference": "9d6a2a9745fb932ce722faae3789728361e82c75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/2fe327e0cb34af607a67a4fa3ccef586e4893302",
-                "reference": "2fe327e0cb34af607a67a4fa3ccef586e4893302",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/9d6a2a9745fb932ce722faae3789728361e82c75",
+                "reference": "9d6a2a9745fb932ce722faae3789728361e82c75",
                 "shasum": ""
             },
             "require": {
@@ -823,7 +823,7 @@
                 "issues": "https://github.com/cultuurnet/culturefeed-php/issues",
                 "source": "https://github.com/cultuurnet/culturefeed-php/tree/III-6747-typehinting-for-udb3"
             },
-            "time": "2025-09-11T08:21:56+00:00"
+            "time": "2025-09-23T12:56:47+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
