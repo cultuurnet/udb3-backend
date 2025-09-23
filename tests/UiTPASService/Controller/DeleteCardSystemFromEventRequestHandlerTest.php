@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTPASService\Controller;
 
 use CultureFeed_Uitpas;
+use CultureFeed_Uitpas_Response;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +37,7 @@ final class DeleteCardSystemFromEventRequestHandlerTest extends TestCase
         $this->uitpas->expects($this->once())
             ->method('deleteCardSystemFromEvent')
             ->with($eventId, $cardSystemId)
-            ->willReturn(null);
+            ->willReturn(new CultureFeed_Uitpas_Response());
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', $eventId)

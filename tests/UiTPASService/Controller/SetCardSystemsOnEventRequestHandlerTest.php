@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTPASService\Controller;
 
 use CultureFeed_Uitpas;
+use CultureFeed_Uitpas_Response;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
@@ -40,7 +41,7 @@ final class SetCardSystemsOnEventRequestHandlerTest extends TestCase
         $this->uitpas->expects($this->once())
             ->method('setCardSystemsForEvent')
             ->with($eventId, $cardSystemIds)
-            ->willReturn(null);
+            ->willReturn(new CultureFeed_Uitpas_Response());
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', $eventId)
@@ -68,7 +69,7 @@ final class SetCardSystemsOnEventRequestHandlerTest extends TestCase
         $this->uitpas->expects($this->once())
             ->method('setCardSystemsForEvent')
             ->with($eventId, $cardSystemIds)
-            ->willReturn(null);
+            ->willReturn(new CultureFeed_Uitpas_Response());
 
         $response = $this->setCardSystemsOnEventRequestHandler->handle($request);
 
