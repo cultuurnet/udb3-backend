@@ -25,7 +25,7 @@ final class ExtractOfferNameTest extends TestCase
                 'Dutch Offer',
             ],
             'mainLanguage key is present' => [
-                ['name' => ['en' => 'English Offer', 'mainLanguage' => 'en']],
+                ['name' => ['en' => 'English Offer'], 'mainLanguage' => 'en'],
                 'English Offer',
             ],
             'fallback to any available key' => [
@@ -39,6 +39,10 @@ final class ExtractOfferNameTest extends TestCase
             'unexpected array structure' => [
                 ['invalidKey' => 'Invalid Value'],
                 '',
+            ],
+            'a string instead of any array' => [
+                ['name' => 'Naam van event'],
+                'Naam van event',
             ],
         ];
     }
