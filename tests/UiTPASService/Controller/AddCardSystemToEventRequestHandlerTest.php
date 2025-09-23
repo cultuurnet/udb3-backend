@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTPASService\Controller;
 
 use CultureFeed_Uitpas;
+use CultureFeed_Uitpas_Response;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -31,16 +32,16 @@ final class AddCardSystemToEventRequestHandlerTest extends TestCase
     public function it_can_add_a_card_system_with_an_automatic_distribution_key_to_an_event(): void
     {
         $eventId = '52943e99-51c8-4ba9-95ef-ec7d93f16ed9';
-        $cardSystemId = '15';
+        $cardSystemId = 15;
 
         $this->uitpas->expects($this->once())
             ->method('addCardSystemToEvent')
             ->with($eventId, $cardSystemId)
-            ->willReturn(null);
+            ->willReturn(new CultureFeed_Uitpas_Response());
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', $eventId)
-            ->withRouteParameter('cardSystemId', $cardSystemId)
+            ->withRouteParameter('cardSystemId', (string) $cardSystemId)
             ->build('GET');
 
         $response = $this->addCardSystemToEventRequestHandlerTest->handle($request);

@@ -44,11 +44,11 @@ final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
         );
 
         $distributionKey1 = new CultureFeed_Uitpas_DistributionKey();
-        $distributionKey1->id = '1';
+        $distributionKey1->id = 1;
         $distributionKey1->name = 'Distribution key 1';
 
         $distributionKey2 = new CultureFeed_Uitpas_DistributionKey();
-        $distributionKey2->id = '2';
+        $distributionKey2->id = 2;
         $distributionKey2->name = 'Distribution key 2';
 
         $cardSystem1->distributionKeys = [
@@ -62,11 +62,11 @@ final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
         );
 
         $distributionKey3 = new CultureFeed_Uitpas_DistributionKey();
-        $distributionKey3->id = '3';
+        $distributionKey3->id = 3;
         $distributionKey3->name = 'Distribution key 3';
 
         $distributionKey4 = new CultureFeed_Uitpas_DistributionKey();
-        $distributionKey4->id = '4';
+        $distributionKey4->id = 4;
         $distributionKey4->name = 'Distribution key 4';
 
         $cardSystem2->distributionKeys = [
