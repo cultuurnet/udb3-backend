@@ -147,7 +147,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         };
 
         foreach ($promotionQueryResults as $promotionsQueryResult) {
-            if ($promotionsQueryResult->points === 1) {
+            if ($promotionsQueryResult->points === 1.0) {
                 $pointChoice = 'pt';
             } else {
                 $pointChoice = 'ptn';
