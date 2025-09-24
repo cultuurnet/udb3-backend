@@ -18,6 +18,8 @@ trait RoleSteps
             '/roles?query=' . $name,
         );
         $this->responseState->setResponse($response);
+        $this->showMeTheUnparsedResponse();
+
 
         $this->theResponseStatusShouldBe(200);
     }

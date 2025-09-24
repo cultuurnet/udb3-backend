@@ -30,13 +30,13 @@ class PointCollectingSpecificationTest extends TestCase
         $factory = new EventFactory();
         return [
             [
-                $factory->buildEventWithPoints(0.01),
+                $factory->buildEventWithPoints(1),
             ],
             [
-                $factory->buildEventWithPoints(0.2),
+                $factory->buildEventWithPoints(20),
             ],
             [
-                $factory->buildEventWithPoints(3.00),
+                $factory->buildEventWithPoints(300),
             ],
             [
                 $factory->buildEventWithPoints(4),
@@ -57,19 +57,13 @@ class PointCollectingSpecificationTest extends TestCase
     {
         $factory = new EventFactory();
         return [
-            [
+            'zero' => [
                 $factory->buildEventWithPoints(0),
             ],
-            [
-                $factory->buildEventWithPoints(0.00),
-            ],
-            [
+            'negative' => [
                 $factory->buildEventWithPoints(-1),
             ],
-            [
-                $factory->buildEventWithPoints(-1.00),
-            ],
-            [
+            'uninitialized' => [
                 new Event(),
             ],
         ];

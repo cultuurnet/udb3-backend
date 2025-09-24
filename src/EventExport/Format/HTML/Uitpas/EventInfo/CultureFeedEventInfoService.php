@@ -147,7 +147,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         };
 
         foreach ($promotionQueryResults as $promotionsQueryResult) {
-            if ($promotionsQueryResult->points === 1) {
+            if ($promotionsQueryResult->points === 1.0) {
                 $pointChoice = 'pt';
             } else {
                 $pointChoice = 'ptn';
@@ -176,7 +176,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         if ($this->kansenTariefForCurrentCardSystem->isSatisfiedBy($key)) {
             $uitpasPrices[] = [
                 'price' => $tariffAsNumeric,
-                'cardSystem' => $cardSystem->name,
+                'cardSystem' => $cardSystem->getName(),
                 'forOtherCardSystems' => false,
             ];
         }
@@ -184,7 +184,7 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
         if ($this->kansenTariefForOtherCardSystems->isSatisfiedBy($key)) {
             $uitpasPrices[] = [
                 'price' => $tariffAsNumeric,
-                'cardSystem' => $cardSystem->name,
+                'cardSystem' => $cardSystem->getName(),
                 'forOtherCardSystems' => true,
             ];
         }
