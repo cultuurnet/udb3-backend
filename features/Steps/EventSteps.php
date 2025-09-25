@@ -40,9 +40,11 @@ trait EventSteps
      */
     public function iUpdateTheEventAtFrom(string $url, string $fileName): void
     {
-        $this->getHttpClient()->putJSON(
-            $url,
-            $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState)
+        $this->responseState->setResponse(
+            $this->getHttpClient()->putJSON(
+                $url,
+                $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState)
+            )
         );
     }
 

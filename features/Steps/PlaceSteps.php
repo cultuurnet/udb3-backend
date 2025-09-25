@@ -101,7 +101,9 @@ trait PlaceSteps
      */
     public function iUpdateThePlaceAt(string $url): void
     {
-        $this->getHttpClient()->putJSON($url, $this->requestState->getJson());
+        $this->responseState->setResponse(
+            $this->getHttpClient()->putJSON($url, $this->requestState->getJson())
+        );
     }
 
     /**
@@ -109,9 +111,11 @@ trait PlaceSteps
      */
     public function iUpdateThePlaceAtFrom(string $url, string $fileName): void
     {
-        $this->getHttpClient()->putJSON(
-            $url,
-            $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState)
+        $this->responseState->setResponse(
+            $this->getHttpClient()->putJSON(
+                $url,
+                $this->fixtures->loadJsonWithRandomName($fileName, $this->variableState)
+            )
         );
     }
 
