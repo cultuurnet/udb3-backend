@@ -6,6 +6,7 @@ use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
+use Behat\Testwork\Hook\Scope\AfterSuiteScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\State\ResponseState;
@@ -110,6 +111,15 @@ final class FeatureContext implements Context
     public static function beforeSuite(BeforeSuiteScope $scope): void
     {
         self::disablePreventDuplicatePlaceCreation();
+
+        $config = require __DIR__ . '/../config.features.php';
+        $userNames = array_keys($config['users']);
+        foreach ($userNames as $userName) {
+            $tokenFile = sys_get_temp_dir() . '/jwt_token_' . $userName . '.txt';
+            if (file_exists($tokenFile)) {
+                unlink($tokenFile);
+            }
+        }
     }
 
     /**
