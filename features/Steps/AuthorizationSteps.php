@@ -64,7 +64,6 @@ trait AuthorizationSteps
         $tokenFile = sys_get_temp_dir() . '/jwt_token_' . $userName . '.txt';
 
         if (file_exists($tokenFile)) {
-            echo 'Reusing existing token for user ' . $userName . PHP_EOL;
             $idToken = file_get_contents($tokenFile);
         } else {
             $response = $this->getHttpClient()->postJSON(
