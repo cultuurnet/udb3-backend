@@ -61,21 +61,29 @@ trait AuthorizationSteps
     {
         $this->iAmUsingTheUiTiDBaseURL();
 
-        $response = $this->getHttpClient()->postJSON(
-            '/oauth/token',
-            Json::encode([
-                'username' => $this->config['users'][$userName]['username'],
-                'password' => $this->config['users'][$userName]['password'],
-                'client_id' => $this->config['clients']['jwt_provider_v2']['client_id'],
-                'client_secret' => $this->config['clients']['jwt_provider_v2']['client_secret'],
-                'grant_type' => 'password',
-                'audience' => 'https://api.publiq.be',
-                'scope' => 'openid profile email',
-            ])
-        );
-        $this->responseState->setResponse($response);
+        $tokenFile = sys_get_temp_dir() . '/jwt_token_' . $userName . '.txt';
 
-        $idToken = $this->responseState->getJsonContent()['id_token'];
+        if (file_exists($tokenFile)) {
+            $idToken = file_get_contents($tokenFile);
+        } else {
+            $response = $this->getHttpClient()->postJSON(
+                '/oauth/token',
+                Json::encode([
+                    'username' => $this->config['users'][$userName]['username'],
+                    'password' => $this->config['users'][$userName]['password'],
+                    'client_id' => $this->config['clients']['jwt_provider_v2']['client_id'],
+                    'client_secret' => $this->config['clients']['jwt_provider_v2']['client_secret'],
+                    'grant_type' => 'password',
+                    'audience' => 'https://api.publiq.be',
+                    'scope' => 'openid profile email',
+                ])
+            );
+            $this->responseState->setResponse($response);
+
+            $idToken = $this->responseState->getJsonContent()['id_token'];
+            file_put_contents($tokenFile, $idToken);
+        }
+
         $this->requestState->setJwt($idToken);
 
         $this->iAmUsingTheUDB3BaseURL();
