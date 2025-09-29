@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Steps;
 
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Support\TokenCache;
 
 trait AuthorizationSteps
 {
@@ -61,11 +62,9 @@ trait AuthorizationSteps
     {
         $this->iAmUsingTheUiTiDBaseURL();
 
-        $tokenFile = sys_get_temp_dir() . '/jwt_token_' . $userName . '.txt';
+        $idToken = TokenCache::getTokenForUser($userName);
 
-        if (file_exists($tokenFile)) {
-            $idToken = file_get_contents($tokenFile);
-        } else {
+        if ($idToken === null) {
             $response = $this->getHttpClient()->postJSON(
                 '/oauth/token',
                 Json::encode([
@@ -81,7 +80,7 @@ trait AuthorizationSteps
             $this->responseState->setResponse($response);
 
             $idToken = $this->responseState->getJsonContent()['id_token'];
-            file_put_contents($tokenFile, $idToken);
+            TokenCache::setTokenForUser($userName, $idToken);
         }
 
         $this->requestState->setJwt($idToken);
