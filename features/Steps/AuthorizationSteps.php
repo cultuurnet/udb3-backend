@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Steps;
 
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Support\TokenCache;
 
 trait AuthorizationSteps
 {
@@ -61,21 +62,27 @@ trait AuthorizationSteps
     {
         $this->iAmUsingTheUiTiDBaseURL();
 
-        $response = $this->getHttpClient()->postJSON(
-            '/oauth/token',
-            Json::encode([
-                'username' => $this->config['users'][$userName]['username'],
-                'password' => $this->config['users'][$userName]['password'],
-                'client_id' => $this->config['clients']['jwt_provider_v2']['client_id'],
-                'client_secret' => $this->config['clients']['jwt_provider_v2']['client_secret'],
-                'grant_type' => 'password',
-                'audience' => 'https://api.publiq.be',
-                'scope' => 'openid profile email',
-            ])
-        );
-        $this->responseState->setResponse($response);
+        $idToken = TokenCache::getTokenForUser($userName);
 
-        $idToken = $this->responseState->getJsonContent()['id_token'];
+        if ($idToken === null) {
+            $response = $this->getHttpClient()->postJSON(
+                '/oauth/token',
+                Json::encode([
+                    'username' => $this->config['users'][$userName]['username'],
+                    'password' => $this->config['users'][$userName]['password'],
+                    'client_id' => $this->config['clients']['jwt_provider_v2']['client_id'],
+                    'client_secret' => $this->config['clients']['jwt_provider_v2']['client_secret'],
+                    'grant_type' => 'password',
+                    'audience' => 'https://api.publiq.be',
+                    'scope' => 'openid profile email',
+                ])
+            );
+            $this->responseState->setResponse($response);
+
+            $idToken = $this->responseState->getJsonContent()['id_token'];
+            TokenCache::setTokenForUser($userName, $idToken);
+        }
+
         $this->requestState->setJwt($idToken);
 
         $this->iAmUsingTheUDB3BaseURL();
