@@ -31,7 +31,13 @@ final class BPostStreetSuggester implements StreetSuggester
         $request = new Request(
             'GET',
             (new Uri($this->domain))
-                ->withPath('/autocomplete/street?id=7&q=' . $streetQuery . '&postalCode=' . $postalCode . '&locality=' . $locality),
+                ->withPath('/roa-info-st2/externalMailingAddressProofingRest/autocomplete/street')
+                ->withQuery(http_build_query([
+                'id' => '7',
+                'q' => $streetQuery,
+                'postalCode' => $postalCode,
+                'locality' => $locality,
+            ])),
             [
                 'x-api-key' => $this->token,
             ]
