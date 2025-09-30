@@ -49,7 +49,13 @@ final class BPostStreetSuggesterTest extends TestCase
                 new Request(
                     'GET',
                     (new Uri(self::DOMAIN))
-                        ->withPath('/autocomplete/street?id=7&q=' . $streetQuery . '&postalCode=' . $postalCode . '&locality=' . $locality),
+                        ->withPath('/roa-info-st2/externalMailingAddressProofingRest/autocomplete/street')
+                        ->withQuery(http_build_query([
+                            'id' => '7',
+                            'q' => $streetQuery,
+                            'postalCode' => $postalCode,
+                            'locality' => $locality,
+                        ])),
                     [
                         'x-api-key' => self::TOKEN,
                     ]
