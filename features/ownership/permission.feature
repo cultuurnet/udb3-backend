@@ -7,6 +7,7 @@ Feature: Test permissions based on ownership
 
   Scenario: Approving the ownership of an organizer gives permission on the organizer
     Given I create a minimal organizer and save the "id" as "organizerId"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I am authorized as JWT provider user "invoerder_ownerships"
     And I set the JSON request payload to:
     """
@@ -27,6 +28,7 @@ Feature: Test permissions based on ownership
 
   Scenario: Deleting the ownership of an organizer removes permission on the organizer
     Given I create a minimal organizer and save the "id" as "organizerId"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I approve the ownership with ownershipId "%{ownershipId}"
     And I am authorized as JWT provider user "invoerder_ownerships"
@@ -48,8 +50,10 @@ Feature: Test permissions based on ownership
 
   Scenario: Approving the ownership of an organizer gives permission on the event associated with the organizer
     Given I create a minimal organizer and save the "id" as "organizerId"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I create a minimal place and save the "id" as "placeId"
     And I create an event from "events/event-with-organizer.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am authorized as JWT provider user "invoerder_ownerships"
     And I set the JSON request payload to:
     """
@@ -70,8 +74,10 @@ Feature: Test permissions based on ownership
 
   Scenario: Deleting the ownership of an organizer removes permission on the event associated with the organizer
     Given I create a minimal organizer and save the "id" as "organizerId"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I create a minimal place and save the "id" as "placeId"
     And I create an event from "events/event-with-organizer.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I am authorized as JWT provider user "centraal_beheerder"
     And I approve the ownership with ownershipId "%{ownershipId}"
@@ -95,7 +101,9 @@ Feature: Test permissions based on ownership
   Scenario: Approving the ownership of an organizer doesn't give permission on the place associated with the organizer
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I keep the value of the JSON response at "url" as "organizerUrl"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I create a place from "places/place-with-organizer.json" and save the "id" as "placeId"
+    And I wait for the place with url "/place/%{placeId}" to be indexed
     And I am authorized as JWT provider user "invoerder_ownerships"
     And I set the JSON request payload to:
     """
