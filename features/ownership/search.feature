@@ -2,7 +2,7 @@ Feature: Test searching ownerships
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v1 user "centraal_beheerder"
+    And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
 
   Scenario: Searching ownership of an organizer by item id
@@ -95,7 +95,7 @@ Feature: Test searching ownerships
     And I request ownership for "79dd2821-3b89-4dbb-9143-920ff2edfa34" on the organizer with organizerId "%{organizerId2}" and save the "id" as "ownershipId2"
     And I request ownership for "d759fd36-fb28-4fe3-8ec6-b4aaf990371d" on the organizer with organizerId "%{organizerId2}" and save the "id" as "ownershipId3"
     And I approve the ownership with ownershipId "%{ownershipId3}"
-    When I am authorized as JWT provider v2 user "invoerder"
+    When I am authorized as JWT provider user "invoerder"
     When I send a GET request to '/ownerships/?itemId=%{organizerId2}'
     Then the response status should be 200
     And the JSON response at "itemsPerPage" should be 2
@@ -113,7 +113,7 @@ Feature: Test searching ownerships
     Given I create a minimal organizer and save the "id" as "organizerId2"
     And I request ownership for "79dd2821-3b89-4dbb-9143-920ff2edfa34" on the organizer with organizerId "%{organizerId2}" and save the "id" as "ownershipId2"
     And I request ownership for "d759fd36-fb28-4fe3-8ec6-b4aaf990371d" on the organizer with organizerId "%{organizerId2}" and save the "id" as "ownershipId3"
-    When I am authorized as JWT provider v2 user "invoerder"
+    When I am authorized as JWT provider user "invoerder"
     When I send a GET request to '/ownerships/?itemId=%{organizerId2}'
     Then the response status should be 200
     And the JSON response at "itemsPerPage" should be 1

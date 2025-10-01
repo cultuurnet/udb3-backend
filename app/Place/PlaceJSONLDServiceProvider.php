@@ -32,6 +32,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\PropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlacesEnrichedPlaceRepository;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Place\ReadModel\JSONLD\EventFactory;
@@ -147,7 +148,7 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
                 );
 
                 $repository = new DuplicatePlacesEnrichedPlaceRepository(
-                    $container->get('duplicate_place_repository'),
+                    $container->get(DuplicatePlaceRepository::class),
                     $container->get('place_iri_generator'),
                     $repository
                 );

@@ -1,10 +1,10 @@
 # CODEOWNERS are automatically assigned as possible reviewers to new PRs.
 
 # Global owners (also need to be duplicated in later rules)
-* @LucWollants @JonasVHG @grubolsch
+* @LucWollants @JonasVHG @grubolsch @bertramakers
 
 # Jenkins / deployment owners
-Gemfile* @willaerk @paulherbosch
-Jenkinsfile @willaerk @paulherbosch
-Rakefile @willaerk @paulherbosch
-lib/ @willaerk @paulherbosch
+Gemfile* @willaerk
+Jenkinsfile @willaerk
+Rakefile @willaerk
+lib/ @willaerk

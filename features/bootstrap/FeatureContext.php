@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Support\Fixtures;
 use CultuurNet\UDB3\Support\HttpClient;
 use CultuurNet\UDB3\Support\MailClient;
 use CultuurNet\UDB3\Support\MailPitClient;
+use CultuurNet\UDB3\Support\TokenCache;
 
 final class FeatureContext implements Context
 {
@@ -110,6 +111,8 @@ final class FeatureContext implements Context
     public static function beforeSuite(BeforeSuiteScope $scope): void
     {
         self::disablePreventDuplicatePlaceCreation();
+
+        TokenCache::clearTokens();
     }
 
     /**

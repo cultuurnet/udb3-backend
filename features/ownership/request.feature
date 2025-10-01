@@ -3,10 +3,9 @@ Feature: Test requesting ownership
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider v2 user "invoerder"
+    And I am authorized as JWT provider user "invoerder"
     And I send and accept "application/json"
 
-  @mails
   Scenario: Requesting ownership of an organizer as creator of the organizer
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
@@ -23,17 +22,26 @@ Feature: Test requesting ownership
     And an "ownership-request" mail has been sent from "no-reply@uitdatabank.be" to "dev+udbtestinvoerder@publiq.be" with subject "Beheeraanvraag voor organisatie %{name}"
 
   Scenario: Requesting ownership of an organizer for yourself
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+    Given I am authorized as JWT provider user "centraal_beheerder"
     And I create a minimal organizer and save the "id" as "organizerId"
-    And I am authorized as JWT provider v2 user "invoerder"
+    And I am authorized as JWT provider user "invoerder"
     And I request ownership for "d759fd36-fb28-4fe3-8ec6-b4aaf990371d" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
 
-  Scenario: Requesting ownership of an organizer for someone else is not allowed if you are not an owner
-    Given I am authorized as JWT provider v1 user "centraal_beheerder"
+  Scenario: Requesting ownership of an organizer for current user
+    Given I am authorized as JWT provider user "centraal_beheerder"
     And I create a minimal organizer and save the "id" as "organizerId"
-    And I am authorized as JWT provider v2 user "invoerder"
+    And I am authorized as JWT provider user "invoerder"
+    And I request ownership for the current user on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    When I get the ownership with ownershipId "%{ownershipId}"
+    Then the JSON response at "id" should be "%{ownershipId}"
+    And the JSON response at "requesterId" should be "d759fd36-fb28-4fe3-8ec6-b4aaf990371d"
+
+  Scenario: Requesting ownership of an organizer for someone else is not allowed if you are not an owner
+    Given I am authorized as JWT provider user "centraal_beheerder"
+    And I create a minimal organizer and save the "id" as "organizerId"
+    And I am authorized as JWT provider user "invoerder"
     And I set the JSON request payload to:
     """
     {
@@ -54,7 +62,6 @@ Feature: Test requesting ownership
     }
     """
 
-  @mails
   Scenario: Requesting ownership of an organizer via email
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for email "dev+e2etest@publiq.be" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"

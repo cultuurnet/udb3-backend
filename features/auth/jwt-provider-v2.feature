@@ -4,7 +4,7 @@ Feature: Test authentication with JWT provider v2 tokens
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I send and accept "application/json"
-    And I am authorized as JWT provider v2 user "invoerder"
+    And I am authorized as JWT provider user "invoerder"
 
   Scenario: I can get my user details with a JWT provider v2 token
     When I send a GET request to "/user"

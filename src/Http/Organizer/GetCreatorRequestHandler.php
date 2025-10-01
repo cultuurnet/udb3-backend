@@ -50,6 +50,10 @@ final class GetCreatorRequestHandler implements RequestHandlerInterface
 
             $organizer = $this->organizerRepository->fetch($organizerId);
 
+            if (!property_exists($organizer->getBody(), 'creator')) {
+                throw ApiProblem::resourceNotFound('Creator', 'unknown');
+            }
+
             $creatorId = $organizer->getBody()->creator;
             $creator = $this->userIdentityResolver->getUserById($creatorId);
 

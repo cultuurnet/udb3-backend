@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Steps;
 
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Support\TokenCache;
 
 trait AuthorizationSteps
 {
@@ -55,36 +56,34 @@ trait AuthorizationSteps
     }
 
     /**
-     * @Given I am authorized as JWT provider v1 user :userName
+     * @Given I am authorized as JWT provider user :userName
      */
-    public function iAmAuthorizedAsJwtProviderV1User(string $userName): void
-    {
-        $this->requestState->setJwt($this->config['users']['uitid_v1'][$userName]['jwt']);
-    }
-
-    /**
-     * @Given I am authorized as JWT provider v2 user :userName
-     */
-    public function iAmAuthorizedAsJwtProviderV2User(string $userName): void
+    public function iAmAuthorizedAsJwtProviderUser(string $userName): void
     {
         $this->iAmUsingTheUiTiDBaseURL();
 
-        $response = $this->getHttpClient()->postJSON(
-            '/oauth/token',
-            Json::encode([
-                'username' => $this->config['users']['uitid_v2'][$userName]['username'],
-                'password' => $this->config['users']['uitid_v2'][$userName]['password'],
-                'client_id' => $this->config['clients']['jwt_provider_v2']['client_id'],
-                'client_secret' => $this->config['clients']['jwt_provider_v2']['client_secret'],
-                'grant_type' => 'password',
-                'audience' => 'https://api.publiq.be',
-                'scope' => 'openid profile email',
-            ])
-        );
-        $this->responseState->setResponse($response);
+        $idToken = TokenCache::getTokenForUser($userName);
 
-        $accessToken = $this->responseState->getJsonContent()['access_token'];
-        $this->requestState->setJwt($accessToken);
+        if ($idToken === null) {
+            $response = $this->getHttpClient()->postJSON(
+                '/oauth/token',
+                Json::encode([
+                    'username' => $this->config['users'][$userName]['username'],
+                    'password' => $this->config['users'][$userName]['password'],
+                    'client_id' => $this->config['clients']['jwt_provider_v2']['client_id'],
+                    'client_secret' => $this->config['clients']['jwt_provider_v2']['client_secret'],
+                    'grant_type' => 'password',
+                    'audience' => 'https://api.publiq.be',
+                    'scope' => 'openid profile email',
+                ])
+            );
+            $this->responseState->setResponse($response);
+
+            $idToken = $this->responseState->getJsonContent()['id_token'];
+            TokenCache::setTokenForUser($userName, $idToken);
+        }
+
+        $this->requestState->setJwt($idToken);
 
         $this->iAmUsingTheUDB3BaseURL();
     }
@@ -123,8 +122,8 @@ trait AuthorizationSteps
         $response = $this->getHttpClient()->postJSON(
             '/oauth/token',
             Json::encode([
-                'username' => $this->config['users']['uitid_v2'][$userName]['username'],
-                'password' => $this->config['users']['uitid_v2'][$userName]['password'],
+                'username' => $this->config['users'][$userName]['username'],
+                'password' => $this->config['users'][$userName]['password'],
                 'client_id' => $this->config['clients'][$clientName]['client_id'],
                 'client_secret' => $this->config['clients'][$clientName]['client_secret'],
                 'grant_type' => 'password',
