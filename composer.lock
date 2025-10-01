@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bb00cac4edd7baae456f15ded49f5c0f",
+    "content-hash": "66ae2ebb4f9be60a8b420fedf818670c",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -863,16 +863,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "dev-php-8.1",
+            "version": "v2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "38b194af4a5a265932c13ab68e8e38c92fe2c475"
+                "reference": "86d904a4fb85f8ddfbe90fa5b623895855d48941"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/38b194af4a5a265932c13ab68e8e38c92fe2c475",
-                "reference": "38b194af4a5a265932c13ab68e8e38c92fe2c475",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/86d904a4fb85f8ddfbe90fa5b623895855d48941",
+                "reference": "86d904a4fb85f8ddfbe90fa5b623895855d48941",
                 "shasum": ""
             },
             "require": {
@@ -908,9 +908,9 @@
             "description": "Culturefeed PHP library",
             "support": {
                 "issues": "https://github.com/cultuurnet/culturefeed-php/issues",
-                "source": "https://github.com/cultuurnet/culturefeed-php/tree/php-8.1"
+                "source": "https://github.com/cultuurnet/culturefeed-php/tree/v2.0"
             },
-            "time": "2025-06-25T14:45:44+00:00"
+            "time": "2025-10-01T12:28:13+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
@@ -12926,7 +12926,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "chrisboulton/php-resque": 20,
-        "cultuurnet/culturefeed-php": 20,
         "publiq/udb3-json-schemas": 20
     },
     "prefer-stable": true,
@@ -12946,5 +12945,5 @@
         "ext-xmlreader": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
