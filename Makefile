@@ -3,6 +3,9 @@
 up:
 	docker-compose up -d
 
+build:
+	docker-compose up --detach --build
+
 down:
 	docker-compose down
 
