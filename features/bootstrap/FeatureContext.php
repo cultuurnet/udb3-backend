@@ -79,30 +79,37 @@ final class FeatureContext implements Context
         return new MailPitClient($this->config['base_url_mailpit']);
     }
 
+    private static function updateConfigFile(string $search, string $replace): void
+    {
+        $file = fopen('config.php', 'c+');
+
+        if (flock($file, LOCK_EX)) {
+            $configFile = stream_get_contents($file);
+            $configFile = str_replace($search, $replace, $configFile);
+            ftruncate($file, 0);
+            rewind($file);
+            fwrite($file, $configFile);
+            fflush($file);
+            flock($file, LOCK_UN);
+        }
+
+        fclose($file);
+    }
+
     private static function disablePreventDuplicatePlaceCreation(): void
     {
-        $configFile = file_get_contents('config.php');
-
-        $configFile = str_replace(
+        self::updateConfigFile(
             "'prevent_duplicate_places_creation' => true",
-            "'prevent_duplicate_places_creation' => false",
-            $configFile
+            "'prevent_duplicate_places_creation' => false"
         );
-
-        file_put_contents('config.php', $configFile);
     }
 
     private static function enablePreventDuplicatePlaceCreation(): void
     {
-        $configFile = file_get_contents('config.php');
-
-        $configFile = str_replace(
+        self::updateConfigFile(
             "'prevent_duplicate_places_creation' => false",
-            "'prevent_duplicate_places_creation' => true",
-            $configFile
+            "'prevent_duplicate_places_creation' => true"
         );
-
-        file_put_contents('config.php', $configFile);
     }
 
     /**
