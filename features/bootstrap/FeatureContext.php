@@ -79,63 +79,12 @@ final class FeatureContext implements Context
         return new MailPitClient($this->config['base_url_mailpit']);
     }
 
-    private static function updateConfigFile(string $search, string $replace): void
-    {
-        $file = fopen('config.php', 'c+');
-
-        if (flock($file, LOCK_EX)) {
-            $configFile = stream_get_contents($file);
-            $configFile = str_replace($search, $replace, $configFile);
-            ftruncate($file, 0);
-            rewind($file);
-            fwrite($file, $configFile);
-            fflush($file);
-            flock($file, LOCK_UN);
-        }
-
-        fclose($file);
-    }
-
-    private static function disablePreventDuplicatePlaceCreation(): void
-    {
-        self::updateConfigFile(
-            "'prevent_duplicate_places_creation' => true",
-            "'prevent_duplicate_places_creation' => false"
-        );
-    }
-
-    private static function enablePreventDuplicatePlaceCreation(): void
-    {
-        self::updateConfigFile(
-            "'prevent_duplicate_places_creation' => false",
-            "'prevent_duplicate_places_creation' => true"
-        );
-    }
-
     /**
      * @BeforeSuite
      */
     public static function beforeSuite(BeforeSuiteScope $scope): void
     {
-        self::disablePreventDuplicatePlaceCreation();
-
         TokenCache::clearTokens();
-    }
-
-    /**
-     * @BeforeFeature @duplicate
-     */
-    public static function beforeFeatureDuplicate(BeforeFeatureScope $scope): void
-    {
-        self::enablePreventDuplicatePlaceCreation();
-    }
-
-    /**
-     * @AfterFeature @duplicate
-     */
-    public static function afterFeatureDuplicate(AfterFeatureScope $scope): void
-    {
-        self::disablePreventDuplicatePlaceCreation();
     }
 
     /**
