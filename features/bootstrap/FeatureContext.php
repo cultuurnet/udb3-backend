@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
 use Behat\Behat\Hook\Scope\AfterFeatureScope;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
@@ -79,12 +80,54 @@ final class FeatureContext implements Context
         return new MailPitClient($this->config['base_url_mailpit']);
     }
 
+    private static function disablePreventDuplicatePlaceCreation(): void
+    {
+        $configFile = file_get_contents('config.php');
+
+        $configFile = str_replace(
+            "'prevent_duplicate_places_creation' => true",
+            "'prevent_duplicate_places_creation' => false",
+            $configFile
+        );
+
+        file_put_contents('config.php', $configFile);
+    }
+
+    private static function enablePreventDuplicatePlaceCreation(): void
+    {
+        $configFile = file_get_contents('config.php');
+
+        $configFile = str_replace(
+            "'prevent_duplicate_places_creation' => false",
+            "'prevent_duplicate_places_creation' => true",
+            $configFile
+        );
+
+        file_put_contents('config.php', $configFile);
+    }
+
     /**
      * @BeforeSuite
      */
     public static function beforeSuite(BeforeSuiteScope $scope): void
     {
         TokenCache::clearTokens();
+    }
+
+    /**
+     * @BeforeScenario @duplicate
+     */
+    public function beforeScenarioDuplicate(BeforeScenarioScope $scope): void
+    {
+        self::enablePreventDuplicatePlaceCreation();
+    }
+
+    /**
+     * @AfterScenario @duplicate
+     */
+    public function afterScenarioDuplicate(AfterScenarioScope $scope): void
+    {
+        self::disablePreventDuplicatePlaceCreation();
     }
 
     /**
