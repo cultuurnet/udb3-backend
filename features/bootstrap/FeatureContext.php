@@ -3,9 +3,7 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Hook\Scope\AfterFeatureScope;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
-use Behat\Behat\Hook\Scope\BeforeFeatureScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
 use CultuurNet\UDB3\State\RequestState;
