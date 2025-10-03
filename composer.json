@@ -81,7 +81,7 @@
   },
   "require-dev": {
     "alchemy/zippy": "~0.2",
-    "behat/behat": "^3.13",
+    "behat/behat": "^3.24.1",
     "icanhazstring/composer-unused": "^0.7",
     "laminas/laminas-diactoros": "^2.17",
     "mikey179/vfsstream": "~1.6.2",
