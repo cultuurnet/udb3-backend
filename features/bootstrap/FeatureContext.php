@@ -110,17 +110,7 @@ final class FeatureContext implements Context
      */
     public static function beforeSuite(BeforeSuiteScope $scope): void
     {
-        self::disablePreventDuplicatePlaceCreation();
-
         TokenCache::clearTokens();
-    }
-
-    /**
-     * @BeforeFeature
-     */
-    public static function beforeFeature(BeforeFeatureScope $scope): void
-    {
-        self::disablePreventDuplicatePlaceCreation();
     }
 
     /**
