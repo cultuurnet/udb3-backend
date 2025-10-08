@@ -1,6 +1,6 @@
 <?php
 
-use CultuurNet\UDB3\Addresses\AddressServiceProvider;
+use CultuurNet\UDB3\Address\AddressServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
 use CultuurNet\UDB3\Authentication\AuthServiceProvider;

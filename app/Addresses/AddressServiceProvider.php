@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Addresses;
+namespace CultuurNet\UDB3\Address;
 
 use CultuurNet\UDB3\Address\StreetSuggester\BPostStreetSuggester;
 use CultuurNet\UDB3\Address\StreetSuggester\CachedStreetSuggester;
