@@ -62,7 +62,7 @@ final class CachedBPostStreetSuggesterTest extends TestCase
     /**
      * @test
      */
-    public function it_can_get_an_uncached_streets_from_the_decoretee(): void
+    public function it_can_get_uncached_streets_from_the_decoratee(): void
     {
         $uncachedStreets = [
             'Koningin Elisabethlaan',
