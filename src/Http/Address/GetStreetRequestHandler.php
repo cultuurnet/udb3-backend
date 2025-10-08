@@ -5,30 +5,50 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Address;
 
 use CultuurNet\UDB3\Address\StreetSuggester\StreetSuggester;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\QueryParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-class GetStreetRequestHandler implements RequestHandlerInterface
+final class GetStreetRequestHandler implements RequestHandlerInterface
 {
-    private StreetSuggester $streetSuggester;
+    private StreetSuggester $belgiumStreetSuggester;
     public function __construct(StreetSuggester $streetSuggester)
     {
-        $this->streetSuggester = $streetSuggester;
+        $this->belgiumStreetSuggester = $streetSuggester;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $queryParameters = new QueryParameters($request);
 
-        $content = $this->streetSuggester->suggest(
-            $queryParameters->get('postalCode'),
-            $queryParameters->get('locality'),
-            $queryParameters->get('query')
-        );
+        $countryCode = $queryParameters->get('country');
+        $postalCode = $queryParameters->get('postalCode');
+        $locality = $queryParameters->get('locality');
+        $query = $queryParameters->get('query');
+        $limit = $queryParameters->getAsInt('limit', 5);
 
-        return new JsonResponse($content);
+        if ($countryCode === null || $postalCode === null || $locality === null || $query === null) {
+            throw ApiProblem::queryParameterMissing('country, postalCode, locality, query');
+        }
+
+        if ($countryCode === 'BE') {
+            $content = $this->belgiumStreetSuggester->suggest(
+                $queryParameters->get('postalCode'),
+                $queryParameters->get('locality'),
+                $queryParameters->get('query'),
+                $limit
+            );
+
+            return new JsonResponse($content);
+        }
+
+        throw ApiProblem::queryParameterInvalidValue(
+            'country',
+            $countryCode,
+            ['BE']
+        );
     }
 }

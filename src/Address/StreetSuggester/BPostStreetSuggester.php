@@ -26,8 +26,12 @@ final class BPostStreetSuggester implements StreetSuggester
     /**
      * @return string[]
      */
-    public function suggest(string $postalCode, string $locality, string $streetQuery): array
-    {
+    public function suggest(
+        string $postalCode,
+        string $locality,
+        string $streetQuery,
+        int $limit = 5
+    ): array {
         $request = new Request(
             'GET',
             (new Uri($this->domain))
@@ -37,6 +41,7 @@ final class BPostStreetSuggester implements StreetSuggester
                 'q' => $streetQuery,
                 'postalCode' => $postalCode,
                 'locality' => $locality,
+                'maxNumberOfSuggestions' => $limit,
             ])),
             [
                 'x-api-key' => $this->token,

@@ -55,6 +55,7 @@ final class BPostStreetSuggesterTest extends TestCase
                             'q' => $streetQuery,
                             'postalCode' => $postalCode,
                             'locality' => $locality,
+                            'maxNumberOfSuggestions' => 5,
                         ])),
                     [
                         'x-api-key' => self::TOKEN,
@@ -129,6 +130,83 @@ final class BPostStreetSuggesterTest extends TestCase
                 'Maria Van Boergondiëstraat',
             ],
             $this->streetSuggester->suggest($postalCode, $locality, $streetQuery)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function itCanHandleVariousLimits(): void
+    {
+        $country = 'BE';
+        $postalCode = '9000';
+        $locality = 'Gent';
+        $streetQuery = 'maria';
+        $limit = 2;
+
+        $this->client->expects($this->once())
+            ->method('sendRequest')
+            ->with(
+                new Request(
+                    'GET',
+                    (new Uri(self::DOMAIN))
+                        ->withPath('/roa-info-st2/externalMailingAddressProofingRest/autocomplete/street')
+                        ->withQuery(http_build_query([
+                            'id' => '7',
+                            'q' => $streetQuery,
+                            'postalCode' => $postalCode,
+                            'locality' => $locality,
+                            'maxNumberOfSuggestions' => 2,
+                        ])),
+                    [
+                        'x-api-key' => self::TOKEN,
+                    ]
+                )
+            )
+            ->willReturn(
+                new Response(
+                    200,
+                    [],
+                    Json::encode(
+                        [
+                            'response' => [
+                                'sequenceNumber' => 7,
+                                'topSuggestions' => [
+                                    [
+                                        'address' => [
+                                            'detectedLanguage' => 'nl',
+                                            'string' => 'KONINGIN MARIA HENDRIKAPLEIN',
+                                            'searchBarString' => 'KONINGIN MARIA HENDRIKAPLEIN',
+                                            'streetName' => 'KONINGIN MARIA HENDRIKAPLEIN',
+                                            'municipalityName' => 'GENT',
+                                            'postalCode' => '9000',
+                                            'localityName' => 'GENT',
+                                        ],
+                                    ],
+                                    [
+                                        'address' => [
+                                            'detectedLanguage' => 'nl',
+                                            'string' => 'MARIALAND',
+                                            'searchBarString' => 'MARIALAND',
+                                            'streetName' => 'MARIALAND',
+                                            'municipalityName' => 'GENT',
+                                            'postalCode' => '9000',
+                                            'localityName' => 'GENT',
+                                        ],
+                                    ],
+                                ],
+                            ],
+                        ]
+                    )
+                )
+            );
+
+        $this->assertEquals(
+            [
+                'Koningin Maria Hendrikaplein',
+                'Marialand',
+            ],
+            $this->streetSuggester->suggest($postalCode, $locality, $streetQuery, $limit)
         );
     }
 }

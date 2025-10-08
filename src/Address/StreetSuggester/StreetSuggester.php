@@ -9,5 +9,10 @@ interface StreetSuggester
     /**
      * @return string[]
      */
-    public function suggest(string $postalCode, string $locality, string $streetQuery): array;
+    public function suggest(
+        string $postalCode,
+        string $locality,
+        string $streetQuery,
+        int $limit = 5
+    ): array;
 }
