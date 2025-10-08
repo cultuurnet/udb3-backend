@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Address\StreetSuggester;
 
 use Symfony\Contracts\Cache\CacheInterface;
 
-final class CachedBPostStreetSuggester implements StreetSuggester
+final class CachedStreetSuggester implements StreetSuggester
 {
     private StreetSuggester $baseStreetSuggester;
 

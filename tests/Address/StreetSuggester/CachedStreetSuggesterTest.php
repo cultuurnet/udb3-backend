@@ -8,14 +8,14 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
-final class CachedBPostStreetSuggesterTest extends TestCase
+final class CachedStreetSuggesterTest extends TestCase
 {
     /**
      * @var StreetSuggester&MockObject
      */
     private $fallbackStreetSuggester;
 
-    private CachedBPostStreetSuggester $cachedBPostStreetSuggester;
+    private CachedStreetSuggester $cachedStreetSuggester;
 
     /**
      * @var string[]
@@ -39,7 +39,7 @@ final class CachedBPostStreetSuggesterTest extends TestCase
             fn () => $this->cachedStreets
         );
 
-        $this->cachedBPostStreetSuggester = new CachedBPostStreetSuggester(
+        $this->cachedStreetSuggester = new CachedStreetSuggester(
             $this->fallbackStreetSuggester,
             $cache
         );
@@ -55,7 +55,7 @@ final class CachedBPostStreetSuggesterTest extends TestCase
 
         $this->assertEquals(
             $this->cachedStreets,
-            $this->cachedBPostStreetSuggester->suggest('9000', 'Gent', 'Maria', 5)
+            $this->cachedStreetSuggester->suggest('9000', 'Gent', 'Maria', 5)
         );
     }
 
@@ -77,7 +77,7 @@ final class CachedBPostStreetSuggesterTest extends TestCase
 
         $this->assertEquals(
             $uncachedStreets,
-            $this->cachedBPostStreetSuggester->suggest('9000', 'Gent', 'Koningin', 5)
+            $this->cachedStreetSuggester->suggest('9000', 'Gent', 'Koningin', 5)
         );
     }
 

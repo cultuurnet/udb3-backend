@@ -14,10 +14,14 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class GetStreetRequestHandler implements RequestHandlerInterface
 {
-    private StreetSuggester $belgiumStreetSuggester;
-    public function __construct(StreetSuggester $belgiumStreetSuggester)
+    /**
+     * @var StreetSuggester[]
+     */
+    private array $streetSuggesters;
+
+    public function __construct(array $streetSuggesters)
     {
-        $this->belgiumStreetSuggester = $belgiumStreetSuggester;
+        $this->streetSuggesters = $streetSuggesters;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -34,21 +38,21 @@ final class GetStreetRequestHandler implements RequestHandlerInterface
             throw ApiProblem::queryParameterMissing('country or postalCode or locality or query');
         }
 
-        if ($countryCode === 'BE') {
-            $content = $this->belgiumStreetSuggester->suggest(
+        if (array_key_exists($countryCode, $this->streetSuggesters))
+        {
+            $content = $this->streetSuggesters[$countryCode]->suggest(
                 $postalCode,
                 $locality,
                 $query,
                 $limit
             );
-
             return new JsonResponse($content);
         }
 
         throw ApiProblem::queryParameterInvalidValue(
             'country',
             $countryCode,
-            ['BE']
+            [array_keys($this->streetSuggesters)]
         );
     }
 }

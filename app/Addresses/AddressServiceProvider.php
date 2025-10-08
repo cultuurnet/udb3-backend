@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Addresses;
 
 use CultuurNet\UDB3\Address\StreetSuggester\BPostStreetSuggester;
-use CultuurNet\UDB3\Address\StreetSuggester\CachedBPostStreetSuggester;
+use CultuurNet\UDB3\Address\StreetSuggester\CachedStreetSuggester;
 use CultuurNet\UDB3\Address\StreetSuggester\StreetSuggester;
 use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
@@ -28,7 +28,7 @@ class AddressServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             StreetSuggester::class,
-            fn () => new CachedBPostStreetSuggester(
+            fn () => new CachedStreetSuggester(
                 new BPostStreetSuggester(
                     new Client(),
                     $container->get('config')['bpost']['domain'],
