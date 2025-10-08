@@ -232,7 +232,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
                 $this->bindCultuurkuurEndpoints($router);
 
-                $this->bindAddressess($router);
+                $this->bindAddresses($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
@@ -320,7 +320,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
         });
     }
 
-    private function bindAddressess(Router $router): void
+    private function bindAddresses(Router $router): void
     {
         $router->group('addresses', function (RouteGroup $routeGroup): void {
             $routeGroup->get('streets/', GetStreetRequestHandler::class);
