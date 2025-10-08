@@ -17,6 +17,7 @@ final class CachedBPostStreetSuggester implements StreetSuggester
         $this->baseStreetSuggester = $streetSuggester;
         $this->cache = $cache;
     }
+
     public function suggest(
         string $postalCode,
         string $locality,
@@ -25,9 +26,7 @@ final class CachedBPostStreetSuggester implements StreetSuggester
     ): array {
         return $this->cache->get(
             $this->createCacheKey($postalCode, $locality, $streetQuery, $limit),
-            function () use ($postalCode, $locality, $streetQuery, $limit) {
-                return $this->baseStreetSuggester->suggest($postalCode, $locality, $streetQuery, $limit);
-            }
+            fn () => $this->baseStreetSuggester->suggest($postalCode, $locality, $streetQuery, $limit)
         );
     }
 
