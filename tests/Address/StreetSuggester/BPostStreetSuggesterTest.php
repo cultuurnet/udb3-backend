@@ -138,7 +138,6 @@ final class BPostStreetSuggesterTest extends TestCase
      */
     public function itCanHandleVariousLimits(): void
     {
-        $country = 'BE';
         $postalCode = '9000';
         $locality = 'Gent';
         $streetQuery = 'maria';
