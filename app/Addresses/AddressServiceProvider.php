@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Addresses;
 
 use CultuurNet\UDB3\Address\StreetSuggester\BPostStreetSuggester;
+use CultuurNet\UDB3\Address\StreetSuggester\CachedBPostStreetSuggester;
 use CultuurNet\UDB3\Address\StreetSuggester\StreetSuggester;
+use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Address\GetStreetRequestHandler;
 use GuzzleHttp\Client;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 class AddressServiceProvider extends AbstractServiceProvider
 {
@@ -26,10 +29,17 @@ class AddressServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             StreetSuggester::class,
-            fn () => new BPostStreetSuggester(
-                new Client(),
-                $container->get('config')['bpost']['domain'],
-                $container->get('config')['bpost']['token'],
+            fn () => new CachedBPostStreetSuggester(
+                new BPostStreetSuggester(
+                    new Client(),
+                    $container->get('config')['bpost']['domain'],
+                    $container->get('config')['bpost']['token'],
+                ),
+                CacheFactory::create(
+                    $container->get('app_cache'),
+                    'belgium_streets',
+                    86400
+                )
             )
         );
 
