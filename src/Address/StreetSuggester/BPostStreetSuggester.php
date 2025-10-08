@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address\StreetSuggester;
 
+use CultuurNet\UDB3\Json;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Client\ClientInterface;
@@ -50,7 +51,7 @@ final class BPostStreetSuggester implements StreetSuggester
 
         $response = $this->client->sendRequest($request);
 
-        return $this->format(json_decode($response->getBody()->getContents(), true));
+        return $this->format(Json::decodeAssociatively($response->getBody()->getContents()));
     }
 
     /**
