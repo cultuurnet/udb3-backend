@@ -60,6 +60,9 @@ final class BPostStreetSuggester implements StreetSuggester
     private function format(array $suggestions): array
     {
         $formattedStreets = [];
+        // This is done because the BPost API returns the streets in CAPITALS &
+        // with lots of unneccessary information.
+        // @see BPostStreetSuggesterTest for an example of the output.
         foreach ($suggestions['response']['topSuggestions'] as $suggestion) {
             $formattedStreets[] = mb_convert_case($suggestion['address']['streetName'], MB_CASE_TITLE, 'UTF-8');
         }
