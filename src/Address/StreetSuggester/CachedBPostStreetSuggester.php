@@ -4,17 +4,35 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Address\StreetSuggester;
 
+use Symfony\Contracts\Cache\CacheInterface;
+
 final class CachedBPostStreetSuggester implements StreetSuggester
 {
-    private StreetSuggester $streetSuggester;
+    private StreetSuggester $baseStreetSuggester;
 
-    public function __construct(StreetSuggester $streetSuggester)
+    private CacheInterface $cache;
+
+    public function __construct(StreetSuggester $streetSuggester, CacheInterface $cache)
     {
-        $this->streetSuggester = $streetSuggester;
+        $this->baseStreetSuggester = $streetSuggester;
+        $this->cache = $cache;
     }
-    public function suggest(string $postalCode, string $locality, string $streetQuery): array
+    public function suggest(
+        string $postalCode,
+        string $locality,
+        string $streetQuery,
+        int $limit = 5
+    ): array {
+        return $this->cache->get(
+            $this->createCacheKey($postalCode, $locality, $streetQuery, $limit),
+            function () use ($postalCode, $locality, $streetQuery, $limit) {
+                return $this->baseStreetSuggester->suggest($postalCode, $locality, $streetQuery, $limit);
+            }
+        );
+    }
+
+    private function createCacheKey(string $postalCode, string $locality, string $streetQuery, int $limit): string
     {
-        //TODO: Decide if we want to cache it.
-        return $this->streetSuggester->suggest($postalCode, $locality, $streetQuery);
+        return preg_replace('/[{}()\/\\\\@:]/', '_', $postalCode . '_' . $locality . '_' . $streetQuery . '_' . (string) $limit);
     }
 }
