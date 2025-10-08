@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Address\GetStreetRequestHandler;
 use GuzzleHttp\Client;
-use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 class AddressServiceProvider extends AbstractServiceProvider
 {
