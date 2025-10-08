@@ -31,7 +31,7 @@ final class GetStreetRequestHandler implements RequestHandlerInterface
         $limit = $queryParameters->getAsInt('limit', 5);
 
         if ($countryCode === null || $postalCode === null || $locality === null || $query === null) {
-            throw ApiProblem::queryParameterMissing('country, postalCode, locality, query');
+            throw ApiProblem::queryParameterMissing('country or postalCode or locality or query');
         }
 
         if ($countryCode === 'BE') {
