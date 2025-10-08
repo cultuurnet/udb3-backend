@@ -33,6 +33,11 @@ final class BPostStreetSuggester implements StreetSuggester
         string $streetQuery,
         int $limit = 5
     ): array {
+        // @see https://www.bpost.be/en/addressing-web-service-widgets-address-validation
+        // for more info about the BPost API.
+        // The 'id' parameter depends on the type of validation required
+        // (e.g., City, PostalCode, Street or HouseNumber).
+        // Use 7 for validating streets.
         $request = new Request(
             'GET',
             (new Uri($this->domain))
