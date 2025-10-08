@@ -36,9 +36,9 @@ final class GetStreetRequestHandler implements RequestHandlerInterface
 
         if ($countryCode === 'BE') {
             $content = $this->belgiumStreetSuggester->suggest(
-                $queryParameters->get('postalCode'),
-                $queryParameters->get('locality'),
-                $queryParameters->get('query'),
+                $postalCode,
+                $locality,
+                $query,
                 $limit
             );
 
