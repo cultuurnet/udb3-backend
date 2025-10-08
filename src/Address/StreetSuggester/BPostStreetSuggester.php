@@ -11,6 +11,8 @@ use Psr\Http\Client\ClientInterface;
 
 final class BPostStreetSuggester implements StreetSuggester
 {
+    private const BPOST_VALIDATION_STREETS = 7;
+
     private ClientInterface $client;
 
     private string $domain;
@@ -43,7 +45,7 @@ final class BPostStreetSuggester implements StreetSuggester
             (new Uri($this->domain))
                 ->withPath('/roa-info-st2/externalMailingAddressProofingRest/autocomplete/street')
                 ->withQuery(http_build_query([
-                'id' => '7',
+                'id' => self::BPOST_VALIDATION_STREETS,
                 'q' => $streetQuery,
                 'postalCode' => $postalCode,
                 'locality' => $locality,
