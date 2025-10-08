@@ -29,7 +29,6 @@ final class GetStreetRequestHandlerTest extends TestCase
     {
         $this->streetSuggester = $this->createMock(StreetSuggester::class);
         $this->getStreetRequestHandler = new GetStreetRequestHandler($this->streetSuggester);
-        ;
     }
 
     /**
