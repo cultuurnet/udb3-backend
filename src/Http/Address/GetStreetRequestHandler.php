@@ -15,9 +15,9 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class GetStreetRequestHandler implements RequestHandlerInterface
 {
     private StreetSuggester $belgiumStreetSuggester;
-    public function __construct(StreetSuggester $streetSuggester)
+    public function __construct(StreetSuggester $belgiumStreetSuggester)
     {
-        $this->belgiumStreetSuggester = $streetSuggester;
+        $this->belgiumStreetSuggester = $belgiumStreetSuggester;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
