@@ -16,6 +16,9 @@ final class BPostStreetSuggesterTest extends TestCase
 {
     public const DOMAIN = 'https://foobar.com';
 
+
+    public const STAGE = 'stage';
+
     public const TOKEN = 'token';
 
     /**
@@ -30,6 +33,7 @@ final class BPostStreetSuggesterTest extends TestCase
         $this->streetSuggester = new BPostStreetSuggester(
             $this->client,
             self::DOMAIN,
+            self::STAGE,
             self::TOKEN
         );
     }
@@ -49,7 +53,7 @@ final class BPostStreetSuggesterTest extends TestCase
                 new Request(
                     'GET',
                     (new Uri(self::DOMAIN))
-                        ->withPath('/roa-info-st2/externalMailingAddressProofingRest/autocomplete/street')
+                        ->withPath('/' . self::STAGE . '/externalMailingAddressProofingRest/autocomplete/street')
                         ->withQuery(http_build_query([
                             'id' => '7',
                             'q' => $streetQuery,
@@ -149,7 +153,7 @@ final class BPostStreetSuggesterTest extends TestCase
                 new Request(
                     'GET',
                     (new Uri(self::DOMAIN))
-                        ->withPath('/roa-info-st2/externalMailingAddressProofingRest/autocomplete/street')
+                        ->withPath('/' . self::STAGE . '/externalMailingAddressProofingRest/autocomplete/street')
                         ->withQuery(http_build_query([
                             'id' => '7',
                             'q' => $streetQuery,

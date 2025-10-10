@@ -17,12 +17,15 @@ final class BPostStreetSuggester implements StreetSuggester
 
     private string $domain;
 
+    private string $stage;
+
     private string $token;
 
-    public function __construct(ClientInterface $client, string $domain, string $token)
+    public function __construct(ClientInterface $client, string $domain, string $stage, string $token)
     {
         $this->client = $client;
         $this->domain = $domain;
+        $this->stage = $stage;
         $this->token = $token;
     }
 
@@ -43,7 +46,7 @@ final class BPostStreetSuggester implements StreetSuggester
         $request = new Request(
             'GET',
             (new Uri($this->domain))
-                ->withPath('/roa-info-st2/externalMailingAddressProofingRest/autocomplete/street')
+                ->withPath('/' . $this->stage . '/externalMailingAddressProofingRest/autocomplete/street')
                 ->withQuery(http_build_query([
                 'id' => self::BPOST_VALIDATION_STREETS,
                 'q' => $streetQuery,

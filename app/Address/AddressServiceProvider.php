@@ -32,6 +32,7 @@ class AddressServiceProvider extends AbstractServiceProvider
                 new BPostStreetSuggester(
                     new Client(),
                     $container->get('config')['bpost']['domain'],
+                    $container->get('config')['bpost']['stage'],
                     $container->get('config')['bpost']['token'],
                 ),
                 CacheFactory::create(
