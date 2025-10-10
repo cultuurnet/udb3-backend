@@ -1,5 +1,6 @@
 <?php
 
+use CultuurNet\UDB3\Address\AddressServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
 use CultuurNet\UDB3\Authentication\AuthServiceProvider;
@@ -224,6 +225,9 @@ $container->addServiceProvider(new MailinglistServiceProvider());
 
 $container->addServiceProvider(new CultuurkuurServiceProvider());
 $container->addServiceProvider(new MailerServiceProvider());
+
+/** Addresses */
+$container->addServiceProvider(new AddressServiceProvider());
 
 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);
