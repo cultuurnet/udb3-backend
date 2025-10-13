@@ -390,10 +390,10 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         return $this->loadDocumentFromRepository($labelsImported);
     }
 
-    protected function applyLabelsReplaced(AbstractLabelsImported $labelsImported): JsonDocument
+    protected function applyLabelsReplaced(AbstractLabelsImported $labelsReplaced): JsonDocument
     {
         // Just return the JSON body without any changes, but this triggers a playhead update.
-        return $this->loadDocumentFromRepository($labelsImported);
+        return $this->loadDocumentFromRepository($labelsReplaced);
     }
 
     protected function applyImageAdded(AbstractImageAdded $imageAdded): JsonDocument
