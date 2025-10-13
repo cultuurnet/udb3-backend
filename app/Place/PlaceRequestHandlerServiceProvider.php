@@ -81,8 +81,8 @@ final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
                     $container->get('config')['prevent_duplicate_places_creation'] ?? false,
                     new LookupDuplicatePlaceWithSapi3(
                         $container->get(PlacesSapi3SearchService::class),
-                        new UniqueAddressIdentifierFactory(),
-                        $container->get(CurrentUser::class)->getId(),
+                        new UniqueAddressIdentifierFactory($container->get('config')['duplicate_places_per_user'] ?? true),
+                        $container->get(CurrentUser::class)->getId()
                     ),
                     $container->get('organizer_jsonld_repository')
                 );
