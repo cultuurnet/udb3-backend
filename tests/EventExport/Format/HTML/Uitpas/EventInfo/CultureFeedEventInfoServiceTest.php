@@ -122,7 +122,7 @@ class CultureFeedEventInfoServiceTest extends TestCase
         $onePointPromotion->points = 1;
         $onePointPromotion->title = 'one point to rule them all';
 
-        $promotionResultSet = new \CultureFeed_ResultSet(1, [$promotion, $onePointPromotion]);
+        $promotionResultSet = new ResultSet(1, [$promotion, $onePointPromotion]);
 
         $this->uitpas->expects($this->once())
             ->method('searchEvents')

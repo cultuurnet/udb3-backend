@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Export;
 
+use CultuurNet\UDB3\EventExport\Notification\Swift\DefaultMessageFactory;
+use CultuurNet\UDB3\EventExport\Notification\DefaultPlainTextBodyFactory;
+use CultuurNet\UDB3\EventExport\Notification\DefaultHTMLBodyFactory;
+use CultuurNet\UDB3\EventExport\Notification\LiteralSubjectFactory;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -147,10 +151,10 @@ final class ExportServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'event_export_notification_mail_factory',
-            fn () => new \CultuurNet\UDB3\EventExport\Notification\Swift\DefaultMessageFactory(
-                new \CultuurNet\UDB3\EventExport\Notification\DefaultPlainTextBodyFactory(),
-                new \CultuurNet\UDB3\EventExport\Notification\DefaultHTMLBodyFactory(),
-                new \CultuurNet\UDB3\EventExport\Notification\LiteralSubjectFactory(
+            fn () => new DefaultMessageFactory(
+                new DefaultPlainTextBodyFactory(),
+                new DefaultHTMLBodyFactory(),
+                new LiteralSubjectFactory(
                     $container->get('config')['export']['mail']['subject']
                 ),
                 $container->get('config')['mail']['sender']['address'],
