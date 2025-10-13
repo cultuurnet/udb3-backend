@@ -8,6 +8,13 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 
 class UniqueAddressIdentifierFactory
 {
+    private bool $duplicatePlacesPerUser;
+
+    public function __construct(bool $duplicatePlacesPerUser)
+    {
+        $this->duplicatePlacesPerUser = $duplicatePlacesPerUser;
+    }
+
     public function create(string $title, Address $address, string $currentUserId): string
     {
         $parts = array_map(
@@ -20,14 +27,17 @@ class UniqueAddressIdentifierFactory
 
     private function getParts(string $title, Address $address, string $currentUserId): array
     {
-        return [
+        $parts = [
             $title,
             $address->getStreet()->toString(),
             $address->getPostalCode()->toString(),
             $address->getLocality()->toString(),
             $address->getCountryCode()->toString(),
-            $currentUserId,
         ];
+        if ($this->duplicatePlacesPerUser) {
+            $parts[] = $currentUserId;
+        }
+        return $parts;
     }
 
     private function escapeReservedElasticsearchCharacters(string $query): string
