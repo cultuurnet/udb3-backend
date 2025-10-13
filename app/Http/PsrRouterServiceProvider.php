@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\WebErrorHandler;
+use CultuurNet\UDB3\Http\Address\GetStreetRequestHandler;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Http\Curators\CreateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\DeleteNewsArticleRequestHandler;
@@ -231,6 +232,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
                 $this->bindCultuurkuurEndpoints($router);
 
+                $this->bindAddresses($router);
+
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 $router->get('/events/', ProxyRequestHandler::class);
                 $router->get('/places/', ProxyRequestHandler::class);
@@ -314,6 +317,13 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
     {
         $router->group('jobs', function (RouteGroup $routeGroup): void {
             $routeGroup->get('{jobId}/', GetJobStatusRequestHandler::class);
+        });
+    }
+
+    private function bindAddresses(Router $router): void
+    {
+        $router->group('addresses', function (RouteGroup $routeGroup): void {
+            $routeGroup->get('streets/', GetStreetRequestHandler::class);
         });
     }
 
