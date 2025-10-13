@@ -15,9 +15,9 @@ use Symfony\Component\Mime\Address;
 class SmtpMailerTest extends TestCase
 {
     private SmtpMailer $smtpMailer;
-    /** @var MailerInterface|MockObject */
+    /** @var MailerInterface&MockObject */
     private $mailer;
-    /** @var LoggerInterface|MockObject */
+    /** @var LoggerInterface&MockObject */
     private $logger;
 
     protected function setUp(): void

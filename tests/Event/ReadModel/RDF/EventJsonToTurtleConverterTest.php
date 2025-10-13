@@ -38,7 +38,7 @@ class EventJsonToTurtleConverterTest extends TestCase
     private EventJsonToTurtleConverter $eventJsonToTurtleConverter;
 
     /**
-     * @var NormalizerInterface|MockObject
+     * @var NormalizerInterface&MockObject
      */
     private $imageNormalizer;
 

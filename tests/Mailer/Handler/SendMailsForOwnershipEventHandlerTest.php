@@ -26,13 +26,13 @@ class SendMailsForOwnershipEventHandlerTest extends TestCase
 
     private SendMailsForOwnershipEventHandler $sendMailsForOwnership;
 
-    /** @var DomainMessageSpecificationInterface|MockObject */
+    /** @var DomainMessageSpecificationInterface&MockObject */
     private $domainMessageSpecificationForReplays;
 
-    /** @var DomainMessageSpecificationInterface|MockObject */
+    /** @var DomainMessageSpecificationInterface&MockObject */
     private $domainMessageSpecificationForMails;
 
-    /** @var ContextDecoratedCommandBus|MockObject */
+    /** @var ContextDecoratedCommandBus&MockObject */
     private $commandBus;
 
     protected function setUp(): void
