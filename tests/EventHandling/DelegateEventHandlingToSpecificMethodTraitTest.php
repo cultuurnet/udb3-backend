@@ -17,10 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 class DelegateEventHandlingToSpecificMethodTraitTest extends TestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $mockedMockLDProjector;
+    private MockObject $mockedMockLDProjector;
 
     /**
      * @var MockLDProjector&MockObject

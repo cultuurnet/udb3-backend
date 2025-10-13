@@ -18,10 +18,7 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class BookingInfoDenormalizer implements DenormalizerInterface
 {
-    /**
-     * @var DenormalizerInterface
-     */
-    private $websiteLabelDenormalizer;
+    private DenormalizerInterface $websiteLabelDenormalizer;
 
     public function __construct(DenormalizerInterface $websiteLabelDenormalizer = null)
     {
