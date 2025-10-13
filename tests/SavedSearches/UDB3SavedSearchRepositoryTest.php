@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\SavedSearches;
 
+use Doctrine\DBAL\DBALException;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use CultuurNet\UDB3\SavedSearches\Doctrine\ColumnNames;
 use CultuurNet\UDB3\SavedSearches\Properties\QueryString;
@@ -150,7 +151,7 @@ class UDB3SavedSearchRepositoryTest extends TestCase
 
     /**
      * @return SavedSearch[]
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     private function getSavedSearches(): array
     {
