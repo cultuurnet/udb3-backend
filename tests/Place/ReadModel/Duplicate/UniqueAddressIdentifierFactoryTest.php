@@ -17,9 +17,14 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
     /**
      * @dataProvider hashDataProvider
      */
-    public function testHash(string $title, Address $address, string $currentUserId, string $expectedHash): void
-    {
-        $actualHash = (new UniqueAddressIdentifierFactory())
+    public function testHash(
+        bool $duplicatePlacesPerUser,
+        string $title,
+        Address $address,
+        string $currentUserId,
+        string $expectedHash
+    ): void {
+        $actualHash = (new UniqueAddressIdentifierFactory($duplicatePlacesPerUser))
             ->create($title, $address, $currentUserId);
 
         $this->assertEquals($expectedHash, $actualHash);
@@ -29,7 +34,8 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
     public function hashDataProvider(): array
     {
         return [
-            'Normal address' => [
+            'Normal address per user' => [
+                true,
                 'Cafe den uil',
                 new Udb3Address(
                     new Udb3Street('Kerkstraat 1'),
@@ -40,7 +46,20 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
                 'user123',
                 'cafe_den_uil_kerkstraat_1_2000_antwerpen_be_user123',
             ],
-            'address with empty location name' => [
+            'Normal address global' => [
+                false,
+                'Cafe den uil',
+                new Udb3Address(
+                    new Udb3Street('Kerkstraat 1'),
+                    new Udb3PostalCode('2000'),
+                    new Udb3Locality('Antwerpen'),
+                    new CountryCode('BE')
+                ),
+                'user123',
+                'cafe_den_uil_kerkstraat_1_2000_antwerpen_be',
+            ],
+            'address with empty location name per user' => [
+                true,
                 '',
                 new Udb3Address(
                     new Udb3Street('Kerkstraat 1'),
@@ -51,7 +70,20 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
                 'user123',
                 'kerkstraat_1_2000_antwerpen_be_user123',
             ],
-            'address with special chars' => [
+            'address with empty location name global' => [
+                false,
+                '',
+                new Udb3Address(
+                    new Udb3Street('Kerkstraat 1'),
+                    new Udb3PostalCode('2000'),
+                    new Udb3Locality('Antwerpen'),
+                    new CountryCode('BE')
+                ),
+                'user123',
+                'kerkstraat_1_2000_antwerpen_be',
+            ],
+            'address with special chars per user' => [
+                true,
                 '',
                 new Udb3Address(
                     new Udb3Street('Kerkstraat 1!'),
@@ -61,6 +93,18 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
                 ),
                 'user123',
                 'kerkstraat_1\!_2000_antwerpen\(berchem\)_be_user123',
+            ],
+            'address with special chars global' => [
+                false,
+                '',
+                new Udb3Address(
+                    new Udb3Street('Kerkstraat 1!'),
+                    new Udb3PostalCode('2000'),
+                    new Udb3Locality('Antwerpen(Berchem)'),
+                    new CountryCode('BE')
+                ),
+                'user123',
+                'kerkstraat_1\!_2000_antwerpen\(berchem\)_be',
             ],
         ];
     }
