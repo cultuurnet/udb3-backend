@@ -90,8 +90,10 @@ Feature: Test searching ownerships
 
   Scenario: Searching ownership of an organizer takes into permission organisaties bewerken
     Given I create a minimal organizer and save the "id" as "organizerId1"
+    And I wait for the organizer with url "/organizers/%{organizerId1}" to be indexed
     And I request ownership for "02566c96-8fd3-4b7e-aa35-cbebe6663b2d" on the organizer with organizerId "%{organizerId1}" and save the "id" as "ownershipId1"
     Given I create a minimal organizer and save the "id" as "organizerId2"
+    And I wait for the organizer with url "/organizers/%{organizerId2}" to be indexed
     And I request ownership for "79dd2821-3b89-4dbb-9143-920ff2edfa34" on the organizer with organizerId "%{organizerId2}" and save the "id" as "ownershipId2"
     And I request ownership for "d759fd36-fb28-4fe3-8ec6-b4aaf990371d" on the organizer with organizerId "%{organizerId2}" and save the "id" as "ownershipId3"
     And I approve the ownership with ownershipId "%{ownershipId3}"
