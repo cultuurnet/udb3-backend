@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class UniqueAddressIdentifierFactory
 {
@@ -22,7 +23,7 @@ class UniqueAddressIdentifierFactory
             $this->getParts($title, $address, $currentUserId)
         );
 
-        return mb_strtolower($this->escapeReservedElasticsearchCharacters(implode('_', array_filter($parts))));
+        return mb_strtolower($this->escapeSpecialCharacters(implode('_', array_filter($parts))));
     }
 
     private function getParts(string $title, Address $address, string $currentUserId): array
@@ -40,16 +41,8 @@ class UniqueAddressIdentifierFactory
         return $parts;
     }
 
-    private function escapeReservedElasticsearchCharacters(string $query): string
+    private function escapeSpecialCharacters(string $query): string
     {
-        // List of special characters that need escaping
-        $specialChars = ['\\', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '/'];
-
-        // Escape each character
-        foreach ($specialChars as $char) {
-            $query = str_replace($char, '\\' . $char, $query);
-        }
-
-        return $query;
+        return (new AsciiSlugger())->slug($query, '_')->toString();
     }
 }
