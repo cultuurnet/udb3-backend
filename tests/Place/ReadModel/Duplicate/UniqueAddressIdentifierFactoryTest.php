@@ -106,6 +106,30 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
                 'user123',
                 'kerkstraat_1_2000_antwerpen_berchem_be',
             ],
+            'Address with diacritics per user' => [
+                true,
+                '\'þ ßnœpŵïñķēłťje',
+                new Udb3Address(
+                    new Udb3Street('Veldstraat 50'),
+                    new Udb3PostalCode('9000'),
+                    new Udb3Locality('Gent'),
+                    new CountryCode('BE')
+                ),
+                'user123',
+                'th_ssnoepwinkeltje_veldstraat_50_9000_gent_be_user123',
+            ],
+            'Address with diacritics global' => [
+                false,
+                '\'þ ßnœpŵïñķēłťje',
+                new Udb3Address(
+                    new Udb3Street('Veldstraat 50'),
+                    new Udb3PostalCode('9000'),
+                    new Udb3Locality('Gent'),
+                    new CountryCode('BE')
+                ),
+                'user123',
+                'th_ssnoepwinkeltje_veldstraat_50_9000_gent_be',
+            ],
         ];
     }
 }
