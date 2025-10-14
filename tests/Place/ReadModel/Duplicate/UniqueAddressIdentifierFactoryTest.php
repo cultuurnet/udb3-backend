@@ -92,7 +92,7 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
                     new CountryCode('BE')
                 ),
                 'user123',
-                'kerkstraat_1\!_2000_antwerpen\(berchem\)_be_user123',
+                'kerkstraat_1_2000_antwerpen_berchem_be_user123',
             ],
             'address with special chars global' => [
                 false,
@@ -104,7 +104,7 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
                     new CountryCode('BE')
                 ),
                 'user123',
-                'kerkstraat_1\!_2000_antwerpen\(berchem\)_be',
+                'kerkstraat_1_2000_antwerpen_berchem_be',
             ],
         ];
     }
