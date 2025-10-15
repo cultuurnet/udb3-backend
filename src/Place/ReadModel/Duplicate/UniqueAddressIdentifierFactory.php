@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 
 class UniqueAddressIdentifierFactory
 {
-    public function create(string $title, Address $address, string $currentUserId): string
+    public function legacyCreate(string $title, Address $address, string $currentUserId): string
     {
         $parts = array_map(
             fn ($part) => str_replace(' ', '_', trim($part)),
