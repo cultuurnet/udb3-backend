@@ -83,6 +83,7 @@ final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
                         $container->get(PlacesSapi3SearchService::class),
                         new UniqueAddressIdentifierFactory(),
                         $container->get(CurrentUser::class)->getId(),
+                        true // TODO
                     ),
                     $container->get('organizer_jsonld_repository')
                 );

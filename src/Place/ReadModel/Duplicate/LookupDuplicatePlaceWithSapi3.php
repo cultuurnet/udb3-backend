@@ -13,14 +13,18 @@ class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
     private UniqueAddressIdentifierFactory $addressIdentifierFactory;
     private string $currentUserId;
 
+    private bool $useUniqueAddressIdentifierV2;
+
     public function __construct(
         Sapi3SearchService $sapi3SearchService,
         UniqueAddressIdentifierFactory $addressIdentifierFactory,
-        string $currentUserId
+        string $currentUserId,
+        bool $useUniqueAddressIdentifierV2
     ) {
         $this->sapi3SearchService = $sapi3SearchService;
         $this->addressIdentifierFactory = $addressIdentifierFactory;
         $this->currentUserId = $currentUserId;
+        $this->useUniqueAddressIdentifierV2 = $useUniqueAddressIdentifierV2;
     }
 
     /*
@@ -30,12 +34,7 @@ class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
     */
     public function getDuplicatePlaceUri(Place $place): ?string
     {
-        $query = '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND unique_address_identifier:' .
-            $this->addressIdentifierFactory->legacyCreate(
-                $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
-                $place->getAddress()->getTranslation($place->getMainLanguage()),
-                $this->currentUserId
-            );
+        $query = $this->getQuery($place);
 
         $results = $this->sapi3SearchService->search(
             $query
@@ -68,5 +67,23 @@ class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
 
         // Add isDuplicate so the response will never contain places we identified as duplicates
         throw new MultipleDuplicatePlacesFound($query);
+    }
+
+    private function getQuery(Place $place): string
+    {
+        if ($this->useUniqueAddressIdentifierV2) {
+            return '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND unique_address_identifier_v2:' .
+                $this->addressIdentifierFactory->create(
+                    $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
+                    $place->getAddress()->getTranslation($place->getMainLanguage())
+                );
+        }
+
+        return '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND unique_address_identifier:' .
+        $this->addressIdentifierFactory->legacyCreate(
+            $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
+            $place->getAddress()->getTranslation($place->getMainLanguage()),
+            $this->currentUserId
+        );
     }
 }
