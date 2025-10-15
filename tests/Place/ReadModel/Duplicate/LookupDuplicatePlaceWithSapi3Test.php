@@ -34,7 +34,7 @@ use CultuurNet\UDB3\Search\Sapi3SearchService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class LookupDuplicatePlaceWithSapi3Test extends TestCase
+final class LookupDuplicatePlaceWithSapi3Test extends TestCase
 {
     private LookupDuplicatePlaceWithSapi3 $lookupDuplicatePlaceWithSapi3;
 

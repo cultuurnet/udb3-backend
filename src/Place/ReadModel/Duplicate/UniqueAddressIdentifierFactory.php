@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 
-class UniqueAddressIdentifierFactory
+final class UniqueAddressIdentifierFactory
 {
     public function create(string $title, Address $address): string
     {

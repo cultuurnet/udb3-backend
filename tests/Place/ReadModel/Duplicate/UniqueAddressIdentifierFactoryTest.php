@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode as Udb3PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street as Udb3Street;
 use PHPUnit\Framework\TestCase;
 
-class UniqueAddressIdentifierFactoryTest extends TestCase
+final class UniqueAddressIdentifierFactoryTest extends TestCase
 {
     /**
      * @dataProvider hashDataProvider

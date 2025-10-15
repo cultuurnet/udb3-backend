@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Search\Sapi3SearchService;
 
-class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
+final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
 {
     private Sapi3SearchService $sapi3SearchService;
     private UniqueAddressIdentifierFactory $addressIdentifierFactory;
