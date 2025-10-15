@@ -17,12 +17,22 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
     /**
      * @dataProvider hashDataProvider
      */
-    public function testHash(string $title, Address $address, string $currentUserId, string $expectedHash): void
-    {
+    public function testHash(
+        string $title,
+        Address $address,
+        string $currentUserId,
+        string $expectedHash,
+        string $expectedHashV2
+    ): void {
         $actualHash = (new UniqueAddressIdentifierFactory())
             ->legacyCreate($title, $address, $currentUserId);
 
         $this->assertEquals($expectedHash, $actualHash);
+
+        $actualHashV2 = (new UniqueAddressIdentifierFactory())
+            ->create($title, $address);
+
+        $this->assertEquals($expectedHashV2, $actualHashV2);
     }
 
 
@@ -39,6 +49,7 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
                 ),
                 'user123',
                 'cafe_den_uil_kerkstraat_1_2000_antwerpen_be_user123',
+                'cafe_den_uil_kerkstraat_1_2000_antwerpen_be',
             ],
             'address with empty location name' => [
                 '',
@@ -50,6 +61,7 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
                 ),
                 'user123',
                 'kerkstraat_1_2000_antwerpen_be_user123',
+                'kerkstraat_1_2000_antwerpen_be',
             ],
             'address with special chars' => [
                 '',
@@ -61,6 +73,19 @@ class UniqueAddressIdentifierFactoryTest extends TestCase
                 ),
                 'user123',
                 'kerkstraat_1\!_2000_antwerpen\(berchem\)_be_user123',
+                'kerkstraat_1_2000_antwerpen_berchem_be',
+            ],
+            'address with diacritics' => [
+                '\'þ ßnœpŵïñķēłťje',
+                new Udb3Address(
+                    new Udb3Street('Veldstraat 50'),
+                    new Udb3PostalCode('9000'),
+                    new Udb3Locality('Gent'),
+                    new CountryCode('BE')
+                ),
+                'user123',
+                '\'þ_ßnœpŵïñķēłťje_veldstraat_50_9000_gent_be_user123',
+                'th_ssnoepwinkeltje_veldstraat_50_9000_gent_be',
             ],
         ];
     }
