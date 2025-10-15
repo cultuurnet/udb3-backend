@@ -4,7 +4,7 @@ Je bent vanaf nu beheerder van de organisatie %{name} in de UiTdatabank. Dit wil
 
 Ga naar de beheerpagina voor meer informatie.
 
-http://uitdatabank.local:80/organizers/%{organizerId}/preview
+http://uitdatabank.local:80/organizers/%{organizerId}/ownerships
 
 Vriendelijke groet,
 Het UiTdatabank team.
