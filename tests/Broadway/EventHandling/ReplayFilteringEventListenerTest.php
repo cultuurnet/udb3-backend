@@ -18,10 +18,7 @@ class ReplayFilteringEventListenerTest extends TestCase
      */
     private $eventListener;
 
-    /**
-     * @var FilteringEventListener
-     */
-    private $filteringEventListener;
+    private FilteringEventListener $filteringEventListener;
 
     public function setUp(): void
     {
