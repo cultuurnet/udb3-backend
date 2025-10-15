@@ -13,10 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class OfferMetadataEnrichedOfferRepositoryTest extends TestCase
 {
-    /**
-     * @var MockObject
-     */
-    private $offerMetadataRepository;
+    private MockObject $offerMetadataRepository;
 
     private InMemoryDocumentRepository $decoratedRepository;
 
