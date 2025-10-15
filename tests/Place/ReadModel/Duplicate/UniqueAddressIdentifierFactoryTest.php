@@ -21,18 +21,18 @@ final class UniqueAddressIdentifierFactoryTest extends TestCase
         string $title,
         Address $address,
         string $currentUserId,
-        string $expectedHash,
-        string $expectedHashV2
+        string $expectedLegacyHash,
+        string $expectedHash
     ): void {
         $actualHash = (new UniqueAddressIdentifierFactory())
             ->legacyCreate($title, $address, $currentUserId);
 
-        $this->assertEquals($expectedHash, $actualHash);
+        $this->assertEquals($expectedLegacyHash, $actualHash);
 
         $actualHashV2 = (new UniqueAddressIdentifierFactory())
             ->create($title, $address);
 
-        $this->assertEquals($expectedHashV2, $actualHashV2);
+        $this->assertEquals($expectedHash, $actualHashV2);
     }
 
 
