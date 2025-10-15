@@ -13,18 +13,18 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
     private UniqueAddressIdentifierFactory $addressIdentifierFactory;
     private string $currentUserId;
 
-    private bool $useUniqueAddressIdentifierV2;
+    private bool $useGlobalAddressIdentifier;
 
     public function __construct(
         Sapi3SearchService $sapi3SearchService,
         UniqueAddressIdentifierFactory $addressIdentifierFactory,
         string $currentUserId,
-        bool $useUniqueAddressIdentifierV2
+        bool $useGlobalAddressIdentifier
     ) {
         $this->sapi3SearchService = $sapi3SearchService;
         $this->addressIdentifierFactory = $addressIdentifierFactory;
         $this->currentUserId = $currentUserId;
-        $this->useUniqueAddressIdentifierV2 = $useUniqueAddressIdentifierV2;
+        $this->useGlobalAddressIdentifier = $useGlobalAddressIdentifier;
     }
 
     /*
@@ -71,7 +71,7 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
 
     private function getQuery(Place $place): string
     {
-        if ($this->useUniqueAddressIdentifierV2) {
+        if ($this->useGlobalAddressIdentifier) {
             return '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND unique_address_identifier_v2:' .
                 $this->addressIdentifierFactory->create(
                     $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
