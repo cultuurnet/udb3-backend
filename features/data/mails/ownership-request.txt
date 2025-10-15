@@ -7,7 +7,7 @@ Als beheerder in UiTdatabank heb je de nodige rechten om:
     - De organisatie informatie te bewerken zoals de afbeelding, beschrijving, en contactinformatie van de organisatie.
     - Evenementen georganiseerd door je organisatie aan te maken, te bewerken en te verwijderen.
 
-Ga naar je beheerspagina: http://uitdatabank.local:80/organizers/%{organizerId}/preview
+Ga naar je beheerspagina: http://uitdatabank.local:80/organizers/%{organizerId}/ownerships
 
 Vriendelijke groet,
 Het UiTdatabank team.
