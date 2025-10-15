@@ -77,7 +77,7 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
             ItemType::place()
         ));
 
-        $query = '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND unique_address_identifier_v2:online_kerkstraat_1_2000_antwerpen_be';
+        $query = '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND global_address_identifier:online_kerkstraat_1_2000_antwerpen_be';
 
         $this->sapi3SearchService->expects($this->once())
             ->method('search')

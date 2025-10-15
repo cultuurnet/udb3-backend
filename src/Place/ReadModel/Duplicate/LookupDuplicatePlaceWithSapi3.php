@@ -72,7 +72,7 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
     private function getQuery(Place $place): string
     {
         if ($this->useGlobalAddressIdentifier) {
-            return '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND unique_address_identifier_v2:' .
+            return '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND global_address_identifier:' .
                 $this->addressIdentifierFactory->create(
                     $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
                     $place->getAddress()->getTranslation($place->getMainLanguage())
