@@ -8,10 +8,7 @@ use CultureFeed_Uitpas_Event_CultureEvent as Event;
 
 class EventFactory
 {
-    /**
-     * @param float|int $points
-     */
-    public function buildEventWithPoints($points): Event
+    public function buildEventWithPoints(int $points): Event
     {
         $event = new Event();
         $event->cardSystems = [];

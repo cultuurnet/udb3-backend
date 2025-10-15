@@ -70,6 +70,7 @@ trait LabelSteps
         // Create test labels if needed
         // Create "public-visible" if it doesn't exist yet
         $this->getLabel('public-visible');
+        $this->showMeTheUnparsedResponse();
         if ($this->responseState->getStatusCode() === 404) {
             $this->createLabel('public-visible', true, true);
         }

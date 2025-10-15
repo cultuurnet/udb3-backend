@@ -27,7 +27,7 @@ final class AddCardSystemToEventRequestHandler implements RequestHandlerInterfac
         $cardSystemId = $routeParameters->get('cardSystemId');
         $distributionKeyId = $routeParameters->has('distributionKeyId') ? $routeParameters->get('distributionKeyId') : null;
 
-        $this->uitpas->addCardSystemToEvent($eventId, $cardSystemId, $distributionKeyId);
+        $this->uitpas->addCardSystemToEvent($eventId, (int) $cardSystemId, (int) $distributionKeyId);
 
         return new Response(200);
     }
