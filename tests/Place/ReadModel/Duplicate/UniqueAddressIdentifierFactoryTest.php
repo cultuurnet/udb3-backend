@@ -5,11 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Address as Udb3Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Locality as Udb3Locality;
-use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode as Udb3PostalCode;
-use CultuurNet\UDB3\Model\ValueObject\Geography\Street as Udb3Street;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
+use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
+use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use PHPUnit\Framework\TestCase;
 
 final class UniqueAddressIdentifierFactoryTest extends TestCase
@@ -41,10 +40,10 @@ final class UniqueAddressIdentifierFactoryTest extends TestCase
         return [
             'Normal address' => [
                 'Cafe den uil',
-                new Udb3Address(
-                    new Udb3Street('Kerkstraat 1'),
-                    new Udb3PostalCode('2000'),
-                    new Udb3Locality('Antwerpen'),
+                new Address(
+                    new Street('Kerkstraat 1'),
+                    new PostalCode('2000'),
+                    new Locality('Antwerpen'),
                     new CountryCode('BE')
                 ),
                 'user123',
@@ -53,10 +52,10 @@ final class UniqueAddressIdentifierFactoryTest extends TestCase
             ],
             'address with empty location name' => [
                 '',
-                new Udb3Address(
-                    new Udb3Street('Kerkstraat 1'),
-                    new Udb3PostalCode('2000'),
-                    new Udb3Locality('Antwerpen'),
+                new Address(
+                    new Street('Kerkstraat 1'),
+                    new PostalCode('2000'),
+                    new Locality('Antwerpen'),
                     new CountryCode('BE')
                 ),
                 'user123',
@@ -65,10 +64,10 @@ final class UniqueAddressIdentifierFactoryTest extends TestCase
             ],
             'address with special chars' => [
                 '',
-                new Udb3Address(
-                    new Udb3Street('Kerkstraat 1!'),
-                    new Udb3PostalCode('2000'),
-                    new Udb3Locality('Antwerpen(Berchem)'),
+                new Address(
+                    new Street('Kerkstraat 1!'),
+                    new PostalCode('2000'),
+                    new Locality('Antwerpen(Berchem)'),
                     new CountryCode('BE')
                 ),
                 'user123',
@@ -77,10 +76,10 @@ final class UniqueAddressIdentifierFactoryTest extends TestCase
             ],
             'address with diacritics' => [
                 '\'þ ßnœpŵïñķēłťje',
-                new Udb3Address(
-                    new Udb3Street('Veldstraat 50'),
-                    new Udb3PostalCode('9000'),
-                    new Udb3Locality('Gent'),
+                new Address(
+                    new Street('Veldstraat 50'),
+                    new PostalCode('9000'),
+                    new Locality('Gent'),
                     new CountryCode('BE')
                 ),
                 'user123',
