@@ -1,4 +1,3 @@
-@duplicate
 Feature: Test creating places
 
   Background:
@@ -7,6 +6,7 @@ Feature: Test creating places
     And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
 
+  @duplicate
   Scenario: Allow creating a new place, if a "duplicate" place before was rejected
     Given I create a random name of 6 characters and keep it as "name"
     Given I create a minimal place and save the "id" as "originalPlaceId" then I should get a "201" response code
@@ -15,6 +15,7 @@ Feature: Test creating places
     And I wait 2 seconds
     And I create a minimal place then I should get a "201" response code
 
+  @duplicate
   Scenario: Be prevented from creating a new place if we already have one on that address
     Given I create a random name of 6 characters and keep it as "name"
     Given I create a minimal place and save the "id" as "originalPlaceId" then I should get a "201" response code
@@ -31,6 +32,7 @@ Feature: Test creating places
     }
     """
 
+  @duplicate
   Scenario: Be prevented from creating a new place if we already have one on that address when the the address contains special chars
     Given I create a name that includes special characters of elastic search and keep it as "name"
     Given I create a minimal place and save the "id" as "originalPlaceId" then I should get a "201" response code
