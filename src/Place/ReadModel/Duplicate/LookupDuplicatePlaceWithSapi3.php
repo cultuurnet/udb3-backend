@@ -80,7 +80,7 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
         }
 
         return '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND unique_address_identifier:' .
-            $this->addressIdentifierFactory->legacyCreate(
+            $this->addressIdentifierFactory->createForUser(
                 $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
                 $place->getAddress()->getTranslation($place->getMainLanguage()),
                 $this->currentUserId

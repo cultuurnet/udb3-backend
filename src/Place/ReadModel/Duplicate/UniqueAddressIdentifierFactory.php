@@ -19,7 +19,7 @@ final class UniqueAddressIdentifierFactory
         return mb_strtolower($this->escapeSpecialCharacters(implode('_', array_filter($parts))));
     }
 
-    public function legacyCreate(string $title, Address $address, string $currentUserId): string
+    public function createForUser(string $title, Address $address, string $currentUserId): string
     {
         $parts = array_map(
             fn ($part) => str_replace(' ', '_', trim($part)),
