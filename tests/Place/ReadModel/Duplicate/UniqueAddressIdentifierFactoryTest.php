@@ -74,6 +74,18 @@ final class UniqueAddressIdentifierFactoryTest extends TestCase
                 'kerkstraat_1\!_2000_antwerpen\(berchem\)_be_user123',
                 'kerkstraat_1_2000_antwerpen_berchem_be',
             ],
+            'address with various special chars' => [
+                'S.M.A.K.-Stedelijk*Museum*voor*@ctuele*kunst*',
+                new Address(
+                    new Street('Jan Hoetplein 1!'),
+                    new PostalCode('9000'),
+                    new Locality('Gent'),
+                    new CountryCode('BE')
+                ),
+                'user123',
+                's.m.a.k.-stedelijk\*museum\*voor\*@ctuele\*kunst\*_jan_hoetplein_1\!_9000_gent_be_user123',
+                's_m_a_k_stedelijk_museum_voor_ctuele_kunst_jan_hoetplein_1_9000_gent_be',
+            ],
             'address with diacritics' => [
                 '\'þ ßnœpŵïñķēłťje',
                 new Address(
