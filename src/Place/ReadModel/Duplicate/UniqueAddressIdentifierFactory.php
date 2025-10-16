@@ -46,21 +46,21 @@ final class UniqueAddressIdentifierFactory
         return $parts;
     }
 
-    private function escapeReservedElasticsearchCharacters(string $query): string
+    private function escapeReservedElasticsearchCharacters(string $addressIdentifier): string
     {
         // List of special characters that need escaping
         $specialChars = ['\\', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '/'];
 
         // Escape each character
         foreach ($specialChars as $char) {
-            $query = str_replace($char, '\\' . $char, $query);
+            $addressIdentifier = str_replace($char, '\\' . $char, $addressIdentifier);
         }
 
-        return $query;
+        return $addressIdentifier;
     }
 
-    private function escapeSpecialCharacters(string $query): string
+    private function escapeSpecialCharacters(string $addressIdentifier): string
     {
-        return (new AsciiSlugger())->slug($query, '_')->toString();
+        return (new AsciiSlugger())->slug($addressIdentifier, '_')->toString();
     }
 }
