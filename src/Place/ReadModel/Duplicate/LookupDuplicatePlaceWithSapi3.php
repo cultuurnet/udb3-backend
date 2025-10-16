@@ -7,20 +7,24 @@ namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Search\Sapi3SearchService;
 
-class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
+final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
 {
     private Sapi3SearchService $sapi3SearchService;
     private UniqueAddressIdentifierFactory $addressIdentifierFactory;
     private string $currentUserId;
 
+    private bool $useGlobalAddressIdentifier;
+
     public function __construct(
         Sapi3SearchService $sapi3SearchService,
         UniqueAddressIdentifierFactory $addressIdentifierFactory,
-        string $currentUserId
+        string $currentUserId,
+        bool $useGlobalAddressIdentifier
     ) {
         $this->sapi3SearchService = $sapi3SearchService;
         $this->addressIdentifierFactory = $addressIdentifierFactory;
         $this->currentUserId = $currentUserId;
+        $this->useGlobalAddressIdentifier = $useGlobalAddressIdentifier;
     }
 
     /*
@@ -30,12 +34,7 @@ class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
     */
     public function getDuplicatePlaceUri(Place $place): ?string
     {
-        $query = '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND unique_address_identifier:' .
-            $this->addressIdentifierFactory->create(
-                $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
-                $place->getAddress()->getTranslation($place->getMainLanguage()),
-                $this->currentUserId
-            );
+        $query = $this->getQuery($place);
 
         $results = $this->sapi3SearchService->search(
             $query
@@ -68,5 +67,23 @@ class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
 
         // Add isDuplicate so the response will never contain places we identified as duplicates
         throw new MultipleDuplicatePlacesFound($query);
+    }
+
+    private function getQuery(Place $place): string
+    {
+        if ($this->useGlobalAddressIdentifier) {
+            return '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND global_address_identifier:' .
+                $this->addressIdentifierFactory->create(
+                    $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
+                    $place->getAddress()->getTranslation($place->getMainLanguage())
+                );
+        }
+
+        return '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND unique_address_identifier:' .
+            $this->addressIdentifierFactory->createForUser(
+                $place->getTitle()->getTranslation($place->getMainLanguage())->toString(),
+                $place->getAddress()->getTranslation($place->getMainLanguage()),
+                $this->currentUserId
+            );
     }
 }

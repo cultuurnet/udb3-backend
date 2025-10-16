@@ -34,7 +34,7 @@ use CultuurNet\UDB3\Search\Sapi3SearchService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-class LookupDuplicatePlaceWithSapi3Test extends TestCase
+final class LookupDuplicatePlaceWithSapi3Test extends TestCase
 {
     private LookupDuplicatePlaceWithSapi3 $lookupDuplicatePlaceWithSapi3;
 
@@ -64,7 +64,8 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
         $this->lookupDuplicatePlaceWithSapi3 = new LookupDuplicatePlaceWithSapi3(
             $this->sapi3SearchService,
             new UniqueAddressIdentifierFactory(),
-            'current-user-id'
+            'current-user-id',
+            true
         );
     }
 
@@ -76,7 +77,7 @@ class LookupDuplicatePlaceWithSapi3Test extends TestCase
             ItemType::place()
         ));
 
-        $query = '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND unique_address_identifier:online_kerkstraat_1_2000_antwerpen_be_current-user-id';
+        $query = '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND global_address_identifier:online_kerkstraat_1_2000_antwerpen_be';
 
         $this->sapi3SearchService->expects($this->once())
             ->method('search')
