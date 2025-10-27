@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\User\CurrentUser;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -30,6 +31,9 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
     /** @var PermissionVoter&MockObject */
     private $permissionVoter;
+
+    /** @var DocumentRepository&MockObject */
+    private $organizerRepository;
 
     private ApproveOwnershipRequestHandler $approveOwnershipRequestHandler;
 
@@ -48,7 +52,9 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
             new OwnershipStatusGuard(
                 $this->ownerShipSearchRepository,
                 $this->permissionVoter
-            )
+            ),
+            $this->ownerShipSearchRepository,
+            $this->organizerRepository = $this->createMock(DocumentRepository::class)
         );
     }
 
