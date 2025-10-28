@@ -65,7 +65,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider knownOrUnkownCreator
+     * @dataProvider knownOrUnknownCreator
      */
     public function it_handles_approving_an_ownership(JsonDocument $organizerAsJson, array $expectedCommands): void
     {
@@ -108,7 +108,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider knownOrUnkownCreator
+     * @dataProvider knownOrUnknownCreator
      */
     public function it_handles_approving_an_ownership_as_god_user(JsonDocument $organizerAsJson, array $expectedCommands): void
     {
@@ -204,7 +204,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
     }
 
-    public static function knownOrUnkownCreator(): array
+    public static function knownOrUnknownCreator(): array
     {
         return [
             'creator_is_known' => [
@@ -219,7 +219,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
                     new ApproveOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
                 ],
             ],
-            'creator_is_unkown' => [
+            'creator_is_unknown' => [
                 new JsonDocument(
                     '9e68dafc-01d8-4c1c-9612-599c918b981d',
                     Json::encode([
