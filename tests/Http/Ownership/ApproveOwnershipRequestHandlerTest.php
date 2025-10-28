@@ -8,13 +8,16 @@ use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Organizer\Commands\ChangeOwner;
 use CultuurNet\UDB3\Ownership\Commands\ApproveOwnership;
 use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\User\CurrentUser;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -34,6 +37,8 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
     /** @var DocumentRepository&MockObject */
     private $organizerRepository;
+
+    private string $itemId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
 
     private ApproveOwnershipRequestHandler $approveOwnershipRequestHandler;
 
@@ -60,25 +65,33 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider knownOrUnkownCreator
      */
-    public function it_handles_approving_an_ownership(): void
+    public function it_handles_approving_an_ownership(JsonDocument $organizerAsJson, array $expectedCommands): void
     {
         CurrentUser::configureGodUserIds([]);
 
         $ownershipId = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
+
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('ownershipId', $ownershipId)
             ->build('POST');
 
-        $this->ownerShipSearchRepository->expects($this->once())
+        $this->ownerShipSearchRepository->expects($this->exactly(2))
             ->method('getById')
+            ->with($ownershipId)
             ->willReturn(new OwnershipItem(
                 $ownershipId,
-                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                $this->itemId,
                 'organizer',
                 'auth0|63e22626e39a8ca1264bd29b',
                 OwnershipState::requested()->toString()
             ));
+
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
+            ->with('9e68dafc-01d8-4c1c-9612-599c918b981d')
+            ->willReturn($organizerAsJson);
 
         $this->permissionVoter->expects($this->once())
             ->method('isAllowed')
@@ -88,17 +101,16 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
-            [
-                new ApproveOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
-            ],
+            $expectedCommands,
             $this->commandBus->getRecordedCommands()
         );
     }
 
     /**
      * @test
+     * @dataProvider knownOrUnkownCreator
      */
-    public function it_handles_approving_an_ownership_as_god_user(): void
+    public function it_handles_approving_an_ownership_as_god_user(JsonDocument $organizerAsJson, array $expectedCommands): void
     {
         CurrentUser::configureGodUserIds(['auth0|63e22626e39a8ca1264bd29b']);
 
@@ -107,8 +119,9 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
             ->withRouteParameter('ownershipId', $ownershipId)
             ->build('POST');
 
-        $this->ownerShipSearchRepository->expects($this->once())
+        $this->ownerShipSearchRepository->expects($this->exactly(2))
             ->method('getById')
+            ->with($ownershipId)
             ->willReturn(new OwnershipItem(
                 $ownershipId,
                 '9e68dafc-01d8-4c1c-9612-599c918b981d',
@@ -117,6 +130,11 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
                 OwnershipState::requested()->toString()
             ));
 
+        $this->organizerRepository->expects($this->once())
+            ->method('fetch')
+            ->with($this->itemId)
+            ->willReturn($organizerAsJson);
+
         $this->permissionVoter->expects($this->never())
             ->method('isAllowed');
 
@@ -124,9 +142,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
-            [
-                new ApproveOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
-            ],
+            $expectedCommands,
             $this->commandBus->getRecordedCommands()
         );
     }
@@ -166,7 +182,7 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
             ->method('getById')
             ->willReturn(new OwnershipItem(
                 $ownershipId,
-                '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                $this->itemId,
                 'organizer',
                 'auth0|63e22626e39a8ca1264bd29b',
                 OwnershipState::requested()->toString()
@@ -186,5 +202,35 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
         );
 
         $this->assertEquals([], $this->commandBus->getRecordedCommands());
+    }
+
+    public static function knownOrUnkownCreator(): array
+    {
+        return [
+            'creator_is_known' => [
+                new JsonDocument(
+                    '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                    Json::encode([
+                        '@type' => 'organizer',
+                        'creator' => 'some_users_id',
+                    ])
+                ),
+                [
+                    new ApproveOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
+                ],
+            ],
+            'creator_is_unkown' => [
+                new JsonDocument(
+                    '9e68dafc-01d8-4c1c-9612-599c918b981d',
+                    Json::encode([
+                        '@type' => 'organizer',
+                    ])
+                ),
+                [
+                    new ApproveOwnership(new Uuid('e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e')),
+                    new ChangeOwner('9e68dafc-01d8-4c1c-9612-599c918b981d', 'auth0|63e22626e39a8ca1264bd29b'),
+                ],
+            ],
+        ];
     }
 }
