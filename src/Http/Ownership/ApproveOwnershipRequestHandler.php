@@ -74,6 +74,6 @@ final class ApproveOwnershipRequestHandler implements RequestHandlerInterface
     {
         $document = $this->organizerRepository->fetch($organizerId);
         $jsonLd = Json::decodeAssociatively($document->getRawBody());
-        return $jsonLd->creator !== null;
+        return array_key_exists('creator', $jsonLd);
     }
 }
