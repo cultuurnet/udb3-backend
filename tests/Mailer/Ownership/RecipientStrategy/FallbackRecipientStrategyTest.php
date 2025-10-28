@@ -76,9 +76,7 @@ final class FallbackRecipientStrategyTest extends TestCase
 
         $this->decorateeRecipientStrategy->expects($this->once())
             ->method('getRecipients')
-            ->willReturn(new Recipients(
-                $userIdentityDetails
-            ));
+            ->willReturn(new Recipients($userIdentityDetails));
 
         $this->assertEquals(
             new Recipients($userIdentityDetails),
