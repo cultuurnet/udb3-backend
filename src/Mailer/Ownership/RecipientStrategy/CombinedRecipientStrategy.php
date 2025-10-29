@@ -13,7 +13,7 @@ final class CombinedRecipientStrategy implements RecipientStrategy
     /** @var RecipientStrategy[] */
     private array $recipientStrategies;
 
-    private ?UserIdentityDetails $fallbackUserIdentityDetails;
+    private ?UserIdentityDetails $fallbackUserIdentityDetails = null;
 
     public function __construct(RecipientStrategy ...$recipientStrategies)
     {
