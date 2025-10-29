@@ -17,6 +17,8 @@ final class CombinedRecipientStrategyTest extends TestCase
     private UserIdentityDetails $recipient2;
     private UserIdentityDetails $recipient3;
 
+    private UserIdentityDetails $fallbackIdentityDetails;
+
     protected function setUp(): void
     {
         $this->ownershipItem = new OwnershipItem(
@@ -41,6 +43,12 @@ final class CombinedRecipientStrategyTest extends TestCase
             Uuid::uuid4()->toString(),
             'Brilsmurf',
             'brilsmurf@publiq.be'
+        );
+
+        $this->fallbackIdentityDetails = new UserIdentityDetails(
+            Uuid::uuid4()->toString(),
+            'Helpdesk',
+            'helpdesk@example.com'
         );
     }
 
@@ -74,5 +82,45 @@ final class CombinedRecipientStrategyTest extends TestCase
 
         $this->assertCount(2, $recipients);
         $this->assertEquals((new Recipients($this->recipient1, $this->recipient2))->getRecipients(), $recipients->getRecipients());
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_use_the_fallback_address_if_no_recipients_were_found(): void
+    {
+        $decorateeRecipientStrategy = $this->createMock(RecipientStrategy::class);
+
+        $combinedStrategyWithFallback = (new CombinedRecipientStrategy($decorateeRecipientStrategy))
+            ->withFallback($this->fallbackIdentityDetails);
+
+        $decorateeRecipientStrategy->expects($this->once())
+            ->method('getRecipients')
+            ->willReturn(new Recipients());
+
+        $this->assertEquals(
+            new Recipients($this->fallbackIdentityDetails),
+            $combinedStrategyWithFallback->getRecipients($this->ownershipItem)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_will_not_use_the_fallback_address_if_recipients_were_found(): void
+    {
+        $decorateeRecipientStrategy = $this->createMock(RecipientStrategy::class);
+
+        $combinedStrategyWithFallback = (new CombinedRecipientStrategy($decorateeRecipientStrategy))
+            ->withFallback($this->fallbackIdentityDetails);
+
+        $decorateeRecipientStrategy->expects($this->once())
+            ->method('getRecipients')
+            ->willReturn(new Recipients($this->recipient1));
+
+        $this->assertEquals(
+            new Recipients($this->recipient1),
+            $combinedStrategyWithFallback->getRecipients($this->ownershipItem)
+        );
     }
 }
