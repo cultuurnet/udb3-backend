@@ -20,8 +20,8 @@ final class CombinedRecipientStrategy implements RecipientStrategy
     public function getRecipients(OwnershipItem $item): Recipients
     {
         $recipients = new Recipients();
-        foreach ($this->recipientStrategies as $voter) {
-            foreach ($voter->getRecipients($item) as $recipient) {
+        foreach ($this->recipientStrategies as $recipientStrategy) {
+            foreach ($recipientStrategy->getRecipients($item) as $recipient) {
                 $recipients->add($recipient);
             }
         }
