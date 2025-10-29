@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Mailer\Handler\Helper\OwnershipMailParamExtractor;
 use CultuurNet\UDB3\Mailer\Handler\SendMailsForOwnershipEventHandler;
 use CultuurNet\UDB3\Mailer\Handler\SendOwnershipMailCommandHandler;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\CombinedRecipientStrategy;
-use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\FallbackRecipientStrategy;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToCreatorOfOrganisation;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToOwnerOfOwnership;
 use CultuurNet\UDB3\Mailer\Ownership\RecipientStrategy\SendToOwnersOfOrganisation;
@@ -69,21 +68,20 @@ class MailerServiceProvider extends AbstractServiceProvider
                     ),
                     $this->container->get(OwnershipSearchRepository::class),
                     $this->container->get(OwnershipMailParamExtractor::class),
-                    new FallbackRecipientStrategy(
+                    (new CombinedRecipientStrategy(
+                        new SendToCreatorOfOrganisation(
+                            $this->container->get(UserIdentityResolver::class),
+                            $this->container->get('organizer_jsonld_repository'),
+                        ),
+                        new SendToOwnersOfOrganisation(
+                            $this->container->get(UserIdentityResolver::class),
+                            $this->container->get(OwnershipSearchRepository::class)
+                        ),
+                    ))->withFallback(
                         new UserIdentityDetails(
                             $this->container->get('config')['mail']['fallback']['user_id'],
                             $this->container->get('config')['mail']['fallback']['user_name'],
                             $this->container->get('config')['mail']['fallback']['email'],
-                        ),
-                        new CombinedRecipientStrategy(
-                            new SendToCreatorOfOrganisation(
-                                $this->container->get(UserIdentityResolver::class),
-                                $this->container->get('organizer_jsonld_repository'),
-                            ),
-                            new SendToOwnersOfOrganisation(
-                                $this->container->get(UserIdentityResolver::class),
-                                $this->container->get(OwnershipSearchRepository::class)
-                            ),
                         )
                     ),
                     new SendToOwnerOfOwnership($this->container->get(UserIdentityResolver::class)),
