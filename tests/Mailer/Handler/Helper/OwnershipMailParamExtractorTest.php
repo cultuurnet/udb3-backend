@@ -19,7 +19,7 @@ class OwnershipMailParamExtractorTest extends TestCase
     private const ID = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
     private const OWNER_ID = 'd6e21fa4-8d8d-4f23-b0cc-c63e34e43a01';
     private const ORGANIZER_ID = 'd146a8cb-14c8-4364-9207-9d32d36f6959';
-    /** @var DocumentRepository|MockObject */
+    /** @var DocumentRepository&MockObject */
     private $organizerRepository;
     private IriGeneratorInterface $organizerIriGenerator;
     private OwnershipMailParamExtractor $extractor;

@@ -20,7 +20,7 @@ class SendToOwnersOfOrganisationTest extends TestCase
     use DBALTestConnectionTrait;
 
     /**
-     * @var UserIdentityResolver|MockObject
+     * @var UserIdentityResolver&MockObject
      */
     private $identityResolver;
     private SendToOwnersOfOrganisation $sendToOwnersOfOrganisation;

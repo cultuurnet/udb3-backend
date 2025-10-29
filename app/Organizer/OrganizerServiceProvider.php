@@ -42,7 +42,7 @@ final class OrganizerServiceProvider extends AbstractServiceProvider
         $container->addShared(
             self::ORGANIZER_FRONTEND_IRI_GENERATOR,
             fn () => new CallableIriGenerator(
-                fn ($cdbid) => $container->get('config')['frontend_url'] . '/organizers/' . $cdbid . '/preview'
+                fn ($cdbid) => $container->get('config')['frontend_url'] . '/organizers/' . $cdbid . '/ownerships'
             )
         );
 
