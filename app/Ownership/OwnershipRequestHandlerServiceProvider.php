@@ -98,7 +98,9 @@ final class OwnershipRequestHandlerServiceProvider extends AbstractServiceProvid
             fn () => new ApproveOwnershipRequestHandler(
                 $container->get('event_command_bus'),
                 $container->get(CurrentUser::class),
-                $container->get(OwnershipStatusGuard::class)
+                $container->get(OwnershipStatusGuard::class),
+                $container->get(OwnershipSearchRepository::class),
+                $container->get('organizer_jsonld_repository')
             )
         );
 
