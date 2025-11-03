@@ -88,7 +88,7 @@ trait UtilitySteps
             $configFile
         );
 
-        file_put_contents('config.php', $configFile);
+        file_put_contents('config.php', $configFile, LOCK_EX);
     }
 
     /**
@@ -104,7 +104,7 @@ trait UtilitySteps
             $configFile
         );
 
-        file_put_contents('config.php', $configFile, );
+        file_put_contents('config.php', $configFile, LOCK_EX);
     }
 
     private function countFilesByType(string $type, string $folder): int
