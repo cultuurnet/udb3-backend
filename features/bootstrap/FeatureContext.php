@@ -89,6 +89,7 @@ final class FeatureContext implements Context
         );
 
         file_put_contents('config.php', $configFile);
+        sleep(2);
     }
 
     private static function enablePreventDuplicatePlaceCreation(): void
@@ -102,6 +103,7 @@ final class FeatureContext implements Context
         );
 
         file_put_contents('config.php', $configFile);
+        sleep(2);
     }
 
     /**
