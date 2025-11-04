@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Uitwisselingsplatform;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Uitwisselingsplatform\Exception\UwpApiFailure;
+use CultuurNet\UDB3\Uitwisselingsplatform\Queries\SparqlQueryInterface;
+use CultuurNet\UDB3\Uitwisselingsplatform\Queries\VerenigingsloketConnectionQuery;
 use CultuurNet\UDB3\Uitwisselingsplatform\Result\VerenigingsloketConnectionResult;
 use Exception;
 use GuzzleHttp\Psr7\Request;
@@ -62,18 +64,18 @@ class UitwisselingsplatformApiConnector
         }
     }
 
-    private function performSparqlQuery(string $queryEndpoint, string $query): ResponseInterface
+    private function performSparqlQuery(SparqlQueryInterface $queryObject): ResponseInterface
     {
         $request = new Request(
             'POST',
-            $queryEndpoint,
+            $queryObject->getEndpoint(),
             [
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . $this->fetchAccessToken(),
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
             http_build_query([
-                'query' => $query,
+                'query' => $queryObject->getQuery(),
             ])
         );
         return $this->httpClient->sendRequest($request);
@@ -81,38 +83,7 @@ class UitwisselingsplatformApiConnector
 
     public function fetchVerenigingsloketConnectionForOrganizer(Uuid $organizerId): ?VerenigingsloketConnectionResult
     {
-        $orgUrl = 'https://data.publiq.be/id/organizer/udb/' . $organizerId->toString();
-
-        $query = '
-            PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-            PREFIX dcterms: <http://purl.org/dc/terms/>
-            PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-            PREFIX sssom: <https://w3id.org/sssom/>
-            PREFIX adms: <http://www.w3.org/ns/adms#>
-            PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
-            SELECT DISTINCT ?mapping ?object_id ?object_label ?subject_id ?subject_label ?vcode ?vcode_url
-            FROM <https://verenigingsloket.be/mappings/>
-            WHERE {
-                ?mapping rdf:type sssom:Mapping .
-                ?mapping sssom:predicate_id "skos:exactMatch" .
-                ?mapping sssom:object_id <' . $orgUrl . '> .
-                ?mapping sssom:object_label ?object_label .
-                ?mapping sssom:subject_id ?subject_id .
-                ?mapping sssom:subject_label ?subject_label .
-
-                # Extract the vcode identifier using string replacement
-                BIND(REPLACE(STR(?subject_id), "https://data.vlaanderen.be/id/verenigingen/", "") AS ?vcode)
-
-                # Create the Verenigingsloket URL as a typed literal
-                BIND(STRDT(CONCAT("https://www.verenigingsloket.be/nl/verenigingen/", ?vcode), xsd:anyURI) AS ?vcode_url)
-            }
-            ';
-
-        $response = $this->performSparqlQuery(
-            'https://data.uitwisselingsplatform.be/be.dcjm.verenigingen/verenigingen-entity-mapping/sparql',
-            $query
-        );
+        $response = $this->performSparqlQuery(new VerenigingsloketConnectionQuery($organizerId));
 
         try {
             $data = JSON::decodeAssociatively($response->getBody()->getContents());
