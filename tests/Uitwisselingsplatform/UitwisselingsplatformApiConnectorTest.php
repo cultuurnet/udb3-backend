@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\UWP;
+namespace CultuurNet\UDB3\Uitwisselingsplatform;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\UWP\Exception\UwpApiFailure;
-use CultuurNet\UDB3\UWP\Result\VerenigingsloketConnectionResult;
+use CultuurNet\UDB3\Uitwisselingsplatform\Exception\UwpApiFailure;
+use CultuurNet\UDB3\Uitwisselingsplatform\Result\VerenigingsloketConnectionResult;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -15,11 +15,11 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-class UwpApiConnectorTest extends TestCase
+class UitwisselingsplatformApiConnectorTest extends TestCase
 {
     private LoggerInterface|MockObject $logger;
     private MockHandler $mockHandler;
-    private UwpApiConnector $uwpApiConnector;
+    private UitwisselingsplatformApiConnector $uwpApiConnector;
 
     protected function setUp(): void
     {
@@ -29,7 +29,7 @@ class UwpApiConnectorTest extends TestCase
         $handlerStack = HandlerStack::create($this->mockHandler);
         $client = new Client(['handler' => $handlerStack]);
 
-        $this->uwpApiConnector = new UwpApiConnector(
+        $this->uwpApiConnector = new UitwisselingsplatformApiConnector(
             $client,
             'test-client-id',
             'test-client-secret',

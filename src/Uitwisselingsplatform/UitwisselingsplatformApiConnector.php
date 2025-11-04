@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\UWP;
+namespace CultuurNet\UDB3\Uitwisselingsplatform;
 
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\UWP\Exception\UwpApiFailure;
-use CultuurNet\UDB3\UWP\Result\VerenigingsloketConnectionResult;
+use CultuurNet\UDB3\Uitwisselingsplatform\Exception\UwpApiFailure;
+use CultuurNet\UDB3\Uitwisselingsplatform\Result\VerenigingsloketConnectionResult;
 use Exception;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Log\LoggerInterface;
 
-class UwpApiConnector
+class UitwisselingsplatformApiConnector
 {
     private ?string $accessToken = null;
 

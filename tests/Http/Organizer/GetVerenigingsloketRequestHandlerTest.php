@@ -8,9 +8,9 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\UWP\Exception\UwpApiFailure;
-use CultuurNet\UDB3\UWP\Result\VerenigingsloketConnectionResult;
-use CultuurNet\UDB3\UWP\UwpApiConnector;
+use CultuurNet\UDB3\Uitwisselingsplatform\Exception\UwpApiFailure;
+use CultuurNet\UDB3\Uitwisselingsplatform\Result\VerenigingsloketConnectionResult;
+use CultuurNet\UDB3\Uitwisselingsplatform\UitwisselingsplatformApiConnector;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -19,13 +19,13 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
 {
     private const ORGANIZER_ID = 'b3a0213a-9716-4555-9e72-77d4f8cf3cce';
 
-    private UwpApiConnector|MockObject $uwpApiConnector;
+    private UitwisselingsplatformApiConnector|MockObject $uwpApiConnector;
     private GetVerenigingsloketRequestHandler $handler;
     private Psr7RequestBuilder $psr7RequestBuilder;
 
     protected function setUp(): void
     {
-        $this->uwpApiConnector = $this->createMock(UwpApiConnector::class);
+        $this->uwpApiConnector = $this->createMock(UitwisselingsplatformApiConnector::class);
         $this->handler = new GetVerenigingsloketRequestHandler($this->uwpApiConnector);
         $this->psr7RequestBuilder = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', self::ORGANIZER_ID);

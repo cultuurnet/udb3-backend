@@ -40,7 +40,7 @@ use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Organizer\ReadModel\RDF\OrganizerJsonToTurtleConverter;
 use CultuurNet\UDB3\User\CurrentUser;
 use CultuurNet\UDB3\User\UserIdentityResolver;
-use CultuurNet\UDB3\UWP\UwpApiConnector;
+use CultuurNet\UDB3\Uitwisselingsplatform\UitwisselingsplatformApiConnector;
 
 final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvider
 {
@@ -276,7 +276,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             GetVerenigingsloketRequestHandler::class,
             function () use ($container) {
                 return new GetVerenigingsloketRequestHandler(
-                    $container->get(UwpApiConnector::class)
+                    $container->get(UitwisselingsplatformApiConnector::class)
                 );
             }
         );

@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\UWP;
+namespace CultuurNet\UDB3\Uitwisselingsplatform;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use GuzzleHttp\Client;
 
-final class UwpServiceProvider extends AbstractServiceProvider
+final class UitwisselingsplatformServiceProvider extends AbstractServiceProvider
 {
     protected function getProvidedServiceNames(): array
     {
         return [
-            UwpApiConnector::class,
+            UitwisselingsplatformApiConnector::class,
         ];
     }
 
@@ -23,9 +23,9 @@ final class UwpServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->addShared(
-            UwpApiConnector::class,
+            UitwisselingsplatformApiConnector::class,
             function () use ($container) {
-                return new UwpApiConnector(
+                return new UitwisselingsplatformApiConnector(
                     new Client(),
                     $container->get('config')['uitwisselingsplatform']['client_id'],
                     $container->get('config')['uitwisselingsplatform']['client_secret'],

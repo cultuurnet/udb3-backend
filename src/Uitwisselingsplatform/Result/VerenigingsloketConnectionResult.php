@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\UWP\Result;
+namespace CultuurNet\UDB3\Uitwisselingsplatform\Result;
 
 final class VerenigingsloketConnectionResult
 {
