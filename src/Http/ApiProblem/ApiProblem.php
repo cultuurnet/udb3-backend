@@ -573,7 +573,7 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function verenigingsloketMatchNotFound(string $organizerId, ): self
+    public static function verenigingsloketMatchNotFound(string $organizerId): self
     {
         return self::create(
             'https://api.publiq.be/probs/url/not-found',
