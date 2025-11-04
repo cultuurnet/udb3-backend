@@ -32,7 +32,7 @@ final class GetVerenigingsloketRequestHandler implements RequestHandlerInterface
         }
 
         if ($result === null) {
-            throw ApiProblem::verenigingslokketConnectionNotFound($organizerId);
+            throw ApiProblem::verenigingsloketMatchNotFound($organizerId);
         }
 
         return new JsonResponse([
