@@ -1,6 +1,6 @@
 services:
-  php-base-8-0:
-    build: docker/php8.0
+  php-base-8-1:
+    build: docker/php8.1
     volumes:
       - .:/var/www/html:cached
     working_dir: /var/www/html
@@ -28,18 +28,18 @@ services:
   php:
       container_name: php.uitdatabank
       extends:
-          service: php-base-8-0
+          service: php-base-8-1
       ports:
           - '8000:80'
 
   php-xdebug:
       container_name: php-xdebug.uitdatabank
       extends:
-          service: php-base-8-0
+          service: php-base-8-1
       profiles:
           - xdebug
       build:
-          context: docker/php8.0
+          context: docker/php8.1
           args:
               ENABLE_XDEBUG: "true"
       environment:
