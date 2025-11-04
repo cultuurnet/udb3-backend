@@ -27,8 +27,8 @@ final class UwpServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 return new UwpApiConnector(
                     new Client(),
-                    $container->get('config')['uwp']['client_id'],
-                    $container->get('config')['uwp']['client_secret'],
+                    $container->get('config')['uitwisselingsplatform']['client_id'],
+                    $container->get('config')['uitwisselingsplatform']['client_secret'],
                     LoggerFactory::create($container, LoggerName::forWeb())
                 );
             }
