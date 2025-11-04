@@ -55,7 +55,7 @@ class UwpApiConnectorTest extends TestCase
         );
 
         $organizerId = new Uuid('12345678-1234-1234-1234-123456789012');
-        $result = $this->uwpApiConnector->fetchVerenigingslokketConnectionForOrganizer($organizerId);
+        $result = $this->uwpApiConnector->fetchVerenigingsloketConnectionForOrganizer($organizerId);
 
         $this->assertInstanceOf(VerenigingsloketConnectionResult::class, $result);
         $this->assertEquals('V123456', $result->getVcode());
@@ -75,7 +75,7 @@ class UwpApiConnectorTest extends TestCase
         );
 
         $organizerId = new Uuid('12345678-1234-1234-1234-123456789012');
-        $result = $this->uwpApiConnector->fetchVerenigingslokketConnectionForOrganizer($organizerId);
+        $result = $this->uwpApiConnector->fetchVerenigingsloketConnectionForOrganizer($organizerId);
 
         $this->assertNull($result);
     }
@@ -98,7 +98,7 @@ class UwpApiConnectorTest extends TestCase
         );
 
         $organizerId = new Uuid('12345678-1234-1234-1234-123456789012');
-        $result = $this->uwpApiConnector->fetchVerenigingslokketConnectionForOrganizer($organizerId);
+        $result = $this->uwpApiConnector->fetchVerenigingsloketConnectionForOrganizer($organizerId);
 
         $this->assertNull($result);
     }
@@ -118,7 +118,7 @@ class UwpApiConnectorTest extends TestCase
         $this->expectExceptionMessage('No access token in response');
 
         $organizerId = new Uuid('12345678-1234-1234-1234-123456789012');
-        $this->uwpApiConnector->fetchVerenigingslokketConnectionForOrganizer($organizerId);
+        $this->uwpApiConnector->fetchVerenigingsloketConnectionForOrganizer($organizerId);
     }
 
     public function testFetchVereningslokketConnectionForOrganizerUsesCorrectOrganizerId(): void
@@ -139,7 +139,7 @@ class UwpApiConnectorTest extends TestCase
             ]))
         );
 
-        $result = $this->uwpApiConnector->fetchVerenigingslokketConnectionForOrganizer($organizerId);
+        $result = $this->uwpApiConnector->fetchVerenigingsloketConnectionForOrganizer($organizerId);
 
         $this->assertInstanceOf(VerenigingsloketConnectionResult::class, $result);
         $this->assertEquals('V654321', $result->getVcode());

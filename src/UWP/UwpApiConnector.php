@@ -79,7 +79,7 @@ class UwpApiConnector
         return $this->httpClient->sendRequest($request);
     }
 
-    public function fetchVerenigingslokketConnectionForOrganizer(Uuid $organizerId): ?VerenigingsloketConnectionResult
+    public function fetchVerenigingsloketConnectionForOrganizer(Uuid $organizerId): ?VerenigingsloketConnectionResult
     {
         $orgUrl = 'https://data.publiq.be/id/organizer/udb/' . $organizerId->toString();
 

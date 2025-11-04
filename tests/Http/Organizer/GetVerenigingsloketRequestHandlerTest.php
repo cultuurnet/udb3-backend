@@ -38,7 +38,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
 
         $this->uwpApiConnector
             ->expects($this->once())
-            ->method('fetchVerenigingslokketConnectionForOrganizer')
+            ->method('fetchVerenigingsloketConnectionForOrganizer')
             ->with(new Uuid(self::ORGANIZER_ID))
             ->willReturn(new VerenigingsloketConnectionResult($vcode, $url));
 
@@ -56,7 +56,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
     {
         $this->uwpApiConnector
             ->expects($this->once())
-            ->method('fetchVerenigingslokketConnectionForOrganizer')
+            ->method('fetchVerenigingsloketConnectionForOrganizer')
             ->with(new Uuid(self::ORGANIZER_ID))
             ->willThrowException(new UwpApiFailure('Failed to fetch token'));
 
@@ -71,7 +71,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
     {
         $this->uwpApiConnector
             ->expects($this->once())
-            ->method('fetchVerenigingslokketConnectionForOrganizer')
+            ->method('fetchVerenigingsloketConnectionForOrganizer')
             ->with(new Uuid(self::ORGANIZER_ID))
             ->willReturn(null);
 

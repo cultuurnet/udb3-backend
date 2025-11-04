@@ -26,7 +26,7 @@ final class GetVerenigingsloketRequestHandler implements RequestHandlerInterface
         $organizerId = $routeParameters->getOrganizerId();
 
         try {
-            $result = $this->uwpApiConnector->fetchVerenigingslokketConnectionForOrganizer(new Uuid($organizerId));
+            $result = $this->uwpApiConnector->fetchVerenigingsloketConnectionForOrganizer(new Uuid($organizerId));
         } catch (UwpApiFailure) {
             throw ApiProblem::uwpApiFailure();
         }
