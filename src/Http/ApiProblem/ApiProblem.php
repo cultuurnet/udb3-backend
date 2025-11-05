@@ -572,4 +572,22 @@ final class ApiProblem extends Exception
             'Place is an UiTPAS counter. UiTPAS places cannot be deleted.'
         );
     }
+
+    public static function verenigingsloketMatchNotFound(string $organizerId): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/url/not-found',
+            sprintf('Organizer %s not found in verenigingsloket.', $organizerId),
+            StatusCodeInterface::STATUS_NOT_FOUND,
+        );
+    }
+
+    public static function uwpApiFailure(): self
+    {
+        return self::create(
+            'https://api.publiq.be/uitdatabank/uwp-api-failure',
+            'Failed to connect to UiTWisselingsplatform',
+            StatusCodeInterface::STATUS_SERVICE_UNAVAILABLE,
+        );
+    }
 }

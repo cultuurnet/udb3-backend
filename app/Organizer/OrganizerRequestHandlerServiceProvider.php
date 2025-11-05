@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Http\Organizer\GetCreatorRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetVerenigingsloketRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\LegacyOrganizerRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
@@ -39,6 +40,7 @@ use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Organizer\ReadModel\RDF\OrganizerJsonToTurtleConverter;
 use CultuurNet\UDB3\User\CurrentUser;
 use CultuurNet\UDB3\User\UserIdentityResolver;
+use CultuurNet\UDB3\Uitwisselingsplatform\UitwisselingsplatformApiConnector;
 
 final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvider
 {
@@ -68,6 +70,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             GetPermissionsForCurrentUserRequestHandler::class,
             GetContributorsRequestHandler::class,
             GetPermissionsForGivenUserRequestHandler::class,
+            GetVerenigingsloketRequestHandler::class,
             UpdateContributorsRequestHandler::class,
         ];
     }
@@ -265,6 +268,15 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             function () use ($container) {
                 return new GetPermissionsForGivenUserRequestHandler(
                     $container->get('organizer_permission_voter')
+                );
+            }
+        );
+
+        $container->addShared(
+            GetVerenigingsloketRequestHandler::class,
+            function () use ($container) {
+                return new GetVerenigingsloketRequestHandler(
+                    $container->get(UitwisselingsplatformApiConnector::class)
                 );
             }
         );
