@@ -25,11 +25,27 @@ trait UtilitySteps
     }
 
     /**
+     * @Given I create a random labelname of :nrOfCharacters characters
+     */
+    public function iCreateARandomLabelnameOfCharacters(int $nrOfCharacters): void
+    {
+        $this->variableState->setRandomVariable('labelname', $nrOfCharacters);
+    }
+
+    /**
      * @Given I set the value of name to :value
      */
     public function iSetTheValueOfNameTo(string $value): void
     {
         $this->variableState->setVariable('name', $value);
+    }
+
+    /**
+     * @Given I set the value of labelname to :value
+     */
+    public function iSetTheValueOfLabelnameTo(string $value): void
+    {
+        $this->variableState->setVariable('labelname', $value);
     }
 
     /**

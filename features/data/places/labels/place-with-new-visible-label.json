@@ -18,6 +18,6 @@
   },
   "calendarType": "permanent",
   "labels": [
-    "%{name}"
+    "%{labelname}"
   ]
 }
