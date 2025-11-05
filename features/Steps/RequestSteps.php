@@ -39,6 +39,10 @@ trait RequestSteps
      */
     public function iSetTheJsonRequestPayloadFrom(string $fileName): void
     {
+        if (str_contains($fileName, 'places')) {
+            $this->variableState->setRandomVariable('name', 20);
+        }
+
         $this->requestState->setJson(
             $this->fixtures->loadJson($fileName, $this->variableState)
         );
@@ -67,7 +71,10 @@ trait RequestSteps
      */
     public function iSendAPostRequestTo(string $url): void
     {
-        $response = $this->getHttpClient()->postJSON($url, $this->requestState->getJson());
+        $response = $this->getHttpClient()->postJSON(
+            $url,
+            $this->variableState->replaceVariables($this->requestState->getJson())
+        );
         $this->responseState->setResponse($response);
     }
 
