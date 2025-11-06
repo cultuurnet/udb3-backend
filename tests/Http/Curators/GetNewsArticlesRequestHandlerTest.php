@@ -18,8 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 class GetNewsArticlesRequestHandlerTest extends TestCase
 {
-    /** @var NewsArticleRepository&MockObject  */
-    private $newsArticleRepository;
+    private NewsArticleRepository&MockObject $newsArticleRepository;
 
     private GetNewsArticlesRequestHandler $getNewsArticlesRequestHandler;
 

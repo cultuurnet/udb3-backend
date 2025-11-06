@@ -17,10 +17,7 @@ final class GetPermissionsForCurrentUserRequestHandlerTest extends TestCase
 
     private const ORGANIZER_ID = 'd67e5cbc-c085-4ee0-a97b-c3795d480bd4';
 
-    /**
-     * @var PermissionVoter&MockObject
-     */
-    private $voter;
+    private PermissionVoter&MockObject $voter;
 
     private GetPermissionsForCurrentUserRequestHandler $getPermissionsForCurrentUserRequestHandler;
 

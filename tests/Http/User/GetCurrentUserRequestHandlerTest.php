@@ -25,10 +25,7 @@ final class GetCurrentUserRequestHandlerTest extends TestCase
 
     private GetCurrentUserRequestHandler $getCurrentUserIdentityController;
 
-    /**
-     * @var UserIdentityResolver&MockObject
-     */
-    private $userIdentityResolver;
+    private UserIdentityResolver&MockObject $userIdentityResolver;
 
     protected function setUp(): void
     {

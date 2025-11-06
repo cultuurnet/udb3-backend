@@ -13,10 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class LocalPlaceServiceTest extends TestCase
 {
-    /**
-     * @var PlaceRelationsRepository&MockObject
-     */
-    private $placeRelationsRepository;
+    private PlaceRelationsRepository&MockObject $placeRelationsRepository;
 
     private LocalPlaceService $localPlaceService;
 

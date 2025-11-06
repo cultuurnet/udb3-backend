@@ -11,10 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 class JSONLDEventFormatterTest extends TestCase
 {
-    /**
-     * @var CalendarSummaryRepositoryInterface&MockObject
-     */
-    private $calendarSummaryRepository;
+    private CalendarSummaryRepositoryInterface&MockObject $calendarSummaryRepository;
 
     public function setUp(): void
     {

@@ -17,8 +17,7 @@ class UpdateThemeRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var CommandBus&MockObject */
-    private $commandBus;
+    private CommandBus&MockObject $commandBus;
     private UpdateThemeRequestHandler $updateThemeRequestHandler;
 
     protected function setUp(): void

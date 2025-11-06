@@ -28,10 +28,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class ChangeOwnerHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var ResourceOwnerQuery&MockObject
-     */
-    private $permissionQuery;
+    private ResourceOwnerQuery&MockObject $permissionQuery;
 
     protected function createCommandHandler(
         EventStore $eventStore,

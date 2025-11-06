@@ -22,10 +22,7 @@ final class CuratorEnrichedOfferRepositoryTest extends TestCase
 {
     private CuratorEnrichedOfferRepository $curatorEnrichedOfferRepository;
 
-    /**
-     * @var NewsArticleRepository&MockObject
-     */
-    private $newsArticleRepository;
+    private NewsArticleRepository&MockObject $newsArticleRepository;
 
     protected function setUp(): void
     {

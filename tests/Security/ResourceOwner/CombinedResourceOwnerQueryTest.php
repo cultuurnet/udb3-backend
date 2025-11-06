@@ -12,7 +12,7 @@ final class CombinedResourceOwnerQueryTest extends TestCase
     /**
      * @var ResourceOwnerQuery[]&MockObject[]
      */
-    private $permissionQueries;
+    private array $permissionQueries;
 
     private CombinedResourceOwnerQuery $combinedPermissionQuery;
 

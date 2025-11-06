@@ -13,10 +13,7 @@ class AbstractRejectedTest extends TestCase
 
     private string $reason;
 
-    /**
-     * @var AbstractRejected&MockObject
-     */
-    private $abstractRejected;
+    private AbstractRejected&MockObject $abstractRejected;
 
     protected function setUp(): void
     {

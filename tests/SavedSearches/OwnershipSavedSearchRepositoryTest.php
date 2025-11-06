@@ -27,10 +27,7 @@ final class OwnershipSavedSearchRepositoryTest extends TestCase
 
     private DocumentRepository $organizerDocumentRepository;
 
-    /**
-     * @var OwnershipSearchRepository&MockObject
-     */
-    private $ownershipSearchRepository;
+    private OwnershipSearchRepository&MockObject $ownershipSearchRepository;
     private OwnershipSavedSearchRepository $ownershipSavedSearchRepository;
 
     protected function setUp(): void

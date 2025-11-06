@@ -21,10 +21,7 @@ final class MediaObjectSerializerTest extends TestCase
 {
     protected MediaObjectSerializer $serializer;
 
-    /**
-     * @var IriGeneratorInterface&MockObject
-     */
-    protected $iriGenerator;
+    protected IriGeneratorInterface&MockObject $iriGenerator;
 
     public function setUp(): void
     {
