@@ -11,15 +11,9 @@ use PHPUnit\Framework\TestCase;
 
 class AbstractEventStoreDecoratorTest extends TestCase
 {
-    /**
-     * @var EventStore&MockObject
-     */
-    private $eventStore;
+    private EventStore&MockObject $eventStore;
 
-    /**
-     * @var AbstractEventStoreDecorator&MockObject
-     */
-    private $abstractEventStoreDecorator;
+    private AbstractEventStoreDecorator&MockObject $abstractEventStoreDecorator;
 
     protected function setUp(): void
     {

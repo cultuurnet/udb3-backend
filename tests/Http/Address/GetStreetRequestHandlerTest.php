@@ -18,10 +18,7 @@ final class GetStreetRequestHandlerTest extends TestCase
     use AssertApiProblemTrait;
     use AssertJsonResponseTrait;
 
-    /**
-     * @var StreetSuggester&MockObject
-     */
-    private $streetSuggester;
+    private StreetSuggester&MockObject $streetSuggester;
 
     private GetStreetRequestHandler $getStreetRequestHandler;
 

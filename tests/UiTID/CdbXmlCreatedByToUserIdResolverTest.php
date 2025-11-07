@@ -13,15 +13,9 @@ use Psr\Log\LoggerInterface;
 
 class CdbXmlCreatedByToUserIdResolverTest extends TestCase
 {
-    /**
-     * @var UserIdentityResolver&MockObject
-     */
-    private $users;
+    private UserIdentityResolver&MockObject $users;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private $logger;
+    private LoggerInterface&MockObject $logger;
 
     private CdbXmlCreatedByToUserIdResolver $resolver;
 

@@ -19,8 +19,7 @@ class UpdateFacilitiesRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var CommandBus&MockObject */
-    private $commandBus;
+    private CommandBus&MockObject $commandBus;
     private UpdateFacilitiesRequestHandler $updateFacilitiesRequestHandler;
 
     protected function setUp(): void

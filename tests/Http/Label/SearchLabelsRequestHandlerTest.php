@@ -23,10 +23,7 @@ final class SearchLabelsRequestHandlerTest extends TestCase
 
     private array $labels = [];
 
-    /**
-     * @var ReadRepositoryInterface&MockObject
-     */
-    private $labelRepository;
+    private ReadRepositoryInterface&MockObject $labelRepository;
 
     private SearchLabelsRequestHandler $searchLabelsRequestHandler;
 

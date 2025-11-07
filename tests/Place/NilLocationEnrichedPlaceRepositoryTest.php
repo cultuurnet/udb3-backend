@@ -17,8 +17,7 @@ final class NilLocationEnrichedPlaceRepositoryTest extends TestCase
 {
     private NilLocationEnrichedPlaceRepository $nilLocationEnrichedPlaceRepository;
 
-    /** @var DocumentRepository&MockObject  */
-    private $placeRepository;
+    private DocumentRepository&MockObject $placeRepository;
 
     protected function setUp(): void
     {

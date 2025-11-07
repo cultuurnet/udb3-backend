@@ -29,14 +29,11 @@ class ApproveOwnershipRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    /** @var OwnershipSearchRepository&MockObject */
-    private $ownerShipSearchRepository;
+    private OwnershipSearchRepository&MockObject $ownerShipSearchRepository;
 
-    /** @var PermissionVoter&MockObject */
-    private $permissionVoter;
+    private PermissionVoter&MockObject $permissionVoter;
 
-    /** @var DocumentRepository&MockObject */
-    private $organizerRepository;
+    private DocumentRepository&MockObject $organizerRepository;
 
     private string $itemId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
 

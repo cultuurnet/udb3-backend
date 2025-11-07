@@ -21,15 +21,9 @@ final class ProductionCommandHandlerTest extends TestCase
 
     private ProductionCommandHandler $commandHandler;
 
-    /**
-     * @var SkippedSimilarEventsRepository&MockObject
-     */
-    private $skippedSimilarEventsRepository;
+    private SkippedSimilarEventsRepository&MockObject $skippedSimilarEventsRepository;
 
-    /**
-     * @var DocumentRepository&MockObject
-     */
-    private $eventRepository;
+    private DocumentRepository&MockObject $eventRepository;
 
     protected function setUp(): void
     {

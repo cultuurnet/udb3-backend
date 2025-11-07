@@ -30,15 +30,9 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class EnrichingEventListenerDecoratorTest extends TestCase
 {
-    /**
-     * @var DomainMessageEnricherInterface&MockObject
-     */
-    private $enricher;
+    private DomainMessageEnricherInterface&MockObject $enricher;
 
-    /**
-     * @var EventListener&MockObject
-     */
-    private $decoratee;
+    private EventListener&MockObject $decoratee;
 
     private EnrichingEventListenerDecorator $enrichingDecorator;
 

@@ -38,10 +38,7 @@ final class AddLabelHandlerTest extends CommandHandlerScenarioTestCase
      */
     private array $mockedLabelReadModels;
 
-    /**
-     * @var LabelServiceInterface&MockObject
-     */
-    private $labelService;
+    private LabelServiceInterface&MockObject $labelService;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): AddLabelHandler
     {

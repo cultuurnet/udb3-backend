@@ -12,15 +12,9 @@ use PHPUnit\Framework\TestCase;
 
 class CompositePropertiesFactoryTest extends TestCase
 {
-    /**
-     * @var PropertiesFactoryInterface&MockObject
-     */
-    private $mockFactory1;
+    private PropertiesFactoryInterface&MockObject $mockFactory1;
 
-    /**
-     * @var PropertiesFactoryInterface&MockObject
-     */
-    private $mockFactory2;
+    private PropertiesFactoryInterface&MockObject $mockFactory2;
 
     private CompositePropertiesFactory $compositeFactory;
 

@@ -33,10 +33,7 @@ class PlaceRepositoryTest extends TestCase
 {
     private PlaceRepository $placeRepository;
 
-    /**
-     * @var EventStore&MockObject
-     */
-    private $eventStore;
+    private EventStore&MockObject $eventStore;
 
     private TraceableEventBus $eventBus;
 

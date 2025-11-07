@@ -18,10 +18,7 @@ class ReadSavedSearchesRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
 
-    /**
-     * @var SavedSearchesOwnedByCurrentUser&MockObject
-     */
-    private $savedSearchRepository;
+    private SavedSearchesOwnedByCurrentUser&MockObject $savedSearchRepository;
 
     private ReadSavedSearchesRequestHandler $readSavedSearchesRequestHandler;
 

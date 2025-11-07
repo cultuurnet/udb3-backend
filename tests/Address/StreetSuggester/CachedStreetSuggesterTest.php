@@ -10,10 +10,7 @@ use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 final class CachedStreetSuggesterTest extends TestCase
 {
-    /**
-     * @var StreetSuggester&MockObject
-     */
-    private $fallbackStreetSuggester;
+    private StreetSuggester&MockObject $fallbackStreetSuggester;
 
     private CachedStreetSuggester $cachedStreetSuggester;
 

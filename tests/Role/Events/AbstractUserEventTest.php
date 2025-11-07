@@ -11,10 +11,9 @@ use PHPUnit\Framework\TestCase;
 class AbstractUserEventTest extends TestCase
 {
     /**
-     * @var AbstractUserEvent&MockObject
      * III-5812 Make inline once upgraded to PHP 8
      */
-    private $abstractUserEvent;
+    private AbstractUserEvent&MockObject $abstractUserEvent;
 
     private Uuid $uuid;
     private string $userId;

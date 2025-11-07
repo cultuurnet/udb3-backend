@@ -25,10 +25,7 @@ class UniqueDBALEventStoreDecoratorTest extends TestCase
 
     private UniqueDBALEventStoreDecorator $uniqueDBALEventStoreDecorator;
 
-    /**
-     * @var UniqueConstraintService&MockObject
-     */
-    private $uniqueConstraintService;
+    private UniqueConstraintService&MockObject $uniqueConstraintService;
 
     private string $uniqueTableName;
 

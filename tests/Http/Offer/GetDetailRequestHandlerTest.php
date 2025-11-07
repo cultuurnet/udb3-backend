@@ -25,11 +25,9 @@ class GetDetailRequestHandlerTest extends TestCase
 
     private GetDetailRequestHandler $getDetailRequestHandler;
 
-    /** @var JsonToTurtleConverter&MockObject */
-    private $placeJsonToTurtleConverter;
+    private JsonToTurtleConverter&MockObject $placeJsonToTurtleConverter;
 
-    /** @var JsonToTurtleConverter&MockObject */
-    private $eventJsonToTurtleConverter;
+    private JsonToTurtleConverter&MockObject $eventJsonToTurtleConverter;
 
     protected function setUp(): void
     {
