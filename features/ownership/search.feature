@@ -88,6 +88,34 @@ Feature: Test searching ownerships
     And the JSON response at "member/1/ownerId" should be "edf305f8-69b6-4553-914e-9ecedcba418e"
     And the JSON response at "member/1/state" should be "requested"
 
+  Scenario: Searching ownership of an organizer by state and with sort
+    Given I create a minimal organizer and save the "id" as "organizerId"
+    And I request ownership for "02566c96-8fd3-4b7e-aa35-cbebe6663b2d" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId1"
+    And I wait 2 seconds
+    And I request ownership for "79dd2821-3b89-4dbb-9143-920ff2edfa34" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId2"
+    When I send a GET request to '/ownerships/?state=requested&itemId=%{organizerId}&imit=2&sort=-created'
+    Then the response status should be 200
+    And the JSON response at "itemsPerPage" should be 2
+    And the JSON response at "totalItems" should be 2
+    And the JSON response at "member/0/id" should be "%{ownershipId2}"
+    And the JSON response at "member/0/ownerId" should be "79dd2821-3b89-4dbb-9143-920ff2edfa34"
+    And the JSON response at "member/0/state" should be "requested"
+    And the JSON response at "member/1/id" should be "%{ownershipId1}"
+    And the JSON response at "member/1/ownerId" should be "02566c96-8fd3-4b7e-aa35-cbebe6663b2d"
+    And the JSON response at "member/1/state" should be "requested"
+    When I send a GET request to '/ownerships/?state=requested&itemId=%{organizerId}&imit=2&sort=created'
+    Then the response status should be 200
+    And the JSON response at "itemsPerPage" should be 2
+    And the JSON response at "totalItems" should be 2
+    And the JSON response at "member/0/id" should be "%{ownershipId1}"
+    And the JSON response at "member/0/ownerId" should be "02566c96-8fd3-4b7e-aa35-cbebe6663b2d"
+    And the JSON response at "member/0/state" should be "requested"
+    And the JSON response at "member/1/id" should be "%{ownershipId2}"
+    And the JSON response at "member/1/ownerId" should be "79dd2821-3b89-4dbb-9143-920ff2edfa34"
+    And the JSON response at "member/1/state" should be "requested"
+
+
+
   Scenario: Searching ownership of an organizer takes into permission organisaties bewerken
     Given I create a minimal organizer and save the "id" as "organizerId1"
     And I wait for the organizer with url "/organizers/%{organizerId1}" to be indexed
