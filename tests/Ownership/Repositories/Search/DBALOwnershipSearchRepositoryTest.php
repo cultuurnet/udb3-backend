@@ -466,7 +466,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
      * @test
      * @dataProvider  sortOptionsProvider
      */
-    public function it_can_sort_search_results(string $sortField, array $expectedOutputs,): void
+    public function it_can_sort_search_results(string $sortField, array $expectedOutputs, ): void
     {
         $ownershipItemA = new OwnershipItem(
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
@@ -507,10 +507,10 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
         );
 
         $resultArray = $result->toArray();
-        $this->assertEquals( $expectedOutputs, array_map(fn($item) => $item->getOwnerId(), $resultArray) );
+        $this->assertEquals($expectedOutputs, array_map(fn ($item) => $item->getOwnerId(), $resultArray));
     }
 
-    public function sortOptionsProvider() : array
+    public function sortOptionsProvider(): array
     {
         return [
             ['owner_id',  ['auth0|user-a', 'auth0|user-b', 'auth0|user-c']],
