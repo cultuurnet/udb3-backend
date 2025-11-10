@@ -461,4 +461,99 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
 
         $this->ownershipSearchRepository->getById('wrong-id');
     }
+
+    /**
+     * @test
+     * @dataProvider  sortOptionsProvider
+     */
+    public function it_can_sort_search_results(string $sortField, array $expectedOutputs,): void
+    {
+        $ownershipItemA = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|user-c',
+            OwnershipState::requested()->toString()
+        );
+        $this->ownershipSearchRepository->save($ownershipItemA);
+
+        $ownershipItemB = new OwnershipItem(
+            '672265b6-d4d0-416e-9b0b-c29de7d18125',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|user-a',
+            OwnershipState::approved()->toString()
+        );
+        $this->ownershipSearchRepository->save($ownershipItemB);
+
+        $ownershipItemC = new OwnershipItem(
+            'a17b54af-6a99-4fdb-bc02-112659be2451',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|user-b',
+            OwnershipState::approved()->toString()
+        );
+        $this->ownershipSearchRepository->save($ownershipItemC);
+
+        $result = $this->ownershipSearchRepository->search(
+            new SearchQuery(
+                [
+                    new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
+                ],
+                0,
+                10,
+                $sortField
+            )
+        );
+
+        $resultArray = $result->toArray();
+        $this->assertEquals( $expectedOutputs, array_map(fn($item) => $item->getOwnerId(), $resultArray) );
+    }
+
+    public function sortOptionsProvider() : array
+    {
+        return [/*
+            ['owner_id',  ['auth0|user-a', 'auth0|user-b', 'auth0|user-c']],
+           ['+owner_id', ['auth0|user-a', 'auth0|user-b', 'auth0|user-c']],
+            ['-owner_id',  ['auth0|user-c', 'auth0|user-b', 'auth0|user-a']],
+    */
+            ['created',  ['auth0|user-c', 'auth0|user-a', 'auth0|user-b']],
+       //     ['+created', ['auth0|user-c', 'auth0|user-a', 'auth0|user-b']],
+   //         ['-created',  ['auth0|user-b', 'auth0|user-a', 'auth0|user-c']],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_default_sorting_when_no_sort_order_specified(): void
+    {
+        $ownershipItemA = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|user-z',
+            OwnershipState::requested()->toString()
+        );
+        $this->ownershipSearchRepository->save($ownershipItemA);
+
+        $ownershipItemB = new OwnershipItem(
+            '672265b6-d4d0-416e-9b0b-c29de7d18125',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|user-a',
+            OwnershipState::approved()->toString()
+        );
+        $this->ownershipSearchRepository->save($ownershipItemB);
+
+        $result = $this->ownershipSearchRepository->search(
+            new SearchQuery([
+                new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d'),
+            ])
+        );
+
+        $resultArray = $result->toArray();
+        $this->assertEquals('auth0|user-a', $resultArray[0]->getOwnerId());
+        $this->assertEquals('auth0|user-z', $resultArray[1]->getOwnerId());
+    }
 }
