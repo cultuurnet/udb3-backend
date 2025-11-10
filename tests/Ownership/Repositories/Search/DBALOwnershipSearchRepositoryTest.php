@@ -512,14 +512,13 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
 
     public function sortOptionsProvider() : array
     {
-        return [/*
+        return [
             ['owner_id',  ['auth0|user-a', 'auth0|user-b', 'auth0|user-c']],
            ['+owner_id', ['auth0|user-a', 'auth0|user-b', 'auth0|user-c']],
             ['-owner_id',  ['auth0|user-c', 'auth0|user-b', 'auth0|user-a']],
-    */
             ['created',  ['auth0|user-c', 'auth0|user-a', 'auth0|user-b']],
-       //     ['+created', ['auth0|user-c', 'auth0|user-a', 'auth0|user-b']],
-   //         ['-created',  ['auth0|user-b', 'auth0|user-a', 'auth0|user-c']],
+            ['+created', ['auth0|user-c', 'auth0|user-a', 'auth0|user-b']],
+            ['-created',  ['auth0|user-b', 'auth0|user-a', 'auth0|user-c']],
         ];
     }
 
