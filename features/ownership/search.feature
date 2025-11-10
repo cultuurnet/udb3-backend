@@ -91,7 +91,6 @@ Feature: Test searching ownerships
   Scenario: Searching ownership of an organizer by state and with sort
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I request ownership for "02566c96-8fd3-4b7e-aa35-cbebe6663b2d" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId1"
-    And I wait 2 seconds
     And I request ownership for "79dd2821-3b89-4dbb-9143-920ff2edfa34" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId2"
     When I send a GET request to '/ownerships/?state=requested&itemId=%{organizerId}&imit=2&sort=-created'
     Then the response status should be 200
