@@ -18,7 +18,7 @@ class SearchQueryTest extends TestCase
         $this->assertEquals(2, $searchQuery->getStart());
         $this->assertEquals(20, $searchQuery->getLimit());
         $this->assertEquals('created', $searchQuery->getSortBy());
-        $this->assertEquals('DESC', $searchQuery->getOrderBy());
+        $this->assertEquals('DESC', $searchQuery->getOrder());
     }
 
     /**
@@ -46,6 +46,6 @@ class SearchQueryTest extends TestCase
         $this->assertEquals(0, $searchQuery->getStart());
         $this->assertEquals(50, $searchQuery->getLimit());
         $this->assertEquals('owner_id', $searchQuery->getSortBy());
-        $this->assertEquals('ASC', $searchQuery->getOrderBy());
+        $this->assertEquals('ASC', $searchQuery->getOrder());
     }
 }

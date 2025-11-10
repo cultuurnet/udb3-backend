@@ -22,9 +22,9 @@ final class SearchQuery
     {
         $this->parameters = $parameters;
 
-        $this->start = $start !== null ? $start : 0;
-        $this->limit = $limit !== null ? $limit : 50;
-        $this->sortOrder = $sortOrder !== null ? $sortOrder : 'owner_id';
+        $this->start = $start ?? 0;
+        $this->limit = $limit ?? 50;
+        $this->sortOrder = $sortOrder ?? 'owner_id';
     }
 
     public function getStart(): int
@@ -39,15 +39,15 @@ final class SearchQuery
 
     public function getSortBy(): string
     {
-        if (strpos($this->sortOrder, '-') === 0) {
+        if (str_starts_with($this->sortOrder, '-')) {
             return substr($this->sortOrder, 1);
         }
         return $this->sortOrder;
     }
 
-    public function getOrderBy(): string
+    public function getOrder(): string
     {
-        if (strpos($this->sortOrder, '-') === 0) {
+        if (str_starts_with($this->sortOrder, '-')) {
             return 'DESC';
         }
         return 'ASC';

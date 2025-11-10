@@ -98,7 +98,7 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         }
 
         $ownershipSearchRows = $queryBuilder
-            ->orderBy($searchQuery->getSortBy(), $searchQuery->getOrderBy())
+            ->orderBy($searchQuery->getSortBy(), $searchQuery->getOrder())
             ->execute()
             ->fetchAllAssociative();
 
