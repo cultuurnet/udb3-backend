@@ -91,40 +91,6 @@ trait UtilitySteps
         assertEquals($result, $original + 1);
     }
 
-    /**
-     * @Given I enable duplicate place creation
-     */
-    public function iEnableDuplicatePlaceCreation(): void
-    {
-        $configFile = file_get_contents('config.php');
-
-        $configFile = str_replace(
-            "'prevent_duplicate_places_creation' => false",
-            "'prevent_duplicate_places_creation' => true",
-            $configFile
-        );
-
-        file_put_contents('config.php', $configFile);
-        sleep(2);
-    }
-
-    /**
-     * @Given I disable duplicatie place creation
-     */
-    public function iDisableDuplicatePlaceCreation(): void
-    {
-        $configFile = file_get_contents('config.php');
-
-        $configFile = str_replace(
-            "'prevent_duplicate_places_creation' => true",
-            "'prevent_duplicate_places_creation' => false",
-            $configFile
-        );
-
-        file_put_contents('config.php', $configFile);
-        sleep(2);
-    }
-
     private function countFilesByType(string $type, string $folder): int
     {
         $downloadsFolder = $this->config['folders'][$folder];
