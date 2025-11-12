@@ -193,11 +193,12 @@ Feature: Test labelling places
 
   Scenario: Remove private labels added by UI on a place via complete overwrite
     Given I am authorized as JWT provider user "centraal_beheerder"
+    And I create a random name of 10 characters
     When I set the JSON request payload to:
     """
     {
       "name": {
-        "nl": "Cafe Den Hemel"
+        "nl": "%{name}"
       },
       "terms": [
         {
