@@ -1,7 +1,7 @@
 {
   "mainLanguage": "nl",
   "name": {
-    "nl": "Cafe Den Hemel"
+    "nl": "%{name}"
   },
   "terms": [
     {

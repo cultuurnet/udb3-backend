@@ -1,6 +1,6 @@
 {
   "mainLanguage": "nl",
-  "name": "Cafe Den Hemel",
+  "name": "%{name}",
   "type": {
     "id": "ekdc4ATGoUitCa0e6me6xA"
   },

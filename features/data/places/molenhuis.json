@@ -3,7 +3,7 @@
   "name": {
     "en": "Mill House",
     "fr": "Maison de la Moulin",
-    "nl": "Molenhuis"
+    "nl": "%{name}"
   },
   "address": {
     "nl": {

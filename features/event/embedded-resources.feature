@@ -11,7 +11,7 @@ Feature: Embedded resources in event data
     And I create a minimal permanent event and save the "url" as "eventUrl"
     And I update the place at "%{placeUrl}" from "places/place-with-updated-name.json"
     When I get the event at "%{eventUrl}"
-    Then the JSON response at "location/name/nl" should be "Cafe Den Hemel UPDATED"
+    Then the JSON response at "location/name/nl" should be "%{name} UPDATED"
 
   Scenario: Update organizer name embedded on event
     When I create a minimal organizer and save the "url" as "organizerUrl"

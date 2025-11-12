@@ -31,7 +31,7 @@ Feature: Test place name property
     And the JSON response at "name" should be:
     """
     {
-      "nl": "Cafe Den Hemel",
+      "nl": "%{name}",
       "en": "Updated name test_place in English"
     }
     """
@@ -60,7 +60,7 @@ Feature: Test place name property
     And the JSON response at "name" should be:
     """
     {
-      "nl": "Cafe Den Hemel",
+      "nl": "%{name}",
       "en": "Updated name test_place in English through legacy"
     }
     """

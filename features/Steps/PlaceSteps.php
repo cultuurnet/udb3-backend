@@ -13,9 +13,11 @@ trait PlaceSteps
      */
     public function iCreateAPlaceAndSaveTheAs(string $jsonPath, string $variableName): void
     {
+        $this->variableState->setRandomVariable('name', 20);
+
         $this->createOrganizer(
             '/places',
-            $this->requestState->getJson(),
+            $this->variableState->replaceVariables($this->requestState->getJson()),
             $jsonPath,
             $variableName
         );
@@ -26,6 +28,8 @@ trait PlaceSteps
      */
     public function iCreateAMinimalPlaceAndSaveTheAs(string $jsonPath, string $variableName): void
     {
+        $this->variableState->setRandomVariable('name', 20);
+
         $this->createPlace(
             '/places',
             $this->fixtures->loadJson('places/place-with-required-fields.json', $this->variableState),
@@ -40,7 +44,9 @@ trait PlaceSteps
      */
     public function iCreateAMinimalPlaceAndSaveTheAsThenIShouldGetAResponseCode(string $jsonPath, string $variableName, int $responseCode): void
     {
-        $json = $this->fixtures->loadJson('places/place-with-required-fields-and-variable-name.json', $this->variableState);
+        $this->variableState->setRandomVariable('name', 20);
+
+        $json = $this->fixtures->loadJson('places/place-with-required-fields.json', $this->variableState);
 
         $this->createPlace(
             '/places',
@@ -56,7 +62,8 @@ trait PlaceSteps
      */
     public function iCreateAMinimalPlaceThenIShouldGetAResponseCode(int $responseCode): void
     {
-        $json = $this->fixtures->loadJson('places/place-with-required-fields-and-variable-name.json', $this->variableState);
+        // Don't set a random name because this step is used inside the duplicate place scenarios
+        $json = $this->fixtures->loadJson('places/place-with-required-fields.json', $this->variableState);
 
         $response = $this->getHttpClient()->postJSON(
             '/places',
@@ -73,6 +80,8 @@ trait PlaceSteps
      */
     public function iCreateAPlaceFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName): void
     {
+        $this->variableState->setRandomVariable('name', 20);
+
         $this->createPlace(
             '/places',
             $this->fixtures->loadJson($fileName, $this->variableState),
@@ -87,6 +96,8 @@ trait PlaceSteps
      */
     public function iImportANewPlaceFromAndSaveTheAs(string $fileName, string $jsonPath, string $variableName): void
     {
+        $this->variableState->setRandomVariable('name', 20);
+
         $this->createPlace(
             '/imports/places',
             $this->fixtures->loadJson($fileName, $this->variableState),

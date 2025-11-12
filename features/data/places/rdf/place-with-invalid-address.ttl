@@ -14,7 +14,7 @@
   dcterms:modified ""^^xsd:dateTime ;
   adms:identifier <http://data.uitdatabank.local:80/places/%{placeId}#identifier-%{identifier}> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
-  locn:locatorName "xxxx"@nl ;
+  locn:locatorName "%{name}"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/Yf4aZBfsUEu2NsQqsprngw> ;
   locn:address <http://data.uitdatabank.local:80/places/%{placeId}#address-e65e3e32> ;
   dcat:keyword "public-visible"^^labeltype:publiek, "public-invisible"^^labeltype:verborgen .

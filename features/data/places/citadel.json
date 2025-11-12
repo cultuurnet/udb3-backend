@@ -3,7 +3,7 @@
   "name": {
     "en": "Citadel",
     "fr": "Citadelle",
-    "nl": "Citadel"
+    "nl": "%{name}"
   },
   "address": {
     "nl": {
