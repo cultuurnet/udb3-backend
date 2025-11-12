@@ -10,8 +10,11 @@ use CultuurNet\UDB3\Ownership\OwnershipState;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItem;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemCollection;
 use CultuurNet\UDB3\Ownership\Repositories\OwnershipItemNotFound;
+use DateTimeImmutable;
+use DateTimeZone;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Query\QueryBuilder;
+use Broadway\Domain\DateTime as BroadwayDateTime;
 
 final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
 {
@@ -41,7 +44,8 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
             'item_type' => $ownershipSearchItem->getItemType(),
             'owner_id' => $ownershipSearchItem->getOwnerId(),
             'state' => $ownershipSearchItem->getState(),
-            'role_id' => $ownershipSearchItem->getRoleId() ? $ownershipSearchItem->getRoleId()->toString() : null,
+            'role_id' => $ownershipSearchItem->getRoleId()?->toString(),
+            'created' => (new DateTimeImmutable('now', new DateTimeZone('UTC')))->format(BroadwayDateTime::FORMAT_STRING),
         ]);
     }
 
@@ -94,7 +98,7 @@ final class DBALOwnershipSearchRepository implements OwnershipSearchRepository
         }
 
         $ownershipSearchRows = $queryBuilder
-            ->orderBy('owner_id', 'ASC')
+            ->orderBy($searchQuery->getSortBy(), $searchQuery->getOrder())
             ->execute()
             ->fetchAllAssociative();
 
