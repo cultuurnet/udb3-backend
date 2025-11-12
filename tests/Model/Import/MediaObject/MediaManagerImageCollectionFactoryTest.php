@@ -23,10 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 class MediaManagerImageCollectionFactoryTest extends TestCase
 {
-    /**
-     * @var MediaManagerInterface&MockObject
-     */
-    private $mediaManager;
+    private MediaManagerInterface&MockObject $mediaManager;
 
     private MediaManagerImageCollectionFactory $factory;
 

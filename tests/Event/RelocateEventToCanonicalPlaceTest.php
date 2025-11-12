@@ -29,10 +29,7 @@ final class RelocateEventToCanonicalPlaceTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    /**
-     * @var DuplicatePlaceRepository&MockObject
-     */
-    private $duplicatePlaceRepository;
+    private DuplicatePlaceRepository&MockObject $duplicatePlaceRepository;
 
     protected function setUp(): void
     {

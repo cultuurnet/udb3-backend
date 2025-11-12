@@ -21,10 +21,7 @@ final class BPostStreetSuggesterTest extends TestCase
 
     public const TOKEN = 'token';
 
-    /**
-     * @var ClientInterface&MockObject
-     */
-    private $client;
+    private ClientInterface&MockObject $client;
     private StreetSuggester $streetSuggester;
 
     public function setUp(): void

@@ -26,8 +26,7 @@ final class UpdateAttendanceModeRequestHandlerTest extends TestCase
 
     private UpdateAttendanceModeRequestHandler $updateAttendanceModeRequestHandler;
 
-    /** @var EventRelationsRepository&MockObject  */
-    private $eventRelationsRepository;
+    private EventRelationsRepository&MockObject $eventRelationsRepository;
 
     protected function setUp(): void
     {

@@ -16,10 +16,7 @@ class GetUserPermissionsRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
 
-    /**
-     * @var UserPermissionsReadRepositoryInterface&MockObject
-     */
-    private $permissionsRepository;
+    private UserPermissionsReadRepositoryInterface&MockObject $permissionsRepository;
 
     protected function setUp(): void
     {

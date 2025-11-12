@@ -15,15 +15,9 @@ final class BroadcastingWriteRepositoryDecoratorTest extends TestCase
 {
     private BroadcastingWriteRepositoryDecorator $broadcastingWriteRepositoryDecorator;
 
-    /**
-     * @var EventBus&MockObject
-     */
-    private $eventBus;
+    private EventBus&MockObject $eventBus;
 
-    /**
-     * @var WriteRepositoryInterface&MockObject
-     */
-    private $writeRepository;
+    private WriteRepositoryInterface&MockObject $writeRepository;
 
     public function setUp(): void
     {

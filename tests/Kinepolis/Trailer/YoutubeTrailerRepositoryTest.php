@@ -23,20 +23,11 @@ final class YoutubeTrailerRepositoryTest extends TestCase
 
     private string $channelId;
 
-    /**
-     * @var UuidGeneratorInterface&MockObject
-     */
-    private $uuidGenerator;
+    private UuidGeneratorInterface&MockObject $uuidGenerator;
 
-    /**
-     * @var Search&MockObject
-     */
-    private $search;
+    private Search&MockObject $search;
 
-    /**
-     * @var LoggerInterface&MockObject
-     */
-    private $logger;
+    private LoggerInterface&MockObject $logger;
 
     public function setUp(): void
     {

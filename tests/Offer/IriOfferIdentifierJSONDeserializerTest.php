@@ -14,10 +14,7 @@ class IriOfferIdentifierJSONDeserializerTest extends TestCase
 {
     private IriOfferIdentifierJSONDeserializer $deserializer;
 
-    /**
-     * @var IriOfferIdentifierFactoryInterface&MockObject
-     */
-    private $iriOfferIdentifierFactory;
+    private IriOfferIdentifierFactoryInterface&MockObject $iriOfferIdentifierFactory;
 
     public function setUp(): void
     {

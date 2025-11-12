@@ -15,10 +15,7 @@ class AbstractPublishedTest extends TestCase
 
     private \DateTimeInterface $publicationDate;
 
-    /**
-     * @var AbstractPublished&MockObject
-     */
-    private $abstractPublished;
+    private AbstractPublished&MockObject $abstractPublished;
 
     protected function setUp(): void
     {

@@ -30,26 +30,17 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 class SuggestOwnershipsRequestHandlerTest extends TestCase
 {
-    /**
-     * @var SearchServiceInterface&MockObject
-     */
-    private $searchService;
+    private SearchServiceInterface&MockObject $searchService;
 
     private CurrentUser $currentUser;
 
-    /**
-     * @var UserIdentityResolver&MockObject
-     */
-    private $userIdentityResolver;
+    private UserIdentityResolver&MockObject $userIdentityResolver;
 
     private OfferJsonDocumentReadRepositoryMockFactory $offerRepositoryFactory;
 
     private UserIdentityDetails $user;
 
-    /**
-     * @var OwnershipSearchRepository&MockObject
-     */
-    private $ownershipSearchRepository;
+    private OwnershipSearchRepository&MockObject $ownershipSearchRepository;
 
     private SuggestOwnershipsRequestHandler $suggestOwnershipsRequestHandler;
 

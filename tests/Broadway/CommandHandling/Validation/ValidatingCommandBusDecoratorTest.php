@@ -11,15 +11,9 @@ use PHPUnit\Framework\TestCase;
 
 class ValidatingCommandBusDecoratorTest extends TestCase
 {
-    /**
-     * @var CommandBus&MockObject
-     */
-    private $decoratee;
+    private CommandBus&MockObject $decoratee;
 
-    /**
-     * @var CommandValidatorInterface&MockObject
-     */
-    private $validator;
+    private CommandValidatorInterface&MockObject $validator;
 
     private ValidatingCommandBusDecorator $decorator;
 

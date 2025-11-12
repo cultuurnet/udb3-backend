@@ -25,8 +25,7 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    /** @var CommandBus&MockObject */
-    private $commandBus;
+    private CommandBus&MockObject $commandBus;
 
     private UpdatePriceInfoRequestHandler $updatePriceInfoRequestHandler;
 

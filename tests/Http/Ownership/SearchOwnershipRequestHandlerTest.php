@@ -27,11 +27,9 @@ class SearchOwnershipRequestHandlerTest extends TestCase
 
     private InMemoryDocumentRepository $ownershipRepository;
 
-    /** @var OwnershipSearchRepository&MockObject */
-    private $ownershipSearchRepository;
+    private OwnershipSearchRepository&MockObject $ownershipSearchRepository;
 
-    /** @var PermissionVoter&MockObject */
-    private $permissionVoter;
+    private PermissionVoter&MockObject $permissionVoter;
 
     private SearchOwnershipRequestHandler $getOwnershipRequestHandler;
 
@@ -473,6 +471,101 @@ class SearchOwnershipRequestHandlerTest extends TestCase
         $this->assertCallableThrowsApiProblem(
             ApiProblem::queryParameterMissing('itemId or state'),
             fn () => $this->getOwnershipRequestHandler->handle($getOwnershipRequest)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_searching_ownerships_with_sort_parameter(): void
+    {
+        CurrentUser::configureGodUserIds([]);
+
+        $getOwnershipRequest = (new Psr7RequestBuilder())
+            ->withUriFromString('?itemId=9e68dafc-01d8-4c1c-9612-599c918b981d&sort=-owner_id')
+            ->build('GET');
+
+        $ownershipItem1 = new OwnershipItem(
+            'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|user-a',
+            OwnershipState::approved()->toString()
+        );
+
+        $ownershipItem2 = new OwnershipItem(
+            '5c7dd3bb-fa44-4c84-b499-303ecc01cba1',
+            '9e68dafc-01d8-4c1c-9612-599c918b981d',
+            'organizer',
+            'auth0|user-z',
+            OwnershipState::rejected()->toString()
+        );
+
+        $ownershipCollection = new OwnershipItemCollection($ownershipItem1, $ownershipItem2);
+
+        $jsonDocuments = [];
+        /** @var OwnershipItem $ownership */
+        foreach ($ownershipCollection as $ownership) {
+            $jsonDocument = new JsonDocument(
+                $ownership->getId(),
+                Json::encode([
+                    'id' => $ownership->getId(),
+                    'itemId' => $ownership->getItemId(),
+                    'ownerId' => $ownership->getOwnerId(),
+                    'ownerType' => $ownership->getItemType(),
+                    'status' => $ownership->getState(),
+                ])
+            );
+            $jsonDocuments[] = $jsonDocument->getAssocBody();
+            $this->ownershipRepository->save($jsonDocument);
+        }
+
+        $searchQuery = new SearchQuery(
+            [new SearchParameter('itemId', '9e68dafc-01d8-4c1c-9612-599c918b981d')],
+            null,
+            null,
+            '-owner_id'
+        );
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with($searchQuery)
+            ->willReturn($ownershipCollection);
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('searchTotal')
+            ->with($searchQuery)
+            ->willReturn(2);
+
+        $this->ownershipSearchRepository->expects($this->exactly(2))
+            ->method('getById')
+            ->willReturnCallback(
+                function (string $ownershipId) use ($ownershipCollection) {
+                    foreach ($ownershipCollection as $ownership) {
+                        if ($ownership->getId() === $ownershipId) {
+                            return $ownership;
+                        }
+                    }
+                    return null;
+                }
+            );
+
+        $this->permissionVoter->expects($this->exactly(2))
+            ->method('isAllowed')
+            ->willReturn(true);
+
+        $response = $this->getOwnershipRequestHandler->handle($getOwnershipRequest);
+
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                '@context' => 'http://www.w3.org/ns/hydra/context.jsonld',
+                '@type' => 'PagedCollection',
+                'itemsPerPage' => 2,
+                'totalItems' => 2,
+                'member' => $jsonDocuments,
+            ]),
+            $response->getBody()->getContents()
         );
     }
 }

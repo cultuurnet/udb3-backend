@@ -17,10 +17,7 @@ final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
 
-    /**
-     * @var CultureFeed_Uitpas&MockObject
-     */
-    private $uitpas;
+    private \CultureFeed_Uitpas&MockObject $uitpas;
 
     private GetCardSystemsFromEventRequestHandler $getCardSystemFromEventRequestHandler;
 

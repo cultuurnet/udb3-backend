@@ -14,10 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class ExportEventsJSONDeserializerTest extends TestCase
 {
-    /**
-     * @var ExportEventsJSONDeserializer&MockObject
-     */
-    private $deserializer;
+    private ExportEventsJSONDeserializer&MockObject $deserializer;
 
     public function setUp(): void
     {

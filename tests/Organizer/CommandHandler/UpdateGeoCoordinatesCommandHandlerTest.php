@@ -26,10 +26,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 
 class UpdateGeoCoordinatesCommandHandlerTest extends CommandHandlerScenarioTestCase
 {
-    /**
-     * @var GeocodingService&MockObject
-     */
-    private $geocodingService;
+    private GeocodingService&MockObject $geocodingService;
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): UpdateGeoCoordinatesFromAddressCommandHandler
     {

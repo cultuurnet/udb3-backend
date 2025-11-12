@@ -21,17 +21,11 @@ use PHPUnit\Framework\TestCase;
 
 class CultureFeedEventInfoServiceTest extends TestCase
 {
-    /**
-     * @var \CultureFeed_Uitpas&MockObject
-     */
-    private $uitpas;
+    private Uitpas&MockObject $uitpas;
 
     private CultureFeedEventInfoService $infoService;
 
-    /**
-     * @var PromotionQueryFactoryInterface&MockObject
-     */
-    private $promotionQueryFactory;
+    private PromotionQueryFactoryInterface&MockObject $promotionQueryFactory;
 
     public function setUp(): void
     {

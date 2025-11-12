@@ -24,15 +24,9 @@ use PHPUnit\Framework\TestCase;
 
 class RoleUsersProjectorTest extends TestCase
 {
-    /**
-     * @var DocumentRepository&MockObject
-     */
-    private $repository;
+    private DocumentRepository&MockObject $repository;
 
-    /**
-     * @var UserIdentityResolver&MockObject
-     */
-    private $userIdentityResolver;
+    private UserIdentityResolver&MockObject $userIdentityResolver;
 
     private RoleUsersProjector $roleUsersProjector;
 
