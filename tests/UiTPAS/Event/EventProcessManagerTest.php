@@ -323,7 +323,7 @@ final class EventProcessManagerTest extends TestCase
             $this->warningLogs
         );
     }
-    
+
     /**
      * @test
      */
