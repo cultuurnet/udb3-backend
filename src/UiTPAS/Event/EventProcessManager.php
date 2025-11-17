@@ -10,8 +10,8 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\Commands\UpdateUiTPASPrices;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
-use CultuurNet\UDB3\Offer\Commands\AddLabel;
-use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
+use CultuurNet\UDB3\Offer\Commands\AddLabel as AddLabelToOffer;
+use CultuurNet\UDB3\Offer\Commands\RemoveLabel as RemoveLabelFromOffer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
@@ -193,7 +193,7 @@ class EventProcessManager implements EventListener
 
         $commands = array_map(
             function (Label $label) use ($offerId) {
-                return new RemoveLabel(
+                return new RemoveLabelFromOffer(
                     $offerId,
                     $label->getName()->toString()
                 );
@@ -219,7 +219,7 @@ class EventProcessManager implements EventListener
 
         $commands = array_map(
             function (Label $label) use ($offerId) {
-                return new AddLabel(
+                return new AddLabelToOffer(
                     $offerId,
                     $label
                 );
