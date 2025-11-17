@@ -193,11 +193,12 @@ Feature: Test labelling places
 
   Scenario: Remove private labels added by UI on a place via complete overwrite
     Given I am authorized as JWT provider user "centraal_beheerder"
+    And I create a random name of 10 characters
     When I set the JSON request payload to:
     """
     {
       "name": {
-        "nl": "Cafe Den Hemel"
+        "nl": "%{name}"
       },
       "terms": [
         {
@@ -333,44 +334,46 @@ Feature: Test labelling places
 
   @bugfix # https://jira.uitdatabank.be/browse/III-4652
   Scenario: Create place with new visible label
-    Given I create a random name of 10 characters
+    Given I create a random labelname of 10 characters
     And I create a place from "places/labels/place-with-new-visible-label.json" and save the "url" as "placeUrl"
     When I get the place at "%{placeUrl}"
     Then the JSON response at "labels" should be:
     """
-    ["%{name}"]
+    ["%{labelname}"]
     """
     And the JSON response should not have "hiddenLabels"
 
   @bugfix # https://jira.uitdatabank.be/browse/III-4652
   Scenario: Create place with new invisible label
-    Given I create a random name of 10 characters
+    Given I create a random labelname of 10 characters
     And I create a place from "places/labels/place-with-new-invisible-label.json" and save the "url" as "placeUrl"
     When I get the place at "%{placeUrl}"
     Then the JSON response should not have "labels"
     And the JSON response at "hiddenLabels" should be:
     """
-    ["%{name}"]
+    ["%{labelname}"]
     """
 
   Scenario: Create place and add a label via default endpoint
     Given I create a random name of 10 characters
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
     And I keep the value of the JSON response at "id" as "placeId"
-    When I send a PUT request to "/places/%{placeId}/labels/%{name}"
+    When I create a random labelname of 10 characters
+    And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
     Then the response status should be "204"
     And I get the place at "%{placeUrl}"
     And the JSON response at "labels" should be:
     """
-    ["%{name}"]
+    ["%{labelname}"]
     """
 
   Scenario: Create place and delete a label of the place
     Given I create a random name of 10 characters
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
+    Given I create a random labelname of 10 characters
     And I keep the value of the JSON response at "id" as "placeId"
-    And I send a PUT request to "/places/%{placeId}/labels/%{name}"
-    When I send a DELETE request to "/places/%{placeId}/labels/%{name}"
+    And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
+    When I send a DELETE request to "/places/%{placeId}/labels/%{labelname}"
     Then the response status should be "204"
     And I get the place at "%{placeUrl}"
     And the JSON response should not have "labels"
@@ -379,10 +382,11 @@ Feature: Test labelling places
     Given I create a random name of 10 characters
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
     And I keep the value of the JSON response at "id" as "placeId"
+    Given I create a random labelname of 10 characters
     When I set the JSON request payload to:
     """
     {
-	  "label": "%{name}"
+	  "label": "%{labelname}"
     }
     """
     And I send a POST request to "/places/%{placeId}/labels/"
@@ -390,5 +394,5 @@ Feature: Test labelling places
     And I get the place at "%{placeUrl}"
     And the JSON response at "labels" should be:
     """
-    ["%{name}"]
+    ["%{labelname}"]
     """

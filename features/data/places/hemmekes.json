@@ -3,7 +3,7 @@
   "name": {
     "en": "Meeting Center De Hemmekes",
     "fr": "Centre de réunion De Hemmekes",
-    "nl": "Ontmoetingscentrum De Hemmekes"
+    "nl": "%{name}"
   },
   "address": {
     "nl": {

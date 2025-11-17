@@ -25,11 +25,27 @@ trait UtilitySteps
     }
 
     /**
+     * @Given I create a random labelname of :nrOfCharacters characters
+     */
+    public function iCreateARandomLabelnameOfCharacters(int $nrOfCharacters): void
+    {
+        $this->variableState->setRandomVariable('labelname', $nrOfCharacters);
+    }
+
+    /**
      * @Given I set the value of name to :value
      */
     public function iSetTheValueOfNameTo(string $value): void
     {
         $this->variableState->setVariable('name', $value);
+    }
+
+    /**
+     * @Given I set the value of labelname to :value
+     */
+    public function iSetTheValueOfLabelnameTo(string $value): void
+    {
+        $this->variableState->setVariable('labelname', $value);
     }
 
     /**
@@ -73,40 +89,6 @@ trait UtilitySteps
         $original = (int) $this->variableState->getVariable('count');
         $result = $this->countFilesByType($type, $folderName);
         assertEquals($result, $original + 1);
-    }
-
-    /**
-     * @Given I enable duplicate place creation
-     */
-    public function iEnableDuplicatePlaceCreation(): void
-    {
-        $configFile = file_get_contents('config.php');
-
-        $configFile = str_replace(
-            "'prevent_duplicate_places_creation' => false",
-            "'prevent_duplicate_places_creation' => true",
-            $configFile
-        );
-
-        file_put_contents('config.php', $configFile);
-        sleep(2);
-    }
-
-    /**
-     * @Given I disable duplicatie place creation
-     */
-    public function iDisableDuplicatePlaceCreation(): void
-    {
-        $configFile = file_get_contents('config.php');
-
-        $configFile = str_replace(
-            "'prevent_duplicate_places_creation' => true",
-            "'prevent_duplicate_places_creation' => false",
-            $configFile
-        );
-
-        file_put_contents('config.php', $configFile);
-        sleep(2);
     }
 
     private function countFilesByType(string $type, string $folder): int
