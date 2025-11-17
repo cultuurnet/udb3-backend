@@ -11,6 +11,7 @@ final class CardSystemsUpdatedParser
 {
     public function parseId(object $payload): Id
     {
+        // Older messages (for events) use `cdbid`, while newer messages (for places and organizers) use `id`.
         if (!isset($payload->id) && !isset($payload->cdbid)) {
             throw new \InvalidArgumentException('Missing id or cdbid property.');
         }
