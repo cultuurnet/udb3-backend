@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\Event\PricesUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\EventProcessManager;
+use CultuurNet\UDB3\UiTPAS\Event\Organizer\OrganizerCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\Place\PlaceCardSystemsUpdatedDeserializer;
 use CultuurNet\UDB3\UiTPAS\Label\InMemoryUiTPASLabelsRepository;
 
@@ -46,6 +47,10 @@ final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
                 $uitpasDeserializerLocator->registerDeserializer(
                     'application/vnd.cultuurnet.uitpas-events.place-card-systems-updated+json',
                     new PlaceCardSystemsUpdatedDeserializer()
+                );
+                $uitpasDeserializerLocator->registerDeserializer(
+                    'application/vnd.cultuurnet.uitpas-events.organizer-card-systems-updated+json',
+                    new OrganizerCardSystemsUpdatedDeserializer()
                 );
 
                 $consumerFactory = new EventBusForwardingConsumerFactory(
