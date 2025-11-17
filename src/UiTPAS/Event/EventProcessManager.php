@@ -80,11 +80,11 @@ class EventProcessManager implements EventListener
 
         // Dispatch commands to remove the labels that are not supposed to be on the event.
         // The event aggregate will check if the label is present and only record a LabelRemoved event if it was.
-        $this->removeLabels(OfferType::event(), $eventId, $inapplicableLabelsForEvent);
+        $this->removeLabelsFromOffer(OfferType::event(), $eventId, $inapplicableLabelsForEvent);
 
         // Dispatch commands to add the labels that are supposed to be on the event.
         // The event aggregate will check if the label is present and only record a LabelAdded event if it was not.
-        $this->addLabels(OfferType::event(), $eventId, $applicableLabelsForEvent);
+        $this->addLabelsToOffer(OfferType::event(), $eventId, $applicableLabelsForEvent);
     }
 
     private function handlePlaceCardSystemsUpdated(PlaceCardSystemsUpdated $placeCardSystemsUpdated): void
@@ -107,11 +107,11 @@ class EventProcessManager implements EventListener
 
         // Dispatch commands to remove the labels that are not supposed to be on the place.
         // The place aggregate will check if the label is present and only record a LabelRemoved event if it was.
-        $this->removeLabels(OfferType::place(), $placeId, $inapplicableLabelsForPlace);
+        $this->removeLabelsFromOffer(OfferType::place(), $placeId, $inapplicableLabelsForPlace);
 
         // Dispatch commands to add the labels that are supposed to be on the place.
         // The place aggregate will check if the label is present and only record a LabelAdded event if it was not.
-        $this->addLabels(OfferType::place(), $placeId, $applicableLabelsForPlace);
+        $this->addLabelsToOffer(OfferType::place(), $placeId, $applicableLabelsForPlace);
     }
 
     private function handleUiTPASPricesUpdated(PricesUpdated $pricesUpdated): void
@@ -185,7 +185,7 @@ class EventProcessManager implements EventListener
     /**
      * @param Label[] $labels
      */
-    private function removeLabels(OfferType $offerType, string $offerId, array $labels): void
+    private function removeLabelsFromOffer(OfferType $offerType, string $offerId, array $labels): void
     {
         $this->logger->info(
             'Removing UiTPAS labels for irrelevant card systems from ' . strtolower($offerType->toString()) . ' ' . $offerId . ' (if applied)'
@@ -207,7 +207,7 @@ class EventProcessManager implements EventListener
     /**
      * @param Label[] $labels
      */
-    private function addLabels(OfferType $offerType, string $offerId, array $labels): void
+    private function addLabelsToOffer(OfferType $offerType, string $offerId, array $labels): void
     {
         if (count($labels) === 0) {
             return;
