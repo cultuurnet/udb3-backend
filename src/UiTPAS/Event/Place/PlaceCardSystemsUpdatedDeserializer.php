@@ -10,8 +10,6 @@ use CultuurNet\UDB3\UiTPAS\Event\CardSystemsUpdatedParser;
 /**
  * Deserializes `application/vnd.cultuurnet.uitpas-events.place-card-systems-updated+json` messages
  * to typed objects.
- *
- * Make sure to extract this logic if more (similar) uitpas messages have to be deserialized in the future.
  */
 final class PlaceCardSystemsUpdatedDeserializer extends JSONDeserializer
 {
