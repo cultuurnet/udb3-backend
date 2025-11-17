@@ -64,12 +64,12 @@ class EventProcessManager implements EventListener
 
         $uitPasLabels = $this->uitPasLabelsRepository->loadAll();
 
-        $applicableLabelsForEvent = $this->determineApplicableLabelsForEvent(
+        $applicableLabelsForEvent = $this->determineApplicableLabelsForCardSystems(
             $eventCardSystemsUpdated->getCardSystems(),
             $uitPasLabels
         );
 
-        $inapplicableLabelsForEvent = $this->determineInapplicableLabelsForEvent(
+        $inapplicableLabelsForEvent = $this->determineInapplicableLabels(
             $applicableLabelsForEvent,
             $uitPasLabels
         );
@@ -97,7 +97,7 @@ class EventProcessManager implements EventListener
      * @param Label[] $uitPasLabels
      * @return Label[]
      */
-    private function determineApplicableLabelsForEvent(
+    private function determineApplicableLabelsForCardSystems(
         array $cardSystems,
         array $uitPasLabels
     ): array {
@@ -124,7 +124,7 @@ class EventProcessManager implements EventListener
      * @param Label[] $uitPasLabels
      * @return Label[]
      */
-    private function determineInapplicableLabelsForEvent(
+    private function determineInapplicableLabels(
         array $applicableLabels,
         array $uitPasLabels
     ): array {
