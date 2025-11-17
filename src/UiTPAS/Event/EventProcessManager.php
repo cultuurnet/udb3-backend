@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
+use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Event\Event\PricesUpdated;
@@ -79,11 +80,11 @@ class EventProcessManager implements EventListener
 
         // Dispatch commands to remove the labels that are not supposed to be on the event.
         // The event aggregate will check if the label is present and only record a LabelRemoved event if it was.
-        $this->removeLabelsFromEvent($eventId, $inapplicableLabelsForEvent);
+        $this->removeLabels(OfferType::event(), $eventId, $inapplicableLabelsForEvent);
 
         // Dispatch commands to add the labels that are supposed to be on the event.
         // The event aggregate will check if the label is present and only record a LabelAdded event if it was not.
-        $this->addLabelsToEvent($eventId, $applicableLabelsForEvent);
+        $this->addLabels(OfferType::event(), $eventId, $applicableLabelsForEvent);
     }
 
     private function handlePlaceCardSystemsUpdated(PlaceCardSystemsUpdated $placeCardSystemsUpdated): void
@@ -106,11 +107,11 @@ class EventProcessManager implements EventListener
 
         // Dispatch commands to remove the labels that are not supposed to be on the place.
         // The place aggregate will check if the label is present and only record a LabelRemoved event if it was.
-        $this->removeLabelsFromPlace($placeId, $inapplicableLabelsForPlace);
+        $this->removeLabels(OfferType::place(), $placeId, $inapplicableLabelsForPlace);
 
         // Dispatch commands to add the labels that are supposed to be on the place.
         // The place aggregate will check if the label is present and only record a LabelAdded event if it was not.
-        $this->addLabelsToPlace($placeId, $applicableLabelsForPlace);
+        $this->addLabels(OfferType::place(), $placeId, $applicableLabelsForPlace);
     }
 
     private function handleUiTPASPricesUpdated(PricesUpdated $pricesUpdated): void
@@ -184,16 +185,16 @@ class EventProcessManager implements EventListener
     /**
      * @param Label[] $labels
      */
-    private function removeLabelsFromEvent(string $eventId, array $labels): void
+    private function removeLabels(OfferType $offerType, string $offerId, array $labels): void
     {
         $this->logger->info(
-            'Removing UiTPAS labels for irrelevant card systems from event ' . $eventId . ' (if applied)'
+            'Removing UiTPAS labels for irrelevant card systems from ' . strtolower($offerType->toString()) . ' ' . $offerId . ' (if applied)'
         );
 
         $commands = array_map(
-            function (Label $label) use ($eventId) {
+            function (Label $label) use ($offerId) {
                 return new RemoveLabel(
-                    $eventId,
+                    $offerId,
                     $label->getName()->toString()
                 );
             },
@@ -206,68 +207,20 @@ class EventProcessManager implements EventListener
     /**
      * @param Label[] $labels
      */
-    private function addLabelsToEvent(string $eventId, array $labels): void
+    private function addLabels(OfferType $offerType, string $offerId, array $labels): void
     {
         if (count($labels) === 0) {
             return;
         }
 
         $this->logger->info(
-            'Adding UiTPAS labels for active card systems on event ' . $eventId . '(if not applied yet)'
+            'Adding UiTPAS labels for active card systems on ' . strtolower($offerType->toString()) . ' ' . $offerId . '(if not applied yet)'
         );
 
         $commands = array_map(
-            function (Label $label) use ($eventId) {
+            function (Label $label) use ($offerId) {
                 return new AddLabel(
-                    $eventId,
-                    $label
-                );
-            },
-            $labels
-        );
-
-        $this->dispatchCommands($commands);
-    }
-
-    /**
-     * @param Label[] $labels
-     */
-    private function removeLabelsFromPlace(string $placeId, array $labels): void
-    {
-        $this->logger->info(
-            'Removing UiTPAS labels for irrelevant card systems from place ' . $placeId . ' (if applied)'
-        );
-
-        $commands = array_map(
-            function (Label $label) use ($placeId) {
-                return new RemoveLabel(
-                    $placeId,
-                    $label->getName()->toString()
-                );
-            },
-            $labels
-        );
-
-        $this->dispatchCommands($commands);
-    }
-
-    /**
-     * @param Label[] $labels
-     */
-    private function addLabelsToPlace(string $placeId, array $labels): void
-    {
-        if (count($labels) === 0) {
-            return;
-        }
-
-        $this->logger->info(
-            'Adding UiTPAS labels for active card systems on place ' . $placeId . '(if not applied yet)'
-        );
-
-        $commands = array_map(
-            function (Label $label) use ($placeId) {
-                return new AddLabel(
-                    $placeId,
+                    $offerId,
                     $label
                 );
             },
