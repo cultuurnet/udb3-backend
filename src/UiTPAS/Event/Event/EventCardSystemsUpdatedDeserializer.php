@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\UiTPAS\Event\Event;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
-use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
-use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
+use CultuurNet\UDB3\UiTPAS\Event\CardSystemsUpdatedParser;
 
 /**
  * Deserializes `application/vnd.cultuurnet.uitpas-events.event-card-systems-updated+json` messages
@@ -16,40 +15,21 @@ use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
  */
 final class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
 {
+    private CardSystemsUpdatedParser $parser;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->parser = new CardSystemsUpdatedParser();
+    }
+
     public function deserialize(string $data): EventCardSystemsUpdated
     {
-        $dto = parent::deserialize($data);
+        $payload = parent::deserialize($data);
 
-        if (!isset($dto->cdbid)) {
-            throw new \InvalidArgumentException('Missing cdbid property.');
-        }
+        $id = $this->parser->parseId($payload);
+        $cardSystems = $this->parser->parseCardSystems($payload);
 
-        $eventId = new Id((string) $dto->cdbid);
-
-        if (!isset($dto->cardSystems)) {
-            throw new \InvalidArgumentException('Missing cardSystems property.');
-        }
-
-        if (!is_array($dto->cardSystems)) {
-            throw new \InvalidArgumentException('Expected cardSystems property to be an array.');
-        }
-
-        $cardSystems = [];
-        foreach ($dto->cardSystems as $cardSystemDTO) {
-            if (!isset($cardSystemDTO->id)) {
-                throw new \InvalidArgumentException('Encountered cardSystems entry without id.');
-            }
-
-            if (!isset($cardSystemDTO->name)) {
-                throw new \InvalidArgumentException('Encountered cardSystems entry without name.');
-            }
-
-            $cardSystems[$cardSystemDTO->id] = new CardSystem(
-                new Id((string) $cardSystemDTO->id),
-                $cardSystemDTO->name
-            );
-        }
-
-        return new EventCardSystemsUpdated($eventId, $cardSystems);
+        return new EventCardSystemsUpdated($id, $cardSystems);
     }
 }
