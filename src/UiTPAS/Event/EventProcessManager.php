@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Event\Event\PricesUpdated;
+use CultuurNet\UDB3\UiTPAS\Event\Place\PlaceCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use Psr\Log\LoggerInterface;
 
@@ -38,12 +39,14 @@ class EventProcessManager implements EventListener
 
     /**
      * @uses handleEventCardSystemsUpdated
+     * @uses handlePlaceCardSystemsUpdated
      * @uses handleUiTPASPricesUpdated
      */
     public function handle(DomainMessage $domainMessage): void
     {
         $map = [
             EventCardSystemsUpdated::class => 'handleEventCardSystemsUpdated',
+            PlaceCardSystemsUpdated::class => 'handlePlaceCardSystemsUpdated',
             PricesUpdated::class => 'handleUiTPASPricesUpdated',
         ];
 
@@ -81,6 +84,33 @@ class EventProcessManager implements EventListener
         // Dispatch commands to add the labels that are supposed to be on the event.
         // The event aggregate will check if the label is present and only record a LabelAdded event if it was not.
         $this->addLabelsToEvent($eventId, $applicableLabelsForEvent);
+    }
+
+    private function handlePlaceCardSystemsUpdated(PlaceCardSystemsUpdated $placeCardSystemsUpdated): void
+    {
+        $placeId = $placeCardSystemsUpdated->getId()->toNative();
+
+        $this->logger->info('Handling updated card systems message for place ' . $placeId);
+
+        $uitPasLabels = $this->uitPasLabelsRepository->loadAll();
+
+        $applicableLabelsForPlace = $this->determineApplicableLabelsForCardSystems(
+            $placeCardSystemsUpdated->getCardSystems(),
+            $uitPasLabels
+        );
+
+        $inapplicableLabelsForPlace = $this->determineInapplicableLabels(
+            $applicableLabelsForPlace,
+            $uitPasLabels
+        );
+
+        // Dispatch commands to remove the labels that are not supposed to be on the place.
+        // The place aggregate will check if the label is present and only record a LabelRemoved event if it was.
+        $this->removeLabelsFromPlace($placeId, $inapplicableLabelsForPlace);
+
+        // Dispatch commands to add the labels that are supposed to be on the place.
+        // The place aggregate will check if the label is present and only record a LabelAdded event if it was not.
+        $this->addLabelsToPlace($placeId, $applicableLabelsForPlace);
     }
 
     private function handleUiTPASPricesUpdated(PricesUpdated $pricesUpdated): void
@@ -190,6 +220,54 @@ class EventProcessManager implements EventListener
             function (Label $label) use ($eventId) {
                 return new AddLabel(
                     $eventId,
+                    $label
+                );
+            },
+            $labels
+        );
+
+        $this->dispatchCommands($commands);
+    }
+
+    /**
+     * @param Label[] $labels
+     */
+    private function removeLabelsFromPlace(string $placeId, array $labels): void
+    {
+        $this->logger->info(
+            'Removing UiTPAS labels for irrelevant card systems from place ' . $placeId . ' (if applied)'
+        );
+
+        $commands = array_map(
+            function (Label $label) use ($placeId) {
+                return new RemoveLabel(
+                    $placeId,
+                    $label->getName()->toString()
+                );
+            },
+            $labels
+        );
+
+        $this->dispatchCommands($commands);
+    }
+
+    /**
+     * @param Label[] $labels
+     */
+    private function addLabelsToPlace(string $placeId, array $labels): void
+    {
+        if (count($labels) === 0) {
+            return;
+        }
+
+        $this->logger->info(
+            'Adding UiTPAS labels for active card systems on place ' . $placeId . '(if not applied yet)'
+        );
+
+        $commands = array_map(
+            function (Label $label) use ($placeId) {
+                return new AddLabel(
+                    $placeId,
                     $label
                 );
             },

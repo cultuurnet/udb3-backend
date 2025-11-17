@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Event\Event\PricesUpdated;
+use CultuurNet\UDB3\UiTPAS\Event\Place\PlaceCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use Money\Currency;
@@ -181,7 +182,7 @@ final class EventProcessManagerTest extends TestCase
     /**
      * @test
      */
-    public function it_should_log_a_warning_if_no_label_can_be_found_for_an_active_card_system(): void
+    public function it_should_log_a_warning_if_no_label_can_be_found_for_an_active_card_system_on_an_event(): void
     {
         $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
         $cardSystems = [7 => new CardSystem(new Id('7'), 'Mock CS')];
@@ -199,6 +200,118 @@ final class EventProcessManagerTest extends TestCase
 
         $this->assertContains(
             'Handling updated card systems message for event cbee7413-ac1e-4dfb-8004-34767eafb8b7',
+            $this->infoLogs
+        );
+
+        $this->assertContains(
+            'Could not find UiTPAS label for card system 7',
+            $this->warningLogs
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_remove_every_uitpas_label_from_a_place_if_it_has_no_card_systems_after_an_update(): void
+    {
+        $placeId = new Id('b99aa687-e965-4a88-936c-a568c586d979');
+
+        $cardSystemsUpdated = new PlaceCardSystemsUpdated($placeId, []);
+
+        $domainMessage = DomainMessage::recordNow(
+            $placeId->toNative(),
+            7,
+            new Metadata([]),
+            $cardSystemsUpdated
+        );
+
+        $expectedCommands = [
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'Paspartoe'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Gent'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Oostende'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS regio Aalst'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Dender'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Zuidwest'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Mechelen'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Kempen'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Maasmechelen'),
+        ];
+
+        $this->eventProcessManager->handle($domainMessage);
+
+        $this->assertEquals($expectedCommands, $this->tracedCommands);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_add_uitpas_labels_for_active_card_systems_to_an_updated_place_with_card_systems(): void
+    {
+        $placeId = new Id('b99aa687-e965-4a88-936c-a568c586d979');
+        $cardSystems = [
+            'c73d78b7-95a7-45b3-bde5-5b2ec7b13afa' => new CardSystem(
+                new Id('c73d78b7-95a7-45b3-bde5-5b2ec7b13afa'),
+                'Mock CS Paspartoe'
+            ),
+            'f23ccb75-190a-4814-945e-c95e83101cc5' => new CardSystem(
+                new Id('f23ccb75-190a-4814-945e-c95e83101cc5'),
+                'Mock CS UiTPAS Gent'
+            ),
+            '98ce6fbc-fb68-4efc-b8c7-95763cb967dd' => new CardSystem(
+                new Id('98ce6fbc-fb68-4efc-b8c7-95763cb967dd'),
+                'Mock CS UiTPAS Oostende'
+            ),
+        ];
+
+        $cardSystemsUpdated = new PlaceCardSystemsUpdated($placeId, $cardSystems);
+
+        $domainMessage = DomainMessage::recordNow(
+            $placeId->toNative(),
+            8,
+            new Metadata([]),
+            $cardSystemsUpdated
+        );
+
+        $expectedCommands = [
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS regio Aalst'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Dender'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Zuidwest'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Mechelen'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Kempen'),
+            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Maasmechelen'),
+            new AddLabel('b99aa687-e965-4a88-936c-a568c586d979', new Label(new LabelName('Paspartoe'), true)),
+            new AddLabel('b99aa687-e965-4a88-936c-a568c586d979', new Label(new LabelName('UiTPAS Gent'), true)),
+            new AddLabel('b99aa687-e965-4a88-936c-a568c586d979', new Label(new LabelName('UiTPAS Oostende'), true)),
+        ];
+
+        $this->eventProcessManager->handle($domainMessage);
+
+        $this->assertEquals($expectedCommands, $this->tracedCommands);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_log_a_warning_if_no_label_can_be_found_for_an_active_card_system_on_a_place(): void
+    {
+        $placeId = new Id('b99aa687-e965-4a88-936c-a568c586d979');
+        $cardSystems = [7 => new CardSystem(new Id('7'), 'Mock CS')];
+
+        $cardSystemsUpdated = new PlaceCardSystemsUpdated($placeId, $cardSystems);
+
+        $domainMessage = DomainMessage::recordNow(
+            $placeId->toNative(),
+            8,
+            new Metadata([]),
+            $cardSystemsUpdated
+        );
+
+        $this->eventProcessManager->handle($domainMessage);
+
+        $this->assertContains(
+            'Handling updated card systems message for place b99aa687-e965-4a88-936c-a568c586d979',
             $this->infoLogs
         );
 
