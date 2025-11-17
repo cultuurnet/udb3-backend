@@ -311,7 +311,7 @@ class EventProcessManager implements EventListener
     }
 
     /**
-     * @param AbstractCommand[] $commands
+     * @param object[] $commands
      */
     private function dispatchCommands(array $commands): void
     {
