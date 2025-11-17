@@ -15,11 +15,14 @@ use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Offer\Commands\AddLabel;
-use CultuurNet\UDB3\Offer\Commands\RemoveLabel;
+use CultuurNet\UDB3\Offer\Commands\AddLabel as AddLabelToOffer;
+use CultuurNet\UDB3\Offer\Commands\RemoveLabel as RemoveLabelFromOffer;
+use CultuurNet\UDB3\Organizer\Commands\AddLabel as AddLabelToOrganizer;
+use CultuurNet\UDB3\Organizer\Commands\RemoveLabel as RemoveLabelFromOrganizer;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\Event\Event\EventCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Event\Event\PricesUpdated;
+use CultuurNet\UDB3\UiTPAS\Event\Organizer\OrganizerCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Event\Place\PlaceCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
@@ -114,16 +117,16 @@ final class EventProcessManagerTest extends TestCase
         );
 
         $expectedCommands = [
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'Paspartoe'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Gent'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Oostende'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS regio Aalst'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Dender'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Zuidwest'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Mechelen'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Kempen'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Maasmechelen'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'Paspartoe'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Gent'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Oostende'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS regio Aalst'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Dender'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Zuidwest'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Mechelen'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Kempen'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Maasmechelen'),
         ];
 
         $this->eventProcessManager->handle($domainMessage);
@@ -162,16 +165,16 @@ final class EventProcessManagerTest extends TestCase
         );
 
         $expectedCommands = [
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS regio Aalst'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Dender'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Zuidwest'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Mechelen'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Kempen'),
-            new RemoveLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Maasmechelen'),
-            new AddLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label(new LabelName('Paspartoe'), true)),
-            new AddLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label(new LabelName('UiTPAS Gent'), true)),
-            new AddLabel('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label(new LabelName('UiTPAS Oostende'), true)),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS regio Aalst'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Dender'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Zuidwest'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Mechelen'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Kempen'),
+            new RemoveLabelFromOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', 'UiTPAS Maasmechelen'),
+            new AddLabelToOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label(new LabelName('Paspartoe'), true)),
+            new AddLabelToOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label(new LabelName('UiTPAS Gent'), true)),
+            new AddLabelToOffer('cbee7413-ac1e-4dfb-8004-34767eafb8b7', new Label(new LabelName('UiTPAS Oostende'), true)),
         ];
 
         $this->eventProcessManager->handle($domainMessage);
@@ -226,16 +229,16 @@ final class EventProcessManagerTest extends TestCase
         );
 
         $expectedCommands = [
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'Paspartoe'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Gent'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Oostende'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS regio Aalst'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Dender'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Zuidwest'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Mechelen'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Kempen'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Maasmechelen'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'Paspartoe'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Gent'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Oostende'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS regio Aalst'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Dender'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Zuidwest'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Mechelen'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Kempen'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Maasmechelen'),
         ];
 
         $this->eventProcessManager->handle($domainMessage);
@@ -274,16 +277,16 @@ final class EventProcessManagerTest extends TestCase
         );
 
         $expectedCommands = [
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS regio Aalst'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Dender'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Zuidwest'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Mechelen'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Kempen'),
-            new RemoveLabel('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Maasmechelen'),
-            new AddLabel('b99aa687-e965-4a88-936c-a568c586d979', new Label(new LabelName('Paspartoe'), true)),
-            new AddLabel('b99aa687-e965-4a88-936c-a568c586d979', new Label(new LabelName('UiTPAS Gent'), true)),
-            new AddLabel('b99aa687-e965-4a88-936c-a568c586d979', new Label(new LabelName('UiTPAS Oostende'), true)),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS regio Aalst'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Dender'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Zuidwest'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Mechelen'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Kempen'),
+            new RemoveLabelFromOffer('b99aa687-e965-4a88-936c-a568c586d979', 'UiTPAS Maasmechelen'),
+            new AddLabelToOffer('b99aa687-e965-4a88-936c-a568c586d979', new Label(new LabelName('Paspartoe'), true)),
+            new AddLabelToOffer('b99aa687-e965-4a88-936c-a568c586d979', new Label(new LabelName('UiTPAS Gent'), true)),
+            new AddLabelToOffer('b99aa687-e965-4a88-936c-a568c586d979', new Label(new LabelName('UiTPAS Oostende'), true)),
         ];
 
         $this->eventProcessManager->handle($domainMessage);
@@ -312,6 +315,118 @@ final class EventProcessManagerTest extends TestCase
 
         $this->assertContains(
             'Handling updated card systems message for place b99aa687-e965-4a88-936c-a568c586d979',
+            $this->infoLogs
+        );
+
+        $this->assertContains(
+            'Could not find UiTPAS label for card system 7',
+            $this->warningLogs
+        );
+    }
+    
+    /**
+     * @test
+     */
+    public function it_should_remove_every_uitpas_label_from_an_organizer_if_it_has_no_card_systems_after_an_update(): void
+    {
+        $organizerId = new Id('3d3b551c-2175-4903-914c-50d215a125e3');
+
+        $cardSystemsUpdated = new OrganizerCardSystemsUpdated($organizerId, []);
+
+        $domainMessage = DomainMessage::recordNow(
+            $organizerId->toNative(),
+            7,
+            new Metadata([]),
+            $cardSystemsUpdated
+        );
+
+        $expectedCommands = [
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'Paspartoe'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS Gent'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS Oostende'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS regio Aalst'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS Dender'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS Zuidwest'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS Mechelen'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS Kempen'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS Maasmechelen'),
+        ];
+
+        $this->eventProcessManager->handle($domainMessage);
+
+        $this->assertEquals($expectedCommands, $this->tracedCommands);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_add_uitpas_labels_for_active_card_systems_to_an_updated_organizer_with_card_systems(): void
+    {
+        $organizerId = new Id('3d3b551c-2175-4903-914c-50d215a125e3');
+        $cardSystems = [
+            'c73d78b7-95a7-45b3-bde5-5b2ec7b13afa' => new CardSystem(
+                new Id('c73d78b7-95a7-45b3-bde5-5b2ec7b13afa'),
+                'Mock CS Paspartoe'
+            ),
+            'f23ccb75-190a-4814-945e-c95e83101cc5' => new CardSystem(
+                new Id('f23ccb75-190a-4814-945e-c95e83101cc5'),
+                'Mock CS UiTPAS Gent'
+            ),
+            '98ce6fbc-fb68-4efc-b8c7-95763cb967dd' => new CardSystem(
+                new Id('98ce6fbc-fb68-4efc-b8c7-95763cb967dd'),
+                'Mock CS UiTPAS Oostende'
+            ),
+        ];
+
+        $cardSystemsUpdated = new OrganizerCardSystemsUpdated($organizerId, $cardSystems);
+
+        $domainMessage = DomainMessage::recordNow(
+            $organizerId->toNative(),
+            8,
+            new Metadata([]),
+            $cardSystemsUpdated
+        );
+
+        $expectedCommands = [
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS regio Aalst'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS Dender'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS Zuidwest'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS Mechelen'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS Kempen'),
+            new RemoveLabelFromOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', 'UiTPAS Maasmechelen'),
+            new AddLabelToOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', new Label(new LabelName('Paspartoe'), true)),
+            new AddLabelToOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', new Label(new LabelName('UiTPAS Gent'), true)),
+            new AddLabelToOrganizer('3d3b551c-2175-4903-914c-50d215a125e3', new Label(new LabelName('UiTPAS Oostende'), true)),
+        ];
+
+        $this->eventProcessManager->handle($domainMessage);
+
+        $this->assertEquals($expectedCommands, $this->tracedCommands);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_log_a_warning_if_no_label_can_be_found_for_an_active_card_system_on_an_organizer(): void
+    {
+        $organizerId = new Id('3d3b551c-2175-4903-914c-50d215a125e3');
+        $cardSystems = [7 => new CardSystem(new Id('7'), 'Mock CS')];
+
+        $cardSystemsUpdated = new OrganizerCardSystemsUpdated($organizerId, $cardSystems);
+
+        $domainMessage = DomainMessage::recordNow(
+            $organizerId->toNative(),
+            8,
+            new Metadata([]),
+            $cardSystemsUpdated
+        );
+
+        $this->eventProcessManager->handle($domainMessage);
+
+        $this->assertContains(
+            'Handling updated card systems message for organizer 3d3b551c-2175-4903-914c-50d215a125e3',
             $this->infoLogs
         );
 
