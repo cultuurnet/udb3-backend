@@ -9,7 +9,6 @@ use Broadway\Domain\DomainMessage;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\Commands\UpdateUiTPASPrices;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
-use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 use CultuurNet\UDB3\Offer\Commands\AddLabel as AddLabelToOffer;
 use CultuurNet\UDB3\Offer\Commands\RemoveLabel as RemoveLabelFromOffer;
 use CultuurNet\UDB3\Offer\OfferType;
