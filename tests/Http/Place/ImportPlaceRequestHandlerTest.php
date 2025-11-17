@@ -163,7 +163,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
             $this->commandBus,
             $this->imageCollectionFactory,
-            true,
             $this->createMock(LookupDuplicatePlace::class),
             $organizerRepository
         );
@@ -5197,7 +5196,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
             $this->commandBus,
             $this->imageCollectionFactory,
-            true,
             $lookupDuplicatePlace,
             new InMemoryDocumentRepository()
         );
@@ -5240,7 +5238,6 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new CallableIriGenerator(fn ($placeId) => 'https://io.uitdatabank.dev/places/' . $placeId),
             $this->commandBus,
             $this->imageCollectionFactory,
-            true,
             $lookupDuplicatePlace,
             new InMemoryDocumentRepository()
         );
