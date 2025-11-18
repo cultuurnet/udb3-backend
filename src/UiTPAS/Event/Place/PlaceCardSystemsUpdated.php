@@ -9,22 +9,13 @@ use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 
 class PlaceCardSystemsUpdated
 {
-    private Id $id;
-
-    /**
-     * @var CardSystem[]
-     */
-    private array $cardSystems;
-
     /**
      * @param CardSystem[] $cardSystems
      */
     public function __construct(
-        Id $id,
-        array $cardSystems
+        private readonly Id $id,
+        private readonly array $cardSystems
     ) {
-        $this->id = $id;
-        $this->cardSystems = $cardSystems;
     }
 
     public function getId(): Id
