@@ -502,7 +502,7 @@ Feature: Test the UDB3 events API
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
     And the response body should be valid JSON
-    And the JSON response at "location/name/nl" should be "Cafe Den Hemel"
+    And the JSON response at "location/name/nl" should be "%{name}"
 
   @bugfix # https://jira.uitdatabank.be/browse/III-4641
   Scenario: Create event in legacy JSON format with location id as a string
@@ -520,7 +520,7 @@ Feature: Test the UDB3 events API
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
     And the response body should be valid JSON
-    And the JSON response at "location/name/nl" should be "Cafe Den Hemel"
+    And the JSON response at "location/name/nl" should be "%{name}"
 
   @bugfix # https://jira.uitdatabank.be/browse/III-4644
   Scenario: Create event in legacy JSON format and ignore address
@@ -538,7 +538,7 @@ Feature: Test the UDB3 events API
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
     And the response body should be valid JSON
-    And the JSON response at "location/name/nl" should be "Cafe Den Hemel"
+    And the JSON response at "location/name/nl" should be "%{name}"
 
   Scenario: Create event in legacy JSON format with location id and copy it single calendar
     Given I set the JSON request payload from "places/place.json"

@@ -253,8 +253,8 @@ trait ResponseSteps
     {
         $this->calculateIdentifier('http://data.uitdatabank.local:80/organizers/', 'organizerId');
         assertEquals(
-            $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
-            $this->removeDates($this->responseState->getContent())
+            $this->removeRandomness($this->fixtures->loadTurtle($fileName, $this->variableState)),
+            $this->removeRandomness($this->responseState->getContent())
         );
     }
 
@@ -265,8 +265,8 @@ trait ResponseSteps
     {
         $this->calculateIdentifier('http://data.uitdatabank.local:80/events/', 'eventId');
         assertEquals(
-            $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
-            $this->removeDates($this->responseState->getContent())
+            $this->removeRandomness($this->fixtures->loadTurtle($fileName, $this->variableState)),
+            $this->removeRandomness($this->responseState->getContent())
         );
     }
 
@@ -277,8 +277,8 @@ trait ResponseSteps
     {
         $this->calculateIdentifier('http://data.uitdatabank.local:80/places/', 'placeId');
         assertEquals(
-            $this->removeDates($this->fixtures->loadTurtle($fileName, $this->variableState)),
-            $this->removeDates($this->responseState->getContent())
+            $this->removeRandomness($this->fixtures->loadTurtle($fileName, $this->variableState)),
+            $this->removeRandomness($this->responseState->getContent())
         );
     }
 
@@ -302,11 +302,22 @@ trait ResponseSteps
         echo $this->responseState->getContent();
     }
 
+    private function removeRandomness(string $value): string
+    {
+        $value = $this->removeDates($value);
+        return $this->removeRuimteTijdIdentifier($value);
+    }
+
     private function removeDates(string $value): string
     {
-        // Only remove the created and modified dates
         $datePattern = '/(?<=dcterms:created\s|dcterms:modified\s)"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}"/';
         return preg_replace($datePattern, '""', $value);
+    }
+
+    private function removeRuimteTijdIdentifier(string $value): string
+    {
+        $identifierPattern = '/e92_Spacetime_Volume-[^>]+/';
+        return preg_replace($identifierPattern, 'e92_Spacetime_Volume>', $value);
     }
 
     /**

@@ -53,7 +53,7 @@ Feature: Test updating places
     Then the JSON response at "name" should be:
     """
     {
-      "nl":"Cafe Den Hemel"
+      "nl":"%{name}"
     }
     """
     And the JSON response at "terms" should be:
@@ -182,7 +182,7 @@ Feature: Test updating places
     And the JSON response at "name" should be:
     """
     {
-      "nl":"Cafe Den Hemel"
+      "nl":"%{name}"
     }
     """
     And the JSON response at "terms" should be:
