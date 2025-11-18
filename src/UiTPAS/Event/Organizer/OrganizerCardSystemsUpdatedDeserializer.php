@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\UiTPAS\Event\Event;
+namespace CultuurNet\UDB3\UiTPAS\Event\Organizer;
 
 use CultuurNet\UDB3\Deserializer\JSONDeserializer;
 use CultuurNet\UDB3\UiTPAS\Event\CardSystemsUpdatedParser;
 
 /**
- * Deserializes `application/vnd.cultuurnet.uitpas-events.event-card-systems-updated+json` messages
+ * Deserializes `application/vnd.cultuurnet.uitpas-events.organizer-card-systems-updated+json` messages
  * to typed objects.
  */
-final class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
+final class OrganizerCardSystemsUpdatedDeserializer extends JSONDeserializer
 {
     private CardSystemsUpdatedParser $parser;
 
@@ -21,13 +21,13 @@ final class EventCardSystemsUpdatedDeserializer extends JSONDeserializer
         $this->parser = new CardSystemsUpdatedParser();
     }
 
-    public function deserialize(string $data): EventCardSystemsUpdated
+    public function deserialize(string $data): OrganizerCardSystemsUpdated
     {
         $payload = parent::deserialize($data);
 
         $id = $this->parser->parseId($payload);
         $cardSystems = $this->parser->parseCardSystems($payload);
 
-        return new EventCardSystemsUpdated($id, $cardSystems);
+        return new OrganizerCardSystemsUpdated($id, $cardSystems);
     }
 }
