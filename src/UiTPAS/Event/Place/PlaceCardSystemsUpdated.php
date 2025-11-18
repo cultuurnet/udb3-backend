@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\UiTPAS\Event\Place;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 
-class PlaceCardSystemsUpdated
+final class PlaceCardSystemsUpdated
 {
     /**
      * @param CardSystem[] $cardSystems
