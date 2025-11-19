@@ -14,8 +14,8 @@ class ItStripsTagsTest extends TestCase
      */
     public function it_should_strip_tags(string $input, string $expectedOutput): void
     {
-        $sanitized = new MockStripTags($input);
-        $this->assertEquals($expectedOutput, $sanitized->toString());
+        $mockStripTags = new MockStripTags($input);
+        $this->assertEquals($expectedOutput, $mockStripTags->toString());
     }
 
     public function taggedDataProvider(): array
