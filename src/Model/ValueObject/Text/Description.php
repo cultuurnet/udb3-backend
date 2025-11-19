@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Text;
 
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
-use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Sanitizes;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\StripTags;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\Trims;
 use InvalidArgumentException;
 
@@ -15,12 +15,12 @@ class Description
     use IsString;
     use IsNotEmpty;
     use Trims;
-    use Sanitizes;
+    use StripTags;
 
     public function __construct(string $value)
     {
         $value = $this->trim($value);
-        $value = $this->sanitize($value);
+        $value = $this->stripTags($value);
         try {
             $this->guardNotEmpty($value);
         } catch (InvalidArgumentException $e) {
