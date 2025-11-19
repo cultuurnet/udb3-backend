@@ -34,8 +34,8 @@ class ItStripsTagsTest extends TestCase
                 'expected' => '',
             ],
             'mixing_allowed_and_disallowed_tags' => [
-                'original' => '<img src=\"https://foobar.com/1f457.png\" alt=\":dress:\" style=\"height: ;width: \"/><strong>Out latest dress</strong>',
-                'expected' => '<strong>Out latest dress</strong>',
+                'original' => '<img src=\"https://foobar.com/1f457.png\" alt=\":dress:\" style=\"height: ;width: \"/><strong>Our latest dress</strong>',
+                'expected' => '<strong>Our latest dress</strong>',
             ],
         ];
     }
