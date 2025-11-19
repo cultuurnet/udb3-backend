@@ -48,6 +48,30 @@ Feature: Test event description property
         "Updated description test_event in English"
         """
 
+  Scenario: It should sanitize tags
+    And I set the JSON request payload to:
+        """
+        { "description": "<img src=\"https://foobar.com/1f457.png\" alt=\":dress:\" style=\"height: ;width: \"/><strong>Onze nieuwste jurk</strong>" }
+        """
+    When I send a PUT request to "/events/%{uuid_testevent}/description/nl"
+    Then the response status should be "204"
+    And I set the JSON request payload to:
+        """
+        { "description": "<img src=\"https://foobar.com/1f457.png\" alt=\":dress:\" style=\"height: ;width: \"/><strong>Out latest dress</strong>" }
+        """
+    When I send a PUT request to "/events/%{uuid_testevent}/description/en"
+    Then the response status should be "204"
+    And I send a GET request to "/events/%{uuid_testevent}"
+    Then the response status should be "200"
+    And the JSON response at "description/nl" should be:
+        """
+        "<strong>Onze nieuwste jurk</strong>"
+        """
+    And the JSON response at "description/en" should be:
+        """
+        "<strong>Out latest dress</strong>"
+        """
+
   Scenario: Update event description (with legacy POST)
     And I set the JSON request payload to:
     """
