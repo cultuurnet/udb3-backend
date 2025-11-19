@@ -57,7 +57,7 @@ Feature: Test event description property
     Then the response status should be "204"
     And I set the JSON request payload to:
         """
-        { "description": "<img src=\"https://foobar.com/1f457.png\" alt=\":dress:\" style=\"height: ;width: \"/><strong>Out latest dress</strong>" }
+        { "description": "<img src=\"https://foobar.com/1f457.png\" alt=\":dress:\" style=\"height: ;width: \"/><strong>Our latest dress</strong>" }
         """
     When I send a PUT request to "/events/%{uuid_testevent}/description/en"
     Then the response status should be "204"
@@ -69,7 +69,7 @@ Feature: Test event description property
         """
     And the JSON response at "description/en" should be:
         """
-        "<strong>Out latest dress</strong>"
+        "<strong>Our latest dress</strong>"
         """
 
   Scenario: Update event description (with legacy POST)
