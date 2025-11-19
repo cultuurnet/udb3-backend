@@ -48,7 +48,7 @@ Feature: Test event description property
         "Updated description test_event in English"
         """
 
-  Scenario: It should sanitize tags
+  Scenario: It should strip tags
     And I set the JSON request payload to:
         """
         { "description": "<img src=\"https://foobar.com/1f457.png\" alt=\":dress:\" style=\"height: ;width: \"/><strong>Onze nieuwste jurk</strong>" }
