@@ -136,7 +136,7 @@ final class YoutubeTrailerRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_should_continue_querying_youtube_throws_a_non_quota_error(): void
+    public function it_should_continue_querying_youtube_when_it_throws_a_non_quota_error(): void
     {
         $videoId = '7c38280f-cfdf-4dc3-9ca6-31b27542c16c';
         $this->search->expects($this->at(0))->method('listSearch')->with(
