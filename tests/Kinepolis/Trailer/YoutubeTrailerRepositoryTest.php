@@ -139,47 +139,30 @@ final class YoutubeTrailerRepositoryTest extends TestCase
     public function it_should_continue_querying_youtube_when_it_throws_a_non_quota_error(): void
     {
         $videoId = '7c38280f-cfdf-4dc3-9ca6-31b27542c16c';
-        $this->search->expects($this->at(0))->method('listSearch')->with(
-            'id,snippet',
-            [
-                'channelId' => $this->channelId,
-                'q' => 'NotFound',
-                'maxResults' => 1,
-            ]
-        )->willThrowException(new GoogleException('Some other Google Exception'));
 
-        $this->search->expects($this->at(0))->method('listSearch')->with(
-            'id,snippet',
-            [
-                'channelId' => $this->channelId,
-                'q' => 'NotFound',
-                'maxResults' => 1,
-            ]
-        )->willThrowException(new GoogleException('Some other Google Exception'));
-
-        $this->search->expects($this->exactly(2))->method('listSearch')
-            ->willReturnCallback(function ($part, $params) {
+        $this->search->expects($this->exactly(2))->method('listSearch')->willReturnCallback(
+            function ($part, $params) {
                 if ($part === 'id,snippet' && $params === [
-                        'channelId' => $this->channelId,
-                        'q' => 'NotFound',
-                        'maxResults' => 1,
-                    ]) {
+                    'channelId' => $this->channelId,
+                    'q' => 'NotFound',
+                    'maxResults' => 1,
+                ]) {
                     throw new GoogleException('Some other Google Exception');
                 }
 
                 if ($part === 'id,snippet' && $params === [
-                        'channelId' => $this->channelId,
-                        'q' => 'MovieAfterException',
-                        'maxResults' => 1,
-                    ]) {
+                    'channelId' => $this->channelId,
+                    'q' => 'MovieAfterException',
+                    'maxResults' => 1,
+                ]) {
                     return Json::decodeAssociatively(
                         SampleFiles::read(__DIR__ . '/../samples/YoutubeSearchResult.json')
                     );
                 }
-            });
+            }
+        );
 
         $this->uuidGenerator->expects($this->once())->method('generate')->willReturn($videoId);
-
 
         $video1 = $this->trailerRepository->findMatchingTrailer('NotFound');
         $this->assertNull($video1);
