@@ -114,4 +114,83 @@ final class YoutubeTrailerRepositoryTest extends TestCase
         $video = $this->trailerRepository->findMatchingTrailer('NotFound');
         $this->assertNull($video);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_stop_querying_youtube_when_the_quota_has_been_hit(): void
+    {
+        $this->search->expects($this->once())->method('listSearch')->with('id,snippet', [
+            'channelId' => $this->channelId,
+            'q' => 'NotFound',
+            'maxResults' => 1,
+        ])->willThrowException(new GoogleException('The request cannot be completed because you have exceeded your \u003ca href=\"/youtube/v3/getting-started#quota\"\u003equota\u003c/a\u003e.'));
+
+        $video1 = $this->trailerRepository->findMatchingTrailer('NotFound');
+        $this->assertNull($video1);
+
+        $video2 = $this->trailerRepository->findMatchingTrailer('MovieAfterException');
+        $this->assertNull($video2);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_continue_querying_youtube_throws_a_non_quota_error(): void
+    {
+        $videoId = '7c38280f-cfdf-4dc3-9ca6-31b27542c16c';
+        $this->search->expects($this->at(0))->method('listSearch')->with(
+            'id,snippet',
+            [
+                'channelId' => $this->channelId,
+                'q' => 'NotFound',
+                'maxResults' => 1,
+            ]
+        )->willThrowException(new GoogleException('Some other Google Exception'));
+
+        $this->search->expects($this->at(0))->method('listSearch')->with(
+            'id,snippet',
+            [
+                'channelId' => $this->channelId,
+                'q' => 'NotFound',
+                'maxResults' => 1,
+            ]
+        )->willThrowException(new GoogleException('Some other Google Exception'));
+
+        $this->search->expects($this->exactly(2))->method('listSearch')
+            ->willReturnCallback(function ($part, $params) {
+                if ($part === 'id,snippet' && $params === [
+                        'channelId' => $this->channelId,
+                        'q' => 'NotFound',
+                        'maxResults' => 1,
+                    ]) {
+                    throw new GoogleException('Some other Google Exception');
+                }
+
+                if ($part === 'id,snippet' && $params === [
+                        'channelId' => $this->channelId,
+                        'q' => 'MovieAfterException',
+                        'maxResults' => 1,
+                    ]) {
+                    return Json::decodeAssociatively(
+                        SampleFiles::read(__DIR__ . '/../samples/YoutubeSearchResult.json')
+                    );
+                }
+            });
+
+        $this->uuidGenerator->expects($this->once())->method('generate')->willReturn($videoId);
+
+
+        $video1 = $this->trailerRepository->findMatchingTrailer('NotFound');
+        $this->assertNull($video1);
+
+        $this->assertEquals(
+            new Video(
+                $videoId,
+                new Url('https://www.youtube.com/watch?v=26r2alNpYSg'),
+                new Language('nl')
+            ),
+            $this->trailerRepository->findMatchingTrailer('MovieAfterException')
+        );
+    }
 }
