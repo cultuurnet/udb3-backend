@@ -24,6 +24,8 @@ final class YoutubeTrailerRepository implements TrailerRepository
 
     private bool $enabled;
 
+    private bool $quotaHasBeenReached = false;
+
     public function __construct(
         Google_Service_YouTube $youTubeClient,
         string $channelId,
@@ -40,7 +42,7 @@ final class YoutubeTrailerRepository implements TrailerRepository
 
     public function findMatchingTrailer(string $title): ?Video
     {
-        if (!$this->enabled) {
+        if (!$this->enabled || $this->quotaHasBeenReached) {
             return null;
         }
 
@@ -66,7 +68,14 @@ final class YoutubeTrailerRepository implements TrailerRepository
                 }
             }
         } catch (GoogleException $exception) {
-            $this->logger->error($exception->getMessage());
+            $message = $exception->getMessage();
+            $this->logger->error($message);
+            if ($message === 'The request cannot be completed because you have exceeded your \u003ca href=\"/youtube/v3/getting-started#quota\"\u003equota\u003c/a\u003e.') {
+                $this->quotaHasBeenReached = true;
+            }
+            if (stripos($message, 'quota') !== false) {
+                $this->quotaHasBeenReached = true;
+            }
         }
 
         return null;
