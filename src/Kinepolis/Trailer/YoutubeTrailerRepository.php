@@ -74,7 +74,6 @@ final class YoutubeTrailerRepository implements TrailerRepository
                 $this->quotaHasBeenReached = true;
             }
         }
-
         return null;
     }
 }
