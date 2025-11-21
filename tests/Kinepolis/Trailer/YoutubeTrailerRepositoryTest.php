@@ -159,6 +159,8 @@ final class YoutubeTrailerRepositoryTest extends TestCase
                         SampleFiles::read(__DIR__ . '/../samples/YoutubeSearchResult.json')
                     );
                 }
+
+                $this->fail('Unexpected arguments passed to listSearch');
             }
         );
 
