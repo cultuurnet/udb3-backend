@@ -81,7 +81,7 @@ final class AddMatchingTrailer extends Command
                 $trailer = $this->searchForTrailer($eventId, $output);
             } catch (GoogleException $exception) {
                 if (stripos($exception->getMessage(), 'quota') !== false) {
-                    $output->writeln('Quota has been reached. Fetching Queries will be halted.');
+                    $output->writeln('Quota has been reached. Fetching trailers will be halted.');
                     break;
                 }
             }
