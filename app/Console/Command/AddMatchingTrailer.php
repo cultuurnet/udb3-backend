@@ -76,6 +76,7 @@ final class AddMatchingTrailer extends Command
 
         $results = $this->searchResultsGenerator->search($query);
         foreach ($results as $eventId => $result) {
+            $trailer = null;
             try {
                 $trailer = $this->searchForTrailer($eventId, $output);
             } catch (GoogleException $exception) {
@@ -84,7 +85,7 @@ final class AddMatchingTrailer extends Command
                     break;
                 }
             }
-            if (isset($trailer)) {
+            if ($trailer !== null) {
                 $this->dispatchAddVideoCommand($eventId, $trailer);
                 $output->writeln("Added trailer for {$eventId}.");
             }
