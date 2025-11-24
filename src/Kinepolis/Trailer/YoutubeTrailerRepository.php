@@ -24,8 +24,6 @@ final class YoutubeTrailerRepository implements TrailerRepository
 
     private bool $enabled;
 
-    private bool $quotaHasBeenReached = false;
-
     public function __construct(
         Google_Service_YouTube $youTubeClient,
         string $channelId,
@@ -42,7 +40,7 @@ final class YoutubeTrailerRepository implements TrailerRepository
 
     public function findMatchingTrailer(string $title): ?Video
     {
-        if (!$this->enabled || $this->quotaHasBeenReached) {
+        if (!$this->enabled) {
             return null;
         }
 
@@ -68,12 +66,10 @@ final class YoutubeTrailerRepository implements TrailerRepository
                 }
             }
         } catch (GoogleException $exception) {
-            $message = $exception->getMessage();
-            $this->logger->error($message);
-            if (stripos($message, 'quota') !== false) {
-                $this->quotaHasBeenReached = true;
-            }
+            $this->logger->error($exception->getMessage());
+            throw $exception;
         }
+
         return null;
     }
 }
