@@ -67,6 +67,7 @@ final class YoutubeTrailerRepository implements TrailerRepository
             }
         } catch (GoogleException $exception) {
             $this->logger->error($exception->getMessage());
+            throw $exception;
         }
 
         return null;
