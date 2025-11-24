@@ -76,11 +76,14 @@ final class AddMatchingTrailer extends Command
 
         $results = $this->searchResultsGenerator->search($query);
         foreach ($results as $eventId => $result) {
+            $trailer = null;
             try {
                 $trailer = $this->searchForTrailer($eventId, $output);
             } catch (GoogleException $exception) {
-                $output->writeln($exception->getMessage());
-                break;
+                if (stripos($exception->getMessage(), 'quota') !== false) {
+                    $output->writeln('Quota has been reached. Fetching trailers will be halted.');
+                    break;
+                }
             }
             if ($trailer !== null) {
                 $this->dispatchAddVideoCommand($eventId, $trailer);
