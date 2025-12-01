@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\UiTPAS\Event\Event;
+namespace CultuurNet\UDB3\UiTPAS\Event\Organizer;
 
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 
-final class EventCardSystemsUpdated
+final class OrganizerCardSystemsUpdated
 {
     /**
      * @param CardSystem[] $cardSystems

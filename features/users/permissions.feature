@@ -38,6 +38,24 @@ Feature: Test the UDB3 roles API permissions
     }
     """
 
+  Scenario: As a regular user I cannot search users by their id
+    Given I am authorized as JWT provider user "invoerder_lgm"
+    When I send a GET request to "/users/26808daa-e194-4ca8-ac93-2b69e3c722bd"
+    Then the response status should be "403"
+
+  Scenario: As a god user I can search users by their id
+    Given I am authorized as JWT provider user "centraal_beheerder"
+    When I send a GET request to "/users/26808daa-e194-4ca8-ac93-2b69e3c722bd"
+    Then the response status should be "200"
+    And the JSON response should be:
+    """
+    {
+      "email": "dev+validator_diest@publiq.be",
+      "username": "dev+validator_diest@publiq.be",
+      "uuid": "26808daa-e194-4ca8-ac93-2b69e3c722bd"
+    }
+    """
+
   Scenario: As an anonymous user I cannot get my user details
     Given I am not authorized
     When I send a GET request to "/user"

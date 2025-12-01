@@ -100,6 +100,9 @@ final class YoutubeTrailerRepositoryTest extends TestCase
      */
     public function it_should_log_when_youtube_throws_an_exception(): void
     {
+        $this->expectException(GoogleException::class);
+        $this->expectExceptionMessage('some Google Exception');
+
         $this->search->expects($this->once())->method('listSearch')->with('id,snippet', [
             'channelId' => $this->channelId,
             'q' => 'NotFound',
@@ -111,7 +114,6 @@ final class YoutubeTrailerRepositoryTest extends TestCase
             ->method('error')
             ->with('some Google Exception');
 
-        $video = $this->trailerRepository->findMatchingTrailer('NotFound');
-        $this->assertNull($video);
+        $this->trailerRepository->findMatchingTrailer('NotFound');
     }
 }

@@ -148,6 +148,7 @@ use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\UpdateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
+use CultuurNet\UDB3\Http\User\GetUserByIdRequestHandler;
 use CultuurNet\UDB3\Mailinglist\SubscribeUserToMailinglistRequestHandler;
 use CultuurNet\UDB3\Cultuurkuur\GetEducationLevelsRequestHandler;
 use CultuurNet\UDB3\Cultuurkuur\GetRegionsRequestHandler;
@@ -538,6 +539,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function bindUser(Router $router): void
     {
+        $router->get('/users/{userId}/', GetUserByIdRequestHandler::class);
         $router->get('/users/emails/{email}/', GetUserByEmailRequestHandler::class);
         $router->get('/user/', GetCurrentUserRequestHandler::class);
     }

@@ -102,6 +102,10 @@ class AgeRange
 
     public function toString(): string
     {
+        if ($this->to === null && ($this->from === null || $this->from->toInteger() === 0)) {
+            return '-';
+        }
+
         $from = $this->from ? $this->from->toInteger() : '';
         $to = $this->to ? $this->to->toInteger() : '';
 

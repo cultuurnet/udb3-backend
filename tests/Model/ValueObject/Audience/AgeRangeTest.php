@@ -117,6 +117,12 @@ class AgeRangeTest extends TestCase
                     'expectedRange' => new AgeRange(),
                     'expectedRangeString' => '-',
                 ],
+            'ALL_ZERO' =>
+                [
+                    'ageRangeString' => '0-',
+                    'expectedRange' => new AgeRange(new Age(0)),
+                    'expectedRangeString' => '-',
+                ],
             'TODDLERS' =>
                 [
                     'ageRangeString' => '0-2',
