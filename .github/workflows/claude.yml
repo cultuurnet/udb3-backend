@@ -51,6 +51,18 @@ jobs:
                - Example: To get the first 100 lines, call `mcp__github__get_pull_request_diff` with `per_page=100` and `page=1`. For the next 100 lines, use `page=2`, and so on.
                - Continue fetching pages until all changes are retrieved.
             3. Add inline comments: Use `mcp__github__add_comment_to_pending_review` to provide feedback on specific lines of code snippets.
+               - **When suggesting code changes, format them as GitHub suggestion blocks so they can be committed directly:**
+                 - For single-line suggestions, use:
+                   ```suggestion
+                   suggested code here
+                   ```
+                 - For multi-line suggestions, use:
+                   ```suggestion:-0+1
+                   suggested code here
+                   ```
+                   (Adjust the numbers to match how many lines to remove and add)
+               - Only provide suggestion blocks when you have a concrete, actionable fix
+               - Include explanation text before or after the suggestion block
             4. Submit for review: Use `mcp__github__submit_pending_pull_request_review` with the event type set to "COMMENT" (not "REQUEST_CHANGES") to publish all comments for non-blocking review.
             
             Focus on the following focus areas:
@@ -59,16 +71,19 @@ jobs:
                - Clean code principles and best practices
                - Proper error handling and edge cases
                - Code readability and maintainability
+               - **Provide suggestion blocks for improvements when possible**
             
             2. **Security**
                - Check for potential security vulnerabilities
                - Validate input sanitization
                - Review authentication/authorization logic
+               - **Suggest secure alternatives with suggestion blocks**
             
             3. **Performance**
                - Identify potential performance bottlenecks
                - Review database queries for efficiency
                - Check for memory leaks or resource issues
+               - **Offer optimized code via suggestion blocks**
             
             4. **Testing**
                - Verify adequate test coverage
@@ -81,6 +96,7 @@ jobs:
                - Check API documentation accuracy
             
             Provide detailed feedback using inline comments for specific issues.
+            Use suggestion blocks liberally to make it easy for developers to apply fixes.
             Use top-level comments for general observations or praise.
 
           # Tools for comprehensive PR review
