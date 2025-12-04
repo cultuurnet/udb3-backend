@@ -20,12 +20,15 @@ final class GetStreetRequestHandlerTest extends TestCase
 
     private StreetSuggester&MockObject $streetSuggester;
 
+    private StreetSuggester&MockObject $streetSuggester2;
+
     private GetStreetRequestHandler $getStreetRequestHandler;
 
     protected function setUp(): void
     {
         $this->streetSuggester = $this->createMock(StreetSuggester::class);
-        $this->getStreetRequestHandler = new GetStreetRequestHandler($this->streetSuggester);
+        $this->streetSuggester2 = $this->createMock(StreetSuggester::class);
+        $this->getStreetRequestHandler = new GetStreetRequestHandler($this->streetSuggester, $this->streetSuggester2);
     }
 
     /**
@@ -98,7 +101,7 @@ final class GetStreetRequestHandlerTest extends TestCase
     public function it_will_throw_on_unsupported_countries(): void
     {
         $request = (new Psr7RequestBuilder())
-            ->withUriFromString('streets?country=NL&postalCode=1012AB&locality=Amsterdam&query=Maria')
+            ->withUriFromString('streets?country=&postalCode=1012AB&locality=Amsterdam&query=Maria')
             ->build('GET');
 
         $this->streetSuggester->expects($this->never())
