@@ -44,9 +44,27 @@ class AddressServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
+            'Dutch_' . StreetSuggester::class,
+            fn () => new CachedStreetSuggester(
+                new BPostStreetSuggester(
+                    new Client(),
+                    $container->get('config')['bpost']['doman'],
+                    $container->get('config')['bpost']['stage'],
+                    $container->get('config')['bpost']['token'],
+                ),
+                CacheFactory::create(
+                    $container->get('app_cache'),
+                    'dutch_streets',
+                    86400
+                )
+            )
+        );
+
+        $container->addShared(
             GetStreetRequestHandler::class,
             fn () => new GetStreetRequestHandler(
-                $container->get(StreetSuggester::class)
+                $container->get(StreetSuggester::class),
+                $container->get('Dutch_' . StreetSuggester::class)
             )
         );
     }
