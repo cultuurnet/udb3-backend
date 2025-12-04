@@ -16,9 +16,12 @@ final class GetStreetRequestHandler implements RequestHandlerInterface
 {
     private StreetSuggester $belgiumStreetSuggester;
 
-    public function __construct(StreetSuggester $belgiumStreetSuggester)
+    private StreetSuggester $dutchStreetSuggester;
+
+    public function __construct(StreetSuggester $belgiumStreetSuggester, StreetSuggester $duchtStreetSuggester)
     {
         $this->belgiumStreetSuggester = $belgiumStreetSuggester;
+        $this->dutchStreetSuggester = $duchtStreetSuggester;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -46,10 +49,20 @@ final class GetStreetRequestHandler implements RequestHandlerInterface
             return new JsonResponse($content);
         }
 
+        if ($countryCode === 'NL') {
+            $content = $this->dutchStreetSuggester->suggest(
+                $postalCode,
+                $locality,
+                $query,
+                $limit
+            );
+            return new JsonResponse($content);
+        }
+
         throw ApiProblem::queryParameterInvalidValue(
             'country',
             $countryCode,
-            ['BE']
+            ['BE', 'NLD']
         );
     }
 }
