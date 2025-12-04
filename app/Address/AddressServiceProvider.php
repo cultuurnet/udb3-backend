@@ -54,7 +54,7 @@ class AddressServiceProvider extends AbstractServiceProvider
                 ),
                 CacheFactory::create(
                     $container->get('app_cache'),
-                    'dutch_streets',
+                    'dutch_streetts',
                     86400
                 )
             )
