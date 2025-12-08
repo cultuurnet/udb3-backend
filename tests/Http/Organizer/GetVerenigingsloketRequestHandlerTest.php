@@ -8,9 +8,10 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Uitwisselingsplatform\Exception\UwpApiFailure;
-use CultuurNet\UDB3\Uitwisselingsplatform\Result\VerenigingsloketConnectionResult;
 use CultuurNet\UDB3\Uitwisselingsplatform\UitwisselingsplatformApiConnector;
+use CultuurNet\UDB3\Verenigingsloket\Exception\VerenigingsloketApiFailure;
+use CultuurNet\UDB3\Verenigingsloket\Result\VerenigingsloketConnectionResult;
+use CultuurNet\UDB3\Verenigingsloket\VerenigingsloketApiConnector;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -19,14 +20,14 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
 {
     private const ORGANIZER_ID = 'b3a0213a-9716-4555-9e72-77d4f8cf3cce';
 
-    private UitwisselingsplatformApiConnector|MockObject $uwpApiConnector;
+    private UitwisselingsplatformApiConnector|MockObject $api;
     private GetVerenigingsloketRequestHandler $handler;
     private Psr7RequestBuilder $psr7RequestBuilder;
 
     protected function setUp(): void
     {
-        $this->uwpApiConnector = $this->createMock(UitwisselingsplatformApiConnector::class);
-        $this->handler = new GetVerenigingsloketRequestHandler($this->uwpApiConnector);
+        $this->api = $this->createMock(VerenigingsloketApiConnector::class);
+        $this->handler = new GetVerenigingsloketRequestHandler($this->api);
         $this->psr7RequestBuilder = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', self::ORGANIZER_ID);
     }
@@ -36,7 +37,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
         $vcode = 'V123456';
         $url = 'https://www.verenigingsloket.be/nl/verenigingen/V123456';
 
-        $this->uwpApiConnector
+        $this->api
             ->expects($this->once())
             ->method('fetchVerenigingsloketConnectionForOrganizer')
             ->with(new Uuid(self::ORGANIZER_ID))
@@ -54,11 +55,11 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
 
     public function testHandleThrowsApiProblemWhenUwpConnectionFails(): void
     {
-        $this->uwpApiConnector
+        $this->api
             ->expects($this->once())
             ->method('fetchVerenigingsloketConnectionForOrganizer')
             ->with(new Uuid(self::ORGANIZER_ID))
-            ->willThrowException(new UwpApiFailure('Failed to fetch token'));
+            ->willThrowException(new VerenigingsloketApiFailure('Failed to fetch token'));
 
         $this->expectException(ApiProblem::class);
         $this->expectExceptionMessage('Failed to connect to UiTWisselingsplatform');
@@ -69,7 +70,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
 
     public function testHandleThrowsApiProblemWhenVereningslokketConnectionNotFound(): void
     {
-        $this->uwpApiConnector
+        $this->api
             ->expects($this->once())
             ->method('fetchVerenigingsloketConnectionForOrganizer')
             ->with(new Uuid(self::ORGANIZER_ID))
