@@ -1,0 +1,75 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Verenigingsloket;
+
+use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Verenigingsloket\Exception\VerenigingsloketApiFailure;
+use CultuurNet\UDB3\Verenigingsloket\Result\VerenigingsloketConnectionResult;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\ResponseInterface;
+use Fig\Http\Message\StatusCodeInterface;
+
+class VerenigingsloketApiConnector
+{
+    public function __construct(
+        private ClientInterface $httpClient,
+        private string $websiteUrl,
+        private string $apiKey,
+    ) {
+    }
+
+    private function fetchOrganizerFromVerenigingsloket(Uuid $organizerId): ResponseInterface
+    {
+        $request = new Request(
+            'GET',
+            '/api/relations?' .
+            http_build_query([
+                'organizerId' => $organizerId->toString(),
+                'status' => 'confirmed',
+                'page' => 1,
+                'itemsPerPage' => 10,
+            ]),
+            [
+                'Accept' =>  'application/ld+json',
+                'X-API-KEY' => $this->apiKey,
+            ],
+        );
+
+        try {
+            $response = $this->httpClient->sendRequest($request);
+        } catch (\Exception $e) {
+            throw VerenigingsloketApiFailure::apiUnavailable($e->getMessage());
+        }
+
+        if ($response->getStatusCode() !== StatusCodeInterface::STATUS_OK) {
+            throw VerenigingsloketApiFailure::requestFailed($response->getStatusCode());
+        }
+
+        return $response;
+    }
+
+    public function fetchVerenigingsloketConnectionForOrganizer(Uuid $organizerId): ?VerenigingsloketConnectionResult
+    {
+        $response = $this->fetchOrganizerFromVerenigingsloket($organizerId);
+
+        try {
+            $data = JSON::decodeAssociatively($response->getBody()->getContents());
+        } catch (\JsonException) {
+            return null;
+        }
+
+        if (empty($data['member'][0]['vCode'])) {
+            return null;
+        }
+
+        $vCode = $data['member'][0]['vCode'];
+        return new VerenigingsloketConnectionResult(
+            $vCode,
+            $this->websiteUrl . $vCode
+        );
+    }
+}
