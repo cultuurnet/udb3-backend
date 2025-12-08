@@ -131,7 +131,7 @@ class VerenigingsloketApiConnectorTest extends TestCase
 
     public function testActualService(): void
     {
-        $config = require __DIR__ . '../../../config.php';
+        $config = require __DIR__ . '/../../config.php';
 
         if (empty($config['verenigingsloket']['test']['orgId'])) {
             $this->markTestSkipped('No verenigingsloket test organizer configured');
