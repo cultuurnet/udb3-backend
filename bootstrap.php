@@ -227,7 +227,6 @@ $container->addServiceProvider(new MailinglistServiceProvider());
 
 $container->addServiceProvider(new CultuurkuurServiceProvider());
 $container->addServiceProvider(new MailerServiceProvider());
-$container->addServiceProvider(new UitwisselingsplatformServiceProvider());
 $container->addServiceProvider(new VerenigingsloketServiceProvider());
 
 /** Addresses */
