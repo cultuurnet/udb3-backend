@@ -128,4 +128,24 @@ class VerenigingsloketApiConnectorTest extends TestCase
 
         $this->assertNull($result);
     }
+
+    public function testActualService(): void
+    {
+        $config = require __DIR__ . '../../../config.php';
+
+        if (empty($config['verenigingsloket']['test']['orgId'])) {
+            $this->markTestSkipped('No verenigingsloket test organizer configured');
+        }
+
+        $apiConnector = new VerenigingsloketApiConnector(
+            new Client(['base_uri' => $config['verenigingsloket']['apiUrl']]),
+            $config['verenigingsloket']['websiteUrl'],
+            $config['verenigingsloket']['apiKey'],
+        );
+
+        $result = $apiConnector->fetchVerenigingsloketConnectionForOrganizer(new Uuid($config['verenigingsloket']['test']['orgId']));
+
+        $this->assertEquals($result->getVcode(), $config['verenigingsloket']['test']['vCode']);
+        $this->assertEquals($result->getUrl(), $config['verenigingsloket']['websiteUrl'] . $config['verenigingsloket']['test']['vCode']);
+    }
 }
