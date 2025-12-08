@@ -79,6 +79,7 @@ use CultuurNet\UDB3\UiTPASService\UiTPASServiceLabelsServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceOrganizerServiceProvider;
 use CultuurNet\UDB3\User\UserServiceProvider;
 use CultuurNet\UDB3\Uitwisselingsplatform\UitwisselingsplatformServiceProvider;
+use CultuurNet\UDB3\Verenigingsloket\VerenigingsloketServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
 
@@ -227,7 +228,7 @@ $container->addServiceProvider(new MailinglistServiceProvider());
 $container->addServiceProvider(new CultuurkuurServiceProvider());
 $container->addServiceProvider(new MailerServiceProvider());
 $container->addServiceProvider(new UitwisselingsplatformServiceProvider());
-
+$container->addServiceProvider(new VerenigingsloketServiceProvider());
 
 /** Addresses */
 $container->addServiceProvider(new AddressServiceProvider());
