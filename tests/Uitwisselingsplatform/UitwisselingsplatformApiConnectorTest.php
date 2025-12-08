@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Uitwisselingsplatform;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Uitwisselingsplatform\Exception\UwpApiFailure;
-use CultuurNet\UDB3\Uitwisselingsplatform\Result\VerenigingsloketConnectionResult;
+use CultuurNet\UDB3\Verenigingsloket\Result\VerenigingsloketConnectionResult;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;

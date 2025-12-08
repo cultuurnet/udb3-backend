@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Uitwisselingsplatform\Exception\UwpApiFailure;
 use CultuurNet\UDB3\Uitwisselingsplatform\Queries\SparqlQueryInterface;
 use CultuurNet\UDB3\Uitwisselingsplatform\Queries\VerenigingsloketConnectionQuery;
-use CultuurNet\UDB3\Uitwisselingsplatform\Result\VerenigingsloketConnectionResult;
+use CultuurNet\UDB3\Verenigingsloket\Result\VerenigingsloketConnectionResult;
 use Exception;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
