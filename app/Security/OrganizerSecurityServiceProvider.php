@@ -16,10 +16,12 @@ use Http\Adapter\Guzzle7\Client;
 
 final class OrganizerSecurityServiceProvider extends AbstractServiceProvider
 {
+    public const ORGANIZER_PERMISSION_VOTER = 'organizer_permission_voter';
+
     protected function getProvidedServiceNames(): array
     {
         return [
-            'organizer_permission_voter',
+            self::ORGANIZER_PERMISSION_VOTER,
         ];
     }
 
@@ -28,7 +30,7 @@ final class OrganizerSecurityServiceProvider extends AbstractServiceProvider
         $container = $this->getContainer();
 
         $container->addShared(
-            'organizer_permission_voter',
+            self::ORGANIZER_PERMISSION_VOTER,
             fn () => new AnyOfVoter(
                 $container->get('god_user_voter'),
                 new ResourceOwnerVoter(
