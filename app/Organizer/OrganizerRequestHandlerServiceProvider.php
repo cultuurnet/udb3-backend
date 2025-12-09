@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Http\Organizer\DeleteEducationalDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteVerenigingsloketConnectionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetCreatorRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
@@ -38,6 +39,7 @@ use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Organizer\ReadModel\RDF\OrganizerJsonToTurtleConverter;
+use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use CultuurNet\UDB3\Verenigingsloket\VerenigingsloketConnector;
@@ -71,6 +73,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             GetContributorsRequestHandler::class,
             GetPermissionsForGivenUserRequestHandler::class,
             GetVerenigingsloketRequestHandler::class,
+            DeleteVerenigingsloketConnectionRequestHandler::class,
             UpdateContributorsRequestHandler::class,
         ];
     }
@@ -277,6 +280,17 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             function () use ($container) {
                 return new GetVerenigingsloketRequestHandler(
                     $container->get(VerenigingsloketConnector::class)
+                );
+            }
+        );
+
+        $container->addShared(
+            DeleteVerenigingsloketConnectionRequestHandler::class,
+            function () use ($container) {
+                return new DeleteVerenigingsloketConnectionRequestHandler(
+                    $container->get(VerenigingsloketConnector::class),
+                    $container->get(OrganizerSecurityServiceProvider::ORGANIZER_PERMISSION_VOTER),
+                    $container->get(CurrentUser::class)->getId()
                 );
             }
         );

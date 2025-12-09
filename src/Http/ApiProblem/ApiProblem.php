@@ -590,4 +590,13 @@ final class ApiProblem extends Exception
             StatusCodeInterface::STATUS_SERVICE_UNAVAILABLE,
         );
     }
+
+    public static function cannotDeleteVerenigingsloketMatch(): self
+    {
+        return self::create(
+            'https://api.publiq.be/uitdatabank/verenigingsloket-api-failure',
+            'Only owners can delete verenigingsloket matches',
+            StatusCodeInterface::STATUS_SERVICE_UNAVAILABLE,
+        );
+    }
 }
