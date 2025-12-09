@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Verenigingsloket\Result;
 
 final class VerenigingsloketConnectionResult
 {
-    public function __construct(private string $vcode, private string $url)
+    public function __construct(private string $vcode, private string $url, private string $relationId)
     {
     }
 
@@ -18,5 +18,10 @@ final class VerenigingsloketConnectionResult
     public function getUrl(): string
     {
         return $this->url;
+    }
+
+    public function getRelationId(): string
+    {
+        return $this->relationId;
     }
 }

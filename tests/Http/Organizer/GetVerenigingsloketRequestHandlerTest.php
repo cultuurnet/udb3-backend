@@ -35,12 +35,13 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
     {
         $vcode = 'V123456';
         $url = 'https://www.verenigingsloket.be/nl/verenigingen/V123456';
+        $relationId = '008583aa-6b6f-4ee0-a42b-1bc2a7f61be8';
 
         $this->api
             ->expects($this->once())
             ->method('fetchVerenigingsloketConnectionForOrganizer')
             ->with(new Uuid(self::ORGANIZER_ID))
-            ->willReturn(new VerenigingsloketConnectionResult($vcode, $url));
+            ->willReturn(new VerenigingsloketConnectionResult($vcode, $url, $relationId));
 
         $response = $this->handler->handle($this->psr7RequestBuilder->build('GET'));
 
