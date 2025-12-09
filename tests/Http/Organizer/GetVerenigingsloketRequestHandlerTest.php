@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Uitwisselingsplatform\UitwisselingsplatformApiConnector;
 use CultuurNet\UDB3\Verenigingsloket\Exception\VerenigingsloketApiFailure;
 use CultuurNet\UDB3\Verenigingsloket\Result\VerenigingsloketConnectionResult;
-use CultuurNet\UDB3\Verenigingsloket\VerenigingsloketApiConnector;
+use CultuurNet\UDB3\Verenigingsloket\VerenigingsloketConnector;
 use Fig\Http\Message\StatusCodeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +26,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->api = $this->createMock(VerenigingsloketApiConnector::class);
+        $this->api = $this->createMock(VerenigingsloketConnector::class);
         $this->handler = new GetVerenigingsloketRequestHandler($this->api);
         $this->psr7RequestBuilder = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', self::ORGANIZER_ID);

@@ -9,14 +9,14 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Verenigingsloket\Exception\VerenigingsloketApiFailure;
-use CultuurNet\UDB3\Verenigingsloket\VerenigingsloketApiConnector;
+use CultuurNet\UDB3\Verenigingsloket\VerenigingsloketConnector;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class GetVerenigingsloketRequestHandler implements RequestHandlerInterface
 {
-    public function __construct(private VerenigingsloketApiConnector $api)
+    public function __construct(private VerenigingsloketConnector $api)
     {
     }
 

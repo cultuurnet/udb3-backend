@@ -20,7 +20,7 @@ use Psr\Http\Client\ClientInterface;
 class VerenigingsloketApiConnectorTest extends TestCase
 {
     private Uuid $organizerId;
-    private VerenigingsloketApiConnector $apiConnector;
+    private VerenigingsloketApiRepository $apiConnector;
 
     private ClientInterface|MockObject $httpClient;
     private MockHandler $mockHandler;
@@ -31,7 +31,7 @@ class VerenigingsloketApiConnectorTest extends TestCase
 
         $handlerStack = HandlerStack::create($this->mockHandler);
         $this->httpClient = new Client(['handler' => $handlerStack]);
-        $this->apiConnector = new VerenigingsloketApiConnector(
+        $this->apiConnector = new VerenigingsloketApiRepository(
             $this->httpClient,
             'https://publiq.be/',
             'supersecret-api-key'
