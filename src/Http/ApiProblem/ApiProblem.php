@@ -596,7 +596,7 @@ final class ApiProblem extends Exception
         return self::create(
             'https://api.publiq.be/uitdatabank/verenigingsloket-api-failure',
             'Only owners can delete verenigingsloket matches',
-            StatusCodeInterface::STATUS_SERVICE_UNAVAILABLE,
+            StatusCodeInterface::STATUS_FORBIDDEN,
         );
     }
 }
