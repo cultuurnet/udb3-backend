@@ -8,7 +8,6 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Uitwisselingsplatform\UitwisselingsplatformApiConnector;
 use CultuurNet\UDB3\Verenigingsloket\Exception\VerenigingsloketApiFailure;
 use CultuurNet\UDB3\Verenigingsloket\Result\VerenigingsloketConnectionResult;
 use CultuurNet\UDB3\Verenigingsloket\VerenigingsloketConnector;
@@ -20,7 +19,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
 {
     private const ORGANIZER_ID = 'b3a0213a-9716-4555-9e72-77d4f8cf3cce';
 
-    private UitwisselingsplatformApiConnector|MockObject $api;
+    private VerenigingsloketConnector|MockObject $api;
     private GetVerenigingsloketRequestHandler $handler;
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -62,13 +61,13 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
             ->willThrowException(new VerenigingsloketApiFailure('Failed to fetch token'));
 
         $this->expectException(ApiProblem::class);
-        $this->expectExceptionMessage('Failed to connect to UiTWisselingsplatform');
+        $this->expectExceptionMessage('Failed to connect to verenigingsloket');
         $this->expectExceptionCode(StatusCodeInterface::STATUS_SERVICE_UNAVAILABLE);
 
         $this->handler->handle($this->psr7RequestBuilder->build('GET'));
     }
 
-    public function testHandleThrowsApiProblemWhenVereningslokketConnectionNotFound(): void
+    public function testHandleThrowsApiProblemWhenConnectionNotFound(): void
     {
         $this->api
             ->expects($this->once())

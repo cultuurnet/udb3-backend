@@ -582,20 +582,11 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function uwpApiFailure(): self
+    public static function verenigingsloketApiFailure(): self
     {
         return self::create(
-            'https://api.publiq.be/uitdatabank/uwp-api-failure',
-            'Failed to connect to UiTWisselingsplatform',
-            StatusCodeInterface::STATUS_SERVICE_UNAVAILABLE,
-        );
-    }
-
-    public static function vereningslokketApiFailure(): self
-    {
-        return self::create(
-            'https://api.publiq.be/uitdatabank/verengingslokket-api-failure',
-            'Failed to connect to Vereningslokket',
+            'https://api.publiq.be/uitdatabank/verenigingsloket-api-failure',
+            'Failed to connect to verenigingsloket',
             StatusCodeInterface::STATUS_SERVICE_UNAVAILABLE,
         );
     }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-return Publiq\PhpCsFixer\Config::fromFolders(
+$config = Publiq\PhpCsFixer\Config::fromFolders(
     [
         'app/',
         'bin/',
@@ -15,3 +15,7 @@ return Publiq\PhpCsFixer\Config::fromFolders(
         'features/Support/',
     ],
 )->legacy();
+
+$config->getFinder()->append(['bootstrap.php']);
+
+return $config;

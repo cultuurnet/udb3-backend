@@ -28,7 +28,7 @@ final class GetVerenigingsloketRequestHandler implements RequestHandlerInterface
         try {
             $result = $this->api->fetchVerenigingsloketConnectionForOrganizer(new Uuid($organizerId));
         } catch (VerenigingsloketApiFailure) {
-            throw ApiProblem::uwpApiFailure();
+            throw ApiProblem::verenigingsloketApiFailure();
         }
 
         if ($result === null) {

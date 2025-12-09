@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 
-class VerenigingsloketApiConnectorTest extends TestCase
+class VerenigingsloketApiRepositoryTest extends TestCase
 {
     private Uuid $organizerId;
     private VerenigingsloketApiRepository $apiConnector;

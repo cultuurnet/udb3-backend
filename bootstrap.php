@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CultuurNet\UDB3\Address\AddressServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
@@ -10,6 +12,7 @@ use CultuurNet\UDB3\CommandHandling\CommandBusServiceProvider;
 use CultuurNet\UDB3\Configuration\ConfigurationServiceProvider;
 use CultuurNet\UDB3\Contributor\ContributorServiceProvider;
 use CultuurNet\UDB3\Culturefeed\CultureFeedServiceProvider;
+use CultuurNet\UDB3\Cultuurkuur\CultuurkuurServiceProvider;
 use CultuurNet\UDB3\Curators\CuratorsServiceProvider;
 use CultuurNet\UDB3\Database\DatabaseServiceProvider;
 use CultuurNet\UDB3\Error\SentryServiceProvider;
@@ -70,7 +73,6 @@ use CultuurNet\UDB3\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\SwiftMailer\SwiftMailerServiceProvider;
-use CultuurNet\UDB3\Cultuurkuur\CultuurkuurServiceProvider;
 use CultuurNet\UDB3\Term\TermServiceProvider;
 use CultuurNet\UDB3\UDB2\UDB2EventServicesProvider;
 use CultuurNet\UDB3\UiTPAS\UiTPASIncomingEventServicesProvider;
@@ -78,7 +80,6 @@ use CultuurNet\UDB3\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceLabelsServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceOrganizerServiceProvider;
 use CultuurNet\UDB3\User\UserServiceProvider;
-use CultuurNet\UDB3\Uitwisselingsplatform\UitwisselingsplatformServiceProvider;
 use CultuurNet\UDB3\Verenigingsloket\VerenigingsloketServiceProvider;
 use League\Container\Container;
 use League\Container\ReflectionContainer;
@@ -227,7 +228,6 @@ $container->addServiceProvider(new MailinglistServiceProvider());
 
 $container->addServiceProvider(new CultuurkuurServiceProvider());
 $container->addServiceProvider(new MailerServiceProvider());
-$container->addServiceProvider(new UitwisselingsplatformServiceProvider());
 $container->addServiceProvider(new VerenigingsloketServiceProvider());
 
 /** Addresses */
