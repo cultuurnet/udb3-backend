@@ -582,15 +582,6 @@ final class ApiProblem extends Exception
         );
     }
 
-    public static function uwpApiFailure(): self
-    {
-        return self::create(
-            'https://api.publiq.be/uitdatabank/uwp-api-failure',
-            'Failed to connect to UiTWisselingsplatform',
-            StatusCodeInterface::STATUS_SERVICE_UNAVAILABLE,
-        );
-    }
-
     public static function vereningslokketApiFailure(): self
     {
         return self::create(
