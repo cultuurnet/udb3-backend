@@ -13,6 +13,5 @@ return Publiq\PhpCsFixer\Config::fromFolders(
         'features/State/',
         'features/Steps/',
         'features/Support/',
-        'bootstrap.php',
     ],
 )->legacy();
