@@ -19,7 +19,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
 {
     private const ORGANIZER_ID = 'b3a0213a-9716-4555-9e72-77d4f8cf3cce';
 
-    private VerenigingsloketApiConnector|MockObject $api;
+    private VerenigingsloketConnector|MockObject $api;
     private GetVerenigingsloketRequestHandler $handler;
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -67,7 +67,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
         $this->handler->handle($this->psr7RequestBuilder->build('GET'));
     }
 
-    public function testHandleThrowsApiProblemWhenVereningslokketConnectionNotFound(): void
+    public function testHandleThrowsApiProblemWhenConnectionNotFound(): void
     {
         $this->api
             ->expects($this->once())
