@@ -34,7 +34,7 @@ final class GetVerenigingsloketRequestHandler implements RequestHandlerInterface
         if ($result === null) {
             throw ApiProblem::verenigingsloketMatchNotFound($organizerId);
         }
- 
+
         return new JsonResponse([
             'vcode' => $result->getVcode(),
             'url' => $result->getUrl(),
