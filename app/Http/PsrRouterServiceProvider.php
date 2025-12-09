@@ -85,6 +85,7 @@ use CultuurNet\UDB3\Http\Organizer\DeleteEducationalDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteVerenigingsloketConnectionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetContributorsRequestHandler as GetContributorsOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetCreatorRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
@@ -397,6 +398,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->put('{organizerId}/contributors/', UpdateContributorsOrganizerRequestHandler::class);
 
             $routeGroup->get('{organizerId}/verenigingsloket/', GetVerenigingsloketRequestHandler::class);
+            $routeGroup->delete('{organizerId}/verenigingsloket/', DeleteVerenigingsloketConnectionRequestHandler::class);
         });
     }
 
