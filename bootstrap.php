@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use CultuurNet\UDB3\Address\AddressServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPConnectionServiceProvider;
 use CultuurNet\UDB3\AMQP\AMQPPublisherServiceProvider;
