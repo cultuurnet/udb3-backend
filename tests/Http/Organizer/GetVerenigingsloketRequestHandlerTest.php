@@ -61,7 +61,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
             ->willThrowException(new VerenigingsloketApiFailure('Failed to fetch token'));
 
         $this->expectException(ApiProblem::class);
-        $this->expectExceptionMessage('Failed to connect to UiTWisselingsplatform');
+        $this->expectExceptionMessage('Failed to connect to verenigingsloket');
         $this->expectExceptionCode(StatusCodeInterface::STATUS_SERVICE_UNAVAILABLE);
 
         $this->handler->handle($this->psr7RequestBuilder->build('GET'));
