@@ -69,7 +69,43 @@ final class VerenigingsloketApiRepository implements VerenigingsloketConnector
         $vCode = $data['member'][0]['vCode'];
         return new VerenigingsloketConnectionResult(
             $vCode,
-            $this->websiteUrl . $vCode
+            $this->websiteUrl . $vCode,
+            $data['member'][0]['id']
         );
+    }
+
+    public function breakRelationFromVerenigingsloket(Uuid $organizerId, string $userId): bool
+    {
+        $result = $this->fetchVerenigingsloketConnectionForOrganizer($organizerId);
+
+        if ($result === null) {
+            return false;
+        }
+
+        $request = new Request(
+            'PATCH',
+            '/api/relations/' . $result->getRelationId(),
+            [
+                'Accept' =>  'application/ld+json',
+                'Content-Type' => 'application/merge-patch+json' ,
+                'X-API-KEY' => $this->apiKey,
+            ],
+            Json::encode([
+                'status' => 'cancelled',
+                'initiator' => 'uitdb:' . $userId,
+            ])
+        );
+
+        try {
+            $response = $this->httpClient->sendRequest($request);
+        } catch (\Exception $e) {
+            throw VerenigingsloketApiFailure::apiUnavailable($e->getMessage());
+        }
+
+        if ($response->getStatusCode() !== StatusCodeInterface::STATUS_OK) {
+            throw VerenigingsloketApiFailure::requestFailed($response->getStatusCode());
+        }
+
+        return true;
     }
 }
