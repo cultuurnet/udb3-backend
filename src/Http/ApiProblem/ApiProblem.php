@@ -590,4 +590,13 @@ final class ApiProblem extends Exception
             StatusCodeInterface::STATUS_SERVICE_UNAVAILABLE,
         );
     }
+
+    public static function vereningslokketApiFailure(): self
+    {
+        return self::create(
+            'https://api.publiq.be/uitdatabank/verengingslokket-api-failure',
+            'Failed to connect to Vereningslokket',
+            StatusCodeInterface::STATUS_SERVICE_UNAVAILABLE,
+        );
+    }
 }

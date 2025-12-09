@@ -8,15 +8,15 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Uitwisselingsplatform\Exception\UwpApiFailure;
-use CultuurNet\UDB3\Uitwisselingsplatform\UitwisselingsplatformApiConnector;
+use CultuurNet\UDB3\Verenigingsloket\Exception\VerenigingsloketApiFailure;
+use CultuurNet\UDB3\Verenigingsloket\VerenigingsloketConnector;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class GetVerenigingsloketRequestHandler implements RequestHandlerInterface
 {
-    public function __construct(private UitwisselingsplatformApiConnector $uwpApiConnector)
+    public function __construct(private VerenigingsloketConnector $api)
     {
     }
 
@@ -26,8 +26,8 @@ final class GetVerenigingsloketRequestHandler implements RequestHandlerInterface
         $organizerId = $routeParameters->getOrganizerId();
 
         try {
-            $result = $this->uwpApiConnector->fetchVerenigingsloketConnectionForOrganizer(new Uuid($organizerId));
-        } catch (UwpApiFailure) {
+            $result = $this->api->fetchVerenigingsloketConnectionForOrganizer(new Uuid($organizerId));
+        } catch (VerenigingsloketApiFailure) {
             throw ApiProblem::uwpApiFailure();
         }
 
