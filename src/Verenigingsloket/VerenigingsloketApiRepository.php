@@ -13,7 +13,7 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Fig\Http\Message\StatusCodeInterface;
 
-class VerenigingsloketApiConnector
+final class VerenigingsloketApiRepository implements VerenigingsloketConnector
 {
     public function __construct(
         private ClientInterface $httpClient,
