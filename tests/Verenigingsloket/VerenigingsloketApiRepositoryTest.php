@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Verenigingsloket;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Verenigingsloket\Enum\VerenigingsloketConnectionStatus;
 use CultuurNet\UDB3\Verenigingsloket\Exception\VerenigingsloketApiFailure;
 use CultuurNet\UDB3\Verenigingsloket\Result\VerenigingsloketConnectionResult;
 use GuzzleHttp\Client;
@@ -47,6 +48,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
                 [
                     'vCode' => 'VCODE123',
                     'id' => $relationId,
+                    'status' => 'confirmed',
                 ],
             ],
         ], JSON_THROW_ON_ERROR);
@@ -61,6 +63,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
         $this->assertEquals('VCODE123', $result->getVcode());
         $this->assertEquals('https://publiq.be/VCODE123', $result->getUrl());
         $this->assertEquals($relationId, $result->getRelationId());
+        $this->assertEquals(VerenigingsloketConnectionStatus::CONFIRMED, $result->getStatus());
     }
 
     public function test_fetchVerenigingsloketConnectionForOrganizer_returns_null_on_invalid_json(): void
@@ -143,6 +146,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
                 [
                     'vCode' => 'VCODE123',
                     'id' => $relationId,
+                    'status' => 'confirmed',
                 ],
             ],
         ], JSON_THROW_ON_ERROR);
@@ -200,6 +204,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
                 [
                     'vCode' => 'VCODE123',
                     'id' => $relationId,
+                    'status' => 'confirmed',
                 ],
             ],
         ], JSON_THROW_ON_ERROR);
@@ -225,6 +230,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
                 [
                     'vCode' => 'VCODE123',
                     'id' => $relationId,
+                    'status' => 'confirmed',
                 ],
             ],
         ], JSON_THROW_ON_ERROR);
@@ -250,6 +256,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
                 [
                     'vCode' => 'VCODE123',
                     'id' => $relationId,
+                    'status' => 'confirmed',
                 ],
             ],
         ], JSON_THROW_ON_ERROR);

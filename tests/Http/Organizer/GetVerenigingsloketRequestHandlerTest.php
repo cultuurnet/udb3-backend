@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Verenigingsloket\Enum\VerenigingsloketConnectionStatus;
 use CultuurNet\UDB3\Verenigingsloket\Exception\VerenigingsloketApiFailure;
 use CultuurNet\UDB3\Verenigingsloket\Result\VerenigingsloketConnectionResult;
 use CultuurNet\UDB3\Verenigingsloket\VerenigingsloketConnector;
@@ -41,7 +42,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
             ->expects($this->once())
             ->method('fetchVerenigingsloketConnectionForOrganizer')
             ->with(new Uuid(self::ORGANIZER_ID))
-            ->willReturn(new VerenigingsloketConnectionResult($vcode, $url, $relationId));
+            ->willReturn(new VerenigingsloketConnectionResult($vcode, $url, $relationId, VerenigingsloketConnectionStatus::CONFIRMED));
 
         $response = $this->handler->handle($this->psr7RequestBuilder->build('GET'));
 
@@ -50,6 +51,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
         $this->assertEquals([
             'vcode' => $vcode,
             'url' => $url,
+            'status' => VerenigingsloketConnectionStatus::CONFIRMED->value,
         ], Json::decodeAssociatively($response->getBody()->getContents()));
     }
 
