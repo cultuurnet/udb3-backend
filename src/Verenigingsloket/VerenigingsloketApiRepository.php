@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Verenigingsloket;
 
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Verenigingsloket\Enum\VerenigingsloketConnectionStatus;
 use CultuurNet\UDB3\Verenigingsloket\Exception\VerenigingsloketApiFailure;
 use CultuurNet\UDB3\Verenigingsloket\Result\VerenigingsloketConnectionResult;
 use GuzzleHttp\Psr7\Request;
@@ -13,6 +14,9 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Fig\Http\Message\StatusCodeInterface;
 
+/**
+ * Documentation: https://uwp-tni.verenigingsloket.be/api
+ */
 final class VerenigingsloketApiRepository implements VerenigingsloketConnector
 {
     public function __construct(
@@ -29,9 +33,8 @@ final class VerenigingsloketApiRepository implements VerenigingsloketConnector
             '/api/relations?' .
             http_build_query([
                 'organizerId' => $organizerId->toString(),
-                'status' => 'confirmed',
                 'page' => 1,
-                'itemsPerPage' => 10,
+                'itemsPerPage' => 1,
             ]),
             [
                 'Accept' =>  'application/ld+json',
@@ -70,7 +73,8 @@ final class VerenigingsloketApiRepository implements VerenigingsloketConnector
         return new VerenigingsloketConnectionResult(
             $vCode,
             $this->websiteUrl . $vCode,
-            $data['member'][0]['id']
+            $data['member'][0]['id'],
+            VerenigingsloketConnectionStatus::from($data['member'][0]['status']),
         );
     }
 

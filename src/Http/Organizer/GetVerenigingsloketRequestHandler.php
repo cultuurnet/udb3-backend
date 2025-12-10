@@ -38,6 +38,7 @@ final class GetVerenigingsloketRequestHandler implements RequestHandlerInterface
         return new JsonResponse([
             'vcode' => $result->getVcode(),
             'url' => $result->getUrl(),
+            'status' => $result->getStatus()->value,
         ]);
     }
 }
