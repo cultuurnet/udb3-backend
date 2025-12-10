@@ -33,8 +33,6 @@ final class VerenigingsloketApiRepository implements VerenigingsloketConnector
             '/api/relations?' .
             http_build_query([
                 'organizerId' => $organizerId->toString(),
-                'page' => 1,
-                'itemsPerPage' => 1,
             ]),
             [
                 'Accept' =>  'application/ld+json',
@@ -65,7 +63,7 @@ final class VerenigingsloketApiRepository implements VerenigingsloketConnector
             return null;
         }
 
-        if (empty($data['member'][0]['vCode'])) {
+        if (empty($data['member'][0]['vCode']) || empty($data['member'][0]['id']) || empty($data['member'][0]['status'])) {
             return null;
         }
 
