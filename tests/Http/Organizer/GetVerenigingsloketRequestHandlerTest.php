@@ -32,7 +32,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
             ->withRouteParameter('organizerId', self::ORGANIZER_ID);
     }
 
-    public function testHandleReturnsJsonResponseWhenVereningslokketConnectionFound(): void
+    public function testHandleReturnsJsonResponseWhenVerenigingsloketConnectionFound(): void
     {
         $vcode = 'V123456';
         $url = 'https://www.verenigingsloket.be/nl/verenigingen/V123456';
@@ -41,7 +41,7 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
         $this->api
             ->expects($this->once())
             ->method('fetchVerenigingsloketConnectionForOrganizer')
-            ->with(new Uuid(self::ORGANIZER_ID))
+            ->with(new Uuid(self::ORGANIZER_ID), VerenigingsloketConnectionStatus::CONFIRMED)
             ->willReturn(new VerenigingsloketConnectionResult($vcode, $url, $relationId, VerenigingsloketConnectionStatus::CONFIRMED));
 
         $response = $this->handler->handle($this->psr7RequestBuilder->build('GET'));
@@ -55,12 +55,12 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
         ], Json::decodeAssociatively($response->getBody()->getContents()));
     }
 
-    public function testHandleThrowsApiProblemWhenUwpConnectionFails(): void
+    public function testHandleThrowsApiProblemWhenVerenigingsloketConnectionFails(): void
     {
         $this->api
             ->expects($this->once())
             ->method('fetchVerenigingsloketConnectionForOrganizer')
-            ->with(new Uuid(self::ORGANIZER_ID))
+            ->with(new Uuid(self::ORGANIZER_ID), VerenigingsloketConnectionStatus::CONFIRMED)
             ->willThrowException(new VerenigingsloketApiFailure('Failed to fetch token'));
 
         $this->expectException(ApiProblem::class);
@@ -72,16 +72,87 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
 
     public function testHandleThrowsApiProblemWhenConnectionNotFound(): void
     {
+        $callCount = 0;
         $this->api
-            ->expects($this->once())
+            ->expects($this->exactly(2))
             ->method('fetchVerenigingsloketConnectionForOrganizer')
-            ->with(new Uuid(self::ORGANIZER_ID))
-            ->willReturn(null);
+            ->willReturnCallback(function (Uuid $organizerId, VerenigingsloketConnectionStatus $status) use (&$callCount) {
+                $callCount++;
+                $this->assertEquals(new Uuid(self::ORGANIZER_ID), $organizerId);
+
+                if ($callCount === 1) {
+                    $this->assertEquals(VerenigingsloketConnectionStatus::CONFIRMED, $status);
+                } elseif ($callCount === 2) {
+                    $this->assertEquals(VerenigingsloketConnectionStatus::CANCELLED, $status);
+                }
+
+                return null;
+            });
 
         $this->expectException(ApiProblem::class);
         $this->expectExceptionMessage('Organizer b3a0213a-9716-4555-9e72-77d4f8cf3cce not found in verenigingsloket.');
         $this->expectExceptionCode(StatusCodeInterface::STATUS_NOT_FOUND);
 
         $this->handler->handle($this->psr7RequestBuilder->build('GET'));
+    }
+
+    public function testHandleFallsBackToCancelledStatusWhenConfirmedNotFound(): void
+    {
+        $vcode = 'V789012';
+        $url = 'https://www.verenigingsloket.be/nl/verenigingen/V789012';
+        $relationId = '123456aa-7b8f-4ee0-a42b-1bc2a7f61be8';
+
+        $callCount = 0;
+        $this->api
+            ->expects($this->exactly(2))
+            ->method('fetchVerenigingsloketConnectionForOrganizer')
+            ->willReturnCallback(function (Uuid $organizerId, VerenigingsloketConnectionStatus $status) use (&$callCount, $vcode, $url, $relationId) {
+                $callCount++;
+                $this->assertEquals(new Uuid(self::ORGANIZER_ID), $organizerId);
+
+                if ($callCount === 1) {
+                    $this->assertEquals(VerenigingsloketConnectionStatus::CONFIRMED, $status);
+                    return null;
+                } elseif ($callCount === 2) {
+                    $this->assertEquals(VerenigingsloketConnectionStatus::CANCELLED, $status);
+                    return new VerenigingsloketConnectionResult($vcode, $url, $relationId, VerenigingsloketConnectionStatus::CANCELLED);
+                }
+
+                return null;
+            });
+
+        $response = $this->handler->handle($this->psr7RequestBuilder->build('GET'));
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $this->assertEquals([
+            'vcode' => $vcode,
+            'url' => $url,
+            'status' => VerenigingsloketConnectionStatus::CANCELLED->value,
+        ], Json::decodeAssociatively($response->getBody()->getContents()));
+    }
+
+    public function testHandlePrefernsConfirmedOverCancelledStatus(): void
+    {
+        $vcode = 'V555555';
+        $url = 'https://www.verenigingsloket.be/nl/verenigingen/V555555';
+        $relationId = '999999aa-8b9f-4ee0-a42b-1bc2a7f61be8';
+
+        // Only CONFIRMED should be called since it returns a result
+        $this->api
+            ->expects($this->once())
+            ->method('fetchVerenigingsloketConnectionForOrganizer')
+            ->with(new Uuid(self::ORGANIZER_ID), VerenigingsloketConnectionStatus::CONFIRMED)
+            ->willReturn(new VerenigingsloketConnectionResult($vcode, $url, $relationId, VerenigingsloketConnectionStatus::CONFIRMED));
+
+        $response = $this->handler->handle($this->psr7RequestBuilder->build('GET'));
+
+        $this->assertEquals(200, $response->getStatusCode());
+
+        $this->assertEquals([
+            'vcode' => $vcode,
+            'url' => $url,
+            'status' => VerenigingsloketConnectionStatus::CONFIRMED->value,
+        ], Json::decodeAssociatively($response->getBody()->getContents()));
     }
 }

@@ -26,13 +26,14 @@ final class VerenigingsloketApiRepository implements VerenigingsloketConnector
     ) {
     }
 
-    private function fetchOrganizerFromVerenigingsloket(Uuid $organizerId): ResponseInterface
+    private function fetchOrganizerFromVerenigingsloketByStatus(Uuid $organizerId, VerenigingsloketConnectionStatus $status): ResponseInterface
     {
         $request = new Request(
             'GET',
             '/api/relations?' .
             http_build_query([
                 'organizerId' => $organizerId->toString(),
+                'status' => $status->value,
             ]),
             [
                 'Accept' =>  'application/ld+json',
@@ -53,9 +54,9 @@ final class VerenigingsloketApiRepository implements VerenigingsloketConnector
         return $response;
     }
 
-    public function fetchVerenigingsloketConnectionForOrganizer(Uuid $organizerId): ?VerenigingsloketConnectionResult
+    public function fetchVerenigingsloketConnectionForOrganizer(Uuid $organizerId, VerenigingsloketConnectionStatus $status): ?VerenigingsloketConnectionResult
     {
-        $response = $this->fetchOrganizerFromVerenigingsloket($organizerId);
+        $response = $this->fetchOrganizerFromVerenigingsloketByStatus($organizerId, $status);
 
         try {
             $data = JSON::decodeAssociatively($response->getBody()->getContents());
@@ -78,7 +79,7 @@ final class VerenigingsloketApiRepository implements VerenigingsloketConnector
 
     public function breakConnectionFromVerenigingsloket(Uuid $organizerId, string $userId): bool
     {
-        $result = $this->fetchVerenigingsloketConnectionForOrganizer($organizerId);
+        $result = $this->fetchVerenigingsloketConnectionForOrganizer($organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
 
         if ($result === null) {
             return false;

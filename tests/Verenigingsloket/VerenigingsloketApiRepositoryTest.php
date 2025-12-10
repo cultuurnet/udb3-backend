@@ -57,7 +57,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
             new Response(200, ['Content-Type' => 'application/ld+json'], $responseBody)
         );
 
-        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId);
+        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
 
         $this->assertInstanceOf(VerenigingsloketConnectionResult::class, $result);
         $this->assertEquals('VCODE123', $result->getVcode());
@@ -72,7 +72,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
             new Response(200, ['Content-Type' => 'application/ld+json'], 'invalid json')
         );
 
-        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId);
+        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
 
         $this->assertNull($result);
     }
@@ -86,7 +86,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
         $this->expectException(VerenigingsloketApiFailure::class);
         $this->expectExceptionMessage('Verenigingsloket API is unavailable: Connection failed');
 
-        $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId);
+        $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
     }
 
     public function test_fetchVerenigingsloketConnectionForOrganizer_throws_exception_on_http_error(): void
@@ -98,7 +98,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
         $this->expectException(VerenigingsloketApiFailure::class);
         $this->expectExceptionMessage('Verenigingsloket API request failed: HTTP 500');
 
-        $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId);
+        $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
     }
 
     public function test_fetchVerenigingsloketConnectionForOrganizer_returns_null_on_empty_response(): void
@@ -111,7 +111,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
             new Response(200, ['Content-Type' => 'application/ld+json'], $responseBody)
         );
 
-        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId);
+        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
 
         $this->assertNull($result);
     }
@@ -130,7 +130,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
             new Response(200, ['Content-Type' => 'application/ld+json'], $responseBody)
         );
 
-        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId);
+        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
 
         $this->assertNull($result);
     }
