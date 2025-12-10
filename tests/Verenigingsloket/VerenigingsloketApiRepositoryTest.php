@@ -153,7 +153,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
             new Response(200, ['Content-Type' => 'application/ld+json'], '{}')
         );
 
-        $result = $this->apiConnector->breakRelationFromVerenigingsloket($this->organizerId, $userId);
+        $result = $this->apiConnector->breakConnectionFromVerenigingsloket($this->organizerId, $userId);
 
         $this->assertTrue($result);
     }
@@ -171,7 +171,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
             new Response(200, ['Content-Type' => 'application/ld+json'], $fetchResponseBody)
         );
 
-        $result = $this->apiConnector->breakRelationFromVerenigingsloket($this->organizerId, $userId);
+        $result = $this->apiConnector->breakConnectionFromVerenigingsloket($this->organizerId, $userId);
 
         $this->assertFalse($result);
     }
@@ -187,7 +187,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
         $this->expectException(VerenigingsloketApiFailure::class);
         $this->expectExceptionMessage('Verenigingsloket API is unavailable: Connection failed');
 
-        $this->apiConnector->breakRelationFromVerenigingsloket($this->organizerId, $userId);
+        $this->apiConnector->breakConnectionFromVerenigingsloket($this->organizerId, $userId);
     }
 
     public function test_breakRelationFromVerenigingsloket_throws_exception_when_patch_fails(): void
@@ -212,7 +212,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
         $this->expectException(VerenigingsloketApiFailure::class);
         $this->expectExceptionMessage('Verenigingsloket API request failed: HTTP 500');
 
-        $this->apiConnector->breakRelationFromVerenigingsloket($this->organizerId, $userId);
+        $this->apiConnector->breakConnectionFromVerenigingsloket($this->organizerId, $userId);
     }
 
     public function test_breakRelationFromVerenigingsloket_throws_exception_when_patch_request_fails(): void
@@ -237,7 +237,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
         $this->expectException(VerenigingsloketApiFailure::class);
         $this->expectExceptionMessage('Verenigingsloket API is unavailable: Network error');
 
-        $this->apiConnector->breakRelationFromVerenigingsloket($this->organizerId, $userId);
+        $this->apiConnector->breakConnectionFromVerenigingsloket($this->organizerId, $userId);
     }
 
     public function test_breakRelationFromVerenigingsloket_handles_401_unauthorized(): void
@@ -262,6 +262,6 @@ class VerenigingsloketApiRepositoryTest extends TestCase
         $this->expectException(VerenigingsloketApiFailure::class);
         $this->expectExceptionMessage('Verenigingsloket API request failed: HTTP 401');
 
-        $this->apiConnector->breakRelationFromVerenigingsloket($this->organizerId, $userId);
+        $this->apiConnector->breakConnectionFromVerenigingsloket($this->organizerId, $userId);
     }
 }

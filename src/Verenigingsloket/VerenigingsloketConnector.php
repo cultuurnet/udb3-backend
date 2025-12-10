@@ -10,5 +10,5 @@ use CultuurNet\UDB3\Verenigingsloket\Result\VerenigingsloketConnectionResult;
 interface VerenigingsloketConnector
 {
     public function fetchVerenigingsloketConnectionForOrganizer(Uuid $organizerId): ?VerenigingsloketConnectionResult;
-    public function breakRelationFromVerenigingsloket(Uuid $organizerId, string $userId): bool;
+    public function breakConnectionFromVerenigingsloket(Uuid $organizerId, string $userId): bool;
 }

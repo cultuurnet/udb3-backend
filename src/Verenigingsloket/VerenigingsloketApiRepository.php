@@ -74,7 +74,7 @@ final class VerenigingsloketApiRepository implements VerenigingsloketConnector
         );
     }
 
-    public function breakRelationFromVerenigingsloket(Uuid $organizerId, string $userId): bool
+    public function breakConnectionFromVerenigingsloket(Uuid $organizerId, string $userId): bool
     {
         $result = $this->fetchVerenigingsloketConnectionForOrganizer($organizerId);
 

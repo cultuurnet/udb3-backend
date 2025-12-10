@@ -49,7 +49,7 @@ class DeleteVerenigingsloketConnectionRequestHandlerTest extends TestCase
 
         $this->api
             ->expects($this->once())
-            ->method('breakRelationFromVerenigingsloket')
+            ->method('breakConnectionFromVerenigingsloket')
             ->with(new Uuid(self::ORGANIZER_ID), self::CURRENT_USER_ID)
             ->willReturn(true);
 
@@ -69,7 +69,7 @@ class DeleteVerenigingsloketConnectionRequestHandlerTest extends TestCase
 
         $this->api
             ->expects($this->never())
-            ->method('breakRelationFromVerenigingsloket');
+            ->method('breakConnectionFromVerenigingsloket');
 
         $this->expectException(ApiProblem::class);
         $this->expectExceptionMessage('Only owners can delete verenigingsloket matches');
@@ -88,7 +88,7 @@ class DeleteVerenigingsloketConnectionRequestHandlerTest extends TestCase
 
         $this->api
             ->expects($this->once())
-            ->method('breakRelationFromVerenigingsloket')
+            ->method('breakConnectionFromVerenigingsloket')
             ->with(new Uuid(self::ORGANIZER_ID), self::CURRENT_USER_ID)
             ->willThrowException(VerenigingsloketApiFailure::apiUnavailable('Connection failed'));
 
@@ -109,7 +109,7 @@ class DeleteVerenigingsloketConnectionRequestHandlerTest extends TestCase
 
         $this->api
             ->expects($this->once())
-            ->method('breakRelationFromVerenigingsloket')
+            ->method('breakConnectionFromVerenigingsloket')
             ->with(new Uuid(self::ORGANIZER_ID), self::CURRENT_USER_ID)
             ->willReturn(false);
 

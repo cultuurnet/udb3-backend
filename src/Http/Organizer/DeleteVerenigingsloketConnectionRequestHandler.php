@@ -33,7 +33,7 @@ final class DeleteVerenigingsloketConnectionRequestHandler implements RequestHan
         }
 
         try {
-            $success = $this->api->breakRelationFromVerenigingsloket(new Uuid($organizerId), $this->currentUserId);
+            $success = $this->api->breakConnectionFromVerenigingsloket(new Uuid($organizerId), $this->currentUserId);
         } catch (VerenigingsloketApiFailure) {
             throw ApiProblem::verenigingsloketApiFailure();
         }
