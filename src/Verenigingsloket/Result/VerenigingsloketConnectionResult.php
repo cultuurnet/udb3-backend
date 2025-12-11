@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Verenigingsloket\Result;
 
+use CultuurNet\UDB3\Verenigingsloket\Enum\VerenigingsloketConnectionStatus;
+
 final class VerenigingsloketConnectionResult
 {
-    public function __construct(private string $vcode, private string $url, private string $relationId)
+    public function __construct(private string $vcode, private string $url, private string $relationId, private VerenigingsloketConnectionStatus $status)
     {
     }
 
@@ -23,5 +25,10 @@ final class VerenigingsloketConnectionResult
     public function getRelationId(): string
     {
         return $this->relationId;
+    }
+
+    public function getStatus(): VerenigingsloketConnectionStatus
+    {
+        return $this->status;
     }
 }
