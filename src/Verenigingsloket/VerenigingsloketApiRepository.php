@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Verenigingsloket;
 
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Verenigingsloket\Enum\VerenigingsloketConnectionStatus;
 use CultuurNet\UDB3\Verenigingsloket\Exception\VerenigingsloketApiFailure;
 use CultuurNet\UDB3\Verenigingsloket\Result\VerenigingsloketConnectionResult;
 use GuzzleHttp\Psr7\Request;
@@ -13,6 +14,9 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Fig\Http\Message\StatusCodeInterface;
 
+/**
+ * Documentation: https://uwp-tni.verenigingsloket.be/api
+ */
 final class VerenigingsloketApiRepository implements VerenigingsloketConnector
 {
     public function __construct(
@@ -22,16 +26,14 @@ final class VerenigingsloketApiRepository implements VerenigingsloketConnector
     ) {
     }
 
-    private function fetchOrganizerFromVerenigingsloket(Uuid $organizerId): ResponseInterface
+    private function fetchOrganizerFromVerenigingsloketByStatus(Uuid $organizerId, VerenigingsloketConnectionStatus $status): ResponseInterface
     {
         $request = new Request(
             'GET',
             '/api/relations?' .
             http_build_query([
                 'organizerId' => $organizerId->toString(),
-                'status' => 'confirmed',
-                'page' => 1,
-                'itemsPerPage' => 10,
+                'status' => $status->value,
             ]),
             [
                 'Accept' =>  'application/ld+json',
@@ -52,9 +54,9 @@ final class VerenigingsloketApiRepository implements VerenigingsloketConnector
         return $response;
     }
 
-    public function fetchVerenigingsloketConnectionForOrganizer(Uuid $organizerId): ?VerenigingsloketConnectionResult
+    public function fetchVerenigingsloketConnectionForOrganizer(Uuid $organizerId, VerenigingsloketConnectionStatus $status): ?VerenigingsloketConnectionResult
     {
-        $response = $this->fetchOrganizerFromVerenigingsloket($organizerId);
+        $response = $this->fetchOrganizerFromVerenigingsloketByStatus($organizerId, $status);
 
         try {
             $data = JSON::decodeAssociatively($response->getBody()->getContents());
@@ -62,14 +64,51 @@ final class VerenigingsloketApiRepository implements VerenigingsloketConnector
             return null;
         }
 
-        if (empty($data['member'][0]['vCode'])) {
+        if (empty($data['member'][0]['vCode']) || empty($data['member'][0]['id']) || empty($data['member'][0]['status'])) {
             return null;
         }
 
         $vCode = $data['member'][0]['vCode'];
         return new VerenigingsloketConnectionResult(
             $vCode,
-            $this->websiteUrl . $vCode
+            $this->websiteUrl . $vCode,
+            $data['member'][0]['id'],
+            VerenigingsloketConnectionStatus::from($data['member'][0]['status']),
         );
+    }
+
+    public function breakConnectionFromVerenigingsloket(Uuid $organizerId, string $userId): bool
+    {
+        $result = $this->fetchVerenigingsloketConnectionForOrganizer($organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
+
+        if ($result === null) {
+            return false;
+        }
+
+        $request = new Request(
+            'PATCH',
+            '/api/relations/' . $result->getRelationId(),
+            [
+                'Accept' =>  'application/ld+json',
+                'Content-Type' => 'application/merge-patch+json' ,
+                'X-API-KEY' => $this->apiKey,
+            ],
+            Json::encode([
+                'status' => 'cancelled',
+                'initiator' => 'uitdb:' . $userId,
+            ])
+        );
+
+        try {
+            $response = $this->httpClient->sendRequest($request);
+        } catch (\Exception $e) {
+            throw VerenigingsloketApiFailure::apiUnavailable($e->getMessage());
+        }
+
+        if ($response->getStatusCode() !== StatusCodeInterface::STATUS_OK) {
+            throw VerenigingsloketApiFailure::requestFailed($response->getStatusCode());
+        }
+
+        return true;
     }
 }

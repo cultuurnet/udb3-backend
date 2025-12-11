@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Verenigingsloket;
 
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Verenigingsloket\Enum\VerenigingsloketConnectionStatus;
 use CultuurNet\UDB3\Verenigingsloket\Exception\VerenigingsloketApiFailure;
 use CultuurNet\UDB3\Verenigingsloket\Result\VerenigingsloketConnectionResult;
 use GuzzleHttp\Client;
@@ -41,10 +42,13 @@ class VerenigingsloketApiRepositoryTest extends TestCase
 
     public function test_fetchVerenigingsloketConnectionForOrganizer_returns_connection_result_on_success(): void
     {
+        $relationId = '554d802b-6bdd-4ceb-97e6-da82a499a7e6';
         $responseBody = json_encode([
             'member' => [
                 [
                     'vCode' => 'VCODE123',
+                    'id' => $relationId,
+                    'status' => 'confirmed',
                 ],
             ],
         ], JSON_THROW_ON_ERROR);
@@ -53,11 +57,13 @@ class VerenigingsloketApiRepositoryTest extends TestCase
             new Response(200, ['Content-Type' => 'application/ld+json'], $responseBody)
         );
 
-        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId);
+        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
 
         $this->assertInstanceOf(VerenigingsloketConnectionResult::class, $result);
         $this->assertEquals('VCODE123', $result->getVcode());
         $this->assertEquals('https://publiq.be/VCODE123', $result->getUrl());
+        $this->assertEquals($relationId, $result->getRelationId());
+        $this->assertEquals(VerenigingsloketConnectionStatus::CONFIRMED, $result->getStatus());
     }
 
     public function test_fetchVerenigingsloketConnectionForOrganizer_returns_null_on_invalid_json(): void
@@ -66,7 +72,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
             new Response(200, ['Content-Type' => 'application/ld+json'], 'invalid json')
         );
 
-        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId);
+        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
 
         $this->assertNull($result);
     }
@@ -80,7 +86,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
         $this->expectException(VerenigingsloketApiFailure::class);
         $this->expectExceptionMessage('Verenigingsloket API is unavailable: Connection failed');
 
-        $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId);
+        $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
     }
 
     public function test_fetchVerenigingsloketConnectionForOrganizer_throws_exception_on_http_error(): void
@@ -92,7 +98,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
         $this->expectException(VerenigingsloketApiFailure::class);
         $this->expectExceptionMessage('Verenigingsloket API request failed: HTTP 500');
 
-        $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId);
+        $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
     }
 
     public function test_fetchVerenigingsloketConnectionForOrganizer_returns_null_on_empty_response(): void
@@ -105,7 +111,7 @@ class VerenigingsloketApiRepositoryTest extends TestCase
             new Response(200, ['Content-Type' => 'application/ld+json'], $responseBody)
         );
 
-        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId);
+        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
 
         $this->assertNull($result);
     }
@@ -124,8 +130,145 @@ class VerenigingsloketApiRepositoryTest extends TestCase
             new Response(200, ['Content-Type' => 'application/ld+json'], $responseBody)
         );
 
-        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId);
+        $result = $this->apiConnector->fetchVerenigingsloketConnectionForOrganizer($this->organizerId, VerenigingsloketConnectionStatus::CONFIRMED);
 
         $this->assertNull($result);
+    }
+
+    public function test_breakRelationFromVerenigingsloket_returns_true_on_success(): void
+    {
+        $relationId = '554d802b-6bdd-4ceb-97e6-da82a499a7e6';
+        $userId = 'user123';
+
+        // Mock the GET request to fetch the connection
+        $fetchResponseBody = json_encode([
+            'member' => [
+                [
+                    'vCode' => 'VCODE123',
+                    'id' => $relationId,
+                    'status' => 'confirmed',
+                ],
+            ],
+        ], JSON_THROW_ON_ERROR);
+
+        // Mock the PATCH request to break the relation
+        $this->mockHandler->append(
+            new Response(200, ['Content-Type' => 'application/ld+json'], $fetchResponseBody),
+            new Response(200, ['Content-Type' => 'application/ld+json'], '{}')
+        );
+
+        $result = $this->apiConnector->breakConnectionFromVerenigingsloket($this->organizerId, $userId);
+
+        $this->assertTrue($result);
+    }
+
+    public function test_breakRelationFromVerenigingsloket_returns_false_when_connection_not_found(): void
+    {
+        $userId = 'user123';
+
+        // Mock the GET request returning empty response
+        $fetchResponseBody = json_encode([
+            'member' => [],
+        ], JSON_THROW_ON_ERROR);
+
+        $this->mockHandler->append(
+            new Response(200, ['Content-Type' => 'application/ld+json'], $fetchResponseBody)
+        );
+
+        $result = $this->apiConnector->breakConnectionFromVerenigingsloket($this->organizerId, $userId);
+
+        $this->assertFalse($result);
+    }
+
+    public function test_breakRelationFromVerenigingsloket_throws_exception_when_fetch_fails(): void
+    {
+        $userId = 'user123';
+
+        $this->mockHandler->append(
+            new ConnectException('Connection failed', new Request('GET', '/api/relations'))
+        );
+
+        $this->expectException(VerenigingsloketApiFailure::class);
+        $this->expectExceptionMessage('Verenigingsloket API is unavailable: Connection failed');
+
+        $this->apiConnector->breakConnectionFromVerenigingsloket($this->organizerId, $userId);
+    }
+
+    public function test_breakRelationFromVerenigingsloket_throws_exception_when_patch_fails(): void
+    {
+        $relationId = '554d802b-6bdd-4ceb-97e6-da82a499a7e6';
+        $userId = 'user123';
+
+        $fetchResponseBody = json_encode([
+            'member' => [
+                [
+                    'vCode' => 'VCODE123',
+                    'id' => $relationId,
+                    'status' => 'confirmed',
+                ],
+            ],
+        ], JSON_THROW_ON_ERROR);
+
+        $this->mockHandler->append(
+            new Response(200, ['Content-Type' => 'application/ld+json'], $fetchResponseBody),
+            new Response(500, ['Content-Type' => 'application/json'], 'Internal Server Error')
+        );
+
+        $this->expectException(VerenigingsloketApiFailure::class);
+        $this->expectExceptionMessage('Verenigingsloket API request failed: HTTP 500');
+
+        $this->apiConnector->breakConnectionFromVerenigingsloket($this->organizerId, $userId);
+    }
+
+    public function test_breakRelationFromVerenigingsloket_throws_exception_when_patch_request_fails(): void
+    {
+        $relationId = '554d802b-6bdd-4ceb-97e6-da82a499a7e6';
+        $userId = 'user123';
+
+        $fetchResponseBody = json_encode([
+            'member' => [
+                [
+                    'vCode' => 'VCODE123',
+                    'id' => $relationId,
+                    'status' => 'confirmed',
+                ],
+            ],
+        ], JSON_THROW_ON_ERROR);
+
+        $this->mockHandler->append(
+            new Response(200, ['Content-Type' => 'application/ld+json'], $fetchResponseBody),
+            new ConnectException('Network error', new Request('PATCH', '/api/relations/' . $relationId))
+        );
+
+        $this->expectException(VerenigingsloketApiFailure::class);
+        $this->expectExceptionMessage('Verenigingsloket API is unavailable: Network error');
+
+        $this->apiConnector->breakConnectionFromVerenigingsloket($this->organizerId, $userId);
+    }
+
+    public function test_breakRelationFromVerenigingsloket_handles_401_unauthorized(): void
+    {
+        $relationId = '554d802b-6bdd-4ceb-97e6-da82a499a7e6';
+        $userId = 'user123';
+
+        $fetchResponseBody = json_encode([
+            'member' => [
+                [
+                    'vCode' => 'VCODE123',
+                    'id' => $relationId,
+                    'status' => 'confirmed',
+                ],
+            ],
+        ], JSON_THROW_ON_ERROR);
+
+        $this->mockHandler->append(
+            new Response(200, ['Content-Type' => 'application/ld+json'], $fetchResponseBody),
+            new Response(401, ['Content-Type' => 'application/json'], 'Unauthorized')
+        );
+
+        $this->expectException(VerenigingsloketApiFailure::class);
+        $this->expectExceptionMessage('Verenigingsloket API request failed: HTTP 401');
+
+        $this->apiConnector->breakConnectionFromVerenigingsloket($this->organizerId, $userId);
     }
 }

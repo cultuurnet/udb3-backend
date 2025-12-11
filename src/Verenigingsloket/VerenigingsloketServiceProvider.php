@@ -12,7 +12,7 @@ final class VerenigingsloketServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
-            VerenigingsloketApiRepository::class,
+            VerenigingsloketConnector::class,
         ];
     }
 

@@ -16,12 +16,13 @@ use CultuurNet\UDB3\Http\Organizer\DeleteEducationalDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteLabelRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\DeleteOrganizerRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\DeleteVerenigingsloketConnectionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetCreatorRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\GetVerenigingsloketRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetVerenigingsloketConnectionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\LegacyOrganizerRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
@@ -38,6 +39,7 @@ use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Organizer\ReadModel\RDF\OrganizerJsonToTurtleConverter;
+use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use CultuurNet\UDB3\Verenigingsloket\VerenigingsloketConnector;
@@ -70,7 +72,8 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             GetPermissionsForCurrentUserRequestHandler::class,
             GetContributorsRequestHandler::class,
             GetPermissionsForGivenUserRequestHandler::class,
-            GetVerenigingsloketRequestHandler::class,
+            GetVerenigingsloketConnectionRequestHandler::class,
+            DeleteVerenigingsloketConnectionRequestHandler::class,
             UpdateContributorsRequestHandler::class,
         ];
     }
@@ -273,10 +276,21 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
         );
 
         $container->addShared(
-            GetVerenigingsloketRequestHandler::class,
+            GetVerenigingsloketConnectionRequestHandler::class,
             function () use ($container) {
-                return new GetVerenigingsloketRequestHandler(
+                return new GetVerenigingsloketConnectionRequestHandler(
                     $container->get(VerenigingsloketConnector::class)
+                );
+            }
+        );
+
+        $container->addShared(
+            DeleteVerenigingsloketConnectionRequestHandler::class,
+            function () use ($container) {
+                return new DeleteVerenigingsloketConnectionRequestHandler(
+                    $container->get(VerenigingsloketConnector::class),
+                    $container->get(OrganizerSecurityServiceProvider::ORGANIZER_PERMISSION_VOTER),
+                    $container->get(CurrentUser::class)->getId()
                 );
             }
         );
