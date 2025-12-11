@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Http\Organizer\GetCreatorRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\GetPermissionsForGivenUserRequestHandler;
-use CultuurNet\UDB3\Http\Organizer\GetVerenigingsloketRequestHandler;
+use CultuurNet\UDB3\Http\Organizer\GetVerenigingsloketConnectionRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\ImportOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\LegacyOrganizerRequestBodyParser;
 use CultuurNet\UDB3\Http\Organizer\UpdateAddressRequestHandler;
@@ -72,7 +72,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             GetPermissionsForCurrentUserRequestHandler::class,
             GetContributorsRequestHandler::class,
             GetPermissionsForGivenUserRequestHandler::class,
-            GetVerenigingsloketRequestHandler::class,
+            GetVerenigingsloketConnectionRequestHandler::class,
             DeleteVerenigingsloketConnectionRequestHandler::class,
             UpdateContributorsRequestHandler::class,
         ];
@@ -276,9 +276,9 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
         );
 
         $container->addShared(
-            GetVerenigingsloketRequestHandler::class,
+            GetVerenigingsloketConnectionRequestHandler::class,
             function () use ($container) {
-                return new GetVerenigingsloketRequestHandler(
+                return new GetVerenigingsloketConnectionRequestHandler(
                     $container->get(VerenigingsloketConnector::class)
                 );
             }

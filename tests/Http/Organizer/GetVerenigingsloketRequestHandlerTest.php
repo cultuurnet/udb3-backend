@@ -21,13 +21,13 @@ class GetVerenigingsloketRequestHandlerTest extends TestCase
     private const ORGANIZER_ID = 'b3a0213a-9716-4555-9e72-77d4f8cf3cce';
 
     private VerenigingsloketConnector|MockObject $api;
-    private GetVerenigingsloketRequestHandler $handler;
+    private GetVerenigingsloketConnectionRequestHandler $handler;
     private Psr7RequestBuilder $psr7RequestBuilder;
 
     protected function setUp(): void
     {
         $this->api = $this->createMock(VerenigingsloketConnector::class);
-        $this->handler = new GetVerenigingsloketRequestHandler($this->api);
+        $this->handler = new GetVerenigingsloketConnectionRequestHandler($this->api);
         $this->psr7RequestBuilder = (new Psr7RequestBuilder())
             ->withRouteParameter('organizerId', self::ORGANIZER_ID);
     }
