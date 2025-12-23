@@ -61,6 +61,10 @@ final class BPostStreetSuggester implements StreetSuggester
 
         $response = $this->client->sendRequest($request);
 
+        if ($response->getStatusCode() !== 200) {
+            return [];
+        }
+
         return $this->format(Json::decodeAssociatively($response->getBody()->getContents()));
     }
 

@@ -209,4 +209,25 @@ final class BPostStreetSuggesterTest extends TestCase
             $this->streetSuggester->suggest($postalCode, $locality, $streetQuery, $limit)
         );
     }
+
+    /**
+     * @test
+     */
+    public function itTakesIntoAccountStatusCode(): void
+    {
+        $postalCode = '9000';
+        $locality = 'Gent';
+        $streetQuery = 'maria';
+
+        $this->client->expects($this->once())
+            ->method('sendRequest')
+            ->willReturn(
+                new Response(400)
+            );
+
+        $this->assertEquals(
+            [],
+            $this->streetSuggester->suggest($postalCode, $locality, $streetQuery)
+        );
+    }
 }
