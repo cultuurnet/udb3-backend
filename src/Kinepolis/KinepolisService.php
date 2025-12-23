@@ -161,8 +161,8 @@ final class KinepolisService
             try {
                 $addImage = $this->uploadImage($token, $parsedMovie, $eventId);
                 $commands[] = $addImage;
-            } catch (ImageNotFound $imageNotFound) {
-                $this->logger->error($imageNotFound->getMessage());
+            } catch (Exception $exception) {
+                $this->logger->error($exception->getMessage());
             }
 
             $commands[] = $this->getLinkToProductionCommand($parsedMovie->getTitle()->toString(), $eventId);
