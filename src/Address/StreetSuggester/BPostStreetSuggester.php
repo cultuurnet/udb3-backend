@@ -8,25 +8,19 @@ use CultuurNet\UDB3\Json;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Uri;
 use Psr\Http\Client\ClientInterface;
+use Psr\Log\LoggerInterface;
 
 final class BPostStreetSuggester implements StreetSuggester
 {
     private const BPOST_VALIDATION_STREETS = 7;
 
-    private ClientInterface $client;
-
-    private string $domain;
-
-    private string $stage;
-
-    private string $token;
-
-    public function __construct(ClientInterface $client, string $domain, string $stage, string $token)
-    {
-        $this->client = $client;
-        $this->domain = $domain;
-        $this->stage = $stage;
-        $this->token = $token;
+    public function __construct(
+        private readonly ClientInterface $client,
+        private readonly string $domain,
+        private readonly string $stage,
+        private readonly string $token,
+        private readonly LoggerInterface $logger
+    ) {
     }
 
     /**
@@ -60,6 +54,14 @@ final class BPostStreetSuggester implements StreetSuggester
         );
 
         $response = $this->client->sendRequest($request);
+
+        if ($response->getStatusCode() !== 200) {
+            $this->logger->error('BPost Street Suggester returned non-200 status code', [
+                'status_code' => $response->getStatusCode(),
+                'body' => $response->getBody()->getContents(),
+            ]);
+            return [];
+        }
 
         return $this->format(Json::decodeAssociatively($response->getBody()->getContents()));
     }
