@@ -27,11 +27,13 @@ use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
+use CultuurNet\UDB3\Media\MediaObjectRepository;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
@@ -122,6 +124,10 @@ final class ImportEventRequestHandlerTest extends TestCase
             new CallableIriGenerator(fn (string $eventId) => 'https://io.uitdatabank.dev/events/' . $eventId),
             new EventDenormalizer(),
             new CombinedRequestBodyParser(
+                ImagesPropertyPolyfillRequestBodyParser::createForEvents(
+                    new CallableIriGenerator(fn (string $imageId) => 'https://io.uitdatabank.dev/images/' . $imageId),
+                    $this->createMock(MediaObjectRepository::class)
+                ),
                 new LegacyEventRequestBodyParser($placeIriGenerator),
                 RemoveEmptyArraysRequestBodyParser::createForEvents(),
                 new ImportTermRequestBodyParser(new EventCategoryResolver()),
@@ -5863,6 +5869,48 @@ final class ImportEventRequestHandlerTest extends TestCase
             new SchemaError(
                 '/mediaObject/0/inLanguage',
                 'The data should match one item from enum'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_mediaObject_id_for_polyfill_is_not_a_string(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => [
+                        'message' => 'this should be a string, not an array',
+                    ],
+                    '@type' => 'schema:ImageObject',
+                    'description' => 'Example description',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject/0/%40id',
+                'The data (object) must match the type: string'
             ),
         ];
 
