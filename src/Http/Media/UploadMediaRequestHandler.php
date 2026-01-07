@@ -7,8 +7,10 @@ namespace CultuurNet\UDB3\Http\Media;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use InvalidArgumentException;
@@ -16,6 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use RectorPrefix202209\Nette\NotImplementedException;
 
 final class UploadMediaRequestHandler implements RequestHandlerInterface
 {
@@ -29,6 +32,23 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        if (!str_contains($request->getHeader('Content-Type')[0], 'multipart/form-data') && $request->getBody()) {
+            $imageId = $this->handleJsonBody($request);
+        } else {
+            $imageId = $this->handleFormData($request);
+        }
+
+        return new JsonResponse(
+            [
+                '@id' => $this->iriGenerator->iri($imageId->toString()),
+                'imageId' => $imageId->toString(),
+            ],
+            201
+        );
+    }
+
+    private function handleFormData(ServerRequestInterface $request): Uuid
     {
         $uploadedFiles = $request->getUploadedFiles();
         if (!isset($uploadedFiles['file']) || !$uploadedFiles['file'] instanceof UploadedFileInterface) {
@@ -69,19 +89,18 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
             throw ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is must be exactly 2 lowercase letters long (for example "nl").');
         }
 
-        $imageId = $this->imageUploader->upload(
+        return $this->imageUploader->upload(
             $uploadedFile,
             new Description($description),
             $copyrightHolder,
             $language
         );
+    }
 
-        return new JsonResponse(
-            [
-                '@id' => $this->iriGenerator->iri($imageId->toString()),
-                'imageId' => $imageId->toString(),
-            ],
-            201
-        );
+    private function handleJsonBody(ServerRequestInterface $request): Uuid
+    {
+        $body = Json::decodeAssociatively($request->getBody()->getContents());
+
+        throw new NotImplementedException('Work in progress');
     }
 }
