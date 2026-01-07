@@ -9,6 +9,8 @@ use CultuurNet\UDB3\Address\StreetSuggester\CachedStreetSuggester;
 use CultuurNet\UDB3\Address\StreetSuggester\StreetSuggester;
 use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Http\Address\GetStreetRequestHandler;
 use GuzzleHttp\Client;
 
@@ -34,6 +36,7 @@ class AddressServiceProvider extends AbstractServiceProvider
                     $container->get('config')['bpost']['domain'],
                     $container->get('config')['bpost']['stage'],
                     $container->get('config')['bpost']['token'],
+                    LoggerFactory::create($this->getContainer(), LoggerName::forWeb())
                 ),
                 CacheFactory::create(
                     $container->get('app_cache'),

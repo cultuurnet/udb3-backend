@@ -121,6 +121,9 @@ final class ImagesPropertyPolyfillRequestBodyParser implements RequestBodyParser
         if (!isset($imageData->{'@id'})) {
             return $imageData;
         }
+        if (!is_string($imageData->{'@id'})) {
+            return $imageData;
+        }
         try {
             $imageIdUrl = new Url($imageData->{'@id'});
         } catch (InvalidArgumentException $e) {
