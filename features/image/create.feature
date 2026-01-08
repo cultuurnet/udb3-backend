@@ -107,7 +107,6 @@ Feature: Test the UDB3 image API
     """
     And I send a POST request to "/images/"
     Then the response status should be "201"
-    And show me the unparsed response
     And I keep the value of the JSON response at "@id" as "image_@id"
     And I keep the value of the JSON response at "imageId" as "image_id"
     When I send a GET request to "/images/%{image_id}"
