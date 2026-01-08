@@ -5,12 +5,17 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -29,6 +34,24 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        $contentTypeHeaders = $request->getHeader('Content-Type');
+        if (empty($contentTypeHeaders) || !str_contains($contentTypeHeaders[0], 'multipart/form-data')) {
+            $imageId = $this->handleJsonBody($request);
+        } else {
+            $imageId = $this->handleFormData($request);
+        }
+
+        return new JsonResponse(
+            [
+                '@id' => $this->iriGenerator->iri($imageId->toString()),
+                'imageId' => $imageId->toString(),
+            ],
+            201
+        );
+    }
+
+    private function handleFormData(ServerRequestInterface $request): Uuid
     {
         $uploadedFiles = $request->getUploadedFiles();
         if (!isset($uploadedFiles['file']) || !$uploadedFiles['file'] instanceof UploadedFileInterface) {
@@ -69,19 +92,33 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
             throw ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is must be exactly 2 lowercase letters long (for example "nl").');
         }
 
-        $imageId = $this->imageUploader->upload(
+        return $this->imageUploader->upload(
             $uploadedFile,
             new Description($description),
             $copyrightHolder,
             $language
         );
+    }
 
-        return new JsonResponse(
-            [
-                '@id' => $this->iriGenerator->iri($imageId->toString()),
-                'imageId' => $imageId->toString(),
-            ],
-            201
+    private function handleJsonBody(ServerRequestInterface $request): Uuid
+    {
+        $parser = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::IMAGE_POST)
+        );
+
+        /** @var \stdClass $data */
+        $data = $parser->parse($request)->getParsedBody();
+
+        $contentUrl = new Url($data->contentUrl);
+        $description = new Description($data->description);
+        $copyrightHolder = new CopyrightHolder($data->copyrightHolder);
+        $language = new Language($data->inLanguage);
+
+        return $this->imageUploader->uploadFromUrl(
+            $contentUrl,
+            $description,
+            $copyrightHolder,
+            $language
         );
     }
 }

@@ -8,12 +8,20 @@ use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Psr\Http\Message\UploadedFileInterface;
 
 interface ImageUploaderInterface
 {
     public function upload(
         UploadedFileInterface $file,
+        Description $description,
+        CopyrightHolder $copyrightHolder,
+        Language $language
+    ): Uuid;
+
+    public function uploadFromUrl(
+        Url $url,
         Description $description,
         CopyrightHolder $copyrightHolder,
         Language $language

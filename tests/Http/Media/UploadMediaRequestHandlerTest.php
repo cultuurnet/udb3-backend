@@ -42,6 +42,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
         $uploadedFile = $this->createUploadedFile('ABC', UPLOAD_ERR_OK, 'test.txt', 'text/plain');
 
         $request = (new Psr7RequestBuilder())
+            ->withHeader('Content-Type', 'multipart/form-data')
             ->withParsedBody([
                 'description' => 'Lenna',
                 'copyrightHolder' => ' Dwight Hooker',
@@ -84,6 +85,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
         $uploadedFile = $this->createUploadedFile('ABC', UPLOAD_ERR_OK, 'test.txt', 'text/plain');
 
         $request = (new Psr7RequestBuilder())
+            ->withHeader('Content-Type', 'multipart/form-data')
             ->withParsedBody($body)
             ->withFiles(['file' => $uploadedFile])
             ->build('POST');
@@ -156,6 +158,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
     public function it_throws_if_no_file_is_uploaded(): void
     {
         $request = (new Psr7RequestBuilder())
+            ->withHeader('Content-Type', 'multipart/form-data')
             ->withParsedBody([
                 'description' => 'Lenna',
                 'copyrightHolder' => ' Dwight Hooker',
@@ -176,6 +179,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
     public function it_throws_if_a_file_was_uploaded_with_the_wrong_form_data_name(): void
     {
         $request = (new Psr7RequestBuilder())
+            ->withHeader('Content-Type', 'multipart/form-data')
             ->withParsedBody([
                 'description' => 'Lenna',
                 'copyrightHolder' => ' Dwight Hooker',
