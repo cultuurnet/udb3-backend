@@ -119,6 +119,41 @@ final class ImageUploaderService implements ImageUploaderInterface
             throw new RuntimeException('Unable to open remote URL: ' . $url->toString());
         }
 
+        try {
+            $contents = '';
+            $bytesRead = 0;
+
+            while (!feof($stream)) {
+                $chunk = fread($stream, 8192);
+
+                if ($chunk === false) {
+                    throw new RuntimeException('Error while reading remote file.');
+                }
+
+                $bytesRead += \strlen($chunk);
+
+                if ($this->maxFileSize && $bytesRead > $this->maxFileSize) {
+                    throw new InvalidFileSize(
+                        'The remote file exceeds the maximum allowed size of ' . $this->maxFileSize . ' bytes.'
+                    );
+                }
+
+                $contents .= $chunk;
+            }
+            
+            if ($contents === '') {
+                throw new RuntimeException('Downloaded file is empty.');
+            }
+            
+            return $contents;
+        } finally {
+            fclose($stream);
+        }
+
+        if ($stream === false) {
+            throw new RuntimeException('Unable to open remote URL: ' . $url->toString());
+        }
+
         $contents = '';
         $bytesRead = 0;
 
