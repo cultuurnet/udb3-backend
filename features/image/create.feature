@@ -100,8 +100,8 @@ Feature: Test the UDB3 image API
     """
     {
       "contentUrl": "https://picsum.photos/200/300",
-      "description": "Een voorbeeld beschrijving",
-      "copyrightHolder": "Jan",
+      "description": "afbeelding via Json Body",
+      "copyrightHolder": "Picsum",
       "inLanguage": "nl"
     }
     """
@@ -119,8 +119,8 @@ Feature: Test the UDB3 image API
       "@type":"schema:ImageObject",
       "contentUrl":"https://images.uitdatabank.dev/%{image_id}.jpeg",
       "thumbnailUrl":"https://images.uitdatabank.dev/%{image_id}.jpeg",
-      "description":"logo",
-      "copyrightHolder":"me",
+      "description":"afbeelding via Json Body",
+      "copyrightHolder":"Picsum",
       "inLanguage":"nl",
       "id": "%{image_id}"
      }

@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use League\Flysystem\FilesystemOperator;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
@@ -94,6 +95,82 @@ final class ImageUploaderService implements ImageUploaderInterface
         return $fileId;
     }
 
+    public function uploadFromUrl(
+        Url $url,
+        Description $description,
+        CopyrightHolder $copyrightHolder,
+        Language $language
+    ): Uuid {
+        $context = stream_context_create([
+            'http' => [
+                'timeout' => 5,
+                'follow_location' => 1,
+                'max_redirects' => 3,
+            ],
+            'ssl' => [
+                'verify_peer' => true,
+                'verify_peer_name' => true,
+            ],
+        ]);
+
+        $stream = @fopen($url->toString(), 'rb', false, $context);
+
+        if ($stream === false) {
+            throw new RuntimeException('Unable to open remote URL: ' . $url->toString());
+        }
+
+        $contents = '';
+        $bytesRead = 0;
+
+        while (!feof($stream)) {
+            $chunk = fread($stream, 8192);
+
+            if ($chunk === false) {
+                fclose($stream);
+                throw new RuntimeException('Error while reading remote file.');
+            }
+
+            $bytesRead += \strlen($chunk);
+
+            if ($this->maxFileSize && $bytesRead > $this->maxFileSize) {
+                fclose($stream);
+                throw new InvalidFileSize(
+                    'The remote file exceeds the maximum allowed size of ' . $this->maxFileSize . ' bytes.'
+                );
+            }
+
+            $contents .= $chunk;
+        }
+
+        fclose($stream);
+
+        if ($contents === '') {
+            throw new RuntimeException('Downloaded file is empty.');
+        }
+
+        $mimeType = $this->getContentsMimeType($contents);
+        $this->guardMimeTypeSupported($mimeType);
+
+        $fileId = new Uuid($this->uuidGenerator->generate());
+        $fileName = $fileId->toString() . '.' . $this->guessExtensionForMimeType($mimeType);
+        $destination = $this->getUploadDirectory() . '/' . $fileName;
+
+        $this->filesystem->write($destination, $contents);
+
+        $this->commandBus->dispatch(
+            new UploadImage(
+                $fileId,
+                new MIMEType($mimeType),
+                $description,
+                $copyrightHolder,
+                $destination,
+                $language
+            )
+        );
+
+        return $fileId;
+    }
+
     private function getFileMimeType(UploadedFileInterface $file): string
     {
         $finfo = new \finfo();
@@ -102,6 +179,15 @@ final class ImageUploaderService implements ImageUploaderInterface
         /** @var string|false $mimeType */
         $mimeType = $finfo->buffer($file->getStream()->getContents(), FILEINFO_MIME_TYPE);
         return $mimeType !== false ? $mimeType : $file->getClientMediaType();
+    }
+
+    private function getContentsMimeType(string $contents): string
+    {
+        $finfo = new \finfo();
+
+        /** @var string|false $mimeType */
+        $mimeType = $finfo->buffer($contents, FILEINFO_MIME_TYPE);
+        return $mimeType !== false ? $mimeType : '';
     }
 
     private function guardMimeTypeSupported(string $mimeType): void
