@@ -5,20 +5,22 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
-use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use RectorPrefix202209\Nette\NotImplementedException;
 
 final class UploadMediaRequestHandler implements RequestHandlerInterface
 {
@@ -99,8 +101,23 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
 
     private function handleJsonBody(ServerRequestInterface $request): Uuid
     {
-        $body = Json::decodeAssociatively($request->getBody()->getContents());
+        $parser = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::IMAGE_POST)
+        );
 
-        throw new NotImplementedException('Work in progress');
+        /** @var \stdClass $data */
+        $data = $parser->parse($request)->getParsedBody();
+
+        $contentUrl = new Url($data->contentUrl);
+        $description = new Description($data->description);
+        $copyrightHolder = new CopyrightHolder($data->copyrightHolder);
+        $language = new Language($data->inLanguage);
+
+        return $this->imageUploader->uploadFromUrl(
+            $contentUrl,
+            $description,
+            $copyrightHolder,
+            $language
+        );
     }
 }
