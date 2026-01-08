@@ -113,7 +113,7 @@ final class ImageUploaderService implements ImageUploaderInterface
             ],
         ]);
 
-        $stream = @fopen($url->toString(), 'rb', false, $context);
+        $stream = fopen($url->toString(), 'rb', false, $context);
 
         if ($stream === false) {
             throw new RuntimeException('Unable to open remote URL: ' . $url->toString());
@@ -144,8 +144,6 @@ final class ImageUploaderService implements ImageUploaderInterface
             if ($contents === '') {
                 throw new RuntimeException('Downloaded file is empty.');
             }
-            
-            return $contents;
         } finally {
             fclose($stream);
         }
