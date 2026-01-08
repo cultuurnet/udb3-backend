@@ -140,16 +140,12 @@ final class ImageUploaderService implements ImageUploaderInterface
 
                 $contents .= $chunk;
             }
-            
+
             if ($contents === '') {
                 throw new RuntimeException('Downloaded file is empty.');
             }
         } finally {
             fclose($stream);
-        }
-
-        if ($stream === false) {
-            throw new RuntimeException('Unable to open remote URL: ' . $url->toString());
         }
 
         $contents = '';
