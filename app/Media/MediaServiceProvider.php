@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\ReadModel\ImageLDProjector;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
+use GuzzleHttp\Client;
 
 final class MediaServiceProvider extends AbstractServiceProvider
 {
@@ -26,6 +27,7 @@ final class MediaServiceProvider extends AbstractServiceProvider
     {
         return [
             'image_uploader',
+            ImageDownloader::class,
             'media_object_store',
             'media_object_repository',
             'media_object_iri_generator',
@@ -56,6 +58,11 @@ final class MediaServiceProvider extends AbstractServiceProvider
                     $container->get('config')['media']['file_size_limit'] ?? 1000000
                 );
             }
+        );
+
+        $container->addShared(
+            ImageDownloader::class,
+            fn () => new ImageDownloaderService(new Client())
         );
 
         $container->addShared(
@@ -168,6 +175,7 @@ final class MediaServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 return new UploadMediaRequestHandler(
                     $container->get('image_uploader'),
+                    $container->get(ImageDownloader::class),
                     $container->get('media_object_iri_generator')
                 );
             }

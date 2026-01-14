@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Media\ImageDownloader;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use Laminas\Diactoros\UploadedFile;
@@ -22,14 +23,18 @@ final class UploadMediaRequestHandlerTest extends TestCase
 
     private ImageUploaderInterface&MockObject $imageUploader;
 
+    private ImageDownloader&MockObject $imageDownloader;
+
     private UploadMediaRequestHandler $uploadMediaRequestHandler;
 
     public function setUp(): void
     {
         $this->imageUploader = $this->createMock(ImageUploaderInterface::class);
+        $this->imageDownloader = $this->createMock(ImageDownloader::class);
 
         $this->uploadMediaRequestHandler = new UploadMediaRequestHandler(
             $this->imageUploader,
+            $this->imageDownloader,
             new CallableIriGenerator(fn (string $item) => 'https://io.uitdatabank.dev/images/' . $item)
         );
     }

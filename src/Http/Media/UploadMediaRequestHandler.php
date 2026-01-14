@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Media\ImageDownloader;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -25,11 +26,17 @@ use Psr\Http\Server\RequestHandlerInterface;
 final class UploadMediaRequestHandler implements RequestHandlerInterface
 {
     private ImageUploaderInterface $imageUploader;
+
+    private ImageDownloader $imageDownloader;
     private IriGeneratorInterface $iriGenerator;
 
-    public function __construct(ImageUploaderInterface $imageUploader, IriGeneratorInterface $iriGenerator)
-    {
+    public function __construct(
+        ImageUploaderInterface $imageUploader,
+        ImageDownloader $imageDownloader,
+        IriGeneratorInterface $iriGenerator
+    ) {
         $this->imageUploader = $imageUploader;
+        $this->imageDownloader = $imageDownloader;
         $this->iriGenerator = $iriGenerator;
     }
 
@@ -114,8 +121,10 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
         $copyrightHolder = new CopyrightHolder($data->copyrightHolder);
         $language = new Language($data->inLanguage);
 
-        return $this->imageUploader->uploadFromUrl(
-            $contentUrl,
+        $uploadedFile = $this->imageDownloader->download($contentUrl);
+
+        return $this->imageUploader->upload(
+            $uploadedFile,
             $description,
             $copyrightHolder,
             $language
