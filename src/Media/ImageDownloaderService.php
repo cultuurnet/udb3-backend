@@ -12,7 +12,7 @@ use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 
-final class ImageDownloaderService implements ImageDownloaderInterface
+final class ImageDownloaderService implements ImageDownloader
 {
     private Client $client;
 
