@@ -62,7 +62,10 @@ final class MediaServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             ImageDownloader::class,
-            fn () => new ImageDownloaderService(new Client())
+            fn () => new ImageDownloaderService(
+                new Client(),
+                $container->get('config')['media']['file_size_limit'] ?? 1000000
+            )
         );
 
         $container->addShared(
