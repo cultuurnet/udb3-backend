@@ -69,7 +69,6 @@ final class ImageDownloaderService implements ImageDownloader
             fclose($tempStream);
             $stream = Utils::streamFor(fopen($tempFile, 'rb'));
 
-            var_dump($this->getFileMimeType($stream));
             $this->guardMimeTypeSupported($this->getFileMimeType($stream));
 
             return new UploadedFile(
