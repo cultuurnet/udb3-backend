@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
@@ -125,7 +126,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider incompleteRequestProvider
+     * @dataProvider incompleteFormDataRequestProvider
      */
     public function it_throws_an_api_problem_if_a_field_is_missing_or_invalid(array $body, ApiProblem $apiProblem): void
     {
@@ -140,7 +141,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
         $this->assertCallableThrowsApiProblem($apiProblem, fn () => $this->uploadMediaRequestHandler->handle($request));
     }
 
-    public function incompleteRequestProvider(): array
+    public function incompleteFormDataRequestProvider(): array
     {
         return  [
             'missing description' => [
@@ -196,6 +197,68 @@ final class UploadMediaRequestHandlerTest extends TestCase
                 ],
                 ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is must be exactly 2 lowercase letters long (for example "nl").'),
             ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider incompleteJsonBodyProvider
+     */
+    public function it_throws_an_api_problem_if_json_body_is_missing_values(array $body, ApiProblem $apiProblem): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($body)
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem($apiProblem, fn () => $this->uploadMediaRequestHandler->handle($request));
+    }
+
+    public function incompleteJsonBodyProvider(): array
+    {
+        return [
+            'missing url' => [
+                [
+                    'description' => 'Some random image',
+                    'copyrightHolder' => 'Creative Commons',
+                    'inLanguage' => 'nl',
+                ],
+                ApiProblem::bodyInvalidData(new SchemaError('/', 'The required properties (contentUrl) are missing')),
+            ],
+            'faulty url' => [
+                [
+                    'contentUrl' => 'file://var/www/home/123',
+                    'description' => 'Some random image',
+                    'copyrightHolder' => 'Creative Commons',
+                    'inLanguage' => 'nl',
+                ],
+                ApiProblem::bodyInvalidData(new SchemaError('/contentUrl', 'The string should match pattern: ^http[s]?:\/\/')),
+            ],
+            'missing description' => [
+                [
+                    'contentUrl' => 'https://example.com/123',
+                    'copyrightHolder' => 'Creative Commons',
+                    'inLanguage' => 'nl',
+                ],
+                ApiProblem::bodyInvalidData(new SchemaError('/', 'The required properties (description) are missing')),
+            ],
+            'missing copyright' => [
+                [
+                    'contentUrl' => 'https://example.com/123',
+                    'description' => 'Some random image',
+                    'inLanguage' => 'nl',
+                ],
+                ApiProblem::bodyInvalidData(new SchemaError('/', 'The required properties (copyrightHolder) are missing')),
+            ],
+            'missing language' => [
+                [
+                    'contentUrl' => 'https://example.com/123',
+                    'description' => 'Some random image',
+                    'copyrightHolder' => 'Creative Commons',
+                ],
+                ApiProblem::bodyInvalidData(new SchemaError('/', 'The required properties (inLanguage) are missing')),
+            ],
+
+
         ];
     }
 
