@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\ImageDownloader;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Laminas\Diactoros\UploadedFile;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -42,7 +43,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_uploading_an_image(): void
+    public function it_handles_uploading_an_image_via_form_data(): void
     {
         $uploadedFile = $this->createUploadedFile('ABC', UPLOAD_ERR_OK, 'test.txt', 'text/plain');
 
@@ -69,6 +70,47 @@ final class UploadMediaRequestHandlerTest extends TestCase
 
                 return $imageId;
             });
+
+        $response = $this->uploadMediaRequestHandler->handle($request);
+
+        $expectedResponseContent = Json::encode([
+            '@id' => 'https://io.uitdatabank.dev/images/' . $imageId->toString(),
+            'imageId' => $imageId->toString(),
+        ]);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals($expectedResponseContent, $response->getBody());
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_uploading_an_image_via_json_body(): void
+    {
+        $uploadedFile = [
+            'contentUrl' => 'https://www.example.com/123',
+            'description' => 'Some random image',
+            'copyrightHolder' => 'Creative Commons',
+            'inLanguage' => 'nl',
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray(
+                $uploadedFile
+            )
+            ->build('POST');
+
+        $imageId = new Uuid('08d9df2e-091d-4f65-930b-00f565a9158f');
+
+        $this->imageDownloader->expects($this->once())
+            ->method('download')
+            ->with(new Url('https://www.example.com/123'));
+
+
+        $this->imageUploader
+            ->expects($this->once())
+            ->method('upload')
+            ->willReturn($imageId);
 
         $response = $this->uploadMediaRequestHandler->handle($request);
 
