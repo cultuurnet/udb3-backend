@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Media\Exceptions\InvalidFileSize;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\UploadedFile;
+use Laminas\Diactoros\Stream;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
@@ -39,7 +40,7 @@ final class ImageDownloaderServiceTest extends TestCase
      */
     public function it_should_return_an_uploaded_file(): void
     {
-        $content = str_repeat('X', $this->maxFileSize);
+        $content = (new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')))->getContents();
         $stream = $this->createMock(StreamInterface::class);
         $stream->expects($this->exactly(2))
             ->method('eof')

@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media;
 
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileSize;
+use CultuurNet\UDB3\Media\Exceptions\InvalidFileType;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\UploadedFile;
 use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Client\ClientInterface;
+use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 
@@ -18,6 +20,12 @@ final class ImageDownloaderService implements ImageDownloader
     private ClientInterface $client;
 
     private int $maxFileSize;
+
+    private array $supportedMimeTypes = [
+        'image/png' => 'png',
+        'image/jpeg' => 'jpeg',
+        'image/gif' => 'gif',
+    ];
 
     public function __construct(
         ClientInterface $client,
@@ -60,6 +68,9 @@ final class ImageDownloaderService implements ImageDownloader
 
             fclose($tempStream);
             $stream = Utils::streamFor(fopen($tempFile, 'rb'));
+
+            var_dump($this->getFileMimeType($stream));
+            $this->guardMimeTypeSupported($this->getFileMimeType($stream));
 
             return new UploadedFile(
                 $stream,
@@ -108,5 +119,25 @@ final class ImageDownloaderService implements ImageDownloader
             FILTER_VALIDATE_IP,
             FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
         );
+    }
+
+    private function getFileMimeType(StreamInterface $stream): string
+    {
+        $finfo = new \finfo();
+        $stream->rewind();
+
+        /** @var string|false $mimeType */
+        $mimeType = $finfo->buffer($stream->getContents(), FILEINFO_MIME_TYPE);
+        return $mimeType !== false ? $mimeType : '';
+    }
+
+    private function guardMimeTypeSupported(string $mimeType): void
+    {
+        $supportedMimeTypes = array_keys($this->supportedMimeTypes);
+        if (!\in_array($mimeType, $supportedMimeTypes, true)) {
+            throw new InvalidFileType(
+                'The uploaded file has mime type "' . $mimeType . '" instead of ' . \implode(',', $supportedMimeTypes)
+            );
+        }
     }
 }
