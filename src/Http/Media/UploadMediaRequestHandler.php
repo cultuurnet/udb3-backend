@@ -43,10 +43,13 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $contentTypeHeaders = $request->getHeader('Content-Type');
-        if (empty($contentTypeHeaders) || !str_contains($contentTypeHeaders[0], 'multipart/form-data')) {
-            $imageId = $this->handleJsonBody($request);
-        } else {
+        $isMultipart = !empty($contentTypeHeaders)
+            && isset($contentTypeHeaders[0])
+            && str_contains($contentTypeHeaders[0], 'multipart/form-data');
+        if ($isMultipart) {
             $imageId = $this->handleFormData($request);
+        } else {
+            $imageId = $this->handleJsonBody($request);
         }
 
         return new JsonResponse(
