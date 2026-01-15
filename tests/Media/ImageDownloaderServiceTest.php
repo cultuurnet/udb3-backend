@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
+use RuntimeException;
 
 final class ImageDownloaderServiceTest extends TestCase
 {
@@ -89,5 +90,17 @@ final class ImageDownloaderServiceTest extends TestCase
             ->with(new Request('GET', $this->onlineImageUrl->toString()))->willReturn($response);
 
         $this->imageDownloader->download($this->onlineImageUrl);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_an_internal_ip_is_used(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Access to internal resources is not allowed');
+        $onlineImageUrl = new Url('http://127.0.0.1/someImage.png');
+        $this->client->expects($this->never())->method('sendRequest');
+        $this->imageDownloader->download($onlineImageUrl);
     }
 }
