@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media;
 
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileSize;
+use CultuurNet\UDB3\Media\Exceptions\InvalidFileType;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\UploadedFile;
@@ -61,6 +62,36 @@ final class ImageDownloaderServiceTest extends TestCase
 
         $uploadedFile = $this->imageDownloader->download($this->onlineImageUrl);
         $this->assertInstanceOf(UploadedFile::class, $uploadedFile);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_guard_mime_types(): void
+    {
+        $this->expectException(InvalidFileType::class);
+        $this->expectExceptionMessage('The uploaded file has mime type "text/plain" instead of image/png,image/jpeg,image/gif');
+
+        $content = str_repeat('X', $this->maxFileSize);
+        $stream = $this->createMock(StreamInterface::class);
+        $stream->expects($this->exactly(2))
+            ->method('eof')
+            ->willReturnOnConsecutiveCalls(false, true);
+
+        $stream->expects($this->once())
+            ->method('read')
+            ->with(8192)
+            ->willReturn($content);
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->expects($this->once())
+            ->method('getBody')
+            ->willReturn($stream);
+
+        $this->client->expects($this->once())->method('sendRequest')
+            ->with(new Request('GET', $this->onlineImageUrl->toString()))->willReturn($response);
+
+        $this->imageDownloader->download($this->onlineImageUrl);
     }
 
     /**
