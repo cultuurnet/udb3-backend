@@ -99,13 +99,14 @@ Feature: Test the UDB3 image API
     And I set the JSON request payload to:
     """
     {
-      "contentUrl": "https://picsum.photos/200/300",
+      "contentUrl": "https://images-acc-uitdatabank.imgix.net/324cc291-7d28-48c2-9da6-84dbc00b3757.png",
       "description": "afbeelding via Json Body",
-      "copyrightHolder": "Picsum",
+      "copyrightHolder": "publiq",
       "inLanguage": "nl"
     }
     """
     And I send a POST request to "/images/"
+    And show me the unparsed response
     Then the response status should be "201"
     And I keep the value of the JSON response at "@id" as "image_@id"
     And I keep the value of the JSON response at "imageId" as "image_id"
@@ -116,10 +117,10 @@ Feature: Test the UDB3 image API
      {
       "@id": "%{baseUrl}/images/%{image_id}",
       "@type":"schema:ImageObject",
-      "contentUrl":"https://images.uitdatabank.dev/%{image_id}.jpeg",
-      "thumbnailUrl":"https://images.uitdatabank.dev/%{image_id}.jpeg",
+      "contentUrl":"https://images.uitdatabank.dev/%{image_id}.png",
+      "thumbnailUrl":"https://images.uitdatabank.dev/%{image_id}.png",
       "description":"afbeelding via Json Body",
-      "copyrightHolder":"Picsum",
+      "copyrightHolder":"publiq",
       "inLanguage":"nl",
       "id": "%{image_id}"
      }
