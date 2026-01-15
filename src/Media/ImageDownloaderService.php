@@ -6,20 +6,21 @@ namespace CultuurNet\UDB3\Media;
 
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileSize;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\UploadedFile;
 use GuzzleHttp\Psr7\Utils;
+use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 
 final class ImageDownloaderService implements ImageDownloader
 {
-    private Client $client;
+    private ClientInterface $client;
 
     private int $maxFileSize;
 
     public function __construct(
-        Client $client,
+        ClientInterface $client,
         int $maxFileSize = 0
     ) {
         if ($maxFileSize < 0) {
@@ -32,9 +33,11 @@ final class ImageDownloaderService implements ImageDownloader
 
     public function download(Url $url): UploadedFileInterface
     {
-        $response = $this->client->get(
-            $url->toString(),
-            ['stream' => true]
+        $response = $this->client->sendRequest(
+            new Request(
+                'GET',
+                $url->toString()
+            )
         );
 
         $body = $response->getBody();
