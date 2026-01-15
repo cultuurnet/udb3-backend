@@ -42,32 +42,40 @@ final class ImageDownloaderService implements ImageDownloader
         );
 
         $body = $response->getBody();
-        $content = '';
+        $tempFile = tempnam(sys_get_temp_dir(), 'img_download_');
+        $tempStream = fopen($tempFile, 'wb');
         $downloadedSize = 0;
+        try {
+            while (!$body->eof()) {
+                $chunk = $body->read(8192);
+                $downloadedSize += strlen($chunk);
 
-        while (!$body->eof()) {
-            $chunk = $body->read(8192);
-            $downloadedSize += strlen($chunk);
-
-            if ($this->maxFileSize > 0 && $downloadedSize > $this->maxFileSize) {
-                $body->close();
-                throw new InvalidFileSize(
-                    'The file size of the uploaded image is too big. Max size (bytes):' . $this->maxFileSize
-                );
+                if ($this->maxFileSize > 0 && $downloadedSize > $this->maxFileSize) {
+                    throw new InvalidFileSize(
+                        'The file size of the uploaded image is too big. Max size (bytes):' . $this->maxFileSize
+                    );
+                }
+                fwrite($tempStream, $chunk);
             }
 
-            $content .= $chunk;
+            fclose($tempStream);
+            $stream = Utils::streamFor(fopen($tempFile, 'rb'));
+
+            return new UploadedFile(
+                $stream,
+                $downloadedSize,
+                UPLOAD_ERR_OK,
+                basename($tempFile),
+                $response->getHeaderLine('Content-Type')
+            );
+        } finally {
+            if (is_resource($tempStream)) {
+                fclose($tempStream);
+            }
+            if (file_exists($tempFile)) {
+                unlink($tempFile);
+            }
         }
-
-        $stream = Utils::streamFor($content);
-
-        return new UploadedFile(
-            $stream,
-            strlen($content),
-            UPLOAD_ERR_OK,
-            'temp',
-            $response->getHeaderLine('Content-Type')
-        );
     }
 
     private function validateUrl(Url $url): void
