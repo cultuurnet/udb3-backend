@@ -97,7 +97,10 @@ final class ImageDownloaderServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_should_throw_an_exception_if_the_uploaded_file_is_not_an_image(): void
+    /**
+     * @test
+     */
+    public function it_should_throw_an_exception_if_file_exceeds_max_size(): void
     {
         $this->expectException(InvalidFileSize::class);
         $this->expectExceptionMessage('The file size of the uploaded image is too big. Max size (bytes):10000');
