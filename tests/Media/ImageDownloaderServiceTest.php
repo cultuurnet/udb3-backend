@@ -36,17 +36,15 @@ final class ImageDownloaderServiceTest extends TestCase
     {
         $tooLargeUrl = new Url('https://foobar/tooLarge.png');
         $this->expectException(InvalidFileSize::class);
-        $this->expectExceptionMessage('The file size of the uploaded image is too big.');
+        $this->expectExceptionMessage('The file size of the uploaded image is too big. Max size (bytes):10000');
 
         $content = str_repeat('X', $this->maxFileSize + 1);
-        $stream = Utils::streamFor($content);
-
-        $streamMock = $this->createMock(StreamInterface::class);
-        $streamMock->expects($this->exactly(1))
+        $stream = $this->createMock(StreamInterface::class);
+        $stream->expects($this->exactly(1))
             ->method('eof')
             ->willReturnOnConsecutiveCalls(false, true);
 
-        $streamMock->expects($this->once())
+        $stream->expects($this->once())
             ->method('read')
             ->with(8192)
             ->willReturn($content);
@@ -54,7 +52,7 @@ final class ImageDownloaderServiceTest extends TestCase
         $response = $this->createMock(ResponseInterface::class);
         $response->expects($this->once())
                 ->method('getBody')
-                ->willReturn($streamMock);
+                ->willReturn($stream);
 
         $this->client->expects($this->once())->method('sendRequest')
             ->with(new Request('GET', $tooLargeUrl->toString()))->willReturn($response);
