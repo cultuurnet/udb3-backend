@@ -33,6 +33,7 @@ final class ImageDownloaderService implements ImageDownloader
 
     public function download(Url $url): UploadedFileInterface
     {
+        $this->validateUrl($url);
         $response = $this->client->sendRequest(
             new Request(
                 'GET',
@@ -66,6 +67,38 @@ final class ImageDownloaderService implements ImageDownloader
             UPLOAD_ERR_OK,
             'temp',
             $response->getHeaderLine('Content-Type')
+        );
+    }
+
+    private function validateUrl(Url $url): void
+    {
+        $urlString = $url->toString();
+        $parsedUrl = parse_url($urlString);
+
+        // Only allow HTTP/HTTPS
+        if (!in_array($parsedUrl['scheme'] ?? '', ['http', 'https'], true)) {
+            throw new RuntimeException('Only HTTP and HTTPS schemes are allowed');
+        }
+
+        // Resolve hostname to IP and check if it's internal
+        $host = $parsedUrl['host'] ?? '';
+        $ip = gethostbyname($host);
+
+        if ($this->isInternalIp($ip)) {
+            throw new RuntimeException('Access to internal resources is not allowed');
+        }
+    }
+
+    private function isInternalIp(string $ip): bool
+    {
+        if (!filter_var($ip, FILTER_VALIDATE_IP)) {
+            return true;
+        }
+
+        return !filter_var(
+            $ip,
+            FILTER_VALIDATE_IP,
+            FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE
         );
     }
 }
