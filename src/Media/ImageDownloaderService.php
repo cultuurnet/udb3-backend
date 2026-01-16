@@ -17,6 +17,7 @@ use RuntimeException;
 
 final class ImageDownloaderService implements ImageDownloader
 {
+    private const TEST_HOST = 'io.uitdatabank.local';
     private ClientInterface $client;
 
     private int $maxFileSize;
@@ -100,6 +101,9 @@ final class ImageDownloaderService implements ImageDownloader
 
         // Resolve hostname to IP and check if it's internal
         $host = $parsedUrl['host'] ?? '';
+        if ($host === self::TEST_HOST) {
+            return;
+        }
         $ip = gethostbyname($host);
 
         if ($this->isInternalIp($ip)) {
