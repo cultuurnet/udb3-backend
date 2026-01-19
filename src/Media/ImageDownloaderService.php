@@ -50,6 +50,10 @@ final class ImageDownloaderService implements ImageDownloader
             )
         );
 
+        if ($response->getStatusCode() !== 200) {
+            throw new InvalidFileType('The file could not be downloaded correctly.');
+        }
+
         $body = $response->getBody();
         $tempFile = tempnam(sys_get_temp_dir(), 'img_download_');
         $tempStream = fopen($tempFile, 'wb');

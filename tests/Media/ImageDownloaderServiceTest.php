@@ -54,6 +54,9 @@ final class ImageDownloaderServiceTest extends TestCase
 
         $response = $this->createMock(ResponseInterface::class);
         $response->expects($this->once())
+            ->method('getStatusCode')
+            ->willReturn(200);
+        $response->expects($this->once())
             ->method('getBody')
             ->willReturn($stream);
 
@@ -85,6 +88,9 @@ final class ImageDownloaderServiceTest extends TestCase
 
         $response = $this->createMock(ResponseInterface::class);
         $response->expects($this->once())
+            ->method('getStatusCode')
+            ->willReturn(200);
+        $response->expects($this->once())
             ->method('getBody')
             ->willReturn($stream);
 
@@ -97,6 +103,24 @@ final class ImageDownloaderServiceTest extends TestCase
     /**
      * @test
      */
+    public function it_should_look_at_status_code(): void
+    {
+        $this->expectException(InvalidFileType::class);
+        $this->expectExceptionMessage('The file could not be downloaded correctly.');
+
+        $response = $this->createMock(ResponseInterface::class);
+        $response->expects($this->once())
+            ->method('getStatusCode')
+            ->willReturn(418);
+        $response->expects($this->never())
+            ->method('getBody');
+
+        $this->client->expects($this->once())->method('sendRequest')
+            ->with(new Request('GET', $this->onlineImageUrl->toString()))->willReturn($response);
+
+        $this->imageDownloader->download($this->onlineImageUrl);
+    }
+
     /**
      * @test
      */
@@ -117,6 +141,9 @@ final class ImageDownloaderServiceTest extends TestCase
             ->willReturn($content);
 
         $response = $this->createMock(ResponseInterface::class);
+        $response->expects($this->once())
+            ->method('getStatusCode')
+            ->willReturn(200);
         $response->expects($this->once())
                 ->method('getBody')
                 ->willReturn($stream);
