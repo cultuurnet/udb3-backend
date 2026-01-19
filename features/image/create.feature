@@ -99,14 +99,13 @@ Feature: Test the UDB3 image API
     And I set the JSON request payload to:
     """
     {
-      "contentUrl": "https://images-acc-uitdatabank.imgix.net/324cc291-7d28-48c2-9da6-84dbc00b3757.png",
+      "contentUrl": "http://io.uitdatabank.local/testfiles/publiq.png",
       "description": "afbeelding via Json Body",
       "copyrightHolder": "publiq",
       "inLanguage": "nl"
     }
     """
     And I send a POST request to "/images/"
-    And show me the unparsed response
     Then the response status should be "201"
     And I keep the value of the JSON response at "@id" as "image_@id"
     And I keep the value of the JSON response at "imageId" as "image_id"
@@ -123,5 +122,79 @@ Feature: Test the UDB3 image API
       "copyrightHolder":"publiq",
       "inLanguage":"nl",
       "id": "%{image_id}"
+     }
+     """
+
+  Scenario: Create image with unknown file extension
+    Given I send and accept "application/json"
+    And I set the JSON request payload to:
+    """
+    {
+      "contentUrl": "http://io.uitdatabank.local/testfiles/publiq",
+      "description": "afbeelding via Json Body",
+      "copyrightHolder": "publiq",
+      "inLanguage": "nl"
+    }
+    """
+    And I send a POST request to "/images/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "@id" as "image_@id"
+    And I keep the value of the JSON response at "imageId" as "image_id"
+    When I send a GET request to "/images/%{image_id}"
+    Then the response status should be "200"
+    And the JSON response should be:
+     """
+     {
+      "@id": "%{baseUrl}/images/%{image_id}",
+      "@type":"schema:ImageObject",
+      "contentUrl":"https://images.uitdatabank.dev/%{image_id}.png",
+      "thumbnailUrl":"https://images.uitdatabank.dev/%{image_id}.png",
+      "description":"afbeelding via Json Body",
+      "copyrightHolder":"publiq",
+      "inLanguage":"nl",
+      "id": "%{image_id}"
+     }
+     """
+
+  Scenario: check for non image types
+    Given I send and accept "application/json"
+    And I set the JSON request payload to:
+    """
+    {
+      "contentUrl": "http://io.uitdatabank.local/testfiles/textfile",
+      "description": "afbeelding via Json Body",
+      "copyrightHolder": "publiq",
+      "inLanguage": "nl"
+    }
+    """
+    And I send a POST request to "/images/"
+    Then the response status should be "400"
+    And the JSON response should be:
+     """
+     {
+       "type":"https:\/\/api.publiq.be\/probs\/body\/file-invalid-type",
+       "title":"Invalid file type",
+       "status":400,
+       "detail":"The uploaded file has mime type \"text\/plain\" instead of image\/png,image\/jpeg,image\/gif"
+     }
+     """
+
+  Scenario: It handles missing data
+    Given I send and accept "application/json"
+    And I set the JSON request payload to:
+    """
+    {
+      "contentUrl": "http://io.uitdatabank.local/testfiles/publiq.png"
+    }
+    """
+    And I send a POST request to "/images/"
+    Then the response status should be "400"
+    And the JSON response should be:
+     """
+     {
+       "type":"https:\/\/api.publiq.be\/probs\/body\/invalid-data",
+       "title":"Invalid body data",
+       "status":400,
+       "schemaErrors":[{"jsonPointer":"\/","error":"The required properties (description, copyrightHolder, inLanguage) are missing"}]
      }
      """
