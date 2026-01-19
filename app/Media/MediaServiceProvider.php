@@ -64,8 +64,8 @@ final class MediaServiceProvider extends AbstractServiceProvider
             ImageDownloader::class,
             fn () => new ImageDownloaderService(
                 new Client([
-                    'timeout' => 30,
-                    'connect_timeout' => 10,
+                    'timeout' => $container->get('config')['media']['timeout'] ?? 30,
+                    'connect_timeout' => $container->get('config')['media']['connect_timeout'] ?? 10,
                     'allow_redirects' => [
                         'max' => 3,
                         'strict' => true,
