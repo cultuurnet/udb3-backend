@@ -30,7 +30,7 @@ final class ImageDownloaderService implements ImageDownloader
 
     public function __construct(
         ClientInterface $client,
-        int $maxFileSize = 0
+        int $maxFileSize = 10000
     ) {
         if ($maxFileSize < 0) {
             throw new RuntimeException('Max file size should be 0 or higher if not null.');
@@ -63,7 +63,7 @@ final class ImageDownloaderService implements ImageDownloader
                 $chunk = $body->read(8192);
                 $downloadedSize += strlen($chunk);
 
-                if ($this->maxFileSize > 0 && $downloadedSize > $this->maxFileSize) {
+                if ($downloadedSize > $this->maxFileSize) {
                     throw new InvalidFileSize(
                         'The file size of the uploaded image is too big. Max size (bytes):' . $this->maxFileSize
                     );
