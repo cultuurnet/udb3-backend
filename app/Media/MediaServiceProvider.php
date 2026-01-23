@@ -62,7 +62,7 @@ final class MediaServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             ImageDownloader::class,
-            fn () => new ImageDownloaderService(
+            fn () => new GuzzleImageDownloader(
                 new Client([
                     'timeout' => $container->get('config')['media']['timeout'] ?? 30,
                     'connect_timeout' => $container->get('config')['media']['connect_timeout'] ?? 10,

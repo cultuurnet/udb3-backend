@@ -15,7 +15,7 @@ use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 
-final class ImageDownloaderService implements ImageDownloader
+final class GuzzleImageDownloader implements ImageDownloader
 {
     private const TEST_HOST = 'io.uitdatabank.local';
     private ClientInterface $client;

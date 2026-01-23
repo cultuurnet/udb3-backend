@@ -17,7 +17,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use RuntimeException;
 
-final class ImageDownloaderServiceTest extends TestCase
+final class GuzzleImageDownloaderTest extends TestCase
 {
     private ImageDownloader $imageDownloader;
 
@@ -31,7 +31,7 @@ final class ImageDownloaderServiceTest extends TestCase
     {
         $this->client = $this->createMock(ClientInterface::class);
         $this->maxFileSize = 10000;
-        $this->imageDownloader = new ImageDownloaderService($this->client, $this->maxFileSize);
+        $this->imageDownloader = new GuzzleImageDownloader($this->client, $this->maxFileSize);
 
         $this->onlineImageUrl = new Url('https://foobar.com/someImage.png');
     }
