@@ -179,6 +179,29 @@ Feature: Test the UDB3 image API
      }
      """
 
+  Scenario: It handles non existing urls
+    Given I send and accept "application/json"
+    And I set the JSON request payload to:
+    """
+    {
+      "contentUrl": "http://io.uitdatabank.local/testfiles/thisDoesNotExist.png",
+      "description": "afbeelding via Json Body",
+      "copyrightHolder": "publiq",
+      "inLanguage": "nl"
+    }
+    """
+    And I send a POST request to "/images/"
+    Then the response status should be "400"
+    And the JSON response should be:
+     """
+     {
+       "type":"https:\/\/api.publiq.be\/probs\/body\/file-invalid-type",
+       "title":"Invalid file type",
+       "status":400,
+       "detail":"The file could not be downloaded correctly."
+     }
+     """
+
   Scenario: It handles missing data
     Given I send and accept "application/json"
     And I set the JSON request payload to:
