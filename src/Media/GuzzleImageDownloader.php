@@ -11,7 +11,6 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\UploadedFile;
 use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UploadedFileInterface;
 use RuntimeException;
 
@@ -74,7 +73,7 @@ final class GuzzleImageDownloader implements ImageDownloader
             fclose($tempStream);
             $stream = Utils::streamFor(fopen($tempFile, 'rb'));
 
-            $this->guardMimeTypeSupported($this->getFileMimeType($stream));
+            $this->guardMimeTypeSupported($this->getFileMimeType($tempFile));
 
             return new UploadedFile(
                 $stream,
@@ -128,14 +127,12 @@ final class GuzzleImageDownloader implements ImageDownloader
         );
     }
 
-    private function getFileMimeType(StreamInterface $stream): string
+    private function getFileMimeType(string $tempFile): string
     {
-        $finfo = new \finfo();
-        $stream->rewind();
-
-        /** @var string|false $mimeType */
-        $mimeType = $finfo->buffer($stream->getContents(), FILEINFO_MIME_TYPE);
-        return $mimeType !== false ? $mimeType : '';
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mimeType = finfo_file($finfo, $tempFile);
+        finfo_close($finfo);
+        return $mimeType;
     }
 
     private function guardMimeTypeSupported(string $mimeType): void
