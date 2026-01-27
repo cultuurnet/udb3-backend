@@ -60,7 +60,8 @@ final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
                     $uitpasDeserializerLocator,
                     $container->get(EventBus::class),
                     $container->get('config')['amqp']['consumer_tag'],
-                    new GeneratedUuidFactory()
+                    new GeneratedUuidFactory(),
+                    $container->get('dbal_connection')
                 );
 
                 $consumerConfig = $container->get('config')['amqp']['consumers']['uitpas'];

@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
+use Doctrine\DBAL\Connection;
 use InvalidArgumentException;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
@@ -33,6 +34,8 @@ final class EventBusForwardingConsumerFactory
 
     private UuidFactory $uuidFactory;
 
+    private Connection $dbalConnection;
+
     public function __construct(
         int $executionDelay,
         AMQPStreamConnection $connection,
@@ -40,7 +43,8 @@ final class EventBusForwardingConsumerFactory
         DeserializerLocatorInterface $deserializerLocator,
         EventBus $eventBus,
         string $consumerTag,
-        UuidFactory $uuidFactory
+        UuidFactory $uuidFactory,
+        Connection $dbalConnection
     ) {
         if ($executionDelay < 0) {
             throw new InvalidArgumentException('Execution delay should be zero or higher.');
@@ -53,6 +57,7 @@ final class EventBusForwardingConsumerFactory
         $this->eventBus = $eventBus;
         $this->consumerTag = $consumerTag;
         $this->uuidFactory = $uuidFactory;
+        $this->dbalConnection = $dbalConnection;
     }
 
     public function create(
@@ -67,6 +72,7 @@ final class EventBusForwardingConsumerFactory
             $exchange,
             $queue,
             $this->uuidFactory,
+            $this->dbalConnection,
             $this->executionDelay
         );
 

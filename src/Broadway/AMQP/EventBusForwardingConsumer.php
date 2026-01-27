@@ -10,6 +10,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
+use Doctrine\DBAL\Connection;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 
@@ -19,6 +20,8 @@ final class EventBusForwardingConsumer extends AbstractConsumer
 
     private UuidFactory $uuidFactory;
 
+    private Connection $dbalConnection;
+
     public function __construct(
         AMQPStreamConnection $connection,
         EventBus $eventBus,
@@ -27,10 +30,12 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         string $exchangeName,
         String $queueName,
         UuidFactory $uuidFactory,
+        Connection $dbalConnection,
         int $delay = 0
     ) {
         $this->eventBus = $eventBus;
         $this->uuidFactory = $uuidFactory;
+        $this->dbalConnection = $dbalConnection;
 
         parent::__construct(
             $connection,
