@@ -6,11 +6,14 @@ namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Media\ImageDownloader;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Laminas\Diactoros\UploadedFile;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -22,14 +25,18 @@ final class UploadMediaRequestHandlerTest extends TestCase
 
     private ImageUploaderInterface&MockObject $imageUploader;
 
+    private ImageDownloader&MockObject $imageDownloader;
+
     private UploadMediaRequestHandler $uploadMediaRequestHandler;
 
     public function setUp(): void
     {
         $this->imageUploader = $this->createMock(ImageUploaderInterface::class);
+        $this->imageDownloader = $this->createMock(ImageDownloader::class);
 
         $this->uploadMediaRequestHandler = new UploadMediaRequestHandler(
             $this->imageUploader,
+            $this->imageDownloader,
             new CallableIriGenerator(fn (string $item) => 'https://io.uitdatabank.dev/images/' . $item)
         );
     }
@@ -37,11 +44,12 @@ final class UploadMediaRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_handles_uploading_an_image(): void
+    public function it_handles_uploading_an_image_via_form_data(): void
     {
         $uploadedFile = $this->createUploadedFile('ABC', UPLOAD_ERR_OK, 'test.txt', 'text/plain');
 
         $request = (new Psr7RequestBuilder())
+            ->withHeader('Content-Type', 'multipart/form-data')
             ->withParsedBody([
                 'description' => 'Lenna',
                 'copyrightHolder' => ' Dwight Hooker',
@@ -77,13 +85,55 @@ final class UploadMediaRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider incompleteRequestProvider
+     */
+    public function it_handles_uploading_an_image_via_json_body(): void
+    {
+        $uploadedFile = [
+            'contentUrl' => 'https://www.example.com/123',
+            'description' => 'Some random image',
+            'copyrightHolder' => 'Creative Commons',
+            'inLanguage' => 'nl',
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray(
+                $uploadedFile
+            )
+            ->build('POST');
+
+        $imageId = new Uuid('08d9df2e-091d-4f65-930b-00f565a9158f');
+
+        $this->imageDownloader->expects($this->once())
+            ->method('download')
+            ->with(new Url('https://www.example.com/123'));
+
+
+        $this->imageUploader
+            ->expects($this->once())
+            ->method('upload')
+            ->willReturn($imageId);
+
+        $response = $this->uploadMediaRequestHandler->handle($request);
+
+        $expectedResponseContent = Json::encode([
+            '@id' => 'https://io.uitdatabank.dev/images/' . $imageId->toString(),
+            'imageId' => $imageId->toString(),
+        ]);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals($expectedResponseContent, $response->getBody());
+    }
+
+    /**
+     * @test
+     * @dataProvider incompleteFormDataRequestProvider
      */
     public function it_throws_an_api_problem_if_a_field_is_missing_or_invalid(array $body, ApiProblem $apiProblem): void
     {
         $uploadedFile = $this->createUploadedFile('ABC', UPLOAD_ERR_OK, 'test.txt', 'text/plain');
 
         $request = (new Psr7RequestBuilder())
+            ->withHeader('Content-Type', 'multipart/form-data')
             ->withParsedBody($body)
             ->withFiles(['file' => $uploadedFile])
             ->build('POST');
@@ -91,7 +141,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
         $this->assertCallableThrowsApiProblem($apiProblem, fn () => $this->uploadMediaRequestHandler->handle($request));
     }
 
-    public function incompleteRequestProvider(): array
+    public function incompleteFormDataRequestProvider(): array
     {
         return  [
             'missing description' => [
@@ -152,10 +202,73 @@ final class UploadMediaRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider incompleteJsonBodyProvider
+     */
+    public function it_throws_an_api_problem_if_json_body_is_missing_values(array $body, ApiProblem $apiProblem): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($body)
+            ->build('POST');
+
+        $this->assertCallableThrowsApiProblem($apiProblem, fn () => $this->uploadMediaRequestHandler->handle($request));
+    }
+
+    public function incompleteJsonBodyProvider(): array
+    {
+        return [
+            'missing url' => [
+                [
+                    'description' => 'Some random image',
+                    'copyrightHolder' => 'Creative Commons',
+                    'inLanguage' => 'nl',
+                ],
+                ApiProblem::bodyInvalidData(new SchemaError('/', 'The required properties (contentUrl) are missing')),
+            ],
+            'faulty url' => [
+                [
+                    'contentUrl' => 'file://var/www/home/123',
+                    'description' => 'Some random image',
+                    'copyrightHolder' => 'Creative Commons',
+                    'inLanguage' => 'nl',
+                ],
+                ApiProblem::bodyInvalidData(new SchemaError('/contentUrl', 'The string should match pattern: ^http[s]?:\/\/')),
+            ],
+            'missing description' => [
+                [
+                    'contentUrl' => 'https://example.com/123',
+                    'copyrightHolder' => 'Creative Commons',
+                    'inLanguage' => 'nl',
+                ],
+                ApiProblem::bodyInvalidData(new SchemaError('/', 'The required properties (description) are missing')),
+            ],
+            'missing copyright' => [
+                [
+                    'contentUrl' => 'https://example.com/123',
+                    'description' => 'Some random image',
+                    'inLanguage' => 'nl',
+                ],
+                ApiProblem::bodyInvalidData(new SchemaError('/', 'The required properties (copyrightHolder) are missing')),
+            ],
+            'missing language' => [
+                [
+                    'contentUrl' => 'https://example.com/123',
+                    'description' => 'Some random image',
+                    'copyrightHolder' => 'Creative Commons',
+                ],
+                ApiProblem::bodyInvalidData(new SchemaError('/', 'The required properties (inLanguage) are missing')),
+            ],
+
+
+        ];
+    }
+
+    /**
+     * @test
      */
     public function it_throws_if_no_file_is_uploaded(): void
     {
         $request = (new Psr7RequestBuilder())
+            ->withHeader('Content-Type', 'multipart/form-data')
             ->withParsedBody([
                 'description' => 'Lenna',
                 'copyrightHolder' => ' Dwight Hooker',
@@ -176,6 +289,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
     public function it_throws_if_a_file_was_uploaded_with_the_wrong_form_data_name(): void
     {
         $request = (new Psr7RequestBuilder())
+            ->withHeader('Content-Type', 'multipart/form-data')
             ->withParsedBody([
                 'description' => 'Lenna',
                 'copyrightHolder' => ' Dwight Hooker',
