@@ -11,6 +11,7 @@ use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 
@@ -53,6 +54,8 @@ final class EventBusForwardingConsumer extends AbstractConsumer
      */
     protected function handle($deserializedMessage, array $context): void
     {
+        $this->ensureDatabaseConnection();
+
         // If the deserializer did not return a DomainMessage yet, then
         // consider the returned value as the payload, and wrap it in a
         // DomainMessage.
@@ -69,5 +72,23 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         $this->eventBus->publish(
             new DomainEventStream([$deserializedMessage])
         );
+    }
+
+    private function ensureDatabaseConnection(): void
+    {
+        try {
+            if (!$this->dbalConnection->isConnected()) {
+                $connected = $this->dbalConnection->connect();
+                if (!$connected) {
+                    $this->logger->critical('Reconnection to database failed');
+                } else {
+                    $this->logger->debug('Connection to database restored successfully');
+                }
+            } else {
+                $this->logger->debug('Connection to database successfully verified');
+            }
+        } catch (Exception $exception) {
+            $this->logger->critical('Connection checks to database failed with exception:' . $exception->getMessage());
+        }
     }
 }
