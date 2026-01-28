@@ -30,6 +30,8 @@ class AggregateAwareDBALEventStore implements EventStore
 
     private string $aggregateType;
 
+    public static bool $clearPreparedLoadStatement = false;
+
     public function __construct(
         Connection $connection,
         Serializer $payloadSerializer,
@@ -113,6 +115,11 @@ class AggregateAwareDBALEventStore implements EventStore
 
     private function prepareLoadStatement(): Statement
     {
+        if (self::$clearPreparedLoadStatement) {
+            $this->loadStatement = null;
+            self::$clearPreparedLoadStatement = false;
+        }
+
         if (null === $this->loadStatement) {
             $queryBuilder = $this->connection->createQueryBuilder();
 
@@ -157,5 +164,10 @@ class AggregateAwareDBALEventStore implements EventStore
             /** @var DomainMessage $domainMessage */
             $id = (string) $domainMessage->getId();
         }
+    }
+
+    public static function clearPreparedLoadStatement(): void
+    {
+        self::$clearPreparedLoadStatement = true;
     }
 }

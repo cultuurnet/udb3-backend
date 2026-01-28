@@ -10,6 +10,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
+use CultuurNet\UDB3\EventSourcing\DBAL\AggregateAwareDBALEventStore;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
@@ -80,6 +81,8 @@ final class EventBusForwardingConsumer extends AbstractConsumer
             $this->dbalConnection->executeQuery('SELECT 1');
             $this->logger->debug('Connection to database successfully verified');
         } catch (Exception $exception) {
+            AggregateAwareDBALEventStore::clearPreparedLoadStatement();
+
             $this->logger->warning('Database connection lost, reconnecting...', [
                 'exception_message' => $exception->getMessage(),
             ]);
