@@ -324,25 +324,36 @@ final class EventBusForwardingConsumerTest extends TestCase
      */
     public function it_logs_database_connection_status(array $scenario): void
     {
-        if (isset($scenario['exception'])) {
+        if (isset($scenario['executeQueryThrows'])) {
             $this->dbalConnection->expects($this->once())
-                ->method('isConnected')
-                ->willThrowException(new Exception($scenario['exception']));
-        } else {
-            $this->dbalConnection->expects($this->once())
-                ->method('isConnected')
-                ->willReturn($scenario['isConnected']);
+                ->method('executeQuery')
+                ->with('SELECT 1')
+                ->willThrowException(new Exception($scenario['executeQueryThrows']));
 
-            if (!$scenario['isConnected']) {
+            $this->dbalConnection->expects($this->once())
+                ->method('close');
+
+            if (isset($scenario['reconnectThrows'])) {
                 $this->dbalConnection->expects($this->once())
                     ->method('connect')
-                    ->willReturn($scenario['connectResult']);
+                    ->willThrowException(new Exception($scenario['reconnectThrows']));
+            } else {
+                $this->dbalConnection->expects($this->once())
+                    ->method('connect');
             }
+        } else {
+            $this->dbalConnection->expects($this->once())
+                ->method('executeQuery')
+                ->with('SELECT 1');
         }
 
-        $this->logger->expects($this->once())
-            ->method($scenario['logLevel'])
-            ->with($scenario['logMessage']);
+        if (isset($scenario['expectedLogs'])) {
+            foreach ($scenario['expectedLogs'] as $expectedLog) {
+                $this->logger->expects($this->once())
+                    ->method($expectedLog['level'])
+                    ->with($expectedLog['message']);
+            }
+        }
 
         $this->deserializerLocator->method('getDeserializerForContentType')
             ->willReturn($this->deserializer);
@@ -364,34 +375,45 @@ final class EventBusForwardingConsumerTest extends TestCase
     public function databaseConnectionScenarios(): array
     {
         return [
-            'connection already active' => [
+            'connection verified successfully' => [
                 [
-                    'isConnected' => true,
-                    'logLevel' => 'debug',
-                    'logMessage' => 'Connection to database successfully verified',
+                    'expectedLogs' => [
+                        [
+                            'level' => 'debug',
+                            'message' => 'Connection to database successfully verified',
+                        ],
+                    ],
                 ],
             ],
             'reconnection successful' => [
                 [
-                    'isConnected' => false,
-                    'connectResult' => true,
-                    'logLevel' => 'debug',
-                    'logMessage' => 'Connection to database restored successfully',
+                    'executeQueryThrows' => 'Connection lost',
+                    'expectedLogs' => [
+                        [
+                            'level' => 'warning',
+                            'message' => 'Database connection lost, reconnecting...',
+                        ],
+                        [
+                            'level' => 'debug',
+                            'message' => 'Successfully reconnected to database',
+                        ],
+                    ],
                 ],
             ],
             'reconnection failed' => [
                 [
-                    'isConnected' => false,
-                    'connectResult' => false,
-                    'logLevel' => 'critical',
-                    'logMessage' => 'Reconnection to database failed',
-                ],
-            ],
-            'connection check throws exception' => [
-                [
-                    'exception' => 'Database connection error',
-                    'logLevel' => 'critical',
-                    'logMessage' => 'Connection checks to database failed with exception:Database connection error',
+                    'executeQueryThrows' => 'Connection lost',
+                    'reconnectThrows' => 'Cannot reconnect',
+                    'expectedLogs' => [
+                        [
+                            'level' => 'warning',
+                            'message' => 'Database connection lost, reconnecting...',
+                        ],
+                        [
+                            'level' => 'critical',
+                            'message' => 'Failed to reconnect to database',
+                        ],
+                    ],
                 ],
             ],
         ];

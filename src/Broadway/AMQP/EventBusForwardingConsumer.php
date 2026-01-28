@@ -77,18 +77,22 @@ final class EventBusForwardingConsumer extends AbstractConsumer
     private function ensureDatabaseConnection(): void
     {
         try {
-            if (!$this->dbalConnection->isConnected()) {
-                $connected = $this->dbalConnection->connect();
-                if (!$connected) {
-                    $this->logger->critical('Reconnection to database failed');
-                } else {
-                    $this->logger->debug('Connection to database restored successfully');
-                }
-            } else {
-                $this->logger->debug('Connection to database successfully verified');
-            }
+            $this->dbalConnection->executeQuery('SELECT 1');
+            $this->logger->debug('Connection to database successfully verified');
         } catch (Exception $exception) {
-            $this->logger->critical('Connection checks to database failed with exception:' . $exception->getMessage());
+            $this->logger->warning('Database connection lost, reconnecting...', [
+                'exception_message' => $exception->getMessage(),
+            ]);
+
+            try {
+                $this->dbalConnection->close();
+                $this->dbalConnection->connect();
+                $this->logger->debug('Successfully reconnected to database');
+            } catch (Exception $exception) {
+                $this->logger->critical('Failed to reconnect to database', [
+                    'exception_message' => $exception->getMessage(),
+                ]);
+            }
         }
     }
 }
