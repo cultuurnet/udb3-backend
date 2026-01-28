@@ -11,6 +11,8 @@ use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use CultuurNet\UDB3\Deserializer\DeserializerNotFoundException;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -40,6 +42,7 @@ final class EventBusForwardingConsumerTest extends TestCase
 
     private DeserializerInterface&MockObject $deserializer;
 
+    private Connection&MockObject $dbalConnection;
 
     public function setUp(): void
     {
@@ -61,6 +64,8 @@ final class EventBusForwardingConsumerTest extends TestCase
             ->method('channel')
             ->willReturn($this->channel);
 
+        $this->dbalConnection = $this->createMock(Connection::class);
+
         $this->eventBusForwardingConsumer = new EventBusForwardingConsumer(
             $this->connection,
             $this->eventBus,
@@ -69,6 +74,7 @@ final class EventBusForwardingConsumerTest extends TestCase
             $this->exchangeName,
             $this->queueName,
             new GeneratedUuidFactory(),
+            $this->dbalConnection,
             $delay
         );
 
@@ -94,7 +100,8 @@ final class EventBusForwardingConsumerTest extends TestCase
             $this->consumerTag,
             $this->exchangeName,
             $this->queueName,
-            new GeneratedUuidFactory()
+            new GeneratedUuidFactory(),
+            $this->dbalConnection,
         );
 
         $expectedConnection = $this->connection;
@@ -309,5 +316,84 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
         $this->eventBusForwardingConsumer->consume($message);
+    }
+
+    /**
+     * @test
+     * @dataProvider databaseConnectionScenarios
+     */
+    public function it_logs_database_connection_status(array $scenario): void
+    {
+        if (isset($scenario['exception'])) {
+            $this->dbalConnection->expects($this->once())
+                ->method('isConnected')
+                ->willThrowException(new Exception($scenario['exception']));
+        } else {
+            $this->dbalConnection->expects($this->once())
+                ->method('isConnected')
+                ->willReturn($scenario['isConnected']);
+
+            if (!$scenario['isConnected']) {
+                $this->dbalConnection->expects($this->once())
+                    ->method('connect')
+                    ->willReturn($scenario['connectResult']);
+            }
+        }
+
+        $this->logger->expects($this->once())
+            ->method($scenario['logLevel'])
+            ->with($scenario['logMessage']);
+
+        $this->deserializerLocator->method('getDeserializerForContentType')
+            ->willReturn($this->deserializer);
+        $this->deserializer->method('deserialize')->willReturn('');
+
+        $message = new AMQPMessage(
+            '',
+            [
+                'content_type' => 'application/vnd.cultuurnet.udb3-events.dummy-event+json',
+                'correlation_id' => 'my-correlation-id-123',
+            ]
+        );
+        $message->delivery_info['channel'] = $this->channel;
+        $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
+
+        $this->eventBusForwardingConsumer->consume($message);
+    }
+
+    public function databaseConnectionScenarios(): array
+    {
+        return [
+            'connection already active' => [
+                [
+                    'isConnected' => true,
+                    'logLevel' => 'debug',
+                    'logMessage' => 'Connection to database successfully verified',
+                ],
+            ],
+            'reconnection successful' => [
+                [
+                    'isConnected' => false,
+                    'connectResult' => true,
+                    'logLevel' => 'debug',
+                    'logMessage' => 'Connection to database restored successfully',
+                ],
+            ],
+            'reconnection failed' => [
+                [
+                    'isConnected' => false,
+                    'connectResult' => false,
+                    'logLevel' => 'critical',
+                    'logMessage' => 'Reconnection to database failed',
+                ],
+            ],
+            'connection check throws exception' => [
+                [
+                    'exception' => 'Database connection error',
+                    'logLevel' => 'critical',
+                    'logMessage' => 'Connection checks to database failed with exception:Database connection error',
+                ],
+            ],
+        ];
     }
 }
