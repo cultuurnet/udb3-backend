@@ -18,6 +18,7 @@ UiTdatabank 3 core application - an event-sourced backend built with Broadway.
 - [Architecture](docs/architecture.md) - System design, tech stack, message flow
 - [Coding Guidelines](docs/coding-guidelines.md) - Code style, conventions, security
 - [Commands](docs/commands.md) - All available make commands
+- [Review Guidelines](docs/review-guidelines.md) - PR review process and focus areas
 
 ## Refactoring Plans
 
