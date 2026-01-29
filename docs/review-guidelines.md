@@ -2,6 +2,8 @@
 
 Review pull requests and provide inline feedback using the GitHub review system.
 
+Focus on actionable improvements only. Skip praise and positive feedback.
+
 ## Review Process
 
 1. Start a review using `mcp__github__create_pending_pull_request_review`
