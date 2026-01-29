@@ -156,6 +156,14 @@ trait AuthorizationSteps
     }
 
     /**
+     * @Given I am using an invalid UiTID v1 API key
+     */
+    public function iAmUsingAnInvalidUitidV1ApiKey(): void
+    {
+        $this->requestState->setApiKey('invalid-api-key');
+    }
+
+    /**
      * @Given I am using a x-client-id header for client :clientId
      */
     public function iAmUsingAXClientIdHeaderForClient(string $clientId): void
