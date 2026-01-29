@@ -10,10 +10,9 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
+use CultuurNet\UDB3\Doctrine\DatabaseConnectionChecker;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 final class EventBusForwardingConsumer extends AbstractConsumer
 {
@@ -21,7 +20,7 @@ final class EventBusForwardingConsumer extends AbstractConsumer
 
     private UuidFactory $uuidFactory;
 
-    private Connection $dbalConnection;
+    private DatabaseConnectionChecker $databaseConnectionChecker;
 
     public function __construct(
         AMQPStreamConnection $connection,
@@ -31,12 +30,12 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         string $exchangeName,
         String $queueName,
         UuidFactory $uuidFactory,
-        Connection $dbalConnection,
+        DatabaseConnectionChecker $databaseConnectionChecker,
         int $delay = 0
     ) {
         $this->eventBus = $eventBus;
         $this->uuidFactory = $uuidFactory;
-        $this->dbalConnection = $dbalConnection;
+        $this->databaseConnectionChecker = $databaseConnectionChecker;
 
         parent::__construct(
             $connection,
@@ -54,7 +53,7 @@ final class EventBusForwardingConsumer extends AbstractConsumer
      */
     protected function handle($deserializedMessage, array $context): void
     {
-        $this->ensureDatabaseConnection();
+        $this->databaseConnectionChecker->ensureConnection();
 
         // If the deserializer did not return a DomainMessage yet, then
         // consider the returned value as the payload, and wrap it in a
@@ -72,27 +71,5 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         $this->eventBus->publish(
             new DomainEventStream([$deserializedMessage])
         );
-    }
-
-    private function ensureDatabaseConnection(): void
-    {
-        try {
-            $this->dbalConnection->executeQuery('SELECT 1');
-            $this->logger->debug('Connection to database successfully verified');
-        } catch (Exception $exception) {
-            $this->logger->warning('Database connection lost, reconnecting...', [
-                'exception_message' => $exception->getMessage(),
-            ]);
-
-            try {
-                $this->dbalConnection->close();
-                $this->dbalConnection->connect();
-                $this->logger->debug('Successfully reconnected to database');
-            } catch (Exception $exception) {
-                $this->logger->critical('Failed to reconnect to database', [
-                    'exception_message' => $exception->getMessage(),
-                ]);
-            }
-        }
     }
 }
