@@ -2,17 +2,6 @@
 
 UiTdatabank 3 core application - an event-sourced backend built with Broadway.
 
-## Quick Reference
-
-| Task | Command |
-|------|---------|
-| Verify all changes | `make ci` |
-| Run unit tests | `make test` |
-| Run specific test | `make test-filter filter=ClassName` |
-| Fix code style | `make cs-fix` |
-| Start environment | `make up` |
-| Shell access | `make bash` |
-
 ## Documentation
 
 - [Domain](docs/domain.md) - Core domain concepts (Event, Place, Organizer, Offer)

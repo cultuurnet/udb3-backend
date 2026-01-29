@@ -26,22 +26,11 @@ This document tracks the improvement of acceptance tests for the SAPI3 (Search A
 - `features/bootstrap/FeatureContext.php` - Main Behat context
 - `features/Steps/RequestSteps.php` - HTTP requests and indexing wait logic
 
-## Architecture Understanding
+## Adding New Tests
 
-### Message Flow
-```
-API Request → Command Handler → Domain Event → EventBus → Projector
-    → *ProjectedToJSONLD → AMQPPublisher → RabbitMQ → SAPI3 → Elasticsearch
-```
-
-### Key Components
-- **AMQPPublisher**: Publishes `*ProjectedToJSONLD` events to RabbitMQ
-- **Exchange**: `udb3.x.domain-events`
-- **SAPI3**: External service consuming messages and indexing to Elasticsearch
-
-### Configuration
-- SAPI3 URL: `http://search.uitdatabank.local:80`
-- RabbitMQ: `rabbitmq:5672`
+1. **Verify the actual API response** using curl against the local SAPI3 URL
+2. **Write the scenario** in the appropriate feature file under `features/search/`
+3. **Run the test** using `make feature-filter path=<feature-file>`
 
 ## Goals
 
