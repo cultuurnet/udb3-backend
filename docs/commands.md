@@ -2,17 +2,6 @@
 
 > **Important**: Always use `make` commands, not direct `composer` or `vendor/bin` calls. The project runs in Docker.
 
-## Quick Reference
-
-| Task | Command |
-|------|---------|
-| Verify all changes | `make ci` |
-| Run unit tests | `make test` |
-| Run specific test | `make test-filter filter=ClassName` |
-| Fix code style | `make cs-fix` |
-| Start environment | `make up` |
-| Shell access | `make bash` |
-
 ## Environment Management
 
 ```bash
@@ -51,16 +40,3 @@ make feature-tag tag=@sapi3                            # SAPI3 search integratio
 make feature-filter path=features/search/auth.feature  # All scenarios in a file
 make feature-filter path=features/search/auth.feature:25  # Single scenario by line number
 ```
-
-## AMQP Consumer
-
-```bash
-# Run message consumer (inside container)
-php bin/console consume [consumer_name]
-```
-
-## Resources
-
-- [Broadway Documentation](https://github.com/broadway/broadway)
-- [Doctrine DBAL](https://www.doctrine-project.org/projects/dbal.html)
-- [PHPStan](https://phpstan.org/)
