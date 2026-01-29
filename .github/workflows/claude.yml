@@ -13,7 +13,7 @@ jobs:
       pull-requests: write
       issues: write
       id-token: write
-      actions: read # Required for Claude to read CI results on PRs
+      actions: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -25,10 +25,8 @@ jobs:
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
 
-          # Enable progress tracking
           track_progress: true
 
-          # Review instructions - see docs/review-guidelines.md for details
           prompt: |
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
@@ -36,12 +34,5 @@ jobs:
             Review this pull request following the guidelines in docs/review-guidelines.md.
             Provide detailed inline feedback using suggestion blocks where applicable.
 
-          # Tools for comprehensive PR review
           claude_args: |
             --allowedTools "mcp__github__get_pull_request,mcp__github__create_pending_pull_request_review,mcp__github__add_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"
-
-      # When track_progress is enabled:
-      # - Creates a tracking comment with progress checkboxes
-      # - Includes all PR context (comments, attachments, images)
-      # - Updates progress as the review proceeds
-      # - Marks as completed when done
