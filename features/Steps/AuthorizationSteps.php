@@ -180,6 +180,14 @@ trait AuthorizationSteps
     }
 
     /**
+     * @Given I am using an invalid x-client-id header
+     */
+    public function iAmUsingAnInvalidXClientIdHeader(): void
+    {
+        $this->requestState->setClientId('invalid-client-id');
+    }
+
+    /**
      * @Given I am using an API key URL parameter of consumer :consumerName
      */
     public function iAmUsingAnApiKeyUrlParameterOfConsumer(string $consumerName): void

@@ -50,6 +50,20 @@ Feature: Test the Search API v3 authentication
     When I send a GET request to "/events"
     Then the response status should be "403"
 
+  Scenario: Search with an invalid client id
+    Given I am using an invalid x-client-id header
+    When I send a GET request to "/events"
+    Then the response status should be "403"
+    And the JSON response should be:
+    """
+    {
+      "title": "Forbidden",
+      "type": "https:\/\/api.publiq.be\/probs\/auth\/forbidden",
+      "status": 403,
+      "detail": "The provided client id invalid-client-id is not allowed to access this API."
+    }
+    """
+
   Scenario: Search with a client access token of a client that has access to Search API v3
     Given I am authorized with an OAuth client access token for "test_client_sapi3_only"
     And I am using the Search API v3 base URL
