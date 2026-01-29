@@ -10,9 +10,8 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerInterface;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
 use CultuurNet\UDB3\Deserializer\DeserializerNotFoundException;
+use CultuurNet\UDB3\Doctrine\DatabaseConnectionChecker;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
-use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Exception;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -42,7 +41,7 @@ final class EventBusForwardingConsumerTest extends TestCase
 
     private DeserializerInterface&MockObject $deserializer;
 
-    private Connection&MockObject $dbalConnection;
+    private DatabaseConnectionChecker&MockObject $databaseConnectionChecker;
 
     public function setUp(): void
     {
@@ -64,7 +63,7 @@ final class EventBusForwardingConsumerTest extends TestCase
             ->method('channel')
             ->willReturn($this->channel);
 
-        $this->dbalConnection = $this->createMock(Connection::class);
+        $this->databaseConnectionChecker = $this->createMock(DatabaseConnectionChecker::class);
 
         $this->eventBusForwardingConsumer = new EventBusForwardingConsumer(
             $this->connection,
@@ -74,7 +73,7 @@ final class EventBusForwardingConsumerTest extends TestCase
             $this->exchangeName,
             $this->queueName,
             new GeneratedUuidFactory(),
-            $this->dbalConnection,
+            $this->databaseConnectionChecker,
             $delay
         );
 
@@ -101,7 +100,7 @@ final class EventBusForwardingConsumerTest extends TestCase
             $this->exchangeName,
             $this->queueName,
             new GeneratedUuidFactory(),
-            $this->dbalConnection,
+            $this->databaseConnectionChecker,
         );
 
         $expectedConnection = $this->connection;
@@ -316,106 +315,5 @@ final class EventBusForwardingConsumerTest extends TestCase
         $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
 
         $this->eventBusForwardingConsumer->consume($message);
-    }
-
-    /**
-     * @test
-     * @dataProvider databaseConnectionScenarios
-     */
-    public function it_logs_database_connection_status(array $scenario): void
-    {
-        if (isset($scenario['executeQueryThrows'])) {
-            $this->dbalConnection->expects($this->once())
-                ->method('executeQuery')
-                ->with('SELECT 1')
-                ->willThrowException(new Exception($scenario['executeQueryThrows']));
-
-            $this->dbalConnection->expects($this->once())
-                ->method('close');
-
-            if (isset($scenario['reconnectThrows'])) {
-                $this->dbalConnection->expects($this->once())
-                    ->method('connect')
-                    ->willThrowException(new Exception($scenario['reconnectThrows']));
-            } else {
-                $this->dbalConnection->expects($this->once())
-                    ->method('connect');
-            }
-        } else {
-            $this->dbalConnection->expects($this->once())
-                ->method('executeQuery')
-                ->with('SELECT 1');
-        }
-
-        if (isset($scenario['expectedLogs'])) {
-            foreach ($scenario['expectedLogs'] as $expectedLog) {
-                $this->logger->expects($this->once())
-                    ->method($expectedLog['level'])
-                    ->with($expectedLog['message']);
-            }
-        }
-
-        $this->deserializerLocator->method('getDeserializerForContentType')
-            ->willReturn($this->deserializer);
-        $this->deserializer->method('deserialize')->willReturn('');
-
-        $message = new AMQPMessage(
-            '',
-            [
-                'content_type' => 'application/vnd.cultuurnet.udb3-events.dummy-event+json',
-                'correlation_id' => 'my-correlation-id-123',
-            ]
-        );
-        $message->delivery_info['channel'] = $this->channel;
-        $message->delivery_info['delivery_tag'] = 'my-delivery-tag';
-
-        $this->eventBusForwardingConsumer->consume($message);
-    }
-
-    public function databaseConnectionScenarios(): array
-    {
-        return [
-            'connection verified successfully' => [
-                [
-                    'expectedLogs' => [
-                        [
-                            'level' => 'debug',
-                            'message' => 'Connection to database successfully verified',
-                        ],
-                    ],
-                ],
-            ],
-            'reconnection successful' => [
-                [
-                    'executeQueryThrows' => 'Connection lost',
-                    'expectedLogs' => [
-                        [
-                            'level' => 'warning',
-                            'message' => 'Database connection lost, reconnecting...',
-                        ],
-                        [
-                            'level' => 'debug',
-                            'message' => 'Successfully reconnected to database',
-                        ],
-                    ],
-                ],
-            ],
-            'reconnection failed' => [
-                [
-                    'executeQueryThrows' => 'Connection lost',
-                    'reconnectThrows' => 'Cannot reconnect',
-                    'expectedLogs' => [
-                        [
-                            'level' => 'warning',
-                            'message' => 'Database connection lost, reconnecting...',
-                        ],
-                        [
-                            'level' => 'critical',
-                            'message' => 'Failed to reconnect to database',
-                        ],
-                    ],
-                ],
-            ],
-        ];
     }
 }
