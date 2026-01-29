@@ -28,7 +28,7 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         DeserializerLocatorInterface $deserializerLocator,
         string $consumerTag,
         string $exchangeName,
-        String $queueName,
+        string $queueName,
         UuidFactory $uuidFactory,
         DatabaseConnectionChecker $databaseConnectionChecker,
         int $delay = 0
