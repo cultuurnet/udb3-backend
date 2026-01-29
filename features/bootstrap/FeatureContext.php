@@ -68,7 +68,8 @@ final class FeatureContext implements Context
             $this->requestState->getClientId(),
             $this->requestState->getContentTypeHeader(),
             $this->requestState->getAcceptHeader(),
-            $this->requestState->getBaseUrl()
+            $this->requestState->getBaseUrl(),
+            $this->requestState->getUrlParams()
         );
     }
 

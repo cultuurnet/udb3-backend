@@ -12,6 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 final class HttpClient
 {
     private Client $client;
+    private array $urlParams;
 
     public function __construct(
         string $jwt,
@@ -19,8 +20,10 @@ final class HttpClient
         string $clientId,
         string $contentTypeHeader,
         string $acceptHeader,
-        string $baseUrl
+        string $baseUrl,
+        array $urlParams = []
     ) {
+        $this->urlParams = $urlParams;
         $headers = [];
 
         if (!empty($jwt)) {
@@ -87,7 +90,17 @@ final class HttpClient
 
     public function get(string $url): ResponseInterface
     {
-        return $this->client->get($url);
+        return $this->client->get($this->appendUrlParams($url));
+    }
+
+    private function appendUrlParams(string $url): string
+    {
+        if (empty($this->urlParams)) {
+            return $url;
+        }
+
+        $separator = str_contains($url, '?') ? '&' : '?';
+        return $url . $separator . http_build_query($this->urlParams);
     }
 
     public function getWithParameters(string $url, array $parameters, VariableState $variableState): ResponseInterface
