@@ -6,14 +6,6 @@ Focus on actionable improvements only. Skip praise and positive feedback.
 
 Reference relevant files in the `docs/` folder for project standards.
 
-## Review Process
-
-1. Start a review using `mcp__github__create_pending_pull_request_review`
-2. Get diff information using `mcp__github__get_pull_request_diff`
-   - Paginate large diffs using `page` and `per_page` parameters
-3. Add inline comments using `mcp__github__add_comment_to_pending_review`
-4. Submit review using `mcp__github__submit_pending_pull_request_review` with event type "COMMENT"
-
 ## Suggestion Blocks
 
 When suggesting code changes, format them as GitHub suggestion blocks:
