@@ -181,7 +181,33 @@ When working on this codebase, prefer:
 
 ---
 
-## 9. Resources
+## 9. Security
+
+### Never Commit
+
+- `.env` files or environment-specific configurations
+- API keys, tokens, or credentials
+- Private keys or certificates
+- Database connection strings with passwords
+- Any hardcoded secrets
+
+### Configuration
+
+- Secrets belong in environment variables, not in code
+- Use `.env.example` or `.env.dist` for documenting required env vars (without actual values)
+- Configuration files with secrets should be in `.gitignore`
+
+### Secure Coding
+
+- No hardcoded credentials or secrets in code
+- No sensitive data in log statements
+- Validate input on user-provided data
+- SQL queries use parameterized statements (handled by Doctrine DBAL)
+- No sensitive data exposure in error messages
+
+---
+
+## 10. Resources
 
 - [Broadway Documentation](https://github.com/broadway/broadway)
 - [Doctrine DBAL](https://www.doctrine-project.org/projects/dbal.html)
