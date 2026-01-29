@@ -24,8 +24,6 @@ class AggregateAwareDBALEventStore implements EventStore
 
     private Serializer $metadataSerializer;
 
-    private ?Statement $loadStatement = null;
-
     private string $tableName;
 
     private string $aggregateType;
@@ -113,23 +111,19 @@ class AggregateAwareDBALEventStore implements EventStore
 
     private function prepareLoadStatement(): Statement
     {
-        if (null === $this->loadStatement) {
-            $queryBuilder = $this->connection->createQueryBuilder();
+        $queryBuilder = $this->connection->createQueryBuilder();
 
-            $queryBuilder->select(
-                ['uuid', 'playhead', 'metadata', 'payload', 'recorded_on', 'aggregate_type']
-            )
-                ->from($this->tableName)
-                ->where('uuid = :uuid')
-                ->andWhere('playhead >= :playhead')
-                ->orderBy('playhead', 'ASC');
+        $queryBuilder->select(
+            ['uuid', 'playhead', 'metadata', 'payload', 'recorded_on', 'aggregate_type']
+        )
+            ->from($this->tableName)
+            ->where('uuid = :uuid')
+            ->andWhere('playhead >= :playhead')
+            ->orderBy('playhead', 'ASC');
 
-            $this->loadStatement = $this->connection->prepare(
-                $queryBuilder->getSQL()
-            );
-        }
-
-        return $this->loadStatement;
+        return $this->connection->prepare(
+            $queryBuilder->getSQL()
+        );
     }
 
     private function deserializeEvent(array $row): DomainMessage
