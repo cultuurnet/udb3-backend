@@ -16,4 +16,4 @@ See [Commands](../commands.md) for all available test commands.
 
 ## Features
 
-- [Search](docs/acceptance-tests/search.md) - SAPI3 search integration tests
+- [Search](search.md) - SAPI3 search integration tests
