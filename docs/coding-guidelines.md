@@ -43,6 +43,11 @@ See `src/Doctrine/DBALDatabaseConnectionChecker.php` for an example.
 - **Avoid** adding dependencies without team discussion
 - **Always** run `make ci` before considering work complete
 
+## AI Restrictions
+
+- **Never** create commits - only humans commit code
+- **Plan** larger changes but implement step by step, waiting for human review between steps
+
 ## Dependency Injection
 
 - Service providers in `app/` wire all dependencies
@@ -51,13 +56,18 @@ See `src/Doctrine/DBALDatabaseConnectionChecker.php` for an example.
 
 See `src/Doctrine/DatabaseConnectionChecker.php` and `src/Doctrine/DBALDatabaseConnectionChecker.php` for an example of interface + implementation pattern.
 
+## Workflow
+
+- **Small commits**: One logical change per commit
+- **Small pull requests**: Easier to review, faster to merge
+- **Feature flags**: Deploy often, enable features when ready
+
 ## Preferences
 
 When working on this codebase, prefer:
 
 - Extracting logic into testable classes with interfaces over inline implementation
 - Constructor injection over service locator patterns
-- Small, focused commits over large changes
 - Explicit code over clever abstractions
 - Integration with existing patterns over introducing new ones
 
