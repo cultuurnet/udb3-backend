@@ -68,13 +68,15 @@ SAPI3 is an external search service (Elasticsearch-based) that:
 - Provides search endpoints proxied by UDB3
 
 **Configuration** (in `config.php`):
-- Base URL: `http://search.uitdatabank.local:80`
+- Base URL: `http://search.uitdatabank.local:9000`
+- ES URL: `http://search.uitdatabank.local:9200/`
 - API Key: configured per environment
 
 **Search Endpoints** (proxy to SAPI3):
 - `/events` - Search events
 - `/places` - Search places
 - `/organizers` - Search organizers
+- `/offers` - Search events and places combined
 
 ## Docker Services
 
