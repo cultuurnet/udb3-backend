@@ -10,6 +10,6 @@ UiTdatabank 3 core application - an event-sourced backend built with Broadway.
 - [Commands](docs/commands.md) - All available make commands
 - [Review Guidelines](docs/review-guidelines.md) - PR review process and focus areas
 
-## Refactoring Plans
+## Acceptance Tests
 
-- [SAPI3 Acceptance Tests](docs/refactor/sapi3-acceptance-tests.md) - Search integration test improvements
+- [SAPI3 Acceptance Tests](docs/refactor/sapi3-acceptance-tests.md) - Search integration acceptance tests
