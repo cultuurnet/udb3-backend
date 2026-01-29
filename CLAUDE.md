@@ -12,4 +12,4 @@ UiTdatabank 3 core application - an event-sourced backend built with Broadway.
 
 ## Acceptance Tests
 
-- [SAPI3 Acceptance Tests](docs/refactor/sapi3-acceptance-tests.md) - Search integration acceptance tests
+- [General](docs/features/general.md) - Acceptance test overview
