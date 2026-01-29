@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\UiTPAS;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Doctrine\DBALDatabaseConnectionChecker;
 use CultuurNet\UDB3\Deserializer\SimpleDeserializerLocator;
 use CultuurNet\UDB3\Broadway\AMQP\EventBusForwardingConsumerFactory;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -53,15 +54,20 @@ final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
                     new OrganizerCardSystemsUpdatedDeserializer()
                 );
 
+                $logger = LoggerFactory::create($container, LoggerName::forAmqpWorker('uitpas'));
+
                 $consumerFactory = new EventBusForwardingConsumerFactory(
                     0,
                     $container->get('amqp.connection'),
-                    LoggerFactory::create($container, LoggerName::forAmqpWorker('uitpas')),
+                    $logger,
                     $uitpasDeserializerLocator,
                     $container->get(EventBus::class),
                     $container->get('config')['amqp']['consumer_tag'],
                     new GeneratedUuidFactory(),
-                    $container->get('dbal_connection')
+                    new DBALDatabaseConnectionChecker(
+                        $container->get('dbal_connection'),
+                        $logger
+                    )
                 );
 
                 $consumerConfig = $container->get('config')['amqp']['consumers']['uitpas'];
