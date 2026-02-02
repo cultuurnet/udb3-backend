@@ -17,6 +17,9 @@ use CultuurNet\UDB3\Http\Auth\Jwt\JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Temp\ApiKeysMatchedToClientIds;
+use CultuurNet\UDB3\Temp\UnmatchedApiKey;
+use CultuurNet\UDB3\User\ClientIdResolver;
 use CultuurNet\UDB3\User\CurrentUser;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
@@ -44,13 +47,19 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
     private UserPermissionsReadRepositoryInterface $userPermissionReadRepository;
 
+    private ClientIdResolver $clientIdResolver;
+
+    private ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds;
+
     public function __construct(
         JwtValidator $uitIdV1JwtValidator,
         JwtValidator $uitIdV2JwtValidator,
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
         ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck,
-        UserPermissionsReadRepositoryInterface $userPermissionsReadRepository
+        UserPermissionsReadRepositoryInterface $userPermissionsReadRepository,
+        ClientIdResolver $clientIdResolver,
+        ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds = null
     ) {
         $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
         $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
@@ -58,6 +67,8 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
         $this->apiKeyConsumerPermissionCheck = $apiKeyConsumerPermissionCheck;
         $this->userPermissionReadRepository = $userPermissionsReadRepository;
+        $this->clientIdResolver = $clientIdResolver;
+        $this->apiKeysMatchedToClientIds = $apiKeysMatchedToClientIds;
     }
 
     public function addPublicRoute(string $pathPattern, array $methods = [], ?string $excludeQueryParam = null): void
