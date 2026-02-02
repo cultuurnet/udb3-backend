@@ -23,3 +23,10 @@ Acceptance tests for the SAPI3 (Search API 3) integration.
 1. Create entity (event/place/organizer) via API
 2. Poll SAPI3 endpoint waiting for indexing (max 5 seconds)
 3. Assert search results
+
+## Query Parameters
+
+SAPI3 supports two types of query parameters:
+
+- **URL parameters**: Direct query string parameters (e.g., `labels=my-label`)
+- **Advanced query parameter**: The `q` parameter using Lucene syntax (e.g., `q=labels:my-label`)
