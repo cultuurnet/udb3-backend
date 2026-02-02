@@ -26,9 +26,13 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 {
+    use LoggerAwareTrait;
+
     private const BEARER = 'Bearer ';
 
     /** @var PublicRouteRule[] */
@@ -69,6 +73,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         $this->userPermissionReadRepository = $userPermissionsReadRepository;
         $this->clientIdResolver = $clientIdResolver;
         $this->apiKeysMatchedToClientIds = $apiKeysMatchedToClientIds;
+        $this->logger = new NullLogger();
     }
 
     public function addPublicRoute(string $pathPattern, array $methods = [], ?string $excludeQueryParam = null): void
@@ -164,6 +169,18 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
             throw ApiProblem::unauthorized(
                 'The given token requires an API key, but no x-api-key header or apiKey URL parameter found.'
             );
+        }
+
+        if ($this->apiKeysMatchedToClientIds !== null) {
+            try {
+                $clientId = $this->apiKeysMatchedToClientIds->getClientId($this->apiKey->toString());
+                if (!$this->clientIdResolver->hasEntryAccess($clientId)) {
+                    throw ApiProblem::forbidden('Given API key is not authorized to use Entry API.');
+                }
+                return;
+            } catch (UnmatchedApiKey $unmatchedApiKey) {
+                $this->logger->warning($unmatchedApiKey->getMessage());
+            }
         }
 
         try {
