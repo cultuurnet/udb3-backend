@@ -12,6 +12,7 @@ Acceptance tests for the SAPI3 (Search API 3) integration.
 ## Test Files
 
 - `auth.feature` - Authentication tests
+- `pagination.feature` - Pagination and sorting tests
 - `search-proxy.feature` - Search endpoint proxy tests
 - `facets.feature` - Facet response tests
 - `contributors.feature` - Contributor filtering
