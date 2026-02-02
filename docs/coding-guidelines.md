@@ -14,12 +14,8 @@ See `src/Doctrine/DBALDatabaseConnectionChecker.php` for an example.
 
 > **Note**: Do NOT use PHP 8.2 `readonly class` syntax - we're on PHP 8.1.
 
-## Testing
+## Comments & Self-Documenting Code
 
-- Use `@test` annotation style for test methods
-- Mock objects use intersection types: `Connection&MockObject`
-- Prefer separate test methods over data providers for clarity
-- Test file location mirrors source: `src/Foo/Bar.php` → `tests/Foo/BarTest.php`
 Avoid comments in favor of self-documenting code:
 
 - **Type hints**: Use typed parameters, typed properties and return types instead of docblock descriptions
@@ -34,6 +30,13 @@ Comments are acceptable when explaining **why** something is done (not **what**)
 
 - Interfaces: Descriptive name without `Interface` suffix (e.g., `DatabaseConnectionChecker`)
 - Implementations: Prefix with technology (e.g., `DBALDatabaseConnectionChecker`)
+
+## Testing
+
+- Use `@test` annotation style for test methods
+- Mock objects use intersection types: `Connection&MockObject`
+- Prefer separate test methods over data providers for clarity
+- Test file location mirrors source: `src/Foo/Bar.php` → `tests/Foo/BarTest.php`
 
 ## Gotchas & Pitfalls
 
