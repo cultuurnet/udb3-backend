@@ -14,17 +14,36 @@ See `src/Doctrine/DBALDatabaseConnectionChecker.php` for an example.
 
 > **Note**: Do NOT use PHP 8.2 `readonly class` syntax - we're on PHP 8.1.
 
+## Comments & Self-Documenting Code
+
+Avoid comments in favor of self-documenting code:
+
+- **Type hints**: Use typed parameters, typed properties and return types instead of docblock descriptions
+- **Method names**: Use descriptive, self-explaining method and function names
+- **Variable names**: Choose clear, meaningful variable names that convey purpose
+- **Class names**: Use descriptive class names that explain their responsibility
+- **File names**: Mirror class names for easy discoverability
+
+Comments are acceptable when explaining **why** something is done (not **what**), such as workarounds for external limitations or non-obvious business rules.
+
+## Naming
+
+### Interfaces
+
+- Descriptive name without `Interface` suffix (e.g., `DatabaseConnectionChecker`)
+- Implementations: Prefix with technology (e.g., `DBALDatabaseConnectionChecker`)
+
+### Exceptions
+
+- Descriptive name without `Exception` suffix
+- Name should describe what went wrong (e.g., `DocumentDoesNotExist`, `NewsArticleNotFound`)
+
 ## Testing
 
 - Use `@test` annotation style for test methods
 - Mock objects use intersection types: `Connection&MockObject`
 - Prefer separate test methods over data providers for clarity
 - Test file location mirrors source: `src/Foo/Bar.php` → `tests/Foo/BarTest.php`
-
-## Naming
-
-- Interfaces: Descriptive name without `Interface` suffix (e.g., `DatabaseConnectionChecker`)
-- Implementations: Prefix with technology (e.g., `DBALDatabaseConnectionChecker`)
 
 ## Gotchas & Pitfalls
 

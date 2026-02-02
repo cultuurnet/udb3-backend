@@ -38,6 +38,11 @@ Feature: Test the Search API v3 authentication
     }
     """
 
+  Scenario: Search with an API key that will be matched to a client id
+    Given I am using an UiTID v1 API key of consumer "apiKeyMatchedToClientId"
+    When I send a GET request to "/events"
+    Then the response status should be "200"
+
   Scenario: Search with a client id that has access to Search API v3
     Given I am using a x-client-id header for client "test_client_sapi3_only"
     And I am using the Search API v3 base URL
