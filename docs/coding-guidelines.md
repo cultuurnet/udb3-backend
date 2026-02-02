@@ -20,6 +20,15 @@ See `src/Doctrine/DBALDatabaseConnectionChecker.php` for an example.
 - Mock objects use intersection types: `Connection&MockObject`
 - Prefer separate test methods over data providers for clarity
 - Test file location mirrors source: `src/Foo/Bar.php` → `tests/Foo/BarTest.php`
+Avoid comments in favor of self-documenting code:
+
+- **Type hints**: Use typed parameters, typed properties and return types instead of docblock descriptions
+- **Method names**: Use descriptive, self-explaining method and function names
+- **Variable names**: Choose clear, meaningful variable names that convey purpose
+- **Class names**: Use descriptive class names that explain their responsibility
+- **File names**: Mirror class names for easy discoverability
+
+Comments are acceptable when explaining **why** something is done (not **what**), such as workarounds for external limitations or non-obvious business rules.
 
 ## Naming
 
