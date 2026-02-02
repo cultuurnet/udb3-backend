@@ -30,3 +30,14 @@ SAPI3 supports two types of query parameters:
 
 - **URL parameters**: Direct query string parameters (e.g., `labels=my-label`)
 - **Advanced query parameter**: The `q` parameter using Lucene syntax (e.g., `q=labels:my-label`)
+
+## Test Isolation
+
+Search tests can use scenario-based label isolation to prevent interference from other tests:
+
+- Tag scenarios with `@labelIsolation` to enable isolation
+- A unique label (`scenario-{uuid}`) is automatically generated per scenario
+- The label is added to all fixtures created during the scenario
+- Search queries automatically filter by this label
+
+This ensures each scenario only sees its own data, regardless of what other tests create.
