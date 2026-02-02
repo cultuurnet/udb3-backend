@@ -28,8 +28,15 @@ Comments are acceptable when explaining **why** something is done (not **what**)
 
 ## Naming
 
-- Interfaces: Descriptive name without `Interface` suffix (e.g., `DatabaseConnectionChecker`)
+### Interfaces
+
+- Descriptive name without `Interface` suffix (e.g., `DatabaseConnectionChecker`)
 - Implementations: Prefix with technology (e.g., `DBALDatabaseConnectionChecker`)
+
+### Exceptions
+
+- Descriptive name without `Exception` suffix
+- Name should describe what went wrong (e.g., `DocumentDoesNotExist`, `NewsArticleNotFound`)
 
 ## Testing
 
