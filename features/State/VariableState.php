@@ -9,6 +9,8 @@ final class VariableState
     private const START_DELIMITER = '%{';
     private const END_DELIMITER = '}';
 
+    private static ?string $scenarioLabel = null;
+
     private array $variables = [];
 
     public function setVariable(string $key, string $value): void
@@ -36,6 +38,21 @@ final class VariableState
     public function getVariable(string $key): string
     {
         return $this->variables[$key];
+    }
+
+    public static function setScenarioLabel(string $label): void
+    {
+        self::$scenarioLabel = $label;
+    }
+
+    public static function getScenarioLabel(): ?string
+    {
+        return self::$scenarioLabel;
+    }
+
+    public static function clearScenarioLabel(): void
+    {
+        self::$scenarioLabel = null;
     }
 
     public function replaceVariables(string $key): string
