@@ -201,7 +201,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
         $container->addShared(
             ApiKeysMatchedToClientIds::class,
             fn () => new InMemoryApiKeysMatchedToClientIds(
-                file_exists(__DIR__ . '/../api_keys_matched_to_client_ids.php') ? require __DIR__ . '/../api_keys_matched_to_client_ids.php' : []
+                file_exists(__DIR__ . '/../../api_keys_matched_to_client_ids.php') ? require __DIR__ . '/../../api_keys_matched_to_client_ids.php' : []
             )
         );
     }
