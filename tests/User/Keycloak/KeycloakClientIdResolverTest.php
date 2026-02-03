@@ -47,8 +47,8 @@ final class KeycloakClientIdResolverTest extends TestCase
                     [],
                     Json::encode([
                         0 => [
-                            'defaultClientScopes' => ['publiq-api-entry-scope']
-                        ]
+                            'defaultClientScopes' => ['publiq-api-entry-scope'],
+                        ],
                     ])
                 )
             );
@@ -74,8 +74,8 @@ final class KeycloakClientIdResolverTest extends TestCase
                     [],
                     Json::encode([
                         0 => [
-                            'defaultClientScopes' => ['publiq-api-search-scope']
-                        ]
+                            'defaultClientScopes' => ['publiq-api-search-scope'],
+                        ],
                     ])
                 )
             );
