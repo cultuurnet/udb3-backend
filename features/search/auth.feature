@@ -23,7 +23,7 @@ Feature: Test the Search API v3 authentication
     Then the response status should be "401"
 
   Scenario: Search with an API key that will be matched to a client id
-    Given I am using an UiTID v1 API key of consumer "apiKeyMatchedToClientId"
+    Given I am using an UiTID v1 API key of consumer "apiKeyMatchedToClientIdWithSearchScope"
     When I send a GET request to "/events"
     Then the response status should be "200"
 
