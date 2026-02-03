@@ -78,6 +78,10 @@ SAPI3 is an external search service (Elasticsearch-based) that:
 - `/organizers` - Search organizers
 - `/offers` - Search events and places combined
 
+## Request Processing
+
+All API requests inside udb3-backend are processed synchronously, except for the export call. This means after creating or updating an entity, no waiting is needed before making subsequent requests to the same entity.
+
 ## Docker Services
 
 | Service | Port | Purpose |
