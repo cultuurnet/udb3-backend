@@ -21,10 +21,10 @@ use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Impersonator;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use CultuurNet\UDB3\Temp\ApiKeysMatchedToClientIds;
-use CultuurNet\UDB3\Temp\InMemoryApiKeysMatchedToClientIds;
+use CultuurNet\UDB3\User\ApiKeysMatchedToClientIds;
 use CultuurNet\UDB3\User\ClientIdResolver;
 use CultuurNet\UDB3\User\CurrentUser;
+use CultuurNet\UDB3\User\InMemoryApiKeysMatchedToClientIds;
 use League\Container\DefinitionContainerInterface;
 
 final class AuthServiceProvider extends AbstractServiceProvider
