@@ -78,6 +78,9 @@ See `src/Doctrine/DatabaseConnectionChecker.php` and `src/Doctrine/DBALDatabaseC
 ## Workflow
 
 - **Small commits**: One logical change per commit
+  - A logical change can span multiple files (e.g., source code + tests, or a refactor touching several related files)
+  - All changes in the commit should belong together and serve a single purpose
+  - The goal is to make commits easy to review and understand
 - **Small pull requests**: Easier to review, faster to merge
 - **Feature flags**: Deploy often, enable features when ready
 
