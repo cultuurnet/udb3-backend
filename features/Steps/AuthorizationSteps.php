@@ -156,6 +156,14 @@ trait AuthorizationSteps
     }
 
     /**
+     * @Given I am using an invalid UiTID v1 API key
+     */
+    public function iAmUsingAnInvalidUitidV1ApiKey(): void
+    {
+        $this->requestState->setApiKey('invalid-api-key');
+    }
+
+    /**
      * @Given I am using a x-client-id header for client :clientId
      */
     public function iAmUsingAXClientIdHeaderForClient(string $clientId): void
@@ -169,5 +177,45 @@ trait AuthorizationSteps
     public function iAmNotUsingAXClientIdHeader(): void
     {
         $this->requestState->setClientId('');
+    }
+
+    /**
+     * @Given I am using an invalid x-client-id header
+     */
+    public function iAmUsingAnInvalidXClientIdHeader(): void
+    {
+        $this->requestState->setClientId('invalid-client-id');
+    }
+
+    /**
+     * @Given I am using an API key URL parameter of consumer :consumerName
+     */
+    public function iAmUsingAnApiKeyUrlParameterOfConsumer(string $consumerName): void
+    {
+        $this->requestState->setUrlParam('apiKey', $this->config['apiKeys'][$consumerName]);
+    }
+
+    /**
+     * @Given I am not using an API key URL parameter
+     */
+    public function iAmNotUsingAnApiKeyUrlParameter(): void
+    {
+        $this->requestState->setUrlParam('apiKey', '');
+    }
+
+    /**
+     * @Given I am using a clientId URL parameter for client :clientId
+     */
+    public function iAmUsingAClientIdUrlParameterForClient(string $clientId): void
+    {
+        $this->requestState->setUrlParam('clientId', $this->config['clients'][$clientId]['client_id']);
+    }
+
+    /**
+     * @Given I am not using a clientId URL parameter
+     */
+    public function iAmNotUsingAClientIdUrlParameter(): void
+    {
+        $this->requestState->setUrlParam('clientId', '');
     }
 }

@@ -10,6 +10,7 @@ final class RequestState
     private string $apiKey = '';
     private string $jwt = '';
     private string $clientId = '';
+    private array $urlParams = [];
 
     private string $acceptHeader = '';
     private string $contentTypeHeader = '';
@@ -45,6 +46,25 @@ final class RequestState
     public function setClientId(string $clientId): void
     {
         $this->clientId = $clientId;
+    }
+
+    public function getUrlParams(): array
+    {
+        return $this->urlParams;
+    }
+
+    public function setUrlParam(string $key, string $value): void
+    {
+        if (empty($value)) {
+            unset($this->urlParams[$key]);
+        } else {
+            $this->urlParams[$key] = $value;
+        }
+    }
+
+    public function clearUrlParams(): void
+    {
+        $this->urlParams = [];
     }
 
     public function getJwt(): string
