@@ -13,19 +13,26 @@ use CultuurNet\UDB3\ApiGuard\ApiKey\Reader\QueryParameterApiKeyReader;
 use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository as ApiKeyConsumerReadRepository;
 use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerSpecification as ApiKeyConsumerSpecification;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\Auth\Jwt\JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
+use CultuurNet\UDB3\Http\Auth\Jwt\JwtValidator;
 use CultuurNet\UDB3\Role\ReadModel\Permissions\UserPermissionsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\User\ApiKeysMatchedToClientIds;
+use CultuurNet\UDB3\User\ClientIdResolver;
 use CultuurNet\UDB3\User\CurrentUser;
+use CultuurNet\UDB3\User\Exceptions\UnmatchedApiKey;
 use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
 final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 {
+    use LoggerAwareTrait;
+
     private const BEARER = 'Bearer ';
 
     /** @var PublicRouteRule[] */
@@ -44,13 +51,19 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
     private UserPermissionsReadRepositoryInterface $userPermissionReadRepository;
 
+    private ClientIdResolver $clientIdResolver;
+
+    private ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds;
+
     public function __construct(
         JwtValidator $uitIdV1JwtValidator,
         JwtValidator $uitIdV2JwtValidator,
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
         ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck,
-        UserPermissionsReadRepositoryInterface $userPermissionsReadRepository
+        UserPermissionsReadRepositoryInterface $userPermissionsReadRepository,
+        ClientIdResolver $clientIdResolver,
+        ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds = null
     ) {
         $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
         $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
@@ -58,6 +71,9 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
         $this->apiKeyConsumerPermissionCheck = $apiKeyConsumerPermissionCheck;
         $this->userPermissionReadRepository = $userPermissionsReadRepository;
+        $this->clientIdResolver = $clientIdResolver;
+        $this->apiKeysMatchedToClientIds = $apiKeysMatchedToClientIds;
+        $this->logger = new NullLogger();
     }
 
     public function addPublicRoute(string $pathPattern, array $methods = [], ?string $excludeQueryParam = null): void
@@ -153,6 +169,18 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
             throw ApiProblem::unauthorized(
                 'The given token requires an API key, but no x-api-key header or apiKey URL parameter found.'
             );
+        }
+
+        if ($this->apiKeysMatchedToClientIds !== null) {
+            try {
+                $clientId = $this->apiKeysMatchedToClientIds->getClientId($this->apiKey->toString());
+                if (!$this->clientIdResolver->hasEntryAccess($clientId)) {
+                    throw ApiProblem::forbidden('Given API key is not authorized to use Entry API.');
+                }
+                return;
+            } catch (UnmatchedApiKey $unmatchedApiKey) {
+                $this->logger->warning($unmatchedApiKey->getMessage());
+            }
         }
 
         try {
