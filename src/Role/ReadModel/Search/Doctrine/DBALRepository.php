@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class DBALRepository implements RepositoryInterface
 {
@@ -34,20 +35,23 @@ class DBALRepository implements RepositoryInterface
 
     public function save(string $uuid, string $name, string $constraint = null): void
     {
-        $q = $this->connection->createQueryBuilder();
-        $q
-            ->insert($this->tableName)
-            ->values(
-                [
-                    ColumnNames::UUID_COLUMN => ':role_id',
-                    ColumnNames::NAME_COLUMN => ':role_name',
-                    ColumnNames::CONSTRAINT_COLUMN => ':constraint',
-                ]
-            )
-            ->setParameter('role_id', $uuid)
-            ->setParameter('role_name', $name)
-            ->setParameter('constraint', $constraint);
-        $q->execute();
+        try {
+            $q = $this->connection->createQueryBuilder();
+            $q
+                ->insert($this->tableName)
+                ->values(
+                    [
+                        ColumnNames::UUID_COLUMN => ':role_id',
+                        ColumnNames::NAME_COLUMN => ':role_name',
+                        ColumnNames::CONSTRAINT_COLUMN => ':constraint',
+                    ]
+                )
+                ->setParameter('role_id', $uuid)
+                ->setParameter('role_name', $name)
+                ->setParameter('constraint', $constraint);
+            $q->execute();
+        } catch (UniqueConstraintViolationException) {
+        }
     }
 
     public function search(string $query = '', int $limit = 10, int $start = 0): Results
