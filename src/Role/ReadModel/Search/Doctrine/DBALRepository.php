@@ -51,7 +51,6 @@ class DBALRepository implements RepositoryInterface
                 ->setParameter('constraint', $constraint);
             $q->execute();
         } catch (UniqueConstraintViolationException) {
-
         }
     }
 
