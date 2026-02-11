@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddPermission;
 use CultuurNet\UDB3\Role\Commands\AddUser;
 use CultuurNet\UDB3\Role\Commands\CreateRole;
+use CultuurNet\UDB3\Role\Commands\DeleteRole;
 use CultuurNet\UDB3\Role\Commands\RemoveUser;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
@@ -218,20 +219,21 @@ class OwnershipPermissionProjectorTest extends TestCase
     public function it_handles_ownership_deleted(): void
     {
         $ownershipId = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
+        $otherOwnershipId = 'other-ownership-id';
         $itemId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
         $recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::fromString('2024-02-19T14:15:16Z'));
 
-        $ownershipRequested = new OwnershipDeleted($ownershipId);
+        $ownershipDeleted = new OwnershipDeleted($ownershipId);
 
         $domainMessage = new DomainMessage(
             $ownershipId,
             0,
             new Metadata(),
-            $ownershipRequested,
+            $ownershipDeleted,
             $recordedOn->toBroadwayDateTime()
         );
 
-        $roleId = self::ROLE_ID;
+        $roleId = new Uuid(self::ROLE_ID);
 
         $this->ownershipSearchRepository->expects($this->once())
             ->method('getById')
@@ -243,20 +245,112 @@ class OwnershipPermissionProjectorTest extends TestCase
                     'organizer',
                     'auth0|63e22626e39a8ca1264bd29b',
                     OwnershipState::requested()->toString()
-                ))->withRoleId(new Uuid($roleId))
+                ))->withRoleId($roleId)
             );
 
         $this->ownershipSearchRepository->expects($this->once())
             ->method('updateRoleId')
             ->with($ownershipId, null);
 
+        // Mock search to return other approved ownerships with the same role (role should not be deleted)
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new SearchQuery(
+                    [
+                        new SearchParameter('state', 'approved'),
+                    ],
+                    0,
+                    100
+                )
+            )
+            ->willReturn(
+                new OwnershipItemCollection(
+                    (new OwnershipItem(
+                        $otherOwnershipId,
+                        $itemId,
+                        'organizer',
+                        'auth0|other-user',
+                        OwnershipState::approved()->toString()
+                    ))->withRoleId($roleId)
+                )
+            );
+
         $this->ownershipPermissionProjector->handle($domainMessage);
 
         $this->assertEquals(
             [
                 new RemoveUser(
-                    new Uuid($roleId),
+                    $roleId,
                     'auth0|63e22626e39a8ca1264bd29b'
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_deletes_role_when_removing_the_last_user(): void
+    {
+        $ownershipId = 'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e';
+        $itemId = '9e68dafc-01d8-4c1c-9612-599c918b981d';
+        $recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::fromString('2024-02-19T14:15:16Z'));
+
+        $ownershipDeleted = new OwnershipDeleted($ownershipId);
+
+        $domainMessage = new DomainMessage(
+            $ownershipId,
+            0,
+            new Metadata(),
+            $ownershipDeleted,
+            $recordedOn->toBroadwayDateTime()
+        );
+
+        $roleId = new Uuid(self::ROLE_ID);
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('getById')
+            ->with($ownershipId)
+            ->willReturn(
+                (new OwnershipItem(
+                    $ownershipId,
+                    $itemId,
+                    'organizer',
+                    'auth0|63e22626e39a8ca1264bd29b',
+                    OwnershipState::approved()->toString()
+                ))->withRoleId($roleId)
+            );
+
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('updateRoleId')
+            ->with($ownershipId, null);
+
+        // Mock search to return no other approved ownerships (role should be deleted)
+        $this->ownershipSearchRepository->expects($this->once())
+            ->method('search')
+            ->with(
+                new SearchQuery(
+                    [
+                        new SearchParameter('state', 'approved'),
+                    ],
+                    0,
+                    100
+                )
+            )
+            ->willReturn(new OwnershipItemCollection());
+
+        $this->ownershipPermissionProjector->handle($domainMessage);
+
+        $this->assertEquals(
+            [
+                new RemoveUser(
+                    $roleId,
+                    'auth0|63e22626e39a8ca1264bd29b'
+                ),
+                new DeleteRole(
+                    $roleId
                 ),
             ],
             $this->commandBus->getRecordedCommands()

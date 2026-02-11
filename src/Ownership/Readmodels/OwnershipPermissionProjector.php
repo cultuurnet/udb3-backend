@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Role\Commands\AddConstraint;
 use CultuurNet\UDB3\Role\Commands\AddPermission;
 use CultuurNet\UDB3\Role\Commands\AddUser;
 use CultuurNet\UDB3\Role\Commands\CreateRole;
+use CultuurNet\UDB3\Role\Commands\DeleteRole;
 use CultuurNet\UDB3\Role\Commands\RemoveUser;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Role\ValueObjects\Query;
@@ -58,6 +59,15 @@ final class OwnershipPermissionProjector implements EventListener
         }
 
         $this->{$handleMethod}($event, $domainMessage);
+    }
+
+    public function deleteRoleIfNoOwnerships(?Uuid $roleId): void
+    {
+        if (!$this->hasOtherOwnershipsForRole($roleId)) {
+            $this->commandBus->dispatch(
+                new DeleteRole($roleId)
+            );
+        }
     }
 
     protected function applyOwnershipApproved(OwnershipApproved $ownershipApproved): void
@@ -114,15 +124,44 @@ final class OwnershipPermissionProjector implements EventListener
 
         $this->commandBus->disableAuthorization();
 
+        $roleId = $ownershipItem->getRoleId();
+
         $this->commandBus->dispatch(
             new RemoveUser(
-                $ownershipItem->getRoleId(),
+                $roleId,
                 $ownershipItem->getOwnerId()
             )
         );
         $this->ownershipSearchRepository->updateRoleId($ownershipItem->getId(), null);
 
+        // Auto-delete the role if there are no remaining ownerships for it
+        $this->deleteRoleIfNoOwnerships($roleId);
+
         $this->commandBus->enableAuthorization();
+    }
+
+    private function hasOtherOwnershipsForRole(Uuid $roleId): bool
+    {
+        // Search for any ownerships (approved state only) that are linked to this role
+        // We look for approved ownerships since only approved ownerships have members in the role
+        $ownerships = $this->ownershipSearchRepository->search(
+            new SearchQuery(
+                [
+                    new SearchParameter('state', 'approved'),
+                ],
+                0,
+                100
+            )
+        );
+
+        $roleIdString = $roleId->toString();
+        foreach ($ownerships as $ownership) {
+            if ($ownership->getRoleId() && $ownership->getRoleId()->toString() === $roleIdString) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function getExistingRoleId(string $itemId): ?Uuid
