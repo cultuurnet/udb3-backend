@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class DBALRepository implements RepositoryInterface
 {
@@ -34,22 +35,24 @@ class DBALRepository implements RepositoryInterface
 
     public function save(string $uuid, string $name, string $constraint = null): void
     {
-        // Use INSERT ... ON DUPLICATE KEY UPDATE to handle replay scenarios where the role already exists in the projection table
-        $sql = sprintf(
-            'INSERT INTO %s (%s, %s, %s) VALUES (:role_id, :role_name, :constraint)
-             ON DUPLICATE KEY UPDATE %s = :role_name',
-            $this->tableName,
-            ColumnNames::UUID_COLUMN,
-            ColumnNames::NAME_COLUMN,
-            ColumnNames::CONSTRAINT_COLUMN,
-            ColumnNames::NAME_COLUMN
-        );
+        try {
+            $q = $this->connection->createQueryBuilder();
+            $q
+                ->insert($this->tableName)
+                ->values(
+                    [
+                        ColumnNames::UUID_COLUMN => ':role_id',
+                        ColumnNames::NAME_COLUMN => ':role_name',
+                        ColumnNames::CONSTRAINT_COLUMN => ':constraint',
+                    ]
+                )
+                ->setParameter('role_id', $uuid)
+                ->setParameter('role_name', $name)
+                ->setParameter('constraint', $constraint);
+            $q->execute();
+        } catch (UniqueConstraintViolationException) {
 
-        $stmt = $this->connection->prepare($sql);
-        $stmt->bindValue('role_id', $uuid);
-        $stmt->bindValue('role_name', $name);
-        $stmt->bindValue('constraint', $constraint);
-        $stmt->execute();
+        }
     }
 
     public function search(string $query = '', int $limit = 10, int $start = 0): Results
