@@ -35,7 +35,7 @@ SAPI3 supports two types of query parameters:
 
 Search tests can use scenario-based label isolation to prevent interference from other tests:
 
-- Tag scenarios with `@labelIsolation` to enable isolation
+- Tag scenarios with `@testIsolation` to enable isolation
 - A unique label (`scenario-{uuid}`) is automatically generated per scenario
 - The label is added to all fixtures created during the scenario
 - Search queries automatically filter by this label

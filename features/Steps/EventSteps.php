@@ -204,5 +204,7 @@ trait EventSteps
         $this->theResponseStatusShouldBe(201);
         $this->theResponseBodyShouldBeValidJson();
         $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
+
+        $this->addScenarioLabelToResource('event');
     }
 }
