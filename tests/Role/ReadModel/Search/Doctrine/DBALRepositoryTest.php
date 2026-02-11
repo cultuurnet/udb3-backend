@@ -121,6 +121,27 @@ class DBALRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_duplicate_saves_during_replay(): void
+    {
+        $roleUuid = $this->role['uuid'];
+        $roleName = $this->role['name'];
+        $constraint = $this->role['constraint_query'];
+
+        // First save
+        $this->dbalRepository->save($roleUuid, $roleName, $constraint);
+        // Second save with same UUID (simulating replay) - should not throw duplicate key error
+        $this->dbalRepository->save($roleUuid, $roleName, $constraint);
+
+        // Verify only one role exists
+        $sql = 'SELECT COUNT(*) as count FROM ' . $this->tableName . ' WHERE uuid = ?';
+        $result = $this->connection->executeQuery($sql, [$roleUuid])->fetchAssociative();
+
+        $this->assertEquals(1, $result['count']);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_search(): void
     {
         $expectedRole1 = [
