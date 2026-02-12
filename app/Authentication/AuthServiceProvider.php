@@ -53,10 +53,6 @@ final class AuthServiceProvider extends AbstractServiceProvider
             RequestAuthenticatorMiddleware::class,
             function () use ($container): RequestAuthenticatorMiddleware {
                 $authenticator = new RequestAuthenticatorMiddleware(
-                    new UitIdV1JwtValidator(
-                        'file://' . __DIR__ . '/../../' . $container->get('config')['jwt']['v1']['keys']['public']['file'],
-                        $container->get('config')['jwt']['v1']['valid_issuers']
-                    ),
                     $this->createUitIdV2JwtValidator($container),
                     new CachedApiKeyAuthenticator(
                         new CultureFeedApiKeyAuthenticator($container->get(ConsumerReadRepository::class)),

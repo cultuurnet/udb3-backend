@@ -43,8 +43,6 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 
     private ?JsonWebToken $token = null;
     private ?ApiKey $apiKey = null;
-
-    private JwtValidator $uitIdV1JwtValidator;
     private JwtValidator $uitIdV2JwtValidator;
     private ApiKeyAuthenticator $apiKeyAuthenticator;
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
@@ -56,7 +54,6 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds;
 
     public function __construct(
-        JwtValidator $uitIdV1JwtValidator,
         JwtValidator $uitIdV2JwtValidator,
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
@@ -65,7 +62,6 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         ClientIdResolver $clientIdResolver,
         ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds = null
     ) {
-        $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
         $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
         $this->apiKeyAuthenticator = $apiKeyAuthenticator;
         $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
