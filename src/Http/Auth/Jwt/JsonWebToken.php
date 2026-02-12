@@ -23,7 +23,6 @@ use Lcobucci\JWT\Validation\Validator;
 
 final class JsonWebToken
 {
-    public const UIT_ID_V1_JWT_PROVIDER_TOKEN = 'uit_v1_jwt_provider_token';
     public const UIT_ID_V2_JWT_PROVIDER_TOKEN = 'uit_v2_jwt_provider_token';
     public const UIT_ID_V2_USER_ACCESS_TOKEN = 'uit_v2_user_access_token';
     public const UIT_ID_V2_CLIENT_ACCESS_TOKEN = 'uit_v2_client_access_token';
@@ -53,11 +52,6 @@ final class JsonWebToken
      */
     public function getType(): string
     {
-        // V1 tokens had a non-standardized "uid" claim
-        if ($this->token->claims()->has('uid')) {
-            return self::UIT_ID_V1_JWT_PROVIDER_TOKEN;
-        }
-
         // Because ID tokens from Keycloak always have a `azp` claim the `typ` claim can be used to verify if a Keycloak ID token is passed.
         if ($this->token->claims()->get('typ', '') === 'ID') {
             return self::UIT_ID_V2_JWT_PROVIDER_TOKEN;
