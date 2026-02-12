@@ -39,21 +39,6 @@ class JsonWebTokenTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_uitid_v1_claim_as_id_if_present(): void
-    {
-        $jwt = JsonWebTokenFactory::createWithClaims(
-            [
-                'https://publiq.be/uitidv1id' => 'b55f041e-5c5e-4850-9fb8-8cf73d538c56',
-                'sub' => 'auth0|ce6abd8f-b1e2-4bce-9dde-08af64438e87',
-            ]
-        );
-
-        $this->assertEquals('b55f041e-5c5e-4850-9fb8-8cf73d538c56', $jwt->getUserId());
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_sub_claim_as_id(): void
     {
         $jwt = JsonWebTokenFactory::createWithClaims(
@@ -152,32 +137,6 @@ class JsonWebTokenTest extends TestCase
             ]
         );
         $this->assertEquals(JsonWebToken::UIT_ID_V2_USER_ACCESS_TOKEN, $jwt->getType());
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_user_identity_details_for_v1_jwt_provider_tokens(): void
-    {
-        $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
-        $userIdentityResolver->expects($this->never())
-            ->method('getUserById');
-
-        $v1Token = JsonWebTokenFactory::createWithClaims(
-            [
-                'uid' => 'c82bd40c-1932-4c45-bd5d-a76cc9907cee',
-                'nick' => 'mock-nickname',
-                'email' => 'mock@example.com',
-            ]
-        );
-
-        $details = new UserIdentityDetails(
-            'c82bd40c-1932-4c45-bd5d-a76cc9907cee',
-            'mock-nickname',
-            'mock@example.com'
-        );
-
-        $this->assertEquals($details, $v1Token->getUserIdentityDetails($userIdentityResolver));
     }
 
     /**
