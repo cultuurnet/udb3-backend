@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Cache\CachedConsumerReadRepository;
 use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
-use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV1JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV2JwtValidator;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Impersonator;
