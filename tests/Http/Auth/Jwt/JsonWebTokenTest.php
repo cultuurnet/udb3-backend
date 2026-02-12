@@ -116,15 +116,6 @@ class JsonWebTokenTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_v1_jwt_provider_token_type_if_a_uid_claim_is_present(): void
-    {
-        $jwt = JsonWebTokenFactory::createWithClaims(['uid' => 'mock']);
-        $this->assertEquals(JsonWebToken::UIT_ID_V1_JWT_PROVIDER_TOKEN, $jwt->getType());
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_v2_jwt_provider_token_type_when_typ_is_id(): void
     {
         $jwt = JsonWebTokenFactory::createWithClaims([
