@@ -69,10 +69,6 @@ final class JsonWebToken
 
     public function getUserId(): string
     {
-        if ($this->token->claims()->has('uid')) {
-            return $this->token->claims()->get('uid');
-        }
-
         if ($this->token->claims()->has('https://publiq.be/uitidv1id')) {
             return $this->token->claims()->get('https://publiq.be/uitidv1id');
         }
