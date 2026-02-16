@@ -101,8 +101,15 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
         );
 
         $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
-        $userIdentityResolver->expects($this->never())
-            ->method('getUserById');
+        $userIdentityResolver->expects($this->once())
+            ->method('getUserById')
+            ->willReturn(
+                new UserIdentityDetails(
+                    'my_user_id',
+                    'jane.doe@anonymous.com',
+                    'jane.doe@anonymous.com'
+                )
+            );
 
         $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
             $token,
