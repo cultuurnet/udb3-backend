@@ -86,15 +86,6 @@ final class JsonWebToken
             return null;
         }
 
-        // Tokens from V1 JWT provider (= custom)
-        if ($this->hasClaims(['nick', 'email'])) {
-            return new UserIdentityDetails(
-                $this->getUserId(),
-                $this->token->claims()->get('nick'),
-                $this->token->claims()->get('email')
-            );
-        }
-
         // Tokens from V2 JWT provider (= Auth0 ID tokens)
         if ($this->hasClaims(['nickname', 'email'])) {
             return new UserIdentityDetails(
