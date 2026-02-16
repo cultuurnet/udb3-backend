@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebTokenFactory;
 use CultuurNet\UDB3\SavedSearches\Properties\CreatorQueryString;
 use CultuurNet\UDB3\SavedSearches\ReadModel\SavedSearch;
 use CultuurNet\UDB3\SavedSearches\ValueObject\CreatedByQueryMode;
+use CultuurNet\UDB3\User\UserIdentityDetails;
 use CultuurNet\UDB3\User\UserIdentityResolver;
 use PHPUnit\Framework\TestCase;
 
@@ -20,7 +21,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
     {
         $token = JsonWebTokenFactory::createWithClaims(
             [
-                'uid' => 'my_user_id',
+                'https://publiq.be/uitidv1id' => 'my_user_id',
                 'nick' => 'my_name',
                 'email' => 'jane.doe@anonymous.com',
             ]
@@ -93,7 +94,7 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
     {
         $token = JsonWebTokenFactory::createWithClaims(
             [
-                'uid' => 'my_user_id',
+                'https://publiq.be/uitidv1id' => 'my_user_id',
                 'nick' => 'my_name',
                 'email' => 'jane.doe@anonymous.com',
             ]
@@ -129,15 +130,23 @@ class Sapi3FixedSavedSearchRepositoryTest extends TestCase
     {
         $token = JsonWebTokenFactory::createWithClaims(
             [
-                'uid' => 'my_user_id',
+                'https://publiq.be/uitidv1id' => 'my_user_id',
                 'nick' => 'my_name',
                 'email' => 'jane.doe@anonymous.com',
             ]
         );
 
         $userIdentityResolver = $this->createMock(UserIdentityResolver::class);
-        $userIdentityResolver->expects($this->never())
-            ->method('getUserById');
+        $userIdentityResolver->expects($this->once())
+            ->method('getUserById')
+            ->with('my_user_id')
+            ->willReturn(
+                new UserIdentityDetails(
+                    'my_user_id',
+                    'jane.doe@anonymous.com',
+                    'jane.doe@anonymous.com'
+                )
+            );
 
         $sapi3FixedSavedSearchRepository = new Sapi3FixedSavedSearchRepository(
             $token,
