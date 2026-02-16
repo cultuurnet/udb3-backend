@@ -73,6 +73,7 @@ use CultuurNet\UDB3\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\SwiftMailer\SwiftMailerServiceProvider;
+use CultuurNet\UDB3\Taxonomy\TaxonomyServiceProvider;
 use CultuurNet\UDB3\Term\TermServiceProvider;
 use CultuurNet\UDB3\UDB2\UDB2EventServicesProvider;
 use CultuurNet\UDB3\UiTPAS\UiTPASIncomingEventServicesProvider;
@@ -232,6 +233,9 @@ $container->addServiceProvider(new VerenigingsloketServiceProvider());
 
 /** Addresses */
 $container->addServiceProvider(new AddressServiceProvider());
+
+/** Taxonomy */
+$container->addServiceProvider(new TaxonomyServiceProvider());
 
 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);
