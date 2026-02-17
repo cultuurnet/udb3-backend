@@ -32,4 +32,6 @@ interface TaxonomyApiClient
      * @return  Category[]
      */
     public function getEventFacilities(): array;
+
+    public function getMapping(): array;
 }
