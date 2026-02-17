@@ -48,7 +48,7 @@ class Sapi3FixedSavedSearchRepository implements SavedSearchesOwnedByCurrentUser
             return new CreatorQueryString($this->token->getUserId());
         }
 
-        // If the user is not found on Auth0, just return a query that filters the creator on user id since we don't
+        // If the user is not found on Keycloak, just return a query that filters the creator on user id since we don't
         // have an email to filter on anyway.
         $user = $this->token->getUserIdentityDetails($this->userIdentityResolver);
         if (!$user) {
