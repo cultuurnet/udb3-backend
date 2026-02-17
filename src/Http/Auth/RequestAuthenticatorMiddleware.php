@@ -26,13 +26,10 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerAwareTrait;
-use Psr\Log\NullLogger;
+use Psr\Log\LoggerInterface;
 
 final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 {
-    use LoggerAwareTrait;
-
     private const BEARER = 'Bearer ';
 
     /** @var PublicRouteRule[] */
@@ -48,9 +45,8 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
     private ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck;
     private UserPermissionsReadRepositoryInterface $userPermissionReadRepository;
-
     private ClientIdResolver $clientIdResolver;
-
+    private LoggerInterface $logger;
     private ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds;
 
     public function __construct(
@@ -60,6 +56,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         ApiKeyConsumerSpecification $apiKeyConsumerPermissionCheck,
         UserPermissionsReadRepositoryInterface $userPermissionsReadRepository,
         ClientIdResolver $clientIdResolver,
+        LoggerInterface $logger,
         ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds = null
     ) {
         $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
@@ -69,7 +66,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         $this->userPermissionReadRepository = $userPermissionsReadRepository;
         $this->clientIdResolver = $clientIdResolver;
         $this->apiKeysMatchedToClientIds = $apiKeysMatchedToClientIds;
-        $this->logger = new NullLogger();
+        $this->logger = $logger;
     }
 
     public function addPublicRoute(string $pathPattern, array $methods = [], ?string $excludeQueryParam = null): void
@@ -172,7 +169,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
                 }
                 return;
             } catch (UnmatchedApiKey $unmatchedApiKey) {
-                $this->logger->warning($unmatchedApiKey->getMessage());
+                $this->logger->error($unmatchedApiKey->getMessage());
             }
         }
 
