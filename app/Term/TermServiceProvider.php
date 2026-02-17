@@ -39,24 +39,8 @@ final class TermServiceProvider extends AbstractServiceProvider
 
     private function provideTermRepository(): TermRepository
     {
-        $mapping = [];
-
-        $files = [
-            __DIR__ . '/../../term_mapping_facilities.php',
-            __DIR__ . '/../../term_mapping_themes.php',
-            __DIR__ . '/../../term_mapping_types.php',
-        ];
-
-        foreach ($files as $file) {
-            if (file_exists($file)) {
-                $terms  = require $file;
-
-                if (is_array($terms)) {
-                    $mapping = array_merge($mapping, $terms);
-                }
-            }
-        }
-
-        return new TermRepository($mapping);
+        $container = $this->getContainer();
+        $taxonomyApiClient = $container->get(TaxonomyApiClient::class);
+        return new TermRepository($taxonomyApiClient->getMapping());
     }
 }
