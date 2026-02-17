@@ -14,6 +14,8 @@ use CultuurNet\UDB3\Cache\CachedApiKeyAuthenticator;
 use CultuurNet\UDB3\Cache\CachedConsumerReadRepository;
 use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV2JwtValidator;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
@@ -65,6 +67,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
                     new ConsumerIsInPermissionGroup((string) $container->get('config')['api_key']['group_id']),
                     $container->get(UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY),
                     $container->get(ClientIdResolver::class),
+                    LoggerFactory::create($this->getContainer(), LoggerName::forWeb()),
                     $container->get('config')['match_api_keys_to_client_ids'] ? $container->get(ApiKeysMatchedToClientIds::class) : null
                 );
 
