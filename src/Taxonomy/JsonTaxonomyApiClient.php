@@ -70,6 +70,12 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
         return $this->getTermsByDomainAndScope(CategoryDomain::facility(), 'events');
     }
 
+
+    public function getMapping(): array
+    {
+        return $this->terms;
+    }
+
     /**
      * @return  Category[]
      */
@@ -78,7 +84,6 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
         $termsByDomainAndScope  = [];
         foreach ($this->terms as $term) {
             if ($term['domain'] === $domain->toString() && in_array($scope, $term['scope'])) {
-                $termsByDomainAndScope[] = $term;
                 $termsByDomainAndScope[$term['id']] = new Category(new CategoryID($term['id']), new CategoryLabel($term['name']['nl']), $domain);
             }
         }
