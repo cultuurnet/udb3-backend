@@ -1603,7 +1603,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      * @test
      * @dataProvider typesThatAreAvailableTillStart
      */
-    public function it_keeps_start_date_for_selected_types_on_calendar_updated(string $termId, string $termName): void
+    public function it_keeps_start_date_for_selected_types_on_calendar_updated(Category $category): void
     {
         $eventId = '1a08516e-aba4-47f0-887e-df37b61a1e8d';
 
@@ -1619,8 +1619,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                         'domain' => 'theme',
                     ],
                     (object) [
-                        'id' => $termId,
-                        'label' => $termName,
+                        'id' => $category->getId()->toString(),
+                        'label' => $category->getLabel()->toString(),
                         'domain' => 'eventtype',
                     ],
                 ],
@@ -1646,7 +1646,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      * @test
      * @dataProvider typesThatAreAvailableTillStart
      */
-    public function it_sets_available_to_start_date_for_selected_types_on_type_updated(string $termId): void
+    public function it_sets_available_to_start_date_for_selected_types_on_type_updated(Category $category): void
     {
         $eventId = '1a08516e-aba4-47f0-887e-df37b61a1e8d';
 
@@ -1685,7 +1685,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $startDate = DateTimeFactory::fromAtom('2018-01-01T12:00:00+01:00');
 
-        $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId($termId));
+        $typeUpdated = new TypeUpdated($eventId, $category);
 
         $updatedItem = $this->project($typeUpdated, $eventId);
 
@@ -1696,7 +1696,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      * @test
      * @dataProvider typesThatAreAvailableTillStart
      */
-    public function it_sets_available_to_end_date_on_type_updated_from_selected_types(string $termId, string $termName): void
+    public function it_sets_available_to_end_date_on_type_updated_from_selected_types(Category $category): void
     {
         $eventId = '1a08516e-aba4-47f0-887e-df37b61a1e8d';
 
@@ -1719,8 +1719,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'availableTo' => '2018-01-01T12:00:00+01:00',
                 'terms' => [
                     (object) [
-                        'id' => $termId,
-                        'label' => $termName,
+                        'id' => $category->getId()->toString(),
+                        'label' => $category->getLabel()->toString(),
                         'domain' => 'theme',
                     ],
                     (object) [
@@ -1735,7 +1735,14 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
 
-        $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0'));
+        $typeUpdated = new TypeUpdated(
+            $eventId,
+            new Category(
+                new CategoryID('0.50.4.0.0'),
+                new CategoryLabel('Concert'),
+                CategoryDomain::eventType()
+            )
+        );
 
         $updatedItem = $this->project($typeUpdated, $eventId);
 
@@ -1784,7 +1791,14 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $endDate = DateTimeFactory::fromAtom('2020-01-01T12:00:00+01:00');
 
-        $typeUpdated = new TypeUpdated($eventId, (new EventTypeResolver())->byId('0.50.4.0.0'));
+        $typeUpdated = new TypeUpdated(
+            $eventId,
+            new Category(
+                new CategoryID('0.50.4.0.0'),
+                new CategoryLabel('Concert'),
+                CategoryDomain::eventType()
+            )
+        );
 
         $updatedItem = $this->project($typeUpdated, $eventId);
 
@@ -1854,8 +1868,12 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     public function typesThatAreAvailableTillStart(): array
     {
         return [
-            ['0.3.1.0.0', 'Lessenreeks'],
-            ['0.57.0.0.0', 'Kamp of vakantie'],
+            [
+                '0.3.1.0.0' => new Category(new CategoryID('0.3.1.0.0'), new CategoryLabel('Lessenreeks'), CategoryDomain::theme()),
+            ],
+            [
+                '0.57.0.0.0' => new Category(new CategoryID('0.57.0.0.0'), new CategoryLabel('Kamp of vakantie'), CategoryDomain::theme()),
+            ],
         ];
     }
 
