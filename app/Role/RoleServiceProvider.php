@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Role;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\AggregateType;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -91,7 +92,8 @@ final class RoleServiceProvider extends AbstractServiceProvider
             'role_search_v3_repository',
             fn () => new DBALRepository(
                 $container->get('dbal_connection'),
-                self::ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME
+                self::ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME,
+                new DomainMessageIsReplayed()
             )
         );
 
