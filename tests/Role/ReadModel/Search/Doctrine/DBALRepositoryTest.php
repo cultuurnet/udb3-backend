@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 
+use Broadway\Domain\DomainMessage;
+use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +28,8 @@ class DBALRepositoryTest extends TestCase
 
         $this->dbalRepository = new DBALRepository(
             $this->getConnection(),
-            $this->tableName
+            $this->tableName,
+            new DomainMessageIsReplayed()
         );
 
         $this->role = [
@@ -33,6 +37,16 @@ class DBALRepositoryTest extends TestCase
             'name' => 'Leuven validatoren',
             'constraint_query' => 'city:Leuven',
         ];
+    }
+
+    private function createDomainMessage(bool $isReplay = false): DomainMessage
+    {
+        return DomainMessage::recordNow(
+            '44ba2574-aa50-4765-a0e5-38b046a13357',
+            0,
+            new Metadata([DomainMessageIsReplayed::METADATA_REPLAY_KEY => $isReplay]),
+            new \stdClass()
+        );
     }
 
     /**
@@ -45,6 +59,7 @@ class DBALRepositoryTest extends TestCase
         $this->dbalRepository->save(
             $expectedRole['uuid'],
             $expectedRole['name'],
+            $this->createDomainMessage(),
             $expectedRole['constraint_query']
         );
 
@@ -63,6 +78,7 @@ class DBALRepositoryTest extends TestCase
         $this->dbalRepository->save(
             $expectedRole['uuid'],
             $expectedRole['name'],
+            $this->createDomainMessage(),
             $expectedRole['constraint_query']
         );
 
@@ -88,6 +104,7 @@ class DBALRepositoryTest extends TestCase
         $this->dbalRepository->save(
             $expectedRole['uuid'],
             $expectedRole['name'],
+            $this->createDomainMessage(),
             $expectedRole['constraint_query']
         );
 
@@ -110,6 +127,7 @@ class DBALRepositoryTest extends TestCase
         $this->dbalRepository->save(
             $expectedRole['uuid'],
             $expectedRole['name'],
+            $this->createDomainMessage(),
             $expectedRole['constraint_query']
         );
 
@@ -128,15 +146,36 @@ class DBALRepositoryTest extends TestCase
         $constraint = $this->role['constraint_query'];
 
         // First save
-        $this->dbalRepository->save($roleUuid, $roleName, $constraint);
-        // Second save with same UUID (simulating replay) - should not throw duplicate key error
-        $this->dbalRepository->save($roleUuid, $roleName, $constraint);
+        $this->dbalRepository->save($roleUuid, $roleName, $this->createDomainMessage(), $constraint);
+
+        // Second save with same UUID during replay - should not throw exception
+        $this->dbalRepository->save($roleUuid, $roleName, $this->createDomainMessage(true), $constraint);
 
         // Verify only one role exists
         $sql = 'SELECT COUNT(*) as count FROM ' . $this->tableName . ' WHERE uuid = ?';
         $result = $this->connection->executeQuery($sql, [$roleUuid])->fetchAssociative();
 
         $this->assertEquals(1, $result['count']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_exception_on_duplicate_saves_when_not_replay(): void
+    {
+        $roleUuid = $this->role['uuid'];
+        $roleName = $this->role['name'];
+        $constraint = $this->role['constraint_query'];
+
+        // First save
+        $this->dbalRepository->save($roleUuid, $roleName, $this->createDomainMessage(), $constraint);
+
+        // Expect exception when trying to save duplicate without replay
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('UniqueConstraintViolationException occurred while saving role');
+
+        // Second save with same UUID but NOT during replay - should throw exception
+        $this->dbalRepository->save($roleUuid, $roleName, $this->createDomainMessage(false), $constraint);
     }
 
     /**
@@ -167,6 +206,7 @@ class DBALRepositoryTest extends TestCase
             $this->dbalRepository->save(
                 $role['uuid'],
                 $role['name'],
+                $this->createDomainMessage(),
                 'foo:bar'
             );
         }
