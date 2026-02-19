@@ -27,8 +27,6 @@ final class ImportTermRequestBodyParserTest extends TestCase
     {
         /** @var CategoryResolverInterface&MockObject $categoryResolver */
         $categoryResolver = $this->createMock(CategoryResolverInterface::class);
-
-        // Configure the mock to return appropriate Category objects for valid term IDs
         $categoryResolver->method('byId')
             ->willReturnCallback(function (CategoryID $categoryID) {
                 // Handle empty category ID
@@ -43,8 +41,6 @@ final class ImportTermRequestBodyParserTest extends TestCase
                         CategoryDomain::eventType()
                     ),
                 ];
-
-                // Return null for unsupported terms (like '0.7.0.0.0')
                 return $termMap[$categoryID->toString()] ?? null;
             });
 
