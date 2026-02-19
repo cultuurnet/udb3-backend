@@ -76,6 +76,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\OfferLDProjectorTestBase;
 use CultuurNet\UDB3\Place\LocalPlaceService;
+use CultuurNet\UDB3\Place\PlaceTypeResolver;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\SampleFiles;
@@ -87,6 +88,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     public const CDBXML_NAMESPACE = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
     private LocalPlaceService&MockObject $placeService;
+
+    private PlaceTypeResolver $placeTypeResolver;
 
     private CdbXMLEventFactory $cdbXMLEventFactory;
 
@@ -114,6 +117,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->cdbXMLEventFactory = new CdbXMLEventFactory();
 
         $this->placeService = $this->createMock(LocalPlaceService::class);
+        $this->placeTypeResolver = new PlaceTypeResolver();
 
         $iriGenerator = new CallableIriGenerator(
             function ($id) {
@@ -189,7 +193,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     'organizer' => 3,
                     'videos' => 2,
                 ])
-            )
+            ),
+            $this->placeTypeResolver
         );
     }
 

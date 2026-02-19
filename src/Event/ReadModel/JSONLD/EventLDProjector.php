@@ -109,8 +109,6 @@ final class EventLDProjector extends OfferLDProjector implements
 
     private EventTypeResolver $eventTypeResolver;
 
-    private PlaceTypeResolver $placeTypeResolver;
-
     private SameAsForUitInVlaanderen $sameAs;
 
     /**
@@ -130,7 +128,8 @@ final class EventLDProjector extends OfferLDProjector implements
         EventTypeResolver $eventTypeResolver,
         array $basePriceTranslations,
         VideoNormalizer $videoNormalizer,
-        Completeness $completeness
+        Completeness $completeness,
+        readonly PlaceTypeResolver $placeTypeResolver
     ) {
         parent::__construct(
             $repository,
@@ -151,7 +150,6 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
         $this->eventTypeResolver = $eventTypeResolver;
-        $this->placeTypeResolver = new PlaceTypeResolver();
         $this->sameAs = new SameAsForUitInVlaanderen();
     }
 
