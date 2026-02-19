@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use DateTimeImmutable;
 
 final class SubEventUpdate
