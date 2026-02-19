@@ -29,6 +29,26 @@ class UpdateTypeHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): UpdateTypeHandler
     {
+        /** @var CategoryResolverInterface&MockObject $eventCategoryResolver */
+        $eventCategoryResolver = $this->createMock(CategoryResolverInterface::class);
+        $eventCategoryResolver->method('byIdInDomain')
+            ->willReturnCallback(function (CategoryID $categoryID, CategoryDomain $domain) {
+                $eventTypeMap = [
+                    '0.5.0.0.0' => new Category(
+                        new CategoryID('0.5.0.0.0'),
+                        new CategoryLabel('Festival'),
+                        CategoryDomain::eventType()
+                    ),
+                    '0.50.4.0.0' => new Category(
+                        new CategoryID('0.50.4.0.0'),
+                        new CategoryLabel('Concert'),
+                        CategoryDomain::eventType()
+                    ),
+                ];
+
+                return $eventTypeMap[$categoryID->toString()] ?? null;
+            });
+
         /** @var CategoryResolverInterface&MockObject $placeCategoryResolver */
         $placeCategoryResolver = $this->createMock(CategoryResolverInterface::class);
         $placeCategoryResolver->method('byIdInDomain')
@@ -54,6 +74,7 @@ class UpdateTypeHandlerTest extends CommandHandlerScenarioTestCase
                 new EventRepository($eventStore, $eventBus),
                 new PlaceRepository($eventStore, $eventBus)
             ),
+            $eventCategoryResolver,
             $placeCategoryResolver
         );
     }

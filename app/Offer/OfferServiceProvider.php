@@ -287,6 +287,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdateTypeHandler::class,
             fn () => new UpdateTypeHandler(
                 $container->get(OfferRepository::class),
+                $container->get(EventCategoryResolver::class),
                 $container->get(PlaceCategoryResolver::class)
             )
         );
