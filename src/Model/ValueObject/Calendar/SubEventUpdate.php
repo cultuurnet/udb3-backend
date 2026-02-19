@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use DateTimeImmutable;
 
@@ -14,8 +15,7 @@ final class SubEventUpdate
     private ?DateTimeImmutable $endDate = null;
     private ?Status $status = null;
     private ?BookingAvailability $bookingAvailability = null;
-
-    private ?Url $reservationLink = null;
+    private BookingInfo $bookingInfo;
 
     public function __construct(int $subEventId)
     {
@@ -75,15 +75,15 @@ final class SubEventUpdate
         return $c;
     }
 
-    public function getReservationLink(): ?Url
+    public function getBookingInfo(): BookingInfo
     {
-        return $this->reservationLink;
+        return $this->bookingInfo;
     }
 
-    public function withReservationLink(?Url $reservationLink): self
+    public function withBookingInfo(BookingInfo $bookingInfo): self
     {
-        $c = clone $this;
-        $c->reservationLink = $reservationLink;
-        return $c;
+        $clone = clone $this;
+        $clone->bookingInfo = $bookingInfo;
+        return $clone;
     }
 }
