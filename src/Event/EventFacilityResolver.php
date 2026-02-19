@@ -12,6 +12,11 @@ use CultuurNet\UDB3\Offer\OfferFacilityResolver;
 
 class EventFacilityResolver extends OfferFacilityResolver
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     final protected function getFacilities(): array
     {
         return [
