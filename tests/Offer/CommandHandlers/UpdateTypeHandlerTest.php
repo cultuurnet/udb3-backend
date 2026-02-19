@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
+use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -22,16 +23,38 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateType;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class UpdateTypeHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): UpdateTypeHandler
     {
+        /** @var CategoryResolverInterface&MockObject $placeCategoryResolver */
+        $placeCategoryResolver = $this->createMock(CategoryResolverInterface::class);
+        $placeCategoryResolver->method('byIdInDomain')
+            ->willReturnCallback(function (CategoryID $categoryID, CategoryDomain $domain) {
+                $eventTypeMap = [
+                    '0.5.0.0.0' => new Category(
+                        new CategoryID('0.5.0.0.0'),
+                        new CategoryLabel('Festival'),
+                        CategoryDomain::eventType()
+                    ),
+                    '0.50.4.0.0' => new Category(
+                        new CategoryID('0.50.4.0.0'),
+                        new CategoryLabel('Concert'),
+                        CategoryDomain::eventType()
+                    ),
+                ];
+
+                return $eventTypeMap[$categoryID->toString()] ?? null;
+            });
+
         return new UpdateTypeHandler(
             new OfferRepository(
                 new EventRepository($eventStore, $eventBus),
                 new PlaceRepository($eventStore, $eventBus)
-            )
+            ),
+            $placeCategoryResolver
         );
     }
 

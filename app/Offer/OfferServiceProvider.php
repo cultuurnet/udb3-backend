@@ -284,7 +284,10 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             UpdateTypeHandler::class,
-            fn () => new UpdateTypeHandler($container->get(OfferRepository::class))
+            fn () => new UpdateTypeHandler(
+                $container->get(OfferRepository::class),
+                $container->get(PlaceCategoryResolver::class)
+            )
         );
 
         $container->addShared(
