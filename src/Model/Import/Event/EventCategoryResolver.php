@@ -53,11 +53,8 @@ final class EventCategoryResolver implements CategoryResolverInterface
             return null;
         }
 
-        /** @var TypeResolverInterface|ThemeResolverInterface|OfferFacilityResolverInterface|null $resolver */
+        /** @var TypeResolverInterface|ThemeResolverInterface|OfferFacilityResolverInterface $resolver */
         $resolver = $resolverMap[$domain->toString()];
-        if ($resolver === null) {
-            return null;
-        }
 
         try {
             return $resolver->byId($categoryID->toString());

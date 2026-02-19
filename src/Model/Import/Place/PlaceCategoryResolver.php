@@ -45,11 +45,8 @@ class PlaceCategoryResolver implements CategoryResolverInterface
             return null;
         }
 
-        /** @var TypeResolverInterface|OfferFacilityResolverInterface|null $resolver */
+        /** @var TypeResolverInterface|OfferFacilityResolverInterface $resolver */
         $resolver = $resolverMap[$domain->toString()];
-        if ($resolver === null) {
-            return null;
-        }
 
         try {
             return $resolver->byId($categoryID->toString());

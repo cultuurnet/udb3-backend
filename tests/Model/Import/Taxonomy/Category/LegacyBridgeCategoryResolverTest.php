@@ -4,21 +4,26 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Import\Taxonomy\Category;
 
+use CultuurNet\UDB3\Event\EventFacilityResolver;
+use CultuurNet\UDB3\Event\EventThemeResolver;
+use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
+use CultuurNet\UDB3\Place\PlaceFacilityResolver;
+use CultuurNet\UDB3\Place\PlaceTypeResolver;
 use PHPUnit\Framework\TestCase;
 
 class LegacyBridgeCategoryResolverTest extends TestCase
 {
-    private LegacyBridgeCategoryResolver $legacyBridgeCategoryResolver;
+    private CategoryResolverInterface $legacyBridgeCategoryResolver;
 
     protected function setUp(): void
     {
-        $this->legacyBridgeCategoryResolver = new EventCategoryResolver();
+        $this->legacyBridgeCategoryResolver = new EventCategoryResolver(new EventTypeResolver(), new EventFacilityResolver(), new EventThemeResolver());
     }
 
     /**
@@ -81,7 +86,7 @@ class LegacyBridgeCategoryResolverTest extends TestCase
         $id = new CategoryID('1.7.2.0.0');
 
         // Not found in PlaceCategoryResolver
-        $resolver = new PlaceCategoryResolver();
+        $resolver = new PlaceCategoryResolver(new PlaceTypeResolver(), new PlaceFacilityResolver());
         $this->assertNull($resolver->byId($id));
         $this->assertNull($resolver->byIdInDomain($id, new CategoryDomain('theme')));
 
