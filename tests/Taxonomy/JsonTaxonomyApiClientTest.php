@@ -6,8 +6,6 @@ namespace CultuurNet\UDB3\Taxonomy;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
