@@ -51,7 +51,7 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
                 $this->bookingAvailabilityDenormalizer->denormalize($data['bookingAvailability'], BookingAvailability::class)
             );
         }
-        if (isset($data['bookingAvailability'])) {
+        if (isset($data['bookingInfo'])) {
             $subEventUpdate = $subEventUpdate->withBookingInfo(
                 $this->bookingInfoDenormalizer->denormalize($data['bookingInfo'], BookingInfo::class)
             );
