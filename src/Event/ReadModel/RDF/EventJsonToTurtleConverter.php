@@ -327,6 +327,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 ),
                 $calendar->getStatus(),
                 $calendar->getBookingAvailability(),
+                new BookingInfo(), // @todo Double check if this should be empty or $event->getBookingInfo() when we work on the Turtle conversion for BOA fields
             );
         }
 
