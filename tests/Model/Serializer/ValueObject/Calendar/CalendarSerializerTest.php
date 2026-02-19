@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -29,7 +30,8 @@ final class CalendarSerializerTest extends TestCase
                     new DateTimeImmutable('2021-01-02T00:00:00+01:00')
                 ),
                 new Status(StatusType::Available()),
-                BookingAvailability::Available()
+                BookingAvailability::Available(),
+                new BookingInfo(),
             )
         );
 
@@ -111,7 +113,8 @@ final class CalendarSerializerTest extends TestCase
                             new DateTimeImmutable('2021-01-02T00:00:00+01:00')
                         ),
                         new Status(StatusType::Available()),
-                        BookingAvailability::Available()
+                        BookingAvailability::Available(),
+                        new BookingInfo(),
                     ),
                     new SubEvent(
                         new DateRange(
@@ -119,7 +122,9 @@ final class CalendarSerializerTest extends TestCase
                             new DateTimeImmutable('2021-01-05T00:00:00+01:00')
                         ),
                         new Status(StatusType::Available()),
-                        BookingAvailability::Available()
+                        BookingAvailability::Available(),
+                        new BookingInfo(),
+
                     )
                 )
             ),
@@ -164,7 +169,8 @@ final class CalendarSerializerTest extends TestCase
                         new DateTimeImmutable('2021-01-02T00:00:00+01:00')
                     ),
                     new Status(StatusType::Available()),
-                    BookingAvailability::Available()
+                    BookingAvailability::Available(),
+                    new BookingInfo(),
                 )
             ),
             CalendarSerializer::deserialize($data)
@@ -219,7 +225,8 @@ final class CalendarSerializerTest extends TestCase
                             new DateTimeImmutable('2021-01-02T00:00:00+01:00')
                         ),
                         new Status(StatusType::Available()),
-                        BookingAvailability::Available()
+                        BookingAvailability::Available(),
+                        new BookingInfo(),
                     ),
                     new SubEvent(
                         new DateRange(
@@ -227,7 +234,8 @@ final class CalendarSerializerTest extends TestCase
                             new DateTimeImmutable('2021-01-05T00:00:00+01:00')
                         ),
                         new Status(StatusType::Available()),
-                        BookingAvailability::Available()
+                        BookingAvailability::Available(),
+                        new BookingInfo(),
                     )
                 )
             ),
