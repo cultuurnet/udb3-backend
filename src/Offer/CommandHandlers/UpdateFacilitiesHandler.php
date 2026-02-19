@@ -25,8 +25,7 @@ final class UpdateFacilitiesHandler implements CommandHandler
         OfferRepository $offer,
         readonly CategoryResolverInterface $eventCategoryResolver,
         readonly CategoryResolverInterface $placeCategoryResolver
-    )
-    {
+    ) {
         $this->offerRepository = $offer;
     }
 
