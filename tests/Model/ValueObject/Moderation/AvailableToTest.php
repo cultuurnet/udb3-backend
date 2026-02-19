@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
@@ -177,7 +176,6 @@ class AvailableToTest extends TestCase
                 SubEvent::createAvailable(new DateRange($startDate, $endDate))
             )
         );
-        $eventTypeResolver = new EventTypeResolver();
 
         $availableTo = AvailableTo::createFromCalendar(
             $calendar,
