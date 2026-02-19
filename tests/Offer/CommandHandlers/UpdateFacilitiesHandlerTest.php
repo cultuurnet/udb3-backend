@@ -29,6 +29,26 @@ class UpdateFacilitiesHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): UpdateFacilitiesHandler
     {
+        /** @var CategoryResolverInterface&MockObject $eventCategoryResolver */
+        $eventCategoryResolver = $this->createMock(CategoryResolverInterface::class);
+        $eventCategoryResolver->method('byIdInDomain')
+            ->willReturnCallback(function (CategoryID $categoryID, CategoryDomain $domain) {
+                $facilityMap = [
+                    '3.13.1.0.0' => new Category(
+                        new CategoryID('3.13.1.0.0'),
+                        new CategoryLabel('Voorzieningen voor assistentiehonden'),
+                        CategoryDomain::facility()
+                    ),
+                    '3.27.0.0.0' => new Category(
+                        new CategoryID('3.27.0.0.0'),
+                        new CategoryLabel('Rolstoeltoegankelijk'),
+                        CategoryDomain::facility()
+                    ),
+                ];
+
+                return $facilityMap[$categoryID->toString()] ?? null;
+            });
+
         /** @var CategoryResolverInterface&MockObject $placeCategoryResolver */
         $placeCategoryResolver = $this->createMock(CategoryResolverInterface::class);
         $placeCategoryResolver->method('byIdInDomain')
@@ -54,6 +74,7 @@ class UpdateFacilitiesHandlerTest extends CommandHandlerScenarioTestCase
                 new EventRepository($eventStore, $eventBus),
                 new PlaceRepository($eventStore, $eventBus)
             ),
+            $eventCategoryResolver,
             $placeCategoryResolver
         );
     }
