@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+
 final class SubEvent
 {
     private DateRange $dateRange;
@@ -12,11 +14,18 @@ final class SubEvent
 
     private BookingAvailability $bookingAvailability;
 
-    public function __construct(DateRange $dateRange, Status $status, BookingAvailability $bookingAvailability)
-    {
+    private ?Url $reservationLink;
+
+    public function __construct(
+        DateRange $dateRange,
+        Status $status,
+        BookingAvailability $bookingAvailability,
+        Url $reservationLink = null
+    ) {
         $this->dateRange = $dateRange;
         $this->status = $status;
         $this->bookingAvailability = $bookingAvailability;
+        $this->reservationLink = $reservationLink;
     }
 
     public static function createAvailable(DateRange $dateRange): self
@@ -42,6 +51,13 @@ final class SubEvent
         return $clone;
     }
 
+    public function withReservationLink(?Url $reservationLink): self
+    {
+        $clone = clone $this;
+        $clone->reservationLink = $reservationLink;
+        return $clone;
+    }
+
     public function getDateRange(): DateRange
     {
         return $this->dateRange;
@@ -55,5 +71,10 @@ final class SubEvent
     public function getBookingAvailability(): BookingAvailability
     {
         return $this->bookingAvailability;
+    }
+
+    public function getReservationLink(): ?Url
+    {
+        return $this->reservationLink;
     }
 }
