@@ -16,7 +16,8 @@ use CultuurNet\UDB3\Role\ReadModel\RoleProjector;
 
 class UserRolesProjector extends RoleProjector
 {
-    //@todo : houdt geen rekening met RoleDeleted event, waardoor er mogelijk rollen in de user roles kunnen blijven staan die niet meer bestaan. Oplossing is om ook te luisteren naar RoleDeleted event en dan de rol verwijderen uit alle user roles documenten.
+    // @todo This ignores the RoleDeleted event, potentially leaving roles in user roles that no longer exist. The solution is to also listen for the RoleDeleted event and then remove the role from all user roles documents.
+    // @see https://jira.publiq.be/browse/III-7029
     use DelegateEventHandlingToSpecificMethodTrait;
 
     private DocumentRepository $roleDetailsDocumentRepository;
