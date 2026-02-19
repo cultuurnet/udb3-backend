@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use DateTimeImmutable;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -45,6 +46,11 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
         if (isset($data['bookingAvailability'])) {
             $subEventUpdate = $subEventUpdate->withBookingAvailability(
                 $this->bookingAvailabilityDenormalizer->denormalize($data['bookingAvailability'], BookingAvailability::class)
+            );
+        }
+        if (isset($data['bookingAvailability'])) {
+            $subEventUpdate = $subEventUpdate->withBookingInfo(
+                $this->bookingAvailabilityDenormalizer->denormalize($data['bookingInfo'], BookingInfo::class)
             );
         }
 
