@@ -5,10 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
-use CultuurNet\UDB3\Offer\OfferFacilityResolver;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
 
 class EventFacilityResolver implements OfferFacilityResolverInterface
