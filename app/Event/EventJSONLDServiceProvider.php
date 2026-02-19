@@ -172,7 +172,7 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
                     $container->get('iri_offer_identifier_factory'),
                     $container->get('event_cdbxml_importer'),
                     new JsonDocumentLanguageEnricher(new EventJsonDocumentLanguageAnalyzer()),
-                    new EventTypeResolver(),
+                    $container->get(EventTypeResolver::class),
                     $container->get('config')['base_price_translations'],
                     new VideoNormalizer($container->get('config')['media']['video_default_copyright']),
                     new CompletenessFromWeights(
