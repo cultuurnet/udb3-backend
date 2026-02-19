@@ -8,9 +8,13 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
-use CultuurNet\UDB3\Place\PlaceFacilityResolver;
-use CultuurNet\UDB3\Place\PlaceTypeResolver;
+use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\EmptyCategoryId;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class ImportTermRequestBodyParserTest extends TestCase
@@ -21,7 +25,30 @@ final class ImportTermRequestBodyParserTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->importTermRequestBodyParser = new ImportTermRequestBodyParser(new PlaceCategoryResolver(new PlaceTypeResolver(), new PlaceFacilityResolver()));
+        /** @var CategoryResolverInterface&MockObject $categoryResolver */
+        $categoryResolver = $this->createMock(CategoryResolverInterface::class);
+
+        // Configure the mock to return appropriate Category objects for valid term IDs
+        $categoryResolver->method('byId')
+            ->willReturnCallback(function (CategoryID $categoryID) {
+                // Handle empty category ID
+                if ($categoryID->toString() === '') {
+                    throw new EmptyCategoryId();
+                }
+
+                $termMap = [
+                    '0.8.0.0.0' => new Category(
+                        new CategoryID('0.8.0.0.0'),
+                        new CategoryLabel('Openbare ruimte'),
+                        CategoryDomain::eventType()
+                    ),
+                ];
+
+                // Return null for unsupported terms (like '0.7.0.0.0')
+                return $termMap[$categoryID->toString()] ?? null;
+            });
+
+        $this->importTermRequestBodyParser = new ImportTermRequestBodyParser($categoryResolver);
     }
 
     /**
