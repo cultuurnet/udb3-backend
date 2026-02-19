@@ -14,7 +14,7 @@ final class SubEventUpdate
     private ?DateTimeImmutable $endDate = null;
     private ?Status $status = null;
     private ?BookingAvailability $bookingAvailability = null;
-    private BookingInfo $bookingInfo;
+    private ?BookingInfo $bookingInfo;
 
     public function __construct(int $subEventId)
     {
@@ -74,12 +74,12 @@ final class SubEventUpdate
         return $c;
     }
 
-    public function getBookingInfo(): BookingInfo
+    public function getBookingInfo(): ?BookingInfo
     {
         return $this->bookingInfo;
     }
 
-    public function withBookingInfo(BookingInfo $bookingInfo): self
+    public function withBookingInfo(?BookingInfo $bookingInfo): self
     {
         $clone = clone $this;
         $clone->bookingInfo = $bookingInfo;
