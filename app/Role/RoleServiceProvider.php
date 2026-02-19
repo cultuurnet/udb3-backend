@@ -92,14 +92,16 @@ final class RoleServiceProvider extends AbstractServiceProvider
             'role_search_v3_repository',
             fn () => new DBALRepository(
                 $container->get('dbal_connection'),
-                self::ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME,
-                new DomainMessageIsReplayed()
+                self::ROLE_SEARCH_V3_REPOSITORY_TABLE_NAME
             )
         );
 
         $container->addShared(
             'role_search_v3_projector',
-            fn () => new ReadModel\Search\Projector($container->get('role_search_v3_repository'))
+            fn () => new ReadModel\Search\Projector(
+                $container->get('role_search_v3_repository'),
+                new DomainMessageIsReplayed()
+            )
         );
 
         $container->addShared(

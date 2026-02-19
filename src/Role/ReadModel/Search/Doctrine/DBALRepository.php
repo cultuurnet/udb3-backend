@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 
-use Broadway\Domain\DomainMessage;
-use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
+use CultuurNet\UDB3\Role\ReadModel\Search\Exception\FailedToUpdateExistingRole;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Exception;
 
 class DBALRepository implements RepositoryInterface
 {
@@ -18,16 +16,10 @@ class DBALRepository implements RepositoryInterface
 
     protected string $tableName;
 
-    private DomainMessageSpecificationInterface $isReplay;
-
-    public function __construct(
-        Connection $connection,
-        string $tableName,
-        DomainMessageSpecificationInterface $isReplay
-    ) {
+    public function __construct(Connection $connection, string $tableName)
+    {
         $this->connection = $connection;
         $this->tableName = $tableName;
-        $this->isReplay = $isReplay;
     }
 
     public function remove(string $uuid): void
@@ -42,7 +34,7 @@ class DBALRepository implements RepositoryInterface
         $q->execute();
     }
 
-    public function save(string $uuid, string $name, DomainMessage $domainMessage, string $constraint = null): void
+    public function save(string $uuid, string $name, string $constraint = null, bool $updateExistingRole = false): void
     {
         try {
             $q = $this->connection->createQueryBuilder();
@@ -60,8 +52,8 @@ class DBALRepository implements RepositoryInterface
                 ->setParameter('constraint', $constraint);
             $q->execute();
         } catch (UniqueConstraintViolationException $e) {
-            if (!$this->isReplay->isSatisfiedBy($domainMessage)) {
-                throw new Exception('UniqueConstraintViolationException occurred while saving role: ' . $e->getMessage(), 0, $e);
+            if (!$updateExistingRole) {
+                throw FailedToUpdateExistingRole::fromUniqueConstraintViolationException($e);
             }
         }
     }
