@@ -124,7 +124,6 @@ final class CalendarSerializerTest extends TestCase
                         new Status(StatusType::Available()),
                         BookingAvailability::Available(),
                         new BookingInfo(),
-
                     )
                 )
             ),
