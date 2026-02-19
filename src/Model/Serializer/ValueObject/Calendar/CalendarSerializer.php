@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
@@ -63,7 +64,8 @@ final class CalendarSerializer implements Serializable
                         $endDate ?: $startDate
                     ),
                     new Status(StatusType::Available()),
-                    new BookingAvailability(BookingAvailabilityType::Available())
+                    new BookingAvailability(BookingAvailabilityType::Available()),
+                    new BookingInfo(),
                 );
             }
         }
