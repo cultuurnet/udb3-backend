@@ -30,20 +30,9 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
         $this->terms = $contents['terms'];
     }
 
-    /**
-     * @return  Category[]
-     */
-    public function getPlaceTypes(): array
+    public function getMapping(): array
     {
-        return $this->getTermsByDomainAndScope(CategoryDomain::eventType(), 'places');
-    }
-
-    /**
-     * @return  Category[]
-     */
-    public function getPlaceFacilities(): array
-    {
-        return $this->getTermsByDomainAndScope(CategoryDomain::facility(), 'places');
+        return $this->terms;
     }
 
     /**
@@ -70,10 +59,20 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
         return $this->getTermsByDomainAndScope(CategoryDomain::facility(), 'events');
     }
 
-
-    public function getMapping(): array
+    /**
+     * @return  Category[]
+     */
+    public function getPlaceTypes(): array
     {
-        return $this->terms;
+        return $this->getTermsByDomainAndScope(CategoryDomain::eventType(), 'places');
+    }
+
+    /**
+     * @return  Category[]
+     */
+    public function getPlaceFacilities(): array
+    {
+        return $this->getTermsByDomainAndScope(CategoryDomain::facility(), 'places');
     }
 
     /**

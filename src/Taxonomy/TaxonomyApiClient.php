@@ -8,15 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 
 interface TaxonomyApiClient
 {
-    /**
-     * @return  Category[]
-     */
-    public function getPlaceTypes(): array;
-
-    /**
-     * @return  Category[]
-     */
-    public function getPlaceFacilities(): array;
+    public function getMapping(): array;
 
     /**
      * @return  Category[]
@@ -33,5 +25,13 @@ interface TaxonomyApiClient
      */
     public function getEventFacilities(): array;
 
-    public function getMapping(): array;
+    /**
+     * @return  Category[]
+     */
+    public function getPlaceTypes(): array;
+
+    /**
+     * @return  Category[]
+     */
+    public function getPlaceFacilities(): array;
 }

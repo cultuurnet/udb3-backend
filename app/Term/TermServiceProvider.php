@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Term;
 
+use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Event\EventThemeResolver;
@@ -12,6 +13,7 @@ use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Place\PlaceFacilityResolver;
 use CultuurNet\UDB3\Place\PlaceTypeResolver;
+use CultuurNet\UDB3\Taxonomy\CachedTaxonomyApiClient;
 use CultuurNet\UDB3\Taxonomy\JsonTaxonomyApiClient;
 use CultuurNet\UDB3\Taxonomy\TaxonomyApiClient;
 use GuzzleHttp\Client;
@@ -38,10 +40,21 @@ final class TermServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             TaxonomyApiClient::class,
-            fn () => new JsonTaxonomyApiClient(
+            fn () => new CachedTaxonomyApiClient(
+                new JsonTaxonomyApiClient(
+                    new Client(),
+                    $container->get('config')['taxonomy']['terms']
+                ),
+                CacheFactory::create(
+                    $container->get('app_cache'),
+                    'taxonomy',
+                    86400
+                )
+            )
+        /* new JsonTaxonomyApiClient(
                 new Client(),
                 $container->get('config')['taxonomy']['terms']
-            )
+            )*/
         );
 
         $container->addShared(
