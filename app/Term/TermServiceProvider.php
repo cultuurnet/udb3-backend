@@ -5,6 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Term;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Event\EventFacilityResolver;
+use CultuurNet\UDB3\Event\EventThemeResolver;
+use CultuurNet\UDB3\Event\EventTypeResolver;
+use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Place\PlaceFacilityResolver;
 use CultuurNet\UDB3\Place\PlaceTypeResolver;
@@ -19,6 +23,9 @@ final class TermServiceProvider extends AbstractServiceProvider
         return [
             TaxonomyApiClient::class,
             TermRepository::class,
+            EventTypeResolver::class,
+            EventFacilityResolver::class,
+            EventThemeResolver::class,
             PlaceTypeResolver::class,
             PlaceFacilityResolver::class,
             PlaceCategoryResolver::class,
@@ -44,6 +51,26 @@ final class TermServiceProvider extends AbstractServiceProvider
                 $taxonomyApiClient = $container->get(TaxonomyApiClient::class);
                 return new TermRepository($taxonomyApiClient->getMapping());
             }
+        );
+
+        $container->addShared(
+            EventTypeResolver::class,
+            fn () => new EventTypeResolver()
+        );
+
+        $container->addShared(
+            EventFacilityResolver::class,
+            fn () => new EventFacilityResolver()
+        );
+
+        $container->addShared(
+            EventThemeResolver::class,
+            fn () => new EventThemeResolver()
+        );
+
+        $container->addShared(
+            EventCategoryResolver::class,
+            fn () => new EventCategoryResolver($container->get(EventTypeResolver::class), $container->get(EventFacilityResolver::class), $container->get(EventThemeResolver::class))
         );
 
         $container->addShared(
