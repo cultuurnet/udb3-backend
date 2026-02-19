@@ -73,7 +73,11 @@ final class TermServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             EventThemeResolver::class,
-            fn () => new EventThemeResolver()
+            function () use ($container): EventThemeResolver {
+                /** @var TaxonomyApiClient $taxonomyApiClient */
+                $taxonomyApiClient = $container->get(TaxonomyApiClient::class);
+                return new EventThemeResolver($taxonomyApiClient->getEventThemes());
+            }
         );
 
         $container->addShared(

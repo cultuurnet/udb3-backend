@@ -16,7 +16,14 @@ final class EventThemeResolverTest extends TestCase
 
     public function setUp(): void
     {
-        $this->themeResolver = new EventThemeResolver();
+        $themes = [
+            '0.52.0.0.0' => new Category(
+                new CategoryID('0.52.0.0.0'),
+                new CategoryLabel('Circus'),
+                CategoryDomain::theme()
+            ),
+        ];
+        $this->themeResolver = new EventThemeResolver($themes);
     }
 
     /**

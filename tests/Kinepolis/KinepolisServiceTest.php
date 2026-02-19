@@ -206,7 +206,13 @@ final class KinepolisServiceTest extends TestCase
                         $this->movieId,
                         new Title('Discovery Day'),
                         new LocationId('a77c8b8e-41e5-44cf-9407-f809ebb48744'),
-                        (new EventThemeResolver())->byId('1.7.4.0.0'),
+                        (new EventThemeResolver([
+                            '1.7.4.0.0' => new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category(
+                                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID('1.7.4.0.0'),
+                                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel('Drama'),
+                                \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain::theme()
+                            ),
+                        ]))->byId('1.7.4.0.0'),
                         new MultipleSubEventsCalendar(
                             new SubEvents(
                                 new SubEvent(
@@ -374,7 +380,13 @@ final class KinepolisServiceTest extends TestCase
                         $this->movieId,
                         new Title('Het Smelt'),
                         new LocationId('a77c8b8e-41e5-44cf-9407-f809ebb48744'),
-                        (new EventThemeResolver())->byId('1.7.4.0.0'),
+                        (new EventThemeResolver([
+                            '1.7.4.0.0' => new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category(
+                                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID('1.7.4.0.0'),
+                                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel('Drama'),
+                                \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain::theme()
+                            ),
+                        ]))->byId('1.7.4.0.0'),
                         new MultipleSubEventsCalendar(
                             new SubEvents(
                                 new SubEvent(
@@ -544,7 +556,13 @@ final class KinepolisServiceTest extends TestCase
                         $this->movieId,
                         new Title('Het Smelt'),
                         new LocationId('a77c8b8e-41e5-44cf-9407-f809ebb48744'),
-                        (new EventThemeResolver())->byId('1.7.4.0.0'),
+                        (new EventThemeResolver([
+                            '1.7.4.0.0' => new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category(
+                                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID('1.7.4.0.0'),
+                                new \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel('Drama'),
+                                \CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain::theme()
+                            ),
+                        ]))->byId('1.7.4.0.0'),
                         new MultipleSubEventsCalendar(
                             new SubEvents(
                                 new SubEvent(
