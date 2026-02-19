@@ -14,7 +14,7 @@ final class SubEventUpdate
     private ?DateTimeImmutable $endDate = null;
     private ?Status $status = null;
     private ?BookingAvailability $bookingAvailability = null;
-    private ?BookingInfo $bookingInfo;
+    private ?BookingInfo $bookingInfo = null;
 
     public function __construct(int $subEventId)
     {
