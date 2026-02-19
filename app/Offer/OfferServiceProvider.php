@@ -58,6 +58,7 @@ use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Label\LabelImportPreProcessor;
 use CultuurNet\UDB3\LabelJSONDeserializer;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
+use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddLabelHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\AddVideoHandler;
@@ -288,7 +289,10 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             UpdateFacilitiesHandler::class,
-            fn () => new UpdateFacilitiesHandler($container->get(OfferRepository::class))
+            fn () => new UpdateFacilitiesHandler(
+                $container->get(OfferRepository::class),
+                $container->get(PlaceCategoryResolver::class)
+            )
         );
 
         $container->addShared(

@@ -43,6 +43,16 @@ final class PlaceTypeResolver implements TypeResolverInterface
         ];
     }
 
+    /**
+     * @param Category[] $types
+     */
+    public function withTypesFromApi(array $types): self
+    {
+        $c = clone $this;
+        $c->types = $types;
+        return $c;
+    }
+
     public function byId(string $typeId): Category
     {
         if (!array_key_exists($typeId, $this->types)) {
