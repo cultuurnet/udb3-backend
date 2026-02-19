@@ -51,13 +51,17 @@ final class TermServiceProvider extends AbstractServiceProvider
             function () use ($container): PlaceTypeResolver {
                 /** @var TaxonomyApiClient $taxonomyApiClient */
                 $taxonomyApiClient = $container->get(TaxonomyApiClient::class);
-                return (new PlaceTypeResolver($taxonomyApiClient->getPlaceTypes()));
+                return new PlaceTypeResolver($taxonomyApiClient->getPlaceTypes());
             }
         );
 
         $container->addShared(
             PlaceFacilityResolver::class,
-            fn () => new PlaceFacilityResolver()
+            function () use ($container): PlaceFacilityResolver {
+                /** @var TaxonomyApiClient $taxonomyApiClient */
+                $taxonomyApiClient = $container->get(TaxonomyApiClient::class);
+                return new PlaceFacilityResolver($taxonomyApiClient->getPlaceFacilities());
+            }
         );
 
         $container->addShared(
