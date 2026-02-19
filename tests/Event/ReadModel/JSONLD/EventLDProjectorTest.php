@@ -74,9 +74,9 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
+use CultuurNet\UDB3\Offer\TypeResolverInterface;
 use CultuurNet\UDB3\OfferLDProjectorTestBase;
 use CultuurNet\UDB3\Place\LocalPlaceService;
-use CultuurNet\UDB3\Place\PlaceTypeResolver;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\SampleFiles;
@@ -89,7 +89,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
     private LocalPlaceService&MockObject $placeService;
 
-    private PlaceTypeResolver $placeTypeResolver;
+    private TypeResolverInterface&MockObject $placeTypeResolver;
 
     private CdbXMLEventFactory $cdbXMLEventFactory;
 
@@ -117,7 +117,36 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->cdbXMLEventFactory = new CdbXMLEventFactory();
 
         $this->placeService = $this->createMock(LocalPlaceService::class);
-        $this->placeTypeResolver = new PlaceTypeResolver();
+
+        // Create mock for PlaceTypeResolver
+        $this->placeTypeResolver = $this->createMock(TypeResolverInterface::class);
+        $this->placeTypeResolver->method('byId')
+            ->willReturnCallback(function (string $typeId) {
+                // Common place types that might be used in tests
+                $placeTypes = [
+                    '0.14.0.0.0' => new Category(
+                        new CategoryID('0.14.0.0.0'),
+                        new CategoryLabel('Monument'),
+                        CategoryDomain::eventType()
+                    ),
+                    '0.15.0.0.0' => new Category(
+                        new CategoryID('0.15.0.0.0'),
+                        new CategoryLabel('Natuur, park of tuin'),
+                        CategoryDomain::eventType()
+                    ),
+                    'Yf4aZBfsUEu2NsQqsprngw' => new Category(
+                        new CategoryID('Yf4aZBfsUEu2NsQqsprngw'),
+                        new CategoryLabel('Cultuur- of ontmoetingscentrum'),
+                        CategoryDomain::eventType()
+                    ),
+                ];
+
+                if (isset($placeTypes[$typeId])) {
+                    return $placeTypes[$typeId];
+                }
+
+                throw new \Exception('Place type ' . $typeId . ' not found');
+            });
 
         $iriGenerator = new CallableIriGenerator(
             function ($id) {

@@ -51,7 +51,7 @@ final class TermServiceProvider extends AbstractServiceProvider
             function () use ($container): PlaceTypeResolver {
                 /** @var TaxonomyApiClient $taxonomyApiClient */
                 $taxonomyApiClient = $container->get(TaxonomyApiClient::class);
-                return (new PlaceTypeResolver())->withTypesFromApi($taxonomyApiClient->getPlaceTypes());
+                return (new PlaceTypeResolver($taxonomyApiClient->getPlaceTypes()));
             }
         );
 
