@@ -12,19 +12,17 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
-use Symfony\Contracts\Cache\CacheInterface;
 
 final class CachedTaxonomyApiClientTest extends TestCase
 {
     private TaxonomyApiClient&MockObject $baseTaxonomyApiClient;
-    private CacheInterface $cache;
     private CachedTaxonomyApiClient $cachedClient;
 
     protected function setUp(): void
     {
         $this->baseTaxonomyApiClient = $this->createMock(TaxonomyApiClient::class);
-        $this->cache = new ArrayAdapter();
-        $this->cachedClient = new CachedTaxonomyApiClient($this->baseTaxonomyApiClient, $this->cache);
+        $cache = new ArrayAdapter();
+        $this->cachedClient = new CachedTaxonomyApiClient($this->baseTaxonomyApiClient, $cache);
     }
 
     /**
