@@ -68,7 +68,7 @@ final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
                     new CombinedRequestBodyParser(
                         new LegacyPlaceRequestBodyParser(),
                         RemoveEmptyArraysRequestBodyParser::createForPlaces(),
-                        new ImportTermRequestBodyParser(new PlaceCategoryResolver()),
+                        new ImportTermRequestBodyParser(new PlaceCategoryResolver(new PlaceTypeResolver(), new PlaceFacilityResolver())),
                         new ImportPriceInfoRequestBodyParser($container->get('config')['base_price_translations']),
                         ImagesPropertyPolyfillRequestBodyParser::createForPlaces(
                             $container->get('media_object_iri_generator'),
