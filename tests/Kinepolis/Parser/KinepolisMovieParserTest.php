@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -80,28 +81,28 @@ final class KinepolisMovieParserTest extends TestCase
                 ],
             ], );
 
-        $themes = [
-            '1.7.2.0.0' => new Category(
+        $themes = new Categories(
+            new Category(
                 new CategoryID('1.7.2.0.0'),
                 new CategoryLabel('Actie en avontuur'),
                 CategoryDomain::theme()
             ),
-            '1.7.3.0.0' => new Category(
+            new Category(
                 new CategoryID('1.7.3.0.0'),
                 new CategoryLabel('Actiekomedie'),
                 CategoryDomain::theme()
             ),
-            '1.7.12.0.0' => new Category(
+            new Category(
                 new CategoryID('1.7.12.0.0'),
                 new CategoryLabel('Animatie en kinderfilms'),
                 CategoryDomain::theme()
             ),
-            '1.7.14.0.0' => new Category(
+            new Category(
                 new CategoryID('1.7.14.0.0'),
                 new CategoryLabel('Meerdere filmgenres'),
                 CategoryDomain::theme()
-            ),
-        ];
+            )
+        );
 
         $this->parser = new KinepolisMovieParser(
             [
@@ -134,13 +135,15 @@ final class KinepolisMovieParserTest extends TestCase
                     'Kinepolis:tDECAm32696',
                     new Title('Godzilla x Kong: The New Empire'),
                     new LocationId('cbf8ddad-9aa7-4add-9133-228a752a87a5'),
-                    (new EventThemeResolver([
-                        '1.7.2.0.0' => new Category(
-                            new CategoryID('1.7.2.0.0'),
-                            new CategoryLabel('Actie en avontuur'),
-                            CategoryDomain::theme()
-                        ),
-                    ]))->byId('1.7.2.0.0'),
+                    (new EventThemeResolver(
+                        new Categories(
+                            new Category(
+                                new CategoryID('1.7.2.0.0'),
+                                new CategoryLabel('Actie en avontuur'),
+                                CategoryDomain::theme()
+                            )
+                        )
+                    ))->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
                             DateTimeFactory::fromAtom('2024-04-08T18:00:00+00:00'),
@@ -180,13 +183,15 @@ final class KinepolisMovieParserTest extends TestCase
                     'Kinepolis:tKOOSTm32696',
                     new Title('Godzilla x Kong: The New Empire'),
                     new LocationId('b4ed748a-dfc4-432f-b242-ed1db62b76e2'),
-                    (new EventThemeResolver([
-                        '1.7.2.0.0' => new Category(
-                            new CategoryID('1.7.2.0.0'),
-                            new CategoryLabel('Actie en avontuur'),
-                            CategoryDomain::theme()
-                        ),
-                    ]))->byId('1.7.2.0.0'),
+                    (new EventThemeResolver(
+                        new Categories(
+                            new Category(
+                                new CategoryID('1.7.2.0.0'),
+                                new CategoryLabel('Actie en avontuur'),
+                                CategoryDomain::theme()
+                            )
+                        )
+                    ))->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
                             DateTimeFactory::fromAtom('2024-04-08T20:30:00+00:00'),
@@ -226,13 +231,15 @@ final class KinepolisMovieParserTest extends TestCase
                     'Kinepolis:tKOOSTm32696v3D',
                     new Title('Godzilla x Kong: The New Empire 3D'),
                     new LocationId('b4ed748a-dfc4-432f-b242-ed1db62b76e2'),
-                    (new EventThemeResolver([
-                        '1.7.2.0.0' => new Category(
-                            new CategoryID('1.7.2.0.0'),
-                            new CategoryLabel('Actie en avontuur'),
-                            CategoryDomain::theme()
-                        ),
-                    ]))->byId('1.7.2.0.0'),
+                    (new EventThemeResolver(
+                        new Categories(
+                            new Category(
+                                new CategoryID('1.7.2.0.0'),
+                                new CategoryLabel('Actie en avontuur'),
+                                CategoryDomain::theme()
+                            )
+                        )
+                    ))->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
                             DateTimeFactory::fromAtom('2024-04-08T17:45:00+00:00'),
@@ -302,13 +309,15 @@ final class KinepolisMovieParserTest extends TestCase
                     'Kinepolis:tDECAm35033750',
                     new Title('Discovery Day'),
                     new LocationId('cbf8ddad-9aa7-4add-9133-228a752a87a5'),
-                    (new EventThemeResolver([
-                        '1.7.2.0.0' => new Category(
-                            new CategoryID('1.7.2.0.0'),
-                            new CategoryLabel('Actie en avontuur'),
-                            CategoryDomain::theme()
-                        ),
-                    ]))->byId('1.7.2.0.0'),
+                    (new EventThemeResolver(
+                        new Categories(
+                            new Category(
+                                new CategoryID('1.7.2.0.0'),
+                                new CategoryLabel('Actie en avontuur'),
+                                CategoryDomain::theme()
+                            )
+                        )
+                    ))->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
                             DateTimeFactory::fromAtom('2024-04-08T18:00:00+00:00'),
@@ -348,13 +357,15 @@ final class KinepolisMovieParserTest extends TestCase
                     'Kinepolis:tKOOSTm35033750',
                     new Title('Discovery Day'),
                     new LocationId('b4ed748a-dfc4-432f-b242-ed1db62b76e2'),
-                    (new EventThemeResolver([
-                        '1.7.2.0.0' => new Category(
-                            new CategoryID('1.7.2.0.0'),
-                            new CategoryLabel('Actie en avontuur'),
-                            CategoryDomain::theme()
-                        ),
-                    ]))->byId('1.7.2.0.0'),
+                    (new EventThemeResolver(
+                        new Categories(
+                            new Category(
+                                new CategoryID('1.7.2.0.0'),
+                                new CategoryLabel('Actie en avontuur'),
+                                CategoryDomain::theme()
+                            )
+                        )
+                    ))->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
                             DateTimeFactory::fromAtom('2024-04-08T20:30:00+00:00'),
@@ -394,13 +405,15 @@ final class KinepolisMovieParserTest extends TestCase
                     'Kinepolis:tKOOSTm35033750v3D',
                     new Title('Discovery Day 3D'),
                     new LocationId('b4ed748a-dfc4-432f-b242-ed1db62b76e2'),
-                    (new EventThemeResolver([
-                        '1.7.2.0.0' => new Category(
-                            new CategoryID('1.7.2.0.0'),
-                            new CategoryLabel('Actie en avontuur'),
-                            CategoryDomain::theme()
-                        ),
-                    ]))->byId('1.7.2.0.0'),
+                    (new EventThemeResolver(
+                        new Categories(
+                            new Category(
+                                new CategoryID('1.7.2.0.0'),
+                                new CategoryLabel('Actie en avontuur'),
+                                CategoryDomain::theme()
+                            )
+                        )
+                    ))->byId('1.7.2.0.0'),
                     new SingleSubEventCalendar(new SubEvent(
                         new DateRange(
                             DateTimeFactory::fromAtom('2024-04-08T17:45:00+00:00'),
