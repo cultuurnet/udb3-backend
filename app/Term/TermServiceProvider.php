@@ -39,7 +39,7 @@ final class TermServiceProvider extends AbstractServiceProvider
             function () use ($container): TermRepository {
                 /** @var TaxonomyApiClient $taxonomyApiClient */
                 $taxonomyApiClient = $container->get(TaxonomyApiClient::class);
-                return new TermRepository($taxonomyApiClient->getMapping());
+                return new TermRepository($taxonomyApiClient->getNativeMapping());
             }
         );
     }

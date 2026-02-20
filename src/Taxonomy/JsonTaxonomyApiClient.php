@@ -85,7 +85,7 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
     }
 
 
-    public function getMapping(): array
+    public function getNativeMapping(): array
     {
         return $this->terms;
     }

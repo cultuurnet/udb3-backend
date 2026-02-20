@@ -33,5 +33,5 @@ interface TaxonomyApiClient
      */
     public function getEventFacilities(): array;
 
-    public function getMapping(): array;
+    public function getNativeMapping(): array;
 }
