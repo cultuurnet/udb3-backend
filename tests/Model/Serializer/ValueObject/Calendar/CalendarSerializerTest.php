@@ -13,6 +13,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -62,6 +64,114 @@ final class CalendarSerializerTest extends TestCase
                 'endDate' => '2021-01-02T00:00:00+01:00',
             ],
             $serializer->serialize()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_serialize_a_calendar_with_booking_info_on_sub_event(): void
+    {
+        $bookingInfo = (new BookingInfo())
+            ->withTelephoneNumber(new TelephoneNumber('0123456789'))
+            ->withEmailAddress(new EmailAddress('user@example.com'));
+
+        $calendar = new SingleSubEventCalendar(
+            new SubEvent(
+                new DateRange(
+                    new DateTimeImmutable('2021-01-01T00:00:00+01:00'),
+                    new DateTimeImmutable('2021-01-02T00:00:00+01:00')
+                ),
+                new Status(StatusType::Available()),
+                BookingAvailability::Available(),
+                $bookingInfo,
+            )
+        );
+
+        $serializer = new CalendarSerializer($calendar);
+
+        $this->assertEquals(
+            [
+                'type' => 'single',
+                'status' => [
+                    'type' => 'Available',
+                ],
+                'bookingAvailability' => [
+                    'type' => 'Available',
+                ],
+                'timestamps' => [
+                    0 => [
+                        'startDate' => '2021-01-01T00:00:00+01:00',
+                        'endDate' => '2021-01-02T00:00:00+01:00',
+                        'status' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingInfo' => [
+                            'phone' => '0123456789',
+                            'email' => 'user@example.com',
+                        ],
+                    ],
+                ],
+                'startDate' => '2021-01-01T00:00:00+01:00',
+                'endDate' => '2021-01-02T00:00:00+01:00',
+            ],
+            $serializer->serialize()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_deserialize_a_calendar_with_booking_info_on_sub_event(): void
+    {
+        $data = [
+            'type' => 'single',
+            'status' => [
+                'type' => 'Available',
+            ],
+            'bookingAvailability' => [
+                'type' => 'Available',
+            ],
+            'timestamps' => [
+                0 => [
+                    'startDate' => '2021-01-01T00:00:00+01:00',
+                    'endDate' => '2021-01-02T00:00:00+01:00',
+                    'status' => [
+                        'type' => 'Available',
+                    ],
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                    ],
+                    'bookingInfo' => [
+                        'phone' => '0123456789',
+                        'email' => 'user@example.com',
+                    ],
+                ],
+            ],
+            'startDate' => '2021-01-01T00:00:00+01:00',
+            'endDate' => '2021-01-02T00:00:00+01:00',
+        ];
+
+        $bookingInfo = (new BookingInfo())
+            ->withTelephoneNumber(new TelephoneNumber('0123456789'))
+            ->withEmailAddress(new EmailAddress('user@example.com'));
+
+        $this->assertEquals(
+            new SingleSubEventCalendar(
+                new SubEvent(
+                    new DateRange(
+                        new DateTimeImmutable('2021-01-01T00:00:00+01:00'),
+                        new DateTimeImmutable('2021-01-02T00:00:00+01:00')
+                    ),
+                    new Status(StatusType::Available()),
+                    BookingAvailability::Available(),
+                    $bookingInfo,
+                )
+            ),
+            CalendarSerializer::deserialize($data)
         );
     }
 

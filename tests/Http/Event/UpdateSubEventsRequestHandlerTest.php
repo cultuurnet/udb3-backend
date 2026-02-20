@@ -17,7 +17,10 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -216,6 +219,37 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     self::EVENT_ID,
                     (new SubEventUpdate(1))
                         ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable())),
+                ),
+            ],
+            'one_subEvent_with_bookingInfo' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingInfo' => (object)[
+                            'phone' => '0123456789',
+                            'email' => 'user@example.com',
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(0))->withBookingInfo(
+                        (new BookingInfo())
+                            ->withTelephoneNumber(new TelephoneNumber('0123456789'))
+                            ->withEmailAddress(new EmailAddress('user@example.com'))
+                    )
+                ),
+            ],
+            'one_subEvent_with_empty_bookingInfo' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingInfo' => (object)[],
+                    ],
+                ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(0))->withBookingInfo(new BookingInfo())
                 ),
             ],
             'one_subEvent_with_id_and_status_type_and_bookingAvailability_type' => [
