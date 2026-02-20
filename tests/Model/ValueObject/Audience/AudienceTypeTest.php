@@ -11,14 +11,16 @@ class AudienceTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_have_three_possible_values(): void
+    public function it_should_have_four_allowed_values(): void
     {
-        $everyone = AudienceType::everyone();
-        $members = AudienceType::members();
-        $education = AudienceType::education();
-
-        $this->assertEquals('everyone', $everyone->toString());
-        $this->assertEquals('members', $members->toString());
-        $this->assertEquals('education', $education->toString());
+        $this->assertEquals(
+            [
+                AudienceType::everyone()->toString(),
+                AudienceType::members()->toString(),
+                AudienceType::education()->toString(),
+                AudienceType::childrenOnly()->toString(),
+            ],
+            AudienceType::getAllowedValues()
+        );
     }
 }
