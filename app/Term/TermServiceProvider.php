@@ -28,6 +28,7 @@ final class TermServiceProvider extends AbstractServiceProvider
             EventTypeResolver::class,
             EventFacilityResolver::class,
             EventThemeResolver::class,
+            EventCategoryResolver::class,
             PlaceTypeResolver::class,
             PlaceFacilityResolver::class,
             PlaceCategoryResolver::class,
