@@ -34,10 +34,10 @@ final class CachedTaxonomyApiClientTest extends TestCase
     {
         $placeTypes = new Categories(
             new Category(
-            new CategoryID('0.14.0.0.0'),
-            new CategoryLabel('Monument'),
-            CategoryDomain::eventType()
-        )
+                new CategoryID('0.14.0.0.0'),
+                new CategoryLabel('Monument'),
+                CategoryDomain::eventType()
+            )
         );
 
         $this->baseTaxonomyApiClient
@@ -181,18 +181,18 @@ final class CachedTaxonomyApiClientTest extends TestCase
     {
         $placeTypes = new Categories(
             new Category(
-                 new CategoryID('0.14.0.0.0'),
-                 new CategoryLabel('Monument'),
-                 CategoryDomain::eventType()
-             )
+                new CategoryID('0.14.0.0.0'),
+                new CategoryLabel('Monument'),
+                CategoryDomain::eventType()
+            )
         );
 
         $eventTypes = new Categories(
             new Category(
-                 new CategoryID('0.50.4.0.0'),
-                 new CategoryLabel('Concert'),
-                 CategoryDomain::eventType()
-             )
+                new CategoryID('0.50.4.0.0'),
+                new CategoryLabel('Concert'),
+                CategoryDomain::eventType()
+            )
         );
 
         $this->baseTaxonomyApiClient
@@ -228,13 +228,13 @@ final class CachedTaxonomyApiClientTest extends TestCase
         $this->baseTaxonomyApiClient
             ->expects($this->once())
             ->method('getEventTypes')
-            ->willReturn([]);
+            ->willReturn(new Categories());
 
         $result = $this->cachedClient->getEventTypes();
-        $this->assertEquals([], $result);
+        $this->assertEquals(new Categories(), $result);
 
         // Should still cache the empty array
         $result2 = $this->cachedClient->getEventTypes();
-        $this->assertEquals([], $result2);
+        $this->assertEquals(new Categories(), $result2);
     }
 }
