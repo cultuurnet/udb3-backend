@@ -22,7 +22,7 @@ final class CachedTaxonomyApiClient implements TaxonomyApiClient
     public function getNativeTerms(): array
     {
         return $this->cache->get(
-            'mapping',
+            'native_terms',
             fn () => $this->baseTaxonomyApiClient->getNativeTerms()
         );
     }
