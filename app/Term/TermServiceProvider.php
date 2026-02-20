@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Term;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Place\PlaceFacilityResolver;
 use CultuurNet\UDB3\Place\PlaceTypeResolver;
@@ -33,7 +35,8 @@ final class TermServiceProvider extends AbstractServiceProvider
             TaxonomyApiClient::class,
             fn () => new JsonTaxonomyApiClient(
                 new Client(),
-                $container->get('config')['taxonomy']['terms']
+                $container->get('config')['taxonomy']['terms'],
+                LoggerFactory::create($this->getContainer(), LoggerName::forWeb())
             )
         );
 
@@ -42,7 +45,7 @@ final class TermServiceProvider extends AbstractServiceProvider
             function () use ($container): TermRepository {
                 /** @var TaxonomyApiClient $taxonomyApiClient */
                 $taxonomyApiClient = $container->get(TaxonomyApiClient::class);
-                return new TermRepository($taxonomyApiClient->getMapping());
+                return new TermRepository($taxonomyApiClient->getNativeTerms());
             }
         );
 
