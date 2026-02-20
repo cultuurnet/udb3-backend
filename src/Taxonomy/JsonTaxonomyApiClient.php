@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
+use Psr\Log\LoggerInterface;
 
 final class JsonTaxonomyApiClient implements TaxonomyApiClient
 {
@@ -18,16 +19,29 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
 
     public function __construct(
         readonly ClientInterface $client,
-        readonly string $termsEndpoint
+        readonly string $termsEndpoint,
+        readonly LoggerInterface $logger
     ) {
         $request = new Request(
             'GET',
             $this->termsEndpoint,
         );
 
-        $response = $this->client->sendRequest($request)->getBody()->getContents();
-        $contents = Json::decodeAssociatively($response);
-        $this->terms = $contents['terms'];
+        $response = $this->client->sendRequest($request);
+        if ($response->getStatusCode() !== 200) {
+            $this->logger->error('Taxonomy Api returned non-200 status code', [
+                'status_code' => $response->getStatusCode(),
+                'body' => $response->getBody()->getContents(),
+            ]);
+            throw new TaxonomyApiProblem('Taxonomy Api returned non-200 status code.');
+        }
+        $contents = $response->getBody()->getContents();
+        if (empty($contents)) {
+            $this->logger->error('Taxonomy Api returned no terms');
+            throw new TaxonomyApiProblem('Taxonomy Api returned no terms.');
+        }
+        $contentsAsJson = Json::decodeAssociatively($contents);
+        $this->terms = $contentsAsJson['terms'];
     }
 
     /**
