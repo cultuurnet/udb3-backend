@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Taxonomy;
 
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -44,63 +45,44 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
         $this->terms = $contentsAsJson['terms'];
     }
 
-    /**
-     * @return  Category[]
-     */
-    public function getPlaceTypes(): array
+    public function getPlaceTypes(): Categories
     {
         return $this->getTermsByDomainAndScope(CategoryDomain::eventType(), 'places');
     }
 
-    /**
-     * @return  Category[]
-     */
-    public function getPlaceFacilities(): array
+    public function getPlaceFacilities(): Categories
     {
         return $this->getTermsByDomainAndScope(CategoryDomain::facility(), 'places');
     }
 
-    /**
-     * @return  Category[]
-     */
-    public function getEventTypes(): array
+    public function getEventTypes(): Categories
     {
         return $this->getTermsByDomainAndScope(CategoryDomain::eventType(), 'events');
     }
 
-    /**
-     * @return  Category[]
-     */
-    public function getEventThemes(): array
+    public function getEventThemes(): Categories
     {
         return $this->getTermsByDomainAndScope(CategoryDomain::theme(), 'events');
     }
 
-    /**
-     * @return  Category[]
-     */
-    public function getEventFacilities(): array
+    public function getEventFacilities(): Categories
     {
         return $this->getTermsByDomainAndScope(CategoryDomain::facility(), 'events');
     }
-
 
     public function getNativeMapping(): array
     {
         return $this->terms;
     }
 
-    /**
-     * @return  Category[]
-     */
-    private function getTermsByDomainAndScope(CategoryDomain $domain, string $scope): array
+    private function getTermsByDomainAndScope(CategoryDomain $domain, string $scope): Categories
     {
         $termsByDomainAndScope  = [];
         foreach ($this->terms as $term) {
             if ($term['domain'] === $domain->toString() && in_array($scope, $term['scope'])) {
-                $termsByDomainAndScope[$term['id']] = new Category(new CategoryID($term['id']), new CategoryLabel($term['name']['nl']), $domain);
+                $termsByDomainAndScope[] = new Category(new CategoryID($term['id']), new CategoryLabel($term['name']['nl']), $domain);
             }
         }
-        return $termsByDomainAndScope;
+        return new Categories(...$termsByDomainAndScope);
     }
 }

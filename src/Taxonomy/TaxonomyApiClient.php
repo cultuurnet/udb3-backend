@@ -4,34 +4,19 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Taxonomy;
 
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 
 interface TaxonomyApiClient
 {
-    /**
-     * @return  Category[]
-     */
-    public function getPlaceTypes(): array;
+    public function getPlaceTypes(): Categories;
 
-    /**
-     * @return  Category[]
-     */
-    public function getPlaceFacilities(): array;
+    public function getPlaceFacilities(): Categories;
 
-    /**
-     * @return  Category[]
-     */
-    public function getEventTypes(): array;
+    public function getEventTypes(): Categories;
 
-    /**
-     * @return  Category[]
-     */
-    public function getEventThemes(): array;
+    public function getEventThemes(): Categories;
 
-    /**
-     * @return  Category[]
-     */
-    public function getEventFacilities(): array;
+    public function getEventFacilities(): Categories;
 
     public function getNativeMapping(): array;
 }
