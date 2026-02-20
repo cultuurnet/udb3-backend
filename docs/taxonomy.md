@@ -27,11 +27,11 @@ Each term in the API response has the following shape:
 
 ## Permissions
 
-| Domain      | Who can set it |
-|-------------|----------------|
-| `eventtype` | Regular users  |
-| `theme`     | Regular users  |
-| `facility`  | Prea           |
+| Domain      | Who can set it         |
+|-------------|------------------------|
+| `eventtype` | Regular users          |
+| `theme`     | Regular users          |
+| `facility`  | Preapproved user roles |
 
 ## API client
 
