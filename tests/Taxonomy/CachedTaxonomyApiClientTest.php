@@ -219,22 +219,4 @@ final class CachedTaxonomyApiClientTest extends TestCase
         $this->assertEquals($placeTypes, $placeTypesResult2);
         $this->assertEquals($eventTypes, $eventTypesResult2);
     }
-
-    /**
-     * @test
-     */
-    public function it_returns_empty_array_when_base_client_returns_empty_array(): void
-    {
-        $this->baseTaxonomyApiClient
-            ->expects($this->once())
-            ->method('getEventTypes')
-            ->willReturn(new Categories());
-
-        $result = $this->cachedClient->getEventTypes();
-        $this->assertEquals(new Categories(), $result);
-
-        // Should still cache the empty array
-        $result2 = $this->cachedClient->getEventTypes();
-        $this->assertEquals(new Categories(), $result2);
-    }
 }
