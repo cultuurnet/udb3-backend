@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Audience;
 
 use PHPUnit\Framework\TestCase;
 
-class AudienceTypeTest extends TestCase
+final class AudienceTypeTest extends TestCase
 {
     /**
      * @test
