@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Taxonomy;
 
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -31,13 +32,13 @@ final class CachedTaxonomyApiClientTest extends TestCase
      */
     public function it_caches_place_types(): void
     {
-        $placeTypes = [
-            '0.14.0.0.0' => new Category(
-                new CategoryID('0.14.0.0.0'),
-                new CategoryLabel('Monument'),
-                CategoryDomain::eventType()
-            ),
-        ];
+        $placeTypes = new Categories(
+            new Category(
+            new CategoryID('0.14.0.0.0'),
+            new CategoryLabel('Monument'),
+            CategoryDomain::eventType()
+        )
+        );
 
         $this->baseTaxonomyApiClient
             ->expects($this->once())
@@ -56,13 +57,13 @@ final class CachedTaxonomyApiClientTest extends TestCase
      */
     public function it_caches_place_facilities(): void
     {
-        $placeFacilities = [
-            '3.27.0.0.0' => new Category(
+        $placeFacilities = new Categories(
+            new Category(
                 new CategoryID('3.27.0.0.0'),
                 new CategoryLabel('Rolstoeltoegankelijk'),
                 CategoryDomain::facility()
-            ),
-        ];
+            )
+        );
 
         $this->baseTaxonomyApiClient
             ->expects($this->once())
@@ -81,13 +82,13 @@ final class CachedTaxonomyApiClientTest extends TestCase
      */
     public function it_caches_event_types(): void
     {
-        $eventTypes = [
-            '0.50.4.0.0' => new Category(
+        $eventTypes = new Categories(
+            new Category(
                 new CategoryID('0.50.4.0.0'),
                 new CategoryLabel('Concert'),
                 CategoryDomain::eventType()
-            ),
-        ];
+            )
+        );
 
         $this->baseTaxonomyApiClient
             ->expects($this->once())
@@ -106,13 +107,13 @@ final class CachedTaxonomyApiClientTest extends TestCase
      */
     public function it_caches_event_themes(): void
     {
-        $eventThemes = [
-            '1.8.3.5.0' => new Category(
+        $eventThemes = new Categories(
+            new Category(
                 new CategoryID('1.8.3.5.0'),
                 new CategoryLabel('Amusementsmuziek'),
                 CategoryDomain::theme()
-            ),
-        ];
+            )
+        );
 
         $this->baseTaxonomyApiClient
             ->expects($this->once())
@@ -131,13 +132,13 @@ final class CachedTaxonomyApiClientTest extends TestCase
      */
     public function it_caches_event_facilities(): void
     {
-        $eventFacilities = [
-            '3.13.1.0.0' => new Category(
+        $eventFacilities = new Categories(
+            new Category(
                 new CategoryID('3.13.1.0.0'),
                 new CategoryLabel('Voorzieningen voor assistentiehonden'),
                 CategoryDomain::facility()
-            ),
-        ];
+            )
+        );
 
         $this->baseTaxonomyApiClient
             ->expects($this->once())
@@ -163,7 +164,7 @@ final class CachedTaxonomyApiClientTest extends TestCase
 
         $this->baseTaxonomyApiClient
             ->expects($this->once())
-            ->method('getMapping')
+            ->method('getNativeTerms')
             ->willReturn($nativeTerms);
 
         $result1 = $this->cachedClient->getNativeTerms();
@@ -178,21 +179,21 @@ final class CachedTaxonomyApiClientTest extends TestCase
      */
     public function it_uses_separate_cache_keys_for_different_methods(): void
     {
-        $placeTypes = [
-            '0.14.0.0.0' => new Category(
-                new CategoryID('0.14.0.0.0'),
-                new CategoryLabel('Monument'),
-                CategoryDomain::eventType()
-            ),
-        ];
+        $placeTypes = new Categories(
+            new Category(
+                 new CategoryID('0.14.0.0.0'),
+                 new CategoryLabel('Monument'),
+                 CategoryDomain::eventType()
+             )
+        );
 
-        $eventTypes = [
-            '0.50.4.0.0' => new Category(
-                new CategoryID('0.50.4.0.0'),
-                new CategoryLabel('Concert'),
-                CategoryDomain::eventType()
-            ),
-        ];
+        $eventTypes = new Categories(
+            new Category(
+                 new CategoryID('0.50.4.0.0'),
+                 new CategoryLabel('Concert'),
+                 CategoryDomain::eventType()
+             )
+        );
 
         $this->baseTaxonomyApiClient
             ->expects($this->once())

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Taxonomy;
 
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
-use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use Symfony\Contracts\Cache\CacheInterface;
 
 final class CachedTaxonomyApiClient implements TaxonomyApiClient
