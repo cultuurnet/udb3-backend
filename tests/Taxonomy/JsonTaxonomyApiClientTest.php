@@ -75,8 +75,12 @@ final class JsonTaxonomyApiClientTest extends TestCase
 
         $this->assertEquals(
             new Categories(
-                           new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
-                       ),
+                new Category(
+                    new CategoryID('0.50.4.0.0'),
+                    new CategoryLabel('Concert'),
+                    CategoryDomain::eventType()
+                )
+            ),
             $client->getEventTypes()
         );
     }
@@ -93,8 +97,12 @@ final class JsonTaxonomyApiClientTest extends TestCase
 
         $this->assertEquals(
             new Categories(
-                           new Category(new CategoryID('1.8.3.1.0'), new CategoryLabel('Jazz en blues'), CategoryDomain::theme()),
-                       ),
+                new Category(
+                    new CategoryID('1.8.3.1.0'),
+                    new CategoryLabel('Jazz en blues'),
+                    CategoryDomain::theme()
+                )
+            ),
             $client->getEventThemes()
         );
     }
@@ -112,8 +120,12 @@ final class JsonTaxonomyApiClientTest extends TestCase
 
         $this->assertEquals(
             new Categories(
-                       new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Ringleiding'), CategoryDomain::facility()),
-                   ),
+                new Category(
+                    new CategoryID('1.8.1.0.0'),
+                    new CategoryLabel('Ringleiding'),
+                    CategoryDomain::facility()
+                )
+            ),
             $client->getEventFacilities()
         );
     }
@@ -131,8 +143,12 @@ final class JsonTaxonomyApiClientTest extends TestCase
 
         $this->assertEquals(
             new Categories(
-                          new Category(new CategoryID('3CuHvenJ+EGkcvhXLg9Ykg'), new CategoryLabel('Tentoonstelling'), CategoryDomain::eventType()),
-                      ),
+                new Category(
+                    new CategoryID('3CuHvenJ+EGkcvhXLg9Ykg'),
+                    new CategoryLabel('Tentoonstelling'),
+                    CategoryDomain::eventType()
+                )
+            ),
             $client->getPlaceTypes()
         );
     }
@@ -150,9 +166,17 @@ final class JsonTaxonomyApiClientTest extends TestCase
 
         $this->assertEquals(
             new Categories(
-                          new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Ringleiding'), CategoryDomain::facility()),
-                          new Category(new CategoryID('1.9.0.0.0'), new CategoryLabel('Parkeerplaats'), CategoryDomain::facility()),
-                      ),
+                new Category(
+                    new CategoryID('1.8.1.0.0'),
+                    new CategoryLabel('Ringleiding'),
+                    CategoryDomain::facility()
+                ),
+                new Category(
+                    new CategoryID('1.9.0.0.0'),
+                    new CategoryLabel('Parkeerplaats'),
+                    CategoryDomain::facility()
+                )
+            ),
             $client->getPlaceFacilities()
         );
     }
