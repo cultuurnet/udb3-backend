@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Taxonomy;
 
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use Symfony\Contracts\Cache\CacheInterface;
 
@@ -19,18 +20,15 @@ final class CachedTaxonomyApiClient implements TaxonomyApiClient
         $this->cache = $cache;
     }
 
-    public function getMapping(): array
+    public function getNativeTerms(): array
     {
         return $this->cache->get(
             'mapping',
-            fn () => $this->baseTaxonomyApiClient->getMapping()
+            fn () => $this->baseTaxonomyApiClient->getNativeTerms()
         );
     }
 
-    /**
-     * @return  Category[]
-     */
-    public function getEventTypes(): array
+    public function getEventTypes(): Categories
     {
         return $this->cache->get(
             'event_types',
@@ -38,10 +36,7 @@ final class CachedTaxonomyApiClient implements TaxonomyApiClient
         );
     }
 
-    /**
-     * @return  Category[]
-     */
-    public function getEventThemes(): array
+    public function getEventThemes(): Categories
     {
         return $this->cache->get(
             'event_themes',
@@ -49,10 +44,7 @@ final class CachedTaxonomyApiClient implements TaxonomyApiClient
         );
     }
 
-    /**
-     * @return  Category[]
-     */
-    public function getEventFacilities(): array
+    public function getEventFacilities(): Categories
     {
         return $this->cache->get(
             'event_facilities',
@@ -60,10 +52,7 @@ final class CachedTaxonomyApiClient implements TaxonomyApiClient
         );
     }
 
-    /**
-     * @return  Category[]
-     */
-    public function getPlaceTypes(): array
+    public function getPlaceTypes(): Categories
     {
         return $this->cache->get(
             'place_types',
@@ -71,10 +60,7 @@ final class CachedTaxonomyApiClient implements TaxonomyApiClient
         );
     }
 
-    /**
-     * @return  Category[]
-     */
-    public function getPlaceFacilities(): array
+    public function getPlaceFacilities(): Categories
     {
         return $this->cache->get(
             'place_facilities',

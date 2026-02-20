@@ -37,6 +37,15 @@ class Categories extends Collection
         return $this->filterDomain(CategoryDomain::theme());
     }
 
+    public function getById(CategoryID $id): ?Category
+    {
+        return $this->filter(
+            function (Category $term) use ($id) {
+                return $term->getId()->sameAs($id);
+            }
+        )->getFirst();
+    }
+
     private function filterDomain(CategoryDomain $domainFilter): ?Category
     {
         return $this->filter(

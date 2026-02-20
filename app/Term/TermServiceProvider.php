@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Term;
 
 use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\EventFacilityResolver;
 use CultuurNet\UDB3\Event\EventThemeResolver;
 use CultuurNet\UDB3\Event\EventTypeResolver;
@@ -28,6 +30,7 @@ final class TermServiceProvider extends AbstractServiceProvider
             EventTypeResolver::class,
             EventFacilityResolver::class,
             EventThemeResolver::class,
+            EventCategoryResolver::class,
             PlaceTypeResolver::class,
             PlaceFacilityResolver::class,
             PlaceCategoryResolver::class,
@@ -43,7 +46,8 @@ final class TermServiceProvider extends AbstractServiceProvider
             fn () => new CachedTaxonomyApiClient(
                 new JsonTaxonomyApiClient(
                     new Client(),
-                    $container->get('config')['taxonomy']['terms']
+                    $container->get('config')['taxonomy']['terms'],
+                    LoggerFactory::create($this->getContainer(), LoggerName::forWeb())
                 ),
                 CacheFactory::create(
                     $container->get('app_cache'),
@@ -51,10 +55,6 @@ final class TermServiceProvider extends AbstractServiceProvider
                     86400
                 )
             )
-        /* new JsonTaxonomyApiClient(
-                new Client(),
-                $container->get('config')['taxonomy']['terms']
-            )*/
         );
 
         $container->addShared(
@@ -62,7 +62,7 @@ final class TermServiceProvider extends AbstractServiceProvider
             function () use ($container): TermRepository {
                 /** @var TaxonomyApiClient $taxonomyApiClient */
                 $taxonomyApiClient = $container->get(TaxonomyApiClient::class);
-                return new TermRepository($taxonomyApiClient->getMapping());
+                return new TermRepository($taxonomyApiClient->getNativeTerms());
             }
         );
 

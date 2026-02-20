@@ -19,20 +19,11 @@ final class EventCategoryResolverTest extends TestCase
 {
     private EventCategoryResolver $eventCategoryResolver;
 
-    /**
-     * @var TypeResolverInterface&MockObject
-     */
-    private $typeResolver;
+    private TypeResolverInterface&MockObject $typeResolver;
 
-    /**
-     * @var OfferFacilityResolverInterface&MockObject
-     */
-    private $facilityResolver;
+    private OfferFacilityResolverInterface&MockObject $facilityResolver;
 
-    /**
-     * @var ThemeResolverInterface&MockObject
-     */
-    private $themeResolver;
+    private ThemeResolverInterface&MockObject $themeResolver;
 
     protected function setUp(): void
     {

@@ -4,220 +4,204 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Taxonomy;
 
+use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\StreamInterface;
+use Psr\Log\NullLogger;
 
 final class JsonTaxonomyApiClientTest extends TestCase
 {
     private ClientInterface&MockObject $httpClient;
-    private string $termsEndpoint;
-    private JsonTaxonomyApiClient $client;
 
     protected function setUp(): void
     {
         $this->httpClient = $this->createMock(ClientInterface::class);
-        $this->termsEndpoint = 'https://taxonomy.example.com/terms';
+    }
 
-        $termsData = [
-            'terms' => [
-                [
-                    'id' => '0.50.4.0.0',
-                    'domain' => 'eventtype',
-                    'scope' => ['events'],
-                    'name' => ['nl' => 'Concert'],
-                ],
-                [
-                    'id' => '1.8.3.5.0',
-                    'domain' => 'theme',
-                    'scope' => ['events'],
-                    'name' => ['nl' => 'Amusementsmuziek'],
-                ],
-                [
-                    'id' => '3.13.1.0.0',
-                    'domain' => 'facility',
-                    'scope' => ['events', 'places'],
-                    'name' => ['nl' => 'Voorzieningen voor assistentiehonden'],
-                ],
-                [
-                    'id' => '0.14.0.0.0',
-                    'domain' => 'eventtype',
-                    'scope' => ['places'],
-                    'name' => ['nl' => 'Monument'],
-                ],
-                [
-                    'id' => '3.27.0.0.0',
-                    'domain' => 'facility',
-                    'scope' => ['places'],
-                    'name' => ['nl' => 'Rolstoeltoegankelijk'],
-                ],
-            ],
-        ];
+    private function createClientWithTerms(array $terms): JsonTaxonomyApiClient
+    {
+        $this->httpClient->expects($this->once())
+                   ->method('sendRequest')
+                   ->willReturn(new Response(200, [], Json::encode(['terms' => $terms])));
 
-        $responseBody = $this->createMock(StreamInterface::class);
-        $responseBody->method('getContents')
-            ->willReturn(json_encode($termsData));
-
-        $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')
-            ->willReturn($responseBody);
-
-        $this->httpClient->method('sendRequest')
-            ->willReturn($response);
-
-        $this->client = new JsonTaxonomyApiClient($this->httpClient, $this->termsEndpoint);
+        return new JsonTaxonomyApiClient($this->httpClient, 'https://taxonomy.example.com/terms', new NullLogger());
     }
 
     /**
      * @test
      */
-    public function it_fetches_and_stores_terms_on_construction(): void
+    public function it_throws_when_api_returns_non_200_status(): void
     {
-        $mapping = $this->client->getMapping();
-        $this->assertCount(5, $mapping);
-        $this->assertIsArray($mapping);
+        $this->httpClient->expects($this->once())
+                   ->method('sendRequest')
+                   ->willReturn(new Response(503));
+
+        $this->expectException(TaxonomyApiProblem::class);
+
+        new JsonTaxonomyApiClient($this->httpClient, 'https://taxonomy.example.com/terms', new NullLogger());
     }
 
     /**
      * @test
      */
-    public function it_returns_all_terms_as_mapping(): void
+    public function it_throws_when_api_returns_empty_body(): void
     {
-        $mapping = $this->client->getMapping();
+        $this->httpClient->expects($this->once())
+                   ->method('sendRequest')
+                   ->willReturn(new Response(200, [], ''));
 
-        $this->assertIsArray($mapping);
-        $this->assertCount(5, $mapping);
-        $this->assertEquals('0.50.4.0.0', $mapping[0]['id']);
-        $this->assertEquals('Concert', $mapping[0]['name']['nl']);
+        $this->expectException(TaxonomyApiProblem::class);
+
+        new JsonTaxonomyApiClient($this->httpClient, 'https://taxonomy.example.com/terms', new NullLogger());
     }
 
     /**
      * @test
      */
-    public function it_returns_event_types_filtered_by_domain_and_scope(): void
+    public function it_returns_event_types(): void
     {
-        $eventTypes = $this->client->getEventTypes();
+        $client = $this->createClientWithTerms([
+                       ['id' => '0.50.4.0.0', 'domain' => 'eventtype', 'name' => ['nl' => 'Concert'], 'scope' => ['events']],
+                       ['id' => '3CuHvenJ+EGkcvhXLg9Ykg', 'domain' => 'eventtype', 'name' => ['nl' => 'Tentoonstelling'], 'scope' => ['places']],
+                       ['id' => '1.8.1.0.0', 'domain' => 'facility', 'name' => ['nl' => 'Ringleiding'], 'scope' => ['events']],
+                   ]);
 
-        $this->assertIsArray($eventTypes);
-        $this->assertCount(1, $eventTypes);
-        $this->assertArrayHasKey('0.50.4.0.0', $eventTypes);
-
-        $concert = $eventTypes['0.50.4.0.0'];
-        $this->assertInstanceOf(Category::class, $concert);
-        $this->assertEquals('0.50.4.0.0', $concert->getId()->toString());
-        $this->assertEquals('Concert', $concert->getLabel()->toString());
-        $this->assertEquals(CategoryDomain::eventType(), $concert->getDomain());
+        $this->assertEquals(
+            new Categories(
+                new Category(
+                    new CategoryID('0.50.4.0.0'),
+                    new CategoryLabel('Concert'),
+                    CategoryDomain::eventType()
+                )
+            ),
+            $client->getEventTypes()
+        );
     }
 
     /**
      * @test
      */
-    public function it_returns_event_themes_filtered_by_domain_and_scope(): void
+    public function it_returns_event_themes(): void
     {
-        $eventThemes = $this->client->getEventThemes();
+        $client = $this->createClientWithTerms([
+                       ['id' => '1.8.3.1.0', 'domain' => 'theme', 'name' => ['nl' => 'Jazz en blues'], 'scope' => ['events']],
+                       ['id' => '0.50.4.0.0', 'domain' => 'eventtype', 'name' => ['nl' => 'Concert'], 'scope' => ['events']],
+                   ]);
 
-        $this->assertIsArray($eventThemes);
-        $this->assertCount(1, $eventThemes);
-        $this->assertArrayHasKey('1.8.3.5.0', $eventThemes);
-
-        $theme = $eventThemes['1.8.3.5.0'];
-        $this->assertInstanceOf(Category::class, $theme);
-        $this->assertEquals('1.8.3.5.0', $theme->getId()->toString());
-        $this->assertEquals('Amusementsmuziek', $theme->getLabel()->toString());
-        $this->assertEquals(CategoryDomain::theme(), $theme->getDomain());
+        $this->assertEquals(
+            new Categories(
+                new Category(
+                    new CategoryID('1.8.3.1.0'),
+                    new CategoryLabel('Jazz en blues'),
+                    CategoryDomain::theme()
+                )
+            ),
+            $client->getEventThemes()
+        );
     }
 
     /**
      * @test
      */
-    public function it_returns_event_facilities_filtered_by_domain_and_scope(): void
+    public function it_returns_event_facilities(): void
     {
-        $eventFacilities = $this->client->getEventFacilities();
+        $client = $this->createClientWithTerms([
+                      ['id' => '1.8.1.0.0', 'domain' => 'facility', 'name' => ['nl' => 'Ringleiding'], 'scope' => ['events', 'places']],
+                      ['id' => '1.9.0.0.0', 'domain' => 'facility', 'name' => ['nl' => 'Parkeerplaats'], 'scope' => ['places']],
+                      ['id' => '0.50.4.0.0', 'domain' => 'eventtype', 'name' => ['nl' => 'Concert'], 'scope' => ['events']],
+                  ]);
 
-        $this->assertIsArray($eventFacilities);
-        $this->assertCount(1, $eventFacilities);
-        $this->assertArrayHasKey('3.13.1.0.0', $eventFacilities);
+        $this->assertEquals(
+            new Categories(
+                new Category(
+                    new CategoryID('1.8.1.0.0'),
+                    new CategoryLabel('Ringleiding'),
+                    CategoryDomain::facility()
+                )
+            ),
+            $client->getEventFacilities()
+        );
+    }
 
-        $facility = $eventFacilities['3.13.1.0.0'];
-        $this->assertInstanceOf(Category::class, $facility);
-        $this->assertEquals('3.13.1.0.0', $facility->getId()->toString());
-        $this->assertEquals('Voorzieningen voor assistentiehonden', $facility->getLabel()->toString());
-        $this->assertEquals(CategoryDomain::facility(), $facility->getDomain());
+    /**
+       * @test
+       */
+    public function it_returns_place_types(): void
+    {
+        $client = $this->createClientWithTerms([
+                      ['id' => '3CuHvenJ+EGkcvhXLg9Ykg', 'domain' => 'eventtype', 'name' => ['nl' => 'Tentoonstelling'], 'scope' => ['places']],
+                      ['id' => '0.50.4.0.0', 'domain' => 'eventtype', 'name' => ['nl' => 'Concert'], 'scope' => ['events']],
+                      ['id' => '1.8.1.0.0', 'domain' => 'facility', 'name' => ['nl' => 'Ringleiding'], 'scope' => ['places']],
+                  ]);
+
+        $this->assertEquals(
+            new Categories(
+                new Category(
+                    new CategoryID('3CuHvenJ+EGkcvhXLg9Ykg'),
+                    new CategoryLabel('Tentoonstelling'),
+                    CategoryDomain::eventType()
+                )
+            ),
+            $client->getPlaceTypes()
+        );
     }
 
     /**
      * @test
      */
-    public function it_returns_place_types_filtered_by_domain_and_scope(): void
+    public function it_returns_place_facilities(): void
     {
-        $placeTypes = $this->client->getPlaceTypes();
+        $client = $this->createClientWithTerms([
+                      ['id' => '1.8.1.0.0', 'domain' => 'facility', 'name' => ['nl' => 'Ringleiding'], 'scope' => ['events', 'places']],
+                      ['id' => '1.9.0.0.0', 'domain' => 'facility', 'name' => ['nl' => 'Parkeerplaats'], 'scope' => ['places']],
+                      ['id' => '0.50.4.0.0', 'domain' => 'eventtype', 'name' => ['nl' => 'Concert'], 'scope' => ['events']],
+                  ]);
 
-        $this->assertIsArray($placeTypes);
-        $this->assertCount(1, $placeTypes);
-        $this->assertArrayHasKey('0.14.0.0.0', $placeTypes);
-
-        $placeType = $placeTypes['0.14.0.0.0'];
-        $this->assertInstanceOf(Category::class, $placeType);
-        $this->assertEquals('0.14.0.0.0', $placeType->getId()->toString());
-        $this->assertEquals('Monument', $placeType->getLabel()->toString());
-        $this->assertEquals(CategoryDomain::eventType(), $placeType->getDomain());
+        $this->assertEquals(
+            new Categories(
+                new Category(
+                    new CategoryID('1.8.1.0.0'),
+                    new CategoryLabel('Ringleiding'),
+                    CategoryDomain::facility()
+                ),
+                new Category(
+                    new CategoryID('1.9.0.0.0'),
+                    new CategoryLabel('Parkeerplaats'),
+                    CategoryDomain::facility()
+                )
+            ),
+            $client->getPlaceFacilities()
+        );
     }
 
     /**
      * @test
      */
-    public function it_returns_place_facilities_filtered_by_domain_and_scope(): void
+    public function it_returns_an_empty_list_when_no_terms_match(): void
     {
-        $placeFacilities = $this->client->getPlaceFacilities();
+        $client = $this->createClientWithTerms([
+                      ['id' => '0.50.4.0.0', 'domain' => 'eventtype', 'name' => ['nl' => 'Concert'], 'scope' => ['events']],
+                  ]);
 
-        $this->assertIsArray($placeFacilities);
-        $this->assertCount(2, $placeFacilities);
-        $this->assertArrayHasKey('3.13.1.0.0', $placeFacilities);
-        $this->assertArrayHasKey('3.27.0.0.0', $placeFacilities);
-
-        $facility1 = $placeFacilities['3.13.1.0.0'];
-        $this->assertEquals('Voorzieningen voor assistentiehonden', $facility1->getLabel()->toString());
-
-        $facility2 = $placeFacilities['3.27.0.0.0'];
-        $this->assertEquals('Rolstoeltoegankelijk', $facility2->getLabel()->toString());
+        $this->assertEquals(new Categories(), $client->getEventThemes());
     }
 
     /**
      * @test
      */
-    public function it_returns_empty_array_when_no_terms_match_filter(): void
+    public function it_returns_native_terms(): void
     {
-        $termsData = [
-            'terms' => [
-                [
-                    'id' => '0.50.4.0.0',
-                    'domain' => 'eventtype',
-                    'scope' => ['events'],
-                    'name' => ['nl' => 'Concert'],
-                ],
-            ],
-        ];
+        $terms = [
+                      ['id' => '0.50.4.0.0', 'domain' => 'eventtype', 'name' => ['nl' => 'Concert'], 'scope' => ['events']],
+                  ];
 
-        $responseBody = $this->createMock(StreamInterface::class);
-        $responseBody->method('getContents')
-            ->willReturn(json_encode($termsData));
-
-        $response = $this->createMock(ResponseInterface::class);
-        $response->method('getBody')
-            ->willReturn($responseBody);
-
-        $httpClient = $this->createMock(ClientInterface::class);
-        $httpClient->method('sendRequest')
-            ->willReturn($response);
-
-        $client = new JsonTaxonomyApiClient($httpClient, $this->termsEndpoint);
-
-        $eventThemes = $client->getEventThemes();
-        $this->assertIsArray($eventThemes);
-        $this->assertCount(0, $eventThemes);
+        $this->assertEquals($terms, $this->createClientWithTerms($terms)->getNativeTerms());
     }
 }

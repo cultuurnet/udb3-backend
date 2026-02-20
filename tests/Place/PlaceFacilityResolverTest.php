@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place;
 
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -18,7 +19,7 @@ final class PlaceFacilityResolverTest extends TestCase
      */
     public function it_should_not_resolve_a_facility_when_the_id_is_unknown(): void
     {
-        $resolver = new PlaceFacilityResolver([]);
+        $resolver = new PlaceFacilityResolver(new Categories());
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage("Unknown facility id '1.8.2'");
@@ -34,9 +35,7 @@ final class PlaceFacilityResolverTest extends TestCase
     {
         $expectedFacility = new Category(new CategoryID('3.23.3.0.0'), new CategoryLabel('Rolstoel ter beschikking'), CategoryDomain::facility());
 
-        $resolver = new PlaceFacilityResolver([
-            '3.23.3.0.0' => $expectedFacility,
-        ]);
+        $resolver = new PlaceFacilityResolver(new Categories($expectedFacility));
 
         $facility = $resolver->byId('3.23.3.0.0');
 

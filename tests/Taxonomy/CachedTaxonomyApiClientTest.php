@@ -154,9 +154,9 @@ final class CachedTaxonomyApiClientTest extends TestCase
     /**
      * @test
      */
-    public function it_caches_mapping(): void
+    public function it_caches_native_terms(): void
     {
-        $mapping = [
+        $nativeTerms = [
             ['id' => '0.50.4.0.0', 'name' => 'Concert'],
             ['id' => '1.8.3.5.0', 'name' => 'Amusementsmuziek'],
         ];
@@ -164,13 +164,13 @@ final class CachedTaxonomyApiClientTest extends TestCase
         $this->baseTaxonomyApiClient
             ->expects($this->once())
             ->method('getMapping')
-            ->willReturn($mapping);
+            ->willReturn($nativeTerms);
 
-        $result1 = $this->cachedClient->getMapping();
-        $this->assertEquals($mapping, $result1);
+        $result1 = $this->cachedClient->getNativeTerms();
+        $this->assertEquals($nativeTerms, $result1);
 
-        $result2 = $this->cachedClient->getMapping();
-        $this->assertEquals($mapping, $result2);
+        $result2 = $this->cachedClient->getNativeTerms();
+        $this->assertEquals($nativeTerms, $result2);
     }
 
     /**
