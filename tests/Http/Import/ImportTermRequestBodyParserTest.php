@@ -9,6 +9,8 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
+use CultuurNet\UDB3\Place\PlaceFacilityResolver;
+use CultuurNet\UDB3\Place\PlaceTypeResolver;
 use PHPUnit\Framework\TestCase;
 
 final class ImportTermRequestBodyParserTest extends TestCase
@@ -19,7 +21,7 @@ final class ImportTermRequestBodyParserTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->importTermRequestBodyParser = new ImportTermRequestBodyParser(new PlaceCategoryResolver());
+        $this->importTermRequestBodyParser = new ImportTermRequestBodyParser(new PlaceCategoryResolver(new PlaceTypeResolver(), new PlaceFacilityResolver()));
     }
 
     /**

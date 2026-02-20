@@ -19,6 +19,9 @@ use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
+use CultuurNet\UDB3\Event\EventFacilityResolver;
+use CultuurNet\UDB3\Event\EventThemeResolver;
+use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
@@ -130,7 +133,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 ),
                 new LegacyEventRequestBodyParser($placeIriGenerator),
                 RemoveEmptyArraysRequestBodyParser::createForEvents(),
-                new ImportTermRequestBodyParser(new EventCategoryResolver()),
+                new ImportTermRequestBodyParser(new EventCategoryResolver(new EventTypeResolver(), new EventFacilityResolver(), new EventThemeResolver())),
                 new ImportPriceInfoRequestBodyParser(
                     [
                         'nl' => 'Basistarief',

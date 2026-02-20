@@ -6,6 +6,9 @@ namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
 use CultuurNet\UDB3\Event\Event;
+use CultuurNet\UDB3\Event\EventFacilityResolver;
+use CultuurNet\UDB3\Event\EventThemeResolver;
+use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
@@ -17,6 +20,8 @@ use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\Place;
+use CultuurNet\UDB3\Place\PlaceFacilityResolver;
+use CultuurNet\UDB3\Place\PlaceTypeResolver;
 use RuntimeException;
 
 final class UpdateFacilitiesHandler implements CommandHandler
@@ -62,10 +67,10 @@ final class UpdateFacilitiesHandler implements CommandHandler
     private function getCategoryResolver(Offer $offer): CategoryResolverInterface
     {
         if ($offer instanceof Event) {
-            return new EventCategoryResolver();
+            return new EventCategoryResolver(new EventTypeResolver(), new EventFacilityResolver(), new EventThemeResolver());
         }
         if ($offer instanceof Place) {
-            return new PlaceCategoryResolver();
+            return new PlaceCategoryResolver(new PlaceTypeResolver(), new PlaceFacilityResolver());
         }
         throw new RuntimeException('No CategoryResolverInterface found for unknown type ' . $offer::getOfferType()->toString());
     }
