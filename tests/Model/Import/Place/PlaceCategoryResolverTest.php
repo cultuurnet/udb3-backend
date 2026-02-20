@@ -18,15 +18,9 @@ final class PlaceCategoryResolverTest extends TestCase
 {
     private PlaceCategoryResolver $placeCategoryResolver;
 
-    /**
-     * @var TypeResolverInterface&MockObject
-     */
-    private $typeResolver;
+    private TypeResolverInterface&MockObject $typeResolver;
 
-    /**
-     * @var OfferFacilityResolverInterface&MockObject
-     */
-    private $facilityResolver;
+    private OfferFacilityResolverInterface&MockObject $facilityResolver;
 
     protected function setUp(): void
     {
