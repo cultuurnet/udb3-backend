@@ -18,5 +18,5 @@ interface TaxonomyApiClient
 
     public function getEventFacilities(): Categories;
 
-    public function getNativeMapping(): array;
+    public function getNativeTerms(): array;
 }

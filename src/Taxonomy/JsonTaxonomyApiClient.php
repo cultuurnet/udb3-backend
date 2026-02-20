@@ -70,7 +70,7 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
         return $this->getTermsByDomainAndScope(CategoryDomain::facility(), 'events');
     }
 
-    public function getNativeMapping(): array
+    public function getNativeTerms(): array
     {
         return $this->terms;
     }
