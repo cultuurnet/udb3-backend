@@ -6144,7 +6144,7 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-5017-docs",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
@@ -6170,7 +6170,7 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-5017-docs"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
             "time": "2026-01-07T09:05:09+00:00"
         },
