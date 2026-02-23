@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class DBALRepository implements RepositoryInterface
 {
@@ -32,7 +34,21 @@ class DBALRepository implements RepositoryInterface
         $q->execute();
     }
 
-    public function save(string $uuid, string $name, string $constraint = null): void
+    public function save(string $uuid, string $name, string $constraint = null, bool $updateExistingRole = false): void
+    {
+        try {
+            $this->insertRole($uuid, $name, $constraint);
+        } catch (UniqueConstraintViolationException $e) {
+            if (!$updateExistingRole) {
+                throw $e;
+            }
+
+            $this->updateRole($uuid, $name, $constraint);
+        }
+    }
+
+    /** @throws UniqueConstraintViolationException|Exception */
+    private function insertRole(string $uuid, string $name, ?string $constraint): void
     {
         $q = $this->connection->createQueryBuilder();
         $q
@@ -44,6 +60,20 @@ class DBALRepository implements RepositoryInterface
                     ColumnNames::CONSTRAINT_COLUMN => ':constraint',
                 ]
             )
+            ->setParameter('role_id', $uuid)
+            ->setParameter('role_name', $name)
+            ->setParameter('constraint', $constraint);
+        $q->execute();
+    }
+
+    private function updateRole(string $uuid, string $name, ?string $constraint): void
+    {
+        $q = $this->connection->createQueryBuilder();
+        $q
+            ->update($this->tableName)
+            ->where($this->connection->getExpressionBuilder()->eq(ColumnNames::UUID_COLUMN, ':role_id'))
+            ->set(ColumnNames::NAME_COLUMN, ':role_name')
+            ->set(ColumnNames::CONSTRAINT_COLUMN, ':constraint')
             ->setParameter('role_id', $uuid)
             ->setParameter('role_name', $name)
             ->setParameter('constraint', $constraint);
