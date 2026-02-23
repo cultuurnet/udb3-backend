@@ -12,7 +12,7 @@ use Exception;
 
 final class PlaceFacilityResolver implements OfferFacilityResolverInterface
 {
-    public function __construct(readonly Categories $facilities)
+    public function __construct(private readonly Categories $facilities)
     {
     }
 

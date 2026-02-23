@@ -12,7 +12,7 @@ use Exception;
 
 final class PlaceTypeResolver implements TypeResolverInterface
 {
-    public function __construct(readonly Categories $types)
+    public function __construct(private readonly Categories $types)
     {
     }
 

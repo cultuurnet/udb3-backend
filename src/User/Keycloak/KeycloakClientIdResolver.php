@@ -14,10 +14,10 @@ use Psr\Http\Client\ClientInterface;
 final class KeycloakClientIdResolver implements ClientIdResolver
 {
     public function __construct(
-        readonly ClientInterface $client,
-        readonly string $domain,
-        readonly string $realm,
-        readonly string $token
+        private readonly ClientInterface $client,
+        private readonly string $domain,
+        private readonly string $realm,
+        private readonly string $token
     ) {
     }
 
