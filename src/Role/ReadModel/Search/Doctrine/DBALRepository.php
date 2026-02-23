@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 
-use CultuurNet\UDB3\Role\ReadModel\Search\Exception\FailedToUpdateExistingRole;
 use CultuurNet\UDB3\Role\ReadModel\Search\RepositoryInterface;
 use CultuurNet\UDB3\Role\ReadModel\Search\Results;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 
 class DBALRepository implements RepositoryInterface
@@ -37,25 +37,47 @@ class DBALRepository implements RepositoryInterface
     public function save(string $uuid, string $name, string $constraint = null, bool $updateExistingRole = false): void
     {
         try {
-            $q = $this->connection->createQueryBuilder();
-            $q
-                ->insert($this->tableName)
-                ->values(
-                    [
-                        ColumnNames::UUID_COLUMN => ':role_id',
-                        ColumnNames::NAME_COLUMN => ':role_name',
-                        ColumnNames::CONSTRAINT_COLUMN => ':constraint',
-                    ]
-                )
-                ->setParameter('role_id', $uuid)
-                ->setParameter('role_name', $name)
-                ->setParameter('constraint', $constraint);
-            $q->execute();
+            $this->insertRole($uuid, $name, $constraint);
         } catch (UniqueConstraintViolationException $e) {
             if (!$updateExistingRole) {
-                throw FailedToUpdateExistingRole::fromUniqueConstraintViolationException($e);
+                throw $e;
             }
+
+            $this->updateRole($uuid, $name, $constraint);
         }
+    }
+
+    /** @throws UniqueConstraintViolationException|Exception */
+    private function insertRole(string $uuid, string $name, ?string $constraint): void
+    {
+        $q = $this->connection->createQueryBuilder();
+        $q
+            ->insert($this->tableName)
+            ->values(
+                [
+                    ColumnNames::UUID_COLUMN => ':role_id',
+                    ColumnNames::NAME_COLUMN => ':role_name',
+                    ColumnNames::CONSTRAINT_COLUMN => ':constraint',
+                ]
+            )
+            ->setParameter('role_id', $uuid)
+            ->setParameter('role_name', $name)
+            ->setParameter('constraint', $constraint);
+        $q->execute();
+    }
+
+    private function updateRole(string $uuid, string $name, ?string $constraint): void
+    {
+        $q = $this->connection->createQueryBuilder();
+        $q
+            ->update($this->tableName)
+            ->where($this->connection->getExpressionBuilder()->eq(ColumnNames::UUID_COLUMN, ':role_id'))
+            ->set(ColumnNames::NAME_COLUMN, ':role_name')
+            ->set(ColumnNames::CONSTRAINT_COLUMN, ':constraint')
+            ->setParameter('role_id', $uuid)
+            ->setParameter('role_name', $name)
+            ->setParameter('constraint', $constraint);
+        $q->execute();
     }
 
     public function search(string $query = '', int $limit = 10, int $start = 0): Results

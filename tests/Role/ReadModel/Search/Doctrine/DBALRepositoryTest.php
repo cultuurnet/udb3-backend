@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Role\ReadModel\Search\Doctrine;
 
 use CultuurNet\UDB3\DBALTestConnectionTrait;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use PHPUnit\Framework\TestCase;
 
 class DBALRepositoryTest extends TestCase
@@ -130,14 +131,24 @@ class DBALRepositoryTest extends TestCase
         // First save
         $this->dbalRepository->save($roleUuid, $roleName, $constraint);
 
-        // Second save with same UUID during replay (updateExistingRole = true) - should not throw exception
-        $this->dbalRepository->save($roleUuid, $roleName, $constraint, true);
+        $updatedName = 'Updated role name';
+        $updatedConstraint = 'zipcode:3000';
 
-        // Verify only one role exists
-        $sql = 'SELECT COUNT(*) as count FROM ' . $this->tableName . ' WHERE uuid = ?';
+        // Second save with same UUID during replay (updateExistingRole = true) - should update the existing role
+        $this->dbalRepository->save($roleUuid, $updatedName, $updatedConstraint, true);
+
+        // Verify only one role exists with updated data
+        $sql = 'SELECT * FROM ' . $this->tableName . ' WHERE uuid = ?';
         $result = $this->connection->executeQuery($sql, [$roleUuid])->fetchAssociative();
 
-        $this->assertEquals(1, $result['count']);
+        $this->assertEquals(
+            [
+                'uuid' => $roleUuid,
+                'name' => $updatedName,
+                'constraint_query' => $updatedConstraint,
+            ],
+            $result
+        );
     }
 
     /**
@@ -152,11 +163,10 @@ class DBALRepositoryTest extends TestCase
         // First save
         $this->dbalRepository->save($roleUuid, $roleName, $constraint);
 
-        // Expect exception when trying to save duplicate without updateExistingRole flag
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('UniqueConstraintViolationException occurred while saving role');
+        // Expect UniqueConstraintViolationException when trying to save duplicate without updateExistingRole flag
+        $this->expectException(UniqueConstraintViolationException::class);
 
-        // Second save with same UUID but updateExistingRole = false - should throw exception
+        // Second save with same UUID but updateExistingRole = false - should rethrow the exception
         $this->dbalRepository->save($roleUuid, $roleName, $constraint, false);
     }
 
