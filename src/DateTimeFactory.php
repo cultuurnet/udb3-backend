@@ -41,6 +41,24 @@ final class DateTimeFactory
             }
         }
 
+        // ISO-8601 allows datetimes without a timezone, which are considered "local time".
+        // Since almost all events are located in Belgium, we assume "Europe/Brussels" as the local timezone.
+        $acceptedFormatsWithoutTimezone = [
+            'Y-m-d\TH:i:s',
+            'Y-m-d\TH:i:s.v',
+            'Y-m-d\TH:i:s.u',
+        ];
+
+        $brusselsTimezone = new DateTimeZone('Europe/Brussels');
+
+        foreach ($acceptedFormatsWithoutTimezone as $acceptedFormat) {
+            $object = DateTimeImmutable::createFromFormat($acceptedFormat, $datetime, $brusselsTimezone);
+
+            if ($object instanceof DateTimeImmutable) {
+                return $object;
+            }
+        }
+
         // If we have not returned a DateTimeImmutable object by now, the $datetime string is in an unsupported format.
         // Throw a specific exception, so that it can be converted to a suitable ApiProblem higher up.
         throw new DateTimeInvalid($datetime . ' does not appear to be a valid ISO-8601 datetime string.');
