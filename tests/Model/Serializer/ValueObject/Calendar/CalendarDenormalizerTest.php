@@ -193,6 +193,64 @@ final class CalendarDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_falls_back_to_top_level_booking_info_for_multiple_calendar_sub_events_without_booking_info(): void
+    {
+        $data = [
+            'calendarType' => 'multiple',
+            'startDate' => '2021-05-17T08:00:00+00:00',
+            'endDate' => '2021-05-18T22:00:00+00:00',
+            'bookingInfo' => [
+                'phone' => '0123456789',
+                'email' => 'user@example.com',
+            ],
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                ],
+                [
+                    'startDate' => '2021-05-18T08:00:00+00:00',
+                    'endDate' => '2021-05-18T22:00:00+00:00',
+                ],
+            ],
+        ];
+
+        $topLevelBookingInfo = (new BookingInfo())
+            ->withTelephoneNumber(new TelephoneNumber('0123456789'))
+            ->withEmailAddress(new EmailAddress('user@example.com'));
+
+        $expected = new MultipleSubEventsCalendar(
+            new SubEvents(
+                new SubEvent(
+                    new DateRange(
+                        new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
+                        new DateTimeImmutable('2021-05-17T22:00:00+00:00')
+                    ),
+                    new Status(StatusType::Available()),
+                    BookingAvailability::Available(),
+                    $topLevelBookingInfo
+                ),
+                new SubEvent(
+                    new DateRange(
+                        new DateTimeImmutable('2021-05-18T08:00:00+00:00'),
+                        new DateTimeImmutable('2021-05-18T22:00:00+00:00')
+                    ),
+                    new Status(StatusType::Available()),
+                    BookingAvailability::Available(),
+                    $topLevelBookingInfo
+                )
+            )
+        );
+
+        $this->assertEquals(
+            $expected,
+            $this->denormalizer->denormalize($data, Calendar::class)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_denormalizes_a_multiple_calendar_with_booking_info_on_one_sub_event(): void
     {
         $data = [
