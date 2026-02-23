@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\String\Enum;
  * @method static AudienceType everyone()
  * @method static AudienceType members()
  * @method static AudienceType education()
+ * @method static AudienceType childrenOnly()
  */
 class AudienceType extends Enum
 {
@@ -19,6 +20,7 @@ class AudienceType extends Enum
             'everyone',
             'members',
             'education',
+            'childrenOnly',
         ];
     }
 }
