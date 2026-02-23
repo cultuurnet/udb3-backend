@@ -327,7 +327,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
                 ),
                 $calendar->getStatus(),
                 $calendar->getBookingAvailability(),
-                new BookingInfo(), // @todo Double check if this should be empty or $event->getBookingInfo() when we work on the Turtle conversion for BOA fields
+                new BookingInfo(), // @todo Use $event->getBookingInfo() when implementing Turtle conversion for BOA fields. A PeriodicCalendar has no per-subEvent bookingInfo, so the event-level bookingInfo is the correct source. For single/multiple calendars the subEvent's own bookingInfo is used via $calendar->getSubEvents() below.
             );
         }
 
