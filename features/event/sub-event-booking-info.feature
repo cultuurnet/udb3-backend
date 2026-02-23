@@ -108,7 +108,39 @@ Feature: Test SubEvent bookingInfo
     """
 
   Scenario: Update bookingInfo on one subEvent of a multiple calendar event
-    Given I create an event from "events/event-with-multiple-sub-events.json" and save the "url" as "eventUrl"
+    Given I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {
+        "nl": "Multiple calendar event"
+      },
+      "terms": [
+        {
+          "id": "0.50.4.0.0",
+          "label": "Concert",
+          "domain": "eventtype"
+        }
+      ],
+      "location": {
+        "@id": "%{placeUrl}"
+      },
+      "calendarType": "multiple",
+      "subEvent": [
+        {
+          "startDate": "2021-05-17T08:00:00+00:00",
+          "endDate": "2021-05-17T22:00:00+00:00"
+        },
+        {
+          "startDate": "2021-05-18T08:00:00+00:00",
+          "endDate": "2021-05-18T22:00:00+00:00"
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/"
+    And the response status should be "201"
+    And I keep the value of the JSON response at "url" as "eventUrl"
     When I set the JSON request payload to:
     """
     [
