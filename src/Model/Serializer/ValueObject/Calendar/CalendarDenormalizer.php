@@ -62,6 +62,11 @@ class CalendarDenormalizer implements DenormalizerInterface
         $bookingAvailabilityData = $data['bookingAvailability'] ?? ['type' => 'Available'];
         $topLevelBookingAvailability = $this->bookingAvailabilityDenormalizer->denormalize($bookingAvailabilityData, BookingAvailability::class);
 
+        $topLevelBookingInfo = null;
+        if (isset($data['bookingInfo'])) {
+            $topLevelBookingInfo = $this->bookingInfoDenormalizer->denormalize($data['bookingInfo'], BookingInfo::class);
+        }
+
         if (($data['calendarType'] === 'single' || $data['calendarType'] === 'multiple') && isset($data['subEvent'])) {
             $data['calendarType'] = count($data['subEvent']) === 1 ? 'single' : 'multiple';
         }
@@ -69,9 +74,9 @@ class CalendarDenormalizer implements DenormalizerInterface
         switch ($data['calendarType']) {
             case 'single':
                 if (isset($data['subEvent'][0])) {
-                    $subEvent = $this->denormalizeSubEvent($data['subEvent'][0], $topLevelStatus, $topLevelBookingAvailability);
+                    $subEvent = $this->denormalizeSubEvent($data['subEvent'][0], $topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo);
                 } else {
-                    $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus, $topLevelBookingAvailability);
+                    $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo);
                 }
                 $calendar = new SingleSubEventCalendar($subEvent);
                 if ($topLevelBookingAvailability !== null) {
@@ -85,8 +90,8 @@ class CalendarDenormalizer implements DenormalizerInterface
                 }
 
                 $subEvents = array_map(
-                    function (array $subEvent) use ($topLevelStatus, $topLevelBookingAvailability) {
-                        return $this->denormalizeSubEvent($subEvent, $topLevelStatus, $topLevelBookingAvailability);
+                    function (array $subEvent) use ($topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo) {
+                        return $this->denormalizeSubEvent($subEvent, $topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo);
                     },
                     $data['subEvent']
                 );
@@ -176,7 +181,8 @@ class CalendarDenormalizer implements DenormalizerInterface
     private function denormalizeSubEvent(
         array $subEventData,
         Status $topLevelStatus,
-        BookingAvailability $topLevelBookingAvailability
+        BookingAvailability $topLevelBookingAvailability,
+        ?BookingInfo $topLevelBookingInfo = null
     ): SubEvent {
         if (!isset($subEventData['status']['type'])) {
             $subEventData['status']['type'] = $topLevelStatus->getType()->toString();
@@ -197,7 +203,7 @@ class CalendarDenormalizer implements DenormalizerInterface
             BookingAvailability::class
         );
 
-        $bookingInfo = new BookingInfo();
+        $bookingInfo = $topLevelBookingInfo ?? new BookingInfo();
         if (isset($subEventData['bookingInfo'])) {
             $bookingInfo = $this->bookingInfoDenormalizer->denormalize($subEventData['bookingInfo'], BookingInfo::class);
         }

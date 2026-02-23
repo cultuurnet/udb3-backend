@@ -72,6 +72,92 @@ final class CalendarDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_falls_back_to_top_level_booking_info_when_sub_event_has_none(): void
+    {
+        $data = [
+            'calendarType' => 'single',
+            'startDate' => '2021-05-17T08:00:00+00:00',
+            'endDate' => '2021-05-17T22:00:00+00:00',
+            'bookingInfo' => [
+                'phone' => '0123456789',
+                'email' => 'user@example.com',
+            ],
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                ],
+            ],
+        ];
+
+        $expected = new SingleSubEventCalendar(
+            new SubEvent(
+                new DateRange(
+                    new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
+                    new DateTimeImmutable('2021-05-17T22:00:00+00:00')
+                ),
+                new Status(StatusType::Available()),
+                BookingAvailability::Available(),
+                (new BookingInfo())
+                    ->withTelephoneNumber(new TelephoneNumber('0123456789'))
+                    ->withEmailAddress(new EmailAddress('user@example.com'))
+            )
+        );
+
+        $this->assertEquals(
+            $expected,
+            $this->denormalizer->denormalize($data, Calendar::class)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_gives_sub_event_booking_info_priority_over_top_level_booking_info(): void
+    {
+        $data = [
+            'calendarType' => 'single',
+            'startDate' => '2021-05-17T08:00:00+00:00',
+            'endDate' => '2021-05-17T22:00:00+00:00',
+            'bookingInfo' => [
+                'phone' => '0000000000',
+                'email' => 'toplevel@example.com',
+            ],
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingInfo' => [
+                        'phone' => '0123456789',
+                        'email' => 'subevent@example.com',
+                    ],
+                ],
+            ],
+        ];
+
+        $expected = new SingleSubEventCalendar(
+            new SubEvent(
+                new DateRange(
+                    new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
+                    new DateTimeImmutable('2021-05-17T22:00:00+00:00')
+                ),
+                new Status(StatusType::Available()),
+                BookingAvailability::Available(),
+                (new BookingInfo())
+                    ->withTelephoneNumber(new TelephoneNumber('0123456789'))
+                    ->withEmailAddress(new EmailAddress('subevent@example.com'))
+            )
+        );
+
+        $this->assertEquals(
+            $expected,
+            $this->denormalizer->denormalize($data, Calendar::class)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_denormalizes_a_single_calendar_without_booking_info_on_the_sub_event(): void
     {
         $data = [
