@@ -8,7 +8,7 @@ interface RepositoryInterface
 {
     public function remove(string $uuid): void;
 
-    public function save(string $uuid, string $name, ?string $constraint = null): void;
+    public function save(string $uuid, string $name, ?string $constraint = null, bool $updateExistingRole = false): void;
 
     public function search(string $query = '', int $limit = 10, int $start = 0): Results;
 
