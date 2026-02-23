@@ -63,7 +63,7 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
                     new CombinedRequestBodyParser(
                         new LegacyEventRequestBodyParser($container->get('place_iri_generator')),
                         RemoveEmptyArraysRequestBodyParser::createForEvents(),
-                        new ImportTermRequestBodyParser(new EventCategoryResolver(new EventTypeResolver(), new EventFacilityResolver(), new EventThemeResolver())),
+                        new ImportTermRequestBodyParser($container->get(EventCategoryResolver::class)),
                         new ImportPriceInfoRequestBodyParser($container->get('config')['base_price_translations']),
                         ImagesPropertyPolyfillRequestBodyParser::createForEvents(
                             $container->get('media_object_iri_generator'),

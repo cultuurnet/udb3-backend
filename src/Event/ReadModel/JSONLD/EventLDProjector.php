@@ -107,7 +107,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
     protected CdbXMLImporter $cdbXMLImporter;
 
-    private EventTypeResolver $eventTypeResolver;
+    private TypeResolverInterface $eventTypeResolver;
 
     private SameAsForUitInVlaanderen $sameAs;
 
@@ -125,7 +125,7 @@ final class EventLDProjector extends OfferLDProjector implements
         IriOfferIdentifierFactoryInterface $iriOfferIdentifierFactory,
         CdbXMLImporter $cdbXMLImporter,
         JsonDocumentMetaDataEnricherInterface $jsonDocumentMetaDataEnricher,
-        EventTypeResolver $eventTypeResolver,
+        TypeResolverInterface $eventTypeResolver,
         array $basePriceTranslations,
         VideoNormalizer $videoNormalizer,
         Completeness $completeness,
