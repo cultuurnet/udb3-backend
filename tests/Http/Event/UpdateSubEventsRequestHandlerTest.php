@@ -426,6 +426,59 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     new SchemaError('/0/status', 'The required properties (type) are missing'),
                 ],
             ],
+            'one_subEvent_with_bookingInfo_phone_wrong_type' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingInfo' => (object)[
+                            'phone' => 123,
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/bookingInfo/phone', 'The data (integer) must match the type: string'),
+                ],
+            ],
+            'one_subEvent_with_bookingInfo_email_invalid' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingInfo' => (object)[
+                            'email' => '@publiq.be',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/bookingInfo/email', 'The data must match the \'email\' format'),
+                ],
+            ],
+            'one_subEvent_with_bookingInfo_url_invalid' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingInfo' => (object)[
+                            'url' => 'www.publiq.be',
+                            'urlLabel' => (object)['nl' => 'Reserveer'],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/bookingInfo/url', 'The data must match the \'uri\' format'),
+                ],
+            ],
+            'one_subEvent_with_bookingInfo_url_without_urlLabel' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingInfo' => (object)[
+                            'url' => 'https://www.publiq.be',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/bookingInfo', '\'urlLabel\' property is required by \'url\' property'),
+                ],
+            ],
         ];
     }
 }

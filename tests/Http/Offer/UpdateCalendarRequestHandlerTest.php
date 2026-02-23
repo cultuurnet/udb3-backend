@@ -811,6 +811,75 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     new SchemaError('/openingHours/0/closes', 'closes should not be before opens'),
                 ],
             ],
+            'single_subEvent_bookingInfo_phone_wrong_type' => [
+                'data' => (object) [
+                    'calendarType' => 'single',
+                    'subEvent' => [
+                        (object) [
+                            'startDate' => '2021-01-01T17:00:30+01:00',
+                            'endDate' => '2021-01-01T20:00:00+01:00',
+                            'bookingInfo' => (object) [
+                                'phone' => 123,
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/subEvent/0/bookingInfo/phone', 'The data (integer) must match the type: string'),
+                ],
+            ],
+            'single_subEvent_bookingInfo_email_invalid' => [
+                'data' => (object) [
+                    'calendarType' => 'single',
+                    'subEvent' => [
+                        (object) [
+                            'startDate' => '2021-01-01T17:00:30+01:00',
+                            'endDate' => '2021-01-01T20:00:00+01:00',
+                            'bookingInfo' => (object) [
+                                'email' => '@publiq.be',
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/subEvent/0/bookingInfo/email', 'The data must match the \'email\' format'),
+                ],
+            ],
+            'single_subEvent_bookingInfo_url_invalid' => [
+                'data' => (object) [
+                    'calendarType' => 'single',
+                    'subEvent' => [
+                        (object) [
+                            'startDate' => '2021-01-01T17:00:30+01:00',
+                            'endDate' => '2021-01-01T20:00:00+01:00',
+                            'bookingInfo' => (object) [
+                                'url' => 'www.publiq.be',
+                                'urlLabel' => (object) ['nl' => 'Reserveer'],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/subEvent/0/bookingInfo/url', 'The data must match the \'uri\' format'),
+                ],
+            ],
+            'single_subEvent_bookingInfo_url_without_urlLabel' => [
+                'data' => (object) [
+                    'calendarType' => 'single',
+                    'subEvent' => [
+                        (object) [
+                            'startDate' => '2021-01-01T17:00:30+01:00',
+                            'endDate' => '2021-01-01T20:00:00+01:00',
+                            'bookingInfo' => (object) [
+                                'url' => 'https://www.publiq.be',
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/subEvent/0/bookingInfo', '\'urlLabel\' property is required by \'url\' property'),
+                ],
+            ],
         ];
     }
 
@@ -1016,9 +1085,8 @@ class UpdateCalendarRequestHandlerTest extends TestCase
     /**
      * @test
      * @dataProvider invalidPlaceDataProvider
-     * @param array|object $data
      */
-    public function it_throws_an_api_problem_when_given_invalid_place_data($data, array $expectedSchemaErrors): void
+    public function it_throws_an_api_problem_when_given_invalid_place_data(array|object $data, array $expectedSchemaErrors): void
     {
         $requestBuilder = new Psr7RequestBuilder();
         if (is_array($data)) {
