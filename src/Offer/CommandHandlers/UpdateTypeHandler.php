@@ -23,7 +23,7 @@ final class UpdateTypeHandler implements CommandHandler
     private OfferRepository $offerRepository;
     private CategoryResolverInterface $eventCategoryResolver;
 
-    public function __construct(OfferRepository $offerRepository, readonly CategoryResolverInterface $placeCategoryResolver)
+    public function __construct(OfferRepository $offerRepository, private readonly CategoryResolverInterface $placeCategoryResolver)
     {
         $this->offerRepository = $offerRepository;
         $this->eventCategoryResolver = new EventCategoryResolver(new EventTypeResolver(), new EventFacilityResolver(), new EventThemeResolver());

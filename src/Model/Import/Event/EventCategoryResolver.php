@@ -15,9 +15,9 @@ use CultuurNet\UDB3\Offer\TypeResolverInterface;
 final class EventCategoryResolver implements CategoryResolverInterface
 {
     public function __construct(
-        readonly TypeResolverInterface $typeResolver,
-        readonly OfferFacilityResolverInterface $facilityResolver,
-        readonly ThemeResolverInterface $themeResolver
+        private readonly TypeResolverInterface $typeResolver,
+        private readonly OfferFacilityResolverInterface $facilityResolver,
+        private readonly ThemeResolverInterface $themeResolver
     ) {
     }
 

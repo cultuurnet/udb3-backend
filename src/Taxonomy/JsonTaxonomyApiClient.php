@@ -19,9 +19,9 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
     private array $terms;
 
     public function __construct(
-        readonly ClientInterface $client,
-        readonly string $termsEndpoint,
-        readonly LoggerInterface $logger
+        private readonly ClientInterface $client,
+        private readonly string $termsEndpoint,
+        private readonly LoggerInterface $logger
     ) {
         $request = new Request(
             'GET',

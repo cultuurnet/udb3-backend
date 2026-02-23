@@ -25,7 +25,7 @@ final class UpdateFacilitiesHandler implements CommandHandler
 {
     private OfferRepository $offerRepository;
 
-    public function __construct(OfferRepository $offer, readonly CategoryResolverInterface $placeCategoryResolver)
+    public function __construct(OfferRepository $offer, private readonly CategoryResolverInterface $placeCategoryResolver)
     {
         $this->offerRepository = $offer;
     }

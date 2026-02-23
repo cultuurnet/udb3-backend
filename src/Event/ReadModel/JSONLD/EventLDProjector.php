@@ -129,7 +129,7 @@ final class EventLDProjector extends OfferLDProjector implements
         array $basePriceTranslations,
         VideoNormalizer $videoNormalizer,
         Completeness $completeness,
-        readonly TypeResolverInterface $placeTypeResolver
+        private readonly TypeResolverInterface $placeTypeResolver
     ) {
         parent::__construct(
             $repository,

@@ -8,7 +8,7 @@ use Exception;
 
 final class UnmatchedApiKey extends Exception
 {
-    public function __construct(readonly string $apiKey)
+    public function __construct(private readonly string $apiKey)
     {
         parent::__construct($this->apiKey . ' could not be matched to a clientId.');
     }
