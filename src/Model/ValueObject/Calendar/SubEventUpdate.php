@@ -81,8 +81,8 @@ final class SubEventUpdate
 
     public function withBookingInfo(?BookingInfo $bookingInfo): self
     {
-        $clone = clone $this;
-        $clone->bookingInfo = $bookingInfo;
-        return $clone;
+        $c = clone $this;
+        $c->bookingInfo = $bookingInfo;
+        return $c;
     }
 }
