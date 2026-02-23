@@ -11,7 +11,7 @@ final class AudienceTypeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_have_four_allowed_values(): void
+    public function it_supports_only_allowed_values(): void
     {
         $this->assertEquals(
             [
