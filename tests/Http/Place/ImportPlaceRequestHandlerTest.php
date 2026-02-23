@@ -86,6 +86,8 @@ use CultuurNet\UDB3\Place\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Events\Moderation\Published;
 use CultuurNet\UDB3\Place\Place;
+use CultuurNet\UDB3\Place\PlaceFacilityResolver;
+use CultuurNet\UDB3\Place\PlaceTypeResolver;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -5277,7 +5279,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         return new CombinedRequestBodyParser(
             new LegacyPlaceRequestBodyParser(),
             RemoveEmptyArraysRequestBodyParser::createForPlaces(),
-            new ImportTermRequestBodyParser(new PlaceCategoryResolver()),
+            new ImportTermRequestBodyParser(new PlaceCategoryResolver(new PlaceTypeResolver(), new PlaceFacilityResolver())),
             new ImportPriceInfoRequestBodyParser(
                 [
                     'nl' => 'Basistarief',
