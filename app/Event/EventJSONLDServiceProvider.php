@@ -42,6 +42,7 @@ use CultuurNet\UDB3\Offer\ReadModel\JSONLD\PropertyPolyfillOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\TermLabelOfferRepositoryDecorator;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
+use CultuurNet\UDB3\Place\PlaceTypeResolver;
 use CultuurNet\UDB3\ReadModel\BroadcastingDocumentRepositoryDecorator;
 use CultuurNet\UDB3\ReadModel\JsonDocumentLanguageEnricher;
 use CultuurNet\UDB3\Term\TermRepository;
@@ -176,7 +177,8 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
                     new VideoNormalizer($container->get('config')['media']['video_default_copyright']),
                     new CompletenessFromWeights(
                         Weights::fromConfig($container->get('config')['completeness']['event'])
-                    )
+                    ),
+                    $container->get(PlaceTypeResolver::class)
                 );
 
                 $eventLDProjector->setLogger(LoggerFactory::create($container, LoggerName::forWeb()));

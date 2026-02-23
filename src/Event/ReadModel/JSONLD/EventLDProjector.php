@@ -85,8 +85,8 @@ use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
+use CultuurNet\UDB3\Offer\TypeResolverInterface;
 use CultuurNet\UDB3\Place\LocalPlaceService;
-use CultuurNet\UDB3\Place\PlaceTypeResolver;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\ReadModel\JsonDocumentMetaDataEnricherInterface;
@@ -109,8 +109,6 @@ final class EventLDProjector extends OfferLDProjector implements
 
     private EventTypeResolver $eventTypeResolver;
 
-    private PlaceTypeResolver $placeTypeResolver;
-
     private SameAsForUitInVlaanderen $sameAs;
 
     /**
@@ -130,7 +128,8 @@ final class EventLDProjector extends OfferLDProjector implements
         EventTypeResolver $eventTypeResolver,
         array $basePriceTranslations,
         VideoNormalizer $videoNormalizer,
-        Completeness $completeness
+        Completeness $completeness,
+        private readonly TypeResolverInterface $placeTypeResolver
     ) {
         parent::__construct(
             $repository,
@@ -151,7 +150,6 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $this->iriOfferIdentifierFactory = $iriOfferIdentifierFactory;
         $this->eventTypeResolver = $eventTypeResolver;
-        $this->placeTypeResolver = new PlaceTypeResolver();
         $this->sameAs = new SameAsForUitInVlaanderen();
     }
 

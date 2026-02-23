@@ -19,8 +19,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class DeleteVerenigingsloketConnectionRequestHandler implements RequestHandlerInterface
 {
-    public function __construct(private readonly VerenigingsloketConnector $api, private readonly PermissionVoter $voter, private readonly string $currentUserId)
-    {
+    public function __construct(
+        private readonly VerenigingsloketConnector $api,
+        private readonly PermissionVoter $voter,
+        private readonly string $currentUserId
+    ) {
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface

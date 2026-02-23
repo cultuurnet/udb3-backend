@@ -8,7 +8,7 @@ use CultuurNet\UDB3\User\Exceptions\UnmatchedApiKey;
 
 final class InMemoryApiKeysMatchedToClientIds implements ApiKeysMatchedToClientIds
 {
-    public function __construct(readonly array $apiKeysMatchedToClientIds)
+    public function __construct(private readonly array $apiKeysMatchedToClientIds)
     {
     }
 

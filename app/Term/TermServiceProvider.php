@@ -7,6 +7,9 @@ namespace CultuurNet\UDB3\Term;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
+use CultuurNet\UDB3\Place\PlaceFacilityResolver;
+use CultuurNet\UDB3\Place\PlaceTypeResolver;
 use CultuurNet\UDB3\Taxonomy\JsonTaxonomyApiClient;
 use CultuurNet\UDB3\Taxonomy\TaxonomyApiClient;
 use GuzzleHttp\Client;
@@ -18,6 +21,9 @@ final class TermServiceProvider extends AbstractServiceProvider
         return [
             TaxonomyApiClient::class,
             TermRepository::class,
+            PlaceTypeResolver::class,
+            PlaceFacilityResolver::class,
+            PlaceCategoryResolver::class,
         ];
     }
 
@@ -41,6 +47,32 @@ final class TermServiceProvider extends AbstractServiceProvider
                 $taxonomyApiClient = $container->get(TaxonomyApiClient::class);
                 return new TermRepository($taxonomyApiClient->getNativeTerms());
             }
+        );
+
+        $container->addShared(
+            PlaceTypeResolver::class,
+            function () use ($container): PlaceTypeResolver {
+                /** @var TaxonomyApiClient $taxonomyApiClient */
+                $taxonomyApiClient = $container->get(TaxonomyApiClient::class);
+                return new PlaceTypeResolver($taxonomyApiClient->getPlaceTypes());
+            }
+        );
+
+        $container->addShared(
+            PlaceFacilityResolver::class,
+            function () use ($container): PlaceFacilityResolver {
+                /** @var TaxonomyApiClient $taxonomyApiClient */
+                $taxonomyApiClient = $container->get(TaxonomyApiClient::class);
+                return new PlaceFacilityResolver($taxonomyApiClient->getPlaceFacilities());
+            }
+        );
+
+        $container->addShared(
+            PlaceCategoryResolver::class,
+            fn () => new PlaceCategoryResolver(
+                $container->get(PlaceTypeResolver::class),
+                $container->get(PlaceFacilityResolver::class)
+            )
         );
     }
 }
