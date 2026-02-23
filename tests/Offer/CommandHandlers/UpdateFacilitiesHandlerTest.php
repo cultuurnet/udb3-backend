@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
+use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -22,16 +23,59 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateFacilities;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class UpdateFacilitiesHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): UpdateFacilitiesHandler
     {
+        /** @var CategoryResolverInterface&MockObject $eventCategoryResolver */
+        $eventCategoryResolver = $this->createMock(CategoryResolverInterface::class);
+        $eventCategoryResolver->method('byIdInDomain')
+            ->willReturnCallback(function (CategoryID $categoryID, CategoryDomain $domain) {
+                $facilityMap = [
+                    '3.13.1.0.0' => new Category(
+                        new CategoryID('3.13.1.0.0'),
+                        new CategoryLabel('Voorzieningen voor assistentiehonden'),
+                        CategoryDomain::facility()
+                    ),
+                    '3.27.0.0.0' => new Category(
+                        new CategoryID('3.27.0.0.0'),
+                        new CategoryLabel('Rolstoeltoegankelijk'),
+                        CategoryDomain::facility()
+                    ),
+                ];
+
+                return $facilityMap[$categoryID->toString()] ?? null;
+            });
+
+        /** @var CategoryResolverInterface&MockObject $placeCategoryResolver */
+        $placeCategoryResolver = $this->createMock(CategoryResolverInterface::class);
+        $placeCategoryResolver->method('byIdInDomain')
+            ->willReturnCallback(function (CategoryID $categoryID, CategoryDomain $domain) {
+                $facilityMap = [
+                    '3.13.1.0.0' => new Category(
+                        new CategoryID('3.13.1.0.0'),
+                        new CategoryLabel('Voorzieningen voor assistentiehonden'),
+                        CategoryDomain::facility()
+                    ),
+                    '3.27.0.0.0' => new Category(
+                        new CategoryID('3.27.0.0.0'),
+                        new CategoryLabel('Rolstoeltoegankelijk'),
+                        CategoryDomain::facility()
+                    ),
+                ];
+
+                return $facilityMap[$categoryID->toString()] ?? null;
+            });
+
         return new UpdateFacilitiesHandler(
             new OfferRepository(
                 new EventRepository($eventStore, $eventBus),
                 new PlaceRepository($eventStore, $eventBus)
-            )
+            ),
+            $eventCategoryResolver,
+            $placeCategoryResolver
         );
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -16,7 +17,15 @@ final class EventThemeResolverTest extends TestCase
 
     public function setUp(): void
     {
-        $this->themeResolver = new EventThemeResolver();
+        $this->themeResolver = new EventThemeResolver(
+            new Categories(
+                new Category(
+                    new CategoryID('0.52.0.0.0'),
+                    new CategoryLabel('Circus'),
+                    CategoryDomain::theme()
+                )
+            )
+        );
     }
 
     /**

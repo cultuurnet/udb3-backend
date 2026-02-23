@@ -6144,19 +6144,18 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-main",
+            "version": "dev-III-5017-docs",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "232d2eb4047b664af35e46c52158aa9fadb0644a"
+                "reference": "645ad9890a335a90fc32a556d8091812c7d2e082"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/232d2eb4047b664af35e46c52158aa9fadb0644a",
-                "reference": "232d2eb4047b664af35e46c52158aa9fadb0644a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/645ad9890a335a90fc32a556d8091812c7d2e082",
+                "reference": "645ad9890a335a90fc32a556d8091812c7d2e082",
                 "shasum": ""
             },
-            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6171,9 +6170,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7040/add-bookinginfo-to-subevent"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-5017-docs"
             },
-            "time": "2026-02-20T08:48:56+00:00"
+            "time": "2026-01-07T09:05:09+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

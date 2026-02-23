@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Kinepolis\Parser;
 
-use CultuurNet\UDB3\Event\EventThemeResolver;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedMovie;
 use CultuurNet\UDB3\Kinepolis\ValueObject\ParsedPriceForATheater;
@@ -14,6 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Offer\ThemeResolverInterface;
 
 final class KinepolisMovieParser implements MovieParser
 {
@@ -27,7 +27,8 @@ final class KinepolisMovieParser implements MovieParser
     public function __construct(
         array $termsMapper,
         array $theatreMapper,
-        DateParser $dateParser
+        DateParser $dateParser,
+        readonly ThemeResolverInterface $eventThemeResolver
     ) {
         $this->termsMapper = $termsMapper;
         $this->theatreMapper = $theatreMapper;
@@ -73,7 +74,7 @@ final class KinepolisMovieParser implements MovieParser
                     $this->generateMovieId($mid, $theatreId, $is3D),
                     new Title($title),
                     new LocationId($this->getLocationId($theatreId)),
-                    (new EventThemeResolver())->byId($themeId),
+                    $this->eventThemeResolver->byId($themeId),
                     $calendar,
                     new PriceInfo(
                         $parsedPrice->getBaseTariff($isLong, $is3D),

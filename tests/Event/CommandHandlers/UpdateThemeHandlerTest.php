@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
+use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -20,12 +21,38 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class UpdateThemeHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): UpdateThemeHandler
     {
-        return new UpdateThemeHandler(new EventRepository($eventStore, $eventBus));
+        /** @var CategoryResolverInterface&MockObject $eventCategoryResolver */
+        $eventCategoryResolver = $this->createMock(CategoryResolverInterface::class);
+
+        // Configure the mock to return appropriate Category objects for valid theme IDs
+        $eventCategoryResolver->method('byIdInDomain')
+            ->willReturnCallback(function (CategoryID $categoryID, CategoryDomain $domain) {
+                $themeMap = [
+                    '1.8.3.5.0' => new Category(
+                        new CategoryID('1.8.3.5.0'),
+                        new CategoryLabel('Amusementsmuziek'),
+                        CategoryDomain::theme()
+                    ),
+                    '1.8.3.3.0' => new Category(
+                        new CategoryID('1.8.3.3.0'),
+                        new CategoryLabel('Dance muziek'),
+                        CategoryDomain::theme()
+                    ),
+                ];
+
+                return $themeMap[$categoryID->toString()] ?? null;
+            });
+
+        return new UpdateThemeHandler(
+            new EventRepository($eventStore, $eventBus),
+            $eventCategoryResolver
+        );
     }
 
     /**

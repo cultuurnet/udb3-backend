@@ -8,6 +8,8 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\Role\Events\ConstraintRemoved;
@@ -29,10 +31,13 @@ class ProjectorTest extends TestCase
 
     private RepositoryInterface&MockObject $repository;
 
+    private DomainMessageSpecificationInterface&MockObject $isReplay;
+
     public function setUp(): void
     {
         $this->repository = $this->createMock(RepositoryInterface::class);
-        $this->projector = new Projector($this->repository);
+        $this->isReplay = $this->createMock(DomainMessageSpecificationInterface::class);
+        $this->projector = new Projector($this->repository, $this->isReplay);
         $this->domainMessage = new DomainMessage('id', 0, new Metadata(), '', DateTime::now());
         $this->uuid = new Uuid('58a35de9-eb6b-46b7-89ab-26c598304a67');
     }
@@ -47,12 +52,50 @@ class ProjectorTest extends TestCase
             'role_name'
         );
 
+        $this->isReplay
+            ->expects($this->once())
+            ->method('isSatisfiedBy')
+            ->with($this->domainMessage)
+            ->willReturn(false);
+
         $this->repository
             ->expects($this->once())
             ->method('save')
-            ->with($this->uuid->toString(), 'role_name');
+            ->with($this->uuid->toString(), 'role_name', null, false);
 
         $this->projector->applyRoleCreated($roleCreated, $this->domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_project_a_created_role_during_replay(): void
+    {
+        $roleCreated = new RoleCreated(
+            $this->uuid,
+            'role_name'
+        );
+
+        $domainMessage = new DomainMessage(
+            'id',
+            0,
+            new Metadata([DomainMessageIsReplayed::METADATA_REPLAY_KEY => true]),
+            '',
+            DateTime::now()
+        );
+
+        $this->isReplay
+            ->expects($this->once())
+            ->method('isSatisfiedBy')
+            ->with($domainMessage)
+            ->willReturn(true);
+
+        $this->repository
+            ->expects($this->once())
+            ->method('save')
+            ->with($this->uuid->toString(), 'role_name', null, true);
+
+        $this->projector->applyRoleCreated($roleCreated, $domainMessage);
     }
 
     /**

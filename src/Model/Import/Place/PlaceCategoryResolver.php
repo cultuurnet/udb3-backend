@@ -14,8 +14,8 @@ use CultuurNet\UDB3\Offer\TypeResolverInterface;
 class PlaceCategoryResolver implements CategoryResolverInterface
 {
     public function __construct(
-        readonly TypeResolverInterface $typeResolver,
-        readonly OfferFacilityResolverInterface $facilityResolver,
+        private readonly TypeResolverInterface $typeResolver,
+        private readonly OfferFacilityResolverInterface $facilityResolver,
     ) {
     }
 

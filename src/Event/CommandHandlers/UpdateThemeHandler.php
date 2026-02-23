@@ -8,10 +8,6 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Event;
-use CultuurNet\UDB3\Event\EventFacilityResolver;
-use CultuurNet\UDB3\Event\EventThemeResolver;
-use CultuurNet\UDB3\Event\EventTypeResolver;
-use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -20,12 +16,10 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 final class UpdateThemeHandler implements CommandHandler
 {
     private Repository $eventRepository;
-    private CategoryResolverInterface $eventCategoryResolver;
 
-    public function __construct(Repository $eventRepository)
+    public function __construct(Repository $eventRepository, readonly CategoryResolverInterface $eventCategoryResolver)
     {
         $this->eventRepository = $eventRepository;
-        $this->eventCategoryResolver = new EventCategoryResolver(new EventTypeResolver(), new EventFacilityResolver(), new EventThemeResolver());
     }
 
     public function handle($command): void

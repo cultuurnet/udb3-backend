@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Offer\OfferFacilityResolverInterface;
-use CultuurNet\UDB3\Place\PlaceFacilityResolver;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -83,10 +82,17 @@ class FacilitiesJSONDeserializerTest extends TestCase
      */
     public function it_should_return_a_facilities_list_from_valid_data_with_multiple_facilities(): void
     {
-        $deserializer = new FacilitiesJSONDeserializer(new PlaceFacilityResolver());
         $wheelchairFacility = new Category(new CategoryID('3.13.1.0.0'), new CategoryLabel('Voorzieningen voor assistentiehonden'), CategoryDomain::facility());
         $audioDescriptionFacility = new Category(new CategoryID('3.25.0.0.0'), new CategoryLabel('Contactpunt voor personen met handicap'), CategoryDomain::facility());
 
+        $this->facilityResolver->expects($this->exactly(2))
+            ->method('byId')
+            ->willReturnMap([
+                ['3.13.1.0.0', $wheelchairFacility],
+                ['3.25.0.0.0', $audioDescriptionFacility],
+            ]);
+
+        $deserializer = new FacilitiesJSONDeserializer($this->facilityResolver);
         $expectedFacilities = [$wheelchairFacility, $audioDescriptionFacility];
 
         $facilities = $deserializer->deserialize('{"facilities": ["3.13.1.0.0", "3.25.0.0.0"]}');
@@ -99,7 +105,20 @@ class FacilitiesJSONDeserializerTest extends TestCase
      */
     public function it_should_not_deserialize_unresolvable_facility_ids(): void
     {
-        $deserializer = new FacilitiesJSONDeserializer(new PlaceFacilityResolver());
+        $audioDescriptionFacility = new Category(new CategoryID('3.25.0.0.0'), new CategoryLabel('Contactpunt voor personen met handicap'), CategoryDomain::facility());
+
+        $this->facilityResolver->method('byId')
+            ->willReturnCallback(function (string $id) use ($audioDescriptionFacility) {
+                if ($id === '3.25.0.0.0') {
+                    return $audioDescriptionFacility;
+                }
+                if ($id === '1.8.2') {
+                    throw new \Exception("Unknown facility id '1.8.2'");
+                }
+                throw new \Exception("Unknown facility id '$id'");
+            });
+
+        $deserializer = new FacilitiesJSONDeserializer($this->facilityResolver);
 
         $this->expectExceptionMessage("Unknown facility id '1.8.2'");
 
