@@ -1,0 +1,34 @@
+<?php
+
+namespace CultuurNet\UDB3\Http\Event;
+
+use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
+use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
+use CultuurNet\UDB3\Http\Request\RouteParameters;
+use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\RequestHandlerInterface;
+
+final class FaqRequestHandler implements RequestHandlerInterface
+{
+    public function __construct(private readonly CommandBus $commandBus)
+    {
+
+    }
+
+    public function handle(ServerRequestInterface $request): ResponseInterface
+    {
+        $routeParameters = new RouteParameters($request);
+        $eventId = $routeParameters->getEventId();
+
+        $parser = RequestBodyParserFactory::createBaseParser(
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_FAQ_PUT)
+        );
+
+
+        return new NoContentResponse();
+    }
+}
