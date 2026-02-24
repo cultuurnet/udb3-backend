@@ -44,6 +44,7 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandlerInt
                     JsonSchemaLocator::PLACE_BOOKING_AVAILABILITY
                 )
             ),
+            new BookingAvailabilityCapacityValidatingRequestBodyParser(),
             new DenormalizingRequestBodyParser(new BookingAvailabilityDenormalizer(), BookingAvailability::class)
         );
 

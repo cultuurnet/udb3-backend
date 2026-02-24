@@ -34,6 +34,7 @@ class UpdateSubEventsRequestHandler implements RequestHandlerInterface
         $this->updateSubEventsParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH),
             new DateRangeValidatingRequestBodyParser(),
+            new SubEventCapacityValidatingRequestBodyParser(),
             new DenormalizingRequestBodyParser(new SubEventUpdatesDenormalizer(), SubEventUpdates::class)
         );
     }
