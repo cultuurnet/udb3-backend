@@ -26,9 +26,9 @@ final class BookingAvailabilityCapacityValidatingRequestBodyParserTest extends T
     /**
      * @test
      */
-    public function it_passes_through_when_availability_is_less_than_capacity(): void
+    public function it_passes_through_when_remainingCapacity_is_less_than_capacity(): void
     {
-        $body = (object) ['capacity' => 100, 'availability' => 42];
+        $body = (object) ['capacity' => 100, 'remainingCapacity' => 42];
 
         $request = $this->requestBuilder->build('PUT')->withParsedBody($body);
 
@@ -40,9 +40,9 @@ final class BookingAvailabilityCapacityValidatingRequestBodyParserTest extends T
     /**
      * @test
      */
-    public function it_passes_through_when_availability_equals_capacity(): void
+    public function it_passes_through_when_remainingCapacity_equals_capacity(): void
     {
-        $body = (object) ['capacity' => 100, 'availability' => 100];
+        $body = (object) ['capacity' => 100, 'remainingCapacity' => 100];
 
         $request = $this->requestBuilder->build('PUT')->withParsedBody($body);
 
@@ -68,9 +68,9 @@ final class BookingAvailabilityCapacityValidatingRequestBodyParserTest extends T
     /**
      * @test
      */
-    public function it_passes_through_when_only_availability_is_set(): void
+    public function it_passes_through_when_only_remainingCapacity_is_set(): void
     {
-        $body = (object) ['availability' => 42];
+        $body = (object) ['remainingCapacity' => 42];
 
         $request = $this->requestBuilder->build('PUT')->withParsedBody($body);
 
@@ -82,15 +82,15 @@ final class BookingAvailabilityCapacityValidatingRequestBodyParserTest extends T
     /**
      * @test
      */
-    public function it_throws_when_availability_exceeds_capacity(): void
+    public function it_throws_when_remainingCapacity_exceeds_capacity(): void
     {
-        $body = (object) ['capacity' => 50, 'availability' => 100];
+        $body = (object) ['capacity' => 50, 'remainingCapacity' => 100];
 
         $request = $this->requestBuilder->build('PUT')->withParsedBody($body);
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/availability', 'availability must be less than or equal to capacity')
+                new SchemaError('/remainingCapacity', 'remainingCapacity must be less than or equal to capacity')
             ),
             fn () => $this->parser->parse($request)
         );
@@ -99,9 +99,9 @@ final class BookingAvailabilityCapacityValidatingRequestBodyParserTest extends T
     /**
      * @test
      */
-    public function it_passes_through_when_availability_is_zero(): void
+    public function it_passes_through_when_remainingCapacity_is_zero(): void
     {
-        $body = (object) ['capacity' => 100, 'availability' => 0];
+        $body = (object) ['capacity' => 100, 'remainingCapacity' => 0];
 
         $request = $this->requestBuilder->build('PUT')->withParsedBody($body);
 

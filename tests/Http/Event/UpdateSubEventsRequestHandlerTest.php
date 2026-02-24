@@ -271,13 +271,13 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable())),
                 ),
             ],
-            'one_subEvent_with_capacity_and_availability' => [
+            'one_subEvent_with_capacity_and_remainingCapacity' => [
                 'data' => [
                     (object)[
                         'id' => 1,
                         'bookingAvailability' => (object)[
                             'capacity' => 100,
-                            'availability' => 42,
+                            'remainingCapacity' => 42,
                         ],
                     ],
                 ],
@@ -287,17 +287,17 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         ->withBookingAvailability(
                             BookingAvailability::Available()
                                 ->withCapacity(100)
-                                ->withAvailability(42)
+                                ->withRemainingCapacity(42)
                         ),
                 ),
             ],
-            'one_subEvent_with_zero_availability_derives_unavailable_type' => [
+            'one_subEvent_with_zero_remainingCapacity_derives_unavailable_type' => [
                 'data' => [
                     (object)[
                         'id' => 1,
                         'bookingAvailability' => (object)[
                             'capacity' => 100,
-                            'availability' => 0,
+                            'remainingCapacity' => 0,
                         ],
                     ],
                 ],
@@ -307,7 +307,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         ->withBookingAvailability(
                             BookingAvailability::Unavailable()
                                 ->withCapacity(100)
-                                ->withAvailability(0)
+                                ->withRemainingCapacity(0)
                         ),
                 ),
             ],
@@ -519,33 +519,33 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     new SchemaError('/0/bookingInfo', '\'urlLabel\' property is required by \'url\' property'),
                 ],
             ],
-            'one_subEvent_with_status_and_availability_are_mutually_exclusive' => [
+            'one_subEvent_with_status_and_remainingCapacity_are_mutually_exclusive' => [
                 'data' => [
                     (object)[
                         'id' => 0,
                         'status' => (object)['type' => 'Available'],
                         'bookingAvailability' => (object)[
                             'capacity' => 100,
-                            'availability' => 42,
+                            'remainingCapacity' => 42,
                         ],
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/0/status', 'status and bookingAvailability.availability are mutually exclusive'),
+                    new SchemaError('/0/status', 'status and bookingAvailability.remainingCapacity are mutually exclusive'),
                 ],
             ],
-            'one_subEvent_with_availability_exceeding_capacity' => [
+            'one_subEvent_with_remainingCapacity_exceeding_capacity' => [
                 'data' => [
                     (object)[
                         'id' => 0,
                         'bookingAvailability' => (object)[
                             'capacity' => 10,
-                            'availability' => 99,
+                            'remainingCapacity' => 99,
                         ],
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/0/bookingAvailability/availability', 'availability must be less than or equal to capacity'),
+                    new SchemaError('/0/bookingAvailability/remainingCapacity', 'remainingCapacity must be less than or equal to capacity'),
                 ],
             ],
         ];

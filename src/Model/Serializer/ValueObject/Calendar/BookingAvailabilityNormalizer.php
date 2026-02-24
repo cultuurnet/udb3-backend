@@ -20,8 +20,8 @@ final class BookingAvailabilityNormalizer implements NormalizerInterface
             $result['capacity'] = $bookingAvailability->getCapacity();
         }
 
-        if ($bookingAvailability->getAvailability() !== null) {
-            $result['availability'] = $bookingAvailability->getAvailability();
+        if ($bookingAvailability->getRemainingCapacity() !== null) {
+            $result['remainingCapacity'] = $bookingAvailability->getRemainingCapacity();
         }
 
         return $result;

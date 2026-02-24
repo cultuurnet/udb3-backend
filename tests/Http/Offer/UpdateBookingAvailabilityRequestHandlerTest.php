@@ -99,7 +99,7 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_fails_when_neither_type_nor_availability_is_provided_for_events(): void
+    public function it_fails_when_neither_type_nor_remainingCapacity_is_provided_for_events(): void
     {
         $given = $this->requestBuilder
             ->withRouteParameter('offerType', 'events')
@@ -157,12 +157,12 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_allows_capacity_and_availability_on_events(): void
+    public function it_allows_capacity_and_remainingCapacity_on_events(): void
     {
         $given = $this->requestBuilder
             ->withRouteParameter('offerType', 'events')
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
-            ->withBodyFromString('{"capacity":100,"availability":42}')
+            ->withBodyFromString('{"capacity":100,"remainingCapacity":42}')
             ->build('PUT');
 
         $this->requestHandler->handle($given);
@@ -173,7 +173,7 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
                     '609a8214-51c9-48c0-903f-840a4f38852f',
                     BookingAvailability::Available()
                         ->withCapacity(100)
-                        ->withAvailability(42)
+                        ->withRemainingCapacity(42)
                 ),
             ],
             $this->commandBus->getRecordedCommands()
@@ -183,12 +183,12 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_derives_unavailable_type_from_zero_availability_on_events(): void
+    public function it_derives_unavailable_type_from_zero_remainingCapacity_on_events(): void
     {
         $given = $this->requestBuilder
             ->withRouteParameter('offerType', 'events')
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
-            ->withBodyFromString('{"capacity":100,"availability":0}')
+            ->withBodyFromString('{"capacity":100,"remainingCapacity":0}')
             ->build('PUT');
 
         $this->requestHandler->handle($given);
@@ -199,7 +199,7 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
                     '609a8214-51c9-48c0-903f-840a4f38852f',
                     BookingAvailability::Unavailable()
                         ->withCapacity(100)
-                        ->withAvailability(0)
+                        ->withRemainingCapacity(0)
                 ),
             ],
             $this->commandBus->getRecordedCommands()
@@ -209,17 +209,17 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_fails_when_availability_exceeds_capacity_on_events(): void
+    public function it_fails_when_remainingCapacity_exceeds_capacity_on_events(): void
     {
         $given = $this->requestBuilder
             ->withRouteParameter('offerType', 'events')
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
-            ->withBodyFromString('{"capacity":10,"availability":99}')
+            ->withBodyFromString('{"capacity":10,"remainingCapacity":99}')
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/availability', 'availability must be less than or equal to capacity')
+                new SchemaError('/remainingCapacity', 'remainingCapacity must be less than or equal to capacity')
             ),
             fn () => $this->requestHandler->handle($given)
         );

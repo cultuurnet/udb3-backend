@@ -25,21 +25,21 @@ final class SubEventCapacityValidatingRequestBodyParser implements RequestBodyPa
                 ? $subEvent->bookingAvailability
                 : null;
 
-            if ($bookingAvailability !== null && isset($bookingAvailability->availability, $subEvent->status)) {
+            if ($bookingAvailability !== null && isset($bookingAvailability->remainingCapacity, $subEvent->status)) {
                 $errors[] = new SchemaError(
                     '/' . $key . '/status',
-                    'status and bookingAvailability.availability are mutually exclusive'
+                    'status and bookingAvailability.remainingCapacity are mutually exclusive'
                 );
             }
 
             if (
                 $bookingAvailability !== null &&
-                isset($bookingAvailability->availability, $bookingAvailability->capacity) &&
-                $bookingAvailability->availability > $bookingAvailability->capacity
+                isset($bookingAvailability->remainingCapacity, $bookingAvailability->capacity) &&
+                $bookingAvailability->remainingCapacity > $bookingAvailability->capacity
             ) {
                 $errors[] = new SchemaError(
-                    '/' . $key . '/bookingAvailability/availability',
-                    'availability must be less than or equal to capacity'
+                    '/' . $key . '/bookingAvailability/remainingCapacity',
+                    'remainingCapacity must be less than or equal to capacity'
                 );
             }
         }

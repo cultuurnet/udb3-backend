@@ -18,8 +18,8 @@ final class BookingAvailabilityDenormalizer implements DenormalizerInterface
             $bookingAvailability = $bookingAvailability->withCapacity($data['capacity']);
         }
 
-        if (isset($data['availability'])) {
-            $bookingAvailability = $bookingAvailability->withAvailability($data['availability']);
+        if (isset($data['remainingCapacity'])) {
+            $bookingAvailability = $bookingAvailability->withRemainingCapacity($data['remainingCapacity']);
         }
 
         return $bookingAvailability;
@@ -32,8 +32,8 @@ final class BookingAvailabilityDenormalizer implements DenormalizerInterface
 
     private function getType(array $data): BookingAvailabilityType
     {
-        if (isset($data['availability'])) {
-            return $data['availability'] > 0
+        if (isset($data['remainingCapacity'])) {
+            return $data['remainingCapacity'] > 0
                 ? BookingAvailabilityType::Available()
                 : BookingAvailabilityType::Unavailable();
         }

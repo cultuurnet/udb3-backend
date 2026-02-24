@@ -29,7 +29,7 @@ final class BookingAvailabilityDenormalizerTest extends TestCase
 
         $this->assertEquals(BookingAvailabilityType::Available(), $result->getType());
         $this->assertNull($result->getCapacity());
-        $this->assertNull($result->getAvailability());
+        $this->assertNull($result->getRemainingCapacity());
     }
 
     /**
@@ -44,58 +44,58 @@ final class BookingAvailabilityDenormalizerTest extends TestCase
 
         $this->assertEquals(BookingAvailabilityType::Unavailable(), $result->getType());
         $this->assertNull($result->getCapacity());
-        $this->assertNull($result->getAvailability());
+        $this->assertNull($result->getRemainingCapacity());
     }
 
     /**
      * @test
      */
-    public function it_derives_available_type_from_positive_availability(): void
+    public function it_derives_available_type_from_positive_remainingCapacity(): void
     {
         $result = $this->denormalizer->denormalize(
-            ['availability' => 42],
+            ['remainingCapacity' => 42],
             BookingAvailability::class
         );
 
         $this->assertEquals(BookingAvailabilityType::Available(), $result->getType());
         $this->assertNull($result->getCapacity());
-        $this->assertSame(42, $result->getAvailability());
+        $this->assertSame(42, $result->getRemainingCapacity());
     }
 
     /**
      * @test
      */
-    public function it_derives_unavailable_type_from_zero_availability(): void
+    public function it_derives_unavailable_type_from_zero_remainingCapacity(): void
     {
         $result = $this->denormalizer->denormalize(
-            ['availability' => 0],
+            ['remainingCapacity' => 0],
             BookingAvailability::class
         );
 
         $this->assertEquals(BookingAvailabilityType::Unavailable(), $result->getType());
         $this->assertNull($result->getCapacity());
-        $this->assertSame(0, $result->getAvailability());
+        $this->assertSame(0, $result->getRemainingCapacity());
     }
 
     /**
      * @test
      */
-    public function it_denormalizes_capacity_and_availability_together(): void
+    public function it_denormalizes_capacity_and_remainingCapacity_together(): void
     {
         $result = $this->denormalizer->denormalize(
-            ['capacity' => 100, 'availability' => 42],
+            ['capacity' => 100, 'remainingCapacity' => 42],
             BookingAvailability::class
         );
 
         $this->assertEquals(BookingAvailabilityType::Available(), $result->getType());
         $this->assertSame(100, $result->getCapacity());
-        $this->assertSame(42, $result->getAvailability());
+        $this->assertSame(42, $result->getRemainingCapacity());
     }
 
     /**
      * @test
      */
-    public function it_denormalizes_capacity_without_availability(): void
+    public function it_denormalizes_capacity_without_remainingCapacity(): void
     {
         $result = $this->denormalizer->denormalize(
             ['type' => 'Available', 'capacity' => 100],
@@ -104,13 +104,13 @@ final class BookingAvailabilityDenormalizerTest extends TestCase
 
         $this->assertEquals(BookingAvailabilityType::Available(), $result->getType());
         $this->assertSame(100, $result->getCapacity());
-        $this->assertNull($result->getAvailability());
+        $this->assertNull($result->getRemainingCapacity());
     }
 
     /**
      * @test
      */
-    public function it_supports_denormalization_of_booking_availability(): void
+    public function it_supports_denormalization_of_booking_remainingCapacity(): void
     {
         $this->assertTrue(
             $this->denormalizer->supportsDenormalization([], BookingAvailability::class)

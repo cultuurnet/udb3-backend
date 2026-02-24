@@ -30,14 +30,14 @@ final class BookingAvailabilityNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_normalizes_with_capacity_and_availability(): void
+    public function it_normalizes_with_capacity_and_remainingCapacity(): void
     {
         $bookingAvailability = BookingAvailability::Available()
             ->withCapacity(100)
-            ->withAvailability(42);
+            ->withRemainingCapacity(42);
 
         $this->assertSame(
-            ['type' => 'Available', 'capacity' => 100, 'availability' => 42],
+            ['type' => 'Available', 'capacity' => 100, 'remainingCapacity' => 42],
             $this->normalizer->normalize($bookingAvailability)
         );
     }
@@ -58,11 +58,11 @@ final class BookingAvailabilityNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_omits_null_capacity_and_availability(): void
+    public function it_omits_null_capacity_and_remainingCapacity(): void
     {
         $bookingAvailability = BookingAvailability::Available()
             ->withCapacity(null)
-            ->withAvailability(null);
+            ->withRemainingCapacity(null);
 
         $this->assertSame(
             ['type' => 'Available'],
@@ -73,14 +73,14 @@ final class BookingAvailabilityNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_normalizes_zero_availability(): void
+    public function it_normalizes_zero_remainingCapacity(): void
     {
         $bookingAvailability = BookingAvailability::Unavailable()
             ->withCapacity(100)
-            ->withAvailability(0);
+            ->withRemainingCapacity(0);
 
         $this->assertSame(
-            ['type' => 'Unavailable', 'capacity' => 100, 'availability' => 0],
+            ['type' => 'Unavailable', 'capacity' => 100, 'remainingCapacity' => 0],
             $this->normalizer->normalize($bookingAvailability)
         );
     }

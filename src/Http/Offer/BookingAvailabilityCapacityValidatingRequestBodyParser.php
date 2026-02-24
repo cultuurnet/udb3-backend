@@ -16,10 +16,10 @@ final class BookingAvailabilityCapacityValidatingRequestBodyParser implements Re
         $data = $request->getParsedBody();
 
         if (
-            isset($data->availability, $data->capacity) && $data->availability > $data->capacity
+            isset($data->remainingCapacity, $data->capacity) && $data->remainingCapacity > $data->capacity
         ) {
             throw ApiProblem::bodyInvalidData(
-                new SchemaError('/availability', 'availability must be less than or equal to capacity')
+                new SchemaError('/remainingCapacity', 'remainingCapacity must be less than or equal to capacity')
             );
         }
 

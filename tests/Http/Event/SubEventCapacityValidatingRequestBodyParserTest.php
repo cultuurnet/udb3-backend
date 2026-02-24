@@ -26,14 +26,14 @@ final class SubEventCapacityValidatingRequestBodyParserTest extends TestCase
     /**
      * @test
      */
-    public function it_passes_through_a_valid_body_with_availability_and_capacity(): void
+    public function it_passes_through_a_valid_body_with_remainingCapacity_and_capacity(): void
     {
         $body = [
             (object) [
                 'id' => 0,
                 'bookingAvailability' => (object) [
                     'capacity' => 100,
-                    'availability' => 42,
+                    'remainingCapacity' => 42,
                 ],
             ],
         ];
@@ -69,7 +69,7 @@ final class SubEventCapacityValidatingRequestBodyParserTest extends TestCase
     /**
      * @test
      */
-    public function it_passes_through_a_valid_body_with_status_but_no_availability(): void
+    public function it_passes_through_a_valid_body_with_status_but_no_remainingCapacity(): void
     {
         $body = [
             (object) [
@@ -89,7 +89,7 @@ final class SubEventCapacityValidatingRequestBodyParserTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_when_status_and_availability_are_both_present(): void
+    public function it_throws_when_status_and_remainingCapacity_are_both_present(): void
     {
         $body = [
             (object) [
@@ -97,7 +97,7 @@ final class SubEventCapacityValidatingRequestBodyParserTest extends TestCase
                 'status' => (object) ['type' => 'Available'],
                 'bookingAvailability' => (object) [
                     'capacity' => 100,
-                    'availability' => 42,
+                    'remainingCapacity' => 42,
                 ],
             ],
         ];
@@ -106,7 +106,7 @@ final class SubEventCapacityValidatingRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/0/status', 'status and bookingAvailability.availability are mutually exclusive')
+                new SchemaError('/0/status', 'status and bookingAvailability.remainingCapacity are mutually exclusive')
             ),
             fn () => $this->parser->parse($request)
         );
@@ -115,14 +115,14 @@ final class SubEventCapacityValidatingRequestBodyParserTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_when_availability_exceeds_capacity(): void
+    public function it_throws_when_remainingCapacity_exceeds_capacity(): void
     {
         $body = [
             (object) [
                 'id' => 0,
                 'bookingAvailability' => (object) [
                     'capacity' => 50,
-                    'availability' => 100,
+                    'remainingCapacity' => 100,
                 ],
             ],
         ];
@@ -131,7 +131,7 @@ final class SubEventCapacityValidatingRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/0/bookingAvailability/availability', 'availability must be less than or equal to capacity')
+                new SchemaError('/0/bookingAvailability/remainingCapacity', 'remainingCapacity must be less than or equal to capacity')
             ),
             fn () => $this->parser->parse($request)
         );
@@ -148,14 +148,14 @@ final class SubEventCapacityValidatingRequestBodyParserTest extends TestCase
                 'status' => (object) ['type' => 'Available'],
                 'bookingAvailability' => (object) [
                     'capacity' => 100,
-                    'availability' => 42,
+                    'remainingCapacity' => 42,
                 ],
             ],
             (object) [
                 'id' => 1,
                 'bookingAvailability' => (object) [
                     'capacity' => 10,
-                    'availability' => 99,
+                    'remainingCapacity' => 99,
                 ],
             ],
         ];
@@ -164,8 +164,8 @@ final class SubEventCapacityValidatingRequestBodyParserTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/0/status', 'status and bookingAvailability.availability are mutually exclusive'),
-                new SchemaError('/1/bookingAvailability/availability', 'availability must be less than or equal to capacity')
+                new SchemaError('/0/status', 'status and bookingAvailability.remainingCapacity are mutually exclusive'),
+                new SchemaError('/1/bookingAvailability/remainingCapacity', 'remainingCapacity must be less than or equal to capacity')
             ),
             fn () => $this->parser->parse($request)
         );
@@ -174,14 +174,14 @@ final class SubEventCapacityValidatingRequestBodyParserTest extends TestCase
     /**
      * @test
      */
-    public function it_passes_through_when_availability_equals_capacity(): void
+    public function it_passes_through_when_remainingCapacity_equals_capacity(): void
     {
         $body = [
             (object) [
                 'id' => 0,
                 'bookingAvailability' => (object) [
                     'capacity' => 100,
-                    'availability' => 100,
+                    'remainingCapacity' => 100,
                 ],
             ],
         ];

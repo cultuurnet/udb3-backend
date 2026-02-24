@@ -10,7 +10,7 @@ final class BookingAvailability
 
     private ?int $capacity = null;
 
-    private ?int $availability = null;
+    private ?int $remainingCapacity = null;
 
     public function __construct(BookingAvailabilityType $type)
     {
@@ -27,9 +27,9 @@ final class BookingAvailability
         return $this->capacity;
     }
 
-    public function getAvailability(): ?int
+    public function getRemainingCapacity(): ?int
     {
-        return $this->availability;
+        return $this->remainingCapacity;
     }
 
     public function withCapacity(?int $capacity): self
@@ -39,10 +39,10 @@ final class BookingAvailability
         return $clone;
     }
 
-    public function withAvailability(?int $availability): self
+    public function withRemainingCapacity(?int $remainingCapacity): self
     {
         $clone = clone $this;
-        $clone->availability = $availability;
+        $clone->remainingCapacity = $remainingCapacity;
         return $clone;
     }
 
