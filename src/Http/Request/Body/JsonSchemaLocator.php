@@ -27,6 +27,7 @@ final class JsonSchemaLocator
     public const EVENT_CONTACT_POINT_PUT = 'event-contactPoint-put.json';
     public const EVENT_DESCRIPTION_PUT = 'event-description-put.json';
     public const EVENT_FACILITIES_PUT = 'event-facilities-put.json';
+    public const EVENT_FAQ_PUT = 'event-faq-put.json';
     public const EVENT_IMAGE_POST = 'event-image-post.json';
     public const EVENT_IMAGE_PUT = 'event-image-put.json';
     public const EVENT_LABELS_PUT = 'event-labels-put.json';
