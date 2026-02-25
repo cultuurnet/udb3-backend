@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItem;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
@@ -49,14 +50,19 @@ final class FaqRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_faq_items_when_the_document_does_not_exist_yet(): void
+    public function it_creates_faq_items_when_there_were_none_before(): void
     {
         $faqItemId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
 
         $this->eventDocumentRepository->expects($this->once())
             ->method('fetch')
             ->with(self::EVENT_ID)
-            ->willThrowException(DocumentDoesNotExist::withId(self::EVENT_ID));
+            ->willReturn(
+                new JsonDocument(
+                    self::EVENT_ID,
+                    Json::encode([])
+                )
+            );
 
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
@@ -107,7 +113,7 @@ final class FaqRequestHandlerTest extends TestCase
             ->with(self::EVENT_ID)
             ->willReturn(new JsonDocument(
                 self::EVENT_ID,
-                json_encode(['faq' => [['id' => $faqItemId, 'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.']]]])
+                Json::encode(['faq' => [['id' => $faqItemId, 'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.']]]])
             ));
 
         $request = $this->psr7RequestBuilder
@@ -152,7 +158,7 @@ final class FaqRequestHandlerTest extends TestCase
             ->with(self::EVENT_ID)
             ->willReturn(new JsonDocument(
                 self::EVENT_ID,
-                json_encode(['faq' => [['id' => $existingId, 'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.']]]])
+                Json::encode(['faq' => [['id' => $existingId, 'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.']]]])
             ));
 
         $request = $this->psr7RequestBuilder
@@ -183,7 +189,7 @@ final class FaqRequestHandlerTest extends TestCase
             ->with(self::EVENT_ID)
             ->willReturn(new JsonDocument(
                 self::EVENT_ID,
-                json_encode([
+                Json::encode([
                     'faq' => [
                         ['id' => $existingId1, 'nl' => ['question' => 'Vraag 1', 'answer' => 'Antwoord 1']],
                         ['id' => $existingId2, 'nl' => ['question' => 'Vraag 2', 'answer' => 'Antwoord 2']],
