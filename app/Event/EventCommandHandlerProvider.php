@@ -116,23 +116,17 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
 
         $container->addShared(
             CreateFaqItemHandler::class,
-            function () use ($container): CreateFaqItemHandler {
-                return new CreateFaqItemHandler($container->get('event_repository'));
-            }
+            fn () => new CreateFaqItemHandler($container->get('event_repository'))
         );
 
         $container->addShared(
             UpdateFaqItemHandler::class,
-            function () use ($container): UpdateFaqItemHandler {
-                return new UpdateFaqItemHandler($container->get('event_repository'));
-            }
+            fn () => new UpdateFaqItemHandler($container->get('event_repository'))
         );
 
         $container->addShared(
             DeleteFaqItemHandler::class,
-            function () use ($container): DeleteFaqItemHandler {
-                return new DeleteFaqItemHandler($container->get('event_repository'));
-            }
+            fn () => new DeleteFaqItemHandler($container->get('event_repository'))
         );
     }
 }
