@@ -25,6 +25,9 @@ use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
+use CultuurNet\UDB3\Event\Events\FaqItemCreated;
+use CultuurNet\UDB3\Event\Events\FaqItemDeleted;
+use CultuurNet\UDB3\Event\Events\FaqItemUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\Image\ImagesUpdatedFromUDB2;
@@ -569,6 +572,75 @@ final class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($offerLD);
     }
 
+    protected function applyFaqItemCreated(FaqItemCreated $faqItemCreated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($faqItemCreated);
+        $jsonLD = $document->getBody();
+
+        $jsonLD->faq = $jsonLD->faq ?? [];
+
+        $translatedFaqItem = $faqItemCreated->getTranslatedFaqItem();
+        $faqItemArray = ['id' => $translatedFaqItem->getOriginalValue()->id];
+
+        foreach ($translatedFaqItem->getLanguages() as $language) {
+            $faqItem = $translatedFaqItem->getTranslation($language);
+            $faqItemArray[$language->getCode()] = [
+                'question' => $faqItem->question->toString(),
+                'answer' => $faqItem->answer->toString(),
+            ];
+        }
+
+        $jsonLD->faq[] = $faqItemArray;
+
+        return $document->withBody($jsonLD);
+    }
+
+    protected function applyFaqItemUpdated(FaqItemUpdated $faqItemUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($faqItemUpdated);
+        $jsonLD = $document->getBody();
+
+        $translatedFaqItem = $faqItemUpdated->getTranslatedFaqItem();
+        $faqItemId = $translatedFaqItem->getOriginalValue()->id;
+
+        $faqItemArray = ['id' => $faqItemId];
+        foreach ($translatedFaqItem->getLanguages() as $language) {
+            $faqItem = $translatedFaqItem->getTranslation($language);
+            $faqItemArray[$language->getCode()] = [
+                'question' => $faqItem->question->toString(),
+                'answer' => $faqItem->answer->toString(),
+            ];
+        }
+
+        $jsonLD->faq = array_values(array_map(
+            fn ($item) => $item->id === $faqItemId ? $faqItemArray : $item,
+            (array)($jsonLD->faq ?? [])
+        ));
+
+        return $document->withBody($jsonLD);
+    }
+
+    protected function applyFaqItemDeleted(FaqItemDeleted $faqItemDeleted): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($faqItemDeleted);
+        $jsonLD = $document->getBody();
+
+        $faqItemId = $faqItemDeleted->getFaqItemId();
+
+        $remaining = array_values(array_filter(
+            (array)($jsonLD->faq ?? []),
+            fn ($item) => $item->id !== $faqItemId
+        ));
+
+        if (empty($remaining)) {
+            unset($jsonLD->faq);
+        } else {
+            $jsonLD->faq = $remaining;
+        }
+
+        return $document->withBody($jsonLD);
+    }
+
     protected function applyOwnerChanged(OwnerChanged $ownerChanged): JsonDocument
     {
         return $this->loadDocumentFromRepositoryByItemId($ownerChanged->getOfferId())
@@ -779,6 +851,21 @@ final class EventLDProjector extends OfferLDProjector implements
     protected function getTypeUpdatedClassName(): string
     {
         return TypeUpdated::class;
+    }
+
+    protected function getFaqItemCreatedClassName(): string
+    {
+        return FaqItemCreated::class;
+    }
+
+    protected function getFaqItemUpdatedClassName(): string
+    {
+        return FaqItemUpdated::class;
+    }
+
+    protected function getFaqItemDeletedClassName(): string
+    {
+        return FaqItemDeleted::class;
     }
 
     protected function getFacilitiesUpdatedClassName(): string
