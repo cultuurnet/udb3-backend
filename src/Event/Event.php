@@ -236,6 +236,7 @@ final class Event extends Offer
         $this->calendar = $eventCopied->getCalendar();
         $this->workflowStatus = WorkflowStatus::DRAFT();
         $this->labels = new LabelsArray();
+        $this->faqItems = new FaqItems();
     }
 
     protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImported): void
