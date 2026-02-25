@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
+use CultuurNet\UDB3\Http\Event\FaqRequestHandler;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAttendanceModeRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAudienceRequestHandler;
@@ -511,6 +512,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->delete('{eventId}/online-url/', DeleteOnlineUrlRequestHandler::class);
             $routeGroup->put('{eventId}/audience/', UpdateAudienceRequestHandler::class);
             $routeGroup->post('{eventId}/copies/', CopyEventRequestHandler::class);
+            $routeGroup->put('{eventId}/faq/', FaqRequestHandler::class);
 
             /**
              * Legacy routes that we need to keep for backward compatibility.
