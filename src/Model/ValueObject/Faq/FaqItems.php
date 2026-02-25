@@ -33,14 +33,4 @@ final class FaqItems
     {
         return $this->items;
     }
-
-    public function isEmpty(): bool
-    {
-        return empty($this->items);
-    }
-
-    public function getLength(): int
-    {
-        return count($this->items);
-    }
 }
