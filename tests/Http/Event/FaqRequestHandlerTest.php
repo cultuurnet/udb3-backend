@@ -18,7 +18,6 @@ use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItem;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -91,6 +90,60 @@ final class FaqRequestHandlerTest extends TestCase
                     (new TranslatedFaqItem(
                         new Language('nl'),
                         new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+                    ))->withTranslation(
+                        new Language('en'),
+                        new FaqItem($faqItemId, new Question('How do I get there?'), new Answer('By bus.'))
+                    )
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_faq_items_when_dutch_is_missing_while_other_language_are_present(): void
+    {
+        $faqItemId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
+
+        $this->eventDocumentRepository->expects($this->once())
+            ->method('fetch')
+            ->with(self::EVENT_ID)
+            ->willReturn(
+                new JsonDocument(
+                    self::EVENT_ID,
+                    Json::encode([])
+                )
+            );
+
+        $request = $this->psr7RequestBuilder
+            ->withRouteParameter('eventId', self::EVENT_ID)
+            ->withJsonBodyFromArray([
+                [
+                    'id' => $faqItemId,
+                    'de' => [
+                        'question' => 'Wie komme ich dorthin?',
+                        'answer' => 'Mit dem Bus.',
+                    ],
+                    'en' => [
+                        'question' => 'How do I get there?',
+                        'answer' => 'By bus.',
+                    ],
+                ],
+            ])
+            ->build('PUT');
+
+        $response = $this->faqRequestHandler->handle($request);
+
+        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals(
+            [
+                new CreateFaqItem(
+                    self::EVENT_ID,
+                    (new TranslatedFaqItem(
+                        new Language('de'),
+                        new FaqItem($faqItemId, new Question('Wie komme ich dorthin?'), new Answer('Mit dem Bus.'))
                     ))->withTranslation(
                         new Language('en'),
                         new FaqItem($faqItemId, new Question('How do I get there?'), new Answer('By bus.'))
@@ -240,7 +293,12 @@ final class FaqRequestHandlerTest extends TestCase
         $this->eventDocumentRepository->expects($this->once())
             ->method('fetch')
             ->with(self::EVENT_ID)
-            ->willThrowException(DocumentDoesNotExist::withId(self::EVENT_ID));
+            ->willReturn(
+                new JsonDocument(
+                    self::EVENT_ID,
+                    Json::encode([])
+                )
+            );
 
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
