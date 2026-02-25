@@ -93,7 +93,7 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_copy_with_an_updated_availability(): void
+    public function it_should_return_copy_with_an_updated_booking_date_range(): void
     {
         $availability = $this->getBookingDateRange();
         $bookingInfo = $this->getBookingInfo();
@@ -103,14 +103,14 @@ class BookingInfoTest extends TestCase
         $bookingDateRange = BookingDateRange::fromTo($from, $to);
         $updatedBookingInfo = $bookingInfo->withBookingDateRange($bookingDateRange);
 
-        $withoutAvailability = $updatedBookingInfo->withoutAvailability();
+        $withoutBookingDateRange = $updatedBookingInfo->withoutBookingDateRange();
 
         $this->assertNotEquals($bookingInfo, $updatedBookingInfo);
-        $this->assertNotEquals($updatedBookingInfo, $withoutAvailability);
+        $this->assertNotEquals($updatedBookingInfo, $withoutBookingDateRange);
 
         $this->assertEquals($availability, $bookingInfo->getBookingDateRange());
         $this->assertEquals($bookingDateRange, $updatedBookingInfo->getBookingDateRange());
-        $this->assertNull($withoutAvailability->getBookingDateRange());
+        $this->assertNull($withoutBookingDateRange->getBookingDateRange());
     }
 
     private function getUrl(): Url

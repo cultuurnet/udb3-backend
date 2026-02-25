@@ -99,7 +99,7 @@ class BookingInfo
         return $c;
     }
 
-    public function withoutAvailability(): self
+    public function withoutBookingDateRange(): self
     {
         $c = clone $this;
         $c->bookingDateRange = null;
