@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
-class DeleteFaqItem extends AbstractCommand
+final class DeleteFaqItem extends AbstractCommand
 {
     private string $faqItemId;
 

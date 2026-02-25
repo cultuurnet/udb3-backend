@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event\Commands;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
-class UpdateFaqItem extends AbstractCommand
+final class UpdateFaqItem extends AbstractCommand
 {
     private TranslatedFaqItem $faqItem;
 
