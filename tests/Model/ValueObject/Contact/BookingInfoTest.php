@@ -100,7 +100,7 @@ class BookingInfoTest extends TestCase
 
         $from = DateTimeFactory::fromFormat('d-m-Y', '02-01-2018');
         $to = DateTimeFactory::fromFormat('d-m-Y', '19-01-2018');
-        $updatedAvailability = BookingAvailability::fromTo($from, $to);
+        $updatedAvailability = BookingDateRange::fromTo($from, $to);
         $updatedBookingInfo = $bookingInfo->withAvailability($updatedAvailability);
 
         $withoutAvailability = $updatedBookingInfo->withoutAvailability();
@@ -141,11 +141,11 @@ class BookingInfoTest extends TestCase
         return new EmailAddress('test@foo.com');
     }
 
-    private function getAvailability(): BookingAvailability
+    private function getAvailability(): BookingDateRange
     {
         $from = DateTimeFactory::fromFormat('d-m-Y', '01-01-2018');
         $to = DateTimeFactory::fromFormat('d-m-Y', '18-01-2018');
-        return BookingAvailability::fromTo($from, $to);
+        return BookingDateRange::fromTo($from, $to);
     }
 
     private function getBookingInfo(): BookingInfo

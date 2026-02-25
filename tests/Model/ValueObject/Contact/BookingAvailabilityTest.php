@@ -20,7 +20,7 @@ class BookingAvailabilityTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('"From" date should not be later than the "to" date.');
 
-        new BookingAvailability($from, $to);
+        new BookingDateRange($from, $to);
     }
 
     /**
@@ -29,7 +29,7 @@ class BookingAvailabilityTest extends TestCase
     public function it_should_be_creatable_with_just_a_from_date(): void
     {
         $from = DateTimeFactory::fromFormat('d-m-Y', '01-01-2018');
-        $availability = BookingAvailability::from($from);
+        $availability = BookingDateRange::from($from);
         $this->assertEquals($from, $availability->getFrom());
     }
 
@@ -39,7 +39,7 @@ class BookingAvailabilityTest extends TestCase
     public function it_should_be_creatable_with_just_a_to_date(): void
     {
         $to = DateTimeFactory::fromFormat('d-m-Y', '18-01-2018');
-        $availability = BookingAvailability::to($to);
+        $availability = BookingDateRange::to($to);
         $this->assertEquals($to, $availability->getTo());
     }
 
@@ -50,7 +50,7 @@ class BookingAvailabilityTest extends TestCase
     {
         $from = DateTimeFactory::fromFormat('d-m-Y', '01-01-2018');
         $to = DateTimeFactory::fromFormat('d-m-Y', '18-01-2018');
-        $availability = BookingAvailability::fromTo($from, $to);
+        $availability = BookingDateRange::fromTo($from, $to);
 
         $this->assertEquals($from, $availability->getFrom());
         $this->assertEquals($to, $availability->getTo());

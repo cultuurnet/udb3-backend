@@ -33,7 +33,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability as ContactBookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange as ContactBookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;

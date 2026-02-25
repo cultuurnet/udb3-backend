@@ -16,13 +16,13 @@ class BookingInfo
 
     private ?EmailAddress $emailAddress;
 
-    private ?BookingAvailability $availability;
+    private ?BookingDateRange $availability;
 
     public function __construct(
         WebsiteLink $website = null,
         TelephoneNumber $telephoneNumber = null,
         EmailAddress $emailAddress = null,
-        BookingAvailability $availability = null
+        BookingDateRange $availability = null
     ) {
         $this->website = $website;
         $this->telephoneNumber = $telephoneNumber;
@@ -87,12 +87,12 @@ class BookingInfo
         return $c;
     }
 
-    public function getAvailability(): ?BookingAvailability
+    public function getAvailability(): ?BookingDateRange
     {
         return $this->availability;
     }
 
-    public function withAvailability(BookingAvailability $availability): self
+    public function withAvailability(BookingDateRange $availability): self
     {
         $c = clone $this;
         $c->availability = $availability;
