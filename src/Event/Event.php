@@ -511,6 +511,11 @@ final class Event extends Offer
 
     public function createFaqItem(TranslatedFaqItem $translatedFaqItem): void
     {
+        $faqItemId = $translatedFaqItem->getOriginalValue()->id;
+        if ($this->faqItems->getById($faqItemId) !== null) {
+            return;
+        }
+
         $this->apply(new FaqItemCreated($this->eventId, $translatedFaqItem));
     }
 
@@ -524,6 +529,13 @@ final class Event extends Offer
 
     public function updateFaqItem(TranslatedFaqItem $translatedFaqItem): void
     {
+        $faqItemId = $translatedFaqItem->getOriginalValue()->id;
+        $existingFaqItem = $this->faqItems->getById($faqItemId);
+
+        if ($existingFaqItem == $translatedFaqItem) {
+            return;
+        }
+
         $this->apply(new FaqItemUpdated($this->eventId, $translatedFaqItem));
     }
 
