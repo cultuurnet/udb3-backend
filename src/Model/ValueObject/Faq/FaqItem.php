@@ -1,0 +1,15 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Model\ValueObject\Faq;
+
+final class FaqItem
+{
+    public function __construct(
+        public readonly string $id,
+        public readonly Question $question,
+        public readonly Answer $answer
+    ) {
+    }
+}
