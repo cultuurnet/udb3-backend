@@ -55,16 +55,14 @@ final class FaqRequestHandler implements RequestHandlerInterface
     {
         $existingFaqIds = [];
 
-        if ($this->eventDocumentRepository !== null) {
-            try {
-                $body = $this->eventDocumentRepository->fetch($eventId)->getBody();
-                $existingFaqIds = array_map(
-                    fn (object $item) => $item->id,
-                    (array)($body->faq ?? [])
-                );
-            } catch (DocumentDoesNotExist) {
-                // No read model yet, treat existing FAQ as empty
-            }
+        try {
+            $body = $this->eventDocumentRepository->fetch($eventId)->getBody();
+            $existingFaqIds = array_map(
+                fn (object $item) => $item->id,
+                (array)($body->faq ?? [])
+            );
+        } catch (DocumentDoesNotExist) {
+            // No read model yet, treat existing FAQ as empty
         }
 
         $commands = [];
