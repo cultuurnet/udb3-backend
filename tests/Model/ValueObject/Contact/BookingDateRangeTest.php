@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Contact;
 use CultuurNet\UDB3\DateTimeFactory;
 use PHPUnit\Framework\TestCase;
 
-class BookingAvailabilityTest extends TestCase
+class BookingDateRangeTest extends TestCase
 {
     /**
      * @test
