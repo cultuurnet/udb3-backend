@@ -16,7 +16,6 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
-use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -53,17 +52,11 @@ final class FaqRequestHandler implements RequestHandlerInterface
 
     private function compareFaqItems(string $eventId, FaqItems $incomingItems): array
     {
-        $existingFaqIds = [];
-
-        try {
-            $body = $this->eventDocumentRepository->fetch($eventId)->getBody();
-            $existingFaqIds = array_map(
-                fn (object $item) => $item->id,
-                (array)($body->faq ?? [])
-            );
-        } catch (DocumentDoesNotExist) {
-            // No read model yet, treat existing FAQ as empty
-        }
+        $body = $this->eventDocumentRepository->fetch($eventId)->getBody();
+        $existingFaqIds = array_map(
+            fn (object $item) => $item->id,
+            (array)($body->faq ?? [])
+        );
 
         $commands = [];
         $incomingById = $incomingItems->toArray();
