@@ -47,7 +47,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -741,7 +741,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                         ),
                         new TelephoneNumber('016 12 34 56'),
                         new EmailAddress('info@publiq.be'),
-                        BookingAvailability::fromTo(
+                        BookingDateRange::fromTo(
                             new DateTimeImmutable('2021-05-17T22:00:00+00:00'),
                             new DateTimeImmutable('2021-05-21T22:00:00+00:00')
                         )

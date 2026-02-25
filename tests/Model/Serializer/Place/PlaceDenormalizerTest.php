@@ -27,7 +27,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -899,7 +899,7 @@ class PlaceDenormalizerTest extends TestCase
                     ),
                     new TelephoneNumber('02 551 18 70'),
                     new EmailAddress('info@publiq.be'),
-                    new BookingAvailability(
+                    new BookingDateRange(
                         DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
                         DateTimeFactory::fromAtom('2018-10-01T00:00:00+01:00')
                     )

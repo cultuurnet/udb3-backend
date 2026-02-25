@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Contact;
 
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Web\TranslatedWebsiteLabelDenormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -45,7 +45,7 @@ class BookingInfoDenormalizer implements DenormalizerInterface
         $phone = null;
         $email = null;
         $website = null;
-        $availability = null;
+        $bookingDateRange = null;
 
         if (!empty($data['phone'])) {
             $phone = new TelephoneNumber($data['phone']);
@@ -84,14 +84,14 @@ class BookingInfoDenormalizer implements DenormalizerInterface
             if ($starts && $ends && $starts > $ends) {
                 $starts = $ends;
             }
-            $availability = new BookingAvailability($starts, $ends);
+            $bookingDateRange = new BookingDateRange($starts, $ends);
         }
 
         return new BookingInfo(
             $website,
             $phone,
             $email,
-            $availability
+            $bookingDateRange
         );
     }
 
