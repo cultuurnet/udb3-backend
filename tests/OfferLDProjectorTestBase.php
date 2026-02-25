@@ -126,11 +126,11 @@ abstract class OfferLDProjectorTestBase extends TestCase
         );
         $phone = new TelephoneNumber('045');
         $email = new EmailAddress('test@test.com');
-        $bookingAvailability = BookingDateRange::fromTo(
+        $bookingDateRange = BookingDateRange::fromTo(
             DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
             DateTimeFactory::fromAtom('2018-01-31T00:00:00+01:00')
         );
-        $bookingInfo = new BookingInfo($websiteLink, $phone, $email, $bookingAvailability);
+        $bookingInfo = new BookingInfo($websiteLink, $phone, $email, $bookingDateRange);
         $eventClass = $this->getEventClass('BookingInfoUpdated');
         $bookingInfoUpdated = new $eventClass($id, $bookingInfo);
 

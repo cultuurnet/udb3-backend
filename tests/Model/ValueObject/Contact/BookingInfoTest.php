@@ -100,8 +100,8 @@ class BookingInfoTest extends TestCase
 
         $from = DateTimeFactory::fromFormat('d-m-Y', '02-01-2018');
         $to = DateTimeFactory::fromFormat('d-m-Y', '19-01-2018');
-        $updatedAvailability = BookingDateRange::fromTo($from, $to);
-        $updatedBookingInfo = $bookingInfo->withAvailability($updatedAvailability);
+        $bookingDateRange = BookingDateRange::fromTo($from, $to);
+        $updatedBookingInfo = $bookingInfo->withAvailability($bookingDateRange);
 
         $withoutAvailability = $updatedBookingInfo->withoutAvailability();
 
@@ -109,7 +109,7 @@ class BookingInfoTest extends TestCase
         $this->assertNotEquals($updatedBookingInfo, $withoutAvailability);
 
         $this->assertEquals($availability, $bookingInfo->getAvailability());
-        $this->assertEquals($updatedAvailability, $updatedBookingInfo->getAvailability());
+        $this->assertEquals($bookingDateRange, $updatedBookingInfo->getAvailability());
         $this->assertNull($withoutAvailability->getAvailability());
     }
 

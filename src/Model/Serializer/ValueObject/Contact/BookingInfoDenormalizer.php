@@ -45,7 +45,7 @@ class BookingInfoDenormalizer implements DenormalizerInterface
         $phone = null;
         $email = null;
         $website = null;
-        $availability = null;
+        $bookingDateRange = null;
 
         if (!empty($data['phone'])) {
             $phone = new TelephoneNumber($data['phone']);
@@ -84,14 +84,14 @@ class BookingInfoDenormalizer implements DenormalizerInterface
             if ($starts && $ends && $starts > $ends) {
                 $starts = $ends;
             }
-            $availability = new BookingDateRange($starts, $ends);
+            $bookingDateRange = new BookingDateRange($starts, $ends);
         }
 
         return new BookingInfo(
             $website,
             $phone,
             $email,
-            $availability
+            $bookingDateRange
         );
     }
 
