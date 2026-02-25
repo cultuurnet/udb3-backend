@@ -87,12 +87,12 @@ class BookingInfo
         return $c;
     }
 
-    public function getAvailability(): ?BookingDateRange
+    public function getBookingDateRange(): ?BookingDateRange
     {
         return $this->bookingDateRange;
     }
 
-    public function withAvailability(BookingDateRange $bookingDateRange): self
+    public function withBookingDateRange(BookingDateRange $bookingDateRange): self
     {
         $c = clone $this;
         $c->bookingDateRange = $bookingDateRange;

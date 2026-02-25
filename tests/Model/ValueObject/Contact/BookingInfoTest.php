@@ -95,22 +95,22 @@ class BookingInfoTest extends TestCase
      */
     public function it_should_return_copy_with_an_updated_availability(): void
     {
-        $availability = $this->getAvailability();
+        $availability = $this->getBookingDateRange();
         $bookingInfo = $this->getBookingInfo();
 
         $from = DateTimeFactory::fromFormat('d-m-Y', '02-01-2018');
         $to = DateTimeFactory::fromFormat('d-m-Y', '19-01-2018');
         $bookingDateRange = BookingDateRange::fromTo($from, $to);
-        $updatedBookingInfo = $bookingInfo->withAvailability($bookingDateRange);
+        $updatedBookingInfo = $bookingInfo->withBookingDateRange($bookingDateRange);
 
         $withoutAvailability = $updatedBookingInfo->withoutAvailability();
 
         $this->assertNotEquals($bookingInfo, $updatedBookingInfo);
         $this->assertNotEquals($updatedBookingInfo, $withoutAvailability);
 
-        $this->assertEquals($availability, $bookingInfo->getAvailability());
-        $this->assertEquals($bookingDateRange, $updatedBookingInfo->getAvailability());
-        $this->assertNull($withoutAvailability->getAvailability());
+        $this->assertEquals($availability, $bookingInfo->getBookingDateRange());
+        $this->assertEquals($bookingDateRange, $updatedBookingInfo->getBookingDateRange());
+        $this->assertNull($withoutAvailability->getBookingDateRange());
     }
 
     private function getUrl(): Url
@@ -141,7 +141,7 @@ class BookingInfoTest extends TestCase
         return new EmailAddress('test@foo.com');
     }
 
-    private function getAvailability(): BookingDateRange
+    private function getBookingDateRange(): BookingDateRange
     {
         $from = DateTimeFactory::fromFormat('d-m-Y', '01-01-2018');
         $to = DateTimeFactory::fromFormat('d-m-Y', '18-01-2018');
@@ -154,7 +154,7 @@ class BookingInfoTest extends TestCase
             $this->getWebsiteLink(),
             $this->getTelephoneNumber(),
             $this->getEmailAddress(),
-            $this->getAvailability()
+            $this->getBookingDateRange()
         );
     }
 }
