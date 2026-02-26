@@ -154,3 +154,58 @@ Feature: Test event FAQ
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/nl"
     And the JSON response at "schemaErrors/0/error" should be "The required properties (answer) are missing"
+
+  Scenario: Cannot update FAQ with more than 30 items
+    When I create a minimal permanent event and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    [
+      {"nl": {"question": "v01?", "answer": "a01!"}},
+      {"nl": {"question": "v02?", "answer": "a02!"}},
+      {"nl": {"question": "v03?", "answer": "a03!"}},
+      {"nl": {"question": "v04?", "answer": "a04!"}},
+      {"nl": {"question": "v05?", "answer": "a05!"}},
+      {"nl": {"question": "v06?", "answer": "a06!"}},
+      {"nl": {"question": "v07?", "answer": "a07!"}},
+      {"nl": {"question": "v08?", "answer": "a08!"}},
+      {"nl": {"question": "v09?", "answer": "a09!"}},
+      {"nl": {"question": "v10?", "answer": "a10!"}},
+      {"nl": {"question": "v11?", "answer": "a11!"}},
+      {"nl": {"question": "v12?", "answer": "a12!"}},
+      {"nl": {"question": "v13?", "answer": "a13!"}},
+      {"nl": {"question": "v14?", "answer": "a14!"}},
+      {"nl": {"question": "v15?", "answer": "a15!"}},
+      {"nl": {"question": "v16?", "answer": "a16!"}},
+      {"nl": {"question": "v17?", "answer": "a17!"}},
+      {"nl": {"question": "v18?", "answer": "a18!"}},
+      {"nl": {"question": "v19?", "answer": "a19!"}},
+      {"nl": {"question": "v20?", "answer": "a20!"}},
+      {"nl": {"question": "v21?", "answer": "a21!"}},
+      {"nl": {"question": "v22?", "answer": "a22!"}},
+      {"nl": {"question": "v23?", "answer": "a23!"}},
+      {"nl": {"question": "v24?", "answer": "a24!"}},
+      {"nl": {"question": "v25?", "answer": "a25!"}},
+      {"nl": {"question": "v26?", "answer": "a26!"}},
+      {"nl": {"question": "v27?", "answer": "a27!"}},
+      {"nl": {"question": "v28?", "answer": "a28!"}},
+      {"nl": {"question": "v29?", "answer": "a29!"}},
+      {"nl": {"question": "v30?", "answer": "a30!"}},
+      {"nl": {"question": "v31?", "answer": "a31!"}}
+    ]
+    """
+    When I send a PUT request to "%{eventUrl}/faq/"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "type": "https:\/\/api.publiq.be\/probs\/body\/invalid-data",
+      "title": "Invalid body data",
+      "status": 400,
+      "schemaErrors": [
+        {
+          "jsonPointer":"\/",
+          "error": "Array should have at most 30 items, 31 found"
+        }
+      ]
+    }
+    """
