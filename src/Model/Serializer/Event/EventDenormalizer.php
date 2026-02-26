@@ -18,6 +18,8 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Event\Serializer\FaqItemsDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
@@ -111,6 +113,7 @@ class EventDenormalizer extends OfferDenormalizer
 
         $offer = $this->denormalizeAttendanceMode($data, $offer);
         $offer = $this->denormalizeOnlineUrl($data, $offer);
+        $offer = $this->denormalizeFaq($data, $offer);
         return $this->denormalizeAudienceType($data, $offer);
     }
 
@@ -127,6 +130,16 @@ class EventDenormalizer extends OfferDenormalizer
     {
         if (isset($data['onlineUrl'])) {
             $event = $event->withOnlineUrl(new Url($data['onlineUrl']));
+        }
+
+        return $event;
+    }
+
+    private function denormalizeFaq(array $data, ImmutableEvent $event): ImmutableEvent
+    {
+        if (isset($data['faq'])) {
+            $faqItems = (new FaqItemsDenormalizer())->denormalize($data['faq'], FaqItems::class);
+            $event = $event->withFaq($faqItems);
         }
 
         return $event;
