@@ -12,7 +12,6 @@ use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use InvalidArgumentException;
-use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class FaqItemsDenormalizer implements DenormalizerInterface
@@ -20,11 +19,11 @@ final class FaqItemsDenormalizer implements DenormalizerInterface
     public function denormalize($data, $class, $format = null, array $context = []): FaqItems
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
-            throw new UnsupportedException("FaqItemsDenormalizer does not support $class.");
+            throw new InvalidArgumentException("FaqItemsDenormalizer does not support $class.");
         }
 
         if (!is_array($data)) {
-            throw new UnsupportedException('FAQ items data should be an array.');
+            throw new InvalidArgumentException('FAQ items data should be an array.');
         }
 
         $faqItems = new FaqItems();
