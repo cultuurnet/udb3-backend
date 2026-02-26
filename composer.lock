@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6446db32ad542280e570b52c0304279",
+    "content-hash": "083d206aace33de3e2cf22b76cac57dd",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6144,16 +6144,16 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-7021-faq-endpoint",
+            "version": "dev-III-7021-faq-in-full-update",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "aa5ad8329dcf251ce4663fc0a6dddc40014ba5b5"
+                "reference": "fe07515e092a4ec983f8c2c346a23a9bf2aecf4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/aa5ad8329dcf251ce4663fc0a6dddc40014ba5b5",
-                "reference": "aa5ad8329dcf251ce4663fc0a6dddc40014ba5b5",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/fe07515e092a4ec983f8c2c346a23a9bf2aecf4f",
+                "reference": "fe07515e092a4ec983f8c2c346a23a9bf2aecf4f",
                 "shasum": ""
             },
             "type": "library",
@@ -6170,9 +6170,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7021-faq-endpoint"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7021-faq-in-full-update"
             },
-            "time": "2026-02-26T10:11:06+00:00"
+            "time": "2026-02-26T12:26:41+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
