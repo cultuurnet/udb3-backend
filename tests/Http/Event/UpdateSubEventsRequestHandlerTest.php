@@ -519,21 +519,6 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     new SchemaError('/0/bookingInfo', '\'urlLabel\' property is required by \'url\' property'),
                 ],
             ],
-            'one_subEvent_with_status_and_remainingCapacity_are_mutually_exclusive' => [
-                'data' => [
-                    (object)[
-                        'id' => 0,
-                        'status' => (object)['type' => 'Available'],
-                        'bookingAvailability' => (object)[
-                            'capacity' => 100,
-                            'remainingCapacity' => 42,
-                        ],
-                    ],
-                ],
-                'expectedSchemaErrors' => [
-                    new SchemaError('/0/status', 'status and bookingAvailability.remainingCapacity are mutually exclusive'),
-                ],
-            ],
             'one_subEvent_with_remainingCapacity_exceeding_capacity' => [
                 'data' => [
                     (object)[

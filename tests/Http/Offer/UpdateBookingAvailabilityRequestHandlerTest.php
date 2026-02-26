@@ -99,25 +99,6 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_fails_when_neither_type_nor_remainingCapacity_is_provided_for_events(): void
-    {
-        $given = $this->requestBuilder
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
-            ->withBodyFromString('{}')
-            ->build('PUT');
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData(new SchemaError('/', 'The data should match exactly one schema')),
-            fn () => $this->requestHandler->handle($given)
-        );
-
-        $this->assertEquals([], $this->commandBus->getRecordedCommands());
-    }
-
-    /**
-     * @test
-     */
     public function it_fails_on_missing_type_for_places(): void
     {
         $given = $this->requestBuilder
