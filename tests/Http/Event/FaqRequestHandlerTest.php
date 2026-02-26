@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdateFaq;
+use CultuurNet\UDB3\Event\Commands\UpdateFaqs;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -67,7 +67,7 @@ final class FaqRequestHandlerTest extends TestCase
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
             [
-                new UpdateFaq(
+                new UpdateFaqs(
                     self::EVENT_ID,
                     (new FaqItems())->with(
                         (new TranslatedFaqItem(
@@ -98,7 +98,7 @@ final class FaqRequestHandlerTest extends TestCase
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
-            [new UpdateFaq(self::EVENT_ID, new FaqItems())],
+            [new UpdateFaqs(self::EVENT_ID, new FaqItems())],
             $this->commandBus->getRecordedCommands()
         );
     }

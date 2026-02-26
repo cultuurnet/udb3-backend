@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Event\Commands\UpdateFaq;
+use CultuurNet\UDB3\Event\Commands\UpdateFaqs;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventRepository;
 
@@ -17,7 +17,7 @@ final class UpdateFaqHandler implements CommandHandler
 
     public function handle($command): void
     {
-        if (!$command instanceof UpdateFaq) {
+        if (!$command instanceof UpdateFaqs) {
             return;
         }
 

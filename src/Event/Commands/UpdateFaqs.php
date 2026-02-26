@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event\Commands;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
-final class UpdateFaq extends AbstractCommand
+final class UpdateFaqs extends AbstractCommand
 {
     public function __construct(string $itemId, public readonly FaqItems $faqItems)
     {
