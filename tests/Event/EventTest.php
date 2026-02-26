@@ -61,7 +61,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItem;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
@@ -2119,14 +2119,14 @@ class EventTest extends AggregateRootScenarioTestCase
         $original = (new FaqItems())->with(
             new TranslatedFaqItem(
                 new Language('nl'),
-                new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+                new Faq($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
             )
         );
 
         $updated = (new FaqItems())->with(
             new TranslatedFaqItem(
                 new Language('nl'),
-                new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de trein.'))
+                new Faq($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de trein.'))
             )
         );
 
@@ -2150,7 +2150,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $faqItems = (new FaqItems())->with(
             new TranslatedFaqItem(
                 new Language('nl'),
-                new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+                new Faq($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
             )
         );
 

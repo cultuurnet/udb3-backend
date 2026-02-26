@@ -11,7 +11,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItem;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
@@ -72,10 +72,10 @@ final class FaqRequestHandlerTest extends TestCase
                     (new FaqItems())->with(
                         (new TranslatedFaqItem(
                             new Language('nl'),
-                            new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+                            new Faq($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
                         ))->withTranslation(
                             new Language('en'),
-                            new FaqItem($faqItemId, new Question('How do I get there?'), new Answer('By bus.'))
+                            new Faq($faqItemId, new Question('How do I get there?'), new Answer('By bus.'))
                         )
                     )
                 ),

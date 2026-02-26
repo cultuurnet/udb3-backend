@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Serializer;
 
 use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItem;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
@@ -75,9 +75,9 @@ final class FaqItemsDenormalizer implements DenormalizerInterface
         return $type === FaqItems::class;
     }
 
-    private function denormalizeFaqItem(string $id, array $data): FaqItem
+    private function denormalizeFaqItem(string $id, array $data): Faq
     {
-        return new FaqItem(
+        return new Faq(
             $id,
             new Question($data['question']),
             new Answer($data['answer'])

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItem;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
@@ -54,7 +54,7 @@ final class FaqsUpdated extends AbstractEvent
 
             $translatedFaqItem = new TranslatedFaqItem(
                 $originalLanguage,
-                new FaqItem(
+                new Faq(
                     $faqItemId,
                     new Question($itemData['translations'][$originalLanguageKey]['question']),
                     new Answer($itemData['translations'][$originalLanguageKey]['answer'])
@@ -67,7 +67,7 @@ final class FaqsUpdated extends AbstractEvent
                 }
                 $translatedFaqItem = $translatedFaqItem->withTranslation(
                     new Language($languageKey),
-                    new FaqItem(
+                    new Faq(
                         $faqItemId,
                         new Question($translation['question']),
                         new Answer($translation['answer'])
