@@ -549,6 +549,9 @@ final class Event extends Offer
 
     public function deleteFaqItem(string $faqItemId): void
     {
+        if ($this->faqItems->getById($faqItemId) === null) {
+            return;
+        }
         $this->apply(new FaqItemDeleted($this->eventId, $faqItemId));
     }
 
