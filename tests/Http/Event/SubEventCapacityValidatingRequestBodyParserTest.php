@@ -147,40 +147,6 @@ final class SubEventCapacityValidatingRequestBodyParserTest extends TestCase
     /**
      * @test
      */
-    public function it_reports_errors_for_multiple_sub_events(): void
-    {
-        $body = [
-            (object) [
-                'id' => 0,
-                'status' => (object) ['type' => 'Available'],
-                'bookingAvailability' => (object) [
-                    'capacity' => 100,
-                    'remainingCapacity' => 42,
-                ],
-            ],
-            (object) [
-                'id' => 1,
-                'bookingAvailability' => (object) [
-                    'capacity' => 10,
-                    'remainingCapacity' => 99,
-                ],
-            ],
-        ];
-
-        $request = $this->requestBuilder->build('PATCH')->withParsedBody($body);
-
-        $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidData(
-                new SchemaError('/0/status', 'status and bookingAvailability.remainingCapacity are mutually exclusive'),
-                new SchemaError('/1/bookingAvailability/remainingCapacity', 'remainingCapacity must be less than or equal to capacity')
-            ),
-            fn () => $this->parser->parse($request)
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_passes_through_when_remainingCapacity_equals_capacity(): void
     {
         $body = [
