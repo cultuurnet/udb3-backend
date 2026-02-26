@@ -8,17 +8,9 @@ use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
 final class FaqItemDeleted extends AbstractEvent
 {
-    private string $faqItemId;
-
-    public function __construct(string $itemId, string $faqItemId)
+    public function __construct(string $itemId, public readonly string $faqItemId)
     {
         parent::__construct($itemId);
-        $this->faqItemId = $faqItemId;
-    }
-
-    public function getFaqItemId(): string
-    {
-        return $this->faqItemId;
     }
 
     public function serialize(): array

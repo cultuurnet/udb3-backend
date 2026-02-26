@@ -13,24 +13,16 @@ use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
 final class FaqItemCreated extends AbstractEvent
 {
-    private TranslatedFaqItem $translatedFaqItem;
-
-    public function __construct(string $itemId, TranslatedFaqItem $translatedFaqItem)
+    public function __construct(string $itemId, public readonly TranslatedFaqItem $faqItem)
     {
         parent::__construct($itemId);
-        $this->translatedFaqItem = $translatedFaqItem;
-    }
-
-    public function getTranslatedFaqItem(): TranslatedFaqItem
-    {
-        return $this->translatedFaqItem;
     }
 
     public function serialize(): array
     {
         $translations = [];
-        foreach ($this->translatedFaqItem->getLanguages() as $language) {
-            $faqItem = $this->translatedFaqItem->getTranslation($language);
+        foreach ($this->faqItem->getLanguages() as $language) {
+            $faqItem = $this->faqItem->getTranslation($language);
             $translations[$language->getCode()] = [
                 'question' => $faqItem->question->toString(),
                 'answer' => $faqItem->answer->toString(),
@@ -38,8 +30,8 @@ final class FaqItemCreated extends AbstractEvent
         }
 
         return parent::serialize() + [
-            'faq_item_id' => $this->translatedFaqItem->getOriginalValue()->id,
-            'original_language' => $this->translatedFaqItem->getOriginalLanguage()->getCode(),
+            'faq_item_id' => $this->faqItem->getOriginalValue()->id,
+            'original_language' => $this->faqItem->getOriginalLanguage()->getCode(),
             'translations' => $translations,
         ];
     }

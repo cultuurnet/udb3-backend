@@ -579,7 +579,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->faq = $jsonLD->faq ?? [];
 
-        $translatedFaqItem = $faqItemCreated->getTranslatedFaqItem();
+        $translatedFaqItem = $faqItemCreated->faqItem;
         $faqItemArray = ['id' => $translatedFaqItem->getOriginalValue()->id];
 
         foreach ($translatedFaqItem->getLanguages() as $language) {
@@ -600,7 +600,7 @@ final class EventLDProjector extends OfferLDProjector implements
         $document = $this->loadDocumentFromRepository($faqItemUpdated);
         $jsonLD = $document->getBody();
 
-        $translatedFaqItem = $faqItemUpdated->getTranslatedFaqItem();
+        $translatedFaqItem = $faqItemUpdated->faqItem;
         $faqItemId = $translatedFaqItem->getOriginalValue()->id;
 
         $faqItemArray = ['id' => $faqItemId];
@@ -625,7 +625,7 @@ final class EventLDProjector extends OfferLDProjector implements
         $document = $this->loadDocumentFromRepository($faqItemDeleted);
         $jsonLD = $document->getBody();
 
-        $faqItemId = $faqItemDeleted->getFaqItemId();
+        $faqItemId = $faqItemDeleted->faqItemId;
 
         $remaining = array_values(array_filter(
             (array)($jsonLD->faq ?? []),

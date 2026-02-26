@@ -522,8 +522,8 @@ final class Event extends Offer
     protected function applyFaqItemCreated(FaqItemCreated $faqItemCreated): void
     {
         $this->faqItems = $this->faqItems->with(
-            $faqItemCreated->getTranslatedFaqItem()->getOriginalValue()->id,
-            $faqItemCreated->getTranslatedFaqItem()
+            $faqItemCreated->faqItem->getOriginalValue()->id,
+            $faqItemCreated->faqItem
         );
     }
 
@@ -542,8 +542,8 @@ final class Event extends Offer
     protected function applyFaqItemUpdated(FaqItemUpdated $faqItemUpdated): void
     {
         $this->faqItems = $this->faqItems->with(
-            $faqItemUpdated->getTranslatedFaqItem()->getOriginalValue()->id,
-            $faqItemUpdated->getTranslatedFaqItem()
+            $faqItemUpdated->faqItem->getOriginalValue()->id,
+            $faqItemUpdated->faqItem
         );
     }
 
@@ -554,7 +554,7 @@ final class Event extends Offer
 
     protected function applyFaqItemDeleted(FaqItemDeleted $faqItemDeleted): void
     {
-        $this->faqItems = $this->faqItems->without($faqItemDeleted->getFaqItemId());
+        $this->faqItems = $this->faqItems->without($faqItemDeleted->faqItemId);
     }
 
     public function updateUiTPASPrices(Tariffs $tariffs): void
