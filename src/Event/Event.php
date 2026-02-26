@@ -532,7 +532,7 @@ final class Event extends Offer
         $faqItemId = $translatedFaqItem->getOriginalValue()->id;
         $existingFaqItem = $this->faqItems->getById($faqItemId);
 
-        if ($existingFaqItem == $translatedFaqItem) {
+        if ($existingFaqItem === null || $existingFaqItem === $translatedFaqItem) {
             return;
         }
 
