@@ -512,7 +512,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->delete('{eventId}/online-url/', DeleteOnlineUrlRequestHandler::class);
             $routeGroup->put('{eventId}/audience/', UpdateAudienceRequestHandler::class);
             $routeGroup->post('{eventId}/copies/', CopyEventRequestHandler::class);
-            $routeGroup->put('{eventId}/faq/', FaqsRequestHandler::class);
+            $routeGroup->put('{eventId}/faqs/', FaqsRequestHandler::class);
 
             /**
              * Legacy routes that we need to keep for backward compatibility.
