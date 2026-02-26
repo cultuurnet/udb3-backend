@@ -508,7 +508,7 @@ final class Event extends Offer
 
     public function updateFaqs(FaqItems $faqItems): void
     {
-        if ($faqItems->toArray() == $this->faqItems->toArray()) {
+        if ($faqItems->sameAs($this->faqItems)) {
             return;
         }
 
