@@ -506,7 +506,7 @@ final class Event extends Offer
         $this->themeId = null;
     }
 
-    public function updateFaq(FaqItems $faqItems): void
+    public function updateFaqs(FaqItems $faqItems): void
     {
         if ($faqItems->sameAs($this->faqItems)) {
             return;
@@ -515,9 +515,9 @@ final class Event extends Offer
         $this->apply(new FaqUpdated($this->eventId, $faqItems));
     }
 
-    protected function applyFaqUpdated(FaqUpdated $faqUpdated): void
+    protected function applyFaqsUpdated(FaqUpdated $faqsUpdated): void
     {
-        $this->faqItems = $faqUpdated->faqItems;
+        $this->faqItems = $faqsUpdated->faqItems;
     }
 
     public function updateUiTPASPrices(Tariffs $tariffs): void

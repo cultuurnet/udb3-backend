@@ -41,7 +41,7 @@ final class FaqRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_dispatches_update_faq_with_all_incoming_items(): void
+    public function it_dispatches_update_faqs_with_all_incoming_items(): void
     {
         $faqItemId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
 
@@ -87,7 +87,7 @@ final class FaqRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_dispatches_update_faq_with_an_empty_list(): void
+    public function it_dispatches_update_faqs_with_an_empty_list(): void
     {
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
