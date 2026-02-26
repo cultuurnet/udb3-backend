@@ -25,13 +25,6 @@ final class SubEventCapacityValidatingRequestBodyParser implements RequestBodyPa
                 ? $subEvent->bookingAvailability
                 : null;
 
-            if ($bookingAvailability !== null && isset($bookingAvailability->remainingCapacity, $subEvent->status)) {
-                $errors[] = new SchemaError(
-                    '/' . $key . '/status',
-                    'status and bookingAvailability.remainingCapacity are mutually exclusive'
-                );
-            }
-
             if (
                 $bookingAvailability !== null &&
                 isset($bookingAvailability->remainingCapacity, $bookingAvailability->capacity) &&
