@@ -9,6 +9,7 @@ use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
+use CultuurNet\UDB3\Event\Commands\UpdateFaqs;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
 use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
@@ -268,6 +269,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $commands[] = new ImportImages($eventId, $images);
 
         $commands[] = new ImportVideos($eventId, $event->getVideos());
+        $commands[] = new UpdateFaqs($eventId, $event->getFaq());
 
         if ($workflowStatus->sameAs(WorkflowStatus::DELETED())) {
             $commands[] = new DeleteOffer($eventId);
