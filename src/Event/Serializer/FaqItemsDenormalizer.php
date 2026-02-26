@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
-use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
+use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use InvalidArgumentException;
@@ -52,7 +52,7 @@ final class FaqItemsDenormalizer implements DenormalizerInterface
 
             $originalLanguageKey = $languageKeys[0];
             $originalLanguage = new Language($originalLanguageKey);
-            $translatedFaqItem = new TranslatedFaqItem(
+            $translatedFaqItem = new TranslatedFaq(
                 $originalLanguage,
                 $this->denormalizeFaqItem($id, $itemData[$originalLanguageKey])
             );

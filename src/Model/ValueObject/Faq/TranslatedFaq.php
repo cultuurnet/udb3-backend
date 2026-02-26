@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
 /**
  * @method Faq getTranslation(Language $language)
  */
-final class TranslatedFaqItem extends TranslatedValueObject
+final class TranslatedFaq extends TranslatedValueObject
 {
     protected function getValueObjectClassName(): string
     {

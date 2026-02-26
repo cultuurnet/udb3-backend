@@ -8,12 +8,12 @@ use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
 final class FaqItems extends Collection
 {
-    public function __construct(TranslatedFaqItem ...$faqItems)
+    public function __construct(TranslatedFaq ...$faqItems)
     {
         parent::__construct(...$faqItems);
     }
 
-    public function getById(string $id): ?TranslatedFaqItem
+    public function getById(string $id): ?TranslatedFaq
     {
         foreach ($this->toArray() as $item) {
             if ($item->getOriginalValue()->id === $id) {
