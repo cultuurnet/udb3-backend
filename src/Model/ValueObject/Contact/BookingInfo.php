@@ -16,18 +16,18 @@ class BookingInfo
 
     private ?EmailAddress $emailAddress;
 
-    private ?BookingAvailability $availability;
+    private ?BookingDateRange $bookingDateRange;
 
     public function __construct(
         WebsiteLink $website = null,
         TelephoneNumber $telephoneNumber = null,
         EmailAddress $emailAddress = null,
-        BookingAvailability $availability = null
+        BookingDateRange $bookingDateRange = null
     ) {
         $this->website = $website;
         $this->telephoneNumber = $telephoneNumber;
         $this->emailAddress = $emailAddress;
-        $this->availability = $availability;
+        $this->bookingDateRange = $bookingDateRange;
     }
 
     public function getWebsite(): ?WebsiteLink
@@ -87,29 +87,29 @@ class BookingInfo
         return $c;
     }
 
-    public function getAvailability(): ?BookingAvailability
+    public function getBookingDateRange(): ?BookingDateRange
     {
-        return $this->availability;
+        return $this->bookingDateRange;
     }
 
-    public function withAvailability(BookingAvailability $availability): self
+    public function withBookingDateRange(BookingDateRange $bookingDateRange): self
     {
         $c = clone $this;
-        $c->availability = $availability;
+        $c->bookingDateRange = $bookingDateRange;
         return $c;
     }
 
-    public function withoutAvailability(): self
+    public function withoutBookingDateRange(): self
     {
         $c = clone $this;
-        $c->availability = null;
+        $c->bookingDateRange = null;
         return $c;
     }
 
     public function isEmpty(): bool
     {
         return is_null($this->website) && is_null($this->telephoneNumber) && is_null($this->emailAddress) &&
-            is_null($this->availability);
+            is_null($this->bookingDateRange);
     }
 
     public function sameAs(BookingInfo $other): bool
