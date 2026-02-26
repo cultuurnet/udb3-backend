@@ -570,13 +570,13 @@ final class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($offerLD);
     }
 
-    protected function applyFaqsUpdated(FaqUpdated $faqsUpdated): JsonDocument
+    protected function applyFaqUpdated(FaqUpdated $faqUpdated): JsonDocument
     {
-        $document = $this->loadDocumentFromRepository($faqsUpdated);
+        $document = $this->loadDocumentFromRepository($faqUpdated);
         $jsonLD = $document->getBody();
 
         $faqItemsArray = [];
-        foreach ($faqsUpdated->faqItems->toArray() as $translatedFaqItem) {
+        foreach ($faqUpdated->faqItems->toArray() as $translatedFaqItem) {
             $faqItemArray = ['id' => $translatedFaqItem->getOriginalValue()->id];
             foreach ($translatedFaqItem->getLanguages() as $language) {
                 $faqItem = $translatedFaqItem->getTranslation($language);

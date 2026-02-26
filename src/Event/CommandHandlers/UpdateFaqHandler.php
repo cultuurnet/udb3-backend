@@ -24,7 +24,7 @@ final class UpdateFaqHandler implements CommandHandler
         /** @var Event $event */
         $event = $this->eventRepository->load($command->getItemId());
 
-        $event->updateFaqs($command->faqItems);
+        $event->updateFaq($command->faqItems);
 
         $this->eventRepository->save($event);
     }

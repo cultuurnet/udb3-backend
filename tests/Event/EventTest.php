@@ -2111,7 +2111,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_updates_faqs_when_the_content_has_changed(): void
+    public function it_updates_faq_when_the_content_has_changed(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $faqItemId = 'a1b2c3d4-0000-0000-0000-000000000001';
@@ -2135,14 +2135,14 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
                 new FaqUpdated($eventId, $original),
             ])
-            ->when(fn (Event $event) => $event->updateFaqs($updated))
+            ->when(fn (Event $event) => $event->updateFaq($updated))
             ->then([new FaqUpdated($eventId, $updated)]);
     }
 
     /**
      * @test
      */
-    public function it_does_not_update_faqs_when_content_is_unchanged(): void
+    public function it_does_not_update_faq_when_content_is_unchanged(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $faqItemId = 'a1b2c3d4-0000-0000-0000-000000000001';
@@ -2159,7 +2159,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
                 new FaqUpdated($eventId, $faqItems),
             ])
-            ->when(fn (Event $event) => $event->updateFaqs($faqItems))
+            ->when(fn (Event $event) => $event->updateFaq($faqItems))
             ->then([]);
     }
 
