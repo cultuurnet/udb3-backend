@@ -27,7 +27,7 @@ use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
-use CultuurNet\UDB3\Event\Events\FaqUpdated;
+use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\Image\ImagesUpdatedFromUDB2;
@@ -512,10 +512,10 @@ final class Event extends Offer
             return;
         }
 
-        $this->apply(new FaqUpdated($this->eventId, $faqItems));
+        $this->apply(new FaqsUpdated($this->eventId, $faqItems));
     }
 
-    protected function applyFaqsUpdated(FaqUpdated $faqsUpdated): void
+    protected function applyFaqsUpdated(FaqsUpdated $faqsUpdated): void
     {
         $this->faqItems = $faqsUpdated->faqItems;
     }

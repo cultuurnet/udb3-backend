@@ -25,7 +25,7 @@ use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
-use CultuurNet\UDB3\Event\Events\FaqUpdated;
+use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\Image\ImagesUpdatedFromUDB2;
@@ -570,7 +570,7 @@ final class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($offerLD);
     }
 
-    protected function applyFaqsUpdated(FaqUpdated $faqsUpdated): JsonDocument
+    protected function applyFaqsUpdated(FaqsUpdated $faqsUpdated): JsonDocument
     {
         $document = $this->loadDocumentFromRepository($faqsUpdated);
         $jsonLD = $document->getBody();
