@@ -26,14 +26,14 @@ final class FaqRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    private FaqRequestHandler $faqRequestHandler;
+    private FaqsRequestHandler $faqRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
-        $this->faqRequestHandler = new FaqRequestHandler($this->commandBus);
+        $this->faqRequestHandler = new FaqsRequestHandler($this->commandBus);
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
         $this->commandBus->record();
     }

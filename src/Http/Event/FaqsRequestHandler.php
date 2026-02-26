@@ -18,7 +18,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class FaqRequestHandler implements RequestHandlerInterface
+final class FaqsRequestHandler implements RequestHandlerInterface
 {
     public function __construct(private readonly CommandBus $commandBus)
     {
