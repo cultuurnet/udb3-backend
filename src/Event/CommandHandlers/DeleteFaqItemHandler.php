@@ -24,7 +24,7 @@ final class DeleteFaqItemHandler implements CommandHandler
         /** @var Event $event */
         $event = $this->eventRepository->load($command->getItemId());
 
-        $event->deleteFaqItem($command->getFaqItemId());
+        $event->deleteFaqItem($command->faqItemId);
 
         $this->eventRepository->save($event);
     }

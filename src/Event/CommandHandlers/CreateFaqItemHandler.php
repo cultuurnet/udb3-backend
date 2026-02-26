@@ -24,7 +24,7 @@ final class CreateFaqItemHandler implements CommandHandler
         /** @var Event $event */
         $event = $this->eventRepository->load($command->getItemId());
 
-        $event->createFaqItem($command->getFaqItem());
+        $event->createFaqItem($command->faqItem);
 
         $this->eventRepository->save($event);
     }

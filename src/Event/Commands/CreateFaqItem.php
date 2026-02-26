@@ -9,16 +9,8 @@ use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
 final class CreateFaqItem extends AbstractCommand
 {
-    private TranslatedFaqItem $faqItem;
-
-    public function __construct(string $itemId, TranslatedFaqItem $faqItem)
+    public function __construct(string $itemId, public readonly TranslatedFaqItem $faqItem)
     {
         parent::__construct($itemId);
-        $this->faqItem = $faqItem;
-    }
-
-    public function getFaqItem(): TranslatedFaqItem
-    {
-        return $this->faqItem;
     }
 }
