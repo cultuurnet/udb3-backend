@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdateFaqs;
+use CultuurNet\UDB3\Event\Commands\UpdateFaq;
 use CultuurNet\UDB3\Event\Serializer\FaqItemsDenormalizer;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -37,7 +37,7 @@ final class FaqRequestHandler implements RequestHandlerInterface
         /** @var FaqItems $faqItems */
         $faqItems = $parser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch(new UpdateFaqs($eventId, $faqItems));
+        $this->commandBus->dispatch(new UpdateFaq($eventId, $faqItems));
 
         return new NoContentResponse();
     }
