@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateFaqs;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventRepository;
 
-final class UpdateFaqHandler implements CommandHandler
+final class UpdateFaqsHandler implements CommandHandler
 {
     public function __construct(private readonly EventRepository $eventRepository)
     {
