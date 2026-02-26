@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
 final class FaqsUpdated extends AbstractEvent
 {
-    public function __construct(string $itemId, public readonly FaqItems $faqItems)
+    public function __construct(string $itemId, public readonly Faqs $faqItems)
     {
         parent::__construct($itemId);
     }
@@ -45,7 +45,7 @@ final class FaqsUpdated extends AbstractEvent
 
     public static function deserialize(array $data): self
     {
-        $faqItems = new FaqItems();
+        $faqItems = new Faqs();
 
         foreach ($data['faq_items'] as $itemData) {
             $faqItemId = $itemData['faq_item_id'];

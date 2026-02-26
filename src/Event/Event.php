@@ -90,7 +90,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -117,7 +117,7 @@ final class Event extends Offer
 
     private ?string $themeId = null;
 
-    private FaqItems $faqItems;
+    private Faqs $faqItems;
 
     public static function getOfferType(): OfferType
     {
@@ -224,7 +224,7 @@ final class Event extends Offer
         $this->locationId = $eventCreated->getLocation();
         $this->mainLanguage = $eventCreated->getMainLanguage();
         $this->workflowStatus = WorkflowStatus::DRAFT();
-        $this->faqItems = new FaqItems();
+        $this->faqItems = new Faqs();
     }
 
     protected function applyEventCopied(EventCopied $eventCopied): void
@@ -233,7 +233,7 @@ final class Event extends Offer
         $this->calendar = $eventCopied->getCalendar();
         $this->workflowStatus = WorkflowStatus::DRAFT();
         $this->labels = new LabelsArray();
-        $this->faqItems = new FaqItems();
+        $this->faqItems = new Faqs();
     }
 
     protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImported): void
@@ -506,7 +506,7 @@ final class Event extends Offer
         $this->themeId = null;
     }
 
-    public function updateFaqs(FaqItems $faqItems): void
+    public function updateFaqs(Faqs $faqItems): void
     {
         if ($faqItems->sameAs($this->faqItems)) {
             return;

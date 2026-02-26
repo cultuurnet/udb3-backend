@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -31,10 +31,10 @@ final class FaqsRequestHandler implements RequestHandlerInterface
 
         $parser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_FAQ_PUT),
-            new DenormalizingRequestBodyParser(new FaqItemsDenormalizer(), FaqItems::class)
+            new DenormalizingRequestBodyParser(new FaqItemsDenormalizer(), Faqs::class)
         );
 
-        /** @var FaqItems $faqItems */
+        /** @var Faqs $faqItems */
         $faqItems = $parser->parse($request)->getParsedBody();
 
         $this->commandBus->dispatch(new UpdateFaqs($eventId, $faqItems));

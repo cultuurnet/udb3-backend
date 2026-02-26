@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -69,7 +69,7 @@ final class FaqRequestHandlerTest extends TestCase
             [
                 new UpdateFaqs(
                     self::EVENT_ID,
-                    (new FaqItems())->with(
+                    (new Faqs())->with(
                         (new TranslatedFaq(
                             new Language('nl'),
                             new Faq($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
@@ -98,7 +98,7 @@ final class FaqRequestHandlerTest extends TestCase
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
-            [new UpdateFaqs(self::EVENT_ID, new FaqItems())],
+            [new UpdateFaqs(self::EVENT_ID, new Faqs())],
             $this->commandBus->getRecordedCommands()
         );
     }
