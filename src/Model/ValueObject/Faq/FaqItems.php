@@ -4,33 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Faq;
 
-final class FaqItems
+use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
+
+final class FaqItems extends Collection
 {
-    /** @var array<string, TranslatedFaqItem> */
-    private array $items = [];
-
-    public function with(string $id, TranslatedFaqItem $faqItem): self
+    public function __construct(TranslatedFaqItem ...$values)
     {
-        $c = clone $this;
-        $c->items[$id] = $faqItem;
-        return $c;
-    }
-
-    public function without(string $id): self
-    {
-        $c = clone $this;
-        unset($c->items[$id]);
-        return $c;
+        parent::__construct(...$values);
     }
 
     public function getById(string $id): ?TranslatedFaqItem
     {
-        return $this->items[$id] ?? null;
-    }
-
-    /** @return array<string, TranslatedFaqItem> */
-    public function toArray(): array
-    {
-        return $this->items;
+        foreach ($this->toArray() as $item) {
+            if ($item->getOriginalValue()->id === $id) {
+                return $item;
+            }
+        }
+        return null;
     }
 }

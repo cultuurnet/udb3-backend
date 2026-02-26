@@ -75,7 +75,7 @@ final class FaqsUpdated extends AbstractEvent
                 );
             }
 
-            $faqItems = $faqItems->with($faqItemId, $translatedFaqItem);
+            $faqItems = $faqItems->with($translatedFaqItem);
         }
 
         return new self($data['item_id'], $faqItems);

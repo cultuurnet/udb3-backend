@@ -2117,7 +2117,6 @@ class EventTest extends AggregateRootScenarioTestCase
         $faqItemId = 'a1b2c3d4-0000-0000-0000-000000000001';
 
         $original = (new FaqItems())->with(
-            $faqItemId,
             new TranslatedFaqItem(
                 new Language('nl'),
                 new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
@@ -2125,7 +2124,6 @@ class EventTest extends AggregateRootScenarioTestCase
         );
 
         $updated = (new FaqItems())->with(
-            $faqItemId,
             new TranslatedFaqItem(
                 new Language('nl'),
                 new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de trein.'))
@@ -2150,7 +2148,6 @@ class EventTest extends AggregateRootScenarioTestCase
         $faqItemId = 'a1b2c3d4-0000-0000-0000-000000000001';
 
         $faqItems = (new FaqItems())->with(
-            $faqItemId,
             new TranslatedFaqItem(
                 new Language('nl'),
                 new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))

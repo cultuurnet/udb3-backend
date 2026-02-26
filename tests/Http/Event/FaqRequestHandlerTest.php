@@ -70,7 +70,6 @@ final class FaqRequestHandlerTest extends TestCase
                 new UpdateFaqs(
                     self::EVENT_ID,
                     (new FaqItems())->with(
-                        $faqItemId,
                         (new TranslatedFaqItem(
                             new Language('nl'),
                             new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))

@@ -64,7 +64,7 @@ final class FaqItemsDenormalizer implements DenormalizerInterface
                 );
             }
 
-            $faqItems = $faqItems->with($id, $translatedFaqItem);
+            $faqItems = $faqItems->with($translatedFaqItem);
         }
 
         return $faqItems;
