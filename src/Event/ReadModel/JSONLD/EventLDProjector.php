@@ -853,21 +853,6 @@ final class EventLDProjector extends OfferLDProjector implements
         return TypeUpdated::class;
     }
 
-    protected function getFaqItemCreatedClassName(): string
-    {
-        return FaqItemCreated::class;
-    }
-
-    protected function getFaqItemUpdatedClassName(): string
-    {
-        return FaqItemUpdated::class;
-    }
-
-    protected function getFaqItemDeletedClassName(): string
-    {
-        return FaqItemDeleted::class;
-    }
-
     protected function getFacilitiesUpdatedClassName(): string
     {
         return FacilitiesUpdated::class;
