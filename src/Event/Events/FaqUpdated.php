@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
-final class FaqsUpdated extends AbstractEvent
+final class FaqUpdated extends AbstractEvent
 {
     public function __construct(string $itemId, public readonly FaqItems $faqItems)
     {

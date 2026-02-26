@@ -16,7 +16,7 @@ use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
-use CultuurNet\UDB3\Event\Events\FaqsUpdated;
+use CultuurNet\UDB3\Event\Events\FaqUpdated;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\Events\ImageAdded;
 use CultuurNet\UDB3\Event\Events\ImageRemoved;
@@ -2133,10 +2133,10 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new FaqsUpdated($eventId, $original),
+                new FaqUpdated($eventId, $original),
             ])
             ->when(fn (Event $event) => $event->updateFaqs($updated))
-            ->then([new FaqsUpdated($eventId, $updated)]);
+            ->then([new FaqUpdated($eventId, $updated)]);
     }
 
     /**
@@ -2157,7 +2157,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new FaqsUpdated($eventId, $faqItems),
+                new FaqUpdated($eventId, $faqItems),
             ])
             ->when(fn (Event $event) => $event->updateFaqs($faqItems))
             ->then([]);
