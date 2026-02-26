@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Model\Event;
 use CultuurNet\UDB3\Model\Offer\Offer;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 
@@ -19,4 +20,6 @@ interface Event extends Offer
     public function getAudienceType(): AudienceType;
 
     public function getPlaceReference(): PlaceReference;
+
+    public function getFaq(): FaqItems;
 }

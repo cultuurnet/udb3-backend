@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\Event;
 
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
+use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -25,6 +26,8 @@ class ImmutableEvent extends ImmutableOffer implements Event
     private ?Url $onlineUrl = null;
 
     private AudienceType $audience;
+
+    private FaqItems $faqItems;
 
     public function __construct(
         Uuid $id,
@@ -47,6 +50,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
         $this->placeReference = $placeReference;
         $this->attendanceMode = AttendanceMode::offline();
         $this->audience = AudienceType::everyone();
+        $this->faqItems = new FaqItems();
     }
 
     public function getPlaceReference(): PlaceReference
@@ -94,6 +98,18 @@ class ImmutableEvent extends ImmutableOffer implements Event
     {
         $c = clone $this;
         $c->audience = $audience;
+        return $c;
+    }
+
+    public function getFaq(): FaqItems
+    {
+        return $this->faqItems;
+    }
+
+    public function withFaq(FaqItems $faqItems): ImmutableEvent
+    {
+        $c = clone $this;
+        $c->faqItems = $faqItems;
         return $c;
     }
 
