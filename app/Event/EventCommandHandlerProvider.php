@@ -6,9 +6,7 @@ namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\CreateFaqItemHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\DeleteFaqItemHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\UpdateFaqItemHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateFaqsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\DeleteOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAttendanceModeHandler;
@@ -34,9 +32,7 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
             UpdateAudienceHandler::class,
             UpdateUiTPASPricesHandler::class,
             CopyEventHandler::class,
-            CreateFaqItemHandler::class,
-            UpdateFaqItemHandler::class,
-            DeleteFaqItemHandler::class,
+            UpdateFaqsHandler::class,
         ];
     }
 
@@ -115,18 +111,8 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            CreateFaqItemHandler::class,
-            fn () => new CreateFaqItemHandler($container->get('event_repository'))
-        );
-
-        $container->addShared(
-            UpdateFaqItemHandler::class,
-            fn () => new UpdateFaqItemHandler($container->get('event_repository'))
-        );
-
-        $container->addShared(
-            DeleteFaqItemHandler::class,
-            fn () => new DeleteFaqItemHandler($container->get('event_repository'))
+            UpdateFaqsHandler::class,
+            fn () => new UpdateFaqsHandler($container->get('event_repository'))
         );
     }
 }

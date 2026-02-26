@@ -16,8 +16,7 @@ use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
-use CultuurNet\UDB3\Event\Events\FaqItemCreated;
-use CultuurNet\UDB3\Event\Events\FaqItemUpdated;
+use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\Events\ImageAdded;
 use CultuurNet\UDB3\Event\Events\ImageRemoved;
@@ -63,6 +62,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItem;
+use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -2111,83 +2111,58 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_creates_a_faq_item_when_the_id_does_not_yet_exist(): void
+    public function it_updates_faqs_when_the_content_has_changed(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $faqItemId = 'a1b2c3d4-0000-0000-0000-000000000001';
-        $faqItem = new TranslatedFaqItem(
-            new Language('nl'),
-            new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+
+        $original = (new FaqItems())->with(
+            $faqItemId,
+            new TranslatedFaqItem(
+                new Language('nl'),
+                new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+            )
         );
 
-        $this->scenario
-            ->given([$this->getCreationEvent()])
-            ->when(fn (Event $event) => $event->createFaqItem($faqItem))
-            ->then([new FaqItemCreated($eventId, $faqItem)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_create_a_faq_item_when_the_id_already_exists(): void
-    {
-        $faqItemId = 'a1b2c3d4-0000-0000-0000-000000000001';
-        $faqItem = new TranslatedFaqItem(
-            new Language('nl'),
-            new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+        $updated = (new FaqItems())->with(
+            $faqItemId,
+            new TranslatedFaqItem(
+                new Language('nl'),
+                new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de trein.'))
+            )
         );
 
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new FaqItemCreated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', $faqItem),
+                new FaqsUpdated($eventId, $original),
             ])
-            ->when(fn (Event $event) => $event->createFaqItem($faqItem))
-            ->then([]);
+            ->when(fn (Event $event) => $event->updateFaqs($updated))
+            ->then([new FaqsUpdated($eventId, $updated)]);
     }
 
     /**
      * @test
      */
-    public function it_updates_a_faq_item_when_the_content_has_changed(): void
+    public function it_does_not_update_faqs_when_content_is_unchanged(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $faqItemId = 'a1b2c3d4-0000-0000-0000-000000000001';
-        $original = new TranslatedFaqItem(
-            new Language('nl'),
-            new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
-        );
-        $updated = new TranslatedFaqItem(
-            new Language('nl'),
-            new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de trein.'))
-        );
 
-        $this->scenario
-            ->given([
-                $this->getCreationEvent(),
-                new FaqItemCreated($eventId, $original),
-            ])
-            ->when(fn (Event $event) => $event->updateFaqItem($updated))
-            ->then([new FaqItemUpdated($eventId, $updated)]);
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_update_a_faq_item_when_the_content_is_unchanged(): void
-    {
-        $faqItemId = 'a1b2c3d4-0000-0000-0000-000000000001';
-        $faqItem = new TranslatedFaqItem(
-            new Language('nl'),
-            new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+        $faqItems = (new FaqItems())->with(
+            $faqItemId,
+            new TranslatedFaqItem(
+                new Language('nl'),
+                new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+            )
         );
 
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new FaqItemCreated('d2b41f1d-598c-46af-a3a5-10e373faa6fe', $faqItem),
+                new FaqsUpdated($eventId, $faqItems),
             ])
-            ->when(fn (Event $event) => $event->updateFaqItem($faqItem))
+            ->when(fn (Event $event) => $event->updateFaqs($faqItems))
             ->then([]);
     }
 

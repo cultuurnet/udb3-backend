@@ -27,9 +27,7 @@ use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
-use CultuurNet\UDB3\Event\Events\FaqItemCreated;
-use CultuurNet\UDB3\Event\Events\FaqItemDeleted;
-use CultuurNet\UDB3\Event\Events\FaqItemUpdated;
+use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\Image\ImagesUpdatedFromUDB2;
@@ -93,7 +91,6 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
-use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -509,55 +506,18 @@ final class Event extends Offer
         $this->themeId = null;
     }
 
-    public function createFaqItem(TranslatedFaqItem $translatedFaqItem): void
+    public function updateFaqs(FaqItems $faqItems): void
     {
-        $faqItemId = $translatedFaqItem->getOriginalValue()->id;
-        if ($this->faqItems->getById($faqItemId) !== null) {
+        if ($faqItems->toArray() == $this->faqItems->toArray()) {
             return;
         }
 
-        $this->apply(new FaqItemCreated($this->eventId, $translatedFaqItem));
+        $this->apply(new FaqsUpdated($this->eventId, $faqItems));
     }
 
-    protected function applyFaqItemCreated(FaqItemCreated $faqItemCreated): void
+    protected function applyFaqsUpdated(FaqsUpdated $faqsUpdated): void
     {
-        $this->faqItems = $this->faqItems->with(
-            $faqItemCreated->faqItem->getOriginalValue()->id,
-            $faqItemCreated->faqItem
-        );
-    }
-
-    public function updateFaqItem(TranslatedFaqItem $translatedFaqItem): void
-    {
-        $faqItemId = $translatedFaqItem->getOriginalValue()->id;
-        $existingFaqItem = $this->faqItems->getById($faqItemId);
-
-        if ($existingFaqItem === null || $existingFaqItem === $translatedFaqItem) {
-            return;
-        }
-
-        $this->apply(new FaqItemUpdated($this->eventId, $translatedFaqItem));
-    }
-
-    protected function applyFaqItemUpdated(FaqItemUpdated $faqItemUpdated): void
-    {
-        $this->faqItems = $this->faqItems->with(
-            $faqItemUpdated->faqItem->getOriginalValue()->id,
-            $faqItemUpdated->faqItem
-        );
-    }
-
-    public function deleteFaqItem(string $faqItemId): void
-    {
-        if ($this->faqItems->getById($faqItemId) === null) {
-            return;
-        }
-        $this->apply(new FaqItemDeleted($this->eventId, $faqItemId));
-    }
-
-    protected function applyFaqItemDeleted(FaqItemDeleted $faqItemDeleted): void
-    {
-        $this->faqItems = $this->faqItems->without($faqItemDeleted->faqItemId);
+        $this->faqItems = $faqsUpdated->faqItems;
     }
 
     public function updateUiTPASPrices(Tariffs $tariffs): void
