@@ -533,6 +533,34 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     new SchemaError('/0/bookingAvailability/remainingCapacity', 'remainingCapacity must be less than or equal to capacity'),
                 ],
             ],
+            'one_subEvent_with_negative_remainingCapacity_and_capacity' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingAvailability' => (object)[
+                            'capacity' => -100,
+                            'remainingCapacity' => -100,
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/bookingAvailability/capacity', 'Number must be greater than or equal to 0'),
+                    new SchemaError('/0/bookingAvailability/remainingCapacity', 'Number must be greater than or equal to 0'),
+                ],
+            ],
+            'one_subEvent_with_no_type_and_no_remaining_capacity' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingAvailability' => (object)[
+
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/bookingAvailability', 'The data should match exactly one schema'),
+                ],
+            ],
         ];
     }
 }
