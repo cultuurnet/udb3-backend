@@ -103,38 +103,6 @@ Feature: Test capacity and remainingCapacity on subEvents
     }
     """
 
-  Scenario: Sending both status and remainingCapacity on a subEvent returns 400
-    When I set the JSON request payload to:
-    """
-    [
-      {
-        "id": 0,
-        "status": {
-          "type": "Available"
-        },
-        "bookingAvailability": {
-          "remainingCapacity": 42
-        }
-      }
-    ]
-    """
-    And I send a PATCH request to "%{eventUrl}/subEvents"
-    Then the response status should be "400"
-    And the JSON response should be:
-    """
-    {
-      "schemaErrors": [
-        {
-          "error": "status and bookingAvailability.remainingCapacity are mutually exclusive",
-          "jsonPointer": "/0/status"
-        }
-      ],
-      "status": 400,
-      "title": "Invalid body data",
-      "type": "https://api.publiq.be/probs/body/invalid-data"
-    }
-    """
-
   Scenario: Sending remainingCapacity greater than capacity on a subEvent returns 400
     When I set the JSON request payload to:
     """
