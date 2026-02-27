@@ -43,13 +43,13 @@ final class FaqRequestHandlerTest extends TestCase
      */
     public function it_dispatches_update_faqs_with_all_incoming_items(): void
     {
-        $faqItemId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
+        $faqId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
 
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
             ->withJsonBodyFromArray([
                 [
-                    'id' => $faqItemId,
+                    'id' => $faqId,
                     'nl' => [
                         'question' => 'Hoe geraak ik er?',
                         'answer' => 'Met de bus.',
@@ -72,10 +72,10 @@ final class FaqRequestHandlerTest extends TestCase
                     (new Faqs())->with(
                         (new TranslatedFaq(
                             new Language('nl'),
-                            new Faq($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+                            new Faq($faqId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
                         ))->withTranslation(
                             new Language('en'),
-                            new Faq($faqItemId, new Question('How do I get there?'), new Answer('By bus.'))
+                            new Faq($faqId, new Question('How do I get there?'), new Answer('By bus.'))
                         )
                     )
                 ),

@@ -2114,19 +2114,19 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_updates_faqs_when_the_content_has_changed(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $faqItemId = 'a1b2c3d4-0000-0000-0000-000000000001';
+        $faqId = 'a1b2c3d4-0000-0000-0000-000000000001';
 
         $original = (new Faqs())->with(
             new TranslatedFaq(
                 new Language('nl'),
-                new Faq($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+                new Faq($faqId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
             )
         );
 
         $updated = (new Faqs())->with(
             new TranslatedFaq(
                 new Language('nl'),
-                new Faq($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de trein.'))
+                new Faq($faqId, new Question('Hoe geraak ik er?'), new Answer('Met de trein.'))
             )
         );
 
@@ -2145,21 +2145,21 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_does_not_update_faqs_when_content_is_unchanged(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $faqItemId = 'a1b2c3d4-0000-0000-0000-000000000001';
+        $faqId = 'a1b2c3d4-0000-0000-0000-000000000001';
 
-        $faqItems = (new Faqs())->with(
+        $faqs = (new Faqs())->with(
             new TranslatedFaq(
                 new Language('nl'),
-                new Faq($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+                new Faq($faqId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
             )
         );
 
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new FaqsUpdated($eventId, $faqItems),
+                new FaqsUpdated($eventId, $faqs),
             ])
-            ->when(fn (Event $event) => $event->updateFaqs($faqItems))
+            ->when(fn (Event $event) => $event->updateFaqs($faqs))
             ->then([]);
     }
 

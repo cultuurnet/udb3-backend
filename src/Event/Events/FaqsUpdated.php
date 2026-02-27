@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
 final class FaqsUpdated extends AbstractEvent
 {
-    public function __construct(string $itemId, public readonly Faqs $faqItems)
+    public function __construct(string $itemId, public readonly Faqs $faqs)
     {
         parent::__construct($itemId);
     }
@@ -22,62 +22,62 @@ final class FaqsUpdated extends AbstractEvent
     public function serialize(): array
     {
         $serializedItems = [];
-        foreach ($this->faqItems->toArray() as $translatedFaqItem) {
+        foreach ($this->faqs->toArray() as $translatedFaq) {
             $translations = [];
-            foreach ($translatedFaqItem->getLanguages() as $language) {
-                $faqItem = $translatedFaqItem->getTranslation($language);
+            foreach ($translatedFaq->getLanguages() as $language) {
+                $faq = $translatedFaq->getTranslation($language);
                 $translations[$language->getCode()] = [
-                    'question' => $faqItem->question->toString(),
-                    'answer' => $faqItem->answer->toString(),
+                    'question' => $faq->question->toString(),
+                    'answer' => $faq->answer->toString(),
                 ];
             }
             $serializedItems[] = [
-                'faq_item_id' => $translatedFaqItem->getOriginalValue()->id,
-                'original_language' => $translatedFaqItem->getOriginalLanguage()->getCode(),
+                'faq_id' => $translatedFaq->getOriginalValue()->id,
+                'original_language' => $translatedFaq->getOriginalLanguage()->getCode(),
                 'translations' => $translations,
             ];
         }
 
         return parent::serialize() + [
-            'faq_items' => $serializedItems,
+            'faqs' => $serializedItems,
         ];
     }
 
     public static function deserialize(array $data): self
     {
-        $faqItems = new Faqs();
+        $faqs = new Faqs();
 
-        foreach ($data['faq_items'] as $itemData) {
-            $faqItemId = $itemData['faq_item_id'];
-            $originalLanguageKey = $itemData['original_language'];
+        foreach ($data['faqs'] as $faqData) {
+            $faqId = $faqData['faq_id'];
+            $originalLanguageKey = $faqData['original_language'];
             $originalLanguage = new Language($originalLanguageKey);
 
-            $translatedFaqItem = new TranslatedFaq(
+            $translatedFaq = new TranslatedFaq(
                 $originalLanguage,
                 new Faq(
-                    $faqItemId,
-                    new Question($itemData['translations'][$originalLanguageKey]['question']),
-                    new Answer($itemData['translations'][$originalLanguageKey]['answer'])
+                    $faqId,
+                    new Question($faqData['translations'][$originalLanguageKey]['question']),
+                    new Answer($faqData['translations'][$originalLanguageKey]['answer'])
                 )
             );
 
-            foreach ($itemData['translations'] as $languageKey => $translation) {
+            foreach ($faqData['translations'] as $languageKey => $translation) {
                 if ($languageKey === $originalLanguageKey) {
                     continue;
                 }
-                $translatedFaqItem = $translatedFaqItem->withTranslation(
+                $translatedFaq = $translatedFaq->withTranslation(
                     new Language($languageKey),
                     new Faq(
-                        $faqItemId,
+                        $faqId,
                         new Question($translation['question']),
                         new Answer($translation['answer'])
                     )
                 );
             }
 
-            $faqItems = $faqItems->with($translatedFaqItem);
+            $faqs = $faqs->with($translatedFaq);
         }
 
-        return new self($data['item_id'], $faqItems);
+        return new self($data['item_id'], $faqs);
     }
 }

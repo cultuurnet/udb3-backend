@@ -24,13 +24,13 @@ Feature: Test event FAQ
       }
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "faq/0/nl/question" should be "Hoe geraak ik er?"
-    And the JSON response at "faq/0/nl/answer" should be "Met de bus."
-    And the JSON response at "faq/0/en/question" should be "How do I get there?"
-    And the JSON response at "faq/0/en/answer" should be "By bus."
+    And the JSON response at "faqs/0/nl/question" should be "Hoe geraak ik er?"
+    And the JSON response at "faqs/0/nl/answer" should be "Met de bus."
+    And the JSON response at "faqs/0/en/question" should be "How do I get there?"
+    And the JSON response at "faqs/0/en/answer" should be "By bus."
 
   Scenario: Update existing FAQ items on an event
     When I create a minimal permanent event and save the "url" as "eventUrl"
@@ -46,10 +46,10 @@ Feature: Test event FAQ
       }
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "faq/0/nl/answer" should be "Met de bus."
+    And the JSON response at "faqs/0/nl/answer" should be "Met de bus."
     And I set the JSON request payload to:
     """
     [
@@ -62,10 +62,10 @@ Feature: Test event FAQ
       }
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "faq/0/nl/answer" should be "Met de trein."
+    And the JSON response at "faqs/0/nl/answer" should be "Met de trein."
 
   Scenario: Remove all FAQ items by sending an empty list
     When I create a minimal permanent event and save the "url" as "eventUrl"
@@ -80,18 +80,18 @@ Feature: Test event FAQ
       }
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response should have "faq"
+    And the JSON response should have "faqs"
     And I set the JSON request payload to:
     """
     []
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    Then the JSON response should not have "faq"
+    Then the JSON response should not have "faqs"
 
   Scenario: Partially update FAQ items on an event
     When I create a minimal permanent event and save the "url" as "eventUrl"
@@ -114,10 +114,10 @@ Feature: Test event FAQ
       }
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "faq" should have 2 entries
+    And the JSON response at "faqs" should have 2 entries
     And I set the JSON request payload to:
     """
     [
@@ -137,12 +137,12 @@ Feature: Test event FAQ
       }
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "faq" should have 2 entries
-    And the JSON response at "faq/0/nl/question" should be "Vraag 2 bijgewerkt"
-    And the JSON response at "faq/1/nl/question" should be "Nieuwe vraag"
+    And the JSON response at "faqs" should have 2 entries
+    And the JSON response at "faqs/0/nl/question" should be "Vraag 2 bijgewerkt"
+    And the JSON response at "faqs/1/nl/question" should be "Nieuwe vraag"
 
   Scenario: Cannot update FAQ with an invalid body
     When I create a minimal permanent event and save the "url" as "eventUrl"
@@ -150,7 +150,7 @@ Feature: Test event FAQ
     """
     [{"nl": {"question": "Hoe geraak ik er?"}}]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/nl"
     And the JSON response at "schemaErrors/0/error" should be "The required properties (answer) are missing"
@@ -193,7 +193,7 @@ Feature: Test event FAQ
       {"nl": {"question": "v31?", "answer": "a31!"}}
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "400"
     And the JSON response should be:
     """

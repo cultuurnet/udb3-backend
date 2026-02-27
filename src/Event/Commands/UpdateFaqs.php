@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
 final class UpdateFaqs extends AbstractCommand
 {
-    public function __construct(string $itemId, public readonly Faqs $faqItems)
+    public function __construct(string $itemId, public readonly Faqs $faqs)
     {
         parent::__construct($itemId);
     }

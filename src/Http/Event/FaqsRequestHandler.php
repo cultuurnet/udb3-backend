@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateFaqs;
-use CultuurNet\UDB3\Event\Serializer\FaqItemsDenormalizer;
+use CultuurNet\UDB3\Event\Serializer\FaqsDenormalizer;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -30,14 +30,14 @@ final class FaqsRequestHandler implements RequestHandlerInterface
         $eventId = $routeParameters->getEventId();
 
         $parser = RequestBodyParserFactory::createBaseParser(
-            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_FAQ_PUT),
-            new DenormalizingRequestBodyParser(new FaqItemsDenormalizer(), Faqs::class)
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_FAQS_PUT),
+            new DenormalizingRequestBodyParser(new FaqsDenormalizer(), Faqs::class)
         );
 
-        /** @var Faqs $faqItems */
-        $faqItems = $parser->parse($request)->getParsedBody();
+        /** @var Faqs $faqs */
+        $faqs = $parser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch(new UpdateFaqs($eventId, $faqItems));
+        $this->commandBus->dispatch(new UpdateFaqs($eventId, $faqs));
 
         return new NoContentResponse();
     }
