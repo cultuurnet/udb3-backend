@@ -193,6 +193,12 @@ class CalendarDenormalizer implements DenormalizerInterface
         if (!isset($subEventData['bookingAvailability']['type'])) {
             $subEventData['bookingAvailability']['type'] = $topLevelBookingAvailability->getType()->toString();
         }
+        if (!isset($subEventData['bookingAvailability']['capacity']) && $topLevelBookingAvailability->getCapacity() !== null) {
+            $subEventData['bookingAvailability']['capacity'] = $topLevelBookingAvailability->getCapacity();
+        }
+        if (!isset($subEventData['bookingAvailability']['remainingCapacity']) && $topLevelBookingAvailability->getRemainingCapacity() !== null) {
+            $subEventData['bookingAvailability']['remainingCapacity'] = $topLevelBookingAvailability->getRemainingCapacity();
+        }
 
         $status = $this->statusDenormalizer->denormalize($subEventData['status'], Status::class);
 
