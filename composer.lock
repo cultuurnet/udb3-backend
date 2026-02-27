@@ -6148,12 +6148,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "52b77fd30344cbc3f33d2fa5894202a35261525a"
+                "reference": "9e21d99aefa45d3c6266b1a6c02fa27bbf5a4e9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/52b77fd30344cbc3f33d2fa5894202a35261525a",
-                "reference": "52b77fd30344cbc3f33d2fa5894202a35261525a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/9e21d99aefa45d3c6266b1a6c02fa27bbf5a4e9b",
+                "reference": "9e21d99aefa45d3c6266b1a6c02fa27bbf5a4e9b",
                 "shasum": ""
             },
             "type": "library",
@@ -6172,7 +6172,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7042/add-capacity-and-availability-to-subevent"
             },
-            "time": "2026-02-26T12:21:44+00:00"
+            "time": "2026-02-27T14:06:26+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
