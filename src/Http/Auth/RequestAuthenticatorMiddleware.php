@@ -41,7 +41,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ?JsonWebToken $token = null;
     private ?ApiKey $apiKey = null;
 
-    private JwtValidator $uitIdV1JwtValidator;
+    private ?JwtValidator $uitIdV1JwtValidator;
     private JwtValidator $uitIdV2JwtValidator;
     private ApiKeyAuthenticator $apiKeyAuthenticator;
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
@@ -52,7 +52,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds;
 
     public function __construct(
-        JwtValidator $uitIdV1JwtValidator,
+        ?JwtValidator $uitIdV1JwtValidator = null,
         JwtValidator $uitIdV2JwtValidator,
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
@@ -147,8 +147,9 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
             throw ApiProblem::unauthorized('Token "' . $tokenString . '" is not a valid JWT.');
         }
 
-        $isV1 = $this->token->getType() === JsonWebToken::UIT_ID_V1_JWT_PROVIDER_TOKEN;
-        $validator = $isV1 ? $this->uitIdV1JwtValidator : $this->uitIdV2JwtValidator;
+        $validator = $this->uitIdV1JwtValidator !== null && $this->token->getType() === JsonWebToken::UIT_ID_V1_JWT_PROVIDER_TOKEN
+            ? $this->uitIdV1JwtValidator
+            : $this->uitIdV2JwtValidator;
 
         $validator->verifySignature($this->token);
         $validator->validateClaims($this->token);

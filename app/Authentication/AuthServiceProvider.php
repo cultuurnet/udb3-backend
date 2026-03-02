@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
+use CultuurNet\UDB3\Http\Auth\Jwt\JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV1JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV2JwtValidator;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
@@ -207,6 +208,18 @@ final class AuthServiceProvider extends AbstractServiceProvider
                 file_exists(__DIR__ . '/../../config.api_keys_matched_to_client_ids.php') ? require __DIR__ . '/../../config.api_keys_matched_to_client_ids.php' : []
             )
         );
+    }
+
+    private function createUitIdV1JwtValidator(DefinitionContainerInterface $container): ?JwtValidator
+    {
+        if ($container->get('config')['allow_v1_tokens'] ?? true) {
+            return new UitIdV1JwtValidator(
+                'file://' . __DIR__ . '/../../' . $container->get('config')['jwt']['v1']['keys']['public']['file'],
+                $container->get('config')['jwt']['v1']['valid_issuers']
+            );
+        }
+
+        return null;
     }
 
     private function createUitIdV2JwtValidator(DefinitionContainerInterface $container): UitIdV2JwtValidator
