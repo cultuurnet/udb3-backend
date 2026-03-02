@@ -124,7 +124,7 @@ final class BookingAvailabilityDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_supports_denormalization_of_booking_remainingCapacity(): void
+    public function it_supports_denormalization_of_booking_availability(): void
     {
         $this->assertTrue(
             $this->denormalizer->supportsDenormalization([], BookingAvailability::class)
