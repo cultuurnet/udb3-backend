@@ -52,7 +52,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds;
 
     public function __construct(
-        ?JwtValidator $uitIdV1JwtValidator = null,
+        ?JwtValidator $uitIdV1JwtValidator,
         JwtValidator $uitIdV2JwtValidator,
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
