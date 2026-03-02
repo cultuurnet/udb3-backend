@@ -40,6 +40,8 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 
     private ?JsonWebToken $token = null;
     private ?ApiKey $apiKey = null;
+
+    private JwtValidator $uitIdV1JwtValidator;
     private JwtValidator $uitIdV2JwtValidator;
     private ApiKeyAuthenticator $apiKeyAuthenticator;
     private ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository;
@@ -50,6 +52,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
     private ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds;
 
     public function __construct(
+        JwtValidator $uitIdV1JwtValidator,
         JwtValidator $uitIdV2JwtValidator,
         ApiKeyAuthenticator $apiKeyAuthenticator,
         ApiKeyConsumerReadRepository $apiKeyConsumerReadRepository,
@@ -59,6 +62,7 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         LoggerInterface $logger,
         ?ApiKeysMatchedToClientIds $apiKeysMatchedToClientIds = null
     ) {
+        $this->uitIdV1JwtValidator = $uitIdV1JwtValidator;
         $this->uitIdV2JwtValidator = $uitIdV2JwtValidator;
         $this->apiKeyAuthenticator = $apiKeyAuthenticator;
         $this->apiKeyConsumerReadRepository = $apiKeyConsumerReadRepository;
@@ -96,9 +100,9 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
 
         $this->authenticateToken($request);
 
-        // Requests that use a token from the JWT provider (v2) require an API key from UiTID v1.
+        // Requests that use a token from the JWT provider (v1 or v2) require an API key from UiTID v1.
         // Requests that use a token that they got from a clientId do not require an API key.
-        if ($this->token->getType() === JsonWebToken::UIT_ID_V2_JWT_PROVIDER_TOKEN) {
+        if ($this->token->getType() === JsonWebToken::UIT_ID_V1_JWT_PROVIDER_TOKEN || $this->token->getType() === JsonWebToken::UIT_ID_V2_JWT_PROVIDER_TOKEN) {
             $this->authenticateApiKey($request);
         }
 
@@ -143,8 +147,11 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
             throw ApiProblem::unauthorized('Token "' . $tokenString . '" is not a valid JWT.');
         }
 
-        $this->uitIdV2JwtValidator->verifySignature($this->token);
-        $this->uitIdV2JwtValidator->validateClaims($this->token);
+        $isV1 = $this->token->getType() === JsonWebToken::UIT_ID_V1_JWT_PROVIDER_TOKEN;
+        $validator = $isV1 ? $this->uitIdV1JwtValidator : $this->uitIdV2JwtValidator;
+
+        $validator->verifySignature($this->token);
+        $validator->validateClaims($this->token);
     }
 
     private function authenticateApiKey(ServerRequestInterface $request): void
