@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\RemainingCapacityExceedsCapacity;
 use PHPUnit\Framework\TestCase;
 
 final class BookingAvailabilityDenormalizerTest extends TestCase
@@ -105,6 +106,19 @@ final class BookingAvailabilityDenormalizerTest extends TestCase
         $this->assertEquals(BookingAvailabilityType::Available(), $result->getType());
         $this->assertSame(100, $result->getCapacity());
         $this->assertNull($result->getRemainingCapacity());
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_remaining_capacity_exceeds_capacity_when_remaining_exceeds_capacity(): void
+    {
+        $this->expectException(RemainingCapacityExceedsCapacity::class);
+
+        $this->denormalizer->denormalize(
+            ['type' => 'Available', 'capacity' => 10, 'remainingCapacity' => 99],
+            BookingAvailability::class
+        );
     }
 
     /**

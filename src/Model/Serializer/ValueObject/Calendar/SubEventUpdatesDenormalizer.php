@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\RemainingCapacityExceedsCapacity;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdates;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -20,9 +23,23 @@ final class SubEventUpdatesDenormalizer implements DenormalizerInterface
     public function denormalize($data, $class, $format = null, array $context = []): SubEventUpdates
     {
         $updates = [];
+        $schemaErrors = [];
+
         foreach ($data as $subEventUpdateData) {
-            $updates[] = $this->subEventUpdateDenormalizer->denormalize($subEventUpdateData, SubEventUpdate::class);
+            try {
+                $updates[] = $this->subEventUpdateDenormalizer->denormalize($subEventUpdateData, SubEventUpdate::class);
+            } catch (RemainingCapacityExceedsCapacity $e) {
+                $schemaErrors[] = new SchemaError(
+                    '/' . $subEventUpdateData['id'] . $e->getJsonPointer(),
+                    $e->getErrorMessage()
+                );
+            }
         }
+
+        if (!empty($schemaErrors)) {
+            throw ApiProblem::bodyInvalidData(...$schemaErrors);
+        }
+
         return new SubEventUpdates(...$updates);
     }
 

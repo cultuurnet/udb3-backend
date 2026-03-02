@@ -175,8 +175,14 @@ final class CalendarNormalizer implements NormalizerInterface
 
         $derived = $this->deriveBookingAvailabilityFromSubEvents($calendar->getSubEvents());
 
-        return $derived
-            ->withCapacity($stored->getCapacity())
-            ->withRemainingCapacity($stored->getRemainingCapacity());
+        if ($stored->getCapacity() !== null) {
+            $derived = $derived->withCapacity($stored->getCapacity());
+        }
+
+        if ($stored->getRemainingCapacity() !== null) {
+            $derived = $derived->withRemainingCapacity($stored->getRemainingCapacity());
+        }
+
+        return $derived;
     }
 }

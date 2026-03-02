@@ -669,9 +669,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             ->withCapacity(100)
             ->withRemainingCapacity(42);
 
-        $updatedBookingAvailability = BookingAvailability::Available()
-            ->withCapacity(null)
-            ->withRemainingCapacity(null);
+        $updatedBookingAvailability = BookingAvailability::Available();
 
         $singleEventCreated = new EventCreated(
             '1',

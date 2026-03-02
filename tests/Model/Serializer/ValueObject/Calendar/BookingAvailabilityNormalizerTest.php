@@ -60,9 +60,7 @@ final class BookingAvailabilityNormalizerTest extends TestCase
      */
     public function it_omits_null_capacity_and_remainingCapacity(): void
     {
-        $bookingAvailability = BookingAvailability::Available()
-            ->withCapacity(null)
-            ->withRemainingCapacity(null);
+        $bookingAvailability = BookingAvailability::Available();
 
         $this->assertSame(
             ['type' => 'Available'],
