@@ -133,6 +133,25 @@ Feature: Test capacity and remainingCapacity on sub-events
     }
     """
 
+  Scenario: Set capacity via PUT booking-availability
+    When I set the JSON request payload to:
+    """
+    {
+      "type": "Available",
+      "capacity": 100
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/booking-availability"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "bookingAvailability" should be:
+    """
+    {
+      "type": "Available",
+      "capacity": 100
+    }
+    """
+
   Scenario: SubEvent type is Available when remainingCapacity=100 (type derivation)
     When I set the JSON request payload to:
     """
