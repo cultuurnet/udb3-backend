@@ -93,24 +93,24 @@ class BookingInfoTest extends TestCase
     /**
      * @test
      */
-    public function it_should_return_copy_with_an_updated_availability(): void
+    public function it_should_return_copy_with_an_updated_booking_date_range(): void
     {
-        $availability = $this->getAvailability();
+        $availability = $this->getBookingDateRange();
         $bookingInfo = $this->getBookingInfo();
 
         $from = DateTimeFactory::fromFormat('d-m-Y', '02-01-2018');
         $to = DateTimeFactory::fromFormat('d-m-Y', '19-01-2018');
-        $updatedAvailability = BookingAvailability::fromTo($from, $to);
-        $updatedBookingInfo = $bookingInfo->withAvailability($updatedAvailability);
+        $bookingDateRange = BookingDateRange::fromTo($from, $to);
+        $updatedBookingInfo = $bookingInfo->withBookingDateRange($bookingDateRange);
 
-        $withoutAvailability = $updatedBookingInfo->withoutAvailability();
+        $withoutBookingDateRange = $updatedBookingInfo->withoutBookingDateRange();
 
         $this->assertNotEquals($bookingInfo, $updatedBookingInfo);
-        $this->assertNotEquals($updatedBookingInfo, $withoutAvailability);
+        $this->assertNotEquals($updatedBookingInfo, $withoutBookingDateRange);
 
-        $this->assertEquals($availability, $bookingInfo->getAvailability());
-        $this->assertEquals($updatedAvailability, $updatedBookingInfo->getAvailability());
-        $this->assertNull($withoutAvailability->getAvailability());
+        $this->assertEquals($availability, $bookingInfo->getBookingDateRange());
+        $this->assertEquals($bookingDateRange, $updatedBookingInfo->getBookingDateRange());
+        $this->assertNull($withoutBookingDateRange->getBookingDateRange());
     }
 
     private function getUrl(): Url
@@ -141,11 +141,11 @@ class BookingInfoTest extends TestCase
         return new EmailAddress('test@foo.com');
     }
 
-    private function getAvailability(): BookingAvailability
+    private function getBookingDateRange(): BookingDateRange
     {
         $from = DateTimeFactory::fromFormat('d-m-Y', '01-01-2018');
         $to = DateTimeFactory::fromFormat('d-m-Y', '18-01-2018');
-        return BookingAvailability::fromTo($from, $to);
+        return BookingDateRange::fromTo($from, $to);
     }
 
     private function getBookingInfo(): BookingInfo
@@ -154,7 +154,7 @@ class BookingInfoTest extends TestCase
             $this->getWebsiteLink(),
             $this->getTelephoneNumber(),
             $this->getEmailAddress(),
-            $this->getAvailability()
+            $this->getBookingDateRange()
         );
     }
 }

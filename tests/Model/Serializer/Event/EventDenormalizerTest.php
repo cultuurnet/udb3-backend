@@ -33,7 +33,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability as ContactBookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -1706,7 +1706,7 @@ class EventDenormalizerTest extends TestCase
                     ),
                     new TelephoneNumber('02 551 18 70'),
                     new EmailAddress('info@publiq.be'),
-                    new ContactBookingAvailability(
+                    new BookingDateRange(
                         DateTimeFactory::fromAtom('2018-01-01T00:00:00+01:00'),
                         DateTimeFactory::fromAtom('2018-10-01T00:00:00+01:00')
                     )
