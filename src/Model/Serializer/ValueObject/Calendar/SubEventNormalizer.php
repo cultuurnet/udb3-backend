@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use DateTimeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -15,12 +16,19 @@ final class SubEventNormalizer implements NormalizerInterface
      */
     public function normalize($subEvent, $format = null, array $context = []): array
     {
-        return [
+        $normalized = [
             'startDate' => $subEvent->getDateRange()->getFrom()->format(DateTimeInterface::ATOM),
             'endDate' => $subEvent->getDateRange()->getTo()->format(DateTimeInterface::ATOM),
             'status' => (new StatusNormalizer())->normalize($subEvent->getStatus()),
             'bookingAvailability' => (new BookingAvailabilityNormalizer())->normalize($subEvent->getBookingAvailability()),
         ];
+
+        $bookingInfo = (new BookingInfoNormalizer())->normalize($subEvent->getBookingInfo());
+        if (!empty($bookingInfo)) {
+            $normalized['bookingInfo'] = $bookingInfo;
+        }
+
+        return $normalized;
     }
 
     public function supportsNormalization($data, $format = null): bool
