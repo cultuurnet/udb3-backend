@@ -29,6 +29,6 @@ final class BookingAvailabilityNormalizer implements NormalizerInterface
 
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data === BookingAvailability::class;
+        return $data instanceof BookingAvailability;
     }
 }
