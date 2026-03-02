@@ -82,8 +82,7 @@ Feature: Test the UDB3 events API
         """
         {
           "type": "Available",
-          "capacity": 500,
-          "remainingCapacity": 250
+          "capacity": 500
         }
         """
     And the JSON response at "status" should be:
@@ -145,8 +144,7 @@ Feature: Test the UDB3 events API
         """
         {
           "type": "Available",
-          "capacity": 300,
-          "remainingCapacity": 75
+          "capacity": 300
         }
         """
     And the JSON response at "status" should be:
@@ -162,8 +160,7 @@ Feature: Test the UDB3 events API
           },
           "bookingAvailability": {
             "type": "Available",
-            "capacity": 300,
-            "remainingCapacity": 75
+            "capacity": 300
           },
           "startDate": "2021-05-17T08:00:00+00:00",
           "endDate": "2021-05-18T22:00:00+00:00",

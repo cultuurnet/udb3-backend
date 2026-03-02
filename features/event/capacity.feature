@@ -1,4 +1,4 @@
-Feature: Test capacity and remainingCapacity on subEvents
+Feature: Test capacity and remainingCapacity on sub-events
 
   Background:
     Given I am using the UDB3 base URL
@@ -125,69 +125,6 @@ Feature: Test capacity and remainingCapacity on subEvents
         {
           "error": "remainingCapacity must be less than or equal to capacity",
           "jsonPointer": "/0/bookingAvailability/remainingCapacity"
-        }
-      ],
-      "status": 400,
-      "title": "Invalid body data",
-      "type": "https://api.publiq.be/probs/body/invalid-data"
-    }
-    """
-
-  Scenario: Set remainingCapacity via PUT booking-availability, type is derived as Available
-    When I set the JSON request payload to:
-    """
-    {
-      "remainingCapacity": 42
-    }
-    """
-    And I send a PUT request to "%{eventUrl}/booking-availability"
-    Then the response status should be "204"
-    And I get the event at "%{eventUrl}"
-    And the JSON response at "bookingAvailability" should be:
-    """
-    {
-      "type": "Available",
-      "remainingCapacity": 42
-    }
-    """
-
-  Scenario: Set capacity and remainingCapacity via PUT booking-availability
-    When I set the JSON request payload to:
-    """
-    {
-      "capacity": 100,
-      "remainingCapacity": 42
-    }
-    """
-    And I send a PUT request to "%{eventUrl}/booking-availability"
-    Then the response status should be "204"
-    And I get the event at "%{eventUrl}"
-    And the JSON response at "bookingAvailability" should be:
-    """
-    {
-      "type": "Available",
-      "capacity": 100,
-      "remainingCapacity": 42
-    }
-    """
-
-  Scenario: Sending remainingCapacity greater than capacity via PUT booking-availability returns 400
-    When I set the JSON request payload to:
-    """
-    {
-      "capacity": 10,
-      "remainingCapacity": 99
-    }
-    """
-    And I send a PUT request to "%{eventUrl}/booking-availability"
-    Then the response status should be "400"
-    And the JSON response should be:
-    """
-    {
-      "schemaErrors": [
-        {
-          "error": "remainingCapacity must be less than or equal to capacity",
-          "jsonPointer": "/remainingCapacity"
         }
       ],
       "status": 400,

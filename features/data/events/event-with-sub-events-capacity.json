@@ -24,8 +24,7 @@
   "endDate": "2018-05-06T21:00:00+01:00",
   "bookingAvailability": {
     "type": "Available",
-    "capacity": 500,
-    "remainingCapacity": 250
+    "capacity": 500
   },
   "subEvent": [
     {
