@@ -38,6 +38,6 @@ final class BookingAvailabilityDenormalizer implements DenormalizerInterface
                 : BookingAvailabilityType::Unavailable();
         }
 
-        return new BookingAvailabilityType($data['type']);
+        return new BookingAvailabilityType($data['type'] ?? 'Available');
     }
 }
