@@ -23,6 +23,7 @@ use Lcobucci\JWT\Validation\Validator;
 
 final class JsonWebToken
 {
+    public const UIT_ID_V1_JWT_PROVIDER_TOKEN = 'uit_v1_jwt_provider_token';
     public const UIT_ID_V2_JWT_PROVIDER_TOKEN = 'uit_v2_jwt_provider_token';
     public const UIT_ID_V2_USER_ACCESS_TOKEN = 'uit_v2_user_access_token';
     public const UIT_ID_V2_CLIENT_ACCESS_TOKEN = 'uit_v2_client_access_token';
@@ -52,6 +53,11 @@ final class JsonWebToken
      */
     public function getType(): string
     {
+        // V1 tokens had a non-standardized "uid" claim
+        if ($this->token->claims()->has('uid')) {
+            return self::UIT_ID_V1_JWT_PROVIDER_TOKEN;
+        }
+
         // Because ID tokens from Keycloak always have a `azp` claim the `typ` claim can be used to verify if a Keycloak ID token is passed.
         if ($this->token->claims()->get('typ', '') === 'ID') {
             return self::UIT_ID_V2_JWT_PROVIDER_TOKEN;
@@ -69,6 +75,10 @@ final class JsonWebToken
 
     public function getUserId(): string
     {
+        if ($this->token->claims()->has('uid')) {
+            return $this->token->claims()->get('uid');
+        }
+
         if ($this->token->claims()->has('https://publiq.be/uitidv1id')) {
             return $this->token->claims()->get('https://publiq.be/uitidv1id');
         }
@@ -84,6 +94,15 @@ final class JsonWebToken
     {
         if ($this->getType() === self::UIT_ID_V2_CLIENT_ACCESS_TOKEN) {
             return null;
+        }
+
+        // Tokens from V1 JWT provider (= custom)
+        if ($this->hasClaims(['nick', 'email'])) {
+            return new UserIdentityDetails(
+                $this->getUserId(),
+                $this->token->claims()->get('nick'),
+                $this->token->claims()->get('email')
+            );
         }
 
         // Tokens from V2 JWT provider (= Auth0 ID tokens)
