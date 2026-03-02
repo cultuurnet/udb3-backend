@@ -195,3 +195,64 @@ Feature: Test capacity and remainingCapacity on subEvents
       "type": "https://api.publiq.be/probs/body/invalid-data"
     }
     """
+
+  Scenario: SubEvent type is Available when remainingCapacity=100 (type derivation)
+    When I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "bookingAvailability": {
+          "remainingCapacity": 100
+        }
+      }
+    ]
+    """
+    And I send a PATCH request to "%{eventUrl}/subEvents"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "bookingAvailability/type" should be "Available"
+    And the JSON response at "subEvent/0/bookingAvailability" should be:
+    """
+    {
+      "type": "Available",
+      "remainingCapacity": 100
+    }
+    """
+
+  Scenario: SubEvent type is Available when remainingCapacity=100 even with top-level Unavailable
+    Given I set the JSON request payload from "places/place.json"
+    And I send a POST request to "/places/"
+    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I set the JSON request payload from "events/event-with-unavailable-sub-events.json"
+    When I send a POST request to "/events/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "url" as "unavailableEventUrl"
+    When I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "bookingAvailability": {
+          "remainingCapacity": 100
+        }
+      }
+    ]
+    """
+    And I send a PATCH request to "%{unavailableEventUrl}/subEvents"
+    Then the response status should be "204"
+    And I get the event at "%{unavailableEventUrl}"
+    And the JSON response at "bookingAvailability/type" should be "Available"
+    And the JSON response at "subEvent/0/bookingAvailability" should be:
+    """
+    {
+      "type": "Available",
+      "remainingCapacity": 100
+    }
+    """
+    And the JSON response at "subEvent/1/bookingAvailability" should be:
+    """
+    {
+      "type": "Unavailable"
+    }
+    """
