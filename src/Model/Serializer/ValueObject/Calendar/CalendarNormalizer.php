@@ -179,10 +179,6 @@ final class CalendarNormalizer implements NormalizerInterface
             $derived = $derived->withCapacity($stored->getCapacity());
         }
 
-        if ($stored->getRemainingCapacity() !== null) {
-            $derived = $derived->withRemainingCapacity($stored->getRemainingCapacity());
-        }
-
         return $derived;
     }
 }

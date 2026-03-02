@@ -61,7 +61,7 @@ final class CalendarNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_preserves_capacity_and_remainingCapacity_on_calendar_with_available_subevent(): void
+    public function it_preserves_capacity_on_calendar_with_available_subevent(): void
     {
         $timezone = new DateTimeZone('Europe/Brussels');
         $startDate = new DateTimeImmutable('2025-03-01 10:00:00', $timezone);
@@ -73,20 +73,18 @@ final class CalendarNormalizerTest extends TestCase
             ->withBookingAvailability(
                 BookingAvailability::Available()
                     ->withCapacity(200)
-                    ->withRemainingCapacity(150)
             );
 
         $normalized = $this->normalizer->normalize($calendar);
 
         $this->assertSame('Available', $normalized['bookingAvailability']['type']);
         $this->assertSame(200, $normalized['bookingAvailability']['capacity']);
-        $this->assertSame(150, $normalized['bookingAvailability']['remainingCapacity']);
     }
 
     /**
      * @test
      */
-    public function it_derives_unavailable_type_from_unavailable_subevent_while_preserving_capacity_and_remainingCapacity(): void
+    public function it_derives_unavailable_type_from_unavailable_subevent_while_preserving_capacity(): void
     {
         $timezone = new DateTimeZone('Europe/Brussels');
         $startDate = new DateTimeImmutable('2025-03-01 10:00:00', $timezone);
@@ -100,15 +98,13 @@ final class CalendarNormalizerTest extends TestCase
             ->withBookingAvailability(
                 BookingAvailability::Available()
                     ->withCapacity(300)
-                    ->withRemainingCapacity(0)
             );
 
         $normalized = $this->normalizer->normalize($calendar);
 
         // Type should be derived as Unavailable from the sub-event
         $this->assertSame('Unavailable', $normalized['bookingAvailability']['type']);
-        // But capacity and remainingCapacity should be preserved from the stored top-level value
+        // But capacity should be preserved from the stored top-level value
         $this->assertSame(300, $normalized['bookingAvailability']['capacity']);
-        $this->assertSame(0, $normalized['bookingAvailability']['remainingCapacity']);
     }
 }
