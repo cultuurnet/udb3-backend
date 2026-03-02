@@ -23,12 +23,12 @@ final class BookingInfoNormalizer implements NormalizerInterface
             ]
         );
 
-        if ($bookingInfo->getAvailability() && $bookingInfo->getAvailability()->getFrom()) {
-            $serialized['availabilityStarts'] = $bookingInfo->getAvailability()->getFrom()->format(\DATE_ATOM);
+        if ($bookingInfo->getBookingDateRange() && $bookingInfo->getBookingDateRange()->getFrom()) {
+            $serialized['availabilityStarts'] = $bookingInfo->getBookingDateRange()->getFrom()->format(\DATE_ATOM);
         }
 
-        if ($bookingInfo->getAvailability() && $bookingInfo->getAvailability()->getTo()) {
-            $serialized['availabilityEnds'] = $bookingInfo->getAvailability()->getTo()->format(\DATE_ATOM);
+        if ($bookingInfo->getBookingDateRange() && $bookingInfo->getBookingDateRange()->getTo()) {
+            $serialized['availabilityEnds'] = $bookingInfo->getBookingDateRange()->getTo()->format(\DATE_ATOM);
         }
 
         if ($bookingInfo->getWebsite()) {

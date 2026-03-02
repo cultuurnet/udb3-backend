@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -110,7 +110,7 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             ),
             new TelephoneNumber('02/1232323'),
             new EmailAddress('info@publiq.be'),
-            BookingAvailability::fromTo(
+            BookingDateRange::fromTo(
                 DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
                 DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
             )
@@ -126,7 +126,7 @@ final class UpdateBookingInfoRequestHandlerTest extends TestCase
             ),
             new TelephoneNumber('02/1232323'),
             new EmailAddress('info@publiq.be'),
-            BookingAvailability::fromTo(
+            BookingDateRange::fromTo(
                 DateTimeFactory::fromAtom('2023-01-01T00:00:00+01:00'),
                 DateTimeFactory::fromAtom('2028-01-31T23:59:59+01:00')
             )
