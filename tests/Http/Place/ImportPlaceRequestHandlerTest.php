@@ -23,7 +23,11 @@ use CultuurNet\UDB3\Media\ImageCollection;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
-use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
+use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
@@ -38,7 +42,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -117,6 +121,9 @@ final class ImportPlaceRequestHandlerTest extends TestCase
     /** @var ImageCollectionFactory&MockObject */
     private object $imageCollectionFactory;
 
+    /** @var CategoryResolverInterface&MockObject */
+    private object $categoryResolver;
+
     private ImportPlaceRequestHandler $importPlaceRequestHandler;
 
     private function getSimplePlace(): array
@@ -154,6 +161,31 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
         $organizerRepository = new InMemoryDocumentRepository();
         $organizerRepository->save(new JsonDocument('5cf42d51-3a4f-46f0-a8af-1cf672be8c84', '{}'));
+
+        // Configure the category resolver mock
+        $this->categoryResolver = $this->createMock(CategoryResolverInterface::class);
+        $this->categoryResolver->method('byId')
+            ->willReturnCallback(function (CategoryID $categoryID) {
+                $termMap = [
+                    'Yf4aZBfsUEu2NsQqsprngw' => new Category(
+                        new CategoryID('Yf4aZBfsUEu2NsQqsprngw'),
+                        new CategoryLabel('Cultuur- of ontmoetingscentrum'),
+                        CategoryDomain::eventType()
+                    ),
+                    '0.15.0.0.0' => new Category(
+                        new CategoryID('0.15.0.0.0'),
+                        new CategoryLabel('Natuur, park of tuin'),
+                        CategoryDomain::eventType()
+                    ),
+                    '0.14.0.0.0' => new Category(
+                        new CategoryID('0.14.0.0.0'),
+                        new CategoryLabel('Monument'),
+                        CategoryDomain::eventType()
+                    ),
+                ];
+
+                return $termMap[$categoryID->toString()] ?? null;
+            });
 
         $this->importPlaceRequestHandler = new ImportPlaceRequestHandler(
             $this->aggregateRepository,
@@ -868,7 +900,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                         ),
                         new TelephoneNumber('016 10 20 30'),
                         new EmailAddress('booking@dehel.be'),
-                        BookingAvailability::fromTo(
+                        BookingDateRange::fromTo(
                             new DateTimeImmutable('2020-05-17T22:00:00+00:00'),
                             new DateTimeImmutable('2028-05-17T22:00:00+00:00')
                         )
@@ -5277,7 +5309,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
         return new CombinedRequestBodyParser(
             new LegacyPlaceRequestBodyParser(),
             RemoveEmptyArraysRequestBodyParser::createForPlaces(),
-            new ImportTermRequestBodyParser(new PlaceCategoryResolver()),
+            new ImportTermRequestBodyParser($this->categoryResolver),
             new ImportPriceInfoRequestBodyParser(
                 [
                     'nl' => 'Basistarief',

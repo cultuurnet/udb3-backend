@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Role;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\AggregateType;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageIsReplayed;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -97,7 +98,10 @@ final class RoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'role_search_v3_projector',
-            fn () => new ReadModel\Search\Projector($container->get('role_search_v3_repository'))
+            fn () => new ReadModel\Search\Projector(
+                $container->get('role_search_v3_repository'),
+                new DomainMessageIsReplayed()
+            )
         );
 
         $container->addShared(

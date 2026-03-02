@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Role\ReadModel\Search;
 
 use Broadway\EventHandling\EventListener;
 use Broadway\Domain\DomainMessage;
+use CultuurNet\UDB3\Broadway\Domain\DomainMessageSpecificationInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Role\Events\ConstraintAdded;
 use CultuurNet\UDB3\Role\Events\ConstraintRemoved;
@@ -20,9 +21,14 @@ class Projector implements EventListener
 
     private RepositoryInterface $repository;
 
-    public function __construct(RepositoryInterface $repository)
-    {
+    private DomainMessageSpecificationInterface $isReplay;
+
+    public function __construct(
+        RepositoryInterface $repository,
+        DomainMessageSpecificationInterface $isReplay
+    ) {
         $this->repository = $repository;
+        $this->isReplay = $isReplay;
     }
 
     public function applyRoleCreated(
@@ -31,7 +37,9 @@ class Projector implements EventListener
     ): void {
         $this->repository->save(
             $roleCreated->getUuid()->toString(),
-            $roleCreated->getName()
+            $roleCreated->getName(),
+            null,
+            $this->isReplay->isSatisfiedBy($domainMessage)
         );
     }
 

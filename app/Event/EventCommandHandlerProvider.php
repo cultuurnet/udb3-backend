@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Event\CommandHandlers\UpdateSubEventsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
+use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 
 final class EventCommandHandlerProvider extends AbstractServiceProvider
 {
@@ -47,7 +48,10 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
         $container->addShared(
             UpdateThemeHandler::class,
             function () use ($container): UpdateThemeHandler {
-                return new UpdateThemeHandler($container->get('event_repository'));
+                return new UpdateThemeHandler(
+                    $container->get('event_repository'),
+                    $container->get(EventCategoryResolver::class)
+                );
             }
         );
 

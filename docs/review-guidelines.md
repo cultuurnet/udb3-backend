@@ -36,6 +36,7 @@ Only provide suggestion blocks for concrete, actionable fixes.
 - Adequate test coverage
 - Test quality and edge cases
 - Missing test scenarios
+- Every change should be evaluated for whether it needs new or updated unit tests and/or feature (acceptance) tests
 
 ### Documentation
 - Code documentation

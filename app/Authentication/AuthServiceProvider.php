@@ -14,14 +14,18 @@ use CultuurNet\UDB3\Cache\CachedApiKeyAuthenticator;
 use CultuurNet\UDB3\Cache\CachedConsumerReadRepository;
 use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
-use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV1JwtValidator;
 use CultuurNet\UDB3\Http\Auth\Jwt\UitIdV2JwtValidator;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Impersonator;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\User\ApiKeysMatchedToClientIds;
+use CultuurNet\UDB3\User\ClientIdResolver;
 use CultuurNet\UDB3\User\CurrentUser;
+use CultuurNet\UDB3\User\InMemoryApiKeysMatchedToClientIds;
 use League\Container\DefinitionContainerInterface;
 
 final class AuthServiceProvider extends AbstractServiceProvider
@@ -36,6 +40,7 @@ final class AuthServiceProvider extends AbstractServiceProvider
             ConsumerReadRepository::class,
             Consumer::class,
             'impersonator',
+            ApiKeysMatchedToClientIds::class,
         ];
     }
 
@@ -49,10 +54,6 @@ final class AuthServiceProvider extends AbstractServiceProvider
             RequestAuthenticatorMiddleware::class,
             function () use ($container): RequestAuthenticatorMiddleware {
                 $authenticator = new RequestAuthenticatorMiddleware(
-                    new UitIdV1JwtValidator(
-                        'file://' . __DIR__ . '/../../' . $container->get('config')['jwt']['v1']['keys']['public']['file'],
-                        $container->get('config')['jwt']['v1']['valid_issuers']
-                    ),
                     $this->createUitIdV2JwtValidator($container),
                     new CachedApiKeyAuthenticator(
                         new CultureFeedApiKeyAuthenticator($container->get(ConsumerReadRepository::class)),
@@ -65,6 +66,9 @@ final class AuthServiceProvider extends AbstractServiceProvider
                     $container->get(ConsumerReadRepository::class),
                     new ConsumerIsInPermissionGroup((string) $container->get('config')['api_key']['group_id']),
                     $container->get(UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY),
+                    $container->get(ClientIdResolver::class),
+                    LoggerFactory::create($this->getContainer(), LoggerName::forWeb()),
+                    $container->get('config')['match_api_keys_to_client_ids'] ? $container->get(ApiKeysMatchedToClientIds::class) : null
                 );
 
                 // We can not expect the ids of events, places and organizers to be correctly formatted as UUIDs,
@@ -190,6 +194,13 @@ final class AuthServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'impersonator',
             fn () => new Impersonator()
+        );
+
+        $container->addShared(
+            ApiKeysMatchedToClientIds::class,
+            fn () => new InMemoryApiKeysMatchedToClientIds(
+                file_exists(__DIR__ . '/../../config.api_keys_matched_to_client_ids.php') ? require __DIR__ . '/../../config.api_keys_matched_to_client_ids.php' : []
+            )
         );
     }
 

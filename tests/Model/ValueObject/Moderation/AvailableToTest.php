@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Moderation;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
@@ -19,6 +18,10 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use DateTimeImmutable;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
@@ -173,12 +176,25 @@ class AvailableToTest extends TestCase
                 SubEvent::createAvailable(new DateRange($startDate, $endDate))
             )
         );
-        $eventTypeResolver = new EventTypeResolver();
 
-        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId('0.7.0.0.0'));
+        $availableTo = AvailableTo::createFromCalendar(
+            $calendar,
+            new Category(
+                new CategoryID('0.7.0.0.0'),
+                new CategoryLabel('Begeleide uitstap of rondleiding'),
+                CategoryDomain::eventType()
+            )
+        );
         $this->assertEquals($endDate, $availableTo);
 
-        $availableTo = AvailableTo::createFromCalendar($calendar, $eventTypeResolver->byId('0.3.1.0.0'));
+        $availableTo = AvailableTo::createFromCalendar(
+            $calendar,
+            new Category(
+                new CategoryID('0.3.1.0.0'),
+                new CategoryLabel('Lessenreeks'),
+                CategoryDomain::eventType()
+            ),
+        );
         $this->assertEquals($startDate, $availableTo);
     }
 }

@@ -52,6 +52,7 @@ use CultuurNet\UDB3\Console\Command\UpdateUniqueOrganizers;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Event\EventThemeResolver;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Kinepolis\Client\AuthenticatedKinepolisClient;
@@ -525,7 +526,8 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                     new KinepolisMovieParser(
                         $container->get('config')['kinepolis']['terms'],
                         $container->get('config')['kinepolis']['theaters'],
-                        new KinepolisDateParser()
+                        new KinepolisDateParser(),
+                        $container->get(EventThemeResolver::class)
                     ),
                     new KinepolisPriceParser(),
                     new MovieMappingRepository($container->get(('dbal_connection'))),

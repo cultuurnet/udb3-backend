@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
-use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryNotFound;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
@@ -19,14 +17,10 @@ use RuntimeException;
 final class UpdateTypeHandler implements CommandHandler
 {
     private OfferRepository $offerRepository;
-    private CategoryResolverInterface $eventCategoryResolver;
-    private CategoryResolverInterface $placeCategoryResolver;
 
-    public function __construct(OfferRepository $offerRepository)
+    public function __construct(OfferRepository $offerRepository, readonly CategoryResolverInterface $eventCategoryResolver, readonly CategoryResolverInterface $placeCategoryResolver)
     {
         $this->offerRepository = $offerRepository;
-        $this->eventCategoryResolver = new EventCategoryResolver();
-        $this->placeCategoryResolver = new PlaceCategoryResolver();
     }
 
     public function handle($command): void

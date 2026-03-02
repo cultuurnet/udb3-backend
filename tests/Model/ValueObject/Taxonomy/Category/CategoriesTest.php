@@ -49,4 +49,36 @@ class CategoriesTest extends TestCase
 
         $this->assertEquals($expected, $actual);
     }
+
+    /**
+     * @test
+     */
+    public function it_should_filter_by_id(): void
+    {
+        $terms = [
+            new Category(
+                new CategoryID('0.100.4.0.0'),
+                new CategoryLabel('wheelchair accessible'),
+                new CategoryDomain('facility')
+            ),
+            new Category(
+                new CategoryID('0.50.4.0.0'),
+                new CategoryLabel('Concert'),
+                new CategoryDomain('eventtype')
+            ),
+        ];
+
+        $categories = new Categories(...$terms);
+
+        $this->assertEquals(
+            new Category(
+                new CategoryID('0.50.4.0.0'),
+                new CategoryLabel('Concert'),
+                new CategoryDomain('eventtype')
+            ),
+            $categories->getById(new CategoryID('0.50.4.0.0'))
+        );
+
+        $this->assertNull($categories->getById(new CategoryID('foobar')));
+    }
 }
