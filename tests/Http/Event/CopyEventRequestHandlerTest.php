@@ -32,6 +32,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\FixedUuidFactory;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -110,7 +111,8 @@ class CopyEventRequestHandlerTest extends TestCase
                             ),
                             new BookingAvailability(
                                 BookingAvailabilityType::Available()
-                            )
+                            ),
+                            new BookingInfo(),
                         )
                     )
                 ),
@@ -139,7 +141,8 @@ class CopyEventRequestHandlerTest extends TestCase
                             ),
                             new BookingAvailability(
                                 BookingAvailabilityType::Available()
-                            )
+                            ),
+                            new BookingInfo(),
                         )
                     )
                 ),
@@ -175,7 +178,8 @@ class CopyEventRequestHandlerTest extends TestCase
                             ),
                             new BookingAvailability(
                                 BookingAvailabilityType::Available()
-                            )
+                            ),
+                            new BookingInfo(),
                         )
                     )
                 ),
@@ -206,7 +210,8 @@ class CopyEventRequestHandlerTest extends TestCase
                             ),
                             new BookingAvailability(
                                 BookingAvailabilityType::Unavailable()
-                            )
+                            ),
+                            new BookingInfo(),
                         )
                     )
                 ),
@@ -243,7 +248,8 @@ class CopyEventRequestHandlerTest extends TestCase
                             ),
                             new BookingAvailability(
                                 BookingAvailabilityType::Available()
-                            )
+                            ),
+                            new BookingInfo(),
                         )
                     )
                 ),
@@ -281,7 +287,8 @@ class CopyEventRequestHandlerTest extends TestCase
                             ),
                             new BookingAvailability(
                                 BookingAvailabilityType::Unavailable()
-                            )
+                            ),
+                            new BookingInfo(),
                         )
                     ))
                     ->withStatus(
@@ -324,7 +331,8 @@ class CopyEventRequestHandlerTest extends TestCase
                             ),
                             new BookingAvailability(
                                 BookingAvailabilityType::Available()
-                            )
+                            ),
+                            new BookingInfo(),
                         )
                     )
                 ),
@@ -349,7 +357,8 @@ class CopyEventRequestHandlerTest extends TestCase
                             ),
                             new BookingAvailability(
                                 BookingAvailabilityType::Available()
-                            )
+                            ),
+                            new BookingInfo(),
                         )
                     )
                 ),
@@ -383,7 +392,8 @@ class CopyEventRequestHandlerTest extends TestCase
                                 ),
                                 new BookingAvailability(
                                     BookingAvailabilityType::Available()
-                                )
+                                ),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -395,7 +405,8 @@ class CopyEventRequestHandlerTest extends TestCase
                                 ),
                                 new BookingAvailability(
                                     BookingAvailabilityType::Available()
-                                )
+                                ),
+                                new BookingInfo(),
                             ),
                         )
                     )
@@ -430,7 +441,8 @@ class CopyEventRequestHandlerTest extends TestCase
                                 ),
                                 new BookingAvailability(
                                     BookingAvailabilityType::Available()
-                                )
+                                ),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -442,7 +454,8 @@ class CopyEventRequestHandlerTest extends TestCase
                                 ),
                                 new BookingAvailability(
                                     BookingAvailabilityType::Available()
-                                )
+                                ),
+                                new BookingInfo(),
                             ),
                         )
                     )

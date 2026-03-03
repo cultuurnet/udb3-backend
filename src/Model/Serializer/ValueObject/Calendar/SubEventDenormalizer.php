@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class SubEventDenormalizer implements DenormalizerInterface
@@ -27,6 +29,11 @@ final class SubEventDenormalizer implements DenormalizerInterface
             $bookingAvailability = (new BookingAvailabilityDenormalizer())->denormalize($data['bookingAvailability'], BookingAvailability::class);
         }
 
+        $bookingInfo = new BookingInfo();
+        if (isset($data['bookingInfo'])) {
+            $bookingInfo = (new BookingInfoDenormalizer())->denormalize($data['bookingInfo'], BookingInfo::class);
+        }
+
         $startDate = DateTimeFactory::fromAtom($data['startDate']);
         $endDate = DateTimeFactory::fromAtom($data['endDate']);
 
@@ -34,7 +41,7 @@ final class SubEventDenormalizer implements DenormalizerInterface
             $endDate = $startDate;
         }
 
-        return new SubEvent(new DateRange($startDate, $endDate), $status, $bookingAvailability);
+        return new SubEvent(new DateRange($startDate, $endDate), $status, $bookingAvailability, $bookingInfo);
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool

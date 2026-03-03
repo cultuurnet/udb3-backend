@@ -394,7 +394,8 @@ final class Event extends Offer
                     $subEventUpdate->getEndDate() ?: $subEvent->getDateRange()->getTo()
                 ),
                 $subEventStatus ?? $subEvent->getStatus(),
-                $subEventBookingAvailability ?? $subEvent->getBookingAvailability()
+                $subEventBookingAvailability ?? $subEvent->getBookingAvailability(),
+                $subEventUpdate->getBookingInfo() ?? $subEvent->getBookingInfo(),
             );
 
             $subEvents[$index] = $updatedSubEvent;

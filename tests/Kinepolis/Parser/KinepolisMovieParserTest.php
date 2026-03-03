@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
@@ -53,7 +54,8 @@ final class KinepolisMovieParserTest extends TestCase
                                 DateTimeFactory::fromAtom('2024-04-08T20:00:00+00:00')
                             ),
                             new Status(StatusType::Available()),
-                            new BookingAvailability(BookingAvailabilityType::Available())
+                            new BookingAvailability(BookingAvailabilityType::Available()),
+                            new BookingInfo(),
                         ),
                     ],
                 ],
@@ -65,7 +67,8 @@ final class KinepolisMovieParserTest extends TestCase
                                 DateTimeFactory::fromAtom('2024-04-08T22:30:00+00:00')
                             ),
                             new Status(StatusType::Available()),
-                            new BookingAvailability(BookingAvailabilityType::Available())
+                            new BookingAvailability(BookingAvailabilityType::Available()),
+                            new BookingInfo(),
                         ),
                     ],
                     '3D' => [
@@ -75,7 +78,8 @@ final class KinepolisMovieParserTest extends TestCase
                                 DateTimeFactory::fromAtom('2024-04-08T19:45:00+00:00')
                             ),
                             new Status(StatusType::Available()),
-                            new BookingAvailability(BookingAvailabilityType::Available())
+                            new BookingAvailability(BookingAvailabilityType::Available()),
+                            new BookingInfo(),
                         ),
                     ],
                 ],
@@ -150,7 +154,8 @@ final class KinepolisMovieParserTest extends TestCase
                             DateTimeFactory::fromAtom('2024-04-08T20:00:00+00:00')
                         ),
                         new Status(StatusType::Available()),
-                        new BookingAvailability(BookingAvailabilityType::Available())
+                        new BookingAvailability(BookingAvailabilityType::Available()),
+                        new BookingInfo(),
                     )),
                     new PriceInfo(
                         new Tariff(
@@ -198,7 +203,8 @@ final class KinepolisMovieParserTest extends TestCase
                             DateTimeFactory::fromAtom('2024-04-08T22:30:00+00:00')
                         ),
                         new Status(StatusType::Available()),
-                        new BookingAvailability(BookingAvailabilityType::Available())
+                        new BookingAvailability(BookingAvailabilityType::Available()),
+                        new BookingInfo(),
                     )),
                     new PriceInfo(
                         new Tariff(
@@ -246,7 +252,8 @@ final class KinepolisMovieParserTest extends TestCase
                             DateTimeFactory::fromAtom('2024-04-08T19:45:00+00:00')
                         ),
                         new Status(StatusType::Available()),
-                        new BookingAvailability(BookingAvailabilityType::Available())
+                        new BookingAvailability(BookingAvailabilityType::Available()),
+                        new BookingInfo(),
                     )),
                     new PriceInfo(
                         new Tariff(
@@ -324,7 +331,8 @@ final class KinepolisMovieParserTest extends TestCase
                             DateTimeFactory::fromAtom('2024-04-08T20:00:00+00:00')
                         ),
                         new Status(StatusType::Available()),
-                        new BookingAvailability(BookingAvailabilityType::Available())
+                        new BookingAvailability(BookingAvailabilityType::Available()),
+                        new BookingInfo(),
                     )),
                     new PriceInfo(
                         new Tariff(
@@ -372,7 +380,8 @@ final class KinepolisMovieParserTest extends TestCase
                             DateTimeFactory::fromAtom('2024-04-08T22:30:00+00:00')
                         ),
                         new Status(StatusType::Available()),
-                        new BookingAvailability(BookingAvailabilityType::Available())
+                        new BookingAvailability(BookingAvailabilityType::Available()),
+                        new BookingInfo(),
                     )),
                     new PriceInfo(
                         new Tariff(
@@ -420,7 +429,8 @@ final class KinepolisMovieParserTest extends TestCase
                             DateTimeFactory::fromAtom('2024-04-08T19:45:00+00:00')
                         ),
                         new Status(StatusType::Available()),
-                        new BookingAvailability(BookingAvailabilityType::Available())
+                        new BookingAvailability(BookingAvailabilityType::Available()),
+                        new BookingInfo(),
                     )),
                     new PriceInfo(
                         new Tariff(
