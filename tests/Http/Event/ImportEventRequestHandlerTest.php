@@ -22,6 +22,9 @@ use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
+use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -57,10 +60,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItem;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
-use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
@@ -271,7 +271,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -354,7 +354,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -474,7 +474,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -550,7 +550,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -830,7 +830,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                         ))->withCopyrightHolder(new CopyrightHolder('publiq vzw')),
                     )
                 ),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -843,7 +843,7 @@ final class ImportEventRequestHandlerTest extends TestCase
     public function it_imports_faq_items(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $faqItemId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
+        $faqId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -868,7 +868,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'calendarType' => 'permanent',
                 'faq' => [
                     [
-                        'id' => $faqItemId,
+                        'id' => $faqId,
                         'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
                         'en' => ['question' => 'How do I get there?', 'answer' => 'By bus.'],
                     ],
@@ -878,13 +878,13 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $this->importEventRequestHandler->handle($request);
 
-        $expectedFaqItems = (new FaqItems())->with(
-            (new TranslatedFaqItem(
+        $expectedFaqs = (new Faqs())->with(
+            (new TranslatedFaq(
                 new Language('nl'),
-                new FaqItem($faqItemId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+                new Faq($faqId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
             ))->withTranslation(
                 new Language('en'),
-                new FaqItem($faqItemId, new Question('How do I get there?'), new Answer('By bus.'))
+                new Faq($faqId, new Question('How do I get there?'), new Answer('By bus.'))
             )
         );
 
@@ -894,7 +894,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             fn ($c) => $c instanceof UpdateFaqs
         ))[0];
 
-        $this->assertEquals(new UpdateFaqs($eventId, $expectedFaqItems), $updateFaqsCommand);
+        $this->assertEquals(new UpdateFaqs($eventId, $expectedFaqs), $updateFaqsCommand);
     }
 
     /**
@@ -965,7 +965,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1037,7 +1037,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1236,7 +1236,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1307,7 +1307,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1388,7 +1388,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1467,7 +1467,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1545,7 +1545,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1627,7 +1627,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1703,7 +1703,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1783,7 +1783,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1857,7 +1857,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -2138,7 +2138,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -2950,7 +2950,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -4214,7 +4214,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteOffer($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
@@ -4550,7 +4550,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -5043,7 +5043,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -5148,7 +5148,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportLabels($eventId, new Labels()),
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
-                new UpdateFaqs($eventId, new FaqItems()),
+                new UpdateFaqs($eventId, new Faqs()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()

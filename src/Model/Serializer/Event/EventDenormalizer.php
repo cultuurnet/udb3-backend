@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\Event;
 
+use CultuurNet\UDB3\Event\Serializer\FaqsDenormalizer;
 use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\EventIDParser;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
@@ -13,13 +14,12 @@ use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Event\Serializer\FaqItemsDenormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
@@ -138,7 +138,7 @@ class EventDenormalizer extends OfferDenormalizer
     private function denormalizeFaq(array $data, ImmutableEvent $event): ImmutableEvent
     {
         if (isset($data['faq'])) {
-            $faqItems = (new FaqItemsDenormalizer())->denormalize($data['faq'], FaqItems::class);
+            $faqItems = (new FaqsDenormalizer())->denormalize($data['faq'], Faqs::class);
             $event = $event->withFaq($faqItems);
         }
 
