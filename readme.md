@@ -41,25 +41,25 @@ The first time you have to build both versions:
 ### Install without Xdebug
 
 ```
-docker-compose up -d
+docker compose up -d
 ```
 
 ### Install profile with Xdebug
 
 ```
-docker-compose --profile xdebug up -d
+docker compose --profile xdebug up -d
 ```
 
 You don't have to rebuild to switch, *you can just switch between versions in your docker engine*.
 Both version are running at the same time, the image without xdebug at port 8000 and the image with xdebug at port 8001.
 
 ### Using xdebug
-To bash inside the xdebug enable container, use 
+To bash inside the xdebug enable container, use
 ```
 make bash-xdebug
 ```
 
-Xdebug is configured to run with trigger mode, meaning you have to modify the request to enable xdebug: 
+Xdebug is configured to run with trigger mode, meaning you have to modify the request to enable xdebug:
 
 - *API*: ADD XDEBUG_TRIGGER as a GET or POST variable, for example in Postman.
 - *Browser*: install a [browser debugging extension](https://www.jetbrains.com/help/phpstorm/browser-debugging-extensions.html#xdebug-helper-extension)
@@ -77,7 +77,7 @@ Logs are located in the `./logs` directory.
 
 - `web.log` contains unforeseen errors/exceptions that occurred in HTTP requests
 - `cli.log` contains CLI errors that did not get caught and logged to the other logs listed below
-  
+
 ### Worker logs
 
 The following logs contain info about CLI commands that run continuously.
@@ -85,7 +85,7 @@ The following logs contain info about CLI commands that run continuously.
 - `amqp.uitpas.log` contains logs about UiTPAS events that get processed through the `amqp-listen-uitpas` CLI command
 - `resque.bulk-label-offer.log` contains logs about the resque worker for the `bulk_label_offer` queue
 - `resque.event-export.log` contains logs about the resque worker for the `event_export` queue
-  
+
 ### Service logs
 
 The following logs contain info about specific services that can be part of HTTP requests, CLI commands, or both.
