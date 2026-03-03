@@ -21,13 +21,7 @@ You cannot directly run tests in this repository. Instead, you need to run the `
 
 ## Code Coverage
 
-The CI pipeline generates a Clover XML coverage report and uploads it as a GitHub Actions artifact named `coverage-report`. Download the latest report with:
-
-```bash
-gh run download --name coverage-report
-```
-
-This produces a `coverage.xml` file in your current directory. When this file is present, use it to assist with test coverage. Common questions to answer from it:
+The CI pipeline generates a Clover XML coverage report (`coverage.xml`) and makes it available in the workspace. If `coverage.xml` is present, read it and include coverage insights in your review:
 
 - Which classes or methods in `src/` have zero coverage?
 - Which files have line coverage below 80%?
