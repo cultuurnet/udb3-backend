@@ -138,8 +138,8 @@ class EventDenormalizer extends OfferDenormalizer
     private function denormalizeFaq(array $data, ImmutableEvent $event): ImmutableEvent
     {
         if (isset($data['faq'])) {
-            $faqItems = (new FaqsDenormalizer())->denormalize($data['faq'], Faqs::class);
-            $event = $event->withFaq($faqItems);
+            $faqs = (new FaqsDenormalizer())->denormalize($data['faq'], Faqs::class);
+            $event = $event->withFaq($faqs);
         }
 
         return $event;
