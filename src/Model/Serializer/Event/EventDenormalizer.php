@@ -29,6 +29,8 @@ class EventDenormalizer extends OfferDenormalizer
 {
     private DenormalizerInterface $placeReferenceDenormalizer;
 
+    private DenormalizerInterface $faqsDenormalizer;
+
     public function __construct(
         UuidParser $eventIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
@@ -43,7 +45,8 @@ class EventDenormalizer extends OfferDenormalizer
         DenormalizerInterface $bookingInfoDenormalizer = null,
         DenormalizerInterface $contactPointDenormalizer = null,
         DenormalizerInterface $mediaObjectReferencesDenormalizer = null,
-        DenormalizerInterface $videoDenormalizer = null
+        DenormalizerInterface $videoDenormalizer = null,
+        DenormalizerInterface $faqsDenormalizer = null
     ) {
         if (!$eventIDParser) {
             $eventIDParser = new EventIDParser();
@@ -54,6 +57,7 @@ class EventDenormalizer extends OfferDenormalizer
         }
 
         $this->placeReferenceDenormalizer = $placeReferenceDenormalizer;
+        $this->faqsDenormalizer = $faqsDenormalizer ?? new FaqsDenormalizer();
 
         parent::__construct(
             $eventIDParser,
@@ -138,7 +142,7 @@ class EventDenormalizer extends OfferDenormalizer
     private function denormalizeFaq(array $data, ImmutableEvent $event): ImmutableEvent
     {
         if (isset($data['faq'])) {
-            $faqs = (new FaqsDenormalizer())->denormalize($data['faq'], Faqs::class);
+            $faqs = $this->faqsDenormalizer->denormalize($data['faq'], Faqs::class);
             $event = $event->withFaq($faqs);
         }
 
