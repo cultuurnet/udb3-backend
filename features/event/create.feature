@@ -873,9 +873,9 @@ Feature: Test the UDB3 events API
     And the response body should be valid JSON
     And I keep the value of the JSON response at "eventId" as "eventId"
     When I send a GET request to "/events/%{eventId}"
-    And the JSON response should have "faq"
-    And the JSON response at "faq/0/nl/question" should be "Hoe geraak ik er?"
-    And the JSON response at "faq/0/nl/answer" should be "Met de bus."
-    And the JSON response at "faq/0/en/question" should be "How do I get there?"
-    And the JSON response at "faq/0/en/answer" should be "By bus."
+    And the JSON response should have "faqs"
+    And the JSON response at "faqs/0/nl/question" should be "Hoe geraak ik er?"
+    And the JSON response at "faqs/0/nl/answer" should be "Met de bus."
+    And the JSON response at "faqs/0/en/question" should be "How do I get there?"
+    And the JSON response at "faqs/0/en/answer" should be "By bus."
 
