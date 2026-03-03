@@ -178,7 +178,6 @@ Feature: Test event FAQ
     """
     When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "400"
-    And show me the unparsed response
     And the JSON response should be:
      """
     {
@@ -203,6 +202,32 @@ Feature: Test event FAQ
              "error":"The required properties (en) are missing"
           }
        ]
+    }
+    """
+
+  Scenario: Cannot create a FAQ with an id
+    When I create a minimal permanent event and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    [
+      {
+        "id": "c094c46a-823a-4a7d-840a-73fb6631fa50",
+        "nl": {
+          "question": "Hoe geraak ik er?",
+          "answer": "Met de bus."
+        }
+      }
+    ]
+    """
+    When I send a PUT request to "%{eventUrl}/faqs/"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "type": "https:\/\/api.publiq.be\/probs\/body\/invalid-data",
+      "title":"Invalid body data",
+      "status":400,
+      "detail":"FAQ with id 'c094c46a-823a-4a7d-840a-73fb6631fa50' does not exist."
     }
     """
 
