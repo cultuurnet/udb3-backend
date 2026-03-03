@@ -34,7 +34,7 @@ jobs:
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php-versions }}
-                  ini-values: xdebug.mode=coverage
+                  coverage: pcov
                   extensions: bcmath, tidy
                   tools: composer
 
@@ -58,9 +58,17 @@ jobs:
               run: composer install --no-progress --no-suggest
 
             - name: ✅ Run tests
-              run: composer test
+              run: vendor/bin/phpunit --coverage-clover coverage.xml
               env:
                   DATABASE_PORT: ${{ job.services.mysql.ports['3306'] }}
+
+            - name: 📎 Upload coverage artifact
+              uses: actions/upload-artifact@v4
+              if: always()
+              with:
+                  name: coverage-report
+                  path: coverage.xml
+                  retention-days: 7
 
     cs:
         runs-on: ubuntu-latest

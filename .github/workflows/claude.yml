@@ -20,6 +20,12 @@ jobs:
         with:
           fetch-depth: 1
 
+      - name: Download coverage report
+        uses: actions/download-artifact@v4
+        with:
+            name: coverage-report
+        continue-on-error: true
+
       - name: PR Review with Progress Tracking
         uses: anthropics/claude-code-action@v1
         with:
