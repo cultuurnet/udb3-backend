@@ -1954,10 +1954,10 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $this->assertEquals(
             [
-                [
+                (object) [
                     'id' => $faqId,
-                    'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
-                    'en' => ['question' => 'How do I get there?', 'answer' => 'By bus.'],
+                    'nl' => (object) ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                    'en' => (object) ['question' => 'How do I get there?', 'answer' => 'By bus.'],
                 ],
             ],
             $body->faqs
