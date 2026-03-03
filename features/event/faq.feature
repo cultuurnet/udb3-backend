@@ -38,7 +38,6 @@ Feature: Test event FAQ
     """
     [
       {
-        "id": "b4575c68-dc04-4b67-9568-63e5d00d4dde",
         "nl": {
           "question": "Hoe geraak ik er?",
           "answer": "Met de bus."
@@ -54,7 +53,6 @@ Feature: Test event FAQ
     """
     [
       {
-        "id": "b4575c68-dc04-4b67-9568-63e5d00d4dde",
         "nl": {
           "question": "Hoe geraak ik er?",
           "answer": "Met de trein."
@@ -99,14 +97,12 @@ Feature: Test event FAQ
     """
     [
       {
-        "id": "aaaaaaaa-0000-0000-0000-000000000001",
         "nl": {
           "question": "Vraag 1",
           "answer": "Antwoord 1"
         }
       },
       {
-        "id": "bbbbbbbb-0000-0000-0000-000000000002",
         "nl": {
           "question": "Vraag 2",
           "answer": "Antwoord 2"
@@ -122,17 +118,15 @@ Feature: Test event FAQ
     """
     [
       {
-        "id": "bbbbbbbb-0000-0000-0000-000000000002",
         "nl": {
-          "question": "Vraag 2 bijgewerkt",
-          "answer": "Antwoord 2 bijgewerkt"
+          "question": "Vraag 1",
+          "answer": "Antwoord 1"
         }
       },
       {
-        "id": "cccccccc-0000-0000-0000-000000000003",
         "nl": {
-          "question": "Nieuwe vraag",
-          "answer": "Nieuw antwoord"
+          "question": "Vraag 2 bijgewerkt",
+          "answer": "Antwoord 2 bijgewerkt"
         }
       }
     ]
@@ -141,8 +135,11 @@ Feature: Test event FAQ
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
     And the JSON response at "faqs" should have 2 entries
-    And the JSON response at "faqs/0/nl/question" should be "Vraag 2 bijgewerkt"
-    And the JSON response at "faqs/1/nl/question" should be "Nieuwe vraag"
+    And the JSON response at "faqs/0/nl/question" should be "Vraag 1"
+    And the JSON response at "faqs/0/nl/answer" should be "Antwoord 1"
+    And the JSON response at "faqs/1/nl/question" should be "Vraag 2 bijgewerkt"
+    And the JSON response at "faqs/1/nl/answer" should be "Antwoord 2 bijgewerkt"
+
 
   Scenario: Cannot update FAQ with a missing answer
     When I create a minimal permanent event and save the "url" as "eventUrl"
