@@ -144,7 +144,7 @@ Feature: Test event FAQ
     And the JSON response at "faqs/0/nl/question" should be "Vraag 2 bijgewerkt"
     And the JSON response at "faqs/1/nl/question" should be "Nieuwe vraag"
 
-  Scenario: Cannot update FAQ with an invalid body
+  Scenario: Cannot update FAQ with a missing answer
     When I create a minimal permanent event and save the "url" as "eventUrl"
     And I set the JSON request payload to:
     """
@@ -154,6 +154,60 @@ Feature: Test event FAQ
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/nl"
     And the JSON response at "schemaErrors/0/error" should be "The required properties (answer) are missing"
+
+  Scenario: Cannot update FAQ with a missing question
+    When I create a minimal permanent event and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    [{"nl": {"answer": "Met de trein."}}]
+    """
+    When I send a PUT request to "%{eventUrl}/faqs/"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/nl"
+    And the JSON response at "schemaErrors/0/error" should be "The required properties (question) are missing"
+
+  Scenario: Cannot update FAQ with a missing language
+    When I create a minimal permanent event and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    [
+      {
+        "": {
+          "question": "Hoe geraak ik er?",
+          "answer": "Met de bus."
+        }
+      }
+    ]
+    """
+    When I send a PUT request to "%{eventUrl}/faqs/"
+    Then the response status should be "400"
+    And show me the unparsed response
+    And the JSON response should be:
+     """
+    {
+       "type":"https:\/\/api.publiq.be\/probs\/body\/invalid-data",
+       "title":"Invalid body data",
+       "status":400,
+       "schemaErrors":[
+          {
+             "jsonPointer":"\/0",
+             "error":"The required properties (nl) are missing"
+          },
+          {
+             "jsonPointer":"\/0",
+             "error":"The required properties (fr) are missing"
+          },
+          {
+             "jsonPointer":"\/0",
+             "error":"The required properties (de) are missing"
+          },
+          {
+             "jsonPointer":"\/0",
+             "error":"The required properties (en) are missing"
+          }
+       ]
+    }
+    """
 
   Scenario: Cannot update FAQ with more than 30 items
     When I create a minimal permanent event and save the "url" as "eventUrl"
