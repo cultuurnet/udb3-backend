@@ -16,6 +16,9 @@ use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 
 final class FaqRequestHandlerTest extends TestCase
@@ -26,6 +29,8 @@ final class FaqRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
+    private DocumentRepository $eventDocumentRepository;
+
     private FaqsRequestHandler $faqRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
@@ -33,7 +38,8 @@ final class FaqRequestHandlerTest extends TestCase
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
-        $this->faqRequestHandler = new FaqsRequestHandler($this->commandBus);
+        $this->eventDocumentRepository = new InMemoryDocumentRepository();
+        $this->faqRequestHandler = new FaqsRequestHandler($this->commandBus, $this->eventDocumentRepository);
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
         $this->commandBus->record();
     }
@@ -44,6 +50,14 @@ final class FaqRequestHandlerTest extends TestCase
     public function it_dispatches_update_faqs_with_all_incoming_items(): void
     {
         $faqId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
+
+        $this->eventDocumentRepository->save(
+            new JsonDocument(self::EVENT_ID, json_encode([
+                'faqs' => [
+                    ['id' => $faqId, 'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.']],
+                ],
+            ]))
+        );
 
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
@@ -100,6 +114,33 @@ final class FaqRequestHandlerTest extends TestCase
         $this->assertEquals(
             [new UpdateFaqs(self::EVENT_ID, new Faqs())],
             $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_an_explicit_id_does_not_exist_in_the_current_faq_list(): void
+    {
+        $unknownId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
+
+        $this->eventDocumentRepository->save(
+            new JsonDocument(self::EVENT_ID, json_encode(['faqs' => []]))
+        );
+
+        $request = $this->psr7RequestBuilder
+            ->withRouteParameter('eventId', self::EVENT_ID)
+            ->withJsonBodyFromArray([
+                [
+                    'id' => $unknownId,
+                    'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                ],
+            ])
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidDataWithDetail("FAQ with id '$unknownId' does not exist."),
+            fn () => $this->faqRequestHandler->handle($request)
         );
     }
 

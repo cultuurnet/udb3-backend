@@ -146,7 +146,8 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
         $container->addShared(
             FaqsRequestHandler::class,
             fn () => new FaqsRequestHandler(
-                $container->get('event_command_bus')
+                $container->get('event_command_bus'),
+                $container->get('event_jsonld_repository'),
             )
         );
 
