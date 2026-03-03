@@ -10,8 +10,9 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
-use PhpAmqpLib\Connection\AMQPStreamConnection;
+use CultuurNet\UDB3\Doctrine\DatabaseConnectionChecker;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
+use PhpAmqpLib\Connection\AMQPStreamConnection;
 
 final class EventBusForwardingConsumer extends AbstractConsumer
 {
@@ -19,18 +20,22 @@ final class EventBusForwardingConsumer extends AbstractConsumer
 
     private UuidFactory $uuidFactory;
 
+    private DatabaseConnectionChecker $databaseConnectionChecker;
+
     public function __construct(
         AMQPStreamConnection $connection,
         EventBus $eventBus,
         DeserializerLocatorInterface $deserializerLocator,
         string $consumerTag,
         string $exchangeName,
-        String $queueName,
+        string $queueName,
         UuidFactory $uuidFactory,
+        DatabaseConnectionChecker $databaseConnectionChecker,
         int $delay = 0
     ) {
         $this->eventBus = $eventBus;
         $this->uuidFactory = $uuidFactory;
+        $this->databaseConnectionChecker = $databaseConnectionChecker;
 
         parent::__construct(
             $connection,
@@ -48,6 +53,8 @@ final class EventBusForwardingConsumer extends AbstractConsumer
      */
     protected function handle($deserializedMessage, array $context): void
     {
+        $this->databaseConnectionChecker->ensureConnection();
+
         // If the deserializer did not return a DomainMessage yet, then
         // consider the returned value as the payload, and wrap it in a
         // DomainMessage.

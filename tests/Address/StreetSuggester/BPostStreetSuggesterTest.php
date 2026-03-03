@@ -11,27 +11,28 @@ use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
+use Psr\Log\LoggerInterface;
 
 final class BPostStreetSuggesterTest extends TestCase
 {
-    public const DOMAIN = 'https://foobar.com';
-
-
-    public const STAGE = 'stage';
-
-    public const TOKEN = 'token';
+    private const DOMAIN = 'https://foobar.com';
+    private const STAGE = 'stage';
+    private const TOKEN = 'token';
 
     private ClientInterface&MockObject $client;
     private StreetSuggester $streetSuggester;
+    private LoggerInterface&MockObject $logger;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->client = $this->createMock(ClientInterface::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
         $this->streetSuggester = new BPostStreetSuggester(
             $this->client,
             self::DOMAIN,
             self::STAGE,
-            self::TOKEN
+            self::TOKEN,
+            $this->logger
         );
     }
 
@@ -207,6 +208,34 @@ final class BPostStreetSuggesterTest extends TestCase
                 'Marialand',
             ],
             $this->streetSuggester->suggest($postalCode, $locality, $streetQuery, $limit)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function itTakesIntoAccountStatusCode(): void
+    {
+        $postalCode = '9000';
+        $locality = 'Gent';
+        $streetQuery = 'maria';
+
+        $this->client->expects($this->once())
+            ->method('sendRequest')
+            ->willReturn(
+                new Response(400)
+            );
+
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with(
+                'BPost Street Suggester returned non-200 status code',
+                $this->arrayHasKey('status_code')
+            );
+
+        $this->assertEquals(
+            [],
+            $this->streetSuggester->suggest($postalCode, $locality, $streetQuery)
         );
     }
 }

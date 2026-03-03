@@ -6,10 +6,11 @@ namespace CultuurNet\UDB3\Broadway\AMQP;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Deserializer\DeserializerLocatorInterface;
+use CultuurNet\UDB3\Doctrine\DatabaseConnectionChecker;
+use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 use InvalidArgumentException;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use Psr\Log\LoggerInterface;
-use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
 
 final class EventBusForwardingConsumerFactory
 {
@@ -33,6 +34,8 @@ final class EventBusForwardingConsumerFactory
 
     private UuidFactory $uuidFactory;
 
+    private DatabaseConnectionChecker $databaseConnectionChecker;
+
     public function __construct(
         int $executionDelay,
         AMQPStreamConnection $connection,
@@ -40,7 +43,8 @@ final class EventBusForwardingConsumerFactory
         DeserializerLocatorInterface $deserializerLocator,
         EventBus $eventBus,
         string $consumerTag,
-        UuidFactory $uuidFactory
+        UuidFactory $uuidFactory,
+        DatabaseConnectionChecker $databaseConnectionChecker
     ) {
         if ($executionDelay < 0) {
             throw new InvalidArgumentException('Execution delay should be zero or higher.');
@@ -53,6 +57,7 @@ final class EventBusForwardingConsumerFactory
         $this->eventBus = $eventBus;
         $this->consumerTag = $consumerTag;
         $this->uuidFactory = $uuidFactory;
+        $this->databaseConnectionChecker = $databaseConnectionChecker;
     }
 
     public function create(
@@ -67,6 +72,7 @@ final class EventBusForwardingConsumerFactory
             $exchange,
             $queue,
             $this->uuidFactory,
+            $this->databaseConnectionChecker,
             $this->executionDelay
         );
 

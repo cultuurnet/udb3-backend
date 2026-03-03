@@ -34,6 +34,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
@@ -41,6 +42,11 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -206,7 +212,15 @@ final class KinepolisServiceTest extends TestCase
                         $this->movieId,
                         new Title('Discovery Day'),
                         new LocationId('a77c8b8e-41e5-44cf-9407-f809ebb48744'),
-                        (new EventThemeResolver())->byId('1.7.4.0.0'),
+                        (new EventThemeResolver(
+                            new Categories(
+                                new Category(
+                                    new CategoryID('1.7.4.0.0'),
+                                    new CategoryLabel('Drama'),
+                                    CategoryDomain::theme()
+                                )
+                            )
+                        ))->byId('1.7.4.0.0'),
                         new MultipleSubEventsCalendar(
                             new SubEvents(
                                 new SubEvent(
@@ -215,7 +229,8 @@ final class KinepolisServiceTest extends TestCase
                                         DateTimeFactory::fromAtom('2024-04-08T19:39:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
-                                    new BookingAvailability(BookingAvailabilityType::Available())
+                                    new BookingAvailability(BookingAvailabilityType::Available()),
+                                    new BookingInfo(),
                                 ),
                                 new SubEvent(
                                     new DateRange(
@@ -223,7 +238,8 @@ final class KinepolisServiceTest extends TestCase
                                         DateTimeFactory::fromAtom('2024-04-08T21:54:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
-                                    new BookingAvailability(BookingAvailabilityType::Available())
+                                    new BookingAvailability(BookingAvailabilityType::Available()),
+                                    new BookingInfo(),
                                 ),
                             ),
                         ),
@@ -374,7 +390,15 @@ final class KinepolisServiceTest extends TestCase
                         $this->movieId,
                         new Title('Het Smelt'),
                         new LocationId('a77c8b8e-41e5-44cf-9407-f809ebb48744'),
-                        (new EventThemeResolver())->byId('1.7.4.0.0'),
+                        (new EventThemeResolver(
+                            new Categories(
+                                new Category(
+                                    new CategoryID('1.7.4.0.0'),
+                                    new CategoryLabel('Drama'),
+                                    CategoryDomain::theme()
+                                )
+                            )
+                        ))->byId('1.7.4.0.0'),
                         new MultipleSubEventsCalendar(
                             new SubEvents(
                                 new SubEvent(
@@ -383,7 +407,8 @@ final class KinepolisServiceTest extends TestCase
                                         DateTimeFactory::fromAtom('2024-04-08T19:39:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
-                                    new BookingAvailability(BookingAvailabilityType::Available())
+                                    new BookingAvailability(BookingAvailabilityType::Available()),
+                                    new BookingInfo(),
                                 ),
                                 new SubEvent(
                                     new DateRange(
@@ -391,7 +416,8 @@ final class KinepolisServiceTest extends TestCase
                                         DateTimeFactory::fromAtom('2024-04-08T21:54:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
-                                    new BookingAvailability(BookingAvailabilityType::Available())
+                                    new BookingAvailability(BookingAvailabilityType::Available()),
+                                    new BookingInfo(),
                                 ),
                             ),
                         ),
@@ -544,7 +570,15 @@ final class KinepolisServiceTest extends TestCase
                         $this->movieId,
                         new Title('Het Smelt'),
                         new LocationId('a77c8b8e-41e5-44cf-9407-f809ebb48744'),
-                        (new EventThemeResolver())->byId('1.7.4.0.0'),
+                        (new EventThemeResolver(
+                            new Categories(
+                                new Category(
+                                    new CategoryID('1.7.4.0.0'),
+                                    new CategoryLabel('Drama'),
+                                    CategoryDomain::theme()
+                                )
+                            )
+                        ))->byId('1.7.4.0.0'),
                         new MultipleSubEventsCalendar(
                             new SubEvents(
                                 new SubEvent(
@@ -553,7 +587,8 @@ final class KinepolisServiceTest extends TestCase
                                         DateTimeFactory::fromAtom('2024-04-08T19:39:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
-                                    new BookingAvailability(BookingAvailabilityType::Available())
+                                    new BookingAvailability(BookingAvailabilityType::Available()),
+                                    new BookingInfo(),
                                 ),
                                 new SubEvent(
                                     new DateRange(
@@ -561,7 +596,8 @@ final class KinepolisServiceTest extends TestCase
                                         DateTimeFactory::fromAtom('2024-04-08T21:54:00+00:00')
                                     ),
                                     new Status(StatusType::Available()),
-                                    new BookingAvailability(BookingAvailabilityType::Available())
+                                    new BookingAvailability(BookingAvailabilityType::Available()),
+                                    new BookingInfo(),
                                 ),
                             )
                         ),
@@ -636,7 +672,8 @@ final class KinepolisServiceTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T19:39:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -644,7 +681,8 @@ final class KinepolisServiceTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T21:54:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                         )
                     )

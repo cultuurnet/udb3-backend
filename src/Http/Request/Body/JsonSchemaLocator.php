@@ -79,6 +79,8 @@ final class JsonSchemaLocator
 
     public const NEWS_ARTICLE_POST = 'newsArticle-post.json';
 
+    public const IMAGE_POST = 'image-post.json';
+
     public static function setSchemaDirectory(string $schemaDirectory): void
     {
         if (!is_dir($schemaDirectory)) {

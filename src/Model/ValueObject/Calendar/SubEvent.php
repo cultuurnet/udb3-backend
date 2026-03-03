@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+
 final class SubEvent
 {
     private DateRange $dateRange;
@@ -12,11 +14,18 @@ final class SubEvent
 
     private BookingAvailability $bookingAvailability;
 
-    public function __construct(DateRange $dateRange, Status $status, BookingAvailability $bookingAvailability)
-    {
+    private BookingInfo $bookingInfo;
+
+    public function __construct(
+        DateRange $dateRange,
+        Status $status,
+        BookingAvailability $bookingAvailability,
+        BookingInfo $bookingInfo
+    ) {
         $this->dateRange = $dateRange;
         $this->status = $status;
         $this->bookingAvailability = $bookingAvailability;
+        $this->bookingInfo = $bookingInfo;
     }
 
     public static function createAvailable(DateRange $dateRange): self
@@ -24,7 +33,8 @@ final class SubEvent
         return new self(
             $dateRange,
             new Status(StatusType::Available()),
-            new BookingAvailability(BookingAvailabilityType::Available())
+            new BookingAvailability(BookingAvailabilityType::Available()),
+            new BookingInfo()
         );
     }
 
@@ -42,6 +52,13 @@ final class SubEvent
         return $clone;
     }
 
+    public function withBookingInfo(BookingInfo $bookingInfo): self
+    {
+        $clone = clone $this;
+        $clone->bookingInfo = $bookingInfo;
+        return $clone;
+    }
+
     public function getDateRange(): DateRange
     {
         return $this->dateRange;
@@ -55,5 +72,10 @@ final class SubEvent
     public function getBookingAvailability(): BookingAvailability
     {
         return $this->bookingAvailability;
+    }
+
+    public function getBookingInfo(): BookingInfo
+    {
+        return $this->bookingInfo;
     }
 }

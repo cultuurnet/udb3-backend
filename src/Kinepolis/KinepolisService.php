@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Event\Productions\AddEventToProduction;
 use CultuurNet\UDB3\Event\Productions\GroupEventsAsProduction;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Kinepolis\Client\KinepolisClient;
-use CultuurNet\UDB3\Kinepolis\Exception\ImageNotFound;
 use CultuurNet\UDB3\Kinepolis\Mapping\MappingRepository;
 use CultuurNet\UDB3\Kinepolis\Parser\MovieParser;
 use CultuurNet\UDB3\Kinepolis\Parser\PriceParser;
@@ -161,8 +160,8 @@ final class KinepolisService
             try {
                 $addImage = $this->uploadImage($token, $parsedMovie, $eventId);
                 $commands[] = $addImage;
-            } catch (ImageNotFound $imageNotFound) {
-                $this->logger->error($imageNotFound->getMessage());
+            } catch (Exception $exception) {
+                $this->logger->error($exception->getMessage());
             }
 
             $commands[] = $this->getLinkToProductionCommand($parsedMovie->getTitle()->toString(), $eventId);

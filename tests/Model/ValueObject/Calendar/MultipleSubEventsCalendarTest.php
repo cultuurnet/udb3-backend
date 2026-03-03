@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use PHPUnit\Framework\TestCase;
 
 class MultipleSubEventsCalendarTest extends TestCase
@@ -22,7 +23,8 @@ class MultipleSubEventsCalendarTest extends TestCase
                     DateTimeFactory::fromFormat('d/m/Y', '11/12/2018')
                 ),
                 new Status(StatusType::Available()),
-                new BookingAvailability(BookingAvailabilityType::Available())
+                new BookingAvailability(BookingAvailabilityType::Available()),
+                new BookingInfo(),
             ),
             new SubEvent(
                 new DateRange(
@@ -30,7 +32,8 @@ class MultipleSubEventsCalendarTest extends TestCase
                     DateTimeFactory::fromFormat('d/m/Y', '18/12/2018')
                 ),
                 new Status(StatusType::Available()),
-                new BookingAvailability(BookingAvailabilityType::Available())
+                new BookingAvailability(BookingAvailabilityType::Available()),
+                new BookingInfo(),
             )
         );
 
@@ -48,7 +51,8 @@ class MultipleSubEventsCalendarTest extends TestCase
             new SubEvent(
                 new DateRange($startDate, $endDate),
                 new Status(StatusType::Available()),
-                new BookingAvailability(BookingAvailabilityType::Available())
+                new BookingAvailability(BookingAvailabilityType::Available()),
+                new BookingInfo(),
             )
         );
 

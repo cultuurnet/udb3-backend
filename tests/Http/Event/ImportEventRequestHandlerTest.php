@@ -20,6 +20,11 @@ use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
+use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
+use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -27,21 +32,22 @@ use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
+use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
+use CultuurNet\UDB3\Media\MediaObjectRepository;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
 use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -97,6 +103,8 @@ final class ImportEventRequestHandlerTest extends TestCase
 
     private MockObject $imageCollectionFactory;
 
+    private MockObject $eventCategoryResolver;
+
     private ImportEventRequestHandler $importEventRequestHandler;
 
     protected function setUp(): void
@@ -105,6 +113,50 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
+
+        // Create and configure the EventCategoryResolver mock
+        $this->eventCategoryResolver = $this->createMock(CategoryResolverInterface::class);
+        $this->eventCategoryResolver->method('byId')
+            ->willReturnCallback(function (CategoryID $categoryID) {
+                // Map of common event type, theme, and facility IDs used in tests
+                $categoryMap = [
+                    // Event types
+                    '0.50.4.0.0' => new Category(
+                        new CategoryID('0.50.4.0.0'),
+                        new CategoryLabel('Concert'),
+                        CategoryDomain::eventType()
+                    ),
+                    '1.50.0.0.0' => new Category(
+                        new CategoryID('1.50.0.0.0'),
+                        new CategoryLabel('Eten en drinken'),
+                        CategoryDomain::eventType()
+                    ),
+                    '0.5.0.0.0' => new Category(
+                        new CategoryID('0.5.0.0.0'),
+                        new CategoryLabel('Festival'),
+                        CategoryDomain::eventType()
+                    ),
+                    // Themes
+                    '1.8.3.5.0' => new Category(
+                        new CategoryID('1.8.3.5.0'),
+                        new CategoryLabel('Amusementsmuziek'),
+                        CategoryDomain::theme()
+                    ),
+                    '0.52.0.0.0' => new Category(
+                        new CategoryID('0.52.0.0.0'),
+                        new CategoryLabel('Circus'),
+                        CategoryDomain::theme()
+                    ),
+                    // Facilities
+                    '3.13.1.0.0' => new Category(
+                        new CategoryID('3.13.1.0.0'),
+                        new CategoryLabel('Voorzieningen voor assistentiehonden'),
+                        CategoryDomain::facility()
+                    ),
+                ];
+
+                return $categoryMap[$categoryID->toString()] ?? null;
+            });
 
         $placeIriGenerator = new CallableIriGenerator(
             fn (string $placeId) => 'https://io.uitdatabank.dev/places/' . $placeId
@@ -122,9 +174,13 @@ final class ImportEventRequestHandlerTest extends TestCase
             new CallableIriGenerator(fn (string $eventId) => 'https://io.uitdatabank.dev/events/' . $eventId),
             new EventDenormalizer(),
             new CombinedRequestBodyParser(
+                ImagesPropertyPolyfillRequestBodyParser::createForEvents(
+                    new CallableIriGenerator(fn (string $imageId) => 'https://io.uitdatabank.dev/images/' . $imageId),
+                    $this->createMock(MediaObjectRepository::class)
+                ),
                 new LegacyEventRequestBodyParser($placeIriGenerator),
                 RemoveEmptyArraysRequestBodyParser::createForEvents(),
-                new ImportTermRequestBodyParser(new EventCategoryResolver()),
+                new ImportTermRequestBodyParser($this->eventCategoryResolver),
                 new ImportPriceInfoRequestBodyParser(
                     [
                         'nl' => 'Basistarief',
@@ -685,7 +741,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                         ),
                         new TelephoneNumber('016 12 34 56'),
                         new EmailAddress('info@publiq.be'),
-                        BookingAvailability::fromTo(
+                        BookingDateRange::fromTo(
                             new DateTimeImmutable('2021-05-17T22:00:00+00:00'),
                             new DateTimeImmutable('2021-05-21T22:00:00+00:00')
                         )
@@ -5872,6 +5928,48 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_if_mediaObject_id_for_polyfill_is_not_a_string(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'mediaObject' => [
+                [
+                    '@id' => [
+                        'message' => 'this should be a string, not an array',
+                    ],
+                    '@type' => 'schema:ImageObject',
+                    'description' => 'Example description',
+                    'copyrightHolder' => 'Example copyright holder',
+                    'inLanguage' => 'nl',
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/mediaObject/0/%40id',
+                'The data (object) must match the type: string'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_image_is_empty(): void
     {
         $event = [
@@ -6276,6 +6374,114 @@ final class ImportEventRequestHandlerTest extends TestCase
                 '/labels/1',
                 'Label "uitpas mechelen" cannot be both in labels and hiddenLabels properties.'
             ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_subEvent_bookingInfo_has_wrong_phone_type(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+            'terms' => [['id' => '1.50.0.0.0']],
+            'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+            'calendarType' => 'single',
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingInfo' => ['phone' => 123],
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError('/subEvent/0/bookingInfo/phone', 'The data (integer) must match the type: string'),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_subEvent_bookingInfo_has_invalid_email(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+            'terms' => [['id' => '1.50.0.0.0']],
+            'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+            'calendarType' => 'single',
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingInfo' => ['email' => '@publiq.be'],
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError('/subEvent/0/bookingInfo/email', 'The data must match the \'email\' format'),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_subEvent_bookingInfo_has_invalid_url(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+            'terms' => [['id' => '1.50.0.0.0']],
+            'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+            'calendarType' => 'single',
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingInfo' => ['url' => 'www.publiq.be', 'urlLabel' => ['nl' => 'Reserveer']],
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError('/subEvent/0/bookingInfo/url', 'The data must match the \'uri\' format'),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_subEvent_bookingInfo_has_url_without_urlLabel(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+            'terms' => [['id' => '1.50.0.0.0']],
+            'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+            'calendarType' => 'single',
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingInfo' => ['url' => 'https://www.publiq.be'],
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError('/subEvent/0/bookingInfo', '\'urlLabel\' property is required by \'url\' property'),
         ];
 
         $this->assertValidationErrors($event, $expectedErrors);

@@ -48,6 +48,18 @@ class DateTimeFactoryTest extends TestCase
                 'given' => '2022-02-28T13:23:47.000600+01:00',
                 'expectedAsRFC3339InBrussels' => '2022-02-28T13:23:47+01:00',
             ],
+            'no_timezone' => [
+                'given' => '2022-02-28T13:23:47',
+                'expectedAsRFC3339InBrussels' => '2022-02-28T13:23:47+01:00',
+            ],
+            'no_timezone_with_100ms_second_fraction' => [
+                'given' => '2022-02-28T13:23:47.100',
+                'expectedAsRFC3339InBrussels' => '2022-02-28T13:23:47+01:00',
+            ],
+            'no_timezone_with_5μs_second_fraction' => [
+                'given' => '2022-02-28T13:23:47.000005',
+                'expectedAsRFC3339InBrussels' => '2022-02-28T13:23:47+01:00',
+            ],
         ];
     }
 
@@ -64,7 +76,6 @@ class DateTimeFactoryTest extends TestCase
     public function invalidISO8601DataProvider(): array
     {
         return [
-            'no_timezone' => ['dateTime' => '2022-02-28T13:23:47'],
             'no_T' => ['dateTime' => '2022-02-28 13:23:47+01:30'],
             'just_a_date' => ['dateTime' => '2022-02-28'],
         ];
