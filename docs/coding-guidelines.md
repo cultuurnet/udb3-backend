@@ -92,6 +92,7 @@ When working on this codebase, prefer:
 - Constructor injection over service locator patterns
 - Explicit code over clever abstractions
 - Integration with existing patterns over introducing new ones
+- When one needs to serialize() or deserialize() to implement a new NormalizerInterface or DenormalizerInterface
 
 ## Security
 
