@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -34,7 +34,7 @@ class UpdateBookingInfoTest extends TestCase
                 ),
                 new TelephoneNumber('0123456789'),
                 new EmailAddress('foo@bar.com'),
-                BookingAvailability::fromTo(
+                BookingDateRange::fromTo(
                     DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
                     DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
                 )
@@ -59,7 +59,7 @@ class UpdateBookingInfoTest extends TestCase
                 ),
                 new TelephoneNumber('0123456789'),
                 new EmailAddress('foo@bar.com'),
-                BookingAvailability::fromTo(
+                BookingDateRange::fromTo(
                     DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
                     DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
                 )
