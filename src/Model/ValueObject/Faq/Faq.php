@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Faq;
 
-final class FaqItem
+final class Faq
 {
     public function __construct(
         public readonly string $id,
@@ -14,7 +14,7 @@ final class FaqItem
     }
 
     /**
-     * @param FaqItem|mixed $other
+     * @param Faq|mixed $other
      */
     public function sameAs($other): bool
     {

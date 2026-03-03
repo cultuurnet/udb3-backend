@@ -90,7 +90,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -117,7 +117,7 @@ final class Event extends Offer
 
     private ?string $themeId = null;
 
-    private FaqItems $faqItems;
+    private Faqs $faqs;
 
     public static function getOfferType(): OfferType
     {
@@ -224,7 +224,7 @@ final class Event extends Offer
         $this->locationId = $eventCreated->getLocation();
         $this->mainLanguage = $eventCreated->getMainLanguage();
         $this->workflowStatus = WorkflowStatus::DRAFT();
-        $this->faqItems = new FaqItems();
+        $this->faqs = new Faqs();
     }
 
     protected function applyEventCopied(EventCopied $eventCopied): void
@@ -233,7 +233,7 @@ final class Event extends Offer
         $this->calendar = $eventCopied->getCalendar();
         $this->workflowStatus = WorkflowStatus::DRAFT();
         $this->labels = new LabelsArray();
-        $this->faqItems = new FaqItems();
+        $this->faqs = new Faqs();
     }
 
     protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImported): void
@@ -394,7 +394,8 @@ final class Event extends Offer
                     $subEventUpdate->getEndDate() ?: $subEvent->getDateRange()->getTo()
                 ),
                 $subEventStatus ?? $subEvent->getStatus(),
-                $subEventBookingAvailability ?? $subEvent->getBookingAvailability()
+                $subEventBookingAvailability ?? $subEvent->getBookingAvailability(),
+                $subEventUpdate->getBookingInfo() ?? $subEvent->getBookingInfo(),
             );
 
             $subEvents[$index] = $updatedSubEvent;
@@ -506,18 +507,18 @@ final class Event extends Offer
         $this->themeId = null;
     }
 
-    public function updateFaqs(FaqItems $faqItems): void
+    public function updateFaqs(Faqs $faqs): void
     {
-        if ($faqItems->sameAs($this->faqItems)) {
+        if ($faqs->sameAs($this->faqs)) {
             return;
         }
 
-        $this->apply(new FaqsUpdated($this->eventId, $faqItems));
+        $this->apply(new FaqsUpdated($this->eventId, $faqs));
     }
 
     protected function applyFaqsUpdated(FaqsUpdated $faqsUpdated): void
     {
-        $this->faqItems = $faqsUpdated->faqItems;
+        $this->faqs = $faqsUpdated->faqs;
     }
 
     public function updateUiTPASPrices(Tariffs $tariffs): void

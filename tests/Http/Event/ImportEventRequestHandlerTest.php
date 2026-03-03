@@ -6467,6 +6467,114 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertValidationErrors($event, $expectedErrors);
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_if_subEvent_bookingInfo_has_wrong_phone_type(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+            'terms' => [['id' => '1.50.0.0.0']],
+            'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+            'calendarType' => 'single',
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingInfo' => ['phone' => 123],
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError('/subEvent/0/bookingInfo/phone', 'The data (integer) must match the type: string'),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_subEvent_bookingInfo_has_invalid_email(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+            'terms' => [['id' => '1.50.0.0.0']],
+            'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+            'calendarType' => 'single',
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingInfo' => ['email' => '@publiq.be'],
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError('/subEvent/0/bookingInfo/email', 'The data must match the \'email\' format'),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_subEvent_bookingInfo_has_invalid_url(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+            'terms' => [['id' => '1.50.0.0.0']],
+            'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+            'calendarType' => 'single',
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingInfo' => ['url' => 'www.publiq.be', 'urlLabel' => ['nl' => 'Reserveer']],
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError('/subEvent/0/bookingInfo/url', 'The data must match the \'uri\' format'),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_subEvent_bookingInfo_has_url_without_urlLabel(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+            'terms' => [['id' => '1.50.0.0.0']],
+            'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+            'calendarType' => 'single',
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingInfo' => ['url' => 'https://www.publiq.be'],
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError('/subEvent/0/bookingInfo', '\'urlLabel\' property is required by \'url\' property'),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $event, array $expectedErrors): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';

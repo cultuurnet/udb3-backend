@@ -35,7 +35,7 @@ final class GetCurrentUserRequestHandlerTest extends TestCase
 
         $this->getCurrentUserIdentityController = new GetCurrentUserRequestHandler(
             $this->userIdentityResolver,
-            JsonWebTokenFactory::createWithClaims(['https://publiq.be/uitidv1id' => 'current_user_id'])
+            JsonWebTokenFactory::createWithClaims(['uid' => 'current_user_id'])
         );
     }
 
@@ -51,9 +51,8 @@ final class GetCurrentUserRequestHandlerTest extends TestCase
             $this->userIdentityResolver,
             JsonWebTokenFactory::createWithClaims(
                 [
-                    'https://publiq.be/uitidv1id' => 'current_user_id',
-                    'sub' => 'auth0|current_user_id',
-                    'nickname' => 'jane_doe',
+                    'uid' => 'current_user_id',
+                    'nick' => 'jane_doe',
                     'email' => 'jane.doe@anonymous.com',
                 ]
             )

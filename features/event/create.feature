@@ -753,6 +753,33 @@ Feature: Test the UDB3 events API
     And the JSON response at "startDate" should be "2018-05-05T18:00:00+00:00"
     And the JSON response at "endDate" should be "2018-05-05T21:00:00+00:00"
 
+  @bugfix # https://jira.uitdatabank.be/browse/III-4768
+  Scenario: Create an event with ISO-8601 datetime without timezone
+    Given I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/event-with-single-calendar-but-without-timezone.json" and save the "url" as "eventUrl"
+
+    When I send a GET request to "%{eventUrl}"
+    Then the response status should be "200"
+    And the response body should be valid JSON
+    And the JSON response at "calendarType" should be "single"
+    And the JSON response at "startDate" should be "2021-05-17T08:00:00+02:00"
+    And the JSON response at "endDate" should be "2021-05-18T22:00:00+02:00"
+    And the JSON response at "subEvent/0" should be:
+    """
+    {
+      "id": 0,
+      "status": {
+        "type": "Available"
+      },
+      "bookingAvailability": {
+        "type": "Available"
+      },
+      "startDate": "2021-05-17T08:00:00+02:00",
+      "endDate": "2021-05-18T22:00:00+02:00",
+      "@type": "Event"
+    }
+    """
+
   Scenario: Try creating an event with non existing location
     Given I set the JSON request payload from "events/event-with-non-existing-place.json"
     When I send a POST request to "/events"
@@ -851,3 +878,4 @@ Feature: Test the UDB3 events API
     And the JSON response at "faq/0/nl/answer" should be "Met de bus."
     And the JSON response at "faq/0/en/question" should be "How do I get there?"
     And the JSON response at "faq/0/en/answer" should be "By bus."
+

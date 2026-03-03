@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -83,7 +84,12 @@ class UpdateStatusHandlerTest extends CommandHandlerScenarioTestCase
 
         $newStatus = new Status(StatusType::Unavailable(), null);
 
-        $expectedSubEvents = new SubEvent(new DateRange($startDate, $endDate), new Status(StatusType::Unavailable()), BookingAvailability::Available());
+        $expectedSubEvents = new SubEvent(
+            new DateRange($startDate, $endDate),
+            new Status(StatusType::Unavailable()),
+            BookingAvailability::Available(),
+            new BookingInfo()
+        );
         $expectedCalendar = (new SingleSubEventCalendar($expectedSubEvents))->withStatus($newStatus);
 
         $command = new UpdateStatus($id, $newStatus);

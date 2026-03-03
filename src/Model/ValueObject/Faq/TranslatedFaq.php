@@ -8,12 +8,12 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
 
 /**
- * @method FaqItem getTranslation(Language $language)
+ * @method Faq getTranslation(Language $language)
  */
-final class TranslatedFaqItem extends TranslatedValueObject
+final class TranslatedFaq extends TranslatedValueObject
 {
     protected function getValueObjectClassName(): string
     {
-        return FaqItem::class;
+        return Faq::class;
     }
 }

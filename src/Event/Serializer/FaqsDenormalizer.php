@@ -5,37 +5,37 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\Serializer;
 
 use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItem;
-use CultuurNet\UDB3\Model\ValueObject\Faq\FaqItems;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
-use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaqItem;
+use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-final class FaqItemsDenormalizer implements DenormalizerInterface
+final class FaqsDenormalizer implements DenormalizerInterface
 {
-    public function denormalize($data, $class, $format = null, array $context = []): FaqItems
+    public function denormalize($data, $class, $format = null, array $context = []): Faqs
     {
         if (!$this->supportsDenormalization($data, $class, $format)) {
-            throw new InvalidArgumentException("FaqItemsDenormalizer does not support $class.");
+            throw new InvalidArgumentException("FaqsDenormalizer does not support $class.");
         }
 
         if (!is_array($data)) {
             throw new InvalidArgumentException('FAQ items data should be an array.');
         }
 
-        $faqItems = new FaqItems();
+        $faqs = new Faqs();
 
-        foreach ($data as $itemData) {
-            if (!isset($itemData['id'])) {
-                $itemData['id'] = Uuid::uuid4()->toString();
+        foreach ($data as $faqData) {
+            if (!isset($faqData['id'])) {
+                $faqData['id'] = Uuid::uuid4()->toString();
             }
-            $id = $itemData['id'];
+            $id = $faqData['id'];
 
             $languageKeys = array_filter(
-                array_keys($itemData),
+                array_keys($faqData),
                 static function (string $key): bool {
                     if ($key === 'id') {
                         return false;
@@ -52,32 +52,32 @@ final class FaqItemsDenormalizer implements DenormalizerInterface
 
             $originalLanguageKey = $languageKeys[0];
             $originalLanguage = new Language($originalLanguageKey);
-            $translatedFaqItem = new TranslatedFaqItem(
+            $translatedFaq = new TranslatedFaq(
                 $originalLanguage,
-                $this->denormalizeFaqItem($id, $itemData[$originalLanguageKey])
+                $this->denormalizeFaq($id, $faqData[$originalLanguageKey])
             );
 
             foreach (array_slice($languageKeys, 1) as $languageKey) {
-                $translatedFaqItem = $translatedFaqItem->withTranslation(
+                $translatedFaq = $translatedFaq->withTranslation(
                     new Language($languageKey),
-                    $this->denormalizeFaqItem($id, $itemData[$languageKey])
+                    $this->denormalizeFaq($id, $faqData[$languageKey])
                 );
             }
 
-            $faqItems = $faqItems->with($translatedFaqItem);
+            $faqs = $faqs->with($translatedFaq);
         }
 
-        return $faqItems;
+        return $faqs;
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === FaqItems::class;
+        return $type === Faqs::class;
     }
 
-    private function denormalizeFaqItem(string $id, array $data): FaqItem
+    private function denormalizeFaq(string $id, array $data): Faq
     {
-        return new FaqItem(
+        return new Faq(
             $id,
             new Question($data['question']),
             new Answer($data['answer'])

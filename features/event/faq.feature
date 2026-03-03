@@ -24,13 +24,13 @@ Feature: Test event FAQ
       }
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "faq/0/nl/question" should be "Hoe geraak ik er?"
-    And the JSON response at "faq/0/nl/answer" should be "Met de bus."
-    And the JSON response at "faq/0/en/question" should be "How do I get there?"
-    And the JSON response at "faq/0/en/answer" should be "By bus."
+    And the JSON response at "faqs/0/nl/question" should be "Hoe geraak ik er?"
+    And the JSON response at "faqs/0/nl/answer" should be "Met de bus."
+    And the JSON response at "faqs/0/en/question" should be "How do I get there?"
+    And the JSON response at "faqs/0/en/answer" should be "By bus."
 
   Scenario: Update existing FAQ items on an event
     When I create a minimal permanent event and save the "url" as "eventUrl"
@@ -38,7 +38,6 @@ Feature: Test event FAQ
     """
     [
       {
-        "id": "b4575c68-dc04-4b67-9568-63e5d00d4dde",
         "nl": {
           "question": "Hoe geraak ik er?",
           "answer": "Met de bus."
@@ -46,15 +45,14 @@ Feature: Test event FAQ
       }
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "faq/0/nl/answer" should be "Met de bus."
+    And the JSON response at "faqs/0/nl/answer" should be "Met de bus."
     And I set the JSON request payload to:
     """
     [
       {
-        "id": "b4575c68-dc04-4b67-9568-63e5d00d4dde",
         "nl": {
           "question": "Hoe geraak ik er?",
           "answer": "Met de trein."
@@ -62,10 +60,10 @@ Feature: Test event FAQ
       }
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "faq/0/nl/answer" should be "Met de trein."
+    And the JSON response at "faqs/0/nl/answer" should be "Met de trein."
 
   Scenario: Remove all FAQ items by sending an empty list
     When I create a minimal permanent event and save the "url" as "eventUrl"
@@ -80,18 +78,18 @@ Feature: Test event FAQ
       }
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response should have "faq"
+    And the JSON response should have "faqs"
     And I set the JSON request payload to:
     """
     []
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    Then the JSON response should not have "faq"
+    Then the JSON response should not have "faqs"
 
   Scenario: Partially update FAQ items on an event
     When I create a minimal permanent event and save the "url" as "eventUrl"
@@ -99,14 +97,12 @@ Feature: Test event FAQ
     """
     [
       {
-        "id": "aaaaaaaa-0000-0000-0000-000000000001",
         "nl": {
           "question": "Vraag 1",
           "answer": "Antwoord 1"
         }
       },
       {
-        "id": "bbbbbbbb-0000-0000-0000-000000000002",
         "nl": {
           "question": "Vraag 2",
           "answer": "Antwoord 2"
@@ -114,46 +110,126 @@ Feature: Test event FAQ
       }
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "faq" should have 2 entries
+    And the JSON response at "faqs" should have 2 entries
     And I set the JSON request payload to:
     """
     [
       {
-        "id": "bbbbbbbb-0000-0000-0000-000000000002",
+        "nl": {
+          "question": "Vraag 1",
+          "answer": "Antwoord 1"
+        }
+      },
+      {
         "nl": {
           "question": "Vraag 2 bijgewerkt",
           "answer": "Antwoord 2 bijgewerkt"
         }
-      },
-      {
-        "id": "cccccccc-0000-0000-0000-000000000003",
-        "nl": {
-          "question": "Nieuwe vraag",
-          "answer": "Nieuw antwoord"
-        }
       }
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "faq" should have 2 entries
-    And the JSON response at "faq/0/nl/question" should be "Vraag 2 bijgewerkt"
-    And the JSON response at "faq/1/nl/question" should be "Nieuwe vraag"
+    And the JSON response at "faqs" should have 2 entries
+    And the JSON response at "faqs/0/nl/question" should be "Vraag 1"
+    And the JSON response at "faqs/0/nl/answer" should be "Antwoord 1"
+    And the JSON response at "faqs/1/nl/question" should be "Vraag 2 bijgewerkt"
+    And the JSON response at "faqs/1/nl/answer" should be "Antwoord 2 bijgewerkt"
 
-  Scenario: Cannot update FAQ with an invalid body
+
+  Scenario: Cannot update FAQ with a missing answer
     When I create a minimal permanent event and save the "url" as "eventUrl"
     And I set the JSON request payload to:
     """
     [{"nl": {"question": "Hoe geraak ik er?"}}]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/nl"
     And the JSON response at "schemaErrors/0/error" should be "The required properties (answer) are missing"
+
+  Scenario: Cannot update FAQ with a missing question
+    When I create a minimal permanent event and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    [{"nl": {"answer": "Met de trein."}}]
+    """
+    When I send a PUT request to "%{eventUrl}/faqs/"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/nl"
+    And the JSON response at "schemaErrors/0/error" should be "The required properties (question) are missing"
+
+  Scenario: Cannot update FAQ with a missing language
+    When I create a minimal permanent event and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    [
+      {
+        "": {
+          "question": "Hoe geraak ik er?",
+          "answer": "Met de bus."
+        }
+      }
+    ]
+    """
+    When I send a PUT request to "%{eventUrl}/faqs/"
+    Then the response status should be "400"
+    And the JSON response should be:
+     """
+    {
+       "type":"https:\/\/api.publiq.be\/probs\/body\/invalid-data",
+       "title":"Invalid body data",
+       "status":400,
+       "schemaErrors":[
+          {
+             "jsonPointer":"\/0",
+             "error":"The required properties (nl) are missing"
+          },
+          {
+             "jsonPointer":"\/0",
+             "error":"The required properties (fr) are missing"
+          },
+          {
+             "jsonPointer":"\/0",
+             "error":"The required properties (de) are missing"
+          },
+          {
+             "jsonPointer":"\/0",
+             "error":"The required properties (en) are missing"
+          }
+       ]
+    }
+    """
+
+  Scenario: Cannot create a FAQ with an id
+    When I create a minimal permanent event and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    [
+      {
+        "id": "c094c46a-823a-4a7d-840a-73fb6631fa50",
+        "nl": {
+          "question": "Hoe geraak ik er?",
+          "answer": "Met de bus."
+        }
+      }
+    ]
+    """
+    When I send a PUT request to "%{eventUrl}/faqs/"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "type": "https:\/\/api.publiq.be\/probs\/body\/invalid-data",
+      "title":"Invalid body data",
+      "status":400,
+      "detail":"FAQ with id 'c094c46a-823a-4a7d-840a-73fb6631fa50' does not exist."
+    }
+    """
 
   Scenario: Cannot update FAQ with more than 30 items
     When I create a minimal permanent event and save the "url" as "eventUrl"
@@ -193,7 +269,7 @@ Feature: Test event FAQ
       {"nl": {"question": "v31?", "answer": "a31!"}}
     ]
     """
-    When I send a PUT request to "%{eventUrl}/faq/"
+    When I send a PUT request to "%{eventUrl}/faqs/"
     Then the response status should be "400"
     And the JSON response should be:
     """

@@ -69,6 +69,7 @@ use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AudienceTypeNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Faq\FaqsNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
@@ -575,23 +576,12 @@ final class EventLDProjector extends OfferLDProjector implements
         $document = $this->loadDocumentFromRepository($faqsUpdated);
         $jsonLD = $document->getBody();
 
-        $faqItemsArray = [];
-        foreach ($faqsUpdated->faqItems->toArray() as $translatedFaqItem) {
-            $faqItemArray = ['id' => $translatedFaqItem->getOriginalValue()->id];
-            foreach ($translatedFaqItem->getLanguages() as $language) {
-                $faqItem = $translatedFaqItem->getTranslation($language);
-                $faqItemArray[$language->getCode()] = [
-                    'question' => $faqItem->question->toString(),
-                    'answer' => $faqItem->answer->toString(),
-                ];
-            }
-            $faqItemsArray[] = $faqItemArray;
-        }
+        $faqsArray = (new FaqsNormalizer())->normalize($faqsUpdated->faqs);
 
-        if (empty($faqItemsArray)) {
-            unset($jsonLD->faq);
+        if (empty($faqsArray)) {
+            unset($jsonLD->faqs);
         } else {
-            $jsonLD->faq = $faqItemsArray;
+            $jsonLD->faqs = $faqsArray;
         }
 
         return $document->withBody($jsonLD);

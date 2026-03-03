@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Model\ValueObject\Faq;
+
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Faq\FaqsNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
+
+final class Faqs extends Collection
+{
+    public function __construct(TranslatedFaq ...$faqs)
+    {
+        parent::__construct(...$faqs);
+    }
+
+    public function getById(string $id): ?TranslatedFaq
+    {
+        foreach ($this->toArray() as $translatedFaq) {
+            if ($translatedFaq->getOriginalValue()->id === $id) {
+                return $translatedFaq;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param Faqs|mixed $other
+     */
+    public function sameAs($other): bool
+    {
+        $faqsNormalizer = new FaqsNormalizer();
+        return $faqsNormalizer->normalize($this) === $faqsNormalizer->normalize($other);
+    }
+}
