@@ -623,7 +623,8 @@ class ImmutableOfferTest extends TestCase
                     DateTimeFactory::fromFormat('d/m/Y', '11/01/2018')
                 ),
                 new Status(StatusType::Available()),
-                new BookingAvailability(BookingAvailabilityType::Available())
+                new BookingAvailability(BookingAvailabilityType::Available()),
+                new BookingInfo(),
             )
         );
     }

@@ -28,6 +28,9 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -662,6 +665,114 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     )
                                 )
                             )->withBookingAvailability(BookingAvailability::Unavailable()),
+                        )
+                    )
+                ),
+            ],
+            'Update bookingInfo on 1 sub event' => [
+                new EventCreated(
+                    '1',
+                    new Language('nl'),
+                    'Multiple Event',
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
+                            ),
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
+                            )
+                        )
+                    )
+                ),
+                new UpdateSubEvents(
+                    '1',
+                    (new SubEventUpdate(1))->withBookingInfo(
+                        (new BookingInfo())
+                            ->withTelephoneNumber(new TelephoneNumber('0123456789'))
+                            ->withEmailAddress(new EmailAddress('user@example.com'))
+                    )
+                ),
+                new CalendarUpdated(
+                    '1',
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
+                            ),
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
+                            ))->withBookingInfo(
+                                (new BookingInfo())
+                                    ->withTelephoneNumber(new TelephoneNumber('0123456789'))
+                                    ->withEmailAddress(new EmailAddress('user@example.com'))
+                            ),
+                        )
+                    )
+                ),
+            ],
+            'Clear bookingInfo on 1 sub event' => [
+                new EventCreated(
+                    '1',
+                    new Language('nl'),
+                    'Multiple Event',
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
+                            ),
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
+                            ))->withBookingInfo(
+                                (new BookingInfo())
+                                    ->withTelephoneNumber(new TelephoneNumber('0123456789'))
+                                    ->withEmailAddress(new EmailAddress('user@example.com'))
+                            )
+                        )
+                    )
+                ),
+                new UpdateSubEvents(
+                    '1',
+                    (new SubEventUpdate(1))->withBookingInfo(new BookingInfo())
+                ),
+                new CalendarUpdated(
+                    '1',
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
+                            ),
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
+                            ),
                         )
                     )
                 ),

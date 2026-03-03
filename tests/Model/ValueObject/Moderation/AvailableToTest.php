@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -50,7 +51,8 @@ class AvailableToTest extends TestCase
             new SubEvent(
                 new DateRange($startDate, $endDate),
                 new Status(StatusType::Available()),
-                new BookingAvailability(BookingAvailabilityType::Available())
+                new BookingAvailability(BookingAvailabilityType::Available()),
+                new BookingInfo(),
             )
         );
 

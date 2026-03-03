@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use PHPUnit\Framework\TestCase;
 
 final class KinepolisDateParserTest extends TestCase
@@ -49,7 +50,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T18:00:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -57,7 +59,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T20:15:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -65,7 +68,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T12:00:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -73,7 +77,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T15:00:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                         ],
                     ],
@@ -85,7 +90,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T20:30:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -93,7 +99,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T17:45:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -101,7 +108,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T12:15:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -109,7 +117,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T15:00:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -117,7 +126,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T20:30:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                         ],
                     ],
@@ -135,7 +145,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T19:39:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -143,7 +154,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T21:54:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -151,7 +163,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T13:39:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -159,7 +172,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T16:39:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                         ],
                     ],
@@ -171,7 +185,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T22:09:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -179,7 +194,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T19:24:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -187,7 +203,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T13:54:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -195,7 +212,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T16:39:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -203,7 +221,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T22:09:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                         ],
                     ],
@@ -221,7 +240,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T20:00:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -229,7 +249,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T14:00:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -237,7 +258,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T17:00:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                         ],
                         '3D' => [
@@ -247,7 +269,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T22:15:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                         ],
                     ],
@@ -259,7 +282,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T22:30:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -267,7 +291,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T14:15:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -275,7 +300,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T17:00:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -283,7 +309,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-09T22:30:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                         ],
                         '3D' => [
@@ -293,7 +320,8 @@ final class KinepolisDateParserTest extends TestCase
                                     DateTimeFactory::fromAtom('2024-04-08T19:45:00+00:00')
                                 ),
                                 new Status(StatusType::Available()),
-                                new BookingAvailability(BookingAvailabilityType::Available())
+                                new BookingAvailability(BookingAvailabilityType::Available()),
+                                new BookingInfo(),
                             ),
                         ],
                     ],

@@ -17,7 +17,10 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -218,6 +221,37 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable())),
                 ),
             ],
+            'one_subEvent_with_bookingInfo' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingInfo' => (object)[
+                            'phone' => '0123456789',
+                            'email' => 'user@example.com',
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(0))->withBookingInfo(
+                        (new BookingInfo())
+                            ->withTelephoneNumber(new TelephoneNumber('0123456789'))
+                            ->withEmailAddress(new EmailAddress('user@example.com'))
+                    )
+                ),
+            ],
+            'one_subEvent_with_empty_bookingInfo' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingInfo' => (object)[],
+                    ],
+                ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(0))->withBookingInfo(new BookingInfo())
+                ),
+            ],
             'one_subEvent_with_id_and_status_type_and_bookingAvailability_type' => [
                 'data' => [
                     (object)[
@@ -390,6 +424,59 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/0/status', 'The required properties (type) are missing'),
+                ],
+            ],
+            'one_subEvent_with_bookingInfo_phone_wrong_type' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingInfo' => (object)[
+                            'phone' => 123,
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/bookingInfo/phone', 'The data (integer) must match the type: string'),
+                ],
+            ],
+            'one_subEvent_with_bookingInfo_email_invalid' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingInfo' => (object)[
+                            'email' => '@publiq.be',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/bookingInfo/email', 'The data must match the \'email\' format'),
+                ],
+            ],
+            'one_subEvent_with_bookingInfo_url_invalid' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingInfo' => (object)[
+                            'url' => 'www.publiq.be',
+                            'urlLabel' => (object)['nl' => 'Reserveer'],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/bookingInfo/url', 'The data must match the \'uri\' format'),
+                ],
+            ],
+            'one_subEvent_with_bookingInfo_url_without_urlLabel' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'bookingInfo' => (object)[
+                            'url' => 'https://www.publiq.be',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/bookingInfo', '\'urlLabel\' property is required by \'url\' property'),
                 ],
             ],
         ];
