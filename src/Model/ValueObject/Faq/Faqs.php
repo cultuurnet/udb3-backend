@@ -17,7 +17,7 @@ final class Faqs extends Collection
     /**
      * @param Faqs|mixed $other
      */
-    public function sameAs($other): bool
+    public function sameAsWithoutId($other): bool
     {
         $faqsNormalizer = new FaqsNormalizer();
         $stripId = static fn (array $faq) => array_diff_key($faq, ['id' => null]);

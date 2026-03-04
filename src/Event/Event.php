@@ -509,7 +509,7 @@ final class Event extends Offer
 
     public function updateFaqs(Faqs $faqs): void
     {
-        if ($faqs->sameAs($this->faqs)) {
+        if ($faqs->sameAsWithoutId($this->faqs)) {
             return;
         }
 
