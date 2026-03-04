@@ -20,6 +20,7 @@ final class Faqs extends Collection
     public function sameAs($other): bool
     {
         $faqsNormalizer = new FaqsNormalizer();
-        return $faqsNormalizer->normalize($this) === $faqsNormalizer->normalize($other);
+        $stripId = static fn (array $faq) => array_diff_key($faq, ['id' => null]);
+        return array_map($stripId, $faqsNormalizer->normalize($this)) === array_map($stripId, $faqsNormalizer->normalize($other));
     }
 }
