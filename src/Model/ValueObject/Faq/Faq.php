@@ -12,15 +12,4 @@ final class Faq
         public readonly Answer $answer
     ) {
     }
-
-    /**
-     * @param Faq|mixed $other
-     */
-    public function sameAs($other): bool
-    {
-        return get_class($this) === get_class($other) &&
-            $this->id === $other->id &&
-            $this->question->sameAs($other->question) &&
-            $this->answer->sameAs($other->answer);
-    }
 }

@@ -14,16 +14,6 @@ final class Faqs extends Collection
         parent::__construct(...$faqs);
     }
 
-    public function getById(string $id): ?TranslatedFaq
-    {
-        foreach ($this->toArray() as $translatedFaq) {
-            if ($translatedFaq->getOriginalValue()->id === $id) {
-                return $translatedFaq;
-            }
-        }
-        return null;
-    }
-
     /**
      * @param Faqs|mixed $other
      */
