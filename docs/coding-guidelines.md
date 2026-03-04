@@ -14,6 +14,17 @@ See `src/Doctrine/DBALDatabaseConnectionChecker.php` for an example.
 
 > **Note**: Do NOT use PHP 8.2 `readonly class` syntax - we're on PHP 8.1.
 
+## Preferences
+
+When working on this codebase, prefer:
+
+- Extracting logic into testable classes with interfaces over inline implementation
+- Constructor injection over service locator patterns
+- Explicit code over clever abstractions
+- Integration with existing patterns over introducing new ones
+- Inline expressions over unnecessary local variables (if a variable is only used once and doesn't improve readability, inline it)
+- When one needs to serialize() or deserialize(), implement a new NormalizerInterface or DenormalizerInterface instead of a separate function
+
 ## Comments & Self-Documenting Code
 
 Avoid comments in favor of self-documenting code:
@@ -37,6 +48,14 @@ Comments are acceptable when explaining **why** something is done (not **what**)
 
 - Descriptive name without `Exception` suffix
 - Name should describe what went wrong (e.g., `DocumentDoesNotExist`, `NewsArticleNotFound`)
+
+## Dependency Injection
+
+- Service providers in `app/` wire all dependencies
+- Use **constructor injection**, not service locators
+- Extract testable logic into separate classes with **interfaces**
+
+See `src/Doctrine/DatabaseConnectionChecker.php` and `src/Doctrine/DBALDatabaseConnectionChecker.php` for an example of interface + implementation pattern.
 
 ## Testing
 
@@ -67,14 +86,6 @@ Comments are acceptable when explaining **why** something is done (not **what**)
 - **Never** create commits - only humans commit code
 - **Plan** larger changes but implement step by step, waiting for human review between steps
 
-## Dependency Injection
-
-- Service providers in `app/` wire all dependencies
-- Use **constructor injection**, not service locators
-- Extract testable logic into separate classes with **interfaces**
-
-See `src/Doctrine/DatabaseConnectionChecker.php` and `src/Doctrine/DBALDatabaseConnectionChecker.php` for an example of interface + implementation pattern.
-
 ## Workflow
 
 - **Small commits**: One logical change per commit
@@ -83,16 +94,6 @@ See `src/Doctrine/DatabaseConnectionChecker.php` and `src/Doctrine/DBALDatabaseC
   - The goal is to make commits easy to review and understand
 - **Small pull requests**: Easier to review, faster to merge
 - **Feature flags**: Deploy often, enable features when ready
-
-## Preferences
-
-When working on this codebase, prefer:
-
-- Extracting logic into testable classes with interfaces over inline implementation
-- Constructor injection over service locator patterns
-- Explicit code over clever abstractions
-- Integration with existing patterns over introducing new ones
-- When one needs to serialize() or deserialize() to implement a new NormalizerInterface or DenormalizerInterface
 
 ## Security
 
