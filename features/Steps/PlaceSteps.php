@@ -286,5 +286,7 @@ trait PlaceSteps
         $this->theResponseStatusShouldBe($responseStatus);
         $this->theResponseBodyShouldBeValidJson();
         $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
+
+        $this->addScenarioLabelToResource('place');
     }
 }

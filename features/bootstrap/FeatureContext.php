@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
+use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\State\RequestState;
 use CultuurNet\UDB3\State\ResponseState;
 use CultuurNet\UDB3\State\VariableState;
@@ -92,6 +94,22 @@ final class FeatureContext implements Context
     public function beforeScenarioMails(BeforeScenarioScope $scope): void
     {
         $this->getMailClient()->deleteAllMails();
+    }
+
+    /**
+     * @BeforeScenario @testIsolation
+     */
+    public function beforeScenarioTestIsolation(BeforeScenarioScope $scope): void
+    {
+        VariableState::setScenarioLabel('scenario-' . Uuid::uuid4()->toString());
+    }
+
+    /**
+     * @AfterScenario @testIsolation
+     */
+    public function afterScenarioTestIsolation(AfterScenarioScope $scope): void
+    {
+        VariableState::clearScenarioLabel();
     }
 
     /**
