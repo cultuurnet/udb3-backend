@@ -21,7 +21,7 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 
-final class FaqRequestHandlerTest extends TestCase
+final class UpdateFaqsRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
@@ -31,7 +31,7 @@ final class FaqRequestHandlerTest extends TestCase
 
     private DocumentRepository $eventDocumentRepository;
 
-    private FaqsRequestHandler $faqRequestHandler;
+    private UpdateFaqsRequestHandler $updateFaqsRequestHandler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -39,7 +39,7 @@ final class FaqRequestHandlerTest extends TestCase
     {
         $this->commandBus = new TraceableCommandBus();
         $this->eventDocumentRepository = new InMemoryDocumentRepository();
-        $this->faqRequestHandler = new FaqsRequestHandler($this->commandBus, $this->eventDocumentRepository);
+        $this->updateFaqsRequestHandler = new UpdateFaqsRequestHandler($this->commandBus, $this->eventDocumentRepository);
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
         $this->commandBus->record();
     }
@@ -76,7 +76,7 @@ final class FaqRequestHandlerTest extends TestCase
             ])
             ->build('PUT');
 
-        $response = $this->faqRequestHandler->handle($request);
+        $response = $this->updateFaqsRequestHandler->handle($request);
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
@@ -108,7 +108,7 @@ final class FaqRequestHandlerTest extends TestCase
             ->withJsonBodyFromArray([])
             ->build('PUT');
 
-        $response = $this->faqRequestHandler->handle($request);
+        $response = $this->updateFaqsRequestHandler->handle($request);
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
@@ -140,7 +140,7 @@ final class FaqRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidDataWithDetail("FAQ with id '$unknownId' does not exist."),
-            fn () => $this->faqRequestHandler->handle($request)
+            fn () => $this->updateFaqsRequestHandler->handle($request)
         );
     }
 
@@ -157,7 +157,7 @@ final class FaqRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             $expectedApiProblem,
-            fn () => $this->faqRequestHandler->handle($request)
+            fn () => $this->updateFaqsRequestHandler->handle($request)
         );
     }
 
