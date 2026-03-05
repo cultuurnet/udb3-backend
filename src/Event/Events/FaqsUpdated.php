@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
-use CultuurNet\UDB3\Event\Serializer\FaqsDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Faq\FaqsNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
+use CultuurNet\UDB3\Model\ValueObject\Faq\FaqsDenormalizer;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
 final class FaqsUpdated extends AbstractEvent
