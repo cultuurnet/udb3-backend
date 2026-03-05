@@ -864,3 +864,18 @@ Feature: Test the UDB3 events API
         ]
     }
     """
+
+  Scenario: Create an event with a FAQ
+    When I create a place from "places/place.json" and save the "url" as "placeUrl"
+    And I set the JSON request payload from "events/event-with-faqs.json"
+    And I send a POST request to "/events/"
+    Then the response status should be "201"
+    And the response body should be valid JSON
+    And I keep the value of the JSON response at "eventId" as "eventId"
+    When I send a GET request to "/events/%{eventId}"
+    And the JSON response should have "faqs"
+    And the JSON response at "faqs/0/nl/question" should be "Hoe geraak ik er?"
+    And the JSON response at "faqs/0/nl/answer" should be "Met de bus."
+    And the JSON response at "faqs/0/en/question" should be "How do I get there?"
+    And the JSON response at "faqs/0/en/answer" should be "By bus."
+
