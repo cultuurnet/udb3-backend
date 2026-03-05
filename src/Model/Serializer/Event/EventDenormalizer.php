@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\Event;
 
-use CultuurNet\UDB3\Event\Serializer\FaqsDenormalizer;
 use CultuurNet\UDB3\Model\Event\Event;
 use CultuurNet\UDB3\Model\Event\EventIDParser;
 use CultuurNet\UDB3\Model\Event\ImmutableEvent;
@@ -15,6 +14,7 @@ use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
+use CultuurNet\UDB3\Model\ValueObject\Faq\FaqsDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
