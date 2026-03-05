@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d6446db32ad542280e570b52c0304279",
+    "content-hash": "e40e7c536212fa26f7e5e65d6e1f4d26",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6144,18 +6144,19 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-7021-faq-endpoint",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "d1fbdcb16d74a92cb103d2593c972b2fabb98170"
+                "reference": "596aa2571aa7372ffba6720c79bdf1153207d6f0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/d1fbdcb16d74a92cb103d2593c972b2fabb98170",
-                "reference": "d1fbdcb16d74a92cb103d2593c972b2fabb98170",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/596aa2571aa7372ffba6720c79bdf1153207d6f0",
+                "reference": "596aa2571aa7372ffba6720c79bdf1153207d6f0",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6170,9 +6171,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7021-faq-endpoint"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
-            "time": "2026-03-05T10:31:14+00:00"
+            "time": "2026-03-05T10:45:11+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
