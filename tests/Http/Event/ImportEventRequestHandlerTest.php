@@ -881,10 +881,18 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedFaqs = (new Faqs())->with(
             (new TranslatedFaq(
                 new Language('nl'),
-                new Faq($faqId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+                new Faq(
+                    new Uuid($faqId),
+                    new Question('Hoe geraak ik er?'),
+                    new Answer('Met de bus.')
+                )
             ))->withTranslation(
                 new Language('en'),
-                new Faq($faqId, new Question('How do I get there?'), new Answer('By bus.'))
+                new Faq(
+                    new Uuid($faqId),
+                    new Question('How do I get there?'),
+                    new Answer('By bus.')
+                )
             )
         );
 
