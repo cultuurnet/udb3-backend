@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
+use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\Image\ImagesUpdatedFromUDB2;
@@ -89,6 +90,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -114,6 +116,8 @@ final class Event extends Offer
     private ?LocationId $locationId = null;
 
     private ?string $themeId = null;
+
+    private Faqs $faqs;
 
     public static function getOfferType(): OfferType
     {
@@ -220,6 +224,7 @@ final class Event extends Offer
         $this->locationId = $eventCreated->getLocation();
         $this->mainLanguage = $eventCreated->getMainLanguage();
         $this->workflowStatus = WorkflowStatus::DRAFT();
+        $this->faqs = new Faqs();
     }
 
     protected function applyEventCopied(EventCopied $eventCopied): void
@@ -228,6 +233,7 @@ final class Event extends Offer
         $this->calendar = $eventCopied->getCalendar();
         $this->workflowStatus = WorkflowStatus::DRAFT();
         $this->labels = new LabelsArray();
+        $this->faqs = new Faqs();
     }
 
     protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImported): void
@@ -499,6 +505,20 @@ final class Event extends Offer
     protected function applyThemeRemoved(ThemeRemoved $themeRemoved): void
     {
         $this->themeId = null;
+    }
+
+    public function updateFaqs(Faqs $faqs): void
+    {
+        if ($faqs->sameAsWithoutId($this->faqs)) {
+            return;
+        }
+
+        $this->apply(new FaqsUpdated($this->eventId, $faqs));
+    }
+
+    protected function applyFaqsUpdated(FaqsUpdated $faqsUpdated): void
+    {
+        $this->faqs = $faqsUpdated->faqs;
     }
 
     public function updateUiTPASPrices(Tariffs $tariffs): void

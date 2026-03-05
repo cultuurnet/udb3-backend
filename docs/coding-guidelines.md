@@ -23,6 +23,7 @@ When working on this codebase, prefer:
 - Explicit code over clever abstractions
 - Integration with existing patterns over introducing new ones
 - Inline expressions over unnecessary local variables (if a variable is only used once and doesn't improve readability, inline it)
+- When one needs to serialize() or deserialize(), implement a new NormalizerInterface or DenormalizerInterface, this Normalizer can be called in the serialize method of Broadway\Serializer\Serializable
 
 ## Comments & Self-Documenting Code
 
