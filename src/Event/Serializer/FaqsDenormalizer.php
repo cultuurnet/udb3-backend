@@ -78,7 +78,7 @@ final class FaqsDenormalizer implements DenormalizerInterface
     private function denormalizeFaq(string $id, array $data): Faq
     {
         return new Faq(
-            $id,
+            new Uuid($id),
             new Question($data['question']),
             new Answer($data['answer'])
         );

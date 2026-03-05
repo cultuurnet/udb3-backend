@@ -16,7 +16,7 @@ final class FaqsNormalizer implements NormalizerInterface
     {
         $faqsArray = [];
         foreach ($faqs->toArray() as $translatedFaq) {
-            $faqArray = ['id' => $translatedFaq->getOriginalValue()->id];
+            $faqArray = [];
             foreach ($translatedFaq->getLanguages() as $language) {
                 $faq = $translatedFaq->getTranslation($language);
                 $faqArray[$language->getCode()] = [

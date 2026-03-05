@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Steps;
 
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use CultuurNet\UDB3\State\VariableState;
 
 trait RequestSteps
 {
@@ -101,8 +102,48 @@ trait RequestSteps
      */
     public function iSendAGetRequestToWithParameters(string $url, TableNode $parameters): void
     {
-        $response = $this->getHttpClient()->getWithParameters($url, $parameters->getRows(), $this->variableState);
+        $params = $this->addScenarioLabelToSearchParameters($url, $parameters->getRows());
+        $response = $this->getHttpClient()->getWithParameters($url, $params, $this->variableState);
         $this->responseState->setResponse($response);
+    }
+
+    private function addScenarioLabelToSearchParameters(string $url, array $parameters): array
+    {
+        $scenarioLabel = VariableState::getScenarioLabel();
+        if ($scenarioLabel === null) {
+            return $parameters;
+        }
+
+        $searchEndpoints = ['/events', '/places', '/organizers', '/offers'];
+        $isSearchEndpoint = false;
+        foreach ($searchEndpoints as $endpoint) {
+            if (str_starts_with($url, $endpoint)) {
+                $isSearchEndpoint = true;
+                break;
+            }
+        }
+
+        if (!$isSearchEndpoint) {
+            return $parameters;
+        }
+
+        $labelFilter = 'labels:' . $scenarioLabel;
+
+        $qIndex = null;
+        foreach ($parameters as $index => $param) {
+            if ($param[0] === 'q') {
+                $qIndex = $index;
+                break;
+            }
+        }
+
+        if ($qIndex !== null) {
+            $parameters[$qIndex][1] = '(' . $parameters[$qIndex][1] . ') AND ' . $labelFilter;
+        } else {
+            $parameters[] = ['q', $labelFilter];
+        }
+
+        return $parameters;
     }
 
     /**

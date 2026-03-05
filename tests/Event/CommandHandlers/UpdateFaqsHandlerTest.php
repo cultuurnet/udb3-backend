@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -102,7 +103,11 @@ final class UpdateFaqsHandlerTest extends CommandHandlerScenarioTestCase
         return (new Faqs())->with(
             new TranslatedFaq(
                 new Language('nl'),
-                new Faq($id, new Question($question), new Answer($answer))
+                new Faq(
+                    new Uuid($id),
+                    new Question($question),
+                    new Answer($answer)
+                )
             )
         );
     }

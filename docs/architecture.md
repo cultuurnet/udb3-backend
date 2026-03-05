@@ -12,7 +12,7 @@ UiTdatabank 3 (UDB3) is an event-sourced backend built with Broadway.
 - **Cache**: Redis
 - **Testing**: PHPUnit (unit), Behat (acceptance)
 - **Quality**: PHPStan (static analysis), PHP-CS-Fixer (code style)
-- **Environment**: Docker with docker-compose
+- **Environment**: Docker with docker compose
 
 ## Project Structure
 

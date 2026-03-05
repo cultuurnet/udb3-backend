@@ -14,22 +14,13 @@ final class Faqs extends Collection
         parent::__construct(...$faqs);
     }
 
-    public function getById(string $id): ?TranslatedFaq
-    {
-        foreach ($this->toArray() as $translatedFaq) {
-            if ($translatedFaq->getOriginalValue()->id === $id) {
-                return $translatedFaq;
-            }
-        }
-        return null;
-    }
-
     /**
      * @param Faqs|mixed $other
      */
-    public function sameAs($other): bool
+    public function sameAsWithoutId($other): bool
     {
         $faqsNormalizer = new FaqsNormalizer();
-        return $faqsNormalizer->normalize($this) === $faqsNormalizer->normalize($other);
+        $stripId = static fn (array $faq) => array_diff_key($faq, ['id' => null]);
+        return array_map($stripId, $faqsNormalizer->normalize($this)) === array_map($stripId, $faqsNormalizer->normalize($other));
     }
 }

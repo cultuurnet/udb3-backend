@@ -129,5 +129,7 @@ trait OrganizerSteps
         $this->theResponseStatusShouldBe(str_contains($endpoint, 'imports') ? 200 : 201);
         $this->theResponseBodyShouldBeValidJson();
         $this->iKeepTheValueOfTheJsonResponseAtAs($jsonPath, $variableName);
+
+        $this->addScenarioLabelToResource('organizer');
     }
 }
