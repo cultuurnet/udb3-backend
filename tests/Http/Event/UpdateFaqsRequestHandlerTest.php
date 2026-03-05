@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
@@ -86,10 +87,18 @@ final class UpdateFaqsRequestHandlerTest extends TestCase
                     (new Faqs())->with(
                         (new TranslatedFaq(
                             new Language('nl'),
-                            new Faq($faqId, new Question('Hoe geraak ik er?'), new Answer('Met de bus.'))
+                            new Faq(
+                                new Uuid($faqId),
+                                new Question('Hoe geraak ik er?'),
+                                new Answer('Met de bus.')
+                            )
                         ))->withTranslation(
                             new Language('en'),
-                            new Faq($faqId, new Question('How do I get there?'), new Answer('By bus.'))
+                            new Faq(
+                                new Uuid($faqId),
+                                new Question('How do I get there?'),
+                                new Answer('By bus.')
+                            )
                         )
                     )
                 ),
