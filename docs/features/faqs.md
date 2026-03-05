@@ -1,11 +1,11 @@
 # Faqs
 
-FAQs are an optional list of question/answer pairs in various languages on Events. Each FAQ item has a stable `id` so it can be referenced and updated across multiple PUT requests.
+FAQs are an optional list of question/answer pairs in various languages on Events. Each FAQ item has an internal `id` that is not exposed in the projection.
 
 ## Data model
 
 Each FAQ item has:
-- `id` — UUID, auto-generated on creation if not provided
+- `id` — UUID, auto-generated on creation but not exposed with the API and only stored inside the event store
 - One or more language translations, each with a `question` (max 255 chars) and an `answer` (max 5000 chars)
 
 ### JSON structure
@@ -13,7 +13,6 @@ Each FAQ item has:
 ```json
 [
   {
-    "id": "b4575c68-dc04-4b67-9568-63e5d00d4dde",
     "nl": {
       "question": "Hoe geraak ik er?",
       "answer": "Met de bus."
