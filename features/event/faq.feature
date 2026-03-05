@@ -140,6 +140,33 @@ Feature: Test event FAQ
     And the JSON response at "faqs/1/nl/question" should be "Vraag 2 bijgewerkt"
     And the JSON response at "faqs/1/nl/answer" should be "Antwoord 2 bijgewerkt"
 
+  Scenario: The internal id of a faq should not be projected
+    When I create a minimal permanent event and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    [
+      {
+        "nl": {
+          "question": "Hoe geraak ik er?",
+          "answer": "Met de bus."
+        }
+      }
+    ]
+    """
+    When I send a PUT request to "%{eventUrl}/faqs/"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "faqs" should be:
+    """
+    [
+      {
+        "nl": {
+          "question": "Hoe geraak ik er?",
+          "answer": "Met de bus."
+        }
+      }
+    ]
+    """
 
   Scenario: Cannot update FAQ with a missing answer
     When I create a minimal permanent event and save the "url" as "eventUrl"
@@ -202,32 +229,6 @@ Feature: Test event FAQ
              "error":"The required properties (en) are missing"
           }
        ]
-    }
-    """
-
-  Scenario: Cannot create a FAQ with an id
-    When I create a minimal permanent event and save the "url" as "eventUrl"
-    And I set the JSON request payload to:
-    """
-    [
-      {
-        "id": "c094c46a-823a-4a7d-840a-73fb6631fa50",
-        "nl": {
-          "question": "Hoe geraak ik er?",
-          "answer": "Met de bus."
-        }
-      }
-    ]
-    """
-    When I send a PUT request to "%{eventUrl}/faqs/"
-    Then the response status should be "400"
-    And the JSON response should be:
-    """
-    {
-      "type": "https:\/\/api.publiq.be\/probs\/body\/invalid-data",
-      "title":"Invalid body data",
-      "status":400,
-      "detail":"FAQ with id 'c094c46a-823a-4a7d-840a-73fb6631fa50' does not exist."
     }
     """
 

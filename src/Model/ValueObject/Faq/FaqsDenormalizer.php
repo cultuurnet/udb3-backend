@@ -2,13 +2,8 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Event\Serializer;
+namespace CultuurNet\UDB3\Model\ValueObject\Faq;
 
-use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
-use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
-use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
-use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
-use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use InvalidArgumentException;
