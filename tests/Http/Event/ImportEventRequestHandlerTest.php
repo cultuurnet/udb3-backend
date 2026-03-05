@@ -866,7 +866,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'terms' => [['id' => '1.50.0.0.0']],
                 'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
                 'calendarType' => 'permanent',
-                'faq' => [
+                'faqs' => [
                     [
                         'id' => $faqId,
                         'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
