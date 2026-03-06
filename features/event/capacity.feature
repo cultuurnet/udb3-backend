@@ -91,7 +91,7 @@ Feature: Test capacity and remainingCapacity on sub-events
     }
     """
 
-  Scenario: Set capacity only on a subEvent (explicit type required)
+  Scenario: Set capacity only on a subEvent without remainingCapacity
     When I set the JSON request payload to:
     """
     [
