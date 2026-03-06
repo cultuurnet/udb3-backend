@@ -179,7 +179,12 @@ Feature: Test capacity and remainingCapacity on sub-events
     And I send a PATCH request to "%{eventUrl}/subEvents"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "bookingAvailability/type" should be "Available"
+    And the JSON response at "bookingAvailability" should be:
+    """
+    {
+      "type": "Available"
+    }
+    """
     And the JSON response at "subEvent/0/bookingAvailability" should be:
     """
     {
