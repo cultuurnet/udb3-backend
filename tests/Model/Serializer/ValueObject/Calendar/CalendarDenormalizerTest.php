@@ -365,4 +365,341 @@ final class CalendarDenormalizerTest extends TestCase
             $this->denormalizer->denormalize($data, Calendar::class)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_single_calendar_with_capacity_and_remaining_capacity(): void
+    {
+        $data = [
+            'calendarType' => 'single',
+            'startDate' => '2021-05-17T08:00:00+00:00',
+            'endDate' => '2021-05-17T22:00:00+00:00',
+            'bookingAvailability' => [
+                'capacity' => 300,
+                'remainingCapacity' => 75,
+            ],
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                ],
+            ],
+        ];
+
+        $topLevelBookingAvailability = BookingAvailability::Available()
+            ->withCapacity(300)
+            ->withRemainingCapacity(75);
+
+        $expected = (new SingleSubEventCalendar(
+            new SubEvent(
+                new DateRange(
+                    new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
+                    new DateTimeImmutable('2021-05-17T22:00:00+00:00')
+                ),
+                new Status(StatusType::Available()),
+                $topLevelBookingAvailability,
+                new BookingInfo()
+            )
+        ))->withBookingAvailability($topLevelBookingAvailability);
+
+        $this->assertEquals(
+            $expected,
+            $this->denormalizer->denormalize($data, Calendar::class)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_falls_back_to_top_level_capacity_when_sub_event_has_none(): void
+    {
+        $data = [
+            'calendarType' => 'single',
+            'startDate' => '2021-05-17T08:00:00+00:00',
+            'endDate' => '2021-05-17T22:00:00+00:00',
+            'bookingAvailability' => [
+                'type' => 'Available',
+                'capacity' => 200,
+                'remainingCapacity' => 50,
+            ],
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                ],
+            ],
+        ];
+
+        $topLevelBookingAvailability = BookingAvailability::Available()
+            ->withCapacity(200)
+            ->withRemainingCapacity(50);
+
+        $expected = (new SingleSubEventCalendar(
+            new SubEvent(
+                new DateRange(
+                    new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
+                    new DateTimeImmutable('2021-05-17T22:00:00+00:00')
+                ),
+                new Status(StatusType::Available()),
+                $topLevelBookingAvailability,
+                new BookingInfo()
+            )
+        ))->withBookingAvailability($topLevelBookingAvailability);
+
+        $this->assertEquals(
+            $expected,
+            $this->denormalizer->denormalize($data, Calendar::class)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_gives_sub_event_capacity_priority_over_top_level_capacity(): void
+    {
+        $data = [
+            'calendarType' => 'single',
+            'startDate' => '2021-05-17T08:00:00+00:00',
+            'endDate' => '2021-05-17T22:00:00+00:00',
+            'bookingAvailability' => [
+                'type' => 'Available',
+                'capacity' => 500,
+                'remainingCapacity' => 250,
+            ],
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                        'capacity' => 100,
+                        'remainingCapacity' => 25,
+                    ],
+                ],
+            ],
+        ];
+
+        $subEventBookingAvailability = BookingAvailability::Available()
+            ->withCapacity(100)
+            ->withRemainingCapacity(25);
+
+        $topLevelBookingAvailability = BookingAvailability::Available()
+            ->withCapacity(500)
+            ->withRemainingCapacity(250);
+
+        $expected = (new SingleSubEventCalendar(
+            new SubEvent(
+                new DateRange(
+                    new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
+                    new DateTimeImmutable('2021-05-17T22:00:00+00:00')
+                ),
+                new Status(StatusType::Available()),
+                $subEventBookingAvailability,
+                new BookingInfo()
+            )
+        ))->withBookingAvailability($topLevelBookingAvailability);
+
+        $this->assertEquals(
+            $expected,
+            $this->denormalizer->denormalize($data, Calendar::class)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_multiple_calendar_with_capacity_and_remaining_capacity_inherited_by_sub_events(): void
+    {
+        $data = [
+            'calendarType' => 'multiple',
+            'startDate' => '2021-05-17T08:00:00+00:00',
+            'endDate' => '2021-05-18T22:00:00+00:00',
+            'bookingAvailability' => [
+                'type' => 'Available',
+                'capacity' => 500,
+                'remainingCapacity' => 250,
+            ],
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                ],
+                [
+                    'startDate' => '2021-05-18T08:00:00+00:00',
+                    'endDate' => '2021-05-18T22:00:00+00:00',
+                ],
+            ],
+        ];
+
+        $bookingAvailability = BookingAvailability::Available()
+            ->withCapacity(500)
+            ->withRemainingCapacity(250);
+
+        $expected = (new MultipleSubEventsCalendar(
+            new SubEvents(
+                new SubEvent(
+                    new DateRange(
+                        new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
+                        new DateTimeImmutable('2021-05-17T22:00:00+00:00')
+                    ),
+                    new Status(StatusType::Available()),
+                    $bookingAvailability,
+                    new BookingInfo()
+                ),
+                new SubEvent(
+                    new DateRange(
+                        new DateTimeImmutable('2021-05-18T08:00:00+00:00'),
+                        new DateTimeImmutable('2021-05-18T22:00:00+00:00')
+                    ),
+                    new Status(StatusType::Available()),
+                    $bookingAvailability,
+                    new BookingInfo()
+                )
+            )
+        ))->withBookingAvailability($bookingAvailability);
+
+        $this->assertEquals(
+            $expected,
+            $this->denormalizer->denormalize($data, Calendar::class)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_multiple_calendar_with_different_capacity_on_each_sub_event(): void
+    {
+        $data = [
+            'calendarType' => 'multiple',
+            'startDate' => '2021-05-17T08:00:00+00:00',
+            'endDate' => '2021-05-18T22:00:00+00:00',
+            'bookingAvailability' => [
+                'type' => 'Available',
+                'capacity' => 500,
+                'remainingCapacity' => 250,
+            ],
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                        'capacity' => 100,
+                        'remainingCapacity' => 42,
+                    ],
+                ],
+                [
+                    'startDate' => '2021-05-18T08:00:00+00:00',
+                    'endDate' => '2021-05-18T22:00:00+00:00',
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                        'capacity' => 200,
+                        'remainingCapacity' => 150,
+                    ],
+                ],
+            ],
+        ];
+
+        $topLevelBookingAvailability = BookingAvailability::Available()
+            ->withCapacity(500)
+            ->withRemainingCapacity(250);
+
+        $expected = (new MultipleSubEventsCalendar(
+            new SubEvents(
+                new SubEvent(
+                    new DateRange(
+                        new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
+                        new DateTimeImmutable('2021-05-17T22:00:00+00:00')
+                    ),
+                    new Status(StatusType::Available()),
+                    BookingAvailability::Available()
+                        ->withCapacity(100)
+                        ->withRemainingCapacity(42),
+                    new BookingInfo()
+                ),
+                new SubEvent(
+                    new DateRange(
+                        new DateTimeImmutable('2021-05-18T08:00:00+00:00'),
+                        new DateTimeImmutable('2021-05-18T22:00:00+00:00')
+                    ),
+                    new Status(StatusType::Available()),
+                    BookingAvailability::Available()
+                        ->withCapacity(200)
+                        ->withRemainingCapacity(150),
+                    new BookingInfo()
+                )
+            )
+        ))->withBookingAvailability($topLevelBookingAvailability);
+
+        $this->assertEquals(
+            $expected,
+            $this->denormalizer->denormalize($data, Calendar::class)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_only_inherits_capacity_when_sub_event_has_no_explicit_capacity(): void
+    {
+        $data = [
+            'calendarType' => 'multiple',
+            'startDate' => '2021-05-17T08:00:00+00:00',
+            'endDate' => '2021-05-18T22:00:00+00:00',
+            'bookingAvailability' => [
+                'type' => 'Available',
+                'capacity' => 500,
+                'remainingCapacity' => 250,
+            ],
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                        'remainingCapacity' => 42,
+                    ],
+                ],
+                [
+                    'startDate' => '2021-05-18T08:00:00+00:00',
+                    'endDate' => '2021-05-18T22:00:00+00:00',
+                ],
+            ],
+        ];
+
+        $topLevelBookingAvailability = BookingAvailability::Available()
+            ->withCapacity(500)
+            ->withRemainingCapacity(250);
+
+        $expected = (new MultipleSubEventsCalendar(
+            new SubEvents(
+                new SubEvent(
+                    new DateRange(
+                        new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
+                        new DateTimeImmutable('2021-05-17T22:00:00+00:00')
+                    ),
+                    new Status(StatusType::Available()),
+                    BookingAvailability::Available()
+                        ->withCapacity(500)
+                        ->withRemainingCapacity(42),
+                    new BookingInfo()
+                ),
+                new SubEvent(
+                    new DateRange(
+                        new DateTimeImmutable('2021-05-18T08:00:00+00:00'),
+                        new DateTimeImmutable('2021-05-18T22:00:00+00:00')
+                    ),
+                    new Status(StatusType::Available()),
+                    $topLevelBookingAvailability,
+                    new BookingInfo()
+                )
+            )
+        ))->withBookingAvailability($topLevelBookingAvailability);
+
+        $this->assertEquals(
+            $expected,
+            $this->denormalizer->denormalize($data, Calendar::class)
+        );
+    }
 }

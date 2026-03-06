@@ -8,6 +8,10 @@ final class BookingAvailability
 {
     private BookingAvailabilityType $type;
 
+    private ?int $capacity = null;
+
+    private ?int $remainingCapacity = null;
+
     public function __construct(BookingAvailabilityType $type)
     {
         $this->type = $type;
@@ -16,6 +20,38 @@ final class BookingAvailability
     public function getType(): BookingAvailabilityType
     {
         return $this->type;
+    }
+
+    public function getCapacity(): ?int
+    {
+        return $this->capacity;
+    }
+
+    public function getRemainingCapacity(): ?int
+    {
+        return $this->remainingCapacity;
+    }
+
+    public function withCapacity(int $capacity): self
+    {
+        if ($this->remainingCapacity !== null && $this->remainingCapacity > $capacity) {
+            throw new RemainingCapacityExceedsCapacity();
+        }
+
+        $clone = clone $this;
+        $clone->capacity = $capacity;
+        return $clone;
+    }
+
+    public function withRemainingCapacity(int $remainingCapacity): self
+    {
+        if ($this->capacity !== null && $remainingCapacity > $this->capacity) {
+            throw new RemainingCapacityExceedsCapacity();
+        }
+
+        $clone = clone $this;
+        $clone->remainingCapacity = $remainingCapacity;
+        return $clone;
     }
 
     public static function Available(): self

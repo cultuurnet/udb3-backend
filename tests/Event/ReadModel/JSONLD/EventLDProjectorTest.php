@@ -46,6 +46,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -2144,5 +2145,421 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 ],
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_sub_events_with_capacity_and_remaining_capacity(): void
+    {
+        $eventId = '926fca95-010e-46b1-8b8e-abe757dd32d5';
+
+        $subEvents = [
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2015-01-26T13:25:21+01:00'),
+                    DateTimeFactory::fromAtom('2015-01-27T13:25:21+01:00')
+                )
+            )->withBookingAvailability(
+                BookingAvailability::Available()
+                    ->withCapacity(100)
+                    ->withRemainingCapacity(42)
+            ),
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2015-01-28T13:25:21+01:00'),
+                    DateTimeFactory::fromAtom('2015-01-29T13:25:21+01:00')
+                )
+            )->withBookingAvailability(
+                BookingAvailability::Available()
+                    ->withCapacity(150)
+                    ->withRemainingCapacity(80)
+            ),
+        ];
+
+        $calendar = new MultipleSubEventsCalendar(
+            new SubEvents(...$subEvents)
+        );
+
+        $theme = new Category(new CategoryID('1.8.1.0.0'), new CategoryLabel('Rock'), CategoryDomain::theme());
+
+        $eventCreated = $this->createEventCreated($eventId, $calendar, $theme);
+
+        $jsonLD = $this->createJsonLD($eventId, new Language('en'));
+        $jsonLD->calendarType = 'multiple';
+        $jsonLD->startDate = '2015-01-26T13:25:21+01:00';
+        $jsonLD->endDate = '2015-01-29T13:25:21+01:00';
+        $jsonLD->subEvent = [
+            (object)[
+                'id' => 0,
+                '@type' => 'Event',
+                'startDate' => '2015-01-26T13:25:21+01:00',
+                'endDate' => '2015-01-27T13:25:21+01:00',
+                'status' => (object) ['type' => 'Available'],
+                'bookingAvailability' => (object) [
+                    'type' => 'Available',
+                    'capacity' => 100,
+                    'remainingCapacity' => 42,
+                ],
+            ],
+            (object)[
+                'id' => 1,
+                '@type' => 'Event',
+                'startDate' => '2015-01-28T13:25:21+01:00',
+                'endDate' => '2015-01-29T13:25:21+01:00',
+                'status' => (object) ['type' => 'Available'],
+                'bookingAvailability' => (object) [
+                    'type' => 'Available',
+                    'capacity' => 150,
+                    'remainingCapacity' => 80,
+                ],
+            ],
+        ];
+        $jsonLD->availableTo = $jsonLD->endDate;
+        $jsonLD->sameAs = [
+            'http://www.uitinvlaanderen.be/agenda/e/some-representative-title/' . $eventId,
+        ];
+        $jsonLD->terms = [
+            (object)[
+                'id' => '0.50.4.0.0',
+                'label' => 'Concert',
+                'domain' => 'eventtype',
+            ],
+            (object)[
+                'id' => '1.8.1.0.0',
+                'label' => 'Rock',
+                'domain' => 'theme',
+            ],
+        ];
+        $jsonLD->typicalAgeRange = '-';
+        $jsonLD->playhead = 1;
+        $jsonLD->completeness = 65;
+
+        $this->mockPlaceService();
+
+        $body = $this->project(
+            $eventCreated,
+            $eventId,
+            null,
+            DateTime::fromString('2015-01-20T13:25:21+01:00')
+        );
+
+        $this->assertEquals($jsonLD, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_single_sub_event_with_remaining_capacity_only(): void
+    {
+        $eventId = 'd8e32a8e-41e8-4e15-b15f-fb6b2c8c5eb9';
+        $recordedOn = '2020-03-15T13:00:00+01:00';
+
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                DateTimeFactory::fromAtom('2020-03-15T14:00:00+01:00'),
+                DateTimeFactory::fromAtom('2020-03-15T18:00:00+01:00')
+            )
+        )->withBookingAvailability(
+            BookingAvailability::Available()->withRemainingCapacity(25)
+        );
+
+        $calendar = new SingleSubEventCalendar($subEvent);
+
+        $eventCreated = $this->createEventCreated($eventId, $calendar);
+
+        $jsonLD = $this->createJsonLD($eventId, new Language('en'));
+        $jsonLD->calendarType = 'single';
+        $jsonLD->startDate = '2020-03-15T14:00:00+01:00';
+        $jsonLD->endDate = '2020-03-15T18:00:00+01:00';
+        $jsonLD->subEvent = [
+            (object)[
+                'id' => 0,
+                '@type' => 'Event',
+                'startDate' => '2020-03-15T14:00:00+01:00',
+                'endDate' => '2020-03-15T18:00:00+01:00',
+                'status' => (object) ['type' => 'Available'],
+                'bookingAvailability' => (object) [
+                    'type' => 'Available',
+                    'remainingCapacity' => 25,
+                ],
+            ],
+        ];
+        $jsonLD->availableTo = $jsonLD->endDate;
+        $jsonLD->created = $recordedOn;
+        $jsonLD->modified = $recordedOn;
+        $jsonLD->sameAs = [
+            'http://www.uitinvlaanderen.be/agenda/e/some-representative-title/' . $eventId,
+        ];
+        $jsonLD->terms = [
+            (object)[
+                'id' => '0.50.4.0.0',
+                'label' => 'Concert',
+                'domain' => 'eventtype',
+            ],
+        ];
+        $jsonLD->typicalAgeRange = '-';
+        $jsonLD->playhead = 1;
+        $jsonLD->completeness = 60;
+
+        $this->mockPlaceService();
+
+        $body = $this->project(
+            $eventCreated,
+            $eventId,
+            null,
+            DateTime::fromString($recordedOn)
+        );
+
+        $this->assertEquals($jsonLD, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_single_sub_event_with_capacity_only(): void
+    {
+        $eventId = '7ab49ce2-2b7f-4e8c-9f1a-8c7e9d5f4b2a';
+        $recordedOn = '2021-06-20T10:00:00+02:00';
+
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                DateTimeFactory::fromAtom('2021-06-20T10:30:00+02:00'),
+                DateTimeFactory::fromAtom('2021-06-20T12:30:00+02:00')
+            )
+        )->withBookingAvailability(
+            BookingAvailability::Available()->withCapacity(200)
+        );
+
+        $calendar = new SingleSubEventCalendar($subEvent);
+
+        $eventCreated = $this->createEventCreated($eventId, $calendar);
+
+        $jsonLD = $this->createJsonLD($eventId, new Language('en'));
+        $jsonLD->calendarType = 'single';
+        $jsonLD->startDate = '2021-06-20T10:30:00+02:00';
+        $jsonLD->endDate = '2021-06-20T12:30:00+02:00';
+        $jsonLD->subEvent = [
+            (object)[
+                'id' => 0,
+                '@type' => 'Event',
+                'startDate' => '2021-06-20T10:30:00+02:00',
+                'endDate' => '2021-06-20T12:30:00+02:00',
+                'status' => (object) ['type' => 'Available'],
+                'bookingAvailability' => (object) [
+                    'type' => 'Available',
+                    'capacity' => 200,
+                ],
+            ],
+        ];
+        $jsonLD->availableTo = $jsonLD->endDate;
+        $jsonLD->created = $recordedOn;
+        $jsonLD->modified = $recordedOn;
+        $jsonLD->sameAs = [
+            'http://www.uitinvlaanderen.be/agenda/e/some-representative-title/' . $eventId,
+        ];
+        $jsonLD->terms = [
+            (object)[
+                'id' => '0.50.4.0.0',
+                'label' => 'Concert',
+                'domain' => 'eventtype',
+            ],
+        ];
+        $jsonLD->typicalAgeRange = '-';
+        $jsonLD->playhead = 1;
+        $jsonLD->completeness = 60;
+
+        $this->mockPlaceService();
+
+        $body = $this->project(
+            $eventCreated,
+            $eventId,
+            null,
+            DateTime::fromString($recordedOn)
+        );
+
+        $this->assertEquals($jsonLD, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_sub_event_with_zero_remaining_capacity(): void
+    {
+        $eventId = '5e9c8b1f-3a2c-47d9-b5c1-9e7a3f2c1d8a';
+        $recordedOn = '2022-09-10T14:00:00+02:00';
+
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                DateTimeFactory::fromAtom('2022-09-10T15:00:00+02:00'),
+                DateTimeFactory::fromAtom('2022-09-10T20:00:00+02:00')
+            )
+        )->withBookingAvailability(
+            BookingAvailability::Available()
+                ->withCapacity(50)
+                ->withRemainingCapacity(0)
+        );
+
+        $calendar = new SingleSubEventCalendar($subEvent);
+
+        $eventCreated = $this->createEventCreated($eventId, $calendar);
+
+        $jsonLD = $this->createJsonLD($eventId, new Language('en'));
+        $jsonLD->calendarType = 'single';
+        $jsonLD->startDate = '2022-09-10T15:00:00+02:00';
+        $jsonLD->endDate = '2022-09-10T20:00:00+02:00';
+        $jsonLD->subEvent = [
+            (object)[
+                'id' => 0,
+                '@type' => 'Event',
+                'startDate' => '2022-09-10T15:00:00+02:00',
+                'endDate' => '2022-09-10T20:00:00+02:00',
+                'status' => (object) ['type' => 'Available'],
+                'bookingAvailability' => (object) [
+                    'type' => 'Available',
+                    'capacity' => 50,
+                    'remainingCapacity' => 0,
+                ],
+            ],
+        ];
+        $jsonLD->availableTo = $jsonLD->endDate;
+        $jsonLD->created = $recordedOn;
+        $jsonLD->modified = $recordedOn;
+        $jsonLD->sameAs = [
+            'http://www.uitinvlaanderen.be/agenda/e/some-representative-title/' . $eventId,
+        ];
+        $jsonLD->terms = [
+            (object)[
+                'id' => '0.50.4.0.0',
+                'label' => 'Concert',
+                'domain' => 'eventtype',
+            ],
+        ];
+        $jsonLD->typicalAgeRange = '-';
+        $jsonLD->playhead = 1;
+        $jsonLD->completeness = 60;
+
+        $this->mockPlaceService();
+
+        $body = $this->project(
+            $eventCreated,
+            $eventId,
+            null,
+            DateTime::fromString($recordedOn)
+        );
+
+        $this->assertEquals($jsonLD, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_multiple_sub_events_with_mixed_capacity_fields(): void
+    {
+        $eventId = '9f2e5a1b-3c8d-4f6a-9e1c-7b5a3d2f4c8a';
+        $recordedOn = '2023-05-01T08:00:00+02:00';
+
+        $subEvents = [
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2023-05-01T09:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2023-05-01T11:00:00+02:00')
+                )
+            )->withBookingAvailability(
+                BookingAvailability::Available()->withCapacity(300)
+            ),
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2023-05-02T09:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2023-05-02T11:00:00+02:00')
+                )
+            )->withBookingAvailability(
+                BookingAvailability::Available()->withRemainingCapacity(120)
+            ),
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromAtom('2023-05-03T09:00:00+02:00'),
+                    DateTimeFactory::fromAtom('2023-05-03T11:00:00+02:00')
+                )
+            )->withBookingAvailability(
+                BookingAvailability::Available()
+                    ->withCapacity(250)
+                    ->withRemainingCapacity(100)
+            ),
+        ];
+
+        $calendar = new MultipleSubEventsCalendar(
+            new SubEvents(...$subEvents)
+        );
+
+        $eventCreated = $this->createEventCreated($eventId, $calendar);
+
+        $jsonLD = $this->createJsonLD($eventId, new Language('en'));
+        $jsonLD->calendarType = 'multiple';
+        $jsonLD->startDate = '2023-05-01T09:00:00+02:00';
+        $jsonLD->endDate = '2023-05-03T11:00:00+02:00';
+        $jsonLD->subEvent = [
+            (object)[
+                'id' => 0,
+                '@type' => 'Event',
+                'startDate' => '2023-05-01T09:00:00+02:00',
+                'endDate' => '2023-05-01T11:00:00+02:00',
+                'status' => (object) ['type' => 'Available'],
+                'bookingAvailability' => (object) [
+                    'type' => 'Available',
+                    'capacity' => 300,
+                ],
+            ],
+            (object)[
+                'id' => 1,
+                '@type' => 'Event',
+                'startDate' => '2023-05-02T09:00:00+02:00',
+                'endDate' => '2023-05-02T11:00:00+02:00',
+                'status' => (object) ['type' => 'Available'],
+                'bookingAvailability' => (object) [
+                    'type' => 'Available',
+                    'remainingCapacity' => 120,
+                ],
+            ],
+            (object)[
+                'id' => 2,
+                '@type' => 'Event',
+                'startDate' => '2023-05-03T09:00:00+02:00',
+                'endDate' => '2023-05-03T11:00:00+02:00',
+                'status' => (object) ['type' => 'Available'],
+                'bookingAvailability' => (object) [
+                    'type' => 'Available',
+                    'capacity' => 250,
+                    'remainingCapacity' => 100,
+                ],
+            ],
+        ];
+        $jsonLD->availableTo = $jsonLD->endDate;
+        $jsonLD->created = $recordedOn;
+        $jsonLD->modified = $recordedOn;
+        $jsonLD->sameAs = [
+            'http://www.uitinvlaanderen.be/agenda/e/some-representative-title/' . $eventId,
+        ];
+        $jsonLD->terms = [
+            (object)[
+                'id' => '0.50.4.0.0',
+                'label' => 'Concert',
+                'domain' => 'eventtype',
+            ],
+        ];
+        $jsonLD->typicalAgeRange = '-';
+        $jsonLD->playhead = 1;
+        $jsonLD->completeness = 60;
+
+        $this->mockPlaceService();
+
+        $body = $this->project(
+            $eventCreated,
+            $eventId,
+            null,
+            DateTime::fromString($recordedOn)
+        );
+
+        $this->assertEquals($jsonLD, $body);
     }
 }
