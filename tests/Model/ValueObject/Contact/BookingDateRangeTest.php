@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Contact;
 use CultuurNet\UDB3\DateTimeFactory;
 use PHPUnit\Framework\TestCase;
 
-class BookingAvailabilityTest extends TestCase
+class BookingDateRangeTest extends TestCase
 {
     /**
      * @test
@@ -20,7 +20,7 @@ class BookingAvailabilityTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('"From" date should not be later than the "to" date.');
 
-        new BookingAvailability($from, $to);
+        new BookingDateRange($from, $to);
     }
 
     /**
@@ -29,8 +29,8 @@ class BookingAvailabilityTest extends TestCase
     public function it_should_be_creatable_with_just_a_from_date(): void
     {
         $from = DateTimeFactory::fromFormat('d-m-Y', '01-01-2018');
-        $availability = BookingAvailability::from($from);
-        $this->assertEquals($from, $availability->getFrom());
+        $bookingDateRange = BookingDateRange::from($from);
+        $this->assertEquals($from, $bookingDateRange->getFrom());
     }
 
     /**
@@ -39,8 +39,8 @@ class BookingAvailabilityTest extends TestCase
     public function it_should_be_creatable_with_just_a_to_date(): void
     {
         $to = DateTimeFactory::fromFormat('d-m-Y', '18-01-2018');
-        $availability = BookingAvailability::to($to);
-        $this->assertEquals($to, $availability->getTo());
+        $bookingDateRange = BookingDateRange::to($to);
+        $this->assertEquals($to, $bookingDateRange->getTo());
     }
 
     /**
@@ -50,9 +50,9 @@ class BookingAvailabilityTest extends TestCase
     {
         $from = DateTimeFactory::fromFormat('d-m-Y', '01-01-2018');
         $to = DateTimeFactory::fromFormat('d-m-Y', '18-01-2018');
-        $availability = BookingAvailability::fromTo($from, $to);
+        $bookingDateRange = BookingDateRange::fromTo($from, $to);
 
-        $this->assertEquals($from, $availability->getFrom());
-        $this->assertEquals($to, $availability->getTo());
+        $this->assertEquals($from, $bookingDateRange->getFrom());
+        $this->assertEquals($to, $bookingDateRange->getTo());
     }
 }

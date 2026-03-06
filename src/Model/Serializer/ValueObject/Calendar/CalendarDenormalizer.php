@@ -62,7 +62,7 @@ class CalendarDenormalizer implements DenormalizerInterface
         $bookingAvailabilityData = $data['bookingAvailability'] ?? ['type' => 'Available'];
         $topLevelBookingAvailability = $this->bookingAvailabilityDenormalizer->denormalize($bookingAvailabilityData, BookingAvailability::class);
 
-        $topLevelBookingInfo = null;
+        $topLevelBookingInfo = new BookingInfo();
         if (isset($data['bookingInfo'])) {
             $topLevelBookingInfo = $this->bookingInfoDenormalizer->denormalize($data['bookingInfo'], BookingInfo::class);
         }
@@ -180,7 +180,7 @@ class CalendarDenormalizer implements DenormalizerInterface
         array $subEventData,
         Status $topLevelStatus,
         BookingAvailability $topLevelBookingAvailability,
-        ?BookingInfo $topLevelBookingInfo = null
+        BookingInfo $topLevelBookingInfo = new BookingInfo()
     ): SubEvent {
         if (!isset($subEventData['status']['type'])) {
             $subEventData['status']['type'] = $topLevelStatus->getType()->toString();
@@ -207,7 +207,7 @@ class CalendarDenormalizer implements DenormalizerInterface
             BookingAvailability::class
         );
 
-        $bookingInfo = $topLevelBookingInfo ?? new BookingInfo();
+        $bookingInfo = $topLevelBookingInfo;
         if (isset($subEventData['bookingInfo'])) {
             $bookingInfo = $this->bookingInfoDenormalizer->denormalize($subEventData['bookingInfo'], BookingInfo::class);
         }

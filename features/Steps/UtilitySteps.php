@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use CultuurNet\UDB3\State\VariableState;
+
 use function PHPUnit\Framework\assertEquals;
 
 trait UtilitySteps
@@ -95,5 +97,16 @@ trait UtilitySteps
     {
         $downloadsFolder = $this->config['folders'][$folder];
         return count(glob($downloadsFolder . '/*.' . $type));
+    }
+
+    private function addScenarioLabelToResource(string $resourceType): void
+    {
+        $scenarioLabel = VariableState::getScenarioLabel();
+        if ($scenarioLabel === null) {
+            return;
+        }
+
+        $resourceId = $this->responseState->getValueOnPath($resourceType . 'Id');
+        $this->getHttpClient()->putJSON('/' . $resourceType . 's/' . $resourceId . '/labels/' . $scenarioLabel, '');
     }
 }

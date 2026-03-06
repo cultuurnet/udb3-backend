@@ -399,7 +399,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /* @var BookingInfoUpdated $bookingInfoUpdated */
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
 
-        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getAvailability());
+        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getBookingDateRange());
 
         $this->assertEventIdReplacedWithItemId($sampleFile);
     }
@@ -419,12 +419,12 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 
         $this->assertEquals(
             DateTimeFactory::fromAtom('2018-02-20T15:11:26+00:00'),
-            $bookingInfoUpdated->getBookingInfo()->getAvailability()->getFrom()
+            $bookingInfoUpdated->getBookingInfo()->getBookingDateRange()->getFrom()
         );
 
         $this->assertEquals(
             DateTimeFactory::fromAtom('2018-04-30T14:11:26+00:00'),
-            $bookingInfoUpdated->getBookingInfo()->getAvailability()->getTo()
+            $bookingInfoUpdated->getBookingInfo()->getBookingDateRange()->getTo()
         );
     }
 
@@ -441,7 +441,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /* @var BookingInfoUpdated $bookingInfoUpdated */
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
 
-        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getAvailability());
+        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getBookingDateRange());
     }
 
     /**
@@ -478,12 +478,12 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 
         $this->assertEquals(
             DateTimeFactory::fromAtom('2018-02-20T15:11:26+01:00'),
-            $bookingInfoUpdated->getBookingInfo()->getAvailability()->getFrom()
+            $bookingInfoUpdated->getBookingInfo()->getBookingDateRange()->getFrom()
         );
 
         $this->assertEquals(
             DateTimeFactory::fromAtom('2018-04-30T14:11:26+01:00'),
-            $bookingInfoUpdated->getBookingInfo()->getAvailability()->getTo()
+            $bookingInfoUpdated->getBookingInfo()->getBookingDateRange()->getTo()
         );
     }
 
@@ -500,7 +500,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /* @var BookingInfoUpdated $bookingInfoUpdated */
         $bookingInfoUpdated = $this->serializer->deserialize($decoded);
 
-        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getAvailability());
+        $this->assertNull($bookingInfoUpdated->getBookingInfo()->getBookingDateRange());
     }
 
     /**
