@@ -52,7 +52,7 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandlerInt
         try {
             /** @var BookingAvailability $bookingAvailability */
             $bookingAvailability = $parser->parse($request)->getParsedBody();
-            } catch (RemainingCapacityExceedsCapacity $e) {
+        } catch (RemainingCapacityExceedsCapacity $e) {
             throw ApiProblem::bodyInvalidData(new SchemaError(
                 '/bookingAvailability/remainingCapacity',
                 $e->getMessage()
