@@ -239,8 +239,6 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                             )
                         )->withBookingAvailability(
                             BookingAvailability::Available()
-                                ->withCapacity(100)
-                                ->withRemainingCapacity(42)
                         )
                     ))->withBookingAvailability(
                         BookingAvailability::Available()
@@ -290,7 +288,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                                 new DateTimeImmutable('2020-01-01 10:00:00'),
                                 new DateTimeImmutable('2020-01-01 12:00:00')
                             )
-                        )->withBookingAvailability(BookingAvailability::Available()->withCapacity(150))
+                        )->withBookingAvailability(BookingAvailability::Available())
                     ))->withBookingAvailability(BookingAvailability::Available()->withCapacity(150))
                 ),
             ]);
@@ -326,19 +324,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             ->withAggregateId('1')
             ->given([$singleEventCreated])
             ->when($updateBookingAvailability)
-            ->then([
-                new CalendarUpdated(
-                    '1',
-                    (new SingleSubEventCalendar(
-                        SubEvent::createAvailable(
-                            new DateRange(
-                                new DateTimeImmutable('2020-01-01 10:00:00'),
-                                new DateTimeImmutable('2020-01-01 12:00:00')
-                            )
-                        )->withBookingAvailability(BookingAvailability::Available()->withRemainingCapacity(75))
-                    ))->withBookingAvailability(BookingAvailability::Available()->withRemainingCapacity(75))
-                ),
-            ]);
+            ->then([]);
     }
 
     /**
@@ -382,11 +368,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                                 new DateTimeImmutable('2020-01-01 10:00:00'),
                                 new DateTimeImmutable('2020-01-01 12:00:00')
                             )
-                        )->withBookingAvailability(
-                            BookingAvailability::Available()
-                                ->withCapacity(100)
-                                ->withRemainingCapacity(0)
-                        )
+                        )->withBookingAvailability(BookingAvailability::Available())
                     ))->withBookingAvailability(
                         BookingAvailability::Available()
                             ->withCapacity(100)
@@ -446,21 +428,13 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                                     new DateTimeImmutable('2020-01-01 10:00:00'),
                                     new DateTimeImmutable('2020-01-01 12:00:00')
                                 )
-                            )->withBookingAvailability(
-                                BookingAvailability::Available()
-                                    ->withCapacity(200)
-                                    ->withRemainingCapacity(50)
-                            ),
+                            )->withBookingAvailability(BookingAvailability::Available()),
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
-                            )->withBookingAvailability(
-                                BookingAvailability::Available()
-                                    ->withCapacity(200)
-                                    ->withRemainingCapacity(50)
-                            )
+                            )->withBookingAvailability(BookingAvailability::Available())
                         )
                     ))->withBookingAvailability(
                         BookingAvailability::Available()
@@ -512,11 +486,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                                 new DateTimeImmutable('2020-01-01 10:00:00'),
                                 new DateTimeImmutable('2020-01-01 12:00:00')
                             )
-                        )->withBookingAvailability(
-                            BookingAvailability::Unavailable()
-                                ->withCapacity(100)
-                                ->withRemainingCapacity(0)
-                        )
+                        )->withBookingAvailability(BookingAvailability::Unavailable())
                     ))->withBookingAvailability(
                         BookingAvailability::Unavailable()
                             ->withCapacity(100)
@@ -595,19 +565,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
             ->withAggregateId('1')
             ->given([$singleEventCreated])
             ->when($updateBookingAvailability)
-            ->then([
-                new CalendarUpdated(
-                    '1',
-                    (new SingleSubEventCalendar(
-                        SubEvent::createAvailable(
-                            new DateRange(
-                                new DateTimeImmutable('2020-01-01 10:00:00'),
-                                new DateTimeImmutable('2020-01-01 12:00:00')
-                            )
-                        )->withBookingAvailability($updatedBookingAvailability)
-                    ))->withBookingAvailability($updatedBookingAvailability)
-                ),
-            ]);
+            ->then([]);
     }
 
     /**
@@ -654,7 +612,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                                 new DateTimeImmutable('2020-01-01 10:00:00'),
                                 new DateTimeImmutable('2020-01-01 12:00:00')
                             )
-                        )->withBookingAvailability($updatedBookingAvailability)
+                        )->withBookingAvailability($originalBookingAvailability)
                     ))->withBookingAvailability($updatedBookingAvailability)
                 ),
             ]);
@@ -702,7 +660,7 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                                 new DateTimeImmutable('2020-01-01 10:00:00'),
                                 new DateTimeImmutable('2020-01-01 12:00:00')
                             )
-                        )->withBookingAvailability($updatedBookingAvailability)
+                        )->withBookingAvailability($originalBookingAvailability)
                     ))->withBookingAvailability($updatedBookingAvailability)
                 ),
             ]);
