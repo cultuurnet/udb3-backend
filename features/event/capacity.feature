@@ -164,6 +164,85 @@ Feature: Test capacity and remainingCapacity on sub-events
     }
     """
 
+  Scenario: PUT booking-availability does not overwrite capacity on sub-events
+    Given I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "bookingAvailability": {
+          "capacity": 100,
+          "remainingCapacity": 42
+        }
+      }
+    ]
+    """
+    And I send a PATCH request to "%{eventUrl}/subEvents"
+    Then the response status should be "204"
+    When I set the JSON request payload to:
+    """
+    {
+      "type": "Available",
+      "capacity": 200
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/booking-availability"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "bookingAvailability" should be:
+    """
+    {
+      "type": "Available",
+      "capacity": 200
+    }
+    """
+    And the JSON response at "subEvent/0/bookingAvailability" should be:
+    """
+    {
+      "type": "Available",
+      "capacity": 100,
+      "remainingCapacity": 42
+    }
+    """
+
+  Scenario: PUT booking-availability type ripples to sub-events without remainingCapacity
+    Given I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "bookingAvailability": {
+          "type": "Available",
+          "capacity": 100
+        }
+      }
+    ]
+    """
+    And I send a PATCH request to "%{eventUrl}/subEvents"
+    Then the response status should be "204"
+    When I set the JSON request payload to:
+    """
+    {
+      "type": "Unavailable"
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/booking-availability"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "bookingAvailability" should be:
+    """
+    {
+      "type": "Unavailable"
+    }
+    """
+    And the JSON response at "subEvent/0/bookingAvailability" should be:
+    """
+    {
+      "type": "Unavailable",
+      "capacity": 100
+    }
+    """
+
   Scenario: SubEvent type is Available when remainingCapacity=100 (type derivation)
     When I set the JSON request payload to:
     """
