@@ -6,8 +6,11 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\RemainingCapacityExceedsCapacity;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
@@ -73,10 +76,17 @@ class CalendarDenormalizer implements DenormalizerInterface
 
         switch ($data['calendarType']) {
             case 'single':
-                if (isset($data['subEvent'][0])) {
-                    $subEvent = $this->denormalizeSubEvent($data['subEvent'][0], $topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo);
-                } else {
-                    $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo);
+                try {
+                    if (isset($data['subEvent'][0])) {
+                        $subEvent = $this->denormalizeSubEvent($data['subEvent'][0], $topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo);
+                    } else {
+                        $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo);
+                    }
+                } catch (RemainingCapacityExceedsCapacity $e) {
+                    throw ApiProblem::bodyInvalidData(new SchemaError(
+                        '/subEvent/0/bookingAvailability/remainingCapacity',
+                        $e->getMessage()
+                    ));
                 }
                 $calendar = new SingleSubEventCalendar($subEvent);
                 $calendar = $calendar->withBookingAvailability($topLevelBookingAvailability);
@@ -87,13 +97,22 @@ class CalendarDenormalizer implements DenormalizerInterface
                     throw new UnsupportedException('Multiple calendar should have at least one subEvent.');
                 }
 
-                $subEvents = array_map(
-                    function (array $subEvent) use ($topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo) {
-                        return $this->denormalizeSubEvent($subEvent, $topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo);
-                    },
-                    $data['subEvent']
-                );
-                $subEvents = new SubEvents(...$subEvents);
+                $denormalizedSubEvents = [];
+                $schemaErrors = [];
+                foreach ($data['subEvent'] as $index => $subEventData) {
+                    try {
+                        $denormalizedSubEvents[] = $this->denormalizeSubEvent($subEventData, $topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo);
+                    } catch (RemainingCapacityExceedsCapacity $e) {
+                        $schemaErrors[] = new SchemaError(
+                            '/subEvent/' . $index . '/bookingAvailability/remainingCapacity',
+                            $e->getMessage()
+                        );
+                    }
+                }
+                if (!empty($schemaErrors)) {
+                    throw ApiProblem::bodyInvalidData(...$schemaErrors);
+                }
+                $subEvents = new SubEvents(...$denormalizedSubEvents);
                 $calendar = new MultipleSubEventsCalendar($subEvents);
                 if ($topLevelBookingAvailability !== null) {
                     $calendar = $calendar->withBookingAvailability($topLevelBookingAvailability);
