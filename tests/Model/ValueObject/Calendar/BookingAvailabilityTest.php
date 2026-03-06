@@ -17,7 +17,7 @@ final class BookingAvailabilityTest extends TestCase
             ->withCapacity(10);
 
         $this->expectException(RemainingCapacityExceedsCapacity::class);
-        $this->expectExceptionMessage('/bookingAvailability/remainingCapacity: remainingCapacity must be less than or equal to capacity');
+        $this->expectExceptionMessage('remainingCapacity must be less than or equal to capacity');
 
         $bookingAvailability->withRemainingCapacity(99);
     }
@@ -31,7 +31,7 @@ final class BookingAvailabilityTest extends TestCase
             ->withRemainingCapacity(99);
 
         $this->expectException(RemainingCapacityExceedsCapacity::class);
-        $this->expectExceptionMessage('/bookingAvailability/remainingCapacity: remainingCapacity must be less than or equal to capacity');
+        $this->expectExceptionMessage('remainingCapacity must be less than or equal to capacity');
 
         $bookingAvailability->withCapacity(10);
     }

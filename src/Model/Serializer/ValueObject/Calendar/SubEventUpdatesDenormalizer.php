@@ -28,10 +28,10 @@ final class SubEventUpdatesDenormalizer implements DenormalizerInterface
         foreach ($data as $subEventUpdateData) {
             try {
                 $updates[] = $this->subEventUpdateDenormalizer->denormalize($subEventUpdateData, SubEventUpdate::class);
-            } catch (RemainingCapacityExceedsCapacity $e) {
+            } catch (RemainingCapacityExceedsCapacity) {
                 $schemaErrors[] = new SchemaError(
-                    '/' . $subEventUpdateData['id'] . $e->getJsonPointer(),
-                    $e->getErrorMessage()
+                    '/' . $subEventUpdateData['id'] . '/bookingAvailability/remainingCapacity',
+                    'remainingCapacity must be less than or equal to capacity'
                 );
             }
         }
