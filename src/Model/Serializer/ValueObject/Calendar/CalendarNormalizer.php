@@ -162,8 +162,8 @@ final class CalendarNormalizer implements NormalizerInterface
     /**
      * A projection can require a potential fix:
      * - For a periodic or permanent calendar this is always available
-     * - If there are sub events the top level status is calculated
-     * In both cases we preserve the capacity and remainingCapacity from the stored booking availability.
+     * - If there are sub events the top level booking availability type is derived from the sub events
+     * In both cases we preserve the capacity from the stored booking availability.
      */
     private function determineCorrectTopBookingAvailabilityForProjection(Calendar $calendar): BookingAvailability
     {
