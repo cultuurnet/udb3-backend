@@ -35,7 +35,7 @@ final class BookingAvailability
     public function withCapacity(int $capacity): self
     {
         if ($this->remainingCapacity !== null && $this->remainingCapacity > $capacity) {
-            throw RemainingCapacityExceedsCapacity::withValues();
+            throw new RemainingCapacityExceedsCapacity();
         }
 
         $clone = clone $this;
@@ -46,7 +46,7 @@ final class BookingAvailability
     public function withRemainingCapacity(int $remainingCapacity): self
     {
         if ($this->capacity !== null && $remainingCapacity > $this->capacity) {
-            throw RemainingCapacityExceedsCapacity::withValues();
+            throw new RemainingCapacityExceedsCapacity();
         }
 
         $clone = clone $this;

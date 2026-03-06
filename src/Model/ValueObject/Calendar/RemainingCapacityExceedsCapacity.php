@@ -8,23 +8,23 @@ use RuntimeException;
 
 final class RemainingCapacityExceedsCapacity extends RuntimeException
 {
-    public static function withValues(
-        string $jsonPointer = '/bookingAvailability/remainingCapacity'
-    ): self {
-        $message = 'remainingCapacity must be less than or equal to capacity';
+    private const ERROR_MESSAGE = 'remainingCapacity must be less than or equal to capacity';
 
-        return new self("{$jsonPointer}: {$message}");
+    private string $jsonPointer;
+
+    public function __construct(string $jsonPointer = '/bookingAvailability/remainingCapacity')
+    {
+        $this->jsonPointer = $jsonPointer;
+        parent::__construct("{$jsonPointer}: " . self::ERROR_MESSAGE);
     }
 
     public function getJsonPointer(): string
     {
-        $parts = explode(': ', $this->message, 2);
-        return $parts[0] ?? '/bookingAvailability/remainingCapacity';
+        return $this->jsonPointer;
     }
 
     public function getErrorMessage(): string
     {
-        $parts = explode(': ', $this->message, 2);
-        return $parts[1] ?? 'remainingCapacity must be less than or equal to capacity';
+        return self::ERROR_MESSAGE;
     }
 }
