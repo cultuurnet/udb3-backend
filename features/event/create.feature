@@ -62,6 +62,149 @@ Feature: Test the UDB3 events API
         """
     And the JSON response at "completeness" should be 65
 
+  Scenario: Create an event with capacity and remainingCapacity on multiple subEvents
+    Given I set the JSON request payload from "places/place.json"
+    When I send a POST request to "/places/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "placeId" as "uuid_place"
+
+    Given I set the JSON request payload from "events/event-with-sub-events-capacity.json"
+    When I send a POST request to "/events/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "id" as "eventId"
+    And I keep the value of the JSON response at "commandId" as "commandId"
+    And I wait for the command with id "%{commandId}" to complete
+
+    When I send a GET request to "events/%{eventId}"
+    Then the response status should be "200"
+    And the response body should be valid JSON
+    And the JSON response at "bookingAvailability" should be:
+        """
+        {
+          "type": "Available",
+          "capacity": 500
+        }
+        """
+    And the JSON response at "status" should be:
+        """
+        {"type":"Available"}
+        """
+    And the JSON response at "subEvent/0" should be:
+        """
+        {
+          "id": 0,
+          "status": {
+            "type": "Available"
+          },
+          "bookingAvailability": {
+            "type": "Available",
+            "capacity": 100,
+            "remainingCapacity": 42
+          },
+          "startDate": "2018-05-05T18:00:00+01:00",
+          "endDate": "2018-05-05T21:00:00+01:00",
+          "@type": "Event"
+        }
+        """
+    And the JSON response at "subEvent/1" should be:
+        """
+        {
+          "id": 1,
+          "status": {
+            "type": "Available"
+          },
+          "bookingAvailability": {
+            "type": "Available",
+            "capacity": 200,
+            "remainingCapacity": 150
+          },
+          "startDate": "2018-05-06T18:00:00+01:00",
+          "endDate": "2018-05-06T21:00:00+01:00",
+          "@type": "Event"
+        }
+        """
+
+  Scenario: Create a single calendar event with capacity and remainingCapacity
+    Given I set the JSON request payload from "places/place.json"
+    When I send a POST request to "/places/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "placeId" as "uuid_place"
+
+    Given I set the JSON request payload from "events/event-single-calendar-with-capacity.json"
+    When I send a POST request to "/events/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "id" as "eventId"
+    And I keep the value of the JSON response at "commandId" as "commandId"
+    And I wait for the command with id "%{commandId}" to complete
+
+    When I send a GET request to "events/%{eventId}"
+    Then the response status should be "200"
+    And the response body should be valid JSON
+    And the JSON response at "bookingAvailability" should be:
+        """
+        {
+          "type": "Available",
+          "capacity": 300
+        }
+        """
+    And the JSON response at "status" should be:
+        """
+        {"type":"Available"}
+        """
+    And the JSON response at "subEvent/0" should be:
+        """
+        {
+          "id": 0,
+          "status": {
+            "type": "Available"
+          },
+          "bookingAvailability": {
+            "type": "Available",
+            "capacity": 300
+          },
+          "startDate": "2021-05-17T08:00:00+00:00",
+          "endDate": "2021-05-18T22:00:00+00:00",
+          "@type": "Event"
+        }
+        """
+
+  Scenario: Update capacity on a single calendar event via PUT
+    Given I set the JSON request payload from "places/place.json"
+    When I send a POST request to "/places/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "placeId" as "uuid_place"
+
+    Given I set the JSON request payload from "events/event-single-calendar-with-capacity.json"
+    When I send a POST request to "/events/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "id" as "eventId"
+    And I keep the value of the JSON response at "commandId" as "commandId"
+    And I wait for the command with id "%{commandId}" to complete
+
+    Given I set the JSON request payload from "events/event-single-calendar-with-updated-capacity.json"
+    When I send a PUT request to "/imports/events/%{eventId}"
+    Then the response status should be "200"
+    And I keep the value of the JSON response at "commandId" as "commandId"
+    And I wait for the command with id "%{commandId}" to complete
+
+    When I send a GET request to "events/%{eventId}"
+    Then the response status should be "200"
+    And the response body should be valid JSON
+    And the JSON response at "bookingAvailability" should be:
+        """
+        {
+          "type": "Available",
+          "capacity": 500
+        }
+        """
+    And the JSON response at "subEvent/0/bookingAvailability" should be:
+        """
+        {
+          "type": "Available",
+          "capacity": 500
+        }
+        """
+
   @bugfix # https://jira.uitdatabank.be/browse/III-4669
   Scenario: Create an event with all fields and then remove them by sending null or empty lists in the JSON
     Given I set the form data properties to:
