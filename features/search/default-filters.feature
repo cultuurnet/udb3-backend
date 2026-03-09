@@ -42,5 +42,5 @@ Feature: Test the Search API v3 default filters
     Then the JSON response at "totalItems" should be 0
     And I send a GET request to "/events" with parameters:
       | audienceType | *             |
-      | q              | id:%{eventId} |
+      | q            | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
