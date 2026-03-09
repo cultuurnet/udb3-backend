@@ -1,0 +1,21 @@
+{
+  "name": {
+    "nl": "%{name}"
+  },
+  "terms": [
+    {
+      "id": "Yf4aZBfsUEu2NsQqsprngw"
+    }
+  ],
+  "address": {
+    "nl" : {
+      "addressCountry": "NL",
+      "addressLocality": "Rotterdam",
+      "postalCode": "3044BC",
+      "streetAddress": "Van Nelleweg 1"
+    }
+  },
+  "calendarType": "permanent",
+  "mainLanguage": "nl",
+  "workflowStatus": "READY_FOR_VALIDATION"
+}
