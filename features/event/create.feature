@@ -1038,3 +1038,62 @@ Feature: Test the UDB3 events API
      And the JSON response at "faqs/0/en/question" should be "How do I get there?"
      And the JSON response at "faqs/0/en/answer" should be "By bus."
 
+   Scenario: Try creating an event with an invalid FAQ
+     When I create a place from "places/place.json" and save the "url" as "placeUrl"
+     And I set the JSON request payload from "events/event-with-invalid-faqs.json"
+     And I send a POST request to "/events/"
+     Then the response status should be "400"
+     And the response body should be valid JSON
+     Then the JSON response should be:
+     """
+     {
+       "type": "https://api.publiq.be/probs/body/invalid-data",
+       "title": "Invalid body data",
+       "status": 400,
+       "schemaErrors": [
+         {
+           "jsonPointer": "/faqs/0/nl",
+           "error": "The required properties (answer) are missing"
+         },
+         {
+           "jsonPointer": "/faqs/0/en",
+           "error": "The required properties (question) are missing"
+         },
+         {
+           "jsonPointer": "/faqs/1/en/answer",
+           "error": "Minimum string length is 1, found 0"
+         }
+       ]
+     }
+     """
+
+  Scenario: Try Updating an event with an invalid FAQ via PUT
+    When I create a place from "places/place.json" and save the "url" as "placeUrl"
+    And I create a minimal permanent event and save the "url" as "eventUrl"
+    And I set the JSON request payload from "events/event-with-invalid-faqs.json"
+    And I send a PUT request to "%{eventUrl}"
+    And show me the unparsed response
+    Then the response status should be "400"
+    And the response body should be valid JSON
+    Then the JSON response should be:
+     """
+     {
+       "type": "https://api.publiq.be/probs/body/invalid-data",
+       "title": "Invalid body data",
+       "status": 400,
+       "schemaErrors": [
+         {
+           "jsonPointer": "/faqs/0/nl",
+           "error": "The required properties (answer) are missing"
+         },
+         {
+           "jsonPointer": "/faqs/0/en",
+           "error": "The required properties (question) are missing"
+         },
+         {
+           "jsonPointer": "/faqs/1/en/answer",
+           "error": "Minimum string length is 1, found 0"
+         }
+       ]
+     }
+     """
