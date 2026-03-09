@@ -31,3 +31,16 @@ Feature: Test the Search API v3 default filters
       | addressCountry | *             |
       | q              | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+
+  Scenario: By default non public audienceTypes are not shown
+    Given I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/event-minimal-permanent-for-members.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 0
+    And I send a GET request to "/events" with parameters:
+      | audienceType | *             |
+      | q              | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 1
