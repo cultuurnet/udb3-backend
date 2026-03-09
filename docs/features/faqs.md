@@ -35,18 +35,14 @@ The endpoint **replaces** the entire FAQ list. Returns `204 No Content` on succe
 
 ### Creating FAQ items
 
-Omit the `id` field — the backend auto-generates a UUID.
-
 ```json
 [{"nl": {"question": "Hoe geraak ik er?", "answer": "Met de bus."}}]
 ```
 
 ### Updating existing FAQ items
 
-Include the `id` of an existing FAQ item. The `id` must already exist in the current FAQ list, otherwise a `400` is returned.
-
 ```json
-[{"id": "b4575c68-dc04-4b67-9568-63e5d00d4dde", "nl": {"question": "Hoe geraak ik er?", "answer": "Met de trein."}}]
+[{"nl": {"question": "Hoe geraak ik er?", "answer": "Met de trein."}}]
 ```
 
 ### Removing all FAQ items
@@ -61,12 +57,9 @@ Send an empty array.
 
 | Constraint                               | HTTP status | Error                                                    |
 |------------------------------------------|-------------|----------------------------------------------------------|
-| `id` provided but not in current list    | 400         | `FAQ with id '{id}' does not exist.`                     |
 | Missing `question` or `answer`           | 400         | `schemaErrors` with the missing field                    |
 | No valid language key on item            | 400         | `schemaErrors` listing missing required languages        |
 | More than 30 items                       | 400         | `Array should have at most 30 items, {n} found`          |
-
-Validation order: the `id` existence check runs before JSON schema validation.
 
 ## Value objects
 
@@ -100,7 +93,7 @@ Emits `FaqsUpdated` unless the new list is identical to the current one (`sameAs
 Serialized using `FaqsNormalizer` / deserialized using `FaqsDenormalizer`. Stored format per item:
 
 ```json
-{"id": "...", "nl": {"question": "...", "answer": "..."}}
+{"nl": {"question": "...", "answer": "..."}}
 ```
 
 ## Read model
