@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -14,6 +15,7 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\RemainingCapacityExceedsCapacity;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use Psr\Http\Message\ResponseInterface;
@@ -47,8 +49,15 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandlerInt
             new DenormalizingRequestBodyParser(new BookingAvailabilityDenormalizer(), BookingAvailability::class)
         );
 
-        /** @var BookingAvailability $bookingAvailability */
-        $bookingAvailability = $parser->parse($request)->getParsedBody();
+        try {
+            /** @var BookingAvailability $bookingAvailability */
+            $bookingAvailability = $parser->parse($request)->getParsedBody();
+        } catch (RemainingCapacityExceedsCapacity $e) {
+            throw ApiProblem::bodyInvalidData(new SchemaError(
+                '/bookingAvailability/remainingCapacity',
+                $e->getMessage()
+            ));
+        }
 
         try {
             $this->commandBus->dispatch(
