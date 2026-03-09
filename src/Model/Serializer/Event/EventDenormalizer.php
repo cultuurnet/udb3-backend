@@ -13,6 +13,8 @@ use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
+use CultuurNet\UDB3\Model\ValueObject\Faq\FaqsDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidParser;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
@@ -26,6 +28,8 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 class EventDenormalizer extends OfferDenormalizer
 {
     private DenormalizerInterface $placeReferenceDenormalizer;
+
+    private DenormalizerInterface $faqsDenormalizer;
 
     public function __construct(
         UuidParser $eventIDParser = null,
@@ -41,7 +45,8 @@ class EventDenormalizer extends OfferDenormalizer
         DenormalizerInterface $bookingInfoDenormalizer = null,
         DenormalizerInterface $contactPointDenormalizer = null,
         DenormalizerInterface $mediaObjectReferencesDenormalizer = null,
-        DenormalizerInterface $videoDenormalizer = null
+        DenormalizerInterface $videoDenormalizer = null,
+        DenormalizerInterface $faqsDenormalizer = null
     ) {
         if (!$eventIDParser) {
             $eventIDParser = new EventIDParser();
@@ -52,6 +57,7 @@ class EventDenormalizer extends OfferDenormalizer
         }
 
         $this->placeReferenceDenormalizer = $placeReferenceDenormalizer;
+        $this->faqsDenormalizer = $faqsDenormalizer ?? new FaqsDenormalizer();
 
         parent::__construct(
             $eventIDParser,
@@ -111,6 +117,7 @@ class EventDenormalizer extends OfferDenormalizer
 
         $offer = $this->denormalizeAttendanceMode($data, $offer);
         $offer = $this->denormalizeOnlineUrl($data, $offer);
+        $offer = $this->denormalizeFaq($data, $offer);
         return $this->denormalizeAudienceType($data, $offer);
     }
 
@@ -127,6 +134,16 @@ class EventDenormalizer extends OfferDenormalizer
     {
         if (isset($data['onlineUrl'])) {
             $event = $event->withOnlineUrl(new Url($data['onlineUrl']));
+        }
+
+        return $event;
+    }
+
+    private function denormalizeFaq(array $data, ImmutableEvent $event): ImmutableEvent
+    {
+        if (isset($data['faqs'])) {
+            $faqs = $this->faqsDenormalizer->denormalize($data['faqs'], Faqs::class);
+            $event = $event->withFaq($faqs);
         }
 
         return $event;
