@@ -1022,18 +1022,19 @@ Feature: Test the UDB3 events API
     And the JSON response at "faqs/0/en/question" should be "How do I get there?"
     And the JSON response at "faqs/0/en/answer" should be "By bus."
 
- Scenario: Update an event with a FAQ via PUT
-   When I create a place from "places/place.json" and save the "url" as "placeUrl"
-   And I create a minimal permanent event and save the "url" as "eventUrl"
-   And I set the JSON request payload from "events/event-with-faqs.json"
-   And I send a PUT request to "%{eventUrl}"
-   And show me the unparsed response
-   Then the response status should be "200"
-   And the response body should be valid JSON
-   And I keep the value of the JSON response at "eventId" as "eventId"
-   When I send a GET request to "/events/%{eventId}"
-   And the JSON response should have "faqs"
-   And the JSON response at "faqs/0/nl/question" should be "Hoe geraak ik er?"
-   And the JSON response at "faqs/0/nl/answer" should be "Met de bus."
-   And the JSON response at "faqs/0/en/question" should be "How do I get there?"
-   And the JSON response at "faqs/0/en/answer" should be "By bus."
+   Scenario: Update an event with a FAQ via PUT
+     When I create a place from "places/place.json" and save the "url" as "placeUrl"
+     And I create a minimal permanent event and save the "url" as "eventUrl"
+     And I set the JSON request payload from "events/event-with-faqs.json"
+     And I send a PUT request to "%{eventUrl}"
+     And show me the unparsed response
+     Then the response status should be "200"
+     And the response body should be valid JSON
+     And I keep the value of the JSON response at "eventId" as "eventId"
+     When I send a GET request to "/events/%{eventId}"
+     And the JSON response should have "faqs"
+     And the JSON response at "faqs/0/nl/question" should be "Hoe geraak ik er?"
+     And the JSON response at "faqs/0/nl/answer" should be "Met de bus."
+     And the JSON response at "faqs/0/en/question" should be "How do I get there?"
+     And the JSON response at "faqs/0/en/answer" should be "By bus."
+
