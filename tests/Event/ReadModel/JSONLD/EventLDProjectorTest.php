@@ -15,9 +15,15 @@ use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
+use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
+use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
@@ -1920,6 +1926,86 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             ],
             $updatedItem->terms
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_faqs_updated(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $faqId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
+
+        $faqs = (new Faqs())->with(
+            (new TranslatedFaq(
+                new Language('nl'),
+                new Faq(
+                    new Uuid($faqId),
+                    new Question('Hoe geraak ik er?'),
+                    new Answer('Met de bus.')
+                )
+            ))->withTranslation(
+                new Language('en'),
+                new Faq(
+                    new Uuid($faqId),
+                    new Question('How do I get there?'),
+                    new Answer('By bus.')
+                )
+            )
+        );
+
+        $body = $this->project(
+            new FaqsUpdated($eventId, $faqs),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertEquals(
+            [
+                (object) [
+                    'nl' => (object) ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                    'en' => (object) ['question' => 'How do I get there?', 'answer' => 'By bus.'],
+                ],
+            ],
+            $body->faqs
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_faqs_from_projection_when_faq_list_is_empty(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $faqId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
+
+        $faqs = (new Faqs())->with(
+            new TranslatedFaq(
+                new Language('nl'),
+                new Faq(
+                    new Uuid($faqId),
+                    new Question('Hoe geraak ik er?'),
+                    new Answer('Met de bus.')
+                )
+            )
+        );
+
+        $this->project(
+            new FaqsUpdated($eventId, $faqs),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $body = $this->project(
+            new FaqsUpdated($eventId, new Faqs()),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertFalse(property_exists($body, 'faqs'));
     }
 
     /**

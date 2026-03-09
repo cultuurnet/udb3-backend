@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateFaqsRequestHandler;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\LegacyEventRequestBodyParser;
 use CultuurNet\UDB3\Http\Event\OnlineLocationPolyfillRequestBodyParser;
@@ -43,6 +44,7 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             UpdateOnlineUrlRequestHandler::class,
             DeleteOnlineUrlRequestHandler::class,
             UpdateAudienceRequestHandler::class,
+            UpdateFaqsRequestHandler::class,
             CopyEventRequestHandler::class,
             UpdateMajorInfoRequestHandler::class,
         ];
@@ -139,6 +141,13 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             function () use ($container): UpdateAudienceRequestHandler {
                 return new UpdateAudienceRequestHandler($container->get('event_command_bus'));
             }
+        );
+
+        $container->addShared(
+            UpdateFaqsRequestHandler::class,
+            fn () => new UpdateFaqsRequestHandler(
+                $container->get('event_command_bus')
+            )
         );
 
         $container->addShared(

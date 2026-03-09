@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
+use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\Events\ImageAdded;
 use CultuurNet\UDB3\Event\Events\ImageRemoved;
@@ -59,6 +60,11 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
+use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -2100,6 +2106,73 @@ class EventTest extends AggregateRootScenarioTestCase
                     )
                 ),
             ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_faqs_when_the_content_has_changed(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $faqId = 'a1b2c3d4-0000-0000-0000-000000000001';
+
+        $original = (new Faqs())->with(
+            new TranslatedFaq(
+                new Language('nl'),
+                new Faq(
+                    new Uuid($faqId),
+                    new Question('Hoe geraak ik er?'),
+                    new Answer('Met de bus.')
+                )
+            )
+        );
+
+        $updated = (new Faqs())->with(
+            new TranslatedFaq(
+                new Language('nl'),
+                new Faq(
+                    new Uuid($faqId),
+                    new Question('Hoe geraak ik er?'),
+                    new Answer('Met de trein.')
+                )
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new FaqsUpdated($eventId, $original),
+            ])
+            ->when(fn (Event $event) => $event->updateFaqs($updated))
+            ->then([new FaqsUpdated($eventId, $updated)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_faqs_when_content_is_unchanged(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $faqId = 'a1b2c3d4-0000-0000-0000-000000000001';
+
+        $faqs = (new Faqs())->with(
+            new TranslatedFaq(
+                new Language('nl'),
+                new Faq(
+                    new Uuid($faqId),
+                    new Question('Hoe geraak ik er?'),
+                    new Answer('Met de bus.')
+                )
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new FaqsUpdated($eventId, $faqs),
+            ])
+            ->when(fn (Event $event) => $event->updateFaqs($faqs))
+            ->then([]);
     }
 
     protected function getSample(string $file): string
