@@ -727,6 +727,86 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     )
                 ),
             ],
+            'Top-level capacity is preserved when updating a sub event on a multiple calendar' => [
+                new EventCreated(
+                    '1',
+                    new Language('nl'),
+                    'Multiple Event',
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    (new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
+                            ),
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
+                            )
+                        )
+                    ))->withBookingAvailability(BookingAvailability::Available()->withCapacity(200))
+                ),
+                new UpdateSubEvents(
+                    '1',
+                    (new SubEventUpdate(1))->withBookingAvailability(BookingAvailability::Unavailable())
+                ),
+                new CalendarUpdated(
+                    '1',
+                    (new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
+                            ),
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
+                            ))->withBookingAvailability(BookingAvailability::Unavailable()),
+                        )
+                    ))->withBookingAvailability(BookingAvailability::Available()->withCapacity(200))
+                ),
+            ],
+            'Top-level capacity is preserved when updating a sub event on a single calendar' => [
+                new EventCreated(
+                    '1',
+                    new Language('nl'),
+                    'Single Event',
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    (new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable('2020-01-01 10:00:00'),
+                                new DateTimeImmutable('2020-01-01 12:00:00')
+                            )
+                        )
+                    ))->withBookingAvailability(BookingAvailability::Available()->withCapacity(100))
+                ),
+                new UpdateSubEvents(
+                    '1',
+                    (new SubEventUpdate(0))->withBookingAvailability(BookingAvailability::Unavailable())
+                ),
+                new CalendarUpdated(
+                    '1',
+                    (new SingleSubEventCalendar(
+                        (SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable('2020-01-01 10:00:00'),
+                                new DateTimeImmutable('2020-01-01 12:00:00')
+                            )
+                        ))->withBookingAvailability(BookingAvailability::Unavailable())
+                    ))->withBookingAvailability(BookingAvailability::Available()->withCapacity(100))
+                ),
+            ],
             'Clear bookingInfo on 1 sub event' => [
                 new EventCreated(
                     '1',

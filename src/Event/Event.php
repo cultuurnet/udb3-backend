@@ -414,6 +414,8 @@ final class Event extends Offer
             $updatedCalendar = new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
         }
 
+        $updatedCalendar = $updatedCalendar->withBookingAvailability($this->calendar->getBookingAvailability());
+
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(
                 new CalendarUpdated($this->eventId, $updatedCalendar)
