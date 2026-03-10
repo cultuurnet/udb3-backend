@@ -100,8 +100,10 @@ use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use DateTimeInterface;
+use InvalidArgumentException;
 
 final class Event extends Offer
 {
@@ -398,6 +400,12 @@ final class Event extends Offer
                 $subEventUpdate->getBookingInfo() ?? $subEvent->getBookingInfo(),
             );
 
+            $childcareTimeRange = $subEventUpdate->getChildcareTimeRange();
+            if ($childcareTimeRange !== null) {
+                $this->validateChildcareTimeRange($childcareTimeRange, $updatedSubEvent, $index);
+                $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareTimeRange);
+            }
+
             $subEvents[$index] = $updatedSubEvent;
         }
 
@@ -410,6 +418,28 @@ final class Event extends Offer
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(
                 new CalendarUpdated($this->eventId, $updatedCalendar)
+            );
+        }
+    }
+
+    /**
+     * Validates childcare times against the effective sub event dates at the domain level.
+     * This is necessary for PATCH requests (UpdateSubEvents) where childcareStartTime or childcareEndTime
+     * can be set without providing the corresponding startDate/endDate in the same request body.
+     * In that case the HTTP-layer ChildcareTimeValidator cannot validate because it only sees the
+     * partial request body, not the stored dates.
+     */
+    private function validateChildcareTimeRange(TimeImmutableRange $childcareTimeRange, SubEvent $subEvent, int $subEventIndex): void
+    {
+        if (!$childcareTimeRange->startIsBeforeTimeOf($subEvent->getDateRange()->getFrom())) {
+            throw new InvalidArgumentException(
+                sprintf('childcareStartTime of subEvent %d must be before the time portion of startDate', $subEventIndex)
+            );
+        }
+
+        if (!$childcareTimeRange->endIsAfterTimeOf($subEvent->getDateRange()->getTo())) {
+            throw new InvalidArgumentException(
+                sprintf('childcareEndTime of subEvent %d must be after the time portion of endDate', $subEventIndex)
             );
         }
     }
