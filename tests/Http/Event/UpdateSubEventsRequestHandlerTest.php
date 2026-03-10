@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
@@ -291,6 +292,43 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         ),
                 ),
             ],
+            'one_subEvent_with_childcareStartTime_and_childcareEndTime' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'childcareStartTime' => '15:00',
+                        'childcareEndTime' => '23:00',
+                    ],
+                ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange('15:00', '23:00'))
+                ),
+            ],
+            'one_subEvent_with_only_childcareStartTime' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'childcareStartTime' => '15:00',
+                    ],
+                ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange('15:00'))
+                ),
+            ],
+            'one_subEvent_with_only_childcareEndTime' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'childcareEndTime' => '23:00',
+                    ],
+                ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange(null, '23:00'))
+                ),
+            ],
             'one_subEvent_with_zero_remainingCapacity_derives_unavailable_type' => [
                 'data' => [
                     (object)[
@@ -546,6 +584,58 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 'expectedSchemaErrors' => [
                     new SchemaError('/0/bookingAvailability/capacity', 'Number must be greater than or equal to 0'),
                     new SchemaError('/0/bookingAvailability/remainingCapacity', 'Number must be greater than or equal to 0'),
+                ],
+            ],
+            'one_subEvent_with_childcareStartTime_equal_to_startDate_time' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'startDate' => '2020-01-01T10:00:00+00:00',
+                        'endDate' => '2020-01-01T12:00:00+00:00',
+                        'childcareStartTime' => '10:00',
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/childcareStartTime', 'childcareStartTime must be before the time portion of startDate'),
+                ],
+            ],
+            'one_subEvent_with_childcareStartTime_after_startDate_time' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'startDate' => '2020-01-01T10:00:00+00:00',
+                        'endDate' => '2020-01-01T12:00:00+00:00',
+                        'childcareStartTime' => '11:00',
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/childcareStartTime', 'childcareStartTime must be before the time portion of startDate'),
+                ],
+            ],
+            'one_subEvent_with_childcareEndTime_equal_to_endDate_time' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'startDate' => '2020-01-01T10:00:00+00:00',
+                        'endDate' => '2020-01-01T12:00:00+00:00',
+                        'childcareEndTime' => '12:00',
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/childcareEndTime', 'childcareEndTime must be after the time portion of endDate'),
+                ],
+            ],
+            'one_subEvent_with_childcareEndTime_before_endDate_time' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'startDate' => '2020-01-01T10:00:00+00:00',
+                        'endDate' => '2020-01-01T12:00:00+00:00',
+                        'childcareEndTime' => '11:00',
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/childcareEndTime', 'childcareEndTime must be after the time portion of endDate'),
                 ],
             ],
             'one_subEvent_with_no_type_and_no_remaining_capacity' => [
