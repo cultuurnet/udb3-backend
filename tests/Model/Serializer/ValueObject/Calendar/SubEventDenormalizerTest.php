@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use PHPUnit\Framework\TestCase;
 
 final class SubEventDenormalizerTest extends TestCase
