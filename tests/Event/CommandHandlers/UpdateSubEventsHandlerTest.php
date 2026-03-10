@@ -37,9 +37,9 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+use CultuurNet\UDB3\Event\ChildcareTimeInvalidException;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use DateTimeImmutable;
-use InvalidArgumentException;
 
 final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -992,8 +992,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             )
         );
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('childcareStartTime of subEvent 0 must be before the time portion of startDate');
+        $this->expectException(ChildcareTimeInvalidException::class);
+        $this->expectExceptionMessage('childcareStartTime must be before the time portion of startDate');
 
         $this->scenario
             ->withAggregateId('1')
@@ -1023,8 +1023,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             )
         );
 
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('childcareEndTime of subEvent 0 must be after the time portion of endDate');
+        $this->expectException(ChildcareTimeInvalidException::class);
+        $this->expectExceptionMessage('childcareEndTime must be after the time portion of endDate');
 
         $this->scenario
             ->withAggregateId('1')

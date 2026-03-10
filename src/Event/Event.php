@@ -103,7 +103,6 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use DateTimeInterface;
-use InvalidArgumentException;
 
 final class Event extends Offer
 {
@@ -432,14 +431,16 @@ final class Event extends Offer
     private function validateChildcareTimeRange(TimeImmutableRange $childcareTimeRange, SubEvent $subEvent, int $subEventIndex): void
     {
         if (!$childcareTimeRange->startIsBeforeTimeOf($subEvent->getDateRange()->getFrom())) {
-            throw new InvalidArgumentException(
-                sprintf('childcareStartTime of subEvent %d must be before the time portion of startDate', $subEventIndex)
+            throw new ChildcareTimeInvalidException(
+                '/' . $subEventIndex . '/childcareStartTime',
+                'childcareStartTime must be before the time portion of startDate'
             );
         }
 
         if (!$childcareTimeRange->endIsAfterTimeOf($subEvent->getDateRange()->getTo())) {
-            throw new InvalidArgumentException(
-                sprintf('childcareEndTime of subEvent %d must be after the time portion of endDate', $subEventIndex)
+            throw new ChildcareTimeInvalidException(
+                '/' . $subEventIndex . '/childcareEndTime',
+                'childcareEndTime must be after the time portion of endDate'
             );
         }
     }

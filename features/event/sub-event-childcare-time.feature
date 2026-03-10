@@ -427,4 +427,5 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
     """
     And I send a PATCH request to "%{eventUrl}/subEvents"
     Then the response status should be "400"
-    And the JSON response at "detail" should be "childcareStartTime of subEvent 0 must be before the time portion of startDate"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/childcareStartTime"
+    And the JSON response at "schemaErrors/0/error" should be "childcareStartTime must be before the time portion of startDate"
