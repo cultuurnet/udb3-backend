@@ -36,8 +36,10 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use DateTimeImmutable;
+use InvalidArgumentException;
 
 final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
 {
@@ -870,6 +872,164 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     )
                 ),
             ],
+            'Update childcare times on sub event' => [
+                new EventCreated(
+                    '1',
+                    new Language('nl'),
+                    'Multiple Event',
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
+                            ),
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 13:00:00')
+                                )
+                            )
+                        )
+                    )
+                ),
+                new UpdateSubEvents(
+                    '1',
+                    (new SubEventUpdate(1))->withChildcareTimeRange(new TimeImmutableRange('9:00', '14:00'))
+                ),
+                new CalendarUpdated(
+                    '1',
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
+                            ),
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 13:00:00')
+                                )
+                            ))->withChildcareTimeRange(new TimeImmutableRange('9:00', '14:00')),
+                        )
+                    )
+                ),
+            ],
+            'Clear childcare times when absent from update' => [
+                new EventCreated(
+                    '1',
+                    new Language('nl'),
+                    'Multiple Event',
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
+                            ),
+                            (SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 13:00:00')
+                                )
+                            ))->withChildcareTimeRange(new TimeImmutableRange('9:00', '14:00'))
+                        )
+                    )
+                ),
+                new UpdateSubEvents(
+                    '1',
+                    new SubEventUpdate(1)
+                ),
+                new CalendarUpdated(
+                    '1',
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
+                            ),
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 13:00:00')
+                                )
+                            ),
+                        )
+                    )
+                ),
+            ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_start_time_is_not_before_start_date_time(): void
+    {
+        $eventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00')
+                    )
+                )
+            )
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('childcareStartTime of subEvent 0 must be before the time portion of startDate');
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$eventCreated])
+            ->when(new UpdateSubEvents('1', (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange('10:00'))))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_end_time_is_not_after_end_date_time(): void
+    {
+        $eventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00')
+                    )
+                )
+            )
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('childcareEndTime of subEvent 0 must be after the time portion of endDate');
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$eventCreated])
+            ->when(new UpdateSubEvents('1', (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange(null, '12:00'))))
+            ->then([]);
     }
 }
