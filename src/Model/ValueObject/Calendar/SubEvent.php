@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 
 final class SubEvent
 {
@@ -15,6 +16,8 @@ final class SubEvent
     private BookingAvailability $bookingAvailability;
 
     private BookingInfo $bookingInfo;
+
+    private ?TimeImmutableRange $childcareTimeRange = null;
 
     public function __construct(
         DateRange $dateRange,
@@ -59,6 +62,13 @@ final class SubEvent
         return $clone;
     }
 
+    public function withChildcareTimeRange(?TimeImmutableRange $childcareTimeRange): self
+    {
+        $clone = clone $this;
+        $clone->childcareTimeRange = $childcareTimeRange;
+        return $clone;
+    }
+
     public function getDateRange(): DateRange
     {
         return $this->dateRange;
@@ -77,5 +87,10 @@ final class SubEvent
     public function getBookingInfo(): BookingInfo
     {
         return $this->bookingInfo;
+    }
+
+    public function getChildcareTimeRange(): ?TimeImmutableRange
+    {
+        return $this->childcareTimeRange;
     }
 }
