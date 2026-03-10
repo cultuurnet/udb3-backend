@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject;
 
+use DateTimeImmutable;
 use InvalidArgumentException;
 
 final class TimeImmutableRange
@@ -40,6 +41,27 @@ final class TimeImmutableRange
     public function getEnd(): ?string
     {
         return $this->end;
+    }
+
+    public function startIsBeforeTimeOf(DateTimeImmutable $dateTime): bool
+    {
+        if ($this->start === null) {
+            return true;
+        }
+        return $this->toMinutes($this->start) < $this->dateTimeToMinutes($dateTime);
+    }
+
+    public function endIsAfterTimeOf(DateTimeImmutable $dateTime): bool
+    {
+        if ($this->end === null) {
+            return true;
+        }
+        return $this->toMinutes($this->end) > $this->dateTimeToMinutes($dateTime);
+    }
+
+    private function dateTimeToMinutes(DateTimeImmutable $dateTime): int
+    {
+        return (int) $dateTime->format('H') * 60 + (int) $dateTime->format('i');
     }
 
     private function guardTime(string $time): void
