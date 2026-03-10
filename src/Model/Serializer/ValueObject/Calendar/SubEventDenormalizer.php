@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class SubEventDenormalizer implements DenormalizerInterface
@@ -41,7 +42,16 @@ final class SubEventDenormalizer implements DenormalizerInterface
             $endDate = $startDate;
         }
 
-        return new SubEvent(new DateRange($startDate, $endDate), $status, $bookingAvailability, $bookingInfo);
+        $subEvent = new SubEvent(new DateRange($startDate, $endDate), $status, $bookingAvailability, $bookingInfo);
+
+        $childcareStart = $data['childcareStartTime'] ?? null;
+        $childcareEnd = $data['childcareEndTime'] ?? null;
+
+        if ($childcareStart !== null || $childcareEnd !== null) {
+            $subEvent = $subEvent->withChildcareTimeRange(new TimeImmutableRange($childcareStart, $childcareEnd));
+        }
+
+        return $subEvent;
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool

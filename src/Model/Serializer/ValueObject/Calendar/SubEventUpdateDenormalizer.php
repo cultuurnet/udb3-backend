@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -58,6 +59,13 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
             $subEventUpdate = $subEventUpdate->withBookingInfo(
                 $this->bookingInfoDenormalizer->denormalize($data['bookingInfo'], BookingInfo::class)
             );
+        }
+
+        $childcareStart = $data['childcareStartTime'] ?? null;
+        $childcareEnd = $data['childcareEndTime'] ?? null;
+
+        if($childcareStart !== null || $childcareEnd !== null) {
+            $subEventUpdate = $subEventUpdate->withChildcareTimeRange(new TimeImmutableRange($childcareStart, $childcareEnd));
         }
 
         return $subEventUpdate;
