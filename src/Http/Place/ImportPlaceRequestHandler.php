@@ -284,6 +284,10 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
                 );
             }
         } catch (MultipleDuplicatePlacesFound $e) {
+            $this->logger->error(
+                $e->getMessage(),
+                ['query' => $e->getQuery()]
+            );
             throw ApiProblem::duplicatePlaceDetected(
                 $e->getMessage(),
                 ['query' => $e->getQuery()]
