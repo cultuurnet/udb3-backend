@@ -33,7 +33,7 @@ final class SubEventNormalizer implements NormalizerInterface
 
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data === SubEvent::class;
+        return $data instanceof SubEvent;
     }
 
     private function addChildcareTimeRangeFields(SubEvent $subEvent, array $normalized): array
