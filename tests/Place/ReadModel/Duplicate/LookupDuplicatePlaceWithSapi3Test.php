@@ -100,7 +100,7 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
         );
     }
 
-    public function test_it_returns_canonical_iri_when_multiple_results_and_canonical_found_in_repository(): void
+    public function test_it_returns_canonical_place_when_multiple_results_and_canonical_found_in_repository(): void
     {
         $place1Id = '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831';
         $place2Id = 'aadcee95-6180-4924-a8eb-ed829d4957a2';
