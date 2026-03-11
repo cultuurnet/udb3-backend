@@ -90,6 +90,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3.6.10-management
+    platform: linux/amd64
     hostname: 'rabbitdocker'
     environment:
       RABBITMQ_DEFAULT_USER: vagrant
