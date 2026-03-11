@@ -62,7 +62,6 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
             }
         }
 
-        // Add isDuplicate so the response will never contain places we identified as duplicates
         throw new MultipleDuplicatePlacesFound($query);
     }
 
