@@ -89,17 +89,11 @@ class CanonicalService
             return $this->getOldestPlace($placeIds);
         }
 
-        if (count($placesWithMuseumpas) === 1) {
-            return $placesWithMuseumpas[array_key_first($placesWithMuseumpas)];
-        }
-        if (count($placesWithMuseumpas) > 1) {
+        if (count($placesWithMuseumpas) >= 1) {
             return $placesWithMuseumpas[array_key_first($placesWithMuseumpas)];
         }
 
-        if (count($placesWithUiTPas) === 1) {
-            return $placesWithUiTPas[array_key_first($placesWithUiTPas)];
-        }
-        if (count($placesWithUiTPas) > 1) {
+        if (count($placesWithUiTPas) >= 1) {
             return $placesWithUiTPas[array_key_first($placesWithUiTPas)];
         }
 
