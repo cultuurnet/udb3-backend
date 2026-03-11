@@ -242,6 +242,7 @@ final class Event extends Offer
         $this->eventId = $eventImported->getEventId();
         // When importing from UDB2 the default main language is always 'nl'.
         $this->mainLanguage = new Language('nl');
+        $this->faqs = new Faqs();
         $this->setUDB2Data($eventImported);
     }
 
