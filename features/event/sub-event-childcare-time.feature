@@ -1,4 +1,4 @@
-Feature: Test SubEvent childcareStartTime and childcareEndTime
+Feature: Test SubEvent childcare times
 
   Background:
     Given I am using the UDB3 base URL
@@ -7,7 +7,7 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
     And I send and accept "application/json"
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
 
-  Scenario: Create an event with childcareStartTime and childcareEndTime on a single calendar subEvent
+  Scenario: Create an event with childcare times on a single calendar subEvent
     When I set the JSON request payload to:
     """
     {
@@ -22,8 +22,10 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
         {
           "startDate": "2021-05-17T16:00:00+00:00",
           "endDate": "2021-05-17T22:00:00+00:00",
-          "childcareStartTime": "15:00",
-          "childcareEndTime": "23:00"
+          "childcare": {
+            "start": "15:00",
+            "end": "23:00"
+          }
         }
       ]
     }
@@ -32,38 +34,8 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
     Then the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "subEvent/0/childcareStartTime" should be "15:00"
-    And the JSON response at "subEvent/0/childcareEndTime" should be "23:00"
-
-  Scenario: Create an event with only childcareStartTime on a subEvent
-    When I set the JSON request payload to:
-    """
-    {
-      "mainLanguage": "nl",
-      "name": {"nl": "Event met kinderopvang start"},
-      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
-      "location": {"@id": "%{placeUrl}"},
-      "calendarType": "single",
-      "startDate": "2021-05-17T16:00:00+00:00",
-      "endDate": "2021-05-17T22:00:00+00:00",
-      "subEvent": [
-        {
-          "startDate": "2021-05-17T16:00:00+00:00",
-          "endDate": "2021-05-17T22:00:00+00:00",
-          "childcareStartTime": "15:00"
-        }
-      ]
-    }
-    """
-    And I send a POST request to "/events/"
-    Then the response status should be "201"
-    And I keep the value of the JSON response at "url" as "eventUrl"
-    And I get the event at "%{eventUrl}"
-    And the JSON response at "subEvent/0/childcareStartTime" should be "15:00"
-    And the JSON response should not include:
-    """
-    "childcareEndTime"
-    """
+    And the JSON response at "subEvent/0/childcare/start" should be "15:00"
+    And the JSON response at "subEvent/0/childcare/end" should be "23:00"
 
   Scenario: Create an event with childcare times on a multiple calendar subEvent
     When I set the JSON request payload to:
@@ -78,8 +50,10 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
         {
           "startDate": "2021-05-17T16:00:00+00:00",
           "endDate": "2021-05-17T22:00:00+00:00",
-          "childcareStartTime": "15:00",
-          "childcareEndTime": "23:00"
+          "childcare": {
+            "start": "15:00",
+            "end": "23:00"
+          }
         },
         {
           "startDate": "2021-05-18T16:00:00+00:00",
@@ -92,8 +66,8 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
     Then the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "subEvent/0/childcareStartTime" should be "15:00"
-    And the JSON response at "subEvent/0/childcareEndTime" should be "23:00"
+    And the JSON response at "subEvent/0/childcare/start" should be "15:00"
+    And the JSON response at "subEvent/0/childcare/end" should be "23:00"
     And the JSON response at "subEvent/1/startDate" should be "2021-05-18T16:00:00+00:00"
     And the JSON response at "subEvent/1/endDate" should be "2021-05-18T22:00:00+00:00"
 
@@ -118,18 +92,20 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
     [
       {
         "id": 0,
-        "childcareStartTime": "15:00",
-        "childcareEndTime": "23:00"
+        "childcare": {
+          "start": "15:00",
+          "end": "23:00"
+        }
       }
     ]
     """
     And I send a PATCH request to "%{eventUrl}/subEvents"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "subEvent/0/childcareStartTime" should be "15:00"
-    And the JSON response at "subEvent/0/childcareEndTime" should be "23:00"
+    And the JSON response at "subEvent/0/childcare/start" should be "15:00"
+    And the JSON response at "subEvent/0/childcare/end" should be "23:00"
 
-  Scenario: Childcare times are cleared when omitted from PATCH
+  Scenario: Childcare times are preserved when omitted from PATCH
     Given I set the JSON request payload to:
     """
     {
@@ -144,8 +120,10 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
         {
           "startDate": "2021-05-17T16:00:00+00:00",
           "endDate": "2021-05-17T22:00:00+00:00",
-          "childcareStartTime": "15:00",
-          "childcareEndTime": "23:00"
+          "childcare": {
+            "start": "15:00",
+            "end": "23:00"
+          }
         }
       ]
     }
@@ -165,13 +143,50 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
     And I send a PATCH request to "%{eventUrl}/subEvents"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
+    And the JSON response at "subEvent/0/childcare/start" should be "15:00"
+    And the JSON response at "subEvent/0/childcare/end" should be "23:00"
+
+  Scenario: Childcare times are cleared when explicitly set to empty in PATCH
+    Given I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {"nl": "Event"},
+      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+      "location": {"@id": "%{placeUrl}"},
+      "calendarType": "single",
+      "startDate": "2021-05-17T16:00:00+00:00",
+      "endDate": "2021-05-17T22:00:00+00:00",
+      "subEvent": [
+        {
+          "startDate": "2021-05-17T16:00:00+00:00",
+          "endDate": "2021-05-17T22:00:00+00:00",
+          "childcare": {
+            "start": "15:00",
+            "end": "23:00"
+          }
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/"
+    And the response status should be "201"
+    And I keep the value of the JSON response at "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "childcare": {}
+      }
+    ]
+    """
+    And I send a PATCH request to "%{eventUrl}/subEvents"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
     And the JSON response should not include:
     """
-    "childcareStartTime"
-    """
-    And the JSON response should not include:
-    """
-    "childcareEndTime"
+    "childcare"
     """
 
   Scenario: Childcare times are cleared when omitted from a PUT calendar update
@@ -189,8 +204,10 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
         {
           "startDate": "2021-05-17T16:00:00+00:00",
           "endDate": "2021-05-17T22:00:00+00:00",
-          "childcareStartTime": "15:00",
-          "childcareEndTime": "23:00"
+          "childcare": {
+            "start": "15:00",
+            "end": "23:00"
+          }
         }
       ]
     }
@@ -217,14 +234,10 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
     And I get the event at "%{eventUrl}"
     And the JSON response should not include:
     """
-    "childcareStartTime"
-    """
-    And the JSON response should not include:
-    """
-    "childcareEndTime"
+    "childcare"
     """
 
-  Scenario: Cannot create an event when childcareStartTime equals the startDate time
+  Scenario: Cannot create an event when childcare.start equals the startDate time
     When I set the JSON request payload to:
     """
     {
@@ -239,17 +252,20 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
         {
           "startDate": "2021-05-17T16:00:00+00:00",
           "endDate": "2021-05-17T22:00:00+00:00",
-          "childcareStartTime": "16:00"
+          "childcare": {
+            "start": "16:00",
+            "end": "23:00"
+          }
         }
       ]
     }
     """
     And I send a POST request to "/events/"
     Then the response status should be "400"
-    And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcareStartTime"
-    And the JSON response at "schemaErrors/0/error" should be "childcareStartTime must be before the time portion of startDate"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcare/start"
+    And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before the time portion of startDate"
 
-  Scenario: Cannot create an event when childcareStartTime is after the startDate time
+  Scenario: Cannot create an event when childcare.start is after the startDate time
     When I set the JSON request payload to:
     """
     {
@@ -264,17 +280,20 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
         {
           "startDate": "2021-05-17T16:00:00+00:00",
           "endDate": "2021-05-17T22:00:00+00:00",
-          "childcareStartTime": "17:00"
+          "childcare": {
+            "start": "17:00",
+            "end": "23:00"
+          }
         }
       ]
     }
     """
     And I send a POST request to "/events/"
     Then the response status should be "400"
-    And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcareStartTime"
-    And the JSON response at "schemaErrors/0/error" should be "childcareStartTime must be before the time portion of startDate"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcare/start"
+    And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before the time portion of startDate"
 
-  Scenario: Cannot create an event when childcareEndTime equals the endDate time
+  Scenario: Cannot create an event when childcare.end equals the endDate time
     When I set the JSON request payload to:
     """
     {
@@ -289,17 +308,20 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
         {
           "startDate": "2021-05-17T16:00:00+00:00",
           "endDate": "2021-05-17T22:00:00+00:00",
-          "childcareEndTime": "22:00"
+          "childcare": {
+            "start": "15:00",
+            "end": "22:00"
+          }
         }
       ]
     }
     """
     And I send a POST request to "/events/"
     Then the response status should be "400"
-    And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcareEndTime"
-    And the JSON response at "schemaErrors/0/error" should be "childcareEndTime must be after the time portion of endDate"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcare/end"
+    And the JSON response at "schemaErrors/0/error" should be "childcare.end must be after the time portion of endDate"
 
-  Scenario: Cannot create an event when childcareEndTime is before the endDate time
+  Scenario: Cannot create an event when childcare.end is before the endDate time
     When I set the JSON request payload to:
     """
     {
@@ -314,17 +336,20 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
         {
           "startDate": "2021-05-17T16:00:00+00:00",
           "endDate": "2021-05-17T22:00:00+00:00",
-          "childcareEndTime": "21:00"
+          "childcare": {
+            "start": "15:00",
+            "end": "21:00"
+          }
         }
       ]
     }
     """
     And I send a POST request to "/events/"
     Then the response status should be "400"
-    And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcareEndTime"
-    And the JSON response at "schemaErrors/0/error" should be "childcareEndTime must be after the time portion of endDate"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcare/end"
+    And the JSON response at "schemaErrors/0/error" should be "childcare.end must be after the time portion of endDate"
 
-  Scenario: Cannot PATCH a subEvent when the new startDate makes the existing childcareStartTime invalid
+  Scenario: Cannot PATCH a subEvent when the new startDate makes the existing childcare.start invalid
     Given I set the JSON request payload to:
     """
     {
@@ -339,7 +364,10 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
         {
           "startDate": "2021-05-17T16:00:00+00:00",
           "endDate": "2021-05-17T22:00:00+00:00",
-          "childcareStartTime": "15:00"
+          "childcare": {
+            "start": "15:00",
+            "end": "23:00"
+          }
         }
       ]
     }
@@ -353,16 +381,19 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
       {
         "id": 0,
         "startDate": "2021-05-17T14:00:00+00:00",
-        "childcareStartTime": "15:00"
+        "childcare": {
+          "start": "15:00",
+          "end": "23:00"
+        }
       }
     ]
     """
     And I send a PATCH request to "%{eventUrl}/subEvents"
     Then the response status should be "400"
-    And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/childcareStartTime"
-    And the JSON response at "schemaErrors/0/error" should be "childcareStartTime must be before the time portion of startDate"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/childcare/start"
+    And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before the time portion of startDate"
 
-  Scenario: Cannot PATCH a subEvent when the new endDate makes the existing childcareEndTime invalid
+  Scenario: Cannot PATCH a subEvent when the new endDate makes the existing childcare.end invalid
     Given I set the JSON request payload to:
     """
     {
@@ -377,7 +408,10 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
         {
           "startDate": "2021-05-17T16:00:00+00:00",
           "endDate": "2021-05-17T22:00:00+00:00",
-          "childcareEndTime": "23:00"
+          "childcare": {
+            "start": "15:00",
+            "end": "23:00"
+          }
         }
       ]
     }
@@ -391,16 +425,19 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
       {
         "id": 0,
         "endDate": "2021-05-17T23:30:00+00:00",
-        "childcareEndTime": "23:00"
+        "childcare": {
+          "start": "15:00",
+          "end": "23:00"
+        }
       }
     ]
     """
     And I send a PATCH request to "%{eventUrl}/subEvents"
     Then the response status should be "400"
-    And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/childcareEndTime"
-    And the JSON response at "schemaErrors/0/error" should be "childcareEndTime must be after the time portion of endDate"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/childcare/end"
+    And the JSON response at "schemaErrors/0/error" should be "childcare.end must be after the time portion of endDate"
 
-  Scenario: Cannot PATCH a subEvent with childcareStartTime not before the stored startDate time
+  Scenario: Cannot PATCH a subEvent with childcare.start not before the stored startDate time
     Given I set the JSON request payload to:
     """
     {
@@ -421,11 +458,14 @@ Feature: Test SubEvent childcareStartTime and childcareEndTime
     [
       {
         "id": 0,
-        "childcareStartTime": "16:00"
+        "childcare": {
+          "start": "16:00",
+          "end": "23:00"
+        }
       }
     ]
     """
     And I send a PATCH request to "%{eventUrl}/subEvents"
     Then the response status should be "400"
-    And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/childcareStartTime"
-    And the JSON response at "schemaErrors/0/error" should be "childcareStartTime must be before the time portion of startDate"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/childcare/start"
+    And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before the time portion of startDate"
