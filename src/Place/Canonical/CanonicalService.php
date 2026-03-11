@@ -77,7 +77,7 @@ class CanonicalService
     /**
      * @param string[] $placeIds
      * This function is only used LookupDuplicatePlaceWithSapi3 to make sure
-     * we always return an idea. Therefore, it does not throw exceptions and
+     * we always return an id. Therefore, it does not throw exceptions and
      * should probably not be used anywhere else.
      */
     public function getCanonicalFromArrayWithoutThrowing(array $placeIds): string
