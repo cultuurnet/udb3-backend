@@ -1148,4 +1148,68 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             ->when(new UpdateSubEvents('1', (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange(null, '12:00'))))
             ->then([]);
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_new_start_date_makes_preserved_childcare_start_invalid(): void
+    {
+        $eventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new SingleSubEventCalendar(
+                (SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 16:00:00'),
+                        new DateTimeImmutable('2020-01-01 22:00:00')
+                    )
+                ))->withChildcareTimeRange(new TimeImmutableRange('15:00', '23:00'))
+            )
+        );
+
+        $this->expectException(ChildcareTimeInvalidException::class);
+        $this->expectExceptionMessage('childcare.start must be before the time portion of startDate');
+
+        // PATCH only updates startDate; childcare is preserved but now invalid against the new startDate
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$eventCreated])
+            ->when(new UpdateSubEvents('1', (new SubEventUpdate(0))->withStartDate(new DateTimeImmutable('2020-01-01 14:00:00'))))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_new_end_date_makes_preserved_childcare_end_invalid(): void
+    {
+        $eventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new SingleSubEventCalendar(
+                (SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 16:00:00'),
+                        new DateTimeImmutable('2020-01-01 22:00:00')
+                    )
+                ))->withChildcareTimeRange(new TimeImmutableRange('15:00', '23:00'))
+            )
+        );
+
+        $this->expectException(ChildcareTimeInvalidException::class);
+        $this->expectExceptionMessage('childcare.end must be after the time portion of endDate');
+
+        // PATCH only updates endDate; childcare is preserved but now invalid against the new endDate
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$eventCreated])
+            ->when(new UpdateSubEvents('1', (new SubEventUpdate(0))->withEndDate(new DateTimeImmutable('2020-01-01 23:30:00'))))
+            ->then([]);
+    }
 }

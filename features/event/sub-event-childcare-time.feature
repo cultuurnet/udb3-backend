@@ -469,3 +469,83 @@ Feature: Test SubEvent childcare times
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/childcare/start"
     And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before the time portion of startDate"
+
+  Scenario: Cannot PATCH a subEvent with a new startDate that makes the preserved childcare.start invalid
+    Given I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {"nl": "Event"},
+      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+      "location": {"@id": "%{placeUrl}"},
+      "calendarType": "single",
+      "startDate": "2021-05-17T16:00:00+00:00",
+      "endDate": "2021-05-17T22:00:00+00:00",
+      "subEvent": [
+        {
+          "startDate": "2021-05-17T16:00:00+00:00",
+          "endDate": "2021-05-17T22:00:00+00:00",
+          "childcare": {
+            "start": "15:00",
+            "end": "23:00"
+          }
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/"
+    And the response status should be "201"
+    And I keep the value of the JSON response at "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "startDate": "2021-05-17T14:00:00+00:00"
+      }
+    ]
+    """
+    And I send a PATCH request to "%{eventUrl}/subEvents"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/childcare/start"
+    And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before the time portion of startDate"
+
+  Scenario: Cannot PATCH a subEvent with a new endDate that makes the preserved childcare.end invalid
+    Given I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {"nl": "Event"},
+      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+      "location": {"@id": "%{placeUrl}"},
+      "calendarType": "single",
+      "startDate": "2021-05-17T16:00:00+00:00",
+      "endDate": "2021-05-17T22:00:00+00:00",
+      "subEvent": [
+        {
+          "startDate": "2021-05-17T16:00:00+00:00",
+          "endDate": "2021-05-17T22:00:00+00:00",
+          "childcare": {
+            "start": "15:00",
+            "end": "23:00"
+          }
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/"
+    And the response status should be "201"
+    And I keep the value of the JSON response at "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "endDate": "2021-05-17T23:30:00+00:00"
+      }
+    ]
+    """
+    And I send a PATCH request to "%{eventUrl}/subEvents"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/childcare/end"
+    And the JSON response at "schemaErrors/0/error" should be "childcare.end must be after the time portion of endDate"

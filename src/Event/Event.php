@@ -406,6 +406,7 @@ final class Event extends Offer
                     $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareTimeRange);
                 }
             } elseif ($subEvent->getChildcareTimeRange() !== null) {
+                $this->validateChildcareTimeRange($subEvent->getChildcareTimeRange(), $updatedSubEvent, $index);
                 $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($subEvent->getChildcareTimeRange());
             }
 
