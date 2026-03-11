@@ -15,6 +15,10 @@ class ChildcareTimeValidatingRequestBodyParser implements RequestBodyParser
     {
         $subEvents = $request->getParsedBody();
 
+        if (!is_array($subEvents)) {
+            return $request;
+        }
+
         $errors = [];
         $childcareTimeValidator = new ChildcareTimeValidator();
         foreach ($subEvents as $key => $subEvent) {
