@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
 use CultuurNet\UDB3\Model\Place\Place;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Search\Sapi3SearchService;
 
 final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
@@ -15,37 +16,42 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
 
     private bool $useGlobalAddressIdentifier;
 
+    private DuplicatePlaceRepository $duplicatePlaceRepository;
+
     public function __construct(
         Sapi3SearchService $sapi3SearchService,
         UniqueAddressIdentifierFactory $addressIdentifierFactory,
         string $currentUserId,
-        bool $useGlobalAddressIdentifier
+        bool $useGlobalAddressIdentifier,
+        DuplicatePlaceRepository $duplicatePlaceRepository
     ) {
         $this->sapi3SearchService = $sapi3SearchService;
         $this->addressIdentifierFactory = $addressIdentifierFactory;
         $this->currentUserId = $currentUserId;
         $this->useGlobalAddressIdentifier = $useGlobalAddressIdentifier;
+        $this->duplicatePlaceRepository = $duplicatePlaceRepository;
     }
 
     /*
     When there is only one place propose that place
     When there are multiple places propose the one with duplicatedBy
-    When there are multiple but no canonical returns the search query to get all places
+    When there are multiple places but no canonical try to find a canonical
+    When all else fails, return a query
     */
     public function getDuplicatePlaceUri(Place $place): ?string
     {
         $query = $this->getQuery($place);
 
-        $results = $this->sapi3SearchService->search(
+        $resultsWithDuplicates = $this->sapi3SearchService->search(
             $query
         );
 
-        if ($results->getTotalItems() === 0) {
+        if ($resultsWithDuplicates->getTotalItems() === 0) {
             return null;
         }
 
-        if ($results->getTotalItems() === 1) {
-            return $results->getItems()[0]->getUrl()->toString();
+        if ($resultsWithDuplicates->getTotalItems() === 1) {
+            return $resultsWithDuplicates->getItems()[0]->getUrl()->toString();
         }
 
         // We have more than 1 result, lets do the call again with isDuplicate=false to see if without duplicates,
@@ -53,16 +59,25 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
         $originalQuery = $query;
         $query .= '&isDuplicate=false';
 
-        $results = $this->sapi3SearchService->search(
+        $resultsWithoutDuplicates = $this->sapi3SearchService->search(
             $query
         );
 
-        if ($results->getTotalItems() === 0) {
-            throw new MultipleDuplicatePlacesFound($originalQuery);
+        if ($resultsWithoutDuplicates->getTotalItems() === 1) {
+            return $resultsWithoutDuplicates->getItems()[0]->getUrl()->toString();
         }
 
-        if ($results->getTotalItems() === 1) {
-            return $results->getItems()[0]->getUrl()->toString();
+        /**
+         * @see https://jira.publiq.be/browse/III-7059
+         */
+        if ($resultsWithoutDuplicates->getTotalItems() === 0) {
+            foreach ($resultsWithDuplicates->getItems() as $item) {
+                $id = $item->getId();
+                $canonicalId = $this->duplicatePlaceRepository->getCanonicalOfPlace($id);
+                if ($canonicalId !== null) {
+                    return $item->getUrl()->toString();
+                }
+            }
         }
 
         // Add isDuplicate so the response will never contain places we identified as duplicates
