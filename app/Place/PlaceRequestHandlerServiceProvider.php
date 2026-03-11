@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlaceWithSapi3;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\UniqueAddressIdentifierFactory;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
@@ -82,7 +83,8 @@ final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
                         $container->get(PlacesSapi3SearchService::class),
                         new UniqueAddressIdentifierFactory(),
                         $container->get(CurrentUser::class)->getId(),
-                        $container->get('config')['use_global_address_identifier'] ?? false
+                        $container->get('config')['use_global_address_identifier'] ?? false,
+                        $container->get(DuplicatePlaceRepository::class)
                     ),
                     $container->get('organizer_jsonld_repository')
                 );
