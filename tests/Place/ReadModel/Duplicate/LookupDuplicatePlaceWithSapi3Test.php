@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
-use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -28,8 +27,6 @@ use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Results;
 use CultuurNet\UDB3\Search\Sapi3SearchService;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -46,22 +43,6 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
     protected function setUp(): void
     {
         $this->sapi3SearchService = $this->createMock(Sapi3SearchService::class);
-
-        $documentRepositoryMock = $this->createMock(DocumentRepository::class);
-
-        $documentRepositoryMock->expects($this->atMost(2))
-            ->method('fetch')
-            ->willReturnCallback(function (string $id) {
-                switch ($id) {
-                    case '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831':
-                    case 'aadcee95-6180-4924-a8eb-ed829d4957a2':
-                        return new JsonDocument($id, Json::encode([]));
-                    case '55a4c2bc-4441-1aef-1aef-bd6ab9ccd831':
-                        return new JsonDocument($id, Json::encode(['duplicatedBy' => 'http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831']));
-                    default:
-                        return new \Exception('There is no hope');
-                }
-            });
 
         $this->duplicatePlaceRepository = $this->createMock(DuplicatePlaceRepository::class);
 
