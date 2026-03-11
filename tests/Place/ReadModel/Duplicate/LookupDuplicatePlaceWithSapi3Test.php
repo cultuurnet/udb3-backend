@@ -144,7 +144,7 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
         $this->duplicatePlaceRepository->method('getCanonicalOfPlace')->willReturn(null);
 
         $this->logger->expects($this->once())
-            ->method('error')
+            ->method('warning')
             ->with(
                 'Problem with finding a canonical place',
                 $this->arrayHasKey('query')
