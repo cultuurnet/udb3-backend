@@ -399,10 +399,14 @@ final class Event extends Offer
                 $subEventUpdate->getBookingInfo() ?? $subEvent->getBookingInfo(),
             );
 
-            $childcareTimeRange = $subEventUpdate->getChildcareTimeRange();
-            if ($childcareTimeRange !== null) {
-                $this->validateChildcareTimeRange($childcareTimeRange, $updatedSubEvent, $index);
-                $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareTimeRange);
+            if ($subEventUpdate->isChildcareTimeRangeSet()) {
+                $childcareTimeRange = $subEventUpdate->getChildcareTimeRange();
+                if ($childcareTimeRange !== null) {
+                    $this->validateChildcareTimeRange($childcareTimeRange, $updatedSubEvent, $index);
+                    $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareTimeRange);
+                }
+            } elseif ($subEvent->getChildcareTimeRange() !== null) {
+                $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($subEvent->getChildcareTimeRange());
             }
 
             $subEvents[$index] = $updatedSubEvent;
@@ -434,17 +438,17 @@ final class Event extends Offer
     {
         if (!$childcareTimeRange->startIsBeforeTimeOf($subEvent->getDateRange()->getFrom())) {
             throw new ChildcareTimeInvalidException(
-                'childcareStartTime',
+                'childcare/start',
                 $subEventIndex,
-                'childcareStartTime must be before the time portion of startDate'
+                'childcare.start must be before the time portion of startDate'
             );
         }
 
         if (!$childcareTimeRange->endIsAfterTimeOf($subEvent->getDateRange()->getTo())) {
             throw new ChildcareTimeInvalidException(
-                'childcareEndTime',
+                'childcare/end',
                 $subEventIndex,
-                'childcareEndTime must be after the time portion of endDate'
+                'childcare.end must be after the time portion of endDate'
             );
         }
     }

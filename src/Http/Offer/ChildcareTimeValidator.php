@@ -19,19 +19,24 @@ final class ChildcareTimeValidator
     {
         $errors = [];
 
-        if (isset($data->childcareStartTime, $data->startDate)
-            && is_string($data->childcareStartTime)
+        $childcare = $data->childcare ?? null;
+        if (!is_object($childcare)) {
+            return $errors;
+        }
+
+        if (isset($childcare->start, $data->startDate)
+            && is_string($childcare->start)
             && is_string($data->startDate)) {
-            $error = $this->validateStartTime($data->childcareStartTime, $data->startDate, $jsonPointer);
+            $error = $this->validateStartTime($childcare->start, $data->startDate, $jsonPointer);
             if ($error !== null) {
                 $errors[] = $error;
             }
         }
 
-        if (isset($data->childcareEndTime, $data->endDate)
-            && is_string($data->childcareEndTime)
+        if (isset($childcare->end, $data->endDate)
+            && is_string($childcare->end)
             && is_string($data->endDate)) {
-            $error = $this->validateEndTime($data->childcareEndTime, $data->endDate, $jsonPointer);
+            $error = $this->validateEndTime($childcare->end, $data->endDate, $jsonPointer);
             if ($error !== null) {
                 $errors[] = $error;
             }
@@ -45,7 +50,7 @@ final class ChildcareTimeValidator
         try {
             $range = new TimeImmutableRange($childcareStartTime);
         } catch (InvalidArgumentException $e) {
-            return new SchemaError($jsonPointer . '/childcareStartTime', $e->getMessage());
+            return new SchemaError($jsonPointer . '/childcare/start', $e->getMessage());
         }
 
         try {
@@ -56,8 +61,8 @@ final class ChildcareTimeValidator
 
         if (!$range->startIsBeforeTimeOf($startDateTime)) {
             return new SchemaError(
-                $jsonPointer . '/childcareStartTime',
-                'childcareStartTime must be before the time portion of startDate'
+                $jsonPointer . '/childcare/start',
+                'childcare.start must be before the time portion of startDate'
             );
         }
 
@@ -69,7 +74,7 @@ final class ChildcareTimeValidator
         try {
             $range = new TimeImmutableRange(null, $childcareEndTime);
         } catch (InvalidArgumentException $e) {
-            return new SchemaError($jsonPointer . '/childcareEndTime', $e->getMessage());
+            return new SchemaError($jsonPointer . '/childcare/end', $e->getMessage());
         }
 
         try {
@@ -80,8 +85,8 @@ final class ChildcareTimeValidator
 
         if (!$range->endIsAfterTimeOf($endDateTime)) {
             return new SchemaError(
-                $jsonPointer . '/childcareEndTime',
-                'childcareEndTime must be after the time portion of endDate'
+                $jsonPointer . '/childcare/end',
+                'childcare.end must be after the time portion of endDate'
             );
         }
 

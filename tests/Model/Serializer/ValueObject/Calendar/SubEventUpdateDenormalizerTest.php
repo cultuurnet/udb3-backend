@@ -19,53 +19,40 @@ final class SubEventUpdateDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_sets_childcare_time_range_to_null_when_both_fields_are_absent(): void
+    public function it_does_not_set_childcare_time_range_when_childcare_is_absent(): void
     {
         $update = $this->denormalizer->denormalize(['id' => 0], SubEventUpdate::class);
 
+        $this->assertFalse($update->isChildcareTimeRangeSet());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_with_childcare_start_and_end(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'childcare' => ['start' => '15:00', 'end' => '23:00']],
+            SubEventUpdate::class
+        );
+
+        $this->assertTrue($update->isChildcareTimeRangeSet());
+        $this->assertSame('15:00', $update->getChildcareTimeRange()->getStart());
+        $this->assertSame('23:00', $update->getChildcareTimeRange()->getEnd());
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_childcare_time_range_when_childcare_is_empty_object(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'childcare' => []],
+            SubEventUpdate::class
+        );
+
+        $this->assertTrue($update->isChildcareTimeRangeSet());
         $this->assertNull($update->getChildcareTimeRange());
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_with_both_childcare_times(): void
-    {
-        $update = $this->denormalizer->denormalize(
-            ['id' => 0, 'childcareStartTime' => '15:00', 'childcareEndTime' => '23:00'],
-            SubEventUpdate::class
-        );
-
-        $this->assertSame('15:00', $update->getChildcareTimeRange()->getStart());
-        $this->assertSame('23:00', $update->getChildcareTimeRange()->getEnd());
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_with_only_childcare_start_time(): void
-    {
-        $update = $this->denormalizer->denormalize(
-            ['id' => 0, 'childcareStartTime' => '15:00'],
-            SubEventUpdate::class
-        );
-
-        $this->assertSame('15:00', $update->getChildcareTimeRange()->getStart());
-        $this->assertNull($update->getChildcareTimeRange()->getEnd());
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_with_only_childcare_end_time(): void
-    {
-        $update = $this->denormalizer->denormalize(
-            ['id' => 0, 'childcareEndTime' => '23:00'],
-            SubEventUpdate::class
-        );
-
-        $this->assertNull($update->getChildcareTimeRange()->getStart());
-        $this->assertSame('23:00', $update->getChildcareTimeRange()->getEnd());
     }
 
     /**

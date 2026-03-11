@@ -61,11 +61,13 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
             );
         }
 
-        $childcareStart = $data['childcareStartTime'] ?? null;
-        $childcareEnd = $data['childcareEndTime'] ?? null;
-
-        if ($childcareStart !== null || $childcareEnd !== null) {
-            $subEventUpdate = $subEventUpdate->withChildcareTimeRange(new TimeImmutableRange($childcareStart, $childcareEnd));
+        if (array_key_exists('childcare', $data)) {
+            $childcare = $data['childcare'];
+            if (is_array($childcare) && isset($childcare['start'], $childcare['end'])) {
+                $subEventUpdate = $subEventUpdate->withChildcareTimeRange(new TimeImmutableRange($childcare['start'], $childcare['end']));
+            } else {
+                $subEventUpdate = $subEventUpdate->withChildcareTimeRange(null);
+            }
         }
 
         return $subEventUpdate;

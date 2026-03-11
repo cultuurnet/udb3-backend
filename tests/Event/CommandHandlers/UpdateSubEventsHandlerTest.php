@@ -1000,7 +1000,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     )
                 ),
             ],
-            'Clear childcare times when absent from update' => [
+            'Clear childcare times when explicitly set to null' => [
                 new EventCreated(
                     '1',
                     new Language('nl'),
@@ -1026,7 +1026,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new UpdateSubEvents(
                     '1',
-                    new SubEventUpdate(1)
+                    (new SubEventUpdate(1))->withChildcareTimeRange(null)
                 ),
                 new CalendarUpdated(
                     '1',
@@ -1054,6 +1054,42 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
     /**
      * @test
      */
+    public function it_does_not_fire_calendar_updated_when_childcare_is_preserved(): void
+    {
+        $eventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Multiple Event',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new MultipleSubEventsCalendar(
+                new SubEvents(
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            new DateTimeImmutable('2020-01-01 10:00:00'),
+                            new DateTimeImmutable('2020-01-01 12:00:00')
+                        )
+                    ),
+                    (SubEvent::createAvailable(
+                        new DateRange(
+                            new DateTimeImmutable('2020-01-03 10:00:00'),
+                            new DateTimeImmutable('2020-01-03 13:00:00')
+                        )
+                    ))->withChildcareTimeRange(new TimeImmutableRange('9:00', '14:00'))
+                )
+            )
+        );
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$eventCreated])
+            ->when(new UpdateSubEvents('1', new SubEventUpdate(1)))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_childcare_start_time_is_not_before_start_date_time(): void
     {
         $eventCreated = new EventCreated(
@@ -1073,7 +1109,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $this->expectException(ChildcareTimeInvalidException::class);
-        $this->expectExceptionMessage('childcareStartTime must be before the time portion of startDate');
+        $this->expectExceptionMessage('childcare.start must be before the time portion of startDate');
 
         $this->scenario
             ->withAggregateId('1')
@@ -1104,7 +1140,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
         );
 
         $this->expectException(ChildcareTimeInvalidException::class);
-        $this->expectExceptionMessage('childcareEndTime must be after the time portion of endDate');
+        $this->expectExceptionMessage('childcare.end must be after the time portion of endDate');
 
         $this->scenario
             ->withAggregateId('1')

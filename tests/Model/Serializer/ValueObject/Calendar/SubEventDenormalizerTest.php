@@ -35,7 +35,25 @@ final class SubEventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_denormalizes_with_both_childcare_times(): void
+    public function it_denormalizes_with_nested_childcare_start_and_end(): void
+    {
+        $subEvent = $this->denormalizer->denormalize(
+            [
+                'startDate' => '2021-05-17T16:00:00+00:00',
+                'endDate' => '2021-05-17T22:00:00+00:00',
+                'childcare' => ['start' => '15:00', 'end' => '23:00'],
+            ],
+            SubEvent::class
+        );
+
+        $this->assertSame('15:00', $subEvent->getChildcareTimeRange()->getStart());
+        $this->assertSame('23:00', $subEvent->getChildcareTimeRange()->getEnd());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_legacy_childcare_start_and_end_times(): void
     {
         $subEvent = $this->denormalizer->denormalize(
             [
@@ -54,7 +72,7 @@ final class SubEventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_denormalizes_with_only_childcare_start_time(): void
+    public function it_denormalizes_legacy_childcare_start_time_only(): void
     {
         $subEvent = $this->denormalizer->denormalize(
             [
@@ -72,7 +90,7 @@ final class SubEventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_denormalizes_with_only_childcare_end_time(): void
+    public function it_denormalizes_legacy_childcare_end_time_only(): void
     {
         $subEvent = $this->denormalizer->denormalize(
             [

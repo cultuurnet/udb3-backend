@@ -17,6 +17,7 @@ final class SubEventUpdate
     private ?BookingAvailability $bookingAvailability = null;
     private ?BookingInfo $bookingInfo = null;
     private ?TimeImmutableRange $childcareTimeRange = null;
+    private bool $childcareTimeRangeIsSet = false;
 
     public function __construct(int $subEventId)
     {
@@ -93,10 +94,16 @@ final class SubEventUpdate
         return $this->childcareTimeRange;
     }
 
+    public function isChildcareTimeRangeSet(): bool
+    {
+        return $this->childcareTimeRangeIsSet;
+    }
+
     public function withChildcareTimeRange(?TimeImmutableRange $childcareTimeRange): self
     {
         $c = clone $this;
         $c->childcareTimeRange = $childcareTimeRange;
+        $c->childcareTimeRangeIsSet = true;
         return $c;
     }
 }
