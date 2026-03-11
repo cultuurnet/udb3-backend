@@ -86,7 +86,10 @@ class CanonicalService
         $placesWithUiTPas = $this->getPlacesWithUiTPasInCluster($placeIds);
 
         if (count($placesWithMuseumpas) > 0 && count($placesWithUiTPas) > 0) {
-            return $this->getOldestPlace($placeIds);
+            $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
+            if (count($placesWithMostEvents) === 1) {
+                return $placesWithMostEvents[array_key_first($placesWithMostEvents)];
+            }
         }
 
         if (count($placesWithMuseumpas) >= 1) {
