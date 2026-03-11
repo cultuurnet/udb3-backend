@@ -153,6 +153,17 @@ final class TimeImmutableRangeTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_when_hour_is_24_with_non_zero_minutes(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('"24:30" is not a valid time. When hour is 24, minutes must be 0.');
+
+        new TimeImmutableRange('24:30');
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_minutes_exceed_59(): void
     {
         $this->expectException(InvalidArgumentException::class);

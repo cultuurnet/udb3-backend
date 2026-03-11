@@ -80,6 +80,12 @@ final class TimeImmutableRange
             );
         }
 
+        if ((int) $hour === 24 && (int) $minutes !== 0) {
+            throw new InvalidArgumentException(
+                sprintf('"%s" is not a valid time. When hour is 24, minutes must be 0.', $time)
+            );
+        }
+
         if ((int) $minutes < 0 || (int) $minutes > 59) {
             throw new InvalidArgumentException(
                 sprintf('"%s" is not a valid time. Minutes must be between 0 and 59.', $time)
