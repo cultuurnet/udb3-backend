@@ -170,10 +170,7 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
         $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
     }
 
-    /**
-     * @test
-     */
-    public function it_returns_first_item_with_canonical_when_no_non_duplicate_results_found(): void
+    public function test_it_returns_first_item_with_canonical_when_no_non_duplicate_results_found(): void
     {
         $place1Id = '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831';
         $place2Id = 'aadcee95-6180-4924-a8eb-ed829d4957a2';
@@ -204,6 +201,25 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
         $duplicatePlaceUri = $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
 
         $this->assertEquals('https://www.example.com/place/99999999-9999-9999-9999-999999999999', $duplicatePlaceUri);
+    }
+
+    public function test_it_throws_when_no_canonical_found_and_no_non_duplicate_results(): void
+    {
+        $place1Id = '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831';
+        $place2Id = 'aadcee95-6180-4924-a8eb-ed829d4957a2';
+
+        $this->sapi3SearchService->method('search')->willReturnOnConsecutiveCalls(
+            new Results(new ItemIdentifiers(
+                new ItemIdentifier(new Url('https://www.example.com/place/' . $place1Id), $place1Id, ItemType::place()),
+                new ItemIdentifier(new Url('https://www.example.com/place/' . $place2Id), $place2Id, ItemType::place()),
+            ), 2),
+            new Results(new ItemIdentifiers(), 0)
+        );
+
+        $this->duplicatePlaceRepository->method('getCanonicalOfPlace')->willReturn(null);
+
+        $this->expectException(MultipleDuplicatePlacesFound::class);
+        $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
     }
 
     private function createPlace(): ImmutablePlace
