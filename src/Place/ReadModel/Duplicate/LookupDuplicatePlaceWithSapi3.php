@@ -78,7 +78,7 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
         }
 
         $this->logger->error(
-            'Problem with finding a canonical place: ',
+            'Problem with finding a canonical place',
             ['query' => $query]
         );
 
