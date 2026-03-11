@@ -33,10 +33,10 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
     }
 
     /*
-    When there is only one place propose that place
-    When there are multiple places propose the one with duplicatedBy
-    When there are multiple places but no canonical try to find a canonical
-    When all else fails, return a query
+     * When there is no place returned by the query allow the creation
+     * When there is one place returned by the query, disallow creation and return the found place
+     * When there is more than one place found, disallow creation and use the duplicate table to find the canonical
+     * When canonical lookup fails return the query
     */
     public function getDuplicatePlaceUri(Place $place): ?string
     {
@@ -54,29 +54,11 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
             return $resultsWithDuplicates->getItems()[0]->getUrl()->toString();
         }
 
-        // We have more than 1 result, lets do the call again with isDuplicate=false to see if without duplicates,
-        // we only get 1 place back
-        $originalQuery = $query;
-        $query .= '&isDuplicate=false';
-
-        $resultsWithoutDuplicates = $this->sapi3SearchService->search(
-            $query
-        );
-
-        if ($resultsWithoutDuplicates->getTotalItems() === 1) {
-            return $resultsWithoutDuplicates->getItems()[0]->getUrl()->toString();
-        }
-
-        /**
-         * @see https://jira.publiq.be/browse/III-7059
-         */
-        if ($resultsWithoutDuplicates->getTotalItems() === 0) {
-            foreach ($resultsWithDuplicates->getItems() as $item) {
-                $id = $item->getId();
-                $canonicalId = $this->duplicatePlaceRepository->getCanonicalOfPlace($id);
-                if ($canonicalId !== null) {
-                    return str_replace($id, $canonicalId, $item->getUrl()->toString());
-                }
+        foreach ($resultsWithDuplicates->getItems() as $item) {
+            $id = $item->getId();
+            $canonicalId = $this->duplicatePlaceRepository->getCanonicalOfPlace($id);
+            if ($canonicalId !== null) {
+                return str_replace($id, $canonicalId, $item->getUrl()->toString());
             }
         }
 
