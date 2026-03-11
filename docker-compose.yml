@@ -89,8 +89,11 @@ services:
       timeout: 5s
 
   rabbitmq:
-    image: public.ecr.aws/y2o7k5u2/udb3/rabbitmq:latest
+    image: rabbitmq:3.6.10-management
     hostname: 'rabbitdocker'
+    environment:
+      RABBITMQ_DEFAULT_USER: vagrant
+      RABBITMQ_DEFAULT_PASS: vagrant
     container_name: rabbitmq.uitdatabank
     ports:
       - 5672:5672
