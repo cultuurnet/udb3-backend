@@ -44,7 +44,6 @@ use CultuurNet\UDB3\Place\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Place\Commands\UpdateDescription;
 use CultuurNet\UDB3\Place\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Place\Place as PlaceAggregate;
-use CultuurNet\UDB3\Place\ReadModel\Duplicate\MultipleDuplicatePlacesFound;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlace;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use DateTimeImmutable;
@@ -270,18 +269,11 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
     public function guardDuplicatePlace(Place $place): void
     {
-        try {
-            $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceUri($place);
-            if ($duplicatePlaceId !== null) {
-                throw ApiProblem::duplicatePlaceDetected(
-                    'A place with this address / name combination already exists. Please use the existing place for your purposes.',
-                    ['duplicatePlaceUri' => $duplicatePlaceId]
-                );
-            }
-        } catch (MultipleDuplicatePlacesFound $e) {
+        $duplicatePlaceId = $this->lookupDuplicatePlace->getDuplicatePlaceUri($place);
+        if ($duplicatePlaceId !== null) {
             throw ApiProblem::duplicatePlaceDetected(
-                $e->getMessage(),
-                ['query' => $e->getQuery()]
+                'A place with this address / name combination already exists. Please use the existing place for your purposes.',
+                ['duplicatePlaceUri' => $duplicatePlaceId]
             );
         }
     }
