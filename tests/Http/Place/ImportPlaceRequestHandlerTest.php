@@ -100,7 +100,6 @@ use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\UuidFactory;
-use Psr\Log\LoggerInterface;
 
 final class ImportPlaceRequestHandlerTest extends TestCase
 {
@@ -197,8 +196,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             $this->commandBus,
             $this->imageCollectionFactory,
             $this->createMock(LookupDuplicatePlace::class),
-            $organizerRepository,
-            $this->createMock(LoggerInterface::class)
+            $organizerRepository
         );
 
         $this->commandBus->record();
@@ -5231,8 +5229,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             $this->commandBus,
             $this->imageCollectionFactory,
             $lookupDuplicatePlace,
-            new InMemoryDocumentRepository(),
-            $this->createMock(LoggerInterface::class)
+            new InMemoryDocumentRepository()
         );
 
         $this->commandBus->record();
@@ -5274,8 +5271,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             $this->commandBus,
             $this->imageCollectionFactory,
             $lookupDuplicatePlace,
-            new InMemoryDocumentRepository(),
-            $this->createMock(LoggerInterface::class)
+            new InMemoryDocumentRepository()
         );
 
         $this->commandBus->record();

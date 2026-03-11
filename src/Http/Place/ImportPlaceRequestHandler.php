@@ -52,7 +52,6 @@ use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ImportPlaceRequestHandler implements RequestHandlerInterface
@@ -77,8 +76,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
 
     private DocumentRepository $organizerDocumentRepository;
 
-    private LoggerInterface $logger;
-
     public function __construct(
         Repository $aggregateRepository,
         UuidGeneratorInterface $uuidGenerator,
@@ -88,8 +85,7 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         CommandBus $commandBus,
         ImageCollectionFactory $imageCollectionFactory,
         LookupDuplicatePlace $lookupDuplicatePlace,
-        DocumentRepository $organizerDocumentRepository,
-        LoggerInterface $logger
+        DocumentRepository $organizerDocumentRepository
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -100,7 +96,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
         $this->imageCollectionFactory = $imageCollectionFactory;
         $this->lookupDuplicatePlace = $lookupDuplicatePlace;
         $this->organizerDocumentRepository = $organizerDocumentRepository;
-        $this->logger = $logger;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -284,10 +279,6 @@ final class ImportPlaceRequestHandler implements RequestHandlerInterface
                 );
             }
         } catch (MultipleDuplicatePlacesFound $e) {
-            $this->logger->error(
-                $e->getMessage(),
-                ['query' => $e->getQuery()]
-            );
             throw ApiProblem::duplicatePlaceDetected(
                 $e->getMessage(),
                 ['query' => $e->getQuery()]
