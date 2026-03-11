@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\Search\Results;
@@ -39,6 +40,8 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
     private LookupDuplicatePlaceWithSapi3 $lookupDuplicatePlaceWithSapi3;
 
     private Sapi3SearchService&MockObject $sapi3SearchService;
+
+    private DuplicatePlaceRepository&MockObject $duplicatePlaceRepository;
 
     protected function setUp(): void
     {
@@ -60,11 +63,14 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
                 }
             });
 
+        $this->duplicatePlaceRepository = $this->createMock(DuplicatePlaceRepository::class);
+
         $this->lookupDuplicatePlaceWithSapi3 = new LookupDuplicatePlaceWithSapi3(
             $this->sapi3SearchService,
             new UniqueAddressIdentifierFactory(),
             'current-user-id',
-            true
+            true,
+            $this->duplicatePlaceRepository
         );
     }
 
@@ -162,6 +168,42 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
 
         $this->expectException(MultipleDuplicatePlacesFound::class);
         $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
+    }
+
+    /**
+     * @test
+     */
+    public function ticket7059(): void
+    {
+        $place1Id = '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831';
+        $place2Id = 'aadcee95-6180-4924-a8eb-ed829d4957a2';
+
+        $this->sapi3SearchService->method('search')->willReturnOnConsecutiveCalls(
+            new Results(new ItemIdentifiers(
+                new ItemIdentifier(
+                    new Url('http://www.example.com/place/' . $place1Id),
+                    $place1Id,
+                    ItemType::place()
+                ),
+                new ItemIdentifier(
+                    new Url('http://www.example.com/place/' . $place2Id),
+                    $place2Id,
+                    ItemType::place()
+                )
+            ), 2),
+            new Results(new ItemIdentifiers(), 0)
+        );
+
+        $this->duplicatePlaceRepository->expects($this->atLeastOnce())
+            ->method('getCanonicalOfPlace')
+            ->willReturnMap([
+                [$place1Id, null],
+                [$place2Id, '99999999-9999-9999-9999-999999999999'],
+            ]);
+
+        $duplicatePlaceUri = $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
+
+        $this->assertEquals('http://www.example.com/place/' . $place2Id, $duplicatePlaceUri);
     }
 
     private function createPlace(): ImmutablePlace
