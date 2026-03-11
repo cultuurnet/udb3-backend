@@ -53,61 +53,6 @@ final class SubEventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_denormalizes_legacy_childcare_start_and_end_times(): void
-    {
-        $subEvent = $this->denormalizer->denormalize(
-            [
-                'startDate' => '2021-05-17T16:00:00+00:00',
-                'endDate' => '2021-05-17T22:00:00+00:00',
-                'childcareStartTime' => '15:00',
-                'childcareEndTime' => '23:00',
-            ],
-            SubEvent::class
-        );
-
-        $this->assertSame('15:00', $subEvent->getChildcareTimeRange()->getStart());
-        $this->assertSame('23:00', $subEvent->getChildcareTimeRange()->getEnd());
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_legacy_childcare_start_time_only(): void
-    {
-        $subEvent = $this->denormalizer->denormalize(
-            [
-                'startDate' => '2021-05-17T16:00:00+00:00',
-                'endDate' => '2021-05-17T22:00:00+00:00',
-                'childcareStartTime' => '15:00',
-            ],
-            SubEvent::class
-        );
-
-        $this->assertSame('15:00', $subEvent->getChildcareTimeRange()->getStart());
-        $this->assertNull($subEvent->getChildcareTimeRange()->getEnd());
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_legacy_childcare_end_time_only(): void
-    {
-        $subEvent = $this->denormalizer->denormalize(
-            [
-                'startDate' => '2021-05-17T16:00:00+00:00',
-                'endDate' => '2021-05-17T22:00:00+00:00',
-                'childcareEndTime' => '23:00',
-            ],
-            SubEvent::class
-        );
-
-        $this->assertNull($subEvent->getChildcareTimeRange()->getStart());
-        $this->assertSame('23:00', $subEvent->getChildcareTimeRange()->getEnd());
-    }
-
-    /**
-     * @test
-     */
     public function it_supports_denormalization_of_sub_event(): void
     {
         $this->assertTrue($this->denormalizer->supportsDenormalization([], SubEvent::class));

@@ -45,10 +45,10 @@ final class ChildcareTimeValidator
         return $errors;
     }
 
-    private function validateStartTime(string $childcareStartTime, string $startDate, string $jsonPointer): ?SchemaError
+    private function validateStartTime(string $start, string $startDate, string $jsonPointer): ?SchemaError
     {
         try {
-            $range = new TimeImmutableRange($childcareStartTime);
+            $range = new TimeImmutableRange($start);
         } catch (InvalidArgumentException $e) {
             return new SchemaError($jsonPointer . '/childcare/start', $e->getMessage());
         }
@@ -69,10 +69,10 @@ final class ChildcareTimeValidator
         return null;
     }
 
-    private function validateEndTime(string $childcareEndTime, string $endDate, string $jsonPointer): ?SchemaError
+    private function validateEndTime(string $end, string $endDate, string $jsonPointer): ?SchemaError
     {
         try {
-            $range = new TimeImmutableRange(null, $childcareEndTime);
+            $range = new TimeImmutableRange(null, $end);
         } catch (InvalidArgumentException $e) {
             return new SchemaError($jsonPointer . '/childcare/end', $e->getMessage());
         }

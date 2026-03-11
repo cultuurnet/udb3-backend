@@ -44,8 +44,8 @@ final class SubEventDenormalizer implements DenormalizerInterface
 
         $subEvent = new SubEvent(new DateRange($startDate, $endDate), $status, $bookingAvailability, $bookingInfo);
 
-        $childcareStart = $data['childcare']['start'] ?? $data['childcareStartTime'] ?? null;
-        $childcareEnd = $data['childcare']['end'] ?? $data['childcareEndTime'] ?? null;
+        $childcareStart = $data['childcare']['start'] ?? null;
+        $childcareEnd = $data['childcare']['end'] ?? null;
 
         if ($childcareStart !== null || $childcareEnd !== null) {
             $subEvent = $subEvent->withChildcareTimeRange(new TimeImmutableRange($childcareStart, $childcareEnd));

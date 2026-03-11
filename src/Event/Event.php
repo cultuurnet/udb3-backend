@@ -430,7 +430,7 @@ final class Event extends Offer
 
     /**
      * Validates childcare times against the effective sub event dates at the domain level.
-     * This is necessary for PATCH requests (UpdateSubEvents) where childcareStartTime or childcareEndTime
+     * This is necessary for PATCH requests (UpdateSubEvents) where childcare times
      * can be set without providing the corresponding startDate/endDate in the same request body.
      * In that case the HTTP-layer ChildcareTimeValidator cannot validate because it only sees the
      * partial request body, not the stored dates.
