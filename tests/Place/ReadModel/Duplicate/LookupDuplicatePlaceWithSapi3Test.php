@@ -173,7 +173,7 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
     /**
      * @test
      */
-    public function ticket7059(): void
+    public function it_returns_first_item_with_canonical_when_no_non_duplicate_results_found(): void
     {
         $place1Id = '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831';
         $place2Id = 'aadcee95-6180-4924-a8eb-ed829d4957a2';
