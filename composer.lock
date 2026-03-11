@@ -6148,12 +6148,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "583f8c4546274fe542ff1cecf9056392d234f0ac"
+                "reference": "9977ff2b57dfa0451c9e13eacb09a31df4a6a4ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/583f8c4546274fe542ff1cecf9056392d234f0ac",
-                "reference": "583f8c4546274fe542ff1cecf9056392d234f0ac",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/9977ff2b57dfa0451c9e13eacb09a31df4a6a4ef",
+                "reference": "9977ff2b57dfa0451c9e13eacb09a31df4a6a4ef",
                 "shasum": ""
             },
             "type": "library",
@@ -6172,7 +6172,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7053/multiple-calendar-add-childcare"
             },
-            "time": "2026-03-10T12:53:06+00:00"
+            "time": "2026-03-11T11:56:23+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
