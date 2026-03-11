@@ -2175,6 +2175,37 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([]);
     }
 
+    /**
+     * @test
+     */
+    public function it_updates_faqs_on_event_imported_from_udb2(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $faqId = 'a1b2c3d4-0000-0000-0000-000000000001';
+
+        $faqs = (new Faqs())->with(
+            new TranslatedFaq(
+                new Language('nl'),
+                new Faq(
+                    new Uuid($faqId),
+                    new Question('Hoe geraak ik er?'),
+                    new Answer('Met de bus.')
+                )
+            )
+        );
+
+        $this->scenario
+            ->given([
+                new EventImportedFromUDB2(
+                    $eventId,
+                    $this->getSample('event_without_price.cdbxml.xml'),
+                    self::NS_CDBXML_3_2
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateFaqs($faqs))
+            ->then([new FaqsUpdated($eventId, $faqs)]);
+    }
+
     protected function getSample(string $file): string
     {
         return SampleFiles::read(
