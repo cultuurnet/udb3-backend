@@ -434,14 +434,16 @@ final class Event extends Offer
     {
         if (!$childcareTimeRange->startIsBeforeTimeOf($subEvent->getDateRange()->getFrom())) {
             throw new ChildcareTimeInvalidException(
-                '/' . $subEventIndex . '/childcareStartTime',
+                'childcareStartTime',
+                $subEventIndex,
                 'childcareStartTime must be before the time portion of startDate'
             );
         }
 
         if (!$childcareTimeRange->endIsAfterTimeOf($subEvent->getDateRange()->getTo())) {
             throw new ChildcareTimeInvalidException(
-                '/' . $subEventIndex . '/childcareEndTime',
+                'childcareEndTime',
+                $subEventIndex,
                 'childcareEndTime must be after the time portion of endDate'
             );
         }

@@ -8,16 +8,23 @@ use InvalidArgumentException;
 
 class ChildcareTimeInvalidException extends InvalidArgumentException
 {
-    private string $jsonPointer;
+    private string $field;
+    private int $subEventIndex;
 
-    public function __construct(string $jsonPointer, string $message)
+    public function __construct(string $field, int $subEventIndex, string $message)
     {
         parent::__construct($message);
-        $this->jsonPointer = $jsonPointer;
+        $this->field = $field;
+        $this->subEventIndex = $subEventIndex;
     }
 
-    public function getJsonPointer(): string
+    public function getField(): string
     {
-        return $this->jsonPointer;
+        return $this->field;
+    }
+
+    public function getSubEventIndex(): int
+    {
+        return $this->subEventIndex;
     }
 }

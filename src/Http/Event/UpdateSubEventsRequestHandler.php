@@ -52,7 +52,8 @@ class UpdateSubEventsRequestHandler implements RequestHandlerInterface
         try {
             $this->commandBus->dispatch(new UpdateSubEvents($eventId, ...$updates));
         } catch (ChildcareTimeInvalidException $exception) {
-            throw ApiProblem::bodyInvalidData(new SchemaError($exception->getJsonPointer(), $exception->getMessage()));
+            $pointer = '/' . $exception->getSubEventIndex() . '/' . $exception->getField();
+            throw ApiProblem::bodyInvalidData(new SchemaError($pointer, $exception->getMessage()));
         } catch (InvalidArgumentException $exception) {
             throw ApiProblem::bodyInvalidDataWithDetail($exception->getMessage());
         }
