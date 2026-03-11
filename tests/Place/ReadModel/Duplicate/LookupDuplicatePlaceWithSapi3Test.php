@@ -33,7 +33,7 @@ use CultuurNet\UDB3\Search\Results;
 use CultuurNet\UDB3\Search\Sapi3SearchService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\NullLogger;
+use Psr\Log\LoggerInterface;
 
 final class LookupDuplicatePlaceWithSapi3Test extends TestCase
 {
@@ -47,12 +47,15 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
 
     private IriGeneratorInterface&MockObject $placeIriGenerator;
 
+    private LoggerInterface&MockObject $logger;
+
     protected function setUp(): void
     {
         $this->sapi3SearchService = $this->createMock(Sapi3SearchService::class);
         $this->duplicatePlaceRepository = $this->createMock(DuplicatePlaceRepository::class);
         $this->canonicalService = $this->createMock(CanonicalService::class);
         $this->placeIriGenerator = $this->createMock(IriGeneratorInterface::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->lookupDuplicatePlaceWithSapi3 = new LookupDuplicatePlaceWithSapi3(
             $this->sapi3SearchService,
@@ -62,7 +65,7 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
             $this->duplicatePlaceRepository,
             $this->canonicalService,
             $this->placeIriGenerator,
-            new NullLogger()
+            $this->logger
         );
     }
 
@@ -139,6 +142,13 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
         );
 
         $this->duplicatePlaceRepository->method('getCanonicalOfPlace')->willReturn(null);
+
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with(
+                'Problem with finding a canonical place',
+                $this->arrayHasKey('query')
+            );
 
         $this->canonicalService->expects($this->once())
             ->method('getCanonicalFromArrayWithoutThrowing')
