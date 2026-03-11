@@ -74,10 +74,10 @@ final class SubEventUpdateDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_clears_childcare_time_range_when_childcare_is_null(): void
+    public function it_clears_childcare_time_range_when_childcare_is_an_empty_array(): void
     {
         $update = $this->denormalizer->denormalize(
-            ['id' => 0, 'childcare' => null],
+            ['id' => 0, 'childcare' => []],
             SubEventUpdate::class
         );
 
