@@ -181,12 +181,12 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
         $this->sapi3SearchService->method('search')->willReturnOnConsecutiveCalls(
             new Results(new ItemIdentifiers(
                 new ItemIdentifier(
-                    new Url('http://www.example.com/place/' . $place1Id),
+                    new Url('https://www.example.com/place/' . $place1Id),
                     $place1Id,
                     ItemType::place()
                 ),
                 new ItemIdentifier(
-                    new Url('http://www.example.com/place/' . $place2Id),
+                    new Url('https://www.example.com/place/' . $place2Id),
                     $place2Id,
                     ItemType::place()
                 )
@@ -203,7 +203,7 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
 
         $duplicatePlaceUri = $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
 
-        $this->assertEquals('http://www.example.com/place/' . $place2Id, $duplicatePlaceUri);
+        $this->assertEquals('https://www.example.com/place/99999999-9999-9999-9999-999999999999', $duplicatePlaceUri);
     }
 
     private function createPlace(): ImmutablePlace

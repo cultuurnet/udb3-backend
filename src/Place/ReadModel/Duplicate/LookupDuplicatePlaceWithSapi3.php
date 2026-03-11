@@ -75,7 +75,7 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
                 $id = $item->getId();
                 $canonicalId = $this->duplicatePlaceRepository->getCanonicalOfPlace($id);
                 if ($canonicalId !== null) {
-                    return $item->getUrl()->toString();
+                    return str_replace($id, $canonicalId, $item->getUrl()->toString());
                 }
             }
         }
