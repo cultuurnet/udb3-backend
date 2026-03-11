@@ -62,16 +62,9 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
         }
 
         if (array_key_exists('childcare', $data)) {
-            $childcare = $data['childcare'];
-            if (is_array($childcare)) {
-                $childcareStart = $childcare['start'] ?? null;
-                $childcareEnd = $childcare['end'] ?? null;
-                if ($childcareStart !== null || $childcareEnd !== null) {
-                    $subEventUpdate = $subEventUpdate->withChildcareTimeRange(new TimeImmutableRange($childcareStart, $childcareEnd));
-                } else {
-                    $subEventUpdate = $subEventUpdate->withChildcareTimeRange(null);
-                }
-            }
+            $subEventUpdate = $subEventUpdate->withChildcareTimeRange(
+                $this->denormalizeChildcare($data['childcare'])
+            );
         }
 
         return $subEventUpdate;
@@ -80,5 +73,28 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
     public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === SubEventUpdate::class;
+    }
+
+    /**
+     * Resolves the PATCH childcare semantics:
+     * - absent key          → preserve (caller must not call this method)
+     * - non-array value     → clear  (e.g. null sent explicitly)
+     * - empty array {}      → clear
+     * - array with start/end → set (either or both fields may be present)
+     */
+    private function denormalizeChildcare(mixed $childcare): ?TimeImmutableRange
+    {
+        if (!is_array($childcare)) {
+            return null;
+        }
+
+        $start = $childcare['start'] ?? null;
+        $end = $childcare['end'] ?? null;
+
+        if ($start === null && $end === null) {
+            return null;
+        }
+
+        return new TimeImmutableRange($start, $end);
     }
 }
