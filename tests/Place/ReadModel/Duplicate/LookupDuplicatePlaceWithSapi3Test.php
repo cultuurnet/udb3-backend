@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
+use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -26,11 +27,13 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Search\Results;
 use CultuurNet\UDB3\Search\Sapi3SearchService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
 
 final class LookupDuplicatePlaceWithSapi3Test extends TestCase
 {
@@ -40,18 +43,29 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
 
     private DuplicatePlaceRepository&MockObject $duplicatePlaceRepository;
 
+    private CanonicalService&MockObject $canonicalService;
+
+    private IriGeneratorInterface $placeIriGenerator;
+
     protected function setUp(): void
     {
         $this->sapi3SearchService = $this->createMock(Sapi3SearchService::class);
 
         $this->duplicatePlaceRepository = $this->createMock(DuplicatePlaceRepository::class);
 
+        $this->canonicalService = $this->createMock(CanonicalService::class);
+
+        $this->placeIriGenerator = $this->createMock(IriGeneratorInterface::class);
+
         $this->lookupDuplicatePlaceWithSapi3 = new LookupDuplicatePlaceWithSapi3(
             $this->sapi3SearchService,
             new UniqueAddressIdentifierFactory(),
             'current-user-id',
             true,
-            $this->duplicatePlaceRepository
+            $this->duplicatePlaceRepository,
+            $this->canonicalService,
+            $this->placeIriGenerator,
+            new NullLogger()
         );
     }
 

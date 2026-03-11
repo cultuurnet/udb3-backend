@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Place;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
@@ -84,7 +86,10 @@ final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
                         new UniqueAddressIdentifierFactory(),
                         $container->get(CurrentUser::class)->getId(),
                         $container->get('config')['use_global_address_identifier'] ?? false,
-                        $container->get(DuplicatePlaceRepository::class)
+                        $container->get(DuplicatePlaceRepository::class),
+                        $container->get('canonical_service'),
+                        $container->get('place_iri_generator'),
+                        LoggerFactory::create($this->getContainer(), LoggerName::forWeb())
                     ),
                     $container->get('organizer_jsonld_repository'),
                 );
