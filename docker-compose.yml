@@ -99,6 +99,9 @@ services:
     ports:
       - 5672:5672
       - 15672:15672
+    volumes:
+      - ./docker/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config
+      - ./docker/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
     networks:
       uitdatabank-backend:
         aliases:
