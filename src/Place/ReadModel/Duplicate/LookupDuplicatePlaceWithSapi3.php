@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
+use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Place\Place;
+use CultuurNet\UDB3\Place\Canonical\CanonicalService;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Search\Sapi3SearchService;
+use Psr\Log\LoggerInterface;
 
 final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
 {
@@ -15,58 +19,77 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
 
     private bool $useGlobalAddressIdentifier;
 
+    private DuplicatePlaceRepository $duplicatePlaceRepository;
+
+    private CanonicalService $canonicalService;
+
+    private IriGeneratorInterface $placeIriGenerator;
+
+    private LoggerInterface $logger;
+
     public function __construct(
         Sapi3SearchService $sapi3SearchService,
         UniqueAddressIdentifierFactory $addressIdentifierFactory,
         string $currentUserId,
-        bool $useGlobalAddressIdentifier
+        bool $useGlobalAddressIdentifier,
+        DuplicatePlaceRepository $duplicatePlaceRepository,
+        CanonicalService $canonicalService,
+        IriGeneratorInterface $placeIriGenerator,
+        LoggerInterface $logger,
     ) {
         $this->sapi3SearchService = $sapi3SearchService;
         $this->addressIdentifierFactory = $addressIdentifierFactory;
         $this->currentUserId = $currentUserId;
         $this->useGlobalAddressIdentifier = $useGlobalAddressIdentifier;
+        $this->duplicatePlaceRepository = $duplicatePlaceRepository;
+        $this->canonicalService = $canonicalService;
+        $this->placeIriGenerator = $placeIriGenerator;
+        $this->logger = $logger;
     }
 
     /*
-    When there is only one place propose that place
-    When there are multiple places propose the one with duplicatedBy
-    When there are multiple but no canonical returns the search query to get all places
+     * When there is no place returned by the query allow the creation
+     * When there is one place returned by the query, disallow creation and return the found place
+     * When there is more than one place found, disallow creation and use the duplicate table to find the canonical
+     * When canonical lookup fails, we use the CanonicalService to try to find a suitable id and log it
     */
     public function getDuplicatePlaceUri(Place $place): ?string
     {
         $query = $this->getQuery($place);
 
-        $results = $this->sapi3SearchService->search(
+        $resultsWithDuplicates = $this->sapi3SearchService->search(
             $query
         );
 
-        if ($results->getTotalItems() === 0) {
+        if ($resultsWithDuplicates->getTotalItems() === 0) {
             return null;
         }
 
-        if ($results->getTotalItems() === 1) {
-            return $results->getItems()[0]->getUrl()->toString();
+        if ($resultsWithDuplicates->getTotalItems() === 1) {
+            return $resultsWithDuplicates->getItems()[0]->getUrl()->toString();
         }
 
-        // We have more than 1 result, lets do the call again with isDuplicate=false to see if without duplicates,
-        // we only get 1 place back
-        $originalQuery = $query;
-        $query .= '&isDuplicate=false';
+        foreach ($resultsWithDuplicates->getItems() as $item) {
+            $id = $item->getId();
+            $canonicalId = $this->duplicatePlaceRepository->getCanonicalOfPlace($id);
+            if ($canonicalId !== null) {
+                return $this->placeIriGenerator->iri($canonicalId);
+            }
+        }
 
-        $results = $this->sapi3SearchService->search(
-            $query
+        $placeIds = array_map(fn ($item) => $item->getId(), $resultsWithDuplicates->getItems());
+
+        $placeId = $this->canonicalService->getCanonicalFromArrayWithoutThrowing($placeIds);
+
+        $this->logger->warning(
+            'Problem with finding a canonical place',
+            [
+                'query' => $query,
+                'suggestCanonicalId' => $placeId,
+            ]
         );
 
-        if ($results->getTotalItems() === 0) {
-            throw new MultipleDuplicatePlacesFound($originalQuery);
-        }
-
-        if ($results->getTotalItems() === 1) {
-            return $results->getItems()[0]->getUrl()->toString();
-        }
-
-        // Add isDuplicate so the response will never contain places we identified as duplicates
-        throw new MultipleDuplicatePlacesFound($query);
+        return $this->placeIriGenerator->iri($placeId);
     }
 
     private function getQuery(Place $place): string

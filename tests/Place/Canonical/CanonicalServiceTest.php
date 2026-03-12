@@ -25,8 +25,10 @@ class CanonicalServiceTest extends TestCase
     private CanonicalService $canonicalService;
 
     private string $museumPassPlaceId;
+    private string $anotherMuseumPassPlaceId;
     private string $mostEventsPlaceId;
     private string $UiTPASPlaceId;
+    private string $anotherUiTPASPlaceId;
     private string $oldestPlaceId;
 
     public function setUp(): void
@@ -35,10 +37,12 @@ class CanonicalServiceTest extends TestCase
 
         $this->oldestPlaceId = '8717c43d-026f-42e9-9ea9-799623c5763c';
         $this->museumPassPlaceId = '901e23fe-b393-4cc6-9307-8e3e3f2ea77f';
-        $anotherMuseumPassPlaceId = '526605d3-7cc4-4607-97a4-065896253f42';
+        $this->anotherMuseumPassPlaceId = '526605d3-7cc4-4607-97a4-065896253f42';
+        $anotherMuseumPassPlaceId = $this->anotherMuseumPassPlaceId;
         $this->mostEventsPlaceId = '34621f3b-b626-4672-be7c-33972ac13791';
         $this->UiTPASPlaceId = Uuid::uuid4()->toString();
-        $anotherUiTPASPlaceId = Uuid::uuid4()->toString();
+        $this->anotherUiTPASPlaceId = Uuid::uuid4()->toString();
+        $anotherUiTPASPlaceId = $this->anotherUiTPASPlaceId;
 
         $this->getConnection()->insert(
             'duplicate_places',
@@ -352,5 +356,111 @@ class CanonicalServiceTest extends TestCase
             $this->UiTPASPlaceId,
             $canonicalId
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_mpm_place_from_array(): void
+    {
+        $canonicalId = $this->canonicalService->getCanonicalFromArrayWithoutThrowing([
+            $this->museumPassPlaceId,
+            $this->mostEventsPlaceId,
+        ]);
+
+        $this->assertEquals($this->museumPassPlaceId, $canonicalId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_first_mpm_place_without_throwing_when_multiple_mpm_places(): void
+    {
+        $canonicalId = $this->canonicalService->getCanonicalFromArrayWithoutThrowing([
+            $this->anotherMuseumPassPlaceId,
+            $this->museumPassPlaceId,
+        ]);
+
+        $this->assertEquals($this->anotherMuseumPassPlaceId, $canonicalId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_uitpas_place_from_array(): void
+    {
+        $canonicalId = $this->canonicalService->getCanonicalFromArrayWithoutThrowing([
+            $this->UiTPASPlaceId,
+            $this->oldestPlaceId,
+        ]);
+
+        $this->assertEquals($this->UiTPASPlaceId, $canonicalId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_first_uitpas_place_without_throwing_when_multiple_uitpas_places(): void
+    {
+        $canonicalId = $this->canonicalService->getCanonicalFromArrayWithoutThrowing([
+            $this->UiTPASPlaceId,
+            $this->anotherUiTPASPlaceId,
+        ]);
+
+        $this->assertEquals($this->UiTPASPlaceId, $canonicalId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_place_with_most_events_when_mpm_and_uitpas_conflict(): void
+    {
+        // museumPassPlaceId has 2 events, UiTPASPlaceId has 0 events
+        $canonicalId = $this->canonicalService->getCanonicalFromArrayWithoutThrowing([
+            $this->museumPassPlaceId,
+            $this->UiTPASPlaceId,
+        ]);
+
+        $this->assertEquals($this->museumPassPlaceId, $canonicalId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_mpm_place_without_throwing_when_mpm_and_uitpas_have_tied_events(): void
+    {
+        // anotherMuseumPassPlaceId has 0 events, UiTPASPlaceId has 0 events → tie → falls back to MPM
+        $canonicalId = $this->canonicalService->getCanonicalFromArrayWithoutThrowing([
+            $this->anotherMuseumPassPlaceId,
+            $this->UiTPASPlaceId,
+        ]);
+
+        $this->assertEquals($this->anotherMuseumPassPlaceId, $canonicalId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_place_with_most_events_from_array(): void
+    {
+        $canonicalId = $this->canonicalService->getCanonicalFromArrayWithoutThrowing([
+            $this->mostEventsPlaceId,
+            $this->oldestPlaceId,
+        ]);
+
+        $this->assertEquals($this->mostEventsPlaceId, $canonicalId);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_oldest_place_when_events_are_tied(): void
+    {
+        $canonicalId = $this->canonicalService->getCanonicalFromArrayWithoutThrowing([
+            $this->oldestPlaceId,
+            '4b4ca084-b78e-474f-b868-6f9df2d20df1',
+        ]);
+
+        $this->assertEquals($this->oldestPlaceId, $canonicalId);
     }
 }

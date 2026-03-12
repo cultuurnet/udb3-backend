@@ -241,6 +241,7 @@ final class Event extends Offer
         $this->eventId = $eventImported->getEventId();
         // When importing from UDB2 the default main language is always 'nl'.
         $this->mainLanguage = new Language('nl');
+        $this->faqs = new Faqs();
         $this->setUDB2Data($eventImported);
     }
 
@@ -406,6 +407,8 @@ final class Event extends Offer
         } else {
             $updatedCalendar = new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
         }
+
+        $updatedCalendar = $updatedCalendar->withBookingAvailability($this->calendar->getBookingAvailability());
 
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(

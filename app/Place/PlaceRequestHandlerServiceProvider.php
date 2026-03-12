@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Place;
 
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
@@ -19,6 +21,7 @@ use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Place\PlaceCategoryResolver;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
+use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\LookupDuplicatePlaceWithSapi3;
 use CultuurNet\UDB3\Place\ReadModel\Duplicate\UniqueAddressIdentifierFactory;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
@@ -82,9 +85,13 @@ final class PlaceRequestHandlerServiceProvider extends AbstractServiceProvider
                         $container->get(PlacesSapi3SearchService::class),
                         new UniqueAddressIdentifierFactory(),
                         $container->get(CurrentUser::class)->getId(),
-                        $container->get('config')['use_global_address_identifier'] ?? false
+                        $container->get('config')['use_global_address_identifier'] ?? false,
+                        $container->get(DuplicatePlaceRepository::class),
+                        $container->get('canonical_service'),
+                        $container->get('place_iri_generator'),
+                        LoggerFactory::create($this->getContainer(), LoggerName::forWeb())
                     ),
-                    $container->get('organizer_jsonld_repository')
+                    $container->get('organizer_jsonld_repository'),
                 );
             }
         );

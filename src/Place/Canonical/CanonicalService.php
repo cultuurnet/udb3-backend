@@ -74,6 +74,40 @@ class CanonicalService
         return $this->getOldestPlace($placeIds);
     }
 
+    /**
+     * @param string[] $placeIds
+     * This function is only used LookupDuplicatePlaceWithSapi3 to make sure
+     * we always return an id. Therefore, it does not throw exceptions and
+     * should probably not be used anywhere else.
+     */
+    public function getCanonicalFromArrayWithoutThrowing(array $placeIds): string
+    {
+        $placesWithMuseumpas = $this->getPlacesWithMuseumPasInCluster($placeIds);
+        $placesWithUiTPas = $this->getPlacesWithUiTPasInCluster($placeIds);
+
+        if (count($placesWithMuseumpas) > 0 && count($placesWithUiTPas) > 0) {
+            $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
+            if (count($placesWithMostEvents) === 1) {
+                return $placesWithMostEvents[array_key_first($placesWithMostEvents)];
+            }
+        }
+
+        if (count($placesWithMuseumpas) >= 1) {
+            return $placesWithMuseumpas[array_key_first($placesWithMuseumpas)];
+        }
+
+        if (count($placesWithUiTPas) >= 1) {
+            return $placesWithUiTPas[array_key_first($placesWithUiTPas)];
+        }
+
+        $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
+        if (count($placesWithMostEvents) === 1) {
+            return $placesWithMostEvents[array_key_first($placesWithMostEvents)];
+        }
+
+        return $this->getOldestPlace($placeIds);
+    }
+
     private function getPlacesWithMuseumPasInCluster(array $placeIds): array
     {
         $result = $this->labelRelationsRepository->getLabelRelationsForType(
