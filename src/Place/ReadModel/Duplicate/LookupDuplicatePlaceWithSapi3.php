@@ -77,14 +77,17 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
             }
         }
 
-        $this->logger->warning(
-            'Problem with finding a canonical place',
-            ['query' => $query]
-        );
-
         $placeIds = array_map(fn ($item) => $item->getId(), $resultsWithDuplicates->getItems());
 
         $placeId = $this->canonicalService->getCanonicalFromArrayWithoutThrowing($placeIds);
+
+        $this->logger->warning(
+            'Problem with finding a canonical place',
+            [
+                'query' => $query,
+                'suggestCanonicalId' => $placeId,
+            ]
+        );
 
         return $this->placeIriGenerator->iri($placeId);
     }
