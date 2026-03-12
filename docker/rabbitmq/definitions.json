@@ -33,19 +33,28 @@
     {"name": "uitpas.q.udb3-domain-events-api",     "vhost": "udb3-vagrant", "durable": true, "auto_delete": false, "arguments": {}},
     {"name": "search.q.udb3-domain-events-api",     "vhost": "udb3-vagrant", "durable": true, "auto_delete": false, "arguments": {}},
     {"name": "uitpas.q.udb3-domain-events-cli",     "vhost": "udb3-vagrant", "durable": true, "auto_delete": false, "arguments": {}},
-    {"name": "uitpas.q.udb3-domain-events-related", "vhost": "udb3-vagrant", "durable": true, "auto_delete": false, "arguments": {}}
+    {"name": "uitpas.q.udb3-domain-events-related", "vhost": "udb3-vagrant", "durable": true, "auto_delete": false, "arguments": {}},
+    {"name": "search02.q.udb3-domain-events-api",     "vhost": "udb3-vagrant", "durable": true, "auto_delete": false, "arguments": {}},
+    {"name": "search02.q.udb3-domain-events-cli",     "vhost": "udb3-vagrant", "durable": true, "auto_delete": false, "arguments": {}},
+    {"name": "search02.q.udb3-domain-events-related", "vhost": "udb3-vagrant", "durable": true, "auto_delete": false, "arguments": {}}
   ],
   "bindings": [
-    {"source": "search.x.domain-events", "vhost": "udb3-vagrant", "destination": "search.q.udb3-domain-events-api",     "destination_type": "queue", "routing_key": "api",     "arguments": {}},
-    {"source": "search.x.domain-events", "vhost": "udb3-vagrant", "destination": "search.q.udb3-domain-events-cli",     "destination_type": "queue", "routing_key": "cli",     "arguments": {}},
-    {"source": "search.x.domain-events", "vhost": "udb3-vagrant", "destination": "search.q.udb3-domain-events-related", "destination_type": "queue", "routing_key": "related", "arguments": {}},
-    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "rdf.q.udb3-domain-events",            "destination_type": "queue", "routing_key": "#",       "arguments": {}},
-    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "search.q.udb3-domain-events-api",     "destination_type": "queue", "routing_key": "api",     "arguments": {}},
-    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "uitpas.q.udb3-domain-events-api",     "destination_type": "queue", "routing_key": "api",     "arguments": {}},
-    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "search.q.udb3-domain-events-cli",     "destination_type": "queue", "routing_key": "cli",     "arguments": {}},
-    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "uitpas.q.udb3-domain-events-cli",     "destination_type": "queue", "routing_key": "cli",     "arguments": {}},
-    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "search.q.udb3-domain-events-related", "destination_type": "queue", "routing_key": "related", "arguments": {}},
-    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "uitpas.q.udb3-domain-events-related", "destination_type": "queue", "routing_key": "related", "arguments": {}},
-    {"source": "uitpas.x.uitpas-events", "vhost": "udb3-vagrant", "destination": "udb3.q.uitpas-events",                "destination_type": "queue", "routing_key": "#",       "arguments": {}}
+    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "rdf.q.udb3-domain-events",              "destination_type": "queue", "routing_key": "#",       "arguments": {}},
+    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "search.q.udb3-domain-events-api",       "destination_type": "queue", "routing_key": "api",     "arguments": {}},
+    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "search.q.udb3-domain-events-cli",       "destination_type": "queue", "routing_key": "cli",     "arguments": {}},
+    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "search.q.udb3-domain-events-related",   "destination_type": "queue", "routing_key": "related", "arguments": {}},
+    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "search02.q.udb3-domain-events-api",     "destination_type": "queue", "routing_key": "api",     "arguments": {}},
+    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "search02.q.udb3-domain-events-cli",     "destination_type": "queue", "routing_key": "cli",     "arguments": {}},
+    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "search02.q.udb3-domain-events-related", "destination_type": "queue", "routing_key": "related", "arguments": {}},
+    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "uitpas.q.udb3-domain-events-api",       "destination_type": "queue", "routing_key": "api",     "arguments": {}},
+    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "uitpas.q.udb3-domain-events-cli",       "destination_type": "queue", "routing_key": "cli",     "arguments": {}},
+    {"source": "udb3.x.domain-events",   "vhost": "udb3-vagrant", "destination": "uitpas.q.udb3-domain-events-related",   "destination_type": "queue", "routing_key": "related", "arguments": {}},
+    {"source": "search.x.domain-events", "vhost": "udb3-vagrant", "destination": "search.q.udb3-domain-events-api",       "destination_type": "queue", "routing_key": "api",     "arguments": {}},
+    {"source": "search.x.domain-events", "vhost": "udb3-vagrant", "destination": "search.q.udb3-domain-events-cli",       "destination_type": "queue", "routing_key": "cli",     "arguments": {}},
+    {"source": "search.x.domain-events", "vhost": "udb3-vagrant", "destination": "search.q.udb3-domain-events-related",   "destination_type": "queue", "routing_key": "related", "arguments": {}},
+    {"source": "search.x.domain-events", "vhost": "udb3-vagrant", "destination": "search02.q.udb3-domain-events-api",     "destination_type": "queue", "routing_key": "api",     "arguments": {}},
+    {"source": "search.x.domain-events", "vhost": "udb3-vagrant", "destination": "search02.q.udb3-domain-events-cli",     "destination_type": "queue", "routing_key": "cli",     "arguments": {}},
+    {"source": "search.x.domain-events", "vhost": "udb3-vagrant", "destination": "search02.q.udb3-domain-events-related", "destination_type": "queue", "routing_key": "related", "arguments": {}},
+    {"source": "uitpas.x.uitpas-events", "vhost": "udb3-vagrant", "destination": "udb3.q.uitpas-events",                  "destination_type": "queue", "routing_key": "#",       "arguments": {}}
   ]
 }
