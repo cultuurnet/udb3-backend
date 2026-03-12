@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Place\ReadModel\Duplicate;
 
+use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -26,11 +27,13 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Search\Results;
 use CultuurNet\UDB3\Search\Sapi3SearchService;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 final class LookupDuplicatePlaceWithSapi3Test extends TestCase
 {
@@ -40,117 +43,126 @@ final class LookupDuplicatePlaceWithSapi3Test extends TestCase
 
     private DuplicatePlaceRepository&MockObject $duplicatePlaceRepository;
 
+    private CanonicalService&MockObject $canonicalService;
+
+    private IriGeneratorInterface&MockObject $placeIriGenerator;
+
+    private LoggerInterface&MockObject $logger;
+
     protected function setUp(): void
     {
         $this->sapi3SearchService = $this->createMock(Sapi3SearchService::class);
-
         $this->duplicatePlaceRepository = $this->createMock(DuplicatePlaceRepository::class);
+        $this->canonicalService = $this->createMock(CanonicalService::class);
+        $this->placeIriGenerator = $this->createMock(IriGeneratorInterface::class);
+        $this->logger = $this->createMock(LoggerInterface::class);
 
         $this->lookupDuplicatePlaceWithSapi3 = new LookupDuplicatePlaceWithSapi3(
             $this->sapi3SearchService,
             new UniqueAddressIdentifierFactory(),
             'current-user-id',
             true,
-            $this->duplicatePlaceRepository
+            $this->duplicatePlaceRepository,
+            $this->canonicalService,
+            $this->placeIriGenerator,
+            $this->logger
         );
     }
 
-    public function test_it_returns_duplicate_place_based_on_search_result(): void
+    public function test_it_returns_null_when_no_results(): void
     {
-        $itemIdentifiers = new ItemIdentifiers(new ItemIdentifier(
-            new Url('http://example.com/place/aadcee95-6180-4924-a8eb-ed829d4957a2'),
-            'aadcee95-6180-4924-a8eb-ed829d4957a2',
-            ItemType::place()
-        ));
+        $this->sapi3SearchService->expects($this->once())
+            ->method('search')
+            ->willReturn(new Results(new ItemIdentifiers(), 0));
 
+        $this->assertNull($this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace()));
+    }
+
+    public function test_it_returns_the_place_uri_when_one_result(): void
+    {
+        $placeId = 'aadcee95-6180-4924-a8eb-ed829d4957a2';
         $query = '(workflowStatus:DRAFT OR workflowStatus:READY_FOR_VALIDATION OR workflowStatus:APPROVED) AND global_address_identifier:online_kerkstraat_1_2000_antwerpen_be';
 
         $this->sapi3SearchService->expects($this->once())
             ->method('search')
             ->with($query)
-            ->willReturn(
-                new Results($itemIdentifiers, $itemIdentifiers->count())
-            );
-
-        $duplicatePlaceUri = $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
-
-        $this->assertEquals('http://example.com/place/aadcee95-6180-4924-a8eb-ed829d4957a2', $duplicatePlaceUri);
-    }
-
-    /**
-     * @dataProvider searchResultsProvider
-     */
-    public function test_get_duplicate_place_uri(Results $searchResult, ?string $expectedResult): void
-    {
-        $this->sapi3SearchService->method('search')->willReturn($searchResult);
-
-        $duplicatePlaceUri = $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
-        $this->assertEquals($expectedResult, $duplicatePlaceUri);
-    }
-
-    public function searchResultsProvider(): array
-    {
-        return [
-            'No results' => [new Results(new ItemIdentifiers(), 0), null],
-            'One result' => [
-                new Results(new ItemIdentifiers(new ItemIdentifier(
-                    new Url('http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831'),
-                    '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
+            ->willReturn(new Results(new ItemIdentifiers(
+                new ItemIdentifier(
+                    new Url('https://example.com/place/' . $placeId),
+                    $placeId,
                     ItemType::place()
-                )), 1),
-                'http://www.example.com/place/21a4c2bc-1aef-4441-bb51-bd6ab9ccd831',
-            ],
-        ];
+                )
+            ), 1));
+
+        $this->assertEquals(
+            'https://example.com/place/' . $placeId,
+            $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace())
+        );
     }
 
-    public function test_it_returns_first_item_with_canonical_when_no_non_duplicate_results_found(): void
+    public function test_it_returns_canonical_place_when_multiple_results_and_canonical_found_in_repository(): void
     {
         $place1Id = '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831';
         $place2Id = 'aadcee95-6180-4924-a8eb-ed829d4957a2';
+        $canonicalId = '99999999-9999-9999-9999-999999999999';
 
         $this->sapi3SearchService->method('search')->willReturn(
             new Results(new ItemIdentifiers(
-                new ItemIdentifier(
-                    new Url('https://www.example.com/place/' . $place1Id),
-                    $place1Id,
-                    ItemType::place()
-                ),
-                new ItemIdentifier(
-                    new Url('https://www.example.com/place/' . $place2Id),
-                    $place2Id,
-                    ItemType::place()
-                )
+                new ItemIdentifier(new Url('https://example.com/place/' . $place1Id), $place1Id, ItemType::place()),
+                new ItemIdentifier(new Url('https://example.com/place/' . $place2Id), $place2Id, ItemType::place()),
             ), 2)
         );
 
-        $this->duplicatePlaceRepository->expects($this->atLeastOnce())
-            ->method('getCanonicalOfPlace')
+        $this->duplicatePlaceRepository->method('getCanonicalOfPlace')
             ->willReturnMap([
                 [$place1Id, null],
-                [$place2Id, '99999999-9999-9999-9999-999999999999'],
+                [$place2Id, $canonicalId],
             ]);
 
-        $duplicatePlaceUri = $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
+        $this->placeIriGenerator->method('iri')
+            ->with($canonicalId)
+            ->willReturn('https://example.com/place/' . $canonicalId);
 
-        $this->assertEquals('https://www.example.com/place/99999999-9999-9999-9999-999999999999', $duplicatePlaceUri);
+        $this->assertEquals(
+            'https://example.com/place/' . $canonicalId,
+            $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace())
+        );
     }
 
-    public function test_it_throws_when_no_canonical_found_and_no_non_duplicate_results(): void
+    public function test_it_falls_back_to_canonical_service_when_no_canonical_found_in_repository(): void
     {
         $place1Id = '21a4c2bc-1aef-4441-bb51-bd6ab9ccd831';
         $place2Id = 'aadcee95-6180-4924-a8eb-ed829d4957a2';
 
         $this->sapi3SearchService->method('search')->willReturn(
             new Results(new ItemIdentifiers(
-                new ItemIdentifier(new Url('https://www.example.com/place/' . $place1Id), $place1Id, ItemType::place()),
-                new ItemIdentifier(new Url('https://www.example.com/place/' . $place2Id), $place2Id, ItemType::place()),
+                new ItemIdentifier(new Url('https://example.com/place/' . $place1Id), $place1Id, ItemType::place()),
+                new ItemIdentifier(new Url('https://example.com/place/' . $place2Id), $place2Id, ItemType::place()),
             ), 2)
         );
 
         $this->duplicatePlaceRepository->method('getCanonicalOfPlace')->willReturn(null);
 
-        $this->expectException(MultipleDuplicatePlacesFound::class);
-        $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace());
+        $this->logger->expects($this->once())
+            ->method('warning')
+            ->with(
+                'Problem with finding a canonical place',
+                $this->arrayHasKey('query')
+            );
+
+        $this->canonicalService->expects($this->once())
+            ->method('getCanonicalFromArrayWithoutThrowing')
+            ->with([$place1Id, $place2Id])
+            ->willReturn($place1Id);
+
+        $this->placeIriGenerator->method('iri')
+            ->with($place1Id)
+            ->willReturn('https://example.com/place/' . $place1Id);
+
+        $this->assertEquals(
+            'https://example.com/place/' . $place1Id,
+            $this->lookupDuplicatePlaceWithSapi3->getDuplicatePlaceUri($this->createPlace())
+        );
     }
 
     private function createPlace(): ImmutablePlace
