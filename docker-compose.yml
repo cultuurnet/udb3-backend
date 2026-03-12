@@ -89,8 +89,7 @@ services:
       timeout: 5s
 
   rabbitmq:
-    image: rabbitmq:3.6.10-management
-    platform: linux/amd64
+    image: rabbitmq:3.12.12-management
     hostname: 'rabbitdocker'
     container_name: rabbitmq.uitdatabank
     ports:
