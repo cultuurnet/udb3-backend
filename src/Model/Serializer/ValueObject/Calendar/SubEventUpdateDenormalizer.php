@@ -77,10 +77,9 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
 
     /**
      * Resolves the PATCH childcare semantics:
-     * - absent key          → preserve (caller must not call this method)
-     * - non-array value     → clear  (e.g. null sent explicitly)
-     * - empty array {}      → clear
-     * - array with start/end → set (either or both fields may be present)
+     * - absent key or null value → preserve (isset guards the call site)
+     * - empty array {}           → clear
+     * - array with start/end     → set (either or both fields may be present)
      */
     private function denormalizeChildcare(array $childcare): ?TimeImmutableRange
     {

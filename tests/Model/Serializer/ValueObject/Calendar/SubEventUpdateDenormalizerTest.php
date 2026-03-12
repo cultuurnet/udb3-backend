@@ -29,6 +29,18 @@ final class SubEventUpdateDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_does_not_set_childcare_time_range_when_childcare_is_null(): void
+    {
+        // null is falsy for isset(), so it is treated the same as an absent key (preserve).
+        // The JSON schema is expected to reject null at the HTTP layer.
+        $update = $this->denormalizer->denormalize(['id' => 0, 'childcare' => null], SubEventUpdate::class);
+
+        $this->assertFalse($update->isChildcareTimeRangeSet());
+    }
+
+    /**
+     * @test
+     */
     public function it_denormalizes_with_childcare_start_and_end(): void
     {
         $update = $this->denormalizer->denormalize(
@@ -69,20 +81,6 @@ final class SubEventUpdateDenormalizerTest extends TestCase
         $this->assertTrue($update->isChildcareTimeRangeSet());
         $this->assertNull($update->getChildcareTimeRange()->getStart());
         $this->assertSame('23:00', $update->getChildcareTimeRange()->getEnd());
-    }
-
-    /**
-     * @test
-     */
-    public function it_clears_childcare_time_range_when_childcare_is_an_empty_array(): void
-    {
-        $update = $this->denormalizer->denormalize(
-            ['id' => 0, 'childcare' => []],
-            SubEventUpdate::class
-        );
-
-        $this->assertTrue($update->isChildcareTimeRangeSet());
-        $this->assertNull($update->getChildcareTimeRange());
     }
 
     /**
