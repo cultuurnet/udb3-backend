@@ -92,9 +92,6 @@ services:
     image: rabbitmq:3.6.10-management
     platform: linux/amd64
     hostname: 'rabbitdocker'
-    environment:
-      RABBITMQ_DEFAULT_USER: vagrant
-      RABBITMQ_DEFAULT_PASS: vagrant
     container_name: rabbitmq.uitdatabank
     ports:
       - 5672:5672
