@@ -46,8 +46,8 @@ final class SubEventDenormalizerTest extends TestCase
             SubEvent::class
         );
 
-        $this->assertSame('15:00', $subEvent->getChildcareTimeRange()->getStart());
-        $this->assertSame('23:00', $subEvent->getChildcareTimeRange()->getEnd());
+        $this->assertSame('15:00', $subEvent->getChildcareTimeRange()->getStart()->getValue());
+        $this->assertSame('23:00', $subEvent->getChildcareTimeRange()->getEnd()->getValue());
     }
 
     /**

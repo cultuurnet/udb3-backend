@@ -49,8 +49,8 @@ final class SubEventUpdateDenormalizerTest extends TestCase
         );
 
         $this->assertTrue($update->isChildcareTimeRangeSet());
-        $this->assertSame('15:00', $update->getChildcareTimeRange()->getStart());
-        $this->assertSame('23:00', $update->getChildcareTimeRange()->getEnd());
+        $this->assertSame('15:00', $update->getChildcareTimeRange()->getStart()->getValue());
+        $this->assertSame('23:00', $update->getChildcareTimeRange()->getEnd()->getValue());
     }
 
     /**
@@ -64,7 +64,7 @@ final class SubEventUpdateDenormalizerTest extends TestCase
         );
 
         $this->assertTrue($update->isChildcareTimeRangeSet());
-        $this->assertSame('15:00', $update->getChildcareTimeRange()->getStart());
+        $this->assertSame('15:00', $update->getChildcareTimeRange()->getStart()->getValue());
         $this->assertNull($update->getChildcareTimeRange()->getEnd());
     }
 
@@ -80,7 +80,7 @@ final class SubEventUpdateDenormalizerTest extends TestCase
 
         $this->assertTrue($update->isChildcareTimeRangeSet());
         $this->assertNull($update->getChildcareTimeRange()->getStart());
-        $this->assertSame('23:00', $update->getChildcareTimeRange()->getEnd());
+        $this->assertSame('23:00', $update->getChildcareTimeRange()->getEnd()->getValue());
     }
 
     /**
