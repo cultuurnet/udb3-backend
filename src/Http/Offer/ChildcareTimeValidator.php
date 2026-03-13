@@ -27,7 +27,13 @@ final class ChildcareTimeValidator
         if (isset($childcare->start, $data->startDate)
             && is_string($childcare->start)
             && is_string($data->startDate)) {
-            $error = $this->validateStartTime($childcare->start, $data->startDate, $jsonPointer);
+            $error = $this->validateChildcareTime(
+                'start',
+                $childcare->start,
+                $data->startDate,
+                'childcare.start must be before the time portion of startDate',
+                $jsonPointer
+            );
             if ($error !== null) {
                 $errors[] = $error;
             }
@@ -36,7 +42,14 @@ final class ChildcareTimeValidator
         if (isset($childcare->end, $data->endDate)
             && is_string($childcare->end)
             && is_string($data->endDate)) {
-            $error = $this->validateEndTime($childcare->end, $data->endDate, $jsonPointer);
+            $error = $this->validateChildcareTime(
+                'end',
+                $childcare->end,
+                $data->endDate,
+                'childcare.end must be after the time portion of endDate',
+                $jsonPointer,
+                isEnd: true
+            );
             if ($error !== null) {
                 $errors[] = $error;
             }
@@ -45,49 +58,33 @@ final class ChildcareTimeValidator
         return $errors;
     }
 
-    private function validateStartTime(string $start, string $startDate, string $jsonPointer): ?SchemaError
-    {
+    private function validateChildcareTime(
+        string $field,
+        string $time,
+        string $date,
+        string $errorMessage,
+        string $jsonPointer,
+        bool $isEnd = false
+    ): ?SchemaError {
         try {
-            $time = new Time($start);
+            $childcareTime = new Time($time);
         } catch (InvalidArgumentException $e) {
-            return new SchemaError($jsonPointer . '/childcare/start', $e->getMessage());
+            return new SchemaError($jsonPointer . '/childcare/' . $field, $e->getMessage());
         }
 
         try {
-            $startDateTime = new DateTimeImmutable($startDate);
+            $dateTime = new DateTimeImmutable($date);
         } catch (Exception) {
             return null;
         }
 
-        if ($time->toMinutes() >= $this->dateTimeToMinutes($startDateTime)) {
-            return new SchemaError(
-                $jsonPointer . '/childcare/start',
-                'childcare.start must be before the time portion of startDate'
-            );
-        }
+        $childcareMinutes = $childcareTime->toMinutes();
+        $dateMinutes = $this->dateTimeToMinutes($dateTime);
 
-        return null;
-    }
-
-    private function validateEndTime(string $end, string $endDate, string $jsonPointer): ?SchemaError
-    {
-        try {
-            $time = new Time($end);
-        } catch (InvalidArgumentException $e) {
-            return new SchemaError($jsonPointer . '/childcare/end', $e->getMessage());
-        }
-
-        try {
-            $endDateTime = new DateTimeImmutable($endDate);
-        } catch (Exception) {
-            return null;
-        }
-
-        if ($time->toMinutes() <= $this->dateTimeToMinutes($endDateTime)) {
-            return new SchemaError(
-                $jsonPointer . '/childcare/end',
-                'childcare.end must be after the time portion of endDate'
-            );
+        // For start: must be before (childcareMinutes < dateMinutes)
+        // For end: must be after (childcareMinutes > dateMinutes)
+        if ($isEnd ? $childcareMinutes <= $dateMinutes : $childcareMinutes >= $dateMinutes) {
+            return new SchemaError($jsonPointer . '/childcare/' . $field, $errorMessage);
         }
 
         return null;
