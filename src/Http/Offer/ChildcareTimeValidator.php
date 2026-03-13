@@ -35,7 +35,7 @@ final class ChildcareTimeValidator
                 $jsonPointer,
                 fn($childcare, $date) => $childcare >= $date
             );
-            if ($error !== null) {
+            if ($error) {
                 $errors[] = $error;
             }
         }
@@ -51,7 +51,7 @@ final class ChildcareTimeValidator
                 $jsonPointer,
                 fn($childcare, $date) => $childcare <= $date
             );
-            if ($error !== null) {
+            if ($error) {
                 $errors[] = $error;
             }
         }
