@@ -32,7 +32,8 @@ final class ChildcareTimeValidator
                 $childcare->start,
                 $data->startDate,
                 'childcare.start must be before the time portion of startDate',
-                $jsonPointer
+                $jsonPointer,
+                fn($childcare, $date) => $childcare >= $date
             );
             if ($error !== null) {
                 $errors[] = $error;
@@ -48,7 +49,7 @@ final class ChildcareTimeValidator
                 $data->endDate,
                 'childcare.end must be after the time portion of endDate',
                 $jsonPointer,
-                isEnd: true
+                fn($childcare, $date) => $childcare <= $date
             );
             if ($error !== null) {
                 $errors[] = $error;
@@ -64,7 +65,7 @@ final class ChildcareTimeValidator
         string $date,
         string $errorMessage,
         string $jsonPointer,
-        bool $isEnd = false
+        callable $isInvalid
     ): ?SchemaError {
         try {
             $childcareTime = new Time($time);
@@ -78,12 +79,7 @@ final class ChildcareTimeValidator
             return null;
         }
 
-        $childcareMinutes = $childcareTime->toMinutes();
-        $dateMinutes = $this->dateTimeToMinutes($dateTime);
-
-        // For start: must be before (childcareMinutes < dateMinutes)
-        // For end: must be after (childcareMinutes > dateMinutes)
-        if ($isEnd ? $childcareMinutes <= $dateMinutes : $childcareMinutes >= $dateMinutes) {
+        if ($isInvalid($childcareTime->toMinutes(), $this->dateTimeToMinutes($dateTime))) {
             return new SchemaError($jsonPointer . '/childcare/' . $field, $errorMessage);
         }
 
