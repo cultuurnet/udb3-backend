@@ -9,23 +9,15 @@ use InvalidArgumentException;
 
 final class TimeImmutableRange
 {
-    private ?string $start;
+    private ?Time $start;
 
-    private ?string $end;
+    private ?Time $end;
 
-    public function __construct(?string $start = null, ?string $end = null)
+    public function __construct(?Time $start = null, ?Time $end = null)
     {
-        if ($start !== null) {
-            $this->guardTime($start);
-        }
-
-        if ($end !== null) {
-            $this->guardTime($end);
-        }
-
-        if ($start !== null && $end !== null && $this->toMinutes($start) >= $this->toMinutes($end)) {
+        if ($start !== null && $end !== null && $start->toMinutes() >= $end->toMinutes()) {
             throw new InvalidArgumentException(
-                sprintf('"%s" must be before "%s".', $start, $end)
+                sprintf('"%s" must be before "%s".', $start->getValue(), $end->getValue())
             );
         }
 
@@ -33,12 +25,12 @@ final class TimeImmutableRange
         $this->end = $end;
     }
 
-    public function getStart(): ?string
+    public function getStart(): ?Time
     {
         return $this->start;
     }
 
-    public function getEnd(): ?string
+    public function getEnd(): ?Time
     {
         return $this->end;
     }
@@ -48,7 +40,7 @@ final class TimeImmutableRange
         if ($this->start === null) {
             return true;
         }
-        return $this->toMinutes($this->start) < $this->dateTimeToMinutes($dateTime);
+        return $this->start->toMinutes() < $this->dateTimeToMinutes($dateTime);
     }
 
     public function endIsAfterTimeOf(DateTimeImmutable $dateTime): bool
@@ -56,46 +48,11 @@ final class TimeImmutableRange
         if ($this->end === null) {
             return true;
         }
-        return $this->toMinutes($this->end) > $this->dateTimeToMinutes($dateTime);
+        return $this->end->toMinutes() > $this->dateTimeToMinutes($dateTime);
     }
 
     private function dateTimeToMinutes(DateTimeImmutable $dateTime): int
     {
         return (int) $dateTime->format('H') * 60 + (int) $dateTime->format('i');
-    }
-
-    private function guardTime(string $time): void
-    {
-        if (!preg_match('/^\d?\d:\d\d$/', $time)) {
-            throw new InvalidArgumentException(
-                sprintf('"%s" is not a valid time. Expected format is H:MM or HH:MM.', $time)
-            );
-        }
-
-        [$hour, $minutes] = explode(':', $time);
-
-        if ((int) $hour < 0 || (int) $hour > 24) {
-            throw new InvalidArgumentException(
-                sprintf('"%s" is not a valid time. Hour must be between 0 and 24.', $time)
-            );
-        }
-
-        if ((int) $hour === 24 && (int) $minutes !== 0) {
-            throw new InvalidArgumentException(
-                sprintf('"%s" is not a valid time. When hour is 24, minutes must be 0.', $time)
-            );
-        }
-
-        if ((int) $minutes < 0 || (int) $minutes > 59) {
-            throw new InvalidArgumentException(
-                sprintf('"%s" is not a valid time. Minutes must be between 0 and 59.', $time)
-            );
-        }
-    }
-
-    private function toMinutes(string $time): int
-    {
-        [$hour, $minutes] = explode(':', $time);
-        return (int) $hour * 60 + (int) $minutes;
     }
 }

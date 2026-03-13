@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -51,7 +52,7 @@ final class SubEventNormalizerTest extends TestCase
      */
     public function it_includes_nested_childcare_object_when_set(): void
     {
-        $subEvent = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange('15:00', '23:00'));
+        $subEvent = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(new Time('15:00'), new Time('23:00')));
         $normalized = $this->normalizer->normalize($subEvent);
 
         $this->assertSame('15:00', $normalized['childcare']['start']);
@@ -63,7 +64,7 @@ final class SubEventNormalizerTest extends TestCase
      */
     public function it_includes_childcare_with_null_end_when_only_start_is_set(): void
     {
-        $subEvent = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange('15:00', null));
+        $subEvent = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(new Time('15:00'), null));
         $normalized = $this->normalizer->normalize($subEvent);
 
         $this->assertSame('15:00', $normalized['childcare']['start']);
@@ -75,7 +76,7 @@ final class SubEventNormalizerTest extends TestCase
      */
     public function it_includes_childcare_with_null_start_when_only_end_is_set(): void
     {
-        $subEvent = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(null, '23:00'));
+        $subEvent = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(null, new Time('23:00')));
         $normalized = $this->normalizer->normalize($subEvent);
 
         $this->assertNull($normalized['childcare']['start']);

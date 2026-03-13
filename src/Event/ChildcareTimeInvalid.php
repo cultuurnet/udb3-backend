@@ -20,7 +20,7 @@ class ChildcareTimeInvalid extends InvalidArgumentException
 
     public static function afterStart(int $subEventIndex) : self
     {
-        return new self('childcare/start', $subEventIndex, 'childcare.start must be after the time portion of startDate');
+        return new self('childcare/start', $subEventIndex, 'childcare.start must be before the time portion of startDate');
     }
 
     public static function beforeEnd(int $subEventIndex) : self

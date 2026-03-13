@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Model\ValueObject\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use Exception;
@@ -48,7 +49,8 @@ final class ChildcareTimeValidator
     private function validateStartTime(string $start, string $startDate, string $jsonPointer): ?SchemaError
     {
         try {
-            $range = new TimeImmutableRange($start);
+            $time = new Time($start);
+            $range = new TimeImmutableRange($time);
         } catch (InvalidArgumentException $e) {
             return new SchemaError($jsonPointer . '/childcare/start', $e->getMessage());
         }
@@ -72,7 +74,8 @@ final class ChildcareTimeValidator
     private function validateEndTime(string $end, string $endDate, string $jsonPointer): ?SchemaError
     {
         try {
-            $range = new TimeImmutableRange(null, $end);
+            $time = new Time($end);
+            $range = new TimeImmutableRange(null, $time);
         } catch (InvalidArgumentException $e) {
             return new SchemaError($jsonPointer . '/childcare/end', $e->getMessage());
         }

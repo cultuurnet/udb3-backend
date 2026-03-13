@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -301,7 +302,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateSubEvents(
                     self::EVENT_ID,
-                    (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange('15:00', '23:00'))
+                    (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange(new Time('15:00'), new Time('23:00')))
                 ),
             ],
             'one_subEvent_with_empty_childcare_clears_existing' => [
