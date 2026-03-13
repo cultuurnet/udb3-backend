@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Model\ValueObject\Time;
-use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use Exception;
 use InvalidArgumentException;
@@ -50,7 +49,6 @@ final class ChildcareTimeValidator
     {
         try {
             $time = new Time($start);
-            $range = new TimeImmutableRange($time);
         } catch (InvalidArgumentException $e) {
             return new SchemaError($jsonPointer . '/childcare/start', $e->getMessage());
         }
@@ -61,7 +59,7 @@ final class ChildcareTimeValidator
             return null;
         }
 
-        if (!$range->startIsBeforeTimeOf($startDateTime)) {
+        if ($time->toMinutes() >= $this->dateTimeToMinutes($startDateTime)) {
             return new SchemaError(
                 $jsonPointer . '/childcare/start',
                 'childcare.start must be before the time portion of startDate'
@@ -75,7 +73,6 @@ final class ChildcareTimeValidator
     {
         try {
             $time = new Time($end);
-            $range = new TimeImmutableRange(null, $time);
         } catch (InvalidArgumentException $e) {
             return new SchemaError($jsonPointer . '/childcare/end', $e->getMessage());
         }
@@ -86,7 +83,7 @@ final class ChildcareTimeValidator
             return null;
         }
 
-        if (!$range->endIsAfterTimeOf($endDateTime)) {
+        if ($time->toMinutes() <= $this->dateTimeToMinutes($endDateTime)) {
             return new SchemaError(
                 $jsonPointer . '/childcare/end',
                 'childcare.end must be after the time portion of endDate'
@@ -94,5 +91,10 @@ final class ChildcareTimeValidator
         }
 
         return null;
+    }
+
+    private function dateTimeToMinutes(DateTimeImmutable $dateTime): int
+    {
+        return (int) $dateTime->format('H') * 60 + (int) $dateTime->format('i');
     }
 }
