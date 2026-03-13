@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
+use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\Image\ImagesUpdatedFromUDB2;
@@ -68,6 +69,7 @@ use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AudienceTypeNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Faq\FaqsNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
@@ -567,6 +569,29 @@ final class EventLDProjector extends OfferLDProjector implements
         $offerLD->terms = array_values($termsWithoutTheme);
 
         return $document->withBody($offerLD);
+    }
+
+    protected function applyFaqsUpdated(FaqsUpdated $faqsUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($faqsUpdated);
+        $jsonLD = $document->getBody();
+
+        $faqsArray = (new FaqsNormalizer())->normalize($faqsUpdated->faqs);
+        $faqsArray = array_map(
+            static function (array $faq): array {
+                unset($faq['id']);
+                return $faq;
+            },
+            $faqsArray
+        );
+
+        if (empty($faqsArray)) {
+            unset($jsonLD->faqs);
+        } else {
+            $jsonLD->faqs = $faqsArray;
+        }
+
+        return $document->withBody($jsonLD);
     }
 
     protected function applyOwnerChanged(OwnerChanged $ownerChanged): JsonDocument

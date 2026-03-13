@@ -98,12 +98,11 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
 
     /**
      * @test
-     * @dataProvider offerTypeParameterProvider
      */
-    public function it_fails_on_missing_type(string $offerType): void
+    public function it_fails_on_missing_type_for_places(): void
     {
         $given = $this->requestBuilder
-            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerType', 'places')
             ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
             ->withBodyFromString('{}')
             ->build('PUT');
@@ -130,6 +129,28 @@ class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(new SchemaError('/type', 'The data should match one item from enum')),
+            fn () => $this->requestHandler->handle($given)
+        );
+
+        $this->assertEquals([], $this->commandBus->getRecordedCommands());
+    }
+
+    /**
+     * @test
+     * @dataProvider offerTypeParameterProvider
+     */
+    public function it_fails_when_remaining_capacity_exceeds_capacity(string $offerType): void
+    {
+        $given = $this->requestBuilder
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', '609a8214-51c9-48c0-903f-840a4f38852f')
+            ->withBodyFromString('{"type":"Available","capacity":10,"remainingCapacity":99}')
+            ->build('PUT');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/bookingAvailability/remainingCapacity', 'remainingCapacity must be less than or equal to capacity')
+            ),
             fn () => $this->requestHandler->handle($given)
         );
 

@@ -195,4 +195,474 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                 ),
             ]);
     }
+
+    /**
+     * @test
+     */
+    public function it_updates_single_calendar_with_capacity_and_remaining_capacity(): void
+    {
+        $singleEventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event with Capacity',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00')
+                    )
+                )
+            )
+        );
+
+        $updateBookingAvailability = new UpdateBookingAvailability(
+            '1',
+            BookingAvailability::Available()
+                ->withCapacity(100)
+                ->withRemainingCapacity(42)
+        );
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$singleEventCreated])
+            ->when($updateBookingAvailability)
+            ->then([
+                new CalendarUpdated(
+                    '1',
+                    (new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable('2020-01-01 10:00:00'),
+                                new DateTimeImmutable('2020-01-01 12:00:00')
+                            )
+                        )->withBookingAvailability(
+                            BookingAvailability::Available()
+                        )
+                    ))->withBookingAvailability(
+                        BookingAvailability::Available()
+                            ->withCapacity(100)
+                            ->withRemainingCapacity(42)
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_single_calendar_with_capacity_only(): void
+    {
+        $singleEventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event with Capacity Only',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00')
+                    )
+                )
+            )
+        );
+
+        $updateBookingAvailability = new UpdateBookingAvailability(
+            '1',
+            BookingAvailability::Available()->withCapacity(150)
+        );
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$singleEventCreated])
+            ->when($updateBookingAvailability)
+            ->then([
+                new CalendarUpdated(
+                    '1',
+                    (new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable('2020-01-01 10:00:00'),
+                                new DateTimeImmutable('2020-01-01 12:00:00')
+                            )
+                        )->withBookingAvailability(BookingAvailability::Available())
+                    ))->withBookingAvailability(BookingAvailability::Available()->withCapacity(150))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_single_calendar_with_remaining_capacity_only(): void
+    {
+        $singleEventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event with Remaining Capacity Only',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00')
+                    )
+                )
+            )
+        );
+
+        $updateBookingAvailability = new UpdateBookingAvailability(
+            '1',
+            BookingAvailability::Available()->withRemainingCapacity(75)
+        );
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$singleEventCreated])
+            ->when($updateBookingAvailability)
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_single_calendar_with_zero_remaining_capacity(): void
+    {
+        $singleEventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event with Zero Remaining Capacity',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00')
+                    )
+                )
+            )
+        );
+
+        $updateBookingAvailability = new UpdateBookingAvailability(
+            '1',
+            BookingAvailability::Available()
+                ->withCapacity(100)
+                ->withRemainingCapacity(0)
+        );
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$singleEventCreated])
+            ->when($updateBookingAvailability)
+            ->then([
+                new CalendarUpdated(
+                    '1',
+                    (new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable('2020-01-01 10:00:00'),
+                                new DateTimeImmutable('2020-01-01 12:00:00')
+                            )
+                        )->withBookingAvailability(BookingAvailability::Available())
+                    ))->withBookingAvailability(
+                        BookingAvailability::Available()
+                            ->withCapacity(100)
+                            ->withRemainingCapacity(0)
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_multiple_calendar_with_capacity_and_remaining_capacity(): void
+    {
+        $multipleEventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Multiple Event with Capacity',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new MultipleSubEventsCalendar(
+                new SubEvents(
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            new DateTimeImmutable('2020-01-01 10:00:00'),
+                            new DateTimeImmutable('2020-01-01 12:00:00')
+                        )
+                    ),
+                    SubEvent::createAvailable(
+                        new DateRange(
+                            new DateTimeImmutable('2020-01-03 10:00:00'),
+                            new DateTimeImmutable('2020-01-03 12:00:00')
+                        )
+                    )
+                )
+            )
+        );
+
+        $updateBookingAvailability = new UpdateBookingAvailability(
+            '1',
+            BookingAvailability::Available()
+                ->withCapacity(200)
+                ->withRemainingCapacity(50)
+        );
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$multipleEventCreated])
+            ->when($updateBookingAvailability)
+            ->then([
+                new CalendarUpdated(
+                    '1',
+                    (new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-01 10:00:00'),
+                                    new DateTimeImmutable('2020-01-01 12:00:00')
+                                )
+                            )->withBookingAvailability(BookingAvailability::Available()),
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    new DateTimeImmutable('2020-01-03 10:00:00'),
+                                    new DateTimeImmutable('2020-01-03 12:00:00')
+                                )
+                            )->withBookingAvailability(BookingAvailability::Available())
+                        )
+                    ))->withBookingAvailability(
+                        BookingAvailability::Available()
+                            ->withCapacity(200)
+                            ->withRemainingCapacity(50)
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_single_calendar_updating_capacity_on_unavailable_booking(): void
+    {
+        $singleEventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event with Capacity and Unavailable',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00')
+                    )
+                )
+            )
+        );
+
+        $updateBookingAvailability = new UpdateBookingAvailability(
+            '1',
+            BookingAvailability::Unavailable()
+                ->withCapacity(100)
+                ->withRemainingCapacity(0)
+        );
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$singleEventCreated])
+            ->when($updateBookingAvailability)
+            ->then([
+                new CalendarUpdated(
+                    '1',
+                    (new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable('2020-01-01 10:00:00'),
+                                new DateTimeImmutable('2020-01-01 12:00:00')
+                            )
+                        )->withBookingAvailability(BookingAvailability::Unavailable())
+                    ))->withBookingAvailability(
+                        BookingAvailability::Unavailable()
+                            ->withCapacity(100)
+                            ->withRemainingCapacity(0)
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_emit_calendar_updated_when_capacity_is_unchanged(): void
+    {
+        $bookingAvailability = BookingAvailability::Available()
+            ->withCapacity(100)
+            ->withRemainingCapacity(42);
+
+        $singleEventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event with Capacity',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            (new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00')
+                    )
+                )->withBookingAvailability($bookingAvailability)
+            ))->withBookingAvailability($bookingAvailability)
+        );
+
+        $updateBookingAvailability = new UpdateBookingAvailability('1', $bookingAvailability);
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$singleEventCreated])
+            ->when($updateBookingAvailability)
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_detects_change_when_only_remaining_capacity_differs(): void
+    {
+        $originalBookingAvailability = BookingAvailability::Available()
+            ->withCapacity(100)
+            ->withRemainingCapacity(42);
+
+        $updatedBookingAvailability = BookingAvailability::Available()
+            ->withCapacity(100)
+            ->withRemainingCapacity(50);
+
+        $singleEventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event with Capacity',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            (new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00')
+                    )
+                )->withBookingAvailability($originalBookingAvailability)
+            ))->withBookingAvailability($originalBookingAvailability)
+        );
+
+        $updateBookingAvailability = new UpdateBookingAvailability('1', $updatedBookingAvailability);
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$singleEventCreated])
+            ->when($updateBookingAvailability)
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_detects_change_when_only_capacity_differs(): void
+    {
+        $originalBookingAvailability = BookingAvailability::Available()
+            ->withCapacity(100)
+            ->withRemainingCapacity(42);
+
+        $updatedBookingAvailability = BookingAvailability::Available()
+            ->withCapacity(150)
+            ->withRemainingCapacity(42);
+
+        $singleEventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event with Capacity',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            (new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00')
+                    )
+                )->withBookingAvailability($originalBookingAvailability)
+            ))->withBookingAvailability($originalBookingAvailability)
+        );
+
+        $updateBookingAvailability = new UpdateBookingAvailability('1', $updatedBookingAvailability);
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$singleEventCreated])
+            ->when($updateBookingAvailability)
+            ->then([
+                new CalendarUpdated(
+                    '1',
+                    (new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable('2020-01-01 10:00:00'),
+                                new DateTimeImmutable('2020-01-01 12:00:00')
+                            )
+                        )->withBookingAvailability($originalBookingAvailability)
+                    ))->withBookingAvailability($updatedBookingAvailability)
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_clearing_capacity_to_null(): void
+    {
+        $originalBookingAvailability = BookingAvailability::Available()
+            ->withCapacity(100)
+            ->withRemainingCapacity(42);
+
+        $updatedBookingAvailability = BookingAvailability::Available();
+
+        $singleEventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event with Capacity',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            (new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00')
+                    )
+                )->withBookingAvailability($originalBookingAvailability)
+            ))->withBookingAvailability($originalBookingAvailability)
+        );
+
+        $updateBookingAvailability = new UpdateBookingAvailability('1', $updatedBookingAvailability);
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$singleEventCreated])
+            ->when($updateBookingAvailability)
+            ->then([
+                new CalendarUpdated(
+                    '1',
+                    (new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable('2020-01-01 10:00:00'),
+                                new DateTimeImmutable('2020-01-01 12:00:00')
+                            )
+                        )->withBookingAvailability($originalBookingAvailability)
+                    ))->withBookingAvailability($updatedBookingAvailability)
+                ),
+            ]);
+    }
 }

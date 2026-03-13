@@ -14,13 +14,21 @@ final class BookingAvailabilityNormalizer implements NormalizerInterface
      */
     public function normalize($bookingAvailability, $format = null, array $context = []): array
     {
-        return [
-            'type' => $bookingAvailability->getType()->toString(),
-        ];
+        $result = ['type' => $bookingAvailability->getType()->toString()];
+
+        if ($bookingAvailability->getCapacity() !== null) {
+            $result['capacity'] = $bookingAvailability->getCapacity();
+        }
+
+        if ($bookingAvailability->getRemainingCapacity() !== null) {
+            $result['remainingCapacity'] = $bookingAvailability->getRemainingCapacity();
+        }
+
+        return $result;
     }
 
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data === BookingAvailability::class;
+        return $data instanceof BookingAvailability;
     }
 }
