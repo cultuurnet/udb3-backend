@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Event\ChildcareTimeInvalid;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -34,6 +36,7 @@ class UpdateSubEventsRequestHandler implements RequestHandlerInterface
         $this->updateSubEventsParser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_SUB_EVENT_PATCH),
             new DateRangeValidatingRequestBodyParser(),
+            new ChildcareTimeValidatingRequestBodyParser(),
             new DenormalizingRequestBodyParser(new SubEventUpdatesDenormalizer(), SubEventUpdates::class)
         );
     }
@@ -48,6 +51,9 @@ class UpdateSubEventsRequestHandler implements RequestHandlerInterface
 
         try {
             $this->commandBus->dispatch(new UpdateSubEvents($eventId, ...$updates));
+        } catch (ChildcareTimeInvalid $exception) {
+            $pointer = '/' . $exception->getSubEventIndex() . '/' . $exception->getField();
+            throw ApiProblem::bodyInvalidData(new SchemaError($pointer, $exception->getMessage()));
         } catch (InvalidArgumentException $exception) {
             throw ApiProblem::bodyInvalidDataWithDetail($exception->getMessage());
         }

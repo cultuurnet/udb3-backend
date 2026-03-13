@@ -64,7 +64,7 @@ final class CalendarNormalizer implements NormalizerInterface
 
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data === Calendar::class;
+        return $data instanceof Calendar;
     }
 
     private function deriveStatusTypeFromSubEvents(SubEvents $subEvents): StatusType

@@ -33,6 +33,6 @@ final class StatusNormalizer implements NormalizerInterface
 
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data === Status::class;
+        return $data instanceof Status;
     }
 }

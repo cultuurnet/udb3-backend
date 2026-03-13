@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -50,7 +49,12 @@ final class OpeningHourNormalizerTest extends TestCase
      */
     public function it_should_support_normalization_for_opening_hour_class(): void
     {
-        $this->assertTrue($this->normalizer->supportsNormalization(OpeningHour::class));
+        $openingHour = new OpeningHour(
+            new Days(Day::monday()),
+            new Time(new Hour(9), new Minute(0)),
+            new Time(new Hour(17), new Minute(0))
+        );
+        $this->assertTrue($this->normalizer->supportsNormalization($openingHour));
     }
 
     /**
@@ -58,6 +62,6 @@ final class OpeningHourNormalizerTest extends TestCase
      */
     public function it_should_not_support_normalization_for_other_classes(): void
     {
-        $this->assertFalse($this->normalizer->supportsNormalization(Event::class));
+        $this->assertFalse($this->normalizer->supportsNormalization(new \stdClass()));
     }
 }

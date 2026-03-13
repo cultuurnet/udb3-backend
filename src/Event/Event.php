@@ -100,6 +100,7 @@ use CultuurNet\UDB3\Offer\LabelsArray;
 use CultuurNet\UDB3\Offer\Offer;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use DateTimeInterface;
 
@@ -399,6 +400,17 @@ final class Event extends Offer
                 $subEventUpdate->getBookingInfo() ?? $subEvent->getBookingInfo(),
             );
 
+            if ($subEventUpdate->isChildcareTimeRangeSet()) {
+                $childcareTimeRange = $subEventUpdate->getChildcareTimeRange();
+                if ($childcareTimeRange !== null) {
+                    $this->validateChildcareTimeRange($childcareTimeRange, $updatedSubEvent, $index);
+                    $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareTimeRange);
+                }
+            } elseif ($subEvent->getChildcareTimeRange() !== null) {
+                $this->validateChildcareTimeRange($subEvent->getChildcareTimeRange(), $updatedSubEvent, $index);
+                $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($subEvent->getChildcareTimeRange());
+            }
+
             $subEvents[$index] = $updatedSubEvent;
         }
 
@@ -414,6 +426,24 @@ final class Event extends Offer
             $this->apply(
                 new CalendarUpdated($this->eventId, $updatedCalendar)
             );
+        }
+    }
+
+    /**
+     * Validates childcare times against the effective sub event dates at the domain level.
+     * This is necessary for PATCH requests (UpdateSubEvents) where childcare times
+     * can be set without providing the corresponding startDate/endDate in the same request body.
+     * In that case the HTTP-layer ChildcareTimeValidator cannot validate because it only sees the
+     * partial request body, not the stored dates.
+     */
+    private function validateChildcareTimeRange(TimeImmutableRange $childcareTimeRange, SubEvent $subEvent, int $subEventIndex): void
+    {
+        if (!$childcareTimeRange->startIsBeforeTimeOf($subEvent->getDateRange()->getFrom())) {
+            throw ChildcareTimeInvalid::afterStart($subEventIndex);
+        }
+
+        if (!$childcareTimeRange->endIsAfterTimeOf($subEvent->getDateRange()->getTo())) {
+            throw ChildcareTimeInvalid::beforeEnd($subEventIndex);
         }
     }
 
