@@ -37,7 +37,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
-use CultuurNet\UDB3\Event\ChildcareTimeInvalidException;
+use CultuurNet\UDB3\Event\ChildcareTimeInvalid;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use DateTimeImmutable;
 
@@ -1108,7 +1108,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             )
         );
 
-        $this->expectException(ChildcareTimeInvalidException::class);
+        $this->expectException(ChildcareTimeInvalid::class);
         $this->expectExceptionMessage('childcare.start must be before the time portion of startDate');
 
         $this->scenario
@@ -1139,7 +1139,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             )
         );
 
-        $this->expectException(ChildcareTimeInvalidException::class);
+        $this->expectException(ChildcareTimeInvalid::class);
         $this->expectExceptionMessage('childcare.end must be after the time portion of endDate');
 
         $this->scenario
@@ -1170,7 +1170,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             )
         );
 
-        $this->expectException(ChildcareTimeInvalidException::class);
+        $this->expectException(ChildcareTimeInvalid::class);
         $this->expectExceptionMessage('childcare.start must be before the time portion of startDate');
 
         // PATCH only updates startDate; childcare is preserved but now invalid against the new startDate
@@ -1202,7 +1202,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             )
         );
 
-        $this->expectException(ChildcareTimeInvalidException::class);
+        $this->expectException(ChildcareTimeInvalid::class);
         $this->expectExceptionMessage('childcare.end must be after the time portion of endDate');
 
         // PATCH only updates endDate; childcare is preserved but now invalid against the new endDate

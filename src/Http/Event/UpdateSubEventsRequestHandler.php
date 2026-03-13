@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\ChildcareTimeInvalidException;
+use CultuurNet\UDB3\Event\ChildcareTimeInvalid;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -51,7 +51,7 @@ class UpdateSubEventsRequestHandler implements RequestHandlerInterface
 
         try {
             $this->commandBus->dispatch(new UpdateSubEvents($eventId, ...$updates));
-        } catch (ChildcareTimeInvalidException $exception) {
+        } catch (ChildcareTimeInvalid $exception) {
             $pointer = '/' . $exception->getSubEventIndex() . '/' . $exception->getField();
             throw ApiProblem::bodyInvalidData(new SchemaError($pointer, $exception->getMessage()));
         } catch (InvalidArgumentException $exception) {

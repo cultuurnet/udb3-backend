@@ -439,19 +439,11 @@ final class Event extends Offer
     private function validateChildcareTimeRange(TimeImmutableRange $childcareTimeRange, SubEvent $subEvent, int $subEventIndex): void
     {
         if (!$childcareTimeRange->startIsBeforeTimeOf($subEvent->getDateRange()->getFrom())) {
-            throw new ChildcareTimeInvalidException(
-                'childcare/start',
-                $subEventIndex,
-                'childcare.start must be before the time portion of startDate'
-            );
+            throw ChildcareTimeInvalid::afterStart($subEventIndex);
         }
 
         if (!$childcareTimeRange->endIsAfterTimeOf($subEvent->getDateRange()->getTo())) {
-            throw new ChildcareTimeInvalidException(
-                'childcare/end',
-                $subEventIndex,
-                'childcare.end must be after the time portion of endDate'
-            );
+            throw ChildcareTimeInvalid::beforeEnd($subEventIndex);
         }
     }
 
