@@ -8,33 +8,33 @@ use InvalidArgumentException;
 
 class ChildcareTimeInvalid extends InvalidArgumentException
 {
-    private string $field;
     private int $subEventIndex;
+    private string $reason;
 
-    private function __construct(string $field, int $subEventIndex, string $message)
+    private function __construct(int $subEventIndex, string $reason)
     {
-        parent::__construct($message);
-        $this->field = $field;
+        parent::__construct($reason);
         $this->subEventIndex = $subEventIndex;
+        $this->reason = $reason;
     }
 
-    public static function afterStart(int $subEventIndex) : self
+    public static function startTimeInvalid(int $subEventIndex): self
     {
-        return new self('childcare/start', $subEventIndex, 'childcare.start must be before the time portion of startDate');
+        return new self($subEventIndex, 'childcare.start must be before the time portion of startDate');
     }
 
-    public static function beforeEnd(int $subEventIndex) : self
+    public static function endTimeInvalid(int $subEventIndex): self
     {
-        return new self('childcare/end', $subEventIndex,  'childcare.end must be after the time portion of endDate');
-    }
-
-    public function getField(): string
-    {
-        return $this->field;
+        return new self($subEventIndex, 'childcare.end must be after the time portion of endDate');
     }
 
     public function getSubEventIndex(): int
     {
         return $this->subEventIndex;
+    }
+
+    public function getReason(): string
+    {
+        return $this->reason;
     }
 }
