@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -56,7 +55,7 @@ final class UpdateFaqsHandlerTest extends CommandHandlerScenarioTestCase
     {
         $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
         $initialFaqs = $this->createFaqs();
-        $updatedFaqs = $this->createFaqs('Waar kan ik parkeren?', 'Aan de ingang.', 'b4575c68-dc04-4b67-9568-63e5d00d4dde');
+        $updatedFaqs = $this->createFaqs('Waar kan ik parkeren?', 'Aan de ingang.');
 
         $this->scenario
             ->withAggregateId($eventId)
@@ -98,13 +97,11 @@ final class UpdateFaqsHandlerTest extends CommandHandlerScenarioTestCase
     private function createFaqs(
         string $question = 'Hoe geraak ik er?',
         string $answer = 'Met de bus.',
-        string $id = 'a1b2c3d4-0000-0000-0000-000000000001',
     ): Faqs {
         return (new Faqs())->with(
             new TranslatedFaq(
                 new Language('nl'),
                 new Faq(
-                    new Uuid($id),
                     new Question($question),
                     new Answer($answer)
                 )

@@ -843,7 +843,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     public function it_imports_faq_items(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
-        $faqId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
 
         $this->uuidGenerator->expects($this->once())
             ->method('generate')
@@ -868,7 +867,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'calendarType' => 'permanent',
                 'faqs' => [
                     [
-                        'id' => $faqId,
                         'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
                         'en' => ['question' => 'How do I get there?', 'answer' => 'By bus.'],
                     ],
@@ -882,14 +880,12 @@ final class ImportEventRequestHandlerTest extends TestCase
             (new TranslatedFaq(
                 new Language('nl'),
                 new Faq(
-                    new Uuid($faqId),
                     new Question('Hoe geraak ik er?'),
                     new Answer('Met de bus.')
                 )
             ))->withTranslation(
                 new Language('en'),
                 new Faq(
-                    new Uuid($faqId),
                     new Question('How do I get there?'),
                     new Answer('By bus.')
                 )
