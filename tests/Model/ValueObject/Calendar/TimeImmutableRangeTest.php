@@ -177,7 +177,7 @@ final class TimeImmutableRangeTest extends TestCase
     public function it_throws_on_end_with_invalid_hour(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('"25:00" is not a valid time. Hour must be between 0 and 24.');
+        $this->expectExceptionMessage('"25:00" is not a valid time. Hour must be between 0 and 23.');
 
         new Time('25:00');
     }
