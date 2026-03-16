@@ -62,16 +62,6 @@ final class TimeTest extends TestCase
     /**
      * @test
      */
-    public function it_converts_24_00_to_minutes(): void
-    {
-        $time = new Time('24:00');
-
-        $this->assertSame(1440, $time->toMinutes());
-    }
-
-    /**
-     * @test
-     */
     public function it_throws_on_invalid_format_single_digit(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -127,33 +117,23 @@ final class TimeTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_when_hour_exceeds_23(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('"24:00" is not a valid time. Hour must be between 0 and 23.');
+
+        new Time('24:00');
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_hour_exceeds_24(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('"25:00" is not a valid time. Hour must be between 0 and 24.');
+        $this->expectExceptionMessage('"25:00" is not a valid time. Hour must be between 0 and 23.');
 
         new Time('25:00');
-    }
-
-    /**
-     * @test
-     */
-    public function it_accepts_hour_24(): void
-    {
-        $time = new Time('24:00');
-
-        $this->assertSame('24:00', $time->getValue());
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_when_hour_is_24_with_non_zero_minutes(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('"24:30" is not a valid time. When hour is 24, minutes must be 0.');
-
-        new Time('24:30');
     }
 
     /**
@@ -174,6 +154,5 @@ final class TimeTest extends TestCase
     {
         $this->assertEquals(new Time('0:00'), new Time('0:00'));
         $this->assertEquals(new Time('23:59'), new Time('23:59'));
-        $this->assertEquals(new Time('24:00'), new Time('24:00'));
     }
 }
