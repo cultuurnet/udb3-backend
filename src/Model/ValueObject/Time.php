@@ -37,9 +37,9 @@ final class Time
 
         [$hour, $minutes] = explode(':', $time);
 
-        if ((int) $hour <= 0 || (int) $hour > 23) {
+        if ((int) $hour < 0 || (int) $hour > 23) {
             throw new InvalidArgumentException(
-                sprintf('"%s" is not a valid time. Hour must be between 1 and 23.', $time)
+                sprintf('"%s" is not a valid time. Hour must be between 0 and 23.', $time)
             );
         }
 

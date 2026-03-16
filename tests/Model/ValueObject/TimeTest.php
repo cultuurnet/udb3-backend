@@ -52,12 +52,11 @@ final class TimeTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_when_hour_is_zero(): void
+    public function it_converts_midnight_to_minutes(): void
     {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('"0:00" is not a valid time. Hour must be between 1 and 23.');
+        $time = new Time('0:00');
 
-        new Time('0:00');
+        $this->assertSame(0, $time->toMinutes());
     }
 
     /**
@@ -121,7 +120,7 @@ final class TimeTest extends TestCase
     public function it_throws_when_hour_exceeds_23(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('"24:00" is not a valid time. Hour must be between 1 and 23.');
+        $this->expectExceptionMessage('"24:00" is not a valid time. Hour must be between 0 and 23.');
 
         new Time('24:00');
     }
@@ -132,7 +131,7 @@ final class TimeTest extends TestCase
     public function it_throws_when_hour_exceeds_24(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('"25:00" is not a valid time. Hour must be between 1 and 23.');
+        $this->expectExceptionMessage('"25:00" is not a valid time. Hour must be between 0 and 23.');
 
         new Time('25:00');
     }
@@ -153,7 +152,7 @@ final class TimeTest extends TestCase
      */
     public function it_accepts_valid_edge_cases(): void
     {
-        $this->assertEquals(new Time('1:00'), new Time('1:00'));
+        $this->assertEquals(new Time('0:00'), new Time('0:00'));
         $this->assertEquals(new Time('23:59'), new Time('23:59'));
     }
 }
