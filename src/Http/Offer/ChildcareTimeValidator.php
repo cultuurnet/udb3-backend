@@ -33,7 +33,7 @@ final class ChildcareTimeValidator
                 $data->startDate,
                 'childcare.start must be before the time portion of startDate',
                 $jsonPointer,
-                fn($childcare, $date) => $childcare >= $date
+                fn ($childcare, $date) => $childcare >= $date
             );
             if ($error) {
                 $errors[] = $error;
@@ -49,7 +49,7 @@ final class ChildcareTimeValidator
                 $data->endDate,
                 'childcare.end must be after the time portion of endDate',
                 $jsonPointer,
-                fn($childcare, $date) => $childcare <= $date
+                fn ($childcare, $date) => $childcare <= $date
             );
             if ($error) {
                 $errors[] = $error;

@@ -246,7 +246,7 @@ class CalendarDenormalizer implements DenormalizerInterface
             $subEvent = $subEvent->withChildcareTimeRange(
                 new TimeImmutableRange(
                     $childcareStart !== null ? new TimeDTO($childcareStart) : null,
-                $childcareEnd !== null ? new TimeDTO($childcareEnd) : null
+                    $childcareEnd !== null ? new TimeDTO($childcareEnd) : null
                 )
             );
         }
