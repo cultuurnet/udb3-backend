@@ -2114,13 +2114,11 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_updates_faqs_when_the_content_has_changed(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $faqId = 'a1b2c3d4-0000-0000-0000-000000000001';
 
         $original = (new Faqs())->with(
             new TranslatedFaq(
                 new Language('nl'),
                 new Faq(
-                    new Uuid($faqId),
                     new Question('Hoe geraak ik er?'),
                     new Answer('Met de bus.')
                 )
@@ -2131,7 +2129,6 @@ class EventTest extends AggregateRootScenarioTestCase
             new TranslatedFaq(
                 new Language('nl'),
                 new Faq(
-                    new Uuid($faqId),
                     new Question('Hoe geraak ik er?'),
                     new Answer('Met de trein.')
                 )
@@ -2153,13 +2150,11 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_does_not_update_faqs_when_content_is_unchanged(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $faqId = 'a1b2c3d4-0000-0000-0000-000000000001';
 
         $faqs = (new Faqs())->with(
             new TranslatedFaq(
                 new Language('nl'),
                 new Faq(
-                    new Uuid($faqId),
                     new Question('Hoe geraak ik er?'),
                     new Answer('Met de bus.')
                 )
@@ -2181,13 +2176,11 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_updates_faqs_on_event_imported_from_udb2(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $faqId = 'a1b2c3d4-0000-0000-0000-000000000001';
 
         $faqs = (new Faqs())->with(
             new TranslatedFaq(
                 new Language('nl'),
                 new Faq(
-                    new Uuid($faqId),
                     new Question('Hoe geraak ik er?'),
                     new Answer('Met de bus.')
                 )
