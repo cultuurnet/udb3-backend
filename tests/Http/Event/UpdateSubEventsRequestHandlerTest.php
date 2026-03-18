@@ -314,7 +314,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateSubEvents(
                     self::EVENT_ID,
-                    (new SubEventUpdate(0))->withChildcareTimeRange(null)
+                    (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange(null, null))
                 ),
             ],
             'one_subEvent_with_zero_remainingCapacity_derives_unavailable_type' => [

@@ -93,8 +93,9 @@ final class SubEventUpdateDenormalizerTest extends TestCase
             SubEventUpdate::class
         );
 
-        // Empty childcare object means "clear", so childcareTimeRange should be null
-        $this->assertNull($update->getChildcareTimeRange());
+        $this->assertNotNull($update->getChildcareTimeRange());
+        $this->assertNull($update->getChildcareTimeRange()->getStart());
+        $this->assertNull($update->getChildcareTimeRange()->getEnd());
     }
 
     /**

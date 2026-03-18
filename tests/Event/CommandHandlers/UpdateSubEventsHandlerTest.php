@@ -1001,7 +1001,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     )
                 ),
             ],
-            'Clear childcare times when explicitly set to null' => [
+            'Clear childcare times when explicitly set to empty' => [
                 new EventCreated(
                     '1',
                     new Language('nl'),
@@ -1027,7 +1027,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new UpdateSubEvents(
                     '1',
-                    (new SubEventUpdate(1))->withChildcareTimeRange(null)
+                    (new SubEventUpdate(1))->withChildcareTimeRange(new TimeImmutableRange(null, null))
                 ),
                 new CalendarUpdated(
                     '1',
@@ -1039,12 +1039,12 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-01 12:00:00')
                                 )
                             ),
-                            SubEvent::createAvailable(
+                            (SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 13:00:00')
                                 )
-                            ),
+                            ))->withChildcareTimeRange(new TimeImmutableRange(null, null)),
                         )
                     )
                 ),
