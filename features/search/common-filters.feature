@@ -60,3 +60,37 @@ Feature: Test the Search API v3 default filters
       | termLabels[] | Jazz en blues     |
       | q            | id:%{eventId}     |
     Then the JSON response at "totalItems" should be 1
+
+  Scenario: Search for ages using the common filter
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/event-with-age-range.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | minAge | 18            |
+      | q      | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | minAge | 7             |
+      | q      | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | maxAge | 5            |
+      | q      | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | maxAge | 11            |
+      | q      | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | allAges | true          |
+      | q       | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | allAges | false         |
+      | q       | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | allAges | *             |
+      | q       | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 1
