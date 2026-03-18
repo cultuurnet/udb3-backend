@@ -140,7 +140,7 @@ Feature: Test event FAQ
     And the JSON response at "faqs/1/nl/question" should be "Vraag 2 bijgewerkt"
     And the JSON response at "faqs/1/nl/answer" should be "Antwoord 2 bijgewerkt"
 
-  Scenario: The internal id of a faq should not be projected
+  Scenario: A faq item should only contain language, question and answer fields
     When I create a minimal permanent event and save the "url" as "eventUrl"
     And I set the JSON request payload to:
     """

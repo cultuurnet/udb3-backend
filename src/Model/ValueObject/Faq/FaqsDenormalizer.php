@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Faq;
 
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -24,17 +23,9 @@ final class FaqsDenormalizer implements DenormalizerInterface
         $faqs = new Faqs();
 
         foreach ($data as $faqData) {
-            if (!isset($faqData['id'])) {
-                $faqData['id'] = Uuid::uuid4()->toString();
-            }
-            $id = $faqData['id'];
-
             $languageKeys = array_filter(
                 array_keys($faqData),
                 static function (string $key): bool {
-                    if ($key === 'id') {
-                        return false;
-                    }
                     try {
                         new Language($key);
                         return true;
@@ -49,13 +40,13 @@ final class FaqsDenormalizer implements DenormalizerInterface
             $originalLanguage = new Language($originalLanguageKey);
             $translatedFaq = new TranslatedFaq(
                 $originalLanguage,
-                $this->denormalizeFaq($id, $faqData[$originalLanguageKey])
+                $this->denormalizeFaq($faqData[$originalLanguageKey])
             );
 
             foreach (array_slice($languageKeys, 1) as $languageKey) {
                 $translatedFaq = $translatedFaq->withTranslation(
                     new Language($languageKey),
-                    $this->denormalizeFaq($id, $faqData[$languageKey])
+                    $this->denormalizeFaq($faqData[$languageKey])
                 );
             }
 
@@ -70,10 +61,9 @@ final class FaqsDenormalizer implements DenormalizerInterface
         return $type === Faqs::class;
     }
 
-    private function denormalizeFaq(string $id, array $data): Faq
+    private function denormalizeFaq(array $data): Faq
     {
         return new Faq(
-            new Uuid($id),
             new Question($data['question']),
             new Answer($data['answer'])
         );
