@@ -400,15 +400,15 @@ final class Event extends Offer
                 $subEventUpdate->getBookingInfo() ?? $subEvent->getBookingInfo(),
             );
 
-            if ($subEventUpdate->isChildcareTimeRangeSet()) {
-                $childcareTimeRange = $subEventUpdate->getChildcareTimeRange();
-                if ($childcareTimeRange !== null) {
-                    $this->validateChildcareTimeRange($childcareTimeRange, $updatedSubEvent, $index);
-                    $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareTimeRange);
-                }
-            } elseif ($subEvent->getChildcareTimeRange() !== null) {
-                $this->validateChildcareTimeRange($subEvent->getChildcareTimeRange(), $updatedSubEvent, $index);
-                $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($subEvent->getChildcareTimeRange());
+            // For PATCH requests: use updated childcare if explicitly provided, otherwise preserve existing.
+            // The flag distinguishes "not mentioned" (null + false) from "explicitly cleared" (null + true).
+            $childcareToApply = $subEventUpdate->isChildcareTimeRangeSet()
+                ? $subEventUpdate->getChildcareTimeRange()
+                : $subEvent->getChildcareTimeRange();
+
+            if ($childcareToApply !== null) {
+                $this->validateChildcareTimeRange($childcareToApply, $updatedSubEvent, $index);
+                $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareToApply);
             }
 
             $subEvents[$index] = $updatedSubEvent;
