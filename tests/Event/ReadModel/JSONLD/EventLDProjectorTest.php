@@ -1934,20 +1934,17 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     public function it_projects_faqs_updated(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $faqId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
 
         $faqs = (new Faqs())->with(
             (new TranslatedFaq(
                 new Language('nl'),
                 new Faq(
-                    new Uuid($faqId),
                     new Question('Hoe geraak ik er?'),
                     new Answer('Met de bus.')
                 )
             ))->withTranslation(
                 new Language('en'),
                 new Faq(
-                    new Uuid($faqId),
                     new Question('How do I get there?'),
                     new Answer('By bus.')
                 )
@@ -1978,13 +1975,11 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     public function it_removes_faqs_from_projection_when_faq_list_is_empty(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $faqId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
 
         $faqs = (new Faqs())->with(
             new TranslatedFaq(
                 new Language('nl'),
                 new Faq(
-                    new Uuid($faqId),
                     new Question('Hoe geraak ik er?'),
                     new Answer('Met de bus.')
                 )
