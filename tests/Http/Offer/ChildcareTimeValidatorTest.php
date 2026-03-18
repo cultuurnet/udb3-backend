@@ -164,34 +164,4 @@ final class ChildcareTimeValidatorTest extends TestCase
 
         $this->assertSame('/subEvent/0/childcare/start', $errors[0]->getJsonPointer());
     }
-
-    /**
-     * @test
-     */
-    public function it_returns_error_when_childcare_start_format_is_invalid(): void
-    {
-        $errors = $this->validator->validate((object) [
-            'startDate' => '2021-05-17T16:00:00+00:00',
-            'endDate' => '2021-05-17T22:00:00+00:00',
-            'childcare' => (object)['start' => 'not-a-time', 'end' => '23:00'],
-        ]);
-
-        $this->assertCount(1, $errors);
-        $this->assertSame('/childcare/start', $errors[0]->getJsonPointer());
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_error_when_childcare_end_format_is_invalid(): void
-    {
-        $errors = $this->validator->validate((object) [
-            'startDate' => '2021-05-17T16:00:00+00:00',
-            'endDate' => '2021-05-17T22:00:00+00:00',
-            'childcare' => (object)['start' => '15:00', 'end' => 'not-a-time'],
-        ]);
-
-        $this->assertCount(1, $errors);
-        $this->assertSame('/childcare/end', $errors[0]->getJsonPointer());
-    }
 }

@@ -9,6 +9,14 @@ use CultuurNet\UDB3\Model\ValueObject\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 
+/**
+ * Validates childcare times against event dates.
+ *
+ * Note: The JSON schema already validates datetime format (RFC 3339) via "format": "date-time"
+ * and time format (H:MM/HH:MM) via regex pattern "^\d?\d:\d\d$". If parsing exceptions occur
+ * during validation, this indicates a schema validation bypass or broken validation pipeline.
+ * Such exceptions should be logged to Sentry as they represent a system integrity issue.
+ */
 final class ChildcareTimeValidator
 {
     /**
@@ -16,28 +24,30 @@ final class ChildcareTimeValidator
      */
     public function validate(object $data, string $jsonPointer = ''): array
     {
-        $errors = [];
-
-        if(!isset($data->childcare)) {
+        if (!isset($data->childcare) || !is_object($data->childcare)) {
             return [];
         }
 
+        $childcare = $data->childcare;
+
+        $start = isset($childcare->start) ? new Time($childcare->start) : null;
+        $end = isset($childcare->end) ? new Time($childcare->end) : null;
+
         try {
-            $dateRange = new TimeImmutableRange(new Time($data->childcare->start), new Time($data->childcare->end));
-        } catch (\Throwable $e) {
+            $dateRange = new TimeImmutableRange($start, $end);
+        } catch (\InvalidArgumentException $e) {
             return [new SchemaError($jsonPointer . '/childcare', $e->getMessage())];
         }
 
-        try {
-            $dateRange->startIsBeforeTimeOf(new DateTimeImmutable($data->childcare->startDate));
-        } catch (\Throwable $e) {
-            $errors[] = new SchemaError($jsonPointer . '/childcare/start', $e->getMessage());
-        }
+        $startDate = isset($data->startDate) ? new DateTimeImmutable($data->startDate) : null;
+        $endDate = isset($data->endDate) ? new DateTimeImmutable($data->endDate) : null;
+        $errors = [];
 
-        try {
-            $dateRange->endIsAfterTimeOf(new DateTimeImmutable($data->childcare->endDate));
-        } catch (\Throwable $e) {
-            $errors[] = new SchemaError($jsonPointer . '/childcare/end', $e->getMessage());
+        if ($startDate !== null && !$dateRange->startIsBeforeTimeOf($startDate)) {
+            $errors[] = new SchemaError($jsonPointer . '/childcare/start', 'childcare.start must be before the time portion of startDate');
+        }
+        if ($endDate !== null && !$dateRange->endIsAfterTimeOf($endDate)) {
+            $errors[] = new SchemaError($jsonPointer . '/childcare/end', 'childcare.end must be after the time portion of endDate');
         }
 
         return $errors;
