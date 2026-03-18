@@ -36,7 +36,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use CultuurNet\UDB3\Event\ChildcareTimeInvalid;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
@@ -979,7 +979,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new UpdateSubEvents(
                     '1',
-                    (new SubEventUpdate(1))->withChildcareTimeRange(new TimeImmutableRange(new Time('9:00'), new Time('14:00')))
+                    (new SubEventUpdate(1))->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('9:00'), Time::fromString('14:00')))
                 ),
                 new CalendarUpdated(
                     '1',
@@ -996,7 +996,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 13:00:00')
                                 )
-                            ))->withChildcareTimeRange(new TimeImmutableRange(new Time('9:00'), new Time('14:00'))),
+                            ))->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('9:00'), Time::fromString('14:00'))),
                         )
                     )
                 ),
@@ -1021,7 +1021,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
                                     new DateTimeImmutable('2020-01-03 13:00:00')
                                 )
-                            ))->withChildcareTimeRange(new TimeImmutableRange(new Time('9:00'), new Time('14:00')))
+                            ))->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('9:00'), Time::fromString('14:00')))
                         )
                     )
                 ),
@@ -1076,7 +1076,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                             new DateTimeImmutable('2020-01-03 10:00:00'),
                             new DateTimeImmutable('2020-01-03 13:00:00')
                         )
-                    ))->withChildcareTimeRange(new TimeImmutableRange(new Time('9:00'), new Time('14:00')))
+                    ))->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('9:00'), Time::fromString('14:00')))
                 )
             )
         );
@@ -1115,7 +1115,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId('1')
             ->given([$eventCreated])
-            ->when(new UpdateSubEvents('1', (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange(new Time('10:00')))))
+            ->when(new UpdateSubEvents('1', (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('10:00')))))
             ->then([]);
     }
 
@@ -1146,7 +1146,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId('1')
             ->given([$eventCreated])
-            ->when(new UpdateSubEvents('1', (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange(null, new Time('12:00')))))
+            ->when(new UpdateSubEvents('1', (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange(null, Time::fromString('12:00')))))
             ->then([]);
     }
 
@@ -1167,7 +1167,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         new DateTimeImmutable('2020-01-01 16:00:00'),
                         new DateTimeImmutable('2020-01-01 22:00:00')
                     )
-                ))->withChildcareTimeRange(new TimeImmutableRange(new Time('15:00'), new Time('23:00')))
+                ))->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('15:00'), Time::fromString('23:00')))
             )
         );
 
@@ -1199,7 +1199,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         new DateTimeImmutable('2020-01-01 16:00:00'),
                         new DateTimeImmutable('2020-01-01 22:00:00')
                     )
-                ))->withChildcareTimeRange(new TimeImmutableRange(new Time('15:00'), new Time('23:00')))
+                ))->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('15:00'), Time::fromString('23:00')))
             )
         );
 

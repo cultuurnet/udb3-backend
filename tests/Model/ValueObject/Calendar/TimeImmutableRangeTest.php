@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -27,8 +27,8 @@ final class TimeImmutableRangeTest extends TestCase
      */
     public function it_accepts_hh_mm_format(): void
     {
-        $start = new Time('15:00');
-        $end = new Time('23:00');
+        $start = Time::fromString('15:00');
+        $end = Time::fromString('23:00');
         $range = new TimeImmutableRange($start, $end);
 
         $this->assertEquals($start, $range->getStart());
@@ -42,8 +42,8 @@ final class TimeImmutableRangeTest extends TestCase
      */
     public function it_accepts_h_mm_format_without_leading_zero(): void
     {
-        $start = new Time('9:00');
-        $end = new Time('9:30');
+        $start = Time::fromString('9:00');
+        $end = Time::fromString('9:30');
         $range = new TimeImmutableRange($start, $end);
 
         $this->assertSame('9:00', $range->getStart()->getValue());
@@ -55,7 +55,7 @@ final class TimeImmutableRangeTest extends TestCase
      */
     public function it_accepts_only_start(): void
     {
-        $start = new Time('15:00');
+        $start = Time::fromString('15:00');
         $range = new TimeImmutableRange($start);
 
         $this->assertEquals($start, $range->getStart());
@@ -67,7 +67,7 @@ final class TimeImmutableRangeTest extends TestCase
      */
     public function it_accepts_only_end(): void
     {
-        $end = new Time('23:00');
+        $end = Time::fromString('23:00');
         $range = new TimeImmutableRange(null, $end);
 
         $this->assertNull($range->getStart());
@@ -82,7 +82,7 @@ final class TimeImmutableRangeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"23:00" must be before "15:00".');
 
-        new TimeImmutableRange(new Time('23:00'), new Time('15:00'));
+        new TimeImmutableRange(Time::fromString('23:00'), Time::fromString('15:00'));
     }
 
     /**
@@ -93,7 +93,7 @@ final class TimeImmutableRangeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"15:00" must be before "15:00".');
 
-        new TimeImmutableRange(new Time('15:00'), new Time('15:00'));
+        new TimeImmutableRange(Time::fromString('15:00'), Time::fromString('15:00'));
     }
 
     /**
@@ -104,7 +104,7 @@ final class TimeImmutableRangeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"15:0" is not a valid time. Expected format is H:MM or HH:MM.');
 
-        new Time('15:0');
+        Time::fromString('15:0');
     }
 
     /**
@@ -115,7 +115,7 @@ final class TimeImmutableRangeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"abc" is not a valid time. Expected format is H:MM or HH:MM.');
 
-        new Time('abc');
+        Time::fromString('abc');
     }
 
     /**
@@ -125,7 +125,7 @@ final class TimeImmutableRangeTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new Time('15');
+        Time::fromString('15');
     }
 
     /**
@@ -135,7 +135,7 @@ final class TimeImmutableRangeTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        new Time('15:00:00');
+        Time::fromString('15:00:00');
     }
 
     /**
@@ -146,7 +146,7 @@ final class TimeImmutableRangeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"24:00" is not a valid time. Hour must be between 0 and 23.');
 
-        new Time('24:00');
+        Time::fromString('24:00');
     }
 
     /**
@@ -157,7 +157,7 @@ final class TimeImmutableRangeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"25:00" is not a valid time. Hour must be between 0 and 23.');
 
-        new Time('25:00');
+        Time::fromString('25:00');
     }
 
     /**
@@ -168,7 +168,7 @@ final class TimeImmutableRangeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"15:60" is not a valid time. Minutes must be between 0 and 59.');
 
-        new Time('15:60');
+        Time::fromString('15:60');
     }
 
     /**
@@ -179,7 +179,7 @@ final class TimeImmutableRangeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"25:00" is not a valid time. Hour must be between 0 and 23.');
 
-        new Time('25:00');
+        Time::fromString('25:00');
     }
 
     /**
@@ -190,6 +190,6 @@ final class TimeImmutableRangeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"23:60" is not a valid time. Minutes must be between 0 and 59.');
 
-        new Time('23:60');
+        Time::fromString('23:60');
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
-use CultuurNet\UDB3\Model\ValueObject\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +40,7 @@ final class SubEventTest extends TestCase
      */
     public function it_can_set_a_childcare_time_range(): void
     {
-        $range = new TimeImmutableRange(new Time('15:00'), new Time('23:00'));
+        $range = new TimeImmutableRange(Time::fromString('15:00'), Time::fromString('23:00'));
         $updated = $this->subEvent->withChildcareTimeRange($range);
 
         $this->assertSame($range, $updated->getChildcareTimeRange());
@@ -51,7 +51,7 @@ final class SubEventTest extends TestCase
      */
     public function it_can_clear_the_childcare_time_range(): void
     {
-        $withRange = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(new Time('15:00'), new Time('23:00')));
+        $withRange = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('15:00'), Time::fromString('23:00')));
         $cleared = $withRange->withChildcareTimeRange(null);
 
         $this->assertNull($cleared->getChildcareTimeRange());
@@ -62,7 +62,7 @@ final class SubEventTest extends TestCase
      */
     public function it_returns_a_new_instance_when_setting_childcare_time_range(): void
     {
-        $updated = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(new Time('15:00'), new Time('23:00')));
+        $updated = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('15:00'), Time::fromString('23:00')));
 
         $this->assertNotSame($this->subEvent, $updated);
         $this->assertNull($this->subEvent->getChildcareTimeRange());
