@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3c91a25d08901bcee3cfff90d73fae2f",
+    "content-hash": "e40e7c536212fa26f7e5e65d6e1f4d26",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6144,18 +6144,19 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-7053/multiple-calendar-add-childcare",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "9977ff2b57dfa0451c9e13eacb09a31df4a6a4ef"
+                "reference": "1a49b6c4d03f69f5544f8d90a23b075150d88b56"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/9977ff2b57dfa0451c9e13eacb09a31df4a6a4ef",
-                "reference": "9977ff2b57dfa0451c9e13eacb09a31df4a6a4ef",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/1a49b6c4d03f69f5544f8d90a23b075150d88b56",
+                "reference": "1a49b6c4d03f69f5544f8d90a23b075150d88b56",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6172,7 +6173,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7053/multiple-calendar-add-childcare"
             },
-            "time": "2026-03-11T11:56:23+00:00"
+            "time": "2026-03-13T14:33:28+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
