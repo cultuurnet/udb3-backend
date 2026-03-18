@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
-use CultuurNet\UDB3\Model\ValueObject\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 
@@ -30,8 +30,8 @@ final class ChildcareTimeValidator
 
         $childcare = $data->childcare;
 
-        $start = isset($childcare->start) ? new Time($childcare->start) : null;
-        $end = isset($childcare->end) ? new Time($childcare->end) : null;
+        $start = isset($childcare->start) ? Time::fromString($childcare->start) : null;
+        $end = isset($childcare->end) ? Time::fromString($childcare->end) : null;
 
         try {
             $dateRange = new TimeImmutableRange($start, $end);

@@ -27,7 +27,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
-use CultuurNet\UDB3\Model\ValueObject\Time as TimeDTO;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -246,8 +245,8 @@ class CalendarDenormalizer implements DenormalizerInterface
             $childcareEnd = $subEventData['childcare']['end'] ?? null;
             $subEvent = $subEvent->withChildcareTimeRange(
                 new TimeImmutableRange(
-                    $childcareStart !== null ? new TimeDTO($childcareStart) : null,
-                    $childcareEnd !== null ? new TimeDTO($childcareEnd) : null
+                    $childcareStart !== null ? Time::fromString($childcareStart) : null,
+                    $childcareEnd !== null ? Time::fromString($childcareEnd) : null
                 )
             );
         }
