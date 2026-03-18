@@ -40,10 +40,13 @@ final class SubEventNormalizer implements NormalizerInterface
     {
         $childcareTimeRange = $subEvent->getChildcareTimeRange();
         if ($childcareTimeRange !== null) {
-            $normalized['childcare'] = [
-                'start' => $childcareTimeRange->getStart()?->getValue(),
-                'end' => $childcareTimeRange->getEnd()?->getValue(),
-            ];
+            $start = $childcareTimeRange->getStart()?->getValue();
+            $end = $childcareTimeRange->getEnd()?->getValue();
+            // Only include childcare if at least one of start or end is set
+            // Empty TimeImmutableRange (both null) represents cleared childcare
+            if ($start !== null || $end !== null) {
+                $normalized['childcare'] = ['start' => $start, 'end' => $end];
+            }
         }
         return $normalized;
     }

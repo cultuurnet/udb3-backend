@@ -401,10 +401,8 @@ final class Event extends Offer
             );
 
             // For PATCH requests: use updated childcare if explicitly provided, otherwise preserve existing.
-            // The flag distinguishes "not mentioned" (null + false) from "explicitly cleared" (null + true).
-            $childcareToApply = $subEventUpdate->isChildcareTimeRangeSet()
-                ? $subEventUpdate->getChildcareTimeRange()
-                : $subEvent->getChildcareTimeRange();
+            // null = not mentioned (preserve), empty TimeImmutableRange = explicitly cleared
+            $childcareToApply = $subEventUpdate->getChildcareTimeRange() ?? $subEvent->getChildcareTimeRange();
 
             if ($childcareToApply !== null) {
                 $this->validateChildcareTimeRange($childcareToApply, $updatedSubEvent, $index);

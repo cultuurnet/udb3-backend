@@ -23,7 +23,7 @@ final class SubEventUpdateDenormalizerTest extends TestCase
     {
         $update = $this->denormalizer->denormalize(['id' => 0], SubEventUpdate::class);
 
-        $this->assertFalse($update->isChildcareTimeRangeSet());
+        $this->assertNull($update->getChildcareTimeRange());
     }
 
     /**
@@ -35,7 +35,7 @@ final class SubEventUpdateDenormalizerTest extends TestCase
         // The JSON schema is expected to reject null at the HTTP layer.
         $update = $this->denormalizer->denormalize(['id' => 0, 'childcare' => null], SubEventUpdate::class);
 
-        $this->assertFalse($update->isChildcareTimeRangeSet());
+        $this->assertNull($update->getChildcareTimeRange());
     }
 
     /**
@@ -48,7 +48,7 @@ final class SubEventUpdateDenormalizerTest extends TestCase
             SubEventUpdate::class
         );
 
-        $this->assertTrue($update->isChildcareTimeRangeSet());
+        $this->assertNotNull($update->getChildcareTimeRange());
         $this->assertSame('15:00', $update->getChildcareTimeRange()->getStart()->getValue());
         $this->assertSame('23:00', $update->getChildcareTimeRange()->getEnd()->getValue());
     }
@@ -63,7 +63,7 @@ final class SubEventUpdateDenormalizerTest extends TestCase
             SubEventUpdate::class
         );
 
-        $this->assertTrue($update->isChildcareTimeRangeSet());
+        $this->assertNotNull($update->getChildcareTimeRange());
         $this->assertSame('15:00', $update->getChildcareTimeRange()->getStart()->getValue());
         $this->assertNull($update->getChildcareTimeRange()->getEnd());
     }
@@ -78,7 +78,7 @@ final class SubEventUpdateDenormalizerTest extends TestCase
             SubEventUpdate::class
         );
 
-        $this->assertTrue($update->isChildcareTimeRangeSet());
+        $this->assertNotNull($update->getChildcareTimeRange());
         $this->assertNull($update->getChildcareTimeRange()->getStart());
         $this->assertSame('23:00', $update->getChildcareTimeRange()->getEnd()->getValue());
     }
@@ -93,8 +93,9 @@ final class SubEventUpdateDenormalizerTest extends TestCase
             SubEventUpdate::class
         );
 
-        $this->assertTrue($update->isChildcareTimeRangeSet());
-        $this->assertNull($update->getChildcareTimeRange());
+        $this->assertNotNull($update->getChildcareTimeRange());
+        $this->assertNull($update->getChildcareTimeRange()->getStart());
+        $this->assertNull($update->getChildcareTimeRange()->getEnd());
     }
 
     /**

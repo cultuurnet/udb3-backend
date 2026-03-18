@@ -240,9 +240,10 @@ class CalendarDenormalizer implements DenormalizerInterface
             $bookingInfo,
         );
 
-        $childcareStart = $subEventData['childcare']['start'] ?? null;
-        $childcareEnd = $subEventData['childcare']['end'] ?? null;
-        if ($childcareStart !== null || $childcareEnd !== null) {
+        // Handle childcare: present key (even if empty) sets it, absent key preserves existing
+        if (isset($subEventData['childcare'])) {
+            $childcareStart = $subEventData['childcare']['start'] ?? null;
+            $childcareEnd = $subEventData['childcare']['end'] ?? null;
             $subEvent = $subEvent->withChildcareTimeRange(
                 new TimeImmutableRange(
                     $childcareStart !== null ? new TimeDTO($childcareStart) : null,
