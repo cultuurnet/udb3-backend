@@ -44,3 +44,48 @@ Feature: Test the Search API v3 default filters
       | audienceType | *             |
       | q            | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+
+    Scenario: By default rejected events are no longer shown
+      Given I create a minimal place and save the "url" as "uuid_place"
+      And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+      And I wait for the event with url "/events/%{eventId}" to be indexed
+      And I reject the event at "/events/%{eventId}" with reason "Reject event"
+      And I wait 2 seconds
+      And I am using the Search API v3 base URL
+      And I send a GET request to "/events" with parameters:
+        | q            | id:%{eventId} |
+      Then the JSON response at "totalItems" should be 0
+      And I send a GET request to "/events" with parameters:
+        | workflowStatus | *             |
+        | q              | id:%{eventId} |
+      Then the JSON response at "totalItems" should be 1
+
+  Scenario: By default events with available to in the past should not be shown
+    Given I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/event-with-single-calendar.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I publish the event at "/events/%{eventId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    And I send a GET request to "/events" with parameters:
+      | q            | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 0
+    And I send a GET request to "/events" with parameters:
+      | availableFrom | *             |
+      | availableTo   | *             |
+      | q             | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 1
+
+  Scenario: By default events with available from in the future should not be shown
+    Given I create a minimal place and save the "url" as "uuid_place"
+    And I create an event from "events/event-with-available-from-in-the-far-future.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    And I send a GET request to "/events" with parameters:
+      | q            | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 0
+    And I send a GET request to "/events" with parameters:
+      | availableFrom | *             |
+      | availableTo   | *             |
+      | q             | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 1
