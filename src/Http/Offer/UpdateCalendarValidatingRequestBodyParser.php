@@ -84,17 +84,7 @@ final class UpdateCalendarValidatingRequestBodyParser implements RequestBodyPars
      */
     private function validateOpeningHoursChildcare(object $data): array
     {
-        if (!isset($data->openingHours) || !is_array($data->openingHours)) {
-            return [];
-        }
-        $errors = [];
-        $validator = new OpeningHourChildcareValidator();
-        foreach ($data->openingHours as $index => $openingHour) {
-            if (is_object($openingHour)) {
-                $errors[] = $validator->validate($openingHour, '/openingHours/' . $index);
-            }
-        }
-        return array_merge(...$errors);
+        return OpeningHourChildcareValidator::validateAll($data);
     }
 
     /**

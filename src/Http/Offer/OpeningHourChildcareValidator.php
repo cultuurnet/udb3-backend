@@ -18,6 +18,26 @@ use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 final class OpeningHourChildcareValidator
 {
     /**
+     * Validate all opening hours childcare entries from a request body object.
+     *
+     * @return SchemaError[]
+     */
+    public static function validateAll(object $data): array
+    {
+        if (!isset($data->openingHours) || !is_array($data->openingHours)) {
+            return [];
+        }
+        $validator = new self();
+        $errors = [];
+        foreach ($data->openingHours as $index => $openingHour) {
+            if (is_object($openingHour)) {
+                $errors[] = $validator->validate($openingHour, '/openingHours/' . $index);
+            }
+        }
+        return array_merge(...$errors);
+    }
+
+    /**
      * @return SchemaError[]
      */
     public function validate(object $openingHourData, string $jsonPointer = ''): array
