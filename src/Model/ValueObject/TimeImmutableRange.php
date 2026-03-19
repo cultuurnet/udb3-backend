@@ -52,6 +52,22 @@ final class TimeImmutableRange
         return $this->end->toMinutes() > $this->dateTimeToMinutes($dateTime);
     }
 
+    public function startIsBeforeTime(Time $time): bool
+    {
+        if ($this->start === null) {
+            return true;
+        }
+        return $this->start->toMinutes() < $time->toMinutes();
+    }
+
+    public function endIsAfterTime(Time $time): bool
+    {
+        if ($this->end === null) {
+            return true;
+        }
+        return $this->end->toMinutes() > $time->toMinutes();
+    }
+
     private function dateTimeToMinutes(DateTimeImmutable $dateTime): int
     {
         return (int) $dateTime->format('H') * 60 + (int) $dateTime->format('i');
