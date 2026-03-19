@@ -58,4 +58,22 @@ class Time
         $time->setTime($hour, $minute);
         return $time->format('H:i');
     }
+
+    /**
+     * Get time as string in H:MM or HH:MM format.
+     * Alias for toString() for compatibility.
+     */
+    public function getValue(): string
+    {
+        return $this->toString();
+    }
+
+    /**
+     * Convert time to total minutes (hours * 60 + minutes).
+     * Useful for time comparisons.
+     */
+    public function toMinutes(): int
+    {
+        return $this->hour->toInteger() * 60 + $this->minute->toInteger();
+    }
 }

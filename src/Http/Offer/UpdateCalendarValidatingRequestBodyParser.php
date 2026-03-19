@@ -89,9 +89,11 @@ final class UpdateCalendarValidatingRequestBodyParser implements RequestBodyPars
 
         $errors = [];
         $dateRangeValidator = new DateRangeValidator();
+        $childcareTimeValidator = new ChildcareTimeValidator();
         foreach ($data->subEvent as $key => $subEvent) {
             if (is_object($subEvent)) {
                 $errors[] = $dateRangeValidator->validate($subEvent, '/subEvent/' . $key);
+                $errors[] = $childcareTimeValidator->validate($subEvent, '/subEvent/' . $key);
             }
         }
         return array_merge(...$errors);
