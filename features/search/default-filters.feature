@@ -43,7 +43,7 @@ Feature: Test the Search API v3 default filters
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} |
     Then the JSON response at "totalItems" should be 0
-    And I send a GET request to "/events" with parameters:
+    When I send a GET request to "/events" with parameters:
       | audienceType | *             |
       | q            | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
@@ -86,10 +86,10 @@ Feature: Test the Search API v3 default filters
     And I publish the event at "/events/%{eventId}"
     And I wait 2 seconds
     And I am using the Search API v3 base URL
-    And I send a GET request to "/events" with parameters:
+    When I send a GET request to "/events" with parameters:
       | q            | id:%{eventId} |
     Then the JSON response at "totalItems" should be 0
-    And I send a GET request to "/events" with parameters:
+    When I send a GET request to "/events" with parameters:
       | availableFrom | *             |
       | availableTo   | *             |
       | q             | id:%{eventId} |
@@ -100,10 +100,10 @@ Feature: Test the Search API v3 default filters
     And I create an event from "events/event-with-available-from-in-the-far-future.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
-    And I send a GET request to "/events" with parameters:
+    When I send a GET request to "/events" with parameters:
       | q            | id:%{eventId} |
     Then the JSON response at "totalItems" should be 0
-    And I send a GET request to "/events" with parameters:
+    When I send a GET request to "/events" with parameters:
       | availableFrom | *             |
       | availableTo   | *             |
       | q             | id:%{eventId} |
