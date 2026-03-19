@@ -23,6 +23,6 @@ final class OpeningHourNormalizer implements NormalizerInterface
 
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data === OpeningHour::class;
+        return $data instanceof OpeningHour;
     }
 }

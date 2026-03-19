@@ -577,14 +577,6 @@ final class EventLDProjector extends OfferLDProjector implements
         $jsonLD = $document->getBody();
 
         $faqsArray = (new FaqsNormalizer())->normalize($faqsUpdated->faqs);
-        $faqsArray = array_map(
-            static function (array $faq): array {
-                unset($faq['id']);
-                return $faq;
-            },
-            $faqsArray
-        );
-
         if (empty($faqsArray)) {
             unset($jsonLD->faqs);
         } else {

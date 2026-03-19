@@ -115,8 +115,8 @@ services:
     volumes:
       - 'udb3-mailpit:/data'
     ports:
-      - 8025:8025
-      - 1025:1025
+      - ${MAILPIT_GUI_PORT:-8025}:8025
+      - ${MAILPIT_SMTP_PORT:-1025}:1025
     networks:
       uitdatabank-backend:
         aliases:

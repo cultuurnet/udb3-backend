@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
 use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 
@@ -44,13 +43,10 @@ final class UpdateFaqsRequestHandlerTest extends TestCase
      */
     public function it_dispatches_update_faqs_with_all_incoming_items(): void
     {
-        $faqId = 'b4575c68-dc04-4b67-9568-63e5d00d4dde';
-
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
             ->withJsonBodyFromArray([
                 [
-                    'id' => $faqId,
                     'nl' => [
                         'question' => 'Hoe geraak ik er?',
                         'answer' => 'Met de bus.',
@@ -74,14 +70,12 @@ final class UpdateFaqsRequestHandlerTest extends TestCase
                         (new TranslatedFaq(
                             new Language('nl'),
                             new Faq(
-                                new Uuid($faqId),
                                 new Question('Hoe geraak ik er?'),
                                 new Answer('Met de bus.')
                             )
                         ))->withTranslation(
                             new Language('en'),
                             new Faq(
-                                new Uuid($faqId),
                                 new Question('How do I get there?'),
                                 new Answer('By bus.')
                             )
