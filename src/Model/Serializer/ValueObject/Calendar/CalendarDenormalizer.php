@@ -143,7 +143,7 @@ class CalendarDenormalizer implements DenormalizerInterface
     {
         $denormalizer = new OpeningHourDenormalizer();
         $openingHours = array_map(
-            fn(array $data) => $denormalizer->denormalize($data, OpeningHour::class),
+            fn (array $data) => $denormalizer->denormalize($data, OpeningHour::class),
             $openingHoursData
         );
         return new OpeningHours(...$openingHours);
