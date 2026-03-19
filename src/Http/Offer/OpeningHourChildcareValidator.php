@@ -1,0 +1,51 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Http\Offer;
+
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+
+/**
+ * Validates childcare times against opening hours.
+ *
+ * Note: The JSON schema already validates time format (H:MM/HH:MM) via regex pattern "^\d?\d:\d\d$".
+ */
+final class OpeningHourChildcareValidator
+{
+    /**
+     * @return SchemaError[]
+     */
+    public function validate(object $openingHourData, string $jsonPointer = ''): array
+    {
+        if (!isset($openingHourData->childcare) || !is_object($openingHourData->childcare)) {
+            return [];
+        }
+
+        $childcare = $openingHourData->childcare;
+
+        $start = isset($childcare->start) ? Time::fromString($childcare->start) : null;
+        $end = isset($childcare->end) ? Time::fromString($childcare->end) : null;
+
+        try {
+            $dateRange = new TimeImmutableRange($start, $end);
+        } catch (\InvalidArgumentException $e) {
+            return [new SchemaError($jsonPointer . '/childcare', $e->getMessage())];
+        }
+
+        $opens = isset($openingHourData->opens) ? Time::fromString($openingHourData->opens) : null;
+        $closes = isset($openingHourData->closes) ? Time::fromString($openingHourData->closes) : null;
+        $errors = [];
+
+        if ($opens !== null && !$dateRange->startIsBeforeTime($opens)) {
+            $errors[] = new SchemaError($jsonPointer . '/childcare/start', 'childcare.start must be before opens');
+        }
+        if ($closes !== null && !$dateRange->endIsAfterTime($closes)) {
+            $errors[] = new SchemaError($jsonPointer . '/childcare/end', 'childcare.end must be after closes');
+        }
+
+        return $errors;
+    }
+}
