@@ -639,6 +639,39 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     new SchemaError('/0/bookingAvailability', 'The data should match exactly one schema'),
                 ],
             ],
+            'one_subEvent_with_childcare_start_invalid_format' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'childcare' => (object)['start' => '15:0'],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/childcare/start', 'The string should match pattern: ^\d?\d:\d\d$'),
+                ],
+            ],
+            'one_subEvent_with_childcare_end_invalid_format' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'childcare' => (object)['end' => 'invalid'],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/childcare/end', 'The string should match pattern: ^\d?\d:\d\d$'),
+                ],
+            ],
+            'one_subEvent_with_childcare_start_wrong_type' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'childcare' => (object)['start' => 1500],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/childcare/start', 'The data (integer) must match the type: string'),
+                ],
+            ],
         ];
     }
 }
