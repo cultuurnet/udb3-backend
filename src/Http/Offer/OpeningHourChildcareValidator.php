@@ -12,6 +12,8 @@ use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
  * Validates childcare times against opening hours.
  *
  * Note: The JSON schema already validates time format (H:MM/HH:MM) via regex pattern "^\d?\d:\d\d$".
+ * If parsing exceptions occur during validation, this indicates a schema validation bypass or broken
+ * validation pipeline. Such exceptions should be logged to Sentry as they represent a system integrity issue.
  */
 final class OpeningHourChildcareValidator
 {
