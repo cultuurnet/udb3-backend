@@ -48,36 +48,36 @@ Feature: Test the Search API v3 default filters
       | q            | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
 
-    Scenario: By default rejected offers are no longer shown
-      Given I create a minimal place and save the "id" as "uuid_place"
-      And I publish the place at "/places/%{uuid_place}"
-      And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
-      And I wait for the event with url "/events/%{eventId}" to be indexed
-      And I reject the event at "/events/%{eventId}" with reason "Reject event"
-      And I reject the place at "/places/%{uuid_place}" with reason "Rejected"
-      And I wait 2 seconds
-      And I am using the Search API v3 base URL
-      When I send a GET request to "/offers" with parameters:
-        | q | id:(%{eventId} OR %{uuid_place}) |
-      Then the JSON response at "totalItems" should be 0
-      When I send a GET request to "/offers" with parameters:
-        | workflowStatus | *                                |
-        | q              | id:(%{eventId} OR %{uuid_place}) |
-      Then the JSON response at "totalItems" should be 2
-      When I send a GET request to "/places" with parameters:
-        | q | id:(%{eventId} OR %{uuid_place}) |
-      Then the JSON response at "totalItems" should be 0
-      When I send a GET request to "/places" with parameters:
-        | workflowStatus | *                                |
-        | q              | id:(%{eventId} OR %{uuid_place}) |
-      Then the JSON response at "totalItems" should be 1
-      When I send a GET request to "/events" with parameters:
-        | q | id:(%{eventId} OR %{uuid_place}) |
-      Then the JSON response at "totalItems" should be 0
-      When I send a GET request to "/events" with parameters:
-        | workflowStatus | *                                |
-        | q              | id:(%{eventId} OR %{uuid_place}) |
-      Then the JSON response at "totalItems" should be 1
+  Scenario: By default rejected offers are no longer shown
+    Given I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I reject the event at "/events/%{eventId}" with reason "Reject event"
+    And I reject the place at "/places/%{uuid_place}" with reason "Rejected"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/offers" with parameters:
+      | q | id:(%{eventId} OR %{uuid_place}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/offers" with parameters:
+      | workflowStatus | *                                |
+      | q              | id:(%{eventId} OR %{uuid_place}) |
+    Then the JSON response at "totalItems" should be 2
+    When I send a GET request to "/places" with parameters:
+      | q | id:(%{eventId} OR %{uuid_place}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/places" with parameters:
+      | workflowStatus | *                                |
+      | q              | id:(%{eventId} OR %{uuid_place}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q | id:(%{eventId} OR %{uuid_place}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | workflowStatus | *                                |
+      | q              | id:(%{eventId} OR %{uuid_place}) |
+    Then the JSON response at "totalItems" should be 1
 
   Scenario: By default events with available to in the past should not be shown
     Given I create a minimal place and save the "url" as "placeUrl"
@@ -96,7 +96,7 @@ Feature: Test the Search API v3 default filters
     Then the JSON response at "totalItems" should be 1
 
   Scenario: By default events with available from in the future should not be shown
-    Given I create a minimal place and save the "url" as "uuid_place"
+    Given I create a minimal place and save the "id" as "uuid_place"
     And I create an event from "events/event-with-available-from-in-the-far-future.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
