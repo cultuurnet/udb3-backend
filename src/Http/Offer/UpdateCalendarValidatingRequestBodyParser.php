@@ -56,7 +56,7 @@ final class UpdateCalendarValidatingRequestBodyParser implements RequestBodyPars
                     $errors,
                     (new DateRangeValidator())->validate($data),
                     (new OpeningHoursRangeValidator())->validate($data),
-                    $this->validateOpeningHoursChildcare($data)
+                    OpeningHourChildcareValidator::validateAll($data)
                 );
                 break;
 
@@ -64,7 +64,7 @@ final class UpdateCalendarValidatingRequestBodyParser implements RequestBodyPars
                 $errors = array_merge(
                     $errors,
                     (new OpeningHoursRangeValidator())->validate($data),
-                    $this->validateOpeningHoursChildcare($data)
+                    OpeningHourChildcareValidator::validateAll($data)
                 );
                 break;
 
@@ -77,14 +77,6 @@ final class UpdateCalendarValidatingRequestBodyParser implements RequestBodyPars
         }
 
         return $request;
-    }
-
-    /**
-     * @return SchemaError[]
-     */
-    private function validateOpeningHoursChildcare(object $data): array
-    {
-        return OpeningHourChildcareValidator::validateAll($data);
     }
 
     /**
