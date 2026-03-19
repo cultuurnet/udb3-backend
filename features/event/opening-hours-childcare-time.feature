@@ -121,10 +121,7 @@ Feature: Test opening hours childcare times
     And I send a PUT request to "%{eventUrl}/calendar"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response should not include:
-    """
-    "childcare"
-    """
+    And the JSON response should not have "openingHours/0/childcare"
 
   Scenario: Cannot create an event when childcare.start equals opens
     When I set the JSON request payload to:
