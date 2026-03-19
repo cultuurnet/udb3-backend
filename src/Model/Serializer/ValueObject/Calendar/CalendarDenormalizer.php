@@ -160,7 +160,19 @@ class CalendarDenormalizer implements DenormalizerInterface
         $days = $this->denormalizeDays($openingHourData['dayOfWeek']);
         $opens = $this->denormalizeTime($openingHourData['opens']);
         $closes = $this->denormalizeTime($openingHourData['closes']);
-        return new OpeningHour($days, $opens, $closes);
+        $openingHour = new OpeningHour($days, $opens, $closes);
+
+        if (isset($openingHourData['childcare'])) {
+            $childcareStart = $openingHourData['childcare']['start'] ?? null;
+            $childcareEnd = $openingHourData['childcare']['end'] ?? null;
+            if ($childcareStart !== null || $childcareEnd !== null) {
+                $start = $childcareStart !== null ? Time::fromString($childcareStart) : null;
+                $end = $childcareEnd !== null ? Time::fromString($childcareEnd) : null;
+                $openingHour = $openingHour->withChildcareTimeRange(new TimeImmutableRange($start, $end));
+            }
+        }
+
+        return $openingHour;
     }
 
     /**

@@ -14,11 +14,22 @@ final class OpeningHourNormalizer implements NormalizerInterface
      */
     public function normalize($openingHour, $format = null, array $context = []): array
     {
-        return [
+        $normalized = [
             'opens' => $openingHour->getOpeningTime()->toString(),
             'closes' => $openingHour->getClosingTime()->toString(),
             'dayOfWeek' => (new DaysNormalizer())->normalize($openingHour->getDays()),
         ];
+
+        $childcareTimeRange = $openingHour->getChildcareTimeRange();
+        if ($childcareTimeRange !== null) {
+            $start = $childcareTimeRange->getStart()?->getValue();
+            $end = $childcareTimeRange->getEnd()?->getValue();
+            if ($start !== null || $end !== null) {
+                $normalized['childcare'] = ['start' => $start, 'end' => $end];
+            }
+        }
+
+        return $normalized;
     }
 
     public function supportsNormalization($data, $format = null): bool
