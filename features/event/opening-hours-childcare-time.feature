@@ -123,6 +123,62 @@ Feature: Test opening hours childcare times
     And I get the event at "%{eventUrl}"
     And the JSON response should not have "openingHours/0/childcare"
 
+  Scenario: Create a periodic event with only childcare.start on an opening hour
+    When I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {"nl": "Periodiek event met gedeeltelijke kinderopvang"},
+      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+      "location": {"@id": "%{placeUrl}"},
+      "calendarType": "periodic",
+      "startDate": "2021-05-01T00:00:00+00:00",
+      "endDate": "2021-05-31T00:00:00+00:00",
+      "openingHours": [
+        {
+          "opens": "09:00",
+          "closes": "17:00",
+          "childcare": {"start": "08:00"},
+          "dayOfWeek": ["monday"]
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "url" as "eventUrl"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "openingHours/0/childcare/start" should be "08:00"
+    And the JSON response should not have "openingHours/0/childcare/end"
+
+  Scenario: Create a periodic event with only childcare.end on an opening hour
+    When I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {"nl": "Periodiek event met gedeeltelijke kinderopvang"},
+      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+      "location": {"@id": "%{placeUrl}"},
+      "calendarType": "periodic",
+      "startDate": "2021-05-01T00:00:00+00:00",
+      "endDate": "2021-05-31T00:00:00+00:00",
+      "openingHours": [
+        {
+          "opens": "09:00",
+          "closes": "17:00",
+          "childcare": {"end": "18:00"},
+          "dayOfWeek": ["monday"]
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "url" as "eventUrl"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "openingHours/0/childcare/end" should be "18:00"
+    And the JSON response should not have "openingHours/0/childcare/start"
+
   Scenario: Cannot create an event when childcare.start equals opens
     When I set the JSON request payload to:
     """

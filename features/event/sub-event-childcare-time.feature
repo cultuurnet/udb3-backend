@@ -237,6 +237,60 @@ Feature: Test SubEvent childcare times
     "childcare"
     """
 
+  Scenario: Create an event with only childcare.start on a subEvent
+    When I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {"nl": "Event met gedeeltelijke kinderopvang"},
+      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+      "location": {"@id": "%{placeUrl}"},
+      "calendarType": "single",
+      "startDate": "2021-05-17T16:00:00+00:00",
+      "endDate": "2021-05-17T22:00:00+00:00",
+      "subEvent": [
+        {
+          "startDate": "2021-05-17T16:00:00+00:00",
+          "endDate": "2021-05-17T22:00:00+00:00",
+          "childcare": {"start": "15:00"}
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "url" as "eventUrl"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "subEvent/0/childcare/start" should be "15:00"
+    And the JSON response should not have "subEvent/0/childcare/end"
+
+  Scenario: Create an event with only childcare.end on a subEvent
+    When I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {"nl": "Event met gedeeltelijke kinderopvang"},
+      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+      "location": {"@id": "%{placeUrl}"},
+      "calendarType": "single",
+      "startDate": "2021-05-17T16:00:00+00:00",
+      "endDate": "2021-05-17T22:00:00+00:00",
+      "subEvent": [
+        {
+          "startDate": "2021-05-17T16:00:00+00:00",
+          "endDate": "2021-05-17T22:00:00+00:00",
+          "childcare": {"end": "23:00"}
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "url" as "eventUrl"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "subEvent/0/childcare/end" should be "23:00"
+    And the JSON response should not have "subEvent/0/childcare/start"
+
   Scenario: Cannot create an event when childcare.start equals the startDate time
     When I set the JSON request payload to:
     """
