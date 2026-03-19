@@ -1,11 +1,10 @@
 # Faqs
 
-FAQs are an optional list of question/answer pairs in various languages on Events. Each FAQ item has an internal `id` that is not exposed in the projection.
+FAQs are an optional list of question/answer pairs in various languages on Events.
 
 ## Data model
 
 Each FAQ item has:
-- `id` — UUID, auto-generated on creation but not exposed with the API and only stored inside the event store
 - One or more language translations, each with a `question` (max 255 chars) and an `answer` (max 5000 chars)
 
 ### JSON structure
@@ -65,13 +64,13 @@ Send an empty array.
 
 All value objects live in `src/Model/ValueObject/Faq/`.
 
-| Class           | Description                                          |
-|-----------------|------------------------------------------------------|
-| `Faq`           | A single FAQ in one language (`id`, `question`, `answer`) |
-| `TranslatedFaq` | A `Faq` with all its language translations           |
-| `Faqs`          | Ordered collection of `TranslatedFaq` items          |
-| `Question`      | Non-empty string, max 255 chars                      |
-| `Answer`        | Non-empty string, max 5000 chars                     |
+| Class           | Description                                         |
+|-----------------|-----------------------------------------------------|
+| `Faq`           | A single FAQ in one language (`question`, `answer`) |
+| `TranslatedFaq` | A `Faq` with all its language translations          |
+| `Faqs`          | Ordered collection of `TranslatedFaq` items         |
+| `Question`      | Non-empty string, max 255 chars                     |
+| `Answer`        | Non-empty string, max 5000 chars                    |
 
 ## Aggregate
 
