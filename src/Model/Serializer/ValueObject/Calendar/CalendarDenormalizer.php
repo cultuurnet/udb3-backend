@@ -15,10 +15,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
@@ -143,61 +139,14 @@ class CalendarDenormalizer implements DenormalizerInterface
         return $type === Calendar::class;
     }
 
-    /**
-     * @todo Extract to a separate OpeningHoursDenormalizer
-     */
     private function denormalizeOpeningHours(array $openingHoursData): OpeningHours
     {
-        $openingHours = array_map([$this, 'denormalizeOpeningHour'], $openingHoursData);
-        return new OpeningHours(...$openingHours);
-    }
-
-    /**
-     * @todo Extract to a separate OpeningHourDenormalizer
-     */
-    private function denormalizeOpeningHour(array $openingHourData): OpeningHour
-    {
-        $days = $this->denormalizeDays($openingHourData['dayOfWeek']);
-        $opens = $this->denormalizeTime($openingHourData['opens']);
-        $closes = $this->denormalizeTime($openingHourData['closes']);
-        $openingHour = new OpeningHour($days, $opens, $closes);
-
-        if (isset($openingHourData['childcare'])) {
-            $childcareStart = $openingHourData['childcare']['start'] ?? null;
-            $childcareEnd = $openingHourData['childcare']['end'] ?? null;
-            if ($childcareStart !== null || $childcareEnd !== null) {
-                $start = $childcareStart !== null ? Time::fromString($childcareStart) : null;
-                $end = $childcareEnd !== null ? Time::fromString($childcareEnd) : null;
-                $openingHour = $openingHour->withChildcareTimeRange(new TimeImmutableRange($start, $end));
-            }
-        }
-
-        return $openingHour;
-    }
-
-    /**
-     * @todo Extract to a separate DaysDenormalizer
-     */
-    private function denormalizeDays(array $daysData): Days
-    {
-        $days = array_map(
-            function ($day) {
-                return new Day($day);
-            },
-            $daysData
+        $denormalizer = new OpeningHourDenormalizer();
+        $openingHours = array_map(
+            fn(array $data) => $denormalizer->denormalize($data, OpeningHour::class),
+            $openingHoursData
         );
-        return new Days(...$days);
-    }
-
-    /**
-     *@todo Extract to a separate TimeDenormalizer
-     */
-    private function denormalizeTime(string $timeString): Time
-    {
-        $dateTime = DateTimeFactory::fromFormat('H:i', $timeString);
-        $hour = new Hour((int) $dateTime->format('H'));
-        $minute = new Minute((int) $dateTime->format('i'));
-        return new Time($hour, $minute);
+        return new OpeningHours(...$openingHours);
     }
 
     private function denormalizeDateRange(array $dateRangeData): DateRange
