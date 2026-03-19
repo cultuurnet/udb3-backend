@@ -1,5 +1,4 @@
 {
-  "@context": "/contexts/event",
   "mainLanguage": "nl",
   "name": {
     "nl": "Ready for validation"
