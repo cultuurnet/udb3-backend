@@ -45,7 +45,14 @@ final class SubEventNormalizer implements NormalizerInterface
             // Only include childcare if at least one of start or end is set
             // Empty TimeImmutableRange (both null) represents cleared childcare
             if ($start !== null || $end !== null) {
-                $normalized['childcare'] = ['start' => $start, 'end' => $end];
+                $childcare = [];
+                if ($start !== null) {
+                    $childcare['start'] = $start;
+                }
+                if ($end !== null) {
+                    $childcare['end'] = $end;
+                }
+                $normalized['childcare'] = $childcare;
             }
         }
         return $normalized;

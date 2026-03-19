@@ -25,7 +25,14 @@ final class OpeningHourNormalizer implements NormalizerInterface
             $start = $childcareTimeRange->getStart()?->getValue();
             $end = $childcareTimeRange->getEnd()?->getValue();
             if ($start !== null || $end !== null) {
-                $normalized['childcare'] = ['start' => $start, 'end' => $end];
+                $childcare = [];
+                if ($start !== null) {
+                    $childcare['start'] = $start;
+                }
+                if ($end !== null) {
+                    $childcare['end'] = $end;
+                }
+                $normalized['childcare'] = $childcare;
             }
         }
 

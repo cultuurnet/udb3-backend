@@ -62,24 +62,24 @@ final class SubEventNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_includes_childcare_with_null_end_when_only_start_is_set(): void
+    public function it_includes_childcare_without_end_when_only_start_is_set(): void
     {
         $subEvent = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('15:00'), null));
         $normalized = $this->normalizer->normalize($subEvent);
 
         $this->assertSame('15:00', $normalized['childcare']['start']);
-        $this->assertNull($normalized['childcare']['end']);
+        $this->assertArrayNotHasKey('end', $normalized['childcare']);
     }
 
     /**
      * @test
      */
-    public function it_includes_childcare_with_null_start_when_only_end_is_set(): void
+    public function it_includes_childcare_without_start_when_only_end_is_set(): void
     {
         $subEvent = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(null, Time::fromString('23:00')));
         $normalized = $this->normalizer->normalize($subEvent);
 
-        $this->assertNull($normalized['childcare']['start']);
+        $this->assertArrayNotHasKey('start', $normalized['childcare']);
         $this->assertSame('23:00', $normalized['childcare']['end']);
     }
 }

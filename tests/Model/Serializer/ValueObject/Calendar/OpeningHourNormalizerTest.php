@@ -82,7 +82,8 @@ final class OpeningHourNormalizerTest extends TestCase
 
         $result = $this->normalizer->normalize($openingHour);
 
-        $this->assertSame(['start' => '08:00', 'end' => null], $result['childcare']);
+        $this->assertSame('08:00', $result['childcare']['start']);
+        $this->assertArrayNotHasKey('end', $result['childcare']);
     }
 
     /**
@@ -98,7 +99,8 @@ final class OpeningHourNormalizerTest extends TestCase
 
         $result = $this->normalizer->normalize($openingHour);
 
-        $this->assertSame(['start' => null, 'end' => '18:00'], $result['childcare']);
+        $this->assertArrayNotHasKey('start', $result['childcare']);
+        $this->assertSame('18:00', $result['childcare']['end']);
     }
 
     /**
