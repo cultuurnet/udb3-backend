@@ -47,8 +47,19 @@ final class OpeningHourChildcareValidator
 
         $childcare = $openingHourData->childcare;
 
-        $start = isset($childcare->start) ? Time::fromString($childcare->start) : null;
-        $end = isset($childcare->end) ? Time::fromString($childcare->end) : null;
+        if ((isset($childcare->start) && !is_string($childcare->start)) ||
+            (isset($childcare->end) && !is_string($childcare->end))) {
+            // Type error(s) will be reported by the Schema validation.
+            return [];
+        }
+
+        try {
+            $start = isset($childcare->start) ? Time::fromString($childcare->start) : null;
+            $end = isset($childcare->end) ? Time::fromString($childcare->end) : null;
+        } catch (\Exception $e) {
+            // Format error(s) will be reported by the Schema validation.
+            return [];
+        }
 
         try {
             $dateRange = new TimeImmutableRange($start, $end);

@@ -6579,6 +6579,185 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->assertValidationErrors($event, $expectedErrors);
     }
 
+    /**
+     * @test
+     */
+    public function it_creates_event_with_periodic_calendar_and_childcare_on_opening_hours(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'periodic',
+            'startDate' => '2021-01-01T14:00:30+01:00',
+            'endDate' => '2021-01-01T17:00:30+01:00',
+            'openingHours' => [
+                [
+                    'opens' => '09:00',
+                    'closes' => '17:00',
+                    'childcare' => ['start' => '08:00', 'end' => '18:00'],
+                    'dayOfWeek' => ['monday'],
+                ],
+            ],
+        ];
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('PUT');
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertEquals(
+            Json::encode([
+                'id' => $eventId,
+                'eventId' => $eventId,
+                'url' => 'https://io.uitdatabank.dev/events/' . $eventId,
+                'commandId' => Uuid::NIL,
+            ]),
+            $response->getBody()->getContents()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_periodic_calendar_childcare_start_has_invalid_format(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'periodic',
+            'startDate' => '2021-01-01T14:00:30+01:00',
+            'endDate' => '2021-01-01T17:00:30+01:00',
+            'openingHours' => [
+                [
+                    'opens' => '09:00',
+                    'closes' => '17:00',
+                    'childcare' => ['start' => '8:0'],
+                    'dayOfWeek' => ['monday'],
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError('/openingHours/0/childcare/start', 'The string should match pattern: ^\d?\d:\d\d$'),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_periodic_calendar_childcare_start_is_not_before_opens(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'periodic',
+            'startDate' => '2021-01-01T14:00:30+01:00',
+            'endDate' => '2021-01-01T17:00:30+01:00',
+            'openingHours' => [
+                [
+                    'opens' => '09:00',
+                    'closes' => '17:00',
+                    'childcare' => ['start' => '09:00', 'end' => '18:00'],
+                    'dayOfWeek' => ['monday'],
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError('/openingHours/0/childcare/start', 'childcare.start must be before opens'),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_periodic_calendar_childcare_end_is_not_after_closes(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'periodic',
+            'startDate' => '2021-01-01T14:00:30+01:00',
+            'endDate' => '2021-01-01T17:00:30+01:00',
+            'openingHours' => [
+                [
+                    'opens' => '09:00',
+                    'closes' => '17:00',
+                    'childcare' => ['start' => '08:00', 'end' => '16:00'],
+                    'dayOfWeek' => ['monday'],
+                ],
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError('/openingHours/0/childcare/end', 'childcare.end must be after closes'),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
     private function assertValidationErrors(array $event, array $expectedErrors): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
