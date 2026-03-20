@@ -271,7 +271,7 @@ final class CanonicalServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_first_uitpas_place_without_throwing_when_multiple_uitpas_places(): void
+    public function it_returns_oldest_uitpas_labeled_place_when_labeled_places_have_tied_events(): void
     {
         $canonicalId = $this->canonicalService->getCanonicalFromArrayWithoutThrowing([
             $this->UiTPASPlaceId,
