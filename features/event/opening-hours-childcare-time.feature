@@ -158,116 +158,36 @@ Feature: Test opening hours childcare times
     And the JSON response should not have "openingHours/0/childcare/start"
 
   Scenario: Cannot create an event when childcare.start equals opens
-    When I set the JSON request payload to:
-    """
-    {
-      "mainLanguage": "nl",
-      "name": {"nl": "Event"},
-      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
-      "location": {"@id": "%{placeUrl}"},
-      "calendarType": "periodic",
-      "startDate": "2021-05-01T00:00:00+00:00",
-      "endDate": "2021-05-31T00:00:00+00:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "childcare": {
-            "start": "09:00",
-            "end": "18:00"
-          },
-          "dayOfWeek": ["monday"]
-        }
-      ]
-    }
-    """
+    Given I set the variable "childcareStart" to "09:00"
+    And I set the variable "childcareEnd" to "18:00"
+    When I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-invalid-childcare.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHours/0/childcare/start"
     And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before opens"
 
   Scenario: Cannot create an event when childcare.start is after opens
-    When I set the JSON request payload to:
-    """
-    {
-      "mainLanguage": "nl",
-      "name": {"nl": "Event"},
-      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
-      "location": {"@id": "%{placeUrl}"},
-      "calendarType": "periodic",
-      "startDate": "2021-05-01T00:00:00+00:00",
-      "endDate": "2021-05-31T00:00:00+00:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "childcare": {
-            "start": "10:00",
-            "end": "18:00"
-          },
-          "dayOfWeek": ["monday"]
-        }
-      ]
-    }
-    """
+    Given I set the variable "childcareStart" to "10:00"
+    And I set the variable "childcareEnd" to "18:00"
+    When I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-invalid-childcare.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHours/0/childcare/start"
     And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before opens"
 
   Scenario: Cannot create an event when childcare.end equals closes
-    When I set the JSON request payload to:
-    """
-    {
-      "mainLanguage": "nl",
-      "name": {"nl": "Event"},
-      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
-      "location": {"@id": "%{placeUrl}"},
-      "calendarType": "periodic",
-      "startDate": "2021-05-01T00:00:00+00:00",
-      "endDate": "2021-05-31T00:00:00+00:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "childcare": {
-            "start": "08:00",
-            "end": "17:00"
-          },
-          "dayOfWeek": ["monday"]
-        }
-      ]
-    }
-    """
+    Given I set the variable "childcareStart" to "08:00"
+    And I set the variable "childcareEnd" to "17:00"
+    When I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-invalid-childcare.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHours/0/childcare/end"
     And the JSON response at "schemaErrors/0/error" should be "childcare.end must be after closes"
 
   Scenario: Cannot create an event when childcare.end is before closes
-    When I set the JSON request payload to:
-    """
-    {
-      "mainLanguage": "nl",
-      "name": {"nl": "Event"},
-      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
-      "location": {"@id": "%{placeUrl}"},
-      "calendarType": "periodic",
-      "startDate": "2021-05-01T00:00:00+00:00",
-      "endDate": "2021-05-31T00:00:00+00:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "childcare": {
-            "start": "08:00",
-            "end": "16:00"
-          },
-          "dayOfWeek": ["monday"]
-        }
-      ]
-    }
-    """
+    Given I set the variable "childcareStart" to "08:00"
+    And I set the variable "childcareEnd" to "16:00"
+    When I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-invalid-childcare.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHours/0/childcare/end"
