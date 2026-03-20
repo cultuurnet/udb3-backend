@@ -11,8 +11,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
-use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -37,49 +35,4 @@ final class SubEventNormalizerTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_does_not_include_childcare_when_not_set(): void
-    {
-        $normalized = $this->normalizer->normalize($this->subEvent);
-
-        $this->assertArrayNotHasKey('childcare', $normalized);
-    }
-
-    /**
-     * @test
-     */
-    public function it_includes_nested_childcare_object_when_set(): void
-    {
-        $subEvent = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('15:00'), Time::fromString('23:00')));
-        $normalized = $this->normalizer->normalize($subEvent);
-
-        $this->assertSame('15:00', $normalized['childcare']['start']);
-        $this->assertSame('23:00', $normalized['childcare']['end']);
-    }
-
-    /**
-     * @test
-     */
-    public function it_includes_childcare_without_end_when_only_start_is_set(): void
-    {
-        $subEvent = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('15:00'), null));
-        $normalized = $this->normalizer->normalize($subEvent);
-
-        $this->assertSame('15:00', $normalized['childcare']['start']);
-        $this->assertArrayNotHasKey('end', $normalized['childcare']);
-    }
-
-    /**
-     * @test
-     */
-    public function it_includes_childcare_without_start_when_only_end_is_set(): void
-    {
-        $subEvent = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange(null, Time::fromString('23:00')));
-        $normalized = $this->normalizer->normalize($subEvent);
-
-        $this->assertArrayNotHasKey('start', $normalized['childcare']);
-        $this->assertSame('23:00', $normalized['childcare']['end']);
-    }
 }

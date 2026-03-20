@@ -20,20 +20,9 @@ final class OpeningHourNormalizer implements NormalizerInterface
             'dayOfWeek' => (new DaysNormalizer())->normalize($openingHour->getDays()),
         ];
 
-        $childcareTimeRange = $openingHour->getChildcareTimeRange();
-        if ($childcareTimeRange !== null) {
-            $start = $childcareTimeRange->getStart()?->getValue();
-            $end = $childcareTimeRange->getEnd()?->getValue();
-            if ($start !== null || $end !== null) {
-                $childcare = [];
-                if ($start !== null) {
-                    $childcare['start'] = $start;
-                }
-                if ($end !== null) {
-                    $childcare['end'] = $end;
-                }
-                $normalized['childcare'] = $childcare;
-            }
+        $childcare = (new ChildcareTimeRangeNormalizer())->normalize($openingHour->getChildcareTimeRange());
+        if ($childcare !== null) {
+            $normalized['childcare'] = $childcare;
         }
 
         return $normalized;
