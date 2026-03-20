@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\Doctrine\DBALReadRepository;
 use CultuurNet\UDB3\Offer\OfferLocator;
+use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\CanonicalServiceFromLabels;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\DBALDuplicatePlacesRemovedFromClusterRepository;
@@ -31,7 +32,7 @@ final class PlaceServiceProvider extends AbstractServiceProvider
             'place_service',
             DuplicatePlaceRepository::class,
             DuplicatePlaceRemovedFromClusterRepository::class,
-            'canonical_service',
+            CanonicalService::class,
         ];
     }
 
@@ -96,7 +97,7 @@ final class PlaceServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            'canonical_service',
+            CanonicalService::class,
             fn () => new CanonicalServiceFromLabels(
                 $this->getCanonicalLabels($container->get('config')),
                 $container->get(DuplicatePlaceRepository::class),
