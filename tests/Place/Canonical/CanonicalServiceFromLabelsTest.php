@@ -14,14 +14,14 @@ use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
-final class CanonicalServiceTest extends TestCase
+final class CanonicalServiceFromLabelsTest extends TestCase
 {
     use DBALTestConnectionTrait;
 
     private const UITPAS_LABEL = 'UiTPas';
     private const UITPAS_LABEL_GENT = 'UiTPAS Gent';
     private const CJM_LABEL = 'cjm-cc';
-    private CanonicalService $canonicalService;
+    private CanonicalServiceFromLabels $canonicalService;
 
     private string $museumPassPlaceId;
     private string $anotherMuseumPassPlaceId;
@@ -114,7 +114,7 @@ final class CanonicalServiceTest extends TestCase
         );
         $documentRepository->save($oldestJsonDocument);
 
-        $this->canonicalService = new CanonicalService(
+        $this->canonicalService = new CanonicalServiceFromLabels(
             ['museumPASSmusees', self::UITPAS_LABEL, self::UITPAS_LABEL_GENT, self::CJM_LABEL],
             new DBALDuplicatePlaceRepository($this->getConnection()),
             new DBALEventRelationsRepository($this->getConnection()),
