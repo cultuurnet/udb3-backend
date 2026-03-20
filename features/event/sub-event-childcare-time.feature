@@ -231,7 +231,7 @@ Feature: Test SubEvent childcare times
   Scenario: Cannot create an event when childcare.start equals the startDate time
     Given I set the variable "childcareStart" to "16:00"
     And I set the variable "childcareEnd" to "23:00"
-    When I set the JSON request payload from "events/sub-event-childcare/event-single-with-invalid-childcare.json"
+    When I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcare/start"
@@ -240,7 +240,7 @@ Feature: Test SubEvent childcare times
   Scenario: Cannot create an event when childcare.start is after the startDate time
     Given I set the variable "childcareStart" to "17:00"
     And I set the variable "childcareEnd" to "23:00"
-    When I set the JSON request payload from "events/sub-event-childcare/event-single-with-invalid-childcare.json"
+    When I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcare/start"
@@ -249,7 +249,7 @@ Feature: Test SubEvent childcare times
   Scenario: Cannot create an event when childcare.end equals the endDate time
     Given I set the variable "childcareStart" to "15:00"
     And I set the variable "childcareEnd" to "22:00"
-    When I set the JSON request payload from "events/sub-event-childcare/event-single-with-invalid-childcare.json"
+    When I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcare/end"
@@ -258,7 +258,7 @@ Feature: Test SubEvent childcare times
   Scenario: Cannot create an event when childcare.end is before the endDate time
     Given I set the variable "childcareStart" to "15:00"
     And I set the variable "childcareEnd" to "21:00"
-    When I set the JSON request payload from "events/sub-event-childcare/event-single-with-invalid-childcare.json"
+    When I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcare/end"
