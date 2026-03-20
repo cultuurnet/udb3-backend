@@ -77,7 +77,9 @@ Feature: Test opening hours childcare times
     And the JSON response should not have "openingHours/1/childcare"
 
   Scenario: Childcare times are cleared when omitted from a PUT calendar update
-    Given I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
+    Given I set the variable "childcareStart" to "08:00"
+    And I set the variable "childcareEnd" to "18:00"
+    And I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
@@ -160,7 +162,7 @@ Feature: Test opening hours childcare times
   Scenario: Cannot create an event when childcare.start equals opens
     Given I set the variable "childcareStart" to "09:00"
     And I set the variable "childcareEnd" to "18:00"
-    When I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-invalid-childcare.json"
+    When I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHours/0/childcare/start"
@@ -169,7 +171,7 @@ Feature: Test opening hours childcare times
   Scenario: Cannot create an event when childcare.start is after opens
     Given I set the variable "childcareStart" to "10:00"
     And I set the variable "childcareEnd" to "18:00"
-    When I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-invalid-childcare.json"
+    When I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHours/0/childcare/start"
@@ -178,7 +180,7 @@ Feature: Test opening hours childcare times
   Scenario: Cannot create an event when childcare.end equals closes
     Given I set the variable "childcareStart" to "08:00"
     And I set the variable "childcareEnd" to "17:00"
-    When I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-invalid-childcare.json"
+    When I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHours/0/childcare/end"
@@ -187,65 +189,37 @@ Feature: Test opening hours childcare times
   Scenario: Cannot create an event when childcare.end is before closes
     Given I set the variable "childcareStart" to "08:00"
     And I set the variable "childcareEnd" to "16:00"
-    When I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-invalid-childcare.json"
+    When I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHours/0/childcare/end"
     And the JSON response at "schemaErrors/0/error" should be "childcare.end must be after closes"
 
   Scenario: Cannot update calendar via PUT when opens is changed to make existing childcare.start invalid
-    Given I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
+    Given I set the variable "childcareStart" to "08:00"
+    And I set the variable "childcareEnd" to "18:00"
+    And I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
-    When I set the JSON request payload to:
-    """
-    {
-      "calendarType": "periodic",
-      "startDate": "2021-05-01T00:00:00+00:00",
-      "endDate": "2021-05-31T00:00:00+00:00",
-      "openingHours": [
-        {
-          "opens": "08:00",
-          "closes": "17:00",
-          "childcare": {
-            "start": "08:00",
-            "end": "18:00"
-          },
-          "dayOfWeek": ["monday"]
-        }
-      ]
-    }
-    """
+    When I set the variable "opens" to "08:00"
+    And I set the variable "closes" to "17:00"
+    And I set the JSON request payload from "events/opening-hours-childcare/calendar-put-with-invalid-childcare.json"
     And I send a PUT request to "%{eventUrl}/calendar"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHours/0/childcare/start"
     And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before opens"
 
   Scenario: Cannot update calendar via PUT when closes is changed to make existing childcare.end invalid
-    Given I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
+    Given I set the variable "childcareStart" to "08:00"
+    And I set the variable "childcareEnd" to "18:00"
+    And I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
-    When I set the JSON request payload to:
-    """
-    {
-      "calendarType": "periodic",
-      "startDate": "2021-05-01T00:00:00+00:00",
-      "endDate": "2021-05-31T00:00:00+00:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "18:30",
-          "childcare": {
-            "start": "08:00",
-            "end": "18:00"
-          },
-          "dayOfWeek": ["monday"]
-        }
-      ]
-    }
-    """
+    When I set the variable "opens" to "09:00"
+    And I set the variable "closes" to "18:30"
+    And I set the JSON request payload from "events/opening-hours-childcare/calendar-put-with-invalid-childcare.json"
     And I send a PUT request to "%{eventUrl}/calendar"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHours/0/childcare/end"

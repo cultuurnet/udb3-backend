@@ -11,8 +11,8 @@
       "opens": "09:00",
       "closes": "17:00",
       "childcare": {
-        "start": "08:00",
-        "end": "18:00"
+        "start": "%{childcareStart}",
+        "end": "%{childcareEnd}"
       },
       "dayOfWeek": ["monday"]
     }
