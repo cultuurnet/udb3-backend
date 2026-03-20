@@ -35,8 +35,7 @@ final class UpdateCalendarValidatingRequestBodyParser implements RequestBodyPars
 
         $data = $request->getParsedBody();
 
-        if (!is_object($data) || count($errors) > 0) {
-            // If the body data is not an object, or schema validation already found errors, stop here.
+        if (count($errors) > 0) {
             // Custom validators below expect structurally valid data and must not run on malformed input.
             throw ApiProblem::bodyInvalidData(...$errors);
         }
