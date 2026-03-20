@@ -26,14 +26,16 @@ final class CalendarValidatingRequestBodyParser implements RequestBodyParser
                 $errors = array_merge(
                     $errors,
                     (new DateRangeValidator())->validate($data),
-                    (new OpeningHoursRangeValidator())->validate($data)
+                    (new OpeningHoursRangeValidator())->validate($data),
+                    (new OpeningHourChildcareValidator())->validate($data)
                 );
                 break;
 
             case 'permanent':
                 $errors = array_merge(
                     $errors,
-                    (new OpeningHoursRangeValidator())->validate($data)
+                    (new OpeningHoursRangeValidator())->validate($data),
+                    (new OpeningHourChildcareValidator())->validate($data)
                 );
                 break;
 

@@ -1,0 +1,20 @@
+{
+  "mainLanguage": "nl",
+  "name": {"nl": "Periodiek event"},
+  "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+  "location": {"@id": "%{placeUrl}"},
+  "calendarType": "periodic",
+  "startDate": "2021-05-01T00:00:00+00:00",
+  "endDate": "2021-05-31T00:00:00+00:00",
+  "openingHours": [
+    {
+      "opens": "09:00",
+      "closes": "17:00",
+      "childcare": {
+        "start": "%{childcareStart}",
+        "end": "%{childcareEnd}"
+      },
+      "dayOfWeek": ["monday"]
+    }
+  ]
+}
