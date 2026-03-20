@@ -76,7 +76,7 @@ class CanonicalService
 
     /**
      * @param string[] $placeIds
-     * This function is only used LookupDuplicatePlaceWithSapi3 to make sure
+     * This function is only used by LookupDuplicatePlaceWithSapi3 to make sure
      * we always return an id. Therefore, it does not throw exceptions and
      * should probably not be used anywhere else.
      */
