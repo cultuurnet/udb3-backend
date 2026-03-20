@@ -157,7 +157,7 @@ final class CanonicalServiceTest extends TestCase
     /**
      * @test
      */
-    public function it_will_throw_an_exception_when_cluster_contains_2_UITPAS_places(): void
+    public function it_will_throw_an_exception_when_cluster_contains_2_canonical_labels(): void
     {
         $this->expectException(MultipleCanonicalPlacesInCluster::class);
         $this->expectExceptionMessage('Cluster cluster_uitpas contains 2 places with a canonical label');
