@@ -46,7 +46,7 @@ class CanonicalService
         $labeledPlaces = $this->getPlacesWithCanonicalLabelInCluster($placeIds);
 
         if (count($labeledPlaces) === 1) {
-            return $labeledPlaces[array_key_first($labeledPlaces)];
+            return $labeledPlaces[0];
         }
 
         if (count($labeledPlaces) > 1) {
@@ -55,7 +55,7 @@ class CanonicalService
 
         $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
         if (count($placesWithMostEvents) === 1) {
-            return $placesWithMostEvents[array_key_first($placesWithMostEvents)];
+            return $placesWithMostEvents[0];
         }
 
         return $this->getOldestPlace($placeIds);
@@ -72,20 +72,20 @@ class CanonicalService
         $labeledPlaces = $this->getPlacesWithCanonicalLabelInCluster($placeIds);
 
         if (count($labeledPlaces) === 1) {
-            return $labeledPlaces[array_key_first($labeledPlaces)];
+            return $labeledPlaces[0];
         }
 
         if (count($labeledPlaces) > 1) {
             $placesWithMostEvents = $this->getPlacesWithMostEvents($labeledPlaces);
             if (count($placesWithMostEvents) === 1) {
-                return $placesWithMostEvents[array_key_first($placesWithMostEvents)];
+                return $placesWithMostEvents[0];
             }
             return $this->getOldestPlace($labeledPlaces);
         }
 
         $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
         if (count($placesWithMostEvents) === 1) {
-            return $placesWithMostEvents[array_key_first($placesWithMostEvents)];
+            return $placesWithMostEvents[0];
         }
 
         return $this->getOldestPlace($placeIds);
