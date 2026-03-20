@@ -77,29 +77,7 @@ Feature: Test opening hours childcare times
     And the JSON response should not have "openingHours/1/childcare"
 
   Scenario: Childcare times are cleared when omitted from a PUT calendar update
-    Given I set the JSON request payload to:
-    """
-    {
-      "mainLanguage": "nl",
-      "name": {"nl": "Periodiek event"},
-      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
-      "location": {"@id": "%{placeUrl}"},
-      "calendarType": "periodic",
-      "startDate": "2021-05-01T00:00:00+00:00",
-      "endDate": "2021-05-31T00:00:00+00:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "childcare": {
-            "start": "08:00",
-            "end": "18:00"
-          },
-          "dayOfWeek": ["monday"]
-        }
-      ]
-    }
-    """
+    Given I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
@@ -296,29 +274,7 @@ Feature: Test opening hours childcare times
     And the JSON response at "schemaErrors/0/error" should be "childcare.end must be after closes"
 
   Scenario: Cannot update calendar via PUT when opens is changed to make existing childcare.start invalid
-    Given I set the JSON request payload to:
-    """
-    {
-      "mainLanguage": "nl",
-      "name": {"nl": "Periodiek event"},
-      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
-      "location": {"@id": "%{placeUrl}"},
-      "calendarType": "periodic",
-      "startDate": "2021-05-01T00:00:00+00:00",
-      "endDate": "2021-05-31T00:00:00+00:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "childcare": {
-            "start": "08:00",
-            "end": "18:00"
-          },
-          "dayOfWeek": ["monday"]
-        }
-      ]
-    }
-    """
+    Given I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
@@ -347,29 +303,7 @@ Feature: Test opening hours childcare times
     And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before opens"
 
   Scenario: Cannot update calendar via PUT when closes is changed to make existing childcare.end invalid
-    Given I set the JSON request payload to:
-    """
-    {
-      "mainLanguage": "nl",
-      "name": {"nl": "Periodiek event"},
-      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
-      "location": {"@id": "%{placeUrl}"},
-      "calendarType": "periodic",
-      "startDate": "2021-05-01T00:00:00+00:00",
-      "endDate": "2021-05-31T00:00:00+00:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "childcare": {
-            "start": "08:00",
-            "end": "18:00"
-          },
-          "dayOfWeek": ["monday"]
-        }
-      ]
-    }
-    """
+    Given I set the JSON request payload from "events/opening-hours-childcare/event-periodic-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
