@@ -14,7 +14,7 @@ use CultuurNet\UDB3\EventSourcing\DomainMessageBuilder;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
-use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
+use CultuurNet\UDB3\Place\Canonical\Exception\MultipleCanonicalPlacesInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentEventFactory;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -101,8 +101,8 @@ final class ProcessDuplicatePlaces extends AbstractCommand
             // 1. Set the canonical of a cluster
             try {
                 $canonicalId = $this->canonicalService->getCanonical($clusterId);
-            } catch (MuseumPassNotUniqueInCluster $museumPassNotUniqueInClusterException) {
-                $output->writeln($museumPassNotUniqueInClusterException->getMessage());
+            } catch (MultipleCanonicalPlacesInCluster $multipleCanonicalPlacesInClusterException) {
+                $output->writeln($multipleCanonicalPlacesInClusterException->getMessage());
                 continue;
             }
 
