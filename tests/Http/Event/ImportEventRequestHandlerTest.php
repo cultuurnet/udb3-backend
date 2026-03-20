@@ -6646,116 +6646,49 @@ final class ImportEventRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider periodicCalendarInvalidChildcareProvider
      */
-    public function it_throws_if_periodic_calendar_childcare_start_has_invalid_format(): void
+    public function it_throws_when_periodic_calendar_childcare_is_invalid(array $openingHour, array $expectedErrors): void
     {
-        $event = [
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannenkoeken voor het goede doel',
+        $this->assertValidationErrors(
+            [
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+                'terms' => [['id' => '1.50.0.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'periodic',
+                'startDate' => '2021-01-01T14:00:30+01:00',
+                'endDate' => '2021-01-01T17:00:30+01:00',
+                'openingHours' => [$openingHour],
             ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'periodic',
-            'startDate' => '2021-01-01T14:00:30+01:00',
-            'endDate' => '2021-01-01T17:00:30+01:00',
-            'openingHours' => [
-                [
-                    'opens' => '09:00',
-                    'closes' => '17:00',
-                    'childcare' => ['start' => '8:0'],
-                    'dayOfWeek' => ['monday'],
-                ],
-            ],
-        ];
-
-        $expectedErrors = [
-            new SchemaError('/openingHours/0/childcare/start', 'The string should match pattern: ^\d?\d:\d\d$'),
-        ];
-
-        $this->assertValidationErrors($event, $expectedErrors);
+            $expectedErrors
+        );
     }
 
-    /**
-     * @test
-     */
-    public function it_throws_if_periodic_calendar_childcare_start_is_not_before_opens(): void
+    public function periodicCalendarInvalidChildcareProvider(): array
     {
-        $event = [
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannenkoeken voor het goede doel',
+        return [
+            'childcare_start_invalid_format' => [
+                'openingHour' => ['opens' => '09:00', 'closes' => '17:00', 'childcare' => ['start' => '8:0'], 'dayOfWeek' => ['monday']],
+                'expectedErrors' => [new SchemaError('/openingHours/0/childcare/start', 'The string should match pattern: ^\d?\d:\d\d$')],
             ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                ],
+            'childcare_start_equals_opens' => [
+                'openingHour' => ['opens' => '09:00', 'closes' => '17:00', 'childcare' => ['start' => '09:00', 'end' => '18:00'], 'dayOfWeek' => ['monday']],
+                'expectedErrors' => [new SchemaError('/openingHours/0/childcare/start', 'childcare.start must be before opens')],
             ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            'childcare_start_after_opens' => [
+                'openingHour' => ['opens' => '09:00', 'closes' => '17:00', 'childcare' => ['start' => '10:00', 'end' => '18:00'], 'dayOfWeek' => ['monday']],
+                'expectedErrors' => [new SchemaError('/openingHours/0/childcare/start', 'childcare.start must be before opens')],
             ],
-            'calendarType' => 'periodic',
-            'startDate' => '2021-01-01T14:00:30+01:00',
-            'endDate' => '2021-01-01T17:00:30+01:00',
-            'openingHours' => [
-                [
-                    'opens' => '09:00',
-                    'closes' => '17:00',
-                    'childcare' => ['start' => '09:00', 'end' => '18:00'],
-                    'dayOfWeek' => ['monday'],
-                ],
+            'childcare_end_equals_closes' => [
+                'openingHour' => ['opens' => '09:00', 'closes' => '17:00', 'childcare' => ['start' => '08:00', 'end' => '17:00'], 'dayOfWeek' => ['monday']],
+                'expectedErrors' => [new SchemaError('/openingHours/0/childcare/end', 'childcare.end must be after closes')],
+            ],
+            'childcare_end_before_closes' => [
+                'openingHour' => ['opens' => '09:00', 'closes' => '17:00', 'childcare' => ['start' => '08:00', 'end' => '16:00'], 'dayOfWeek' => ['monday']],
+                'expectedErrors' => [new SchemaError('/openingHours/0/childcare/end', 'childcare.end must be after closes')],
             ],
         ];
-
-        $expectedErrors = [
-            new SchemaError('/openingHours/0/childcare/start', 'childcare.start must be before opens'),
-        ];
-
-        $this->assertValidationErrors($event, $expectedErrors);
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_if_periodic_calendar_childcare_end_is_not_after_closes(): void
-    {
-        $event = [
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannenkoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'periodic',
-            'startDate' => '2021-01-01T14:00:30+01:00',
-            'endDate' => '2021-01-01T17:00:30+01:00',
-            'openingHours' => [
-                [
-                    'opens' => '09:00',
-                    'closes' => '17:00',
-                    'childcare' => ['start' => '08:00', 'end' => '16:00'],
-                    'dayOfWeek' => ['monday'],
-                ],
-            ],
-        ];
-
-        $expectedErrors = [
-            new SchemaError('/openingHours/0/childcare/end', 'childcare.end must be after closes'),
-        ];
-
-        $this->assertValidationErrors($event, $expectedErrors);
     }
 
     private function assertValidationErrors(array $event, array $expectedErrors): void
