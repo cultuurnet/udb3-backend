@@ -7,15 +7,15 @@ namespace CultuurNet\UDB3\Place\Canonical;
 use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Label\ReadModels\Relations\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\RelationType;
-use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassAndUiTPassInSameCluster;
-use CultuurNet\UDB3\Place\Canonical\Exception\MuseumPassNotUniqueInCluster;
-use CultuurNet\UDB3\Place\Canonical\Exception\UiTPassNotUniqueInCluster;
+use CultuurNet\UDB3\Place\Canonical\Exception\MultipleCanonicalPlacesInCluster;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class CanonicalService
 {
-    private string $museumpasLabel;
-    private array $uitpasLabels;
+    /**
+     * @var string[]
+     */
+    private array $canonicalLabels;
 
     private DuplicatePlaceRepository $duplicatePlaceRepository;
 
@@ -26,15 +26,13 @@ class CanonicalService
     private DocumentRepository $placeRepository;
 
     public function __construct(
-        string $museumpasLabel,
-        array $uitpasLabels,
+        array $canonicalLabels,
         DuplicatePlaceRepository $duplicatePlaceRepository,
         EventRelationsRepository $eventRelationsRepository,
         ReadRepositoryInterface $labelRelationsRepository,
         DocumentRepository $placeRepository
     ) {
-        $this->museumpasLabel = $museumpasLabel;
-        $this->uitpasLabels = $uitpasLabels;
+        $this->canonicalLabels = $canonicalLabels;
         $this->duplicatePlaceRepository = $duplicatePlaceRepository;
         $this->eventRelationsRepository = $eventRelationsRepository;
         $this->labelRelationsRepository = $labelRelationsRepository;
@@ -45,25 +43,14 @@ class CanonicalService
     {
         $placeIds = $this->duplicatePlaceRepository->getPlacesInCluster($clusterId);
 
-        $placesWithMuseumpas = $this->getPlacesWithMuseumPasInCluster($placeIds);
-        $placesWithUiTPas = $this->getPlacesWithUiTPasInCluster($placeIds);
+        $labeledPlaces = $this->getPlacesWithCanonicalLabelInCluster($placeIds);
 
-        if (count($placesWithMuseumpas) > 0 && count($placesWithUiTPas) > 0) {
-            throw new MuseumPassAndUiTPassInSameCluster($clusterId, count($placesWithMuseumpas), count($placesWithUiTPas));
-        }
-
-        if (count($placesWithMuseumpas) === 1) {
-            return $placesWithMuseumpas[array_key_first($placesWithMuseumpas)];
-        }
-        if (count($placesWithMuseumpas) > 1) {
-            throw new MuseumPassNotUniqueInCluster($clusterId, count($placesWithMuseumpas));
+        if (count($labeledPlaces) === 1) {
+            return $labeledPlaces[array_key_first($labeledPlaces)];
         }
 
-        if (count($placesWithUiTPas) === 1) {
-            return $placesWithUiTPas[array_key_first($placesWithUiTPas)];
-        }
-        if (count($placesWithUiTPas) > 1) {
-            throw new UiTPassNotUniqueInCluster($clusterId, count($placesWithUiTPas));
+        if (count($labeledPlaces) > 1) {
+            throw new MultipleCanonicalPlacesInCluster($clusterId, count($labeledPlaces));
         }
 
         $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
@@ -82,22 +69,18 @@ class CanonicalService
      */
     public function getCanonicalFromArrayWithoutThrowing(array $placeIds): string
     {
-        $placesWithMuseumpas = $this->getPlacesWithMuseumPasInCluster($placeIds);
-        $placesWithUiTPas = $this->getPlacesWithUiTPasInCluster($placeIds);
+        $labeledPlaces = $this->getPlacesWithCanonicalLabelInCluster($placeIds);
 
-        if (count($placesWithMuseumpas) > 0 && count($placesWithUiTPas) > 0) {
-            $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
+        if (count($labeledPlaces) === 1) {
+            return $labeledPlaces[array_key_first($labeledPlaces)];
+        }
+
+        if (count($labeledPlaces) > 1) {
+            $placesWithMostEvents = $this->getPlacesWithMostEvents($labeledPlaces);
             if (count($placesWithMostEvents) === 1) {
                 return $placesWithMostEvents[array_key_first($placesWithMostEvents)];
             }
-        }
-
-        if (count($placesWithMuseumpas) >= 1) {
-            return $placesWithMuseumpas[array_key_first($placesWithMuseumpas)];
-        }
-
-        if (count($placesWithUiTPas) >= 1) {
-            return $placesWithUiTPas[array_key_first($placesWithUiTPas)];
+            return $this->getOldestPlace($labeledPlaces);
         }
 
         $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
@@ -108,24 +91,14 @@ class CanonicalService
         return $this->getOldestPlace($placeIds);
     }
 
-    private function getPlacesWithMuseumPasInCluster(array $placeIds): array
-    {
-        $result = $this->labelRelationsRepository->getLabelRelationsForType(
-            $this->museumpasLabel,
-            RelationType::place()
-        );
-
-        return array_intersect($placeIds, $result);
-    }
-
-    private function getPlacesWithUiTPasInCluster(array $placeIds): array
+    private function getPlacesWithCanonicalLabelInCluster(array $placeIds): array
     {
         $result = $this->labelRelationsRepository->getLabelsRelationsForType(
-            $this->uitpasLabels,
+            $this->canonicalLabels,
             RelationType::place()
         );
 
-        return array_intersect($placeIds, $result);
+        return array_values(array_unique(array_intersect($placeIds, $result)));
     }
 
     private function getPlacesWithMostEvents(array $placeIds): array
