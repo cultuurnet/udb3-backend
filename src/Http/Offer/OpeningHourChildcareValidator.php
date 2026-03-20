@@ -30,7 +30,7 @@ final class OpeningHourChildcareValidator
         $errors = [];
         foreach ($data->openingHours as $index => $openingHourData) {
             if (is_object($openingHourData)) {
-                array_push($errors, ...$this->validateEntry($openingHourData, '/openingHours/' . $index));
+                array_push($errors, ...$this->validateOpeningHours($openingHourData, '/openingHours/' . $index));
             }
         }
         return $errors;
@@ -39,7 +39,7 @@ final class OpeningHourChildcareValidator
     /**
      * @return SchemaError[]
      */
-    private function validateEntry(object $openingHourData, string $jsonPointer): array
+    private function validateOpeningHours(object $openingHourData, string $jsonPointer): array
     {
         if (!isset($openingHourData->childcare) || !is_object($openingHourData->childcare)) {
             return [];
