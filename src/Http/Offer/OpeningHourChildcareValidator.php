@@ -18,29 +18,28 @@ use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 final class OpeningHourChildcareValidator
 {
     /**
-     * Validate all opening hours childcare entries from a request body object.
-     *
      * @return SchemaError[]
      */
-    public static function validateAll(object $data): array
+    public function validate(object $data): array
     {
         if (!isset($data->openingHours) || !is_array($data->openingHours)) {
+            // Error(s) will be reported by the Schema validation.
             return [];
         }
-        $validator = new self();
+
         $errors = [];
-        foreach ($data->openingHours as $index => $openingHour) {
-            if (is_object($openingHour)) {
-                $errors[] = $validator->validate($openingHour, '/openingHours/' . $index);
+        foreach ($data->openingHours as $index => $openingHourData) {
+            if (is_object($openingHourData)) {
+                array_push($errors, ...$this->validateEntry($openingHourData, '/openingHours/' . $index));
             }
         }
-        return array_merge(...$errors);
+        return $errors;
     }
 
     /**
      * @return SchemaError[]
      */
-    public function validate(object $openingHourData, string $jsonPointer = ''): array
+    private function validateEntry(object $openingHourData, string $jsonPointer): array
     {
         if (!isset($openingHourData->childcare) || !is_object($openingHourData->childcare)) {
             return [];
