@@ -98,8 +98,7 @@ final class PlaceServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'canonical_service',
             fn () => new CanonicalService(
-                $container->get('config')['museumpas']['label'],
-                $container->get('config')['uitpas']['labels'],
+                $this->getCanonicalLabels($container->get('config')),
                 $container->get(DuplicatePlaceRepository::class),
                 $container->get(EventRelationsRepository::class),
                 new DBALReadRepository(
@@ -108,6 +107,18 @@ final class PlaceServiceProvider extends AbstractServiceProvider
                 ),
                 $container->get('place_jsonld_repository'),
             )
+        );
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getCanonicalLabels(array $config): array
+    {
+        return array_merge(
+            [$config['museumpas']['label']],
+            array_values($config['uitpas']['labels']),
+            $config['canonical_place_labels'] ?? []
         );
     }
 }
