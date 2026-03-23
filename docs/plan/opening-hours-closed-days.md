@@ -1,12 +1,14 @@
-# Plan: Add `openingHoursClosedDays` to Calendar
+# Plan: Add `openingHoursClosedDays` to Event Calendar
 
 ## Context
 
-Events and places with `calendarType = periodic` or `permanent` have opening hours. There is currently no way to mark specific date ranges as closed (e.g., public holidays) while keeping the default opening hours intact. The JSON schema already defines `openingHoursClosedDays` in `event-calendar-put.json` and `event-openingHoursClosedDays.json`, but the PHP backend does not yet parse, store, validate, or return this field.
+**Events only.** Events with `calendarType = periodic` or `permanent` have opening hours. There is currently no way to mark specific date ranges as closed (e.g., public holidays) while keeping the default opening hours intact. The JSON schema already defines `openingHoursClosedDays` in `event-calendar-put.json` and `event-openingHoursClosedDays.json`, but the PHP backend does not yet parse, store, validate, or return this field.
+
+**Note:** Although the calendar domain model is shared between events and places, places do not have a schema definition for `openingHoursClosedDays` and will reject any such input per their schema validation. This feature is event-specific only.
 
 ## Affected Endpoints
 
-- `PUT /events/{eventId}/calendar` (and `PUT /places/{placeId}/calendar`)
+- `PUT /events/{eventId}/calendar` (events only)
 - `GET /events/{eventId}` (read model)
 - `POST /events/{eventId}/copies` (uses same CalendarDenormalizer)
 
@@ -56,6 +58,12 @@ Events and places with `calendarType = periodic` or `permanent` have opening hou
 - Description is optional; max 1000 chars per language.
 - `openingHoursClosedDays` takes precedence over `openingHoursAdjusted` (behavior note for consumers).
 - GET responses return entries sorted by `startDate`.
+
+## Events vs Places
+
+**Events Only:** The `openingHoursClosedDays` field is defined only in the event schema (`event-calendar-put.json` and `event-openingHoursClosedDays.json`). Places do not have a corresponding schema definition and will reject this field as an additional property.
+
+**Shared Domain Model:** Although the Calendar domain model classes (`PeriodicCalendar`, `PermanentCalendar`, `CalendarWithClosedDays` interface) are shared between events and places, the feature is accessible only to events via the API layer. The serializers and validators are also shared, but schema validation at the HTTP boundary ensures places cannot submit this field.
 
 ## Reusable Patterns
 
