@@ -9,9 +9,11 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
@@ -24,6 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\ClosedDayNormalizer;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
@@ -107,9 +110,17 @@ final class CalendarSerializer implements Serializable
                 break;
             case CalendarType::periodic():
                 $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), new OpeningHours(...$openingHours));
+                if (!empty($data['openingHoursClosedDays'])) {
+                    $closedDays = self::deserializeClosedDays($data['openingHoursClosedDays']);
+                    $calendar = $calendar->withClosedDays($closedDays);
+                }
                 break;
             case CalendarType::permanent():
                 $calendar = new PermanentCalendar(new OpeningHours(...$openingHours));
+                if (!empty($data['openingHoursClosedDays'])) {
+                    $closedDays = self::deserializeClosedDays($data['openingHoursClosedDays']);
+                    $calendar = $calendar->withClosedDays($closedDays);
+                }
                 break;
             default:
                 throw new InvalidArgumentException('Invalid calendar type provided!');
@@ -163,6 +174,15 @@ final class CalendarSerializer implements Serializable
             }
         }
 
+        if ($this->calendar instanceof CalendarWithClosedDays && !$this->calendar->getClosedDays()->isEmpty()) {
+            $calendar['openingHoursClosedDays'] = array_map(
+                function (ClosedDay $closedDay) {
+                    return self::serializeClosedDay($closedDay);
+                },
+                $this->calendar->getClosedDays()->toArray()
+            );
+        }
+
         if ($this->calendar instanceof CalendarWithDateRange) {
             $calendar['startDate'] = $this->calendar->getStartDate()->format(DateTimeInterface::ATOM);
             $calendar['endDate'] = $this->calendar->getEndDate()->format(DateTimeInterface::ATOM);
@@ -187,5 +207,51 @@ final class CalendarSerializer implements Serializable
         }
 
         return $dateTime;
+    }
+
+    private static function serializeClosedDay(ClosedDay $closedDay): array
+    {
+        $data = [
+            'startDate' => $closedDay->getStartDate()->format('Y-m-d'),
+            'endDate' => $closedDay->getEndDate()->format('Y-m-d'),
+        ];
+
+        if ($closedDay->getDescription() !== null) {
+            $description = $closedDay->getDescription();
+            $serializedDescription = [];
+            foreach ($description->getLanguages() as $language) {
+                $serializedDescription[$language->getCode()] = $description->getTranslation($language)->toString();
+            }
+            $data['description'] = $serializedDescription;
+        }
+
+        return $data;
+    }
+
+    /**
+     * @param array $closedDaysData
+     * @return \CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays
+     */
+    private static function deserializeClosedDays(array $closedDaysData)
+    {
+        $closedDays = [];
+        $denormalizer = new TranslatedClosedDayDescriptionDenormalizer();
+
+        foreach ($closedDaysData as $closedDayData) {
+            $startDate = DateTimeImmutable::createFromFormat('Y-m-d', $closedDayData['startDate']);
+            $endDate = DateTimeImmutable::createFromFormat('Y-m-d', $closedDayData['endDate']);
+
+            $description = null;
+            if (isset($closedDayData['description']) && is_array($closedDayData['description'])) {
+                $description = $denormalizer->denormalize(
+                    $closedDayData['description'],
+                    \CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription::class
+                );
+            }
+
+            $closedDays[] = new \CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay($startDate, $endDate, $description);
+        }
+
+        return new \CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays(...$closedDays);
     }
 }
