@@ -134,26 +134,26 @@ Feature: Test the Search API v3 default filters
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | addressCountry[] | NL                               |
+      | addressCountry | NL                               |
       | q                | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | addressCountry[] | BE                               |
+      | addressCountry | BE                               |
       | q                | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/places" with parameters:
-      | addressCountry[] | NL                               |
+      | addressCountry | NL                               |
       | q                | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | addressCountry[] | BE                               |
+      | addressCountry | BE                               |
+      | q                | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | addressCountry | NL                               |
       | q                | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | addressCountry[] | NL                               |
-      | q                | id:(%{uuid_place} OR %{eventId}) |
-    Then the JSON response at "totalItems" should be 0
-    When I send a GET request to "/events" with parameters:
-      | addressCountry[] | BE                               |
+      | addressCountry | BE                               |
       | q                | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
