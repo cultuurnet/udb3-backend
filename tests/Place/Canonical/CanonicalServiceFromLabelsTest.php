@@ -149,7 +149,7 @@ final class CanonicalServiceFromLabelsTest extends TestCase
     public function it_will_throw_an_exception_when_cluster_contains_2_labeled_places(): void
     {
         $this->expectException(MultipleCanonicalPlacesInCluster::class);
-        $this->expectExceptionMessage('Cluster cluster_2 contains 2 places with a canonical label');
+        $this->expectExceptionMessage('Cluster cluster_2 contains 2 places with a canonical label: 526605d3-7cc4-4607-97a4-065896253f42, 901e23fe-b393-4cc6-9307-8e3e3f2ea77f');
 
         $this->canonicalService->getCanonical('cluster_2');
     }
