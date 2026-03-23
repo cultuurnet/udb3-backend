@@ -22,20 +22,8 @@ class ClosedDaysValidator
 
         $errors = [];
         foreach ($data->openingHoursClosedDays as $index => $closedDayData) {
-            if (!isset($closedDayData->startDate, $closedDayData->endDate) ||
-                !is_string($closedDayData->startDate) ||
-                !is_string($closedDayData->endDate)) {
-                // Error(s) will be reported by the Schema validation.
-                continue;
-            }
-
-            try {
-                $startDate = DateTimeFactory::fromISO8601($closedDayData->startDate);
-                $endDate = DateTimeFactory::fromISO8601($closedDayData->endDate);
-            } catch (DateTimeInvalid $e) {
-                // Date format error(s) will be reported by the Schema validation.
-                continue;
-            }
+            $startDate = DateTimeFactory::fromISO8601($closedDayData->startDate);
+            $endDate = DateTimeFactory::fromISO8601($closedDayData->endDate);
 
             if ($startDate > $endDate) {
                 $errors[] = new SchemaError(
@@ -45,21 +33,9 @@ class ClosedDaysValidator
             }
 
             // For periodic calendars, validate that closed days are within the periodic range
-            if (isset($data->calendarType) && $data->calendarType === 'periodic') {
-                if (!isset($data->startDate, $data->endDate) ||
-                    !is_string($data->startDate) ||
-                    !is_string($data->endDate)) {
-                    // Errors will be reported by Schema validation or DateRangeValidator
-                    continue;
-                }
-
-                try {
-                    $periodicStart = DateTimeFactory::fromISO8601($data->startDate);
-                    $periodicEnd = DateTimeFactory::fromISO8601($data->endDate);
-                } catch (DateTimeInvalid $e) {
-                    // Errors will be reported by DateRangeValidator
-                    continue;
-                }
+            if ($data->calendarType === 'periodic') {
+                $periodicStart = DateTimeFactory::fromISO8601($data->startDate);
+                $periodicEnd = DateTimeFactory::fromISO8601($data->endDate);
 
                 if ($startDate < $periodicStart) {
                     $errors[] = new SchemaError(
