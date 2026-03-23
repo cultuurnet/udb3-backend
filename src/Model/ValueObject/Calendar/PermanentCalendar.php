@@ -6,9 +6,11 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 
-class PermanentCalendar implements CalendarWithOpeningHours
+class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithClosedDays
 {
     private OpeningHours $openingHours;
+
+    private ClosedDays $closedDays;
 
     private Status $status;
 
@@ -17,6 +19,7 @@ class PermanentCalendar implements CalendarWithOpeningHours
     public function __construct(OpeningHours $openingHours)
     {
         $this->openingHours = $openingHours;
+        $this->closedDays = new ClosedDays();
         $this->status = new Status(StatusType::Available());
         $this->bookingAvailability = new BookingAvailability(BookingAvailabilityType::Available());
     }
@@ -53,5 +56,17 @@ class PermanentCalendar implements CalendarWithOpeningHours
     public function getOpeningHours(): OpeningHours
     {
         return $this->openingHours;
+    }
+
+    public function getClosedDays(): ClosedDays
+    {
+        return $this->closedDays;
+    }
+
+    public function withClosedDays(ClosedDays $closedDays): static
+    {
+        $clone = clone $this;
+        $clone->closedDays = $closedDays;
+        return $clone;
     }
 }
