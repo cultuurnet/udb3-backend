@@ -50,7 +50,7 @@ final class CanonicalServiceFromLabels implements CanonicalService
         }
 
         if (count($labeledPlaces) > 1) {
-            throw new MultipleCanonicalPlacesInCluster($clusterId, count($labeledPlaces));
+            throw new MultipleCanonicalPlacesInCluster($clusterId, $labeledPlaces);
         }
 
         $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
