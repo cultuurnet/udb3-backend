@@ -5,18 +5,27 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ClosedDayNormalizer
+class ClosedDayNormalizer implements NormalizerInterface
 {
-    public function normalize(ClosedDay $closedDay): array
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof ClosedDay;
+    }
+
+    /**
+     * @param ClosedDay $object
+     */
+    public function normalize($object, $format = null, array $context = []): array
     {
         $data = [
-            'startDate' => $closedDay->getStartDate()->format('Y-m-d'),
-            'endDate' => $closedDay->getEndDate()->format('Y-m-d'),
+            'startDate' => $object->getStartDate()->format('Y-m-d'),
+            'endDate' => $object->getEndDate()->format('Y-m-d'),
         ];
 
-        if ($closedDay->getDescription() !== null) {
-            $description = $closedDay->getDescription();
+        if ($object->getDescription() !== null) {
+            $description = $object->getDescription();
             $normalizedDescription = [];
             foreach ($description->getLanguages() as $language) {
                 $normalizedDescription[$language->getCode()] = $description->getTranslation($language)->toString();

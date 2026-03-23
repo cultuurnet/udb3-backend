@@ -15,15 +15,7 @@ final class ClosedDays
     {
         usort(
             $closedDays,
-            function (ClosedDay $a, ClosedDay $b) {
-                if ($a->getStartDate() < $b->getStartDate()) {
-                    return -1;
-                }
-                if ($a->getStartDate() > $b->getStartDate()) {
-                    return 1;
-                }
-                return 0;
-            }
+            fn (ClosedDay $a, ClosedDay $b) => $a->getStartDate() <=> $b->getStartDate()
         );
 
         $this->closedDays = $closedDays;

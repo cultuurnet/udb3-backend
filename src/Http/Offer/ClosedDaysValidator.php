@@ -8,7 +8,7 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use DateTimeImmutable;
 
-class ClosedDaysValidator
+final class ClosedDaysValidator
 {
     /**
      * @return SchemaError[]

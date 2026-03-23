@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
@@ -110,17 +111,17 @@ final class CalendarSerializer implements Serializable
             case CalendarType::periodic():
                 $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), new OpeningHours(...$openingHours));
                 if (!empty($data['openingHoursClosedDays'])) {
-                    $closedDaysDenormalizer = new ClosedDaysDenormalizer();
-                    $closedDays = $closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], \CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays::class);
-                    $calendar = $calendar->withClosedDays($closedDays);
+                    $calendar = $calendar->withClosedDays(
+                        (new ClosedDaysDenormalizer())->denormalize($data['openingHoursClosedDays'], ClosedDays::class)
+                    );
                 }
                 break;
             case CalendarType::permanent():
                 $calendar = new PermanentCalendar(new OpeningHours(...$openingHours));
                 if (!empty($data['openingHoursClosedDays'])) {
-                    $closedDaysDenormalizer = new ClosedDaysDenormalizer();
-                    $closedDays = $closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], \CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays::class);
-                    $calendar = $calendar->withClosedDays($closedDays);
+                    $calendar = $calendar->withClosedDays(
+                        (new ClosedDaysDenormalizer())->denormalize($data['openingHoursClosedDays'], ClosedDays::class)
+                    );
                 }
                 break;
             default:
