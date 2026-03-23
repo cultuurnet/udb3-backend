@@ -31,6 +31,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use PHPUnit\Framework\TestCase;
@@ -535,6 +536,68 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     )
                 ),
             ],
+            'periodic_with_childcare_on_opening_hours' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T14:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'childcare' => (object)['start' => '08:00', 'end' => '18:00'],
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
+                            DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
+                        ),
+                        new OpeningHours(
+                            (new OpeningHour(
+                                new Days(Day::monday()),
+                                new Time(new Hour(9), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0))
+                            ))->withChildcareTimeRange(new TimeImmutableRange(
+                                Time::fromString('08:00'),
+                                Time::fromString('18:00')
+                            ))
+                        )
+                    )
+                ),
+            ],
+            'permanent_with_childcare_on_opening_hours' => [
+                'data' => (object) [
+                    'calendarType' => 'permanent',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'childcare' => (object)['start' => '08:00', 'end' => '18:00'],
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    new PermanentCalendar(
+                        new OpeningHours(
+                            (new OpeningHour(
+                                new Days(Day::monday()),
+                                new Time(new Hour(9), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0))
+                            ))->withChildcareTimeRange(new TimeImmutableRange(
+                                Time::fromString('08:00'),
+                                Time::fromString('18:00')
+                            ))
+                        )
+                    )
+                ),
+            ],
         ];
     }
 
@@ -809,6 +872,146 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/openingHours/0/closes', 'closes should not be before opens'),
+                ],
+            ],
+            'periodic_childcare_start_invalid_format' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T14:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'childcare' => (object)['start' => '8:0'],
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0/childcare/start', 'The string should match pattern: ^\d?\d:\d\d$'),
+                ],
+            ],
+            'periodic_childcare_end_wrong_type' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T14:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'childcare' => (object)['start' => '08:00', 'end' => 1800],
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0/childcare/end', 'The data (integer) must match the type: string'),
+                ],
+            ],
+            'periodic_childcare_start_equals_opens' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T14:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'childcare' => (object)['start' => '09:00', 'end' => '18:00'],
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0/childcare/start', 'childcare.start must be before opens'),
+                ],
+            ],
+            'periodic_childcare_start_after_opens' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T14:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'childcare' => (object)['start' => '10:00', 'end' => '18:00'],
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0/childcare/start', 'childcare.start must be before opens'),
+                ],
+            ],
+            'periodic_childcare_end_equals_closes' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T14:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'childcare' => (object)['start' => '08:00', 'end' => '17:00'],
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0/childcare/end', 'childcare.end must be after closes'),
+                ],
+            ],
+            'periodic_childcare_end_before_closes' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2021-01-01T14:00:30+01:00',
+                    'endDate' => '2021-01-01T17:00:30+01:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'childcare' => (object)['start' => '08:00', 'end' => '16:00'],
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0/childcare/end', 'childcare.end must be after closes'),
+                ],
+            ],
+            'permanent_childcare_start_equals_opens' => [
+                'data' => (object) [
+                    'calendarType' => 'permanent',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'childcare' => (object)['start' => '09:00', 'end' => '18:00'],
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0/childcare/start', 'childcare.start must be before opens'),
+                ],
+            ],
+            'permanent_childcare_end_before_closes' => [
+                'data' => (object) [
+                    'calendarType' => 'permanent',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'childcare' => (object)['start' => '08:00', 'end' => '16:00'],
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHours/0/childcare/end', 'childcare.end must be after closes'),
                 ],
             ],
             'single_subEvent_bookingInfo_phone_wrong_type' => [
