@@ -28,11 +28,16 @@ final class SubEventNormalizer implements NormalizerInterface
             $normalized['bookingInfo'] = $bookingInfo;
         }
 
+        $childcare = (new ChildcareTimeRangeNormalizer())->normalize($subEvent->getChildcareTimeRange());
+        if ($childcare !== null) {
+            $normalized['childcare'] = $childcare;
+        }
+
         return $normalized;
     }
 
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data === SubEvent::class;
+        return $data instanceof SubEvent;
     }
 }
