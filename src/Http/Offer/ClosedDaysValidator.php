@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\DateTimeInvalid;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use DateTimeImmutable;
 
 class ClosedDaysValidator
 {
@@ -33,9 +33,9 @@ class ClosedDaysValidator
             }
 
             // For periodic calendars, validate that closed days are within the periodic range
-            if ($data->calendarType === 'periodic') {
-                $periodicStart = DateTimeFactory::fromISO8601($data->startDate);
-                $periodicEnd = DateTimeFactory::fromISO8601($data->endDate);
+            if (isset($data->calendarType) && $data->calendarType === 'periodic') {
+                $periodicStart = isset($data->startDate) ? new DateTimeImmutable($data->startDate) : null;
+                $periodicEnd = isset($data->endDate) ? new DateTimeImmutable($data->endDate) : null;
 
                 if ($startDate < $periodicStart) {
                     $errors[] = new SchemaError(
