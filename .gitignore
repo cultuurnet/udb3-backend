@@ -4,6 +4,7 @@
 /web/media/
 /web/images
 *.pem
+.claude
 
 # Ignore configuration files
 config.php

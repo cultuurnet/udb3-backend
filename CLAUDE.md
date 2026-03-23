@@ -11,5 +11,5 @@ UiTdatabank 3 core application - an event-sourced backend built with Broadway.
 - [Review Guidelines](docs/review-guidelines.md) - PR review process and focus areas
 
 ## Acceptance Tests
-
+ 
 - [General](docs/features/general.md) - Acceptance test overview

@@ -24,6 +24,6 @@ final class DaysNormalizer implements NormalizerInterface
 
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data === Days::class;
+        return $data instanceof Days;
     }
 }

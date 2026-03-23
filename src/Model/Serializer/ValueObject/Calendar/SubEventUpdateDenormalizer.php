@@ -9,6 +9,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -60,11 +62,34 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
             );
         }
 
+        if (isset($data['childcare'])) {
+            $subEventUpdate = $subEventUpdate->withChildcareTimeRange(
+                $this->denormalizeChildcare($data['childcare'])
+            );
+        }
+
         return $subEventUpdate;
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === SubEventUpdate::class;
+    }
+
+    /**
+     * Resolves the PATCH childcare semantics:
+     * - absent key                → preserve (isset guards the call site, returns null from denormalize)
+     * - empty object {}           → clear (returns empty TimeImmutableRange with both null)
+     * - object with start/end     → set (either or both fields may be present)
+     */
+    private function denormalizeChildcare(array $childcare): TimeImmutableRange
+    {
+        $start = $childcare['start'] ?? null;
+        $end = $childcare['end'] ?? null;
+
+        $startTime = $start !== null ? Time::fromString($start) : null;
+        $endTime = $end !== null ? Time::fromString($end) : null;
+
+        return new TimeImmutableRange($startTime, $endTime);
     }
 }
