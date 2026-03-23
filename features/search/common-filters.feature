@@ -288,3 +288,29 @@ Feature: Test the Search API v3 default filters
       | regions[] | nis-24134                        |
       | q         | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+
+  Scenario: Search for text the common filters
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I create a random name of 10 characters
+    And I set the JSON request payload to:
+    """
+    { "description": "%{name}" }
+    """
+    And I send a PUT request to "/places/%{uuid_place}/description/nl"
+    And I send a PUT request to "/events/%{eventId}/description/nl"
+    And I wait 2 seconds
+    When I send a GET request to "/offers" with parameters:
+      | text      | %{name}                          |
+      | q         | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 2
+    When I send a GET request to "/places" with parameters:
+      | text      | %{name}                          |
+      | q         | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | text      | %{name}                          |
+      | q         | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
