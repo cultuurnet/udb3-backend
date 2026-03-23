@@ -53,12 +53,7 @@ final class CanonicalServiceFromLabels implements CanonicalService
             throw new MultipleCanonicalPlacesInCluster($clusterId, $labeledPlaces);
         }
 
-        $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
-        if (count($placesWithMostEvents) === 1) {
-            return $placesWithMostEvents[0];
-        }
-
-        return $this->getOldestPlace($placeIds);
+        return $this->resolveByEventsOrAge($placeIds);
     }
 
     /**
@@ -76,13 +71,17 @@ final class CanonicalServiceFromLabels implements CanonicalService
         }
 
         if (count($labeledPlaces) > 1) {
-            $placesWithMostEvents = $this->getPlacesWithMostEvents($labeledPlaces);
-            if (count($placesWithMostEvents) === 1) {
-                return $placesWithMostEvents[0];
-            }
-            return $this->getOldestPlace($labeledPlaces);
+            return $this->resolveByEventsOrAge($labeledPlaces);
         }
 
+        return $this->resolveByEventsOrAge($placeIds);
+    }
+
+    /**
+     * @param string[] $placeIds
+     */
+    private function resolveByEventsOrAge(array $placeIds): string
+    {
         $placesWithMostEvents = $this->getPlacesWithMostEvents($placeIds);
         if (count($placesWithMostEvents) === 1) {
             return $placesWithMostEvents[0];
