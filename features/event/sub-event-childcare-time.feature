@@ -106,7 +106,9 @@ Feature: Test SubEvent childcare times
     And the JSON response at "subEvent/0/childcare/end" should be "23:00"
 
   Scenario: Childcare times are preserved when omitted from PATCH
-    Given I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
+    Given I set the variable "childcareStart" to "15:00"
+    And I set the variable "childcareEnd" to "23:00"
+    And I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
@@ -126,7 +128,9 @@ Feature: Test SubEvent childcare times
     And the JSON response at "subEvent/0/childcare/end" should be "23:00"
 
   Scenario: Childcare times are cleared when explicitly set to empty in PATCH
-    Given I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
+    Given I set the variable "childcareStart" to "15:00"
+    And I set the variable "childcareEnd" to "23:00"
+    And I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
@@ -148,7 +152,9 @@ Feature: Test SubEvent childcare times
     """
 
   Scenario: Childcare times are cleared when omitted from a PUT calendar update
-    Given I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
+    Given I set the variable "childcareStart" to "15:00"
+    And I set the variable "childcareEnd" to "23:00"
+    And I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
@@ -265,7 +271,9 @@ Feature: Test SubEvent childcare times
     And the JSON response at "schemaErrors/0/error" should be "childcare.end must be after the time portion of endDate"
 
   Scenario: Cannot PATCH a subEvent when the new startDate makes the existing childcare.start invalid
-    Given I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
+    Given I set the variable "childcareStart" to "15:00"
+    And I set the variable "childcareEnd" to "23:00"
+    And I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
@@ -288,7 +296,9 @@ Feature: Test SubEvent childcare times
     And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before the time portion of startDate"
 
   Scenario: Cannot PATCH a subEvent when the new endDate makes the existing childcare.end invalid
-    Given I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
+    Given I set the variable "childcareStart" to "15:00"
+    And I set the variable "childcareEnd" to "23:00"
+    And I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
@@ -344,7 +354,9 @@ Feature: Test SubEvent childcare times
     And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before the time portion of startDate"
 
   Scenario: Cannot PATCH a subEvent with a new startDate that makes the preserved childcare.start invalid
-    Given I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
+    Given I set the variable "childcareStart" to "15:00"
+    And I set the variable "childcareEnd" to "23:00"
+    And I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
@@ -363,7 +375,9 @@ Feature: Test SubEvent childcare times
     And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before the time portion of startDate"
 
   Scenario: Cannot PATCH a subEvent with a new endDate that makes the preserved childcare.end invalid
-    Given I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
+    Given I set the variable "childcareStart" to "15:00"
+    And I set the variable "childcareEnd" to "23:00"
+    And I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
