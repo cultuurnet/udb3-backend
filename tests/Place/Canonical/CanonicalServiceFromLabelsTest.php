@@ -160,7 +160,7 @@ final class CanonicalServiceFromLabelsTest extends TestCase
     public function it_will_throw_an_exception_when_cluster_contains_2_canonical_labels(): void
     {
         $this->expectException(MultipleCanonicalPlacesInCluster::class);
-        $this->expectExceptionMessage('Cluster cluster_uitpas contains 2 places with a canonical label');
+        $this->expectExceptionMessage(sprintf('Cluster cluster_uitpas contains 2 places with a canonical label: %s, %s', $this->UiTPASPlaceId, $this->anotherUiTPASPlaceId));
 
         $this->canonicalService->getCanonical('cluster_uitpas');
     }
@@ -171,7 +171,7 @@ final class CanonicalServiceFromLabelsTest extends TestCase
     public function it_will_throw_an_exception_when_cluster_contains_an_UITPAS_AND_MPM_place(): void
     {
         $this->expectException(MultipleCanonicalPlacesInCluster::class);
-        $this->expectExceptionMessage('Cluster cluster_mpm_and_uitpas contains 2 places with a canonical label');
+        $this->expectExceptionMessage(sprintf('Cluster cluster_mpm_and_uitpas contains 2 places with a canonical label: %s, %s', $this->museumPassPlaceId, $this->UiTPASPlaceId));
 
         $this->canonicalService->getCanonical('cluster_mpm_and_uitpas');
     }
@@ -212,7 +212,7 @@ final class CanonicalServiceFromLabelsTest extends TestCase
     public function it_will_throw_an_exception_when_cluster_contains_cjm_and_mpm_places(): void
     {
         $this->expectException(MultipleCanonicalPlacesInCluster::class);
-        $this->expectExceptionMessage('Cluster cluster_cjm_and_mpm contains 2 places with a canonical label');
+        $this->expectExceptionMessage(sprintf('Cluster cluster_cjm_and_mpm contains 2 places with a canonical label: %s, %s', $this->cjmPlaceId, $this->museumPassPlaceId));
 
         $this->canonicalService->getCanonical('cluster_cjm_and_mpm');
     }
