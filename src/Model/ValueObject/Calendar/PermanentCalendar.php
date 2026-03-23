@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 
-class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithClosedDays
+final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithClosedDays
 {
     private OpeningHours $openingHours;
 

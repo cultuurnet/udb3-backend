@@ -7,9 +7,9 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class ClosedDayNormalizer implements NormalizerInterface
+final class ClosedDayNormalizer implements NormalizerInterface
 {
-    public function supportsNormalization($data, $format = null)
+    public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof ClosedDay;
     }

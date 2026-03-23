@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use DateTimeImmutable;
 
@@ -22,8 +21,8 @@ final class ClosedDaysValidator
 
         $errors = [];
         foreach ($data->openingHoursClosedDays as $index => $closedDayData) {
-            $startDate = DateTimeFactory::fromISO8601($closedDayData->startDate);
-            $endDate = DateTimeFactory::fromISO8601($closedDayData->endDate);
+            $startDate = new DateTimeImmutable($closedDayData->startDate);
+            $endDate = new DateTimeImmutable($closedDayData->endDate);
 
             if ($startDate > $endDate) {
                 $errors[] = new SchemaError(
@@ -37,14 +36,14 @@ final class ClosedDaysValidator
                 $periodicStart = isset($data->startDate) ? new DateTimeImmutable($data->startDate) : null;
                 $periodicEnd = isset($data->endDate) ? new DateTimeImmutable($data->endDate) : null;
 
-                if ($startDate < $periodicStart) {
+                if ($periodicStart !== null && $startDate < $periodicStart) {
                     $errors[] = new SchemaError(
                         '/openingHoursClosedDays/' . $index . '/startDate',
                         'startDate should not be before the calendar startDate'
                     );
                 }
 
-                if ($endDate > $periodicEnd) {
+                if ($periodicEnd !== null && $endDate > $periodicEnd) {
                     $errors[] = new SchemaError(
                         '/openingHoursClosedDays/' . $index . '/endDate',
                         'endDate should not be after the calendar endDate'

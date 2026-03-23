@@ -19,7 +19,7 @@ final class ClosedDayDescription
     public function __construct(string $value)
     {
         $this->guardNotEmpty($value);
-        $this->setValue($value);
         $this->guardTooLong(ClosedDayDescription::class, $value, self::MAX_LENGTH);
+        $this->setValue($value);
     }
 }
