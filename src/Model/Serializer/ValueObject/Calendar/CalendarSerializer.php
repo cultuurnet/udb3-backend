@@ -111,14 +111,16 @@ final class CalendarSerializer implements Serializable
             case CalendarType::periodic():
                 $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), new OpeningHours(...$openingHours));
                 if (!empty($data['openingHoursClosedDays'])) {
-                    $closedDays = self::deserializeClosedDays($data['openingHoursClosedDays']);
+                    $closedDaysDenormalizer = new ClosedDaysDenormalizer();
+                    $closedDays = $closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], \CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays::class);
                     $calendar = $calendar->withClosedDays($closedDays);
                 }
                 break;
             case CalendarType::permanent():
                 $calendar = new PermanentCalendar(new OpeningHours(...$openingHours));
                 if (!empty($data['openingHoursClosedDays'])) {
-                    $closedDays = self::deserializeClosedDays($data['openingHoursClosedDays']);
+                    $closedDaysDenormalizer = new ClosedDaysDenormalizer();
+                    $closedDays = $closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], \CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays::class);
                     $calendar = $calendar->withClosedDays($closedDays);
                 }
                 break;
@@ -175,9 +177,10 @@ final class CalendarSerializer implements Serializable
         }
 
         if ($this->calendar instanceof CalendarWithClosedDays && !$this->calendar->getClosedDays()->isEmpty()) {
+            $closedDayNormalizer = new ClosedDayNormalizer();
             $calendar['openingHoursClosedDays'] = array_map(
-                function (ClosedDay $closedDay) {
-                    return self::serializeClosedDay($closedDay);
+                function (ClosedDay $closedDay) use ($closedDayNormalizer) {
+                    return $closedDayNormalizer->normalize($closedDay);
                 },
                 $this->calendar->getClosedDays()->toArray()
             );
@@ -209,49 +212,4 @@ final class CalendarSerializer implements Serializable
         return $dateTime;
     }
 
-    private static function serializeClosedDay(ClosedDay $closedDay): array
-    {
-        $data = [
-            'startDate' => $closedDay->getStartDate()->format('Y-m-d'),
-            'endDate' => $closedDay->getEndDate()->format('Y-m-d'),
-        ];
-
-        if ($closedDay->getDescription() !== null) {
-            $description = $closedDay->getDescription();
-            $serializedDescription = [];
-            foreach ($description->getLanguages() as $language) {
-                $serializedDescription[$language->getCode()] = $description->getTranslation($language)->toString();
-            }
-            $data['description'] = $serializedDescription;
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param array $closedDaysData
-     * @return \CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays
-     */
-    private static function deserializeClosedDays(array $closedDaysData)
-    {
-        $closedDays = [];
-        $denormalizer = new TranslatedClosedDayDescriptionDenormalizer();
-
-        foreach ($closedDaysData as $closedDayData) {
-            $startDate = DateTimeImmutable::createFromFormat('Y-m-d', $closedDayData['startDate']);
-            $endDate = DateTimeImmutable::createFromFormat('Y-m-d', $closedDayData['endDate']);
-
-            $description = null;
-            if (isset($closedDayData['description']) && is_array($closedDayData['description'])) {
-                $description = $denormalizer->denormalize(
-                    $closedDayData['description'],
-                    \CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription::class
-                );
-            }
-
-            $closedDays[] = new \CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay($startDate, $endDate, $description);
-        }
-
-        return new \CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays(...$closedDays);
-    }
 }

@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\RemainingCapacityExceedsCapacity;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -24,7 +23,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
@@ -35,14 +33,14 @@ class CalendarDenormalizer implements DenormalizerInterface
     private StatusDenormalizer $statusDenormalizer;
     private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
     private BookingInfoDenormalizer $bookingInfoDenormalizer;
-    private TranslatedClosedDayDescriptionDenormalizer $translatedClosedDayDescriptionDenormalizer;
+    private ClosedDaysDenormalizer $closedDaysDenormalizer;
 
     public function __construct()
     {
         $this->statusDenormalizer = new StatusDenormalizer();
         $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
         $this->bookingInfoDenormalizer = new BookingInfoDenormalizer();
-        $this->translatedClosedDayDescriptionDenormalizer = new TranslatedClosedDayDescriptionDenormalizer();
+        $this->closedDaysDenormalizer = new ClosedDaysDenormalizer();
     }
 
     /**
@@ -124,8 +122,8 @@ class CalendarDenormalizer implements DenormalizerInterface
             case 'periodic':
                 $dateRange = $this->denormalizeDateRange($data);
                 $calendar = new PeriodicCalendar($dateRange, $openingHours);
-                if (isset($data['openingHoursClosedDays']) && is_array($data['openingHoursClosedDays'])) {
-                    $closedDays = $this->denormalizeClosedDays($data['openingHoursClosedDays']);
+                if (isset($data['openingHoursClosedDays'])) {
+                    $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
                     $calendar = $calendar->withClosedDays($closedDays);
                 }
                 break;
@@ -133,8 +131,8 @@ class CalendarDenormalizer implements DenormalizerInterface
             case 'permanent':
             default:
                 $calendar = new PermanentCalendar($openingHours);
-                if (isset($data['openingHoursClosedDays']) && is_array($data['openingHoursClosedDays'])) {
-                    $closedDays = $this->denormalizeClosedDays($data['openingHoursClosedDays']);
+                if (isset($data['openingHoursClosedDays'])) {
+                    $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
                     $calendar = $calendar->withClosedDays($closedDays);
                 }
                 break;
@@ -226,26 +224,5 @@ class CalendarDenormalizer implements DenormalizerInterface
         }
 
         return $subEvent;
-    }
-
-    private function denormalizeClosedDays(array $closedDaysData): ClosedDays
-    {
-        $closedDays = [];
-        foreach ($closedDaysData as $closedDayData) {
-            $startDate = DateTimeFactory::fromISO8601($closedDayData['startDate']);
-            $endDate = DateTimeFactory::fromISO8601($closedDayData['endDate']);
-
-            $description = null;
-            if (isset($closedDayData['description']) && is_array($closedDayData['description'])) {
-                $description = $this->translatedClosedDayDescriptionDenormalizer->denormalize(
-                    $closedDayData['description'],
-                    TranslatedClosedDayDescription::class
-                );
-            }
-
-            $closedDays[] = new ClosedDay($startDate, $endDate, $description);
-        }
-
-        return new ClosedDays(...$closedDays);
     }
 }
