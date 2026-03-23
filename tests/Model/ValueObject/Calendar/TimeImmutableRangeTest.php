@@ -100,6 +100,88 @@ final class TimeImmutableRangeTest extends TestCase
     /**
      * @test
      */
+    public function it_returns_true_from_start_is_before_time_when_start_is_null(): void
+    {
+        $range = new TimeImmutableRange(null, Time::fromString('20:00'));
+
+        $this->assertTrue($range->startIsBeforeTime(Time::fromString('09:00')));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_true_from_start_is_before_time_when_start_is_before_given_time(): void
+    {
+        $range = new TimeImmutableRange(Time::fromString('08:00'));
+
+        $this->assertTrue($range->startIsBeforeTime(Time::fromString('09:00')));
+    }
+
+    /**
+     * @test
+     * @dataProvider notBeforeTimeProvider
+     */
+    public function it_returns_false_from_start_is_before_time_when_start_is_not_before_given_time(
+        string $start,
+        string $reference
+    ): void {
+        $range = new TimeImmutableRange(Time::fromString($start));
+
+        $this->assertFalse($range->startIsBeforeTime(Time::fromString($reference)));
+    }
+
+    public function notBeforeTimeProvider(): array
+    {
+        return [
+            'equal'  => ['09:00', '09:00'],
+            'after'  => ['10:00', '09:00'],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_true_from_end_is_after_time_when_end_is_null(): void
+    {
+        $range = new TimeImmutableRange(Time::fromString('08:00'), null);
+
+        $this->assertTrue($range->endIsAfterTime(Time::fromString('17:00')));
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_true_from_end_is_after_time_when_end_is_after_given_time(): void
+    {
+        $range = new TimeImmutableRange(null, Time::fromString('18:00'));
+
+        $this->assertTrue($range->endIsAfterTime(Time::fromString('17:00')));
+    }
+
+    /**
+     * @test
+     * @dataProvider notAfterTimeProvider
+     */
+    public function it_returns_false_from_end_is_after_time_when_end_is_not_after_given_time(
+        string $end,
+        string $reference
+    ): void {
+        $range = new TimeImmutableRange(null, Time::fromString($end));
+
+        $this->assertFalse($range->endIsAfterTime(Time::fromString($reference)));
+    }
+
+    public function notAfterTimeProvider(): array
+    {
+        return [
+            'equal'  => ['17:00', '17:00'],
+            'before' => ['16:00', '17:00'],
+        ];
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_on_invalid_start_format(): void
     {
         $this->expectException(InvalidArgumentException::class);

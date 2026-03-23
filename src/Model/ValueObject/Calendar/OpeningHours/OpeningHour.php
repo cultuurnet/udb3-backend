@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+
 class OpeningHour
 {
     private Days $days;
@@ -11,6 +13,8 @@ class OpeningHour
     private Time $openingTime;
 
     private Time $closingTime;
+
+    private ?TimeImmutableRange $childcareTimeRange = null;
 
     public function __construct(Days $days, Time $openingTime, Time $closingTime)
     {
@@ -45,5 +49,17 @@ class OpeningHour
     {
         return $otherOpeningHour->getOpeningTime()->sameAs($this->getOpeningTime()) &&
             $otherOpeningHour->getClosingTime()->sameAs($this->getClosingTime());
+    }
+
+    public function getChildcareTimeRange(): ?TimeImmutableRange
+    {
+        return $this->childcareTimeRange;
+    }
+
+    public function withChildcareTimeRange(?TimeImmutableRange $childcareTimeRange): self
+    {
+        $clone = clone $this;
+        $clone->childcareTimeRange = $childcareTimeRange;
+        return $clone;
     }
 }

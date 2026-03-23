@@ -31,8 +31,11 @@ jobs:
             REPO: ${{ github.repository }}
             PR NUMBER: ${{ github.event.pull_request.number || github.event.issue.number }}
 
-            Review this pull request following the guidelines in docs/review-guidelines.md.
+            Review this pull request following the guidelines in docs/review-guidelines.md and the docs/coding-guidelines.md.
+            
             Provide detailed inline feedback using suggestion blocks where applicable.
+              
+            You can find general information about the repository and its code in the CLAUDE.md file.
 
           claude_args: |
             --allowedTools "mcp__github__get_pull_request,mcp__github__create_pending_pull_request_review,mcp__github__add_comment_to_pending_review,mcp__github__submit_pending_pull_request_review,mcp__github__get_pull_request_diff"

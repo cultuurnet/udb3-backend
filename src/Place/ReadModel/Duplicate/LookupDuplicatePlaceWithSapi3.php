@@ -48,7 +48,7 @@ final class LookupDuplicatePlaceWithSapi3 implements LookupDuplicatePlace
     }
 
     /*
-     * When there is no place returned by the query allow the creation
+     * When there is no place returned by the query, allow the creation
      * When there is one place returned by the query, disallow creation and return the found place
      * When there is more than one place found, disallow creation and use the duplicate table to find the canonical
      * When canonical lookup fails, we use the CanonicalService to try to find a suitable id and log it

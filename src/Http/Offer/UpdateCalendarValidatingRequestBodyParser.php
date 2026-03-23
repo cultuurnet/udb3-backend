@@ -35,9 +35,8 @@ final class UpdateCalendarValidatingRequestBodyParser implements RequestBodyPars
 
         $data = $request->getParsedBody();
 
-        if (!is_object($data)) {
-            // If the body data is not an object, there's nothing left to validate. Just re-throw the errors from the
-            // JSON schema validation.
+        if (count($errors) > 0) {
+            // Custom validators below expect structurally valid data and must not run on malformed input.
             throw ApiProblem::bodyInvalidData(...$errors);
         }
 
@@ -55,14 +54,16 @@ final class UpdateCalendarValidatingRequestBodyParser implements RequestBodyPars
                 $errors = array_merge(
                     $errors,
                     (new DateRangeValidator())->validate($data),
-                    (new OpeningHoursRangeValidator())->validate($data)
+                    (new OpeningHoursRangeValidator())->validate($data),
+                    (new OpeningHourChildcareValidator())->validate($data)
                 );
                 break;
 
             case 'permanent':
                 $errors = array_merge(
                     $errors,
-                    (new OpeningHoursRangeValidator())->validate($data)
+                    (new OpeningHoursRangeValidator())->validate($data),
+                    (new OpeningHourChildcareValidator())->validate($data)
                 );
                 break;
 
