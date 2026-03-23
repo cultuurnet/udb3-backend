@@ -117,7 +117,6 @@ final class PlaceServiceProvider extends AbstractServiceProvider
     private function getCanonicalLabels(array $config): array
     {
         return array_merge(
-            [$config['museumpas']['label']],
             array_values($config['uitpas']['labels']),
             $config['canonical_place_labels'] ?? []
         );
