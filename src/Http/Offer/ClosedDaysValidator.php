@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
+use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\DateTimeInvalid;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
-use DateTimeImmutable;
 
 final class ClosedDaysValidator
 {
@@ -21,8 +22,20 @@ final class ClosedDaysValidator
 
         $errors = [];
         foreach ($data->openingHoursClosedDays as $index => $closedDayData) {
-            $startDate = new DateTimeImmutable($closedDayData->startDate);
-            $endDate = new DateTimeImmutable($closedDayData->endDate);
+            if (!isset($closedDayData->startDate, $closedDayData->endDate) ||
+                !is_string($closedDayData->startDate) ||
+                !is_string($closedDayData->endDate)) {
+                // Error(s) will be reported by the Schema validation.
+                continue;
+            }
+
+            try {
+                $startDate = DateTimeFactory::fromISO8601($closedDayData->startDate);
+                $endDate = DateTimeFactory::fromISO8601($closedDayData->endDate);
+            } catch (DateTimeInvalid $e) {
+                // Date format error(s) will be reported by the Schema validation.
+                continue;
+            }
 
             if ($startDate > $endDate) {
                 $errors[] = new SchemaError(
@@ -33,17 +46,29 @@ final class ClosedDaysValidator
 
             // For periodic calendars, validate that closed days are within the periodic range
             if (isset($data->calendarType) && $data->calendarType === 'periodic') {
-                $periodicStart = isset($data->startDate) ? new DateTimeImmutable($data->startDate) : null;
-                $periodicEnd = isset($data->endDate) ? new DateTimeImmutable($data->endDate) : null;
+                if (!isset($data->startDate, $data->endDate) ||
+                    !is_string($data->startDate) ||
+                    !is_string($data->endDate)) {
+                    // Errors will be reported by Schema validation or DateRangeValidator
+                    continue;
+                }
 
-                if ($periodicStart !== null && $startDate < $periodicStart) {
+                try {
+                    $periodicStart = DateTimeFactory::fromISO8601($data->startDate);
+                    $periodicEnd = DateTimeFactory::fromISO8601($data->endDate);
+                } catch (DateTimeInvalid $e) {
+                    // Errors will be reported by DateRangeValidator
+                    continue;
+                }
+
+                if ($startDate < $periodicStart) {
                     $errors[] = new SchemaError(
                         '/openingHoursClosedDays/' . $index . '/startDate',
                         'startDate should not be before the calendar startDate'
                     );
                 }
 
-                if ($periodicEnd !== null && $endDate > $periodicEnd) {
+                if ($endDate > $periodicEnd) {
                     $errors[] = new SchemaError(
                         '/openingHoursClosedDays/' . $index . '/endDate',
                         'endDate should not be after the calendar endDate'

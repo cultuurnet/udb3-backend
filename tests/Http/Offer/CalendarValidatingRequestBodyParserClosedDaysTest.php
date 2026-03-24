@@ -1,0 +1,189 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Http\Offer;
+
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
+use PHPUnit\Framework\TestCase;
+
+final class CalendarValidatingRequestBodyParserClosedDaysTest extends TestCase
+{
+    use AssertApiProblemTrait;
+
+    private CalendarValidatingRequestBodyParser $parser;
+
+    protected function setUp(): void
+    {
+        $this->parser = new CalendarValidatingRequestBodyParser();
+    }
+
+    /**
+     * @test
+     * @dataProvider validClosedDaysDataProvider
+     */
+    public function it_accepts_valid_closed_days(object $data): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromObject($data)
+            ->build('PUT')
+            ->withParsedBody($data);
+
+        // Should not throw
+        $this->parser->parse($request);
+
+        $this->assertTrue(true);
+    }
+
+    public function validClosedDaysDataProvider(): array
+    {
+        return [
+            'periodic with single closed day' => [
+                (object)[
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-01-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [],
+                    'openingHoursClosedDays' => [
+                        (object)[
+                            'startDate' => '2024-12-25T00:00:00+00:00',
+                            'endDate' => '2024-12-25T23:59:59+00:00',
+                        ],
+                    ],
+                ],
+            ],
+            'permanent with multiple closed days' => [
+                (object)[
+                    'calendarType' => 'permanent',
+                    'openingHours' => [],
+                    'openingHoursClosedDays' => [
+                        (object)[
+                            'startDate' => '2024-01-01T00:00:00+00:00',
+                            'endDate' => '2024-01-01T23:59:59+00:00',
+                        ],
+                        (object)[
+                            'startDate' => '2025-12-25T00:00:00+00:00',
+                            'endDate' => '2025-12-25T23:59:59+00:00',
+                        ],
+                    ],
+                ],
+            ],
+            'periodic with closed day spanning multiple days' => [
+                (object)[
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-01-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [],
+                    'openingHoursClosedDays' => [
+                        (object)[
+                            'startDate' => '2024-12-24T00:00:00+00:00',
+                            'endDate' => '2024-12-26T23:59:59+00:00',
+                        ],
+                    ],
+                ],
+            ],
+            'permanent without closed days' => [
+                (object)[
+                    'calendarType' => 'permanent',
+                    'openingHours' => [],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidClosedDaysDataProvider
+     */
+    public function it_rejects_invalid_closed_days(object $data, string $errorPath, string $expectedErrorMessage): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromObject($data)
+            ->build('PUT')
+            ->withParsedBody($data);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError($errorPath, $expectedErrorMessage)
+            ),
+            fn () => $this->parser->parse($request)
+        );
+    }
+
+    public function invalidClosedDaysDataProvider(): array
+    {
+        return [
+            'closed day startDate after endDate' => [
+                (object)[
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-01-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [],
+                    'openingHoursClosedDays' => [
+                        (object)[
+                            'startDate' => '2024-12-25T00:00:00+00:00',
+                            'endDate' => '2024-12-24T23:59:59+00:00',
+                        ],
+                    ],
+                ],
+                '/openingHoursClosedDays/0/endDate',
+                'endDate should not be before startDate',
+            ],
+            'closed day before periodic calendar startDate' => [
+                (object)[
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-03-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [],
+                    'openingHoursClosedDays' => [
+                        (object)[
+                            'startDate' => '2024-01-01T00:00:00+00:00',
+                            'endDate' => '2024-01-01T23:59:59+00:00',
+                        ],
+                    ],
+                ],
+                '/openingHoursClosedDays/0/startDate',
+                'startDate should not be before the calendar startDate',
+            ],
+            'closed day after periodic calendar endDate' => [
+                (object)[
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-01-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [],
+                    'openingHoursClosedDays' => [
+                        (object)[
+                            'startDate' => '2025-01-01T00:00:00+00:00',
+                            'endDate' => '2025-01-01T23:59:59+00:00',
+                        ],
+                    ],
+                ],
+                '/openingHoursClosedDays/0/endDate',
+                'endDate should not be after the calendar endDate',
+            ],
+            'multiple closed days with one invalid' => [
+                (object)[
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-01-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [],
+                    'openingHoursClosedDays' => [
+                        (object)[
+                            'startDate' => '2024-01-01T00:00:00+00:00',
+                            'endDate' => '2024-01-01T23:59:59+00:00',
+                        ],
+                        (object)[
+                            'startDate' => '2025-12-25T00:00:00+00:00',
+                            'endDate' => '2025-12-25T23:59:59+00:00',
+                        ],
+                    ],
+                ],
+                '/openingHoursClosedDays/1/endDate',
+                'endDate should not be after the calendar endDate',
+            ],
+        ];
+    }
+}
