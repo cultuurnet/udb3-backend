@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\DateTimeInvalid;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use DateTimeImmutable;
 
 final class ClosedDaysValidator
 {
@@ -30,8 +31,8 @@ final class ClosedDaysValidator
             }
 
             try {
-                $startDate = DateTimeFactory::fromISO8601($closedDayData->startDate);
-                $endDate = DateTimeFactory::fromISO8601($closedDayData->endDate);
+                $startDate = $this->parseDateTime($closedDayData->startDate);
+                $endDate = $this->parseDateTime($closedDayData->endDate);
             } catch (DateTimeInvalid $e) {
                 // Date format error(s) will be reported by the Schema validation.
                 continue;
@@ -54,8 +55,8 @@ final class ClosedDaysValidator
                 }
 
                 try {
-                    $periodicStart = DateTimeFactory::fromISO8601($data->startDate);
-                    $periodicEnd = DateTimeFactory::fromISO8601($data->endDate);
+                    $periodicStart = $this->parseDateTime($data->startDate);
+                    $periodicEnd = $this->parseDateTime($data->endDate);
                 } catch (DateTimeInvalid $e) {
                     // Errors will be reported by DateRangeValidator
                     continue;
@@ -78,5 +79,17 @@ final class ClosedDaysValidator
         }
 
         return $errors;
+    }
+
+    private function parseDateTime(string $dateString): DateTimeImmutable
+    {
+        // Try parsing as date-only format first (YYYY-MM-DD)
+        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d', $dateString);
+        if ($dateOnly instanceof DateTimeImmutable) {
+            return $dateOnly;
+        }
+
+        // Fall back to ISO8601 datetime format
+        return DateTimeFactory::fromISO8601($dateString);
     }
 }

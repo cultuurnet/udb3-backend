@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\DateTimeInvalid;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
+use DateTimeImmutable;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class ClosedDaysDenormalizer implements DenormalizerInterface
@@ -31,8 +33,8 @@ class ClosedDaysDenormalizer implements DenormalizerInterface
                 continue;
             }
 
-            $startDate = DateTimeFactory::fromISO8601($closedDayData['startDate']);
-            $endDate = DateTimeFactory::fromISO8601($closedDayData['endDate']);
+            $startDate = $this->parseDateTime($closedDayData['startDate']);
+            $endDate = $this->parseDateTime($closedDayData['endDate']);
 
             $description = null;
             if (isset($closedDayData['description']) && is_array($closedDayData['description'])) {
@@ -46,6 +48,18 @@ class ClosedDaysDenormalizer implements DenormalizerInterface
         }
 
         return new ClosedDays(...$closedDays);
+    }
+
+    private function parseDateTime(string $dateString): DateTimeImmutable
+    {
+        // Try parsing as date-only format first (YYYY-MM-DD)
+        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d', $dateString);
+        if ($dateOnly instanceof DateTimeImmutable) {
+            return $dateOnly;
+        }
+
+        // Fall back to ISO8601 datetime format
+        return DateTimeFactory::fromISO8601($dateString);
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool
