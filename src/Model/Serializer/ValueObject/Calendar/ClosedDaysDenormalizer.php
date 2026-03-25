@@ -62,7 +62,7 @@ final class ClosedDaysDenormalizer implements DenormalizerInterface
 
     private function parseDate(string $dateString): DateTimeImmutable
     {
-        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d', $dateString);
+        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d|', $dateString);
         if ($dateOnly instanceof DateTimeImmutable) {
             return $dateOnly;
         }

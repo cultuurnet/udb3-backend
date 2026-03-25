@@ -25,10 +25,9 @@ final class ClosedDayNormalizer implements NormalizerInterface
         ];
 
         if ($object->getDescription() !== null) {
-            $description = $object->getDescription();
             $normalizedDescription = [];
-            foreach ($description->getLanguages() as $language) {
-                $normalizedDescription[$language->getCode()] = $description->getTranslation($language)->toString();
+            foreach ($object->getDescription()->getLanguages() as $language) {
+                $normalizedDescription[$language->getCode()] = $object->getDescription()->getTranslation($language)->toString();
             }
             $data['description'] = $normalizedDescription;
         }

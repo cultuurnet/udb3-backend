@@ -83,13 +83,11 @@ final class ClosedDaysValidator
 
     private function parseDateTime(string $dateString): DateTimeImmutable
     {
-        // Try parsing as date-only format first (YYYY-MM-DD)
-        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d', $dateString);
+        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d|', $dateString);
         if ($dateOnly instanceof DateTimeImmutable) {
             return $dateOnly;
         }
 
-        // Fall back to ISO8601 datetime format
         return DateTimeFactory::fromISO8601($dateString);
     }
 }
