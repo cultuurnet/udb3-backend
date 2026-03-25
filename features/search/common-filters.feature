@@ -591,6 +591,61 @@ Feature: Test the Search API v3 default filters
       | q          | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
 
+  Scenario: Search for timestamps using the common filters
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/event-with-single-calendar.json" and save the "id" as "eventId"
+    And I publish the event at "/events/%{eventId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/offers" with parameters:
+      | dateFrom      | 2021-01-01T00:00:00%2B01:00 |
+      | availableTo   | *                           |
+      | availableFrom | *                           |
+      | q             | id:(%{eventId})             |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/offers" with parameters:
+      | dateFrom      | 2090-01-01T00:00:00%2B01:00 |
+      | availableTo   | *                           |
+      | availableFrom | *                           |
+      | q             | id:(%{eventId})             |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | dateFrom      | 2021-01-01T00:00:00%2B01:00 |
+      | availableTo   | *                           |
+      | availableFrom | *                           |
+      | q             | id:(%{eventId})             |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | dateFrom      | 2090-01-01T00:00:00%2B01:00 |
+      | availableTo   | *                           |
+      | availableFrom | *                           |
+      | q             | id:(%{eventId})             |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/offers" with parameters:
+      | dateTo        | 2090-01-01T00:00:00%2B01:00 |
+      | availableTo   | *                           |
+      | availableFrom | *                           |
+      | q             | id:(%{eventId})             |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/offers" with parameters:
+      | dateTo        | 2020-01-01T00:00:00%2B01:00 |
+      | availableTo   | *                           |
+      | availableFrom | *                           |
+      | q             | id:(%{eventId})             |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | dateTo        | 2090-01-01T00:00:00%2B01:00 |
+      | availableTo   | *                           |
+      | availableFrom | *                           |
+      | q             | id:(%{eventId})             |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | dateTo        | 2020-01-01T00:00:00%2B01:00 |
+      | availableTo   | *                           |
+      | availableFrom | *                           |
+      | q             | id:(%{eventId})             |
+    Then the JSON response at "totalItems" should be 0
+
   Scenario: Search for text using the common filters
     When I create a minimal place and save the "id" as "uuid_place"
     And I publish the place at "/places/%{uuid_place}"
