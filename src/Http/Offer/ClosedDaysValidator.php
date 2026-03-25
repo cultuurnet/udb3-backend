@@ -34,7 +34,7 @@ final class ClosedDaysValidator
             // Validate using ClosedDay value object (validates startDate <= endDate)
             try {
                 new ClosedDay($startDate, $endDate);
-            } catch (InvalidArgumentException $e) {
+            } catch (InvalidArgumentException) {
                 $errors[] = new SchemaError(
                     '/openingHoursClosedDays/' . $index . '/endDate',
                     'endDate should not be before startDate'
