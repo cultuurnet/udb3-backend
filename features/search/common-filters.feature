@@ -25,7 +25,12 @@ Feature: Test the Search API v3 common filters
     When I send a GET request to "/events" with parameters:
       | labels | %{labelname} |
     Then the JSON response at "totalItems" should be 1
-    When I send a GET request to "/events" with parameters:
+    When I am using the UDB3 base URL
+    And I create a random labelname of 10 characters
+    And I send a PUT request to "/places/%{uuid_place}/labels/%{labelname}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    And I send a GET request to "/events" with parameters:
       | locationLabels | %{labelname} |
     Then the JSON response at "totalItems" should be 1
 
