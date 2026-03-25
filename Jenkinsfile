@@ -6,7 +6,7 @@ pipeline {
     agent none
 
     environment {
-        PIPELINE_VERSION = build.pipelineVersion()
+        PIPELINE_VERSION = util.pipelineVersion()
         REPOSITORY_NAME  = 'uitdatabank-entry-api'
     }
 
@@ -21,7 +21,7 @@ pipeline {
         stage('Setup and build') {
             agent { label 'ubuntu && 20.04 && php8.1' }
             environment {
-                GIT_SHORT_COMMIT = build.shortCommitRef()
+                GIT_SHORT_COMMIT = util.shortCommitRef()
                 ARTIFACT_VERSION = "${env.PIPELINE_VERSION}" + '+sha.' + "${env.GIT_SHORT_COMMIT}"
             }
             steps {
