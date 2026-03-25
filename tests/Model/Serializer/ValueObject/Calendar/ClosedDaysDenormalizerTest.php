@@ -201,6 +201,5 @@ final class ClosedDaysDenormalizerTest extends TestCase
     {
         $this->assertTrue($this->denormalizer->supportsDenormalization([], ClosedDays::class));
         $this->assertFalse($this->denormalizer->supportsDenormalization([], 'SomeOtherClass'));
-        $this->assertFalse($this->denormalizer->supportsDenormalization('not-an-array', ClosedDays::class));
     }
 }

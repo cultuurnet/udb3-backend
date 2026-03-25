@@ -34,9 +34,9 @@ final class ClosedDaysDenormalizer implements DenormalizerInterface
             }
 
             try {
-                $startDate = self::parseDateTime($closedDayData['startDate']);
-                $endDate = self::parseDateTime($closedDayData['endDate']);
-            } catch (DateTimeInvalid $e) {
+                $startDate = DateTimeFactory::fromISO8601($closedDayData['startDate']);
+                $endDate = DateTimeFactory::fromISO8601($closedDayData['endDate']);
+            } catch (DateTimeInvalid) {
                 // Date format error(s) will be reported by Schema validation.
                 continue;
             }
@@ -55,24 +55,8 @@ final class ClosedDaysDenormalizer implements DenormalizerInterface
         return new ClosedDays(...$closedDays);
     }
 
-    private static function parseDateTime(string $dateString): DateTimeImmutable
-    {
-        // Try parsing as date-only format first (YYYY-MM-DD)
-        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d', $dateString);
-        if ($dateOnly instanceof DateTimeImmutable) {
-            return $dateOnly;
-        }
-
-        // Fall back to ISO8601 datetime format
-        try {
-            return DateTimeFactory::fromISO8601($dateString);
-        } catch (DateTimeInvalid $e) {
-            throw $e;
-        }
-    }
-
     public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === ClosedDays::class && is_array($data);
+        return $type === ClosedDays::class;
     }
 }
