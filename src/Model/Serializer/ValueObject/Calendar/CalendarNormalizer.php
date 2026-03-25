@@ -62,8 +62,9 @@ final class CalendarNormalizer implements NormalizerInterface
         }
 
         if ($calendar instanceof CalendarWithClosedDays && !$calendar->getClosedDays()->isEmpty()) {
+            $closedDayNormalizer = new ClosedDayNormalizer();
             $data['openingHoursClosedDays'] = array_map(
-                fn (ClosedDay $cd) => (new ClosedDayNormalizer())->normalize($cd),
+                fn (ClosedDay $cd) => $closedDayNormalizer->normalize($cd),
                 $calendar->getClosedDays()->toArray()
             );
         }

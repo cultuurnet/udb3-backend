@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use DateTimeImmutable;
+use InvalidArgumentException;
 
 final class ClosedDay
 {
@@ -14,7 +15,7 @@ final class ClosedDay
         private readonly ?TranslatedClosedDayDescription $description = null
     ) {
         if ($startDate > $endDate) {
-            throw new \InvalidArgumentException('"startDate" should not be later than "endDate".');
+            throw new InvalidArgumentException('"startDate" should not be later than "endDate".');
         }
     }
 

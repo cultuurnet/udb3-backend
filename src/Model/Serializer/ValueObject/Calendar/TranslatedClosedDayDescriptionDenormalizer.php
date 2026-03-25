@@ -9,7 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDayDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
-class TranslatedClosedDayDescriptionDenormalizer extends TranslatedValueObjectDenormalizer
+final class TranslatedClosedDayDescriptionDenormalizer extends TranslatedValueObjectDenormalizer
 {
     public function supportsDenormalization($data, $type, $format = null): bool
     {
