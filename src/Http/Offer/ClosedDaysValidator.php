@@ -52,14 +52,14 @@ final class ClosedDaysValidator
                 if ($startDate < $periodicStart) {
                     $errors[] = new SchemaError(
                         '/openingHoursClosedDays/' . $index . '/startDate',
-                        'startDate should not be before the calendar startDate'
+                        'the start date of a closed day should not be before the calendar start date'
                     );
                 }
 
                 if ($endDate > $periodicEnd) {
                     $errors[] = new SchemaError(
                         '/openingHoursClosedDays/' . $index . '/endDate',
-                        'endDate should not be after the calendar endDate'
+                        'the end date of a closed day should not be after the calendar end date'
                     );
                 }
             }
