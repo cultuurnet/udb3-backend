@@ -253,7 +253,8 @@ Feature: Test the Search API v3 common filters
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for languages using the common filters
-    When I create a place from "places/place-in-german-and-french.json" and save the "id" as "uuid_place"
+    When I create a random name of 10 characters
+    And I create a place from "places/place-in-german-and-french.json" and save the "id" as "uuid_place"
     And I publish the place at "/places/%{uuid_place}"
     And I create an event from "events/event-in-german-and-french.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
