@@ -1,0 +1,27 @@
+{
+  "name": {
+    "de": "%{name}",
+    "fr": "%{name}"
+  },
+  "terms": [
+    {
+      "id": "Yf4aZBfsUEu2NsQqsprngw"
+    }
+  ],
+  "address": {
+    "de" : {
+      "addressCountry": "BE",
+      "addressLocality": "Eupen",
+      "postalCode": "4700",
+      "streetAddress": "Bahnhofstraße 31"
+    },
+    "fr" : {
+      "addressCountry": "BE",
+      "addressLocality": "Eupen",
+      "postalCode": "4700",
+      "streetAddress": "Rue de la Gare 31"
+    }
+  },
+  "calendarType": "permanent",
+  "mainLanguage": "de"
+}
