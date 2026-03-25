@@ -183,33 +183,32 @@ Feature: Test the Search API v3 common filters
   Scenario: Search for country using the common filters
     When I create a minimal place and save the "id" as "uuid_place"
     And I publish the place at "/places/%{uuid_place}"
-    And I wait 0 seconds
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | addressCountry | NL                               |
-      | q                | id:(%{uuid_place} OR %{eventId}) |
+      | q              | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
       | addressCountry | BE                               |
-      | q                | id:(%{uuid_place} OR %{eventId}) |
+      | q              | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/places" with parameters:
       | addressCountry | NL                               |
-      | q                | id:(%{uuid_place} OR %{eventId}) |
+      | q              | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | addressCountry | BE                               |
-      | q                | id:(%{uuid_place} OR %{eventId}) |
+      | q              | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
       | addressCountry | NL                               |
-      | q                | id:(%{uuid_place} OR %{eventId}) |
+      | q              | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | addressCountry | BE                               |
-      | q                | id:(%{uuid_place} OR %{eventId}) |
+      | q              | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for a single region using the common filters
@@ -253,11 +252,6 @@ Feature: Test the Search API v3 common filters
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
-    When I send a GET request to "/offers" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24020                        |
-      | q         | id:(%{uuid_place} OR %{eventId}) |
-    Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
       | regions[] | nis-20001                        |
       | regions[] | nis-24020                        |
