@@ -21,9 +21,6 @@ final class TranslatedClosedDayDescriptionDenormalizer extends TranslatedValueOb
         return new TranslatedClosedDayDescription($originalLanguage, $originalValue);
     }
 
-    /**
-     * @inheritdoc
-     */
     protected function createValueObject($value)
     {
         return new ClosedDayDescription($value);
