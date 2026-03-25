@@ -34,9 +34,11 @@ class CalendarDenormalizer implements DenormalizerInterface
     private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
     private BookingInfoDenormalizer $bookingInfoDenormalizer;
     private ClosedDaysDenormalizer $closedDaysDenormalizer;
+    private string $offerType;
 
-    public function __construct()
+    public function __construct(string $offerType = 'event')
     {
+        $this->offerType = $offerType;
         $this->statusDenormalizer = new StatusDenormalizer();
         $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
         $this->bookingInfoDenormalizer = new BookingInfoDenormalizer();
@@ -122,7 +124,9 @@ class CalendarDenormalizer implements DenormalizerInterface
             case 'periodic':
                 $dateRange = $this->denormalizeDateRange($data);
                 $calendar = new PeriodicCalendar($dateRange, $openingHours);
-                if (isset($data['openingHoursClosedDays'])) {
+                // openingHoursClosedDays is an events-only feature. Places should not use this field.
+                // It's only denormalized for events, not for places, to keep the feature event-specific.
+                if (isset($data['openingHoursClosedDays']) && $this->isEventOffer()) {
                     $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
                     $calendar = $calendar->withClosedDays($closedDays);
                 }
@@ -131,7 +135,9 @@ class CalendarDenormalizer implements DenormalizerInterface
             case 'permanent':
             default:
                 $calendar = new PermanentCalendar($openingHours);
-                if (isset($data['openingHoursClosedDays'])) {
+                // openingHoursClosedDays is an events-only feature. Places should not use this field.
+                // It's only denormalized for events, not for places, to keep the feature event-specific.
+                if (isset($data['openingHoursClosedDays']) && $this->isEventOffer()) {
                     $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
                     $calendar = $calendar->withClosedDays($closedDays);
                 }
@@ -224,5 +230,10 @@ class CalendarDenormalizer implements DenormalizerInterface
         }
 
         return $subEvent;
+    }
+
+    private function isEventOffer(): bool
+    {
+        return $this->offerType !== 'place';
     }
 }

@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Place\Place;
 use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\CoordinatesDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
@@ -56,6 +57,10 @@ class PlaceDenormalizer extends OfferDenormalizer
 
         if (!$geoCoordinatesDenormalizer) {
             $geoCoordinatesDenormalizer = new CoordinatesDenormalizer();
+        }
+
+        if (!$calendarDenormalizer) {
+            $calendarDenormalizer = new CalendarDenormalizer('place');
         }
 
         $this->addressDenormalizer = $addressDenormalizer;
