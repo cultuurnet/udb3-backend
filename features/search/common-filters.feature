@@ -537,7 +537,7 @@ Feature: Test the Search API v3 common filters
       | q         | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | modifiedFrom | 2024-01-01T00:00:00%2B01:00      |
+      | modifiedFrom | 2024-01-01T00:00:00%2B01:00     |
       | q           | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
