@@ -6,15 +6,16 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use DateTimeImmutable;
 use DateTimeZone;
+use InvalidArgumentException;
 
 /**
  * Validates closed days for periodic and permanent calendars.
  *
  * Note: The JSON schema already validates date format (Y-m-d or ISO8601) via "format" and pattern rules.
- * If parsing exceptions occur during validation, this indicates a schema validation bypass.
- * Such exceptions should be logged to Sentry as they represent a system integrity issue.
+ * Domain validation (startDate <= endDate) is delegated to ClosedDay value object.
  */
 final class ClosedDaysValidator
 {
@@ -32,15 +33,19 @@ final class ClosedDaysValidator
             $startDate = $this->parseDateTime($closedDayData->startDate);
             $endDate = $this->parseDateTime($closedDayData->endDate);
 
-            if ($startDate > $endDate) {
+            // Validate using ClosedDay value object (validates startDate <= endDate)
+            try {
+                new ClosedDay($startDate, $endDate);
+            } catch (InvalidArgumentException $e) {
                 $errors[] = new SchemaError(
                     '/openingHoursClosedDays/' . $index . '/endDate',
                     'endDate should not be before startDate'
                 );
+                continue;
             }
 
             // For periodic calendars, validate that closed days are within the periodic range
-            if (isset($data->calendarType) && $data->calendarType === 'periodic' && isset($data->startDate, $data->endDate)) {
+            if (isset($data->calendarType, $data->startDate, $data->endDate) && $data->calendarType === 'periodic') {
                 $periodicStart = $this->parseDateTime($data->startDate);
                 $periodicEnd = $this->parseDateTime($data->endDate);
 
