@@ -442,6 +442,27 @@ Feature: Test the Search API v3 default filters
       | q      | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
 
+  Scenario: Search for booking availability using the common filters
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-unavailable-sub-events.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I publish the event at "/events/%{eventId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | bookingAvailability | Unavailable                      |
+      | availableTo         | *                                |
+      | availableFrom       | *                                |
+      | q                   | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | bookingAvailability | Available                        |
+      | availableTo         | *                                |
+      | availableFrom       | *                                |
+      | q                   | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+
   Scenario: Search for text using the common filters
     When I create a minimal place and save the "id" as "uuid_place"
     And I publish the place at "/places/%{uuid_place}"
