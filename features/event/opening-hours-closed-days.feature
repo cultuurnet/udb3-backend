@@ -29,7 +29,12 @@ Feature: Test opening hours closed days
       "openingHoursClosedDays": [
         {
           "startDate": "2024-12-25",
-          "endDate": "2024-12-25"
+          "endDate": "2024-12-25",
+          "description": {
+            "nl": "Gesloten op eerste kerstdag",
+            "en": "Closed on Christmas Day",
+            "fr": "Fermé le jour de Noël"
+          }
         }
       ]
     }
@@ -40,6 +45,9 @@ Feature: Test opening hours closed days
     And I get the event at "%{eventUrl}"
     And the JSON response at "openingHoursClosedDays/0/startDate" should be "2024-12-25"
     And the JSON response at "openingHoursClosedDays/0/endDate" should be "2024-12-25"
+    And the JSON response at "openingHoursClosedDays/0/description/nl" should be "Gesloten op eerste kerstdag"
+    And the JSON response at "openingHoursClosedDays/0/description/en" should be "Closed on Christmas Day"
+    And the JSON response at "openingHoursClosedDays/0/description/fr" should be "Fermé le jour de Noël"
 
   Scenario: Create a periodic event with multiple closed days
     When I set the JSON request payload to:
@@ -62,11 +70,21 @@ Feature: Test opening hours closed days
       "openingHoursClosedDays": [
         {
           "startDate": "2024-01-01",
-          "endDate": "2024-01-01"
+          "endDate": "2024-01-01",
+          "description": {
+            "nl": "Gesloten met Nieuwjaarsdag",
+            "en": "Closed on New Year's Day",
+            "fr": "Fermé le jour de l'an"
+          }
         },
         {
           "startDate": "2024-12-25",
-          "endDate": "2024-12-26"
+          "endDate": "2024-12-26",
+          "description": {
+            "nl": "Gesloten met kerstdagen",
+            "en": "Closed on Christmas holidays",
+            "fr": "Fermé pendant les vacances de Noël"
+          }
         }
       ]
     }
@@ -77,8 +95,12 @@ Feature: Test opening hours closed days
     And I get the event at "%{eventUrl}"
     And the JSON response should have "openingHoursClosedDays"
     And the JSON response at "openingHoursClosedDays/0/startDate" should be "2024-01-01"
+    And the JSON response at "openingHoursClosedDays/0/description/nl" should be "Gesloten met Nieuwjaarsdag"
+    And the JSON response at "openingHoursClosedDays/0/description/en" should be "Closed on New Year's Day"
     And the JSON response at "openingHoursClosedDays/1/startDate" should be "2024-12-25"
     And the JSON response at "openingHoursClosedDays/1/endDate" should be "2024-12-26"
+    And the JSON response at "openingHoursClosedDays/1/description/nl" should be "Gesloten met kerstdagen"
+    And the JSON response at "openingHoursClosedDays/1/description/en" should be "Closed on Christmas holidays"
 
   Scenario: Create a permanent event with closed days
     When I set the JSON request payload to:
@@ -99,7 +121,13 @@ Feature: Test opening hours closed days
       "openingHoursClosedDays": [
         {
           "startDate": "2024-12-25",
-          "endDate": "2024-12-25"
+          "endDate": "2024-12-25",
+          "description": {
+            "nl": "Gesloten: Kerstdag",
+            "en": "Closed: Christmas",
+            "fr": "Fermé: Noël",
+            "de": "Geschlossen: Weihnachten"
+          }
         }
       ]
     }
@@ -110,6 +138,10 @@ Feature: Test opening hours closed days
     And I get the event at "%{eventUrl}"
     And the JSON response at "openingHoursClosedDays/0/startDate" should be "2024-12-25"
     And the JSON response at "openingHoursClosedDays/0/endDate" should be "2024-12-25"
+    And the JSON response at "openingHoursClosedDays/0/description/nl" should be "Gesloten: Kerstdag"
+    And the JSON response at "openingHoursClosedDays/0/description/en" should be "Closed: Christmas"
+    And the JSON response at "openingHoursClosedDays/0/description/fr" should be "Fermé: Noël"
+    And the JSON response at "openingHoursClosedDays/0/description/de" should be "Geschlossen: Weihnachten"
 
   Scenario: Update periodic event with closed days via PUT /calendar
     Given I set the JSON request payload to:
@@ -150,7 +182,12 @@ Feature: Test opening hours closed days
       "openingHoursClosedDays": [
         {
           "startDate": "2024-12-25",
-          "endDate": "2024-12-25"
+          "endDate": "2024-12-25",
+          "description": {
+            "nl": "Gesloten op eerste kerstdag",
+            "en": "Closed on Christmas Day",
+            "fr": "Fermé le jour de Noël"
+          }
         }
       ]
     }
@@ -160,6 +197,8 @@ Feature: Test opening hours closed days
     And I get the event at "%{eventUrl}"
     And the JSON response at "openingHoursClosedDays/0/startDate" should be "2024-12-25"
     And the JSON response at "openingHoursClosedDays/0/endDate" should be "2024-12-25"
+    And the JSON response at "openingHoursClosedDays/0/description/nl" should be "Gesloten op eerste kerstdag"
+    And the JSON response at "openingHoursClosedDays/0/description/en" should be "Closed on Christmas Day"
 
   Scenario: Clear closed days when omitted from a PUT calendar update
     Given I set the JSON request payload to:
@@ -182,7 +221,11 @@ Feature: Test opening hours closed days
       "openingHoursClosedDays": [
         {
           "startDate": "2024-12-25",
-          "endDate": "2024-12-25"
+          "endDate": "2024-12-25",
+          "description": {
+            "nl": "Gesloten op eerste kerstdag",
+            "en": "Closed on Christmas Day"
+          }
         }
       ]
     }
