@@ -7,7 +7,7 @@ Feature: Test the Search API v3 advanced filters
     And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
 
-  Scenario: Search for a single label using the advanced filter
+  Scenario: Search for a single label using an advanced query
     When I create a random labelname of 10 characters
     And I create a minimal place and save the "id" as "uuid_place"
     And I publish the place at "/places/%{uuid_place}"
@@ -30,7 +30,7 @@ Feature: Test the Search API v3 advanced filters
       | locationLabels | %{labelname} |
     Then the JSON response at "totalItems" should be 1
 
-  Scenario: Search for a single term using the common filter
+  Scenario: Search for a single term using an advanced query
     When I create a minimal place and save the "id" as "uuid_place"
     And I publish the place at "/places/%{uuid_place}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
