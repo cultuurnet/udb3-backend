@@ -202,4 +202,15 @@ final class ClosedDaysDenormalizerTest extends TestCase
         $this->assertTrue($this->denormalizer->supportsDenormalization([], ClosedDays::class));
         $this->assertFalse($this->denormalizer->supportsDenormalization([], 'SomeOtherClass'));
     }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_date_only_format(): void
+    {
+        $data = [['startDate' => '2024-12-25', 'endDate' => '2024-12-26']];
+        $result = $this->denormalizer->denormalize($data, ClosedDays::class);
+        $this->assertSame('2024-12-25', $result->toArray()[0]->getStartDate()->format('Y-m-d'));
+        $this->assertSame('2024-12-26', $result->toArray()[0]->getEndDate()->format('Y-m-d'));
+    }
 }
