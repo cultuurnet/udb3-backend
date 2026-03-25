@@ -542,6 +542,54 @@ Feature: Test the Search API v3 default filters
       | createdTo | 2024-01-01T00:00:00%2B01:00      |
       | q         | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/offers" with parameters:
+      | modifiedFrom | 2024-01-01T00:00:00%2B01:00      |
+      | q           | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 2
+    When I send a GET request to "/offers" with parameters:
+      | modifiedFrom | 2090-01-01T00:00:00%2B01:00      |
+      | q            | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/places" with parameters:
+      | modifiedFrom | 2024-01-01T00:00:00%2B01:00      |
+      | q            | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/places" with parameters:
+      | modifiedFrom | 2090-01-01T00:00:00%2B01:00      |
+      | q            | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | modifiedFrom | 2024-01-01T00:00:00%2B01:00      |
+      | q            | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | modifiedFrom | 2090-01-01T00:00:00%2B01:00      |
+      | q            | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/offers" with parameters:
+      | modifiedTo | 2090-01-01T00:00:00%2B01:00      |
+      | q          | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 2
+    When I send a GET request to "/offers" with parameters:
+      | modifiedTo | 2024-01-01T00:00:00%2B01:00      |
+      | q          | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/places" with parameters:
+      | modifiedTo | 2090-01-01T00:00:00%2B01:00      |
+      | q          | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/places" with parameters:
+      | modifiedTo | 2024-01-01T00:00:00%2B01:00      |
+      | q          | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | modifiedTo | 2090-01-01T00:00:00%2B01:00      |
+      | q          | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | modifiedTo | 2024-01-01T00:00:00%2B01:00      |
+      | q          | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for text using the common filters
     When I create a minimal place and save the "id" as "uuid_place"
