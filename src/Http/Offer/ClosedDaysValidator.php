@@ -8,6 +8,7 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\DateTimeInvalid;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use DateTimeImmutable;
+use DateTimeZone;
 
 final class ClosedDaysValidator
 {
@@ -83,7 +84,7 @@ final class ClosedDaysValidator
 
     private function parseDateTime(string $dateString): DateTimeImmutable
     {
-        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d|', $dateString);
+        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d|', $dateString, new DateTimeZone('UTC'));
         if ($dateOnly instanceof DateTimeImmutable) {
             return $dateOnly;
         }
