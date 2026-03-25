@@ -146,7 +146,7 @@ final class CalendarValidatingRequestBodyParserClosedDaysTest extends TestCase
                     ],
                 ],
                 '/openingHoursClosedDays/0/startDate',
-                'startDate should not be before the calendar startDate',
+                'the start date of a closed day should not be before the calendar start date',
             ],
             'closed day after periodic calendar endDate' => [
                 (object)[
@@ -162,7 +162,7 @@ final class CalendarValidatingRequestBodyParserClosedDaysTest extends TestCase
                     ],
                 ],
                 '/openingHoursClosedDays/0/endDate',
-                'endDate should not be after the calendar endDate',
+                'the end date of a closed day should not be after the calendar end date',
             ],
             'multiple closed days with one invalid' => [
                 (object)[
@@ -182,7 +182,7 @@ final class CalendarValidatingRequestBodyParserClosedDaysTest extends TestCase
                     ],
                 ],
                 '/openingHoursClosedDays/1/endDate',
-                'endDate should not be after the calendar endDate',
+                'the end date of a closed day should not be after the calendar end date',
             ],
         ];
     }

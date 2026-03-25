@@ -159,7 +159,7 @@ final class ClosedDaysValidatorTest extends TestCase
                         ],
                     ],
                 ],
-                'startDate should not be before the calendar startDate',
+                'the start date of a closed day should not be before the calendar start date',
             ],
             'closed day after periodic end' => [
                 (object)[
@@ -173,7 +173,7 @@ final class ClosedDaysValidatorTest extends TestCase
                         ],
                     ],
                 ],
-                'endDate should not be after the calendar endDate',
+                'the end date of a closed day should not be after the calendar end date',
             ],
         ];
     }

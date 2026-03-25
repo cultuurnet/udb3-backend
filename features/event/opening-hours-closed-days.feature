@@ -313,7 +313,7 @@ Feature: Test opening hours closed days
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursClosedDays/0/startDate"
-    And the JSON response at "schemaErrors/0/error" should be "startDate should not be before the calendar startDate"
+    And the JSON response at "schemaErrors/0/error" should be "the start date of a closed day should not be before the calendar start date"
 
   Scenario: Cannot create periodic event when closed day is after calendar endDate
     When I set the JSON request payload to:
@@ -344,7 +344,7 @@ Feature: Test opening hours closed days
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursClosedDays/0/endDate"
-    And the JSON response at "schemaErrors/0/error" should be "endDate should not be after the calendar endDate"
+    And the JSON response at "schemaErrors/0/error" should be "the end date of a closed day should not be after the calendar end date"
 
   Scenario: Cannot update calendar via PUT when closed day is invalid
     Given I set the JSON request payload to:
