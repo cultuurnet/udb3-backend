@@ -8,7 +8,6 @@ use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
-use DateTimeImmutable;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ClosedDaysDenormalizer implements DenormalizerInterface
@@ -32,8 +31,8 @@ final class ClosedDaysDenormalizer implements DenormalizerInterface
                 continue;
             }
 
-            $startDate = $this->parseDate($closedDayData['startDate']);
-            $endDate = $this->parseDate($closedDayData['endDate']);
+            $startDate = DateTimeFactory::fromDateOrISO8601($closedDayData['startDate']);
+            $endDate = DateTimeFactory::fromDateOrISO8601($closedDayData['endDate']);
 
             $description = null;
             if (isset($closedDayData['description']) && is_array($closedDayData['description'])) {
@@ -52,15 +51,5 @@ final class ClosedDaysDenormalizer implements DenormalizerInterface
     public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === ClosedDays::class;
-    }
-
-    private function parseDate(string $dateString): DateTimeImmutable
-    {
-        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d|', $dateString);
-        if ($dateOnly instanceof DateTimeImmutable) {
-            return $dateOnly;
-        }
-
-        return DateTimeFactory::fromISO8601($dateString);
     }
 }

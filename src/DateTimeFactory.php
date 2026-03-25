@@ -89,20 +89,13 @@ final class DateTimeFactory
         );
     }
 
-    /**
-     * Parses a datetime string that can be either a date-only (Y-m-d) or ISO8601 format.
-     * Date-only strings are parsed with UTC timezone.
-     * Falls back to ISO8601 parsing for datetime strings.
-     */
     public static function fromDateOrISO8601(string $datetime): DateTimeImmutable
     {
-        // Try date-only format first
-        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d|', $datetime, new DateTimeZone('UTC'));
+        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d|', $datetime, new DateTimeZone('Europe/Brussels'));
         if ($dateOnly instanceof DateTimeImmutable) {
             return $dateOnly;
         }
 
-        // Fall back to ISO8601 parsing
         return self::fromISO8601($datetime);
     }
 }
