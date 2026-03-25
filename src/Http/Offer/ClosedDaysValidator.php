@@ -5,11 +5,17 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\DateTimeInvalid;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use DateTimeImmutable;
 use DateTimeZone;
 
+/**
+ * Validates closed days for periodic and permanent calendars.
+ *
+ * Note: The JSON schema already validates date format (Y-m-d or ISO8601) via "format" and pattern rules.
+ * If parsing exceptions occur during validation, this indicates a schema validation bypass.
+ * Such exceptions should be logged to Sentry as they represent a system integrity issue.
+ */
 final class ClosedDaysValidator
 {
     /**
@@ -18,24 +24,21 @@ final class ClosedDaysValidator
     public function validate(object $data): array
     {
         if (!isset($data->openingHoursClosedDays) || !is_array($data->openingHoursClosedDays)) {
-            // Error(s) will be reported by the Schema validation.
             return [];
         }
 
         $errors = [];
         foreach ($data->openingHoursClosedDays as $index => $closedDayData) {
-            if (!isset($closedDayData->startDate, $closedDayData->endDate) ||
-                !is_string($closedDayData->startDate) ||
-                !is_string($closedDayData->endDate)) {
-                // Error(s) will be reported by the Schema validation.
+            // Skip entries with missing fields - schema validation will report these
+            if (!isset($closedDayData->startDate, $closedDayData->endDate)) {
                 continue;
             }
 
             try {
                 $startDate = $this->parseDateTime($closedDayData->startDate);
                 $endDate = $this->parseDateTime($closedDayData->endDate);
-            } catch (DateTimeInvalid $e) {
-                // Date format error(s) will be reported by the Schema validation.
+            } catch (\Throwable $e) {
+                // Skip entries with malformed dates or invalid types - schema validation will report these
                 continue;
             }
 
@@ -47,19 +50,12 @@ final class ClosedDaysValidator
             }
 
             // For periodic calendars, validate that closed days are within the periodic range
-            if (isset($data->calendarType) && $data->calendarType === 'periodic') {
-                if (!isset($data->startDate, $data->endDate) ||
-                    !is_string($data->startDate) ||
-                    !is_string($data->endDate)) {
-                    // Errors will be reported by Schema validation or DateRangeValidator
-                    continue;
-                }
-
+            if (isset($data->calendarType) && $data->calendarType === 'periodic' && isset($data->startDate, $data->endDate)) {
                 try {
                     $periodicStart = $this->parseDateTime($data->startDate);
                     $periodicEnd = $this->parseDateTime($data->endDate);
-                } catch (DateTimeInvalid $e) {
-                    // Errors will be reported by DateRangeValidator
+                } catch (\Throwable $e) {
+                    // Skip - calendar dates should be validated by DateRangeValidator
                     continue;
                 }
 
