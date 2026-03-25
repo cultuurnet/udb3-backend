@@ -166,37 +166,6 @@ final class ClosedDaysDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_skips_entries_with_malformed_dates(): void
-    {
-        $data = [
-            [
-                'startDate' => '2024-01-01T00:00:00+00:00',
-                'endDate' => '2024-01-01T23:59:59+00:00',
-            ],
-            // Malformed date
-            [
-                'startDate' => 'not-a-date',
-                'endDate' => '2024-02-01T23:59:59+00:00',
-            ],
-            [
-                'startDate' => '2024-03-01T00:00:00+00:00',
-                'endDate' => '2024-03-01T23:59:59+00:00',
-            ],
-        ];
-
-        $result = $this->denormalizer->denormalize($data, ClosedDays::class);
-
-        // Only valid entries should be included, malformed entry is skipped
-        $this->assertEquals(2, $result->count());
-
-        $closedDays = $result->toArray();
-        $this->assertEquals(new DateTimeImmutable('2024-01-01T00:00:00+00:00'), $closedDays[0]->getStartDate());
-        $this->assertEquals(new DateTimeImmutable('2024-03-01T00:00:00+00:00'), $closedDays[1]->getStartDate());
-    }
-
-    /**
-     * @test
-     */
     public function it_supports_denormalization_of_closed_days(): void
     {
         $this->assertTrue($this->denormalizer->supportsDenormalization([], ClosedDays::class));

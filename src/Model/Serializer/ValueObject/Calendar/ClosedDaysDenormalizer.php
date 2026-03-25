@@ -33,13 +33,8 @@ final class ClosedDaysDenormalizer implements DenormalizerInterface
                 continue;
             }
 
-            try {
-                $startDate = $this->parseDate($closedDayData['startDate']);
-                $endDate = $this->parseDate($closedDayData['endDate']);
-            } catch (DateTimeInvalid) {
-                // Date format error(s) will be reported by Schema validation.
-                continue;
-            }
+            $startDate = $this->parseDate($closedDayData['startDate']);
+            $endDate = $this->parseDate($closedDayData['endDate']);
 
             $description = null;
             if (isset($closedDayData['description']) && is_array($closedDayData['description'])) {
