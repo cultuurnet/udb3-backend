@@ -7,8 +7,6 @@ namespace CultuurNet\UDB3\Http\Offer;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
-use DateTimeImmutable;
-use DateTimeZone;
 use InvalidArgumentException;
 
 /**
@@ -30,8 +28,8 @@ final class ClosedDaysValidator
 
         $errors = [];
         foreach ($data->openingHoursClosedDays as $index => $closedDayData) {
-            $startDate = $this->parseDateTime($closedDayData->startDate);
-            $endDate = $this->parseDateTime($closedDayData->endDate);
+            $startDate = DateTimeFactory::fromDateOrISO8601($closedDayData->startDate);
+            $endDate = DateTimeFactory::fromDateOrISO8601($closedDayData->endDate);
 
             // Validate using ClosedDay value object (validates startDate <= endDate)
             try {
@@ -46,8 +44,8 @@ final class ClosedDaysValidator
 
             // For periodic calendars, validate that closed days are within the periodic range
             if (isset($data->calendarType, $data->startDate, $data->endDate) && $data->calendarType === 'periodic') {
-                $periodicStart = $this->parseDateTime($data->startDate);
-                $periodicEnd = $this->parseDateTime($data->endDate);
+                $periodicStart = DateTimeFactory::fromDateOrISO8601($data->startDate);
+                $periodicEnd = DateTimeFactory::fromDateOrISO8601($data->endDate);
 
                 if ($startDate < $periodicStart) {
                     $errors[] = new SchemaError(
@@ -66,15 +64,5 @@ final class ClosedDaysValidator
         }
 
         return $errors;
-    }
-
-    private function parseDateTime(string $dateString): DateTimeImmutable
-    {
-        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d|', $dateString, new DateTimeZone('UTC'));
-        if ($dateOnly instanceof DateTimeImmutable) {
-            return $dateOnly;
-        }
-
-        return DateTimeFactory::fromISO8601($dateString);
     }
 }
