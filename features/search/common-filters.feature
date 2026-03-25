@@ -116,7 +116,7 @@ Feature: Test the Search API v3 common filters
 
   Scenario: Search for ages using the common filter
     When I create a minimal place and save the "url" as "placeUrl"
-    And I create an event from "events/event-with-age-range.json" and save the "id" as "eventId"
+    And I create an event from "events/event-with-age-range-6-to-12.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
