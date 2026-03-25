@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -407,6 +408,8 @@ final class CalendarSerializerTest extends TestCase
         $calendar = CalendarSerializer::deserialize($data);
 
         $this->assertInstanceOf(PeriodicCalendar::class, $calendar);
+        $this->assertInstanceOf(CalendarWithClosedDays::class, $calendar);
+        /** @var CalendarWithClosedDays $calendar */
         $this->assertFalse($calendar->getClosedDays()->isEmpty());
         $this->assertEquals(1, $calendar->getClosedDays()->count());
 
@@ -467,6 +470,8 @@ final class CalendarSerializerTest extends TestCase
         $calendar = CalendarSerializer::deserialize($data);
 
         $this->assertInstanceOf(PermanentCalendar::class, $calendar);
+        $this->assertInstanceOf(CalendarWithClosedDays::class, $calendar);
+        /** @var CalendarWithClosedDays $calendar */
         $this->assertFalse($calendar->getClosedDays()->isEmpty());
         $this->assertEquals(2, $calendar->getClosedDays()->count());
 
