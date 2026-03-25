@@ -239,5 +239,4 @@ final class ClosedDaysValidatorTest extends TestCase
         // Should skip bounds check gracefully - no errors
         $this->assertEmpty($errors);
     }
-
 }
