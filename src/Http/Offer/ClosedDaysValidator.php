@@ -29,18 +29,8 @@ final class ClosedDaysValidator
 
         $errors = [];
         foreach ($data->openingHoursClosedDays as $index => $closedDayData) {
-            // Skip entries with missing fields - schema validation will report these
-            if (!isset($closedDayData->startDate, $closedDayData->endDate)) {
-                continue;
-            }
-
-            try {
-                $startDate = $this->parseDateTime($closedDayData->startDate);
-                $endDate = $this->parseDateTime($closedDayData->endDate);
-            } catch (\Throwable $e) {
-                // Skip entries with malformed dates or invalid types - schema validation will report these
-                continue;
-            }
+            $startDate = $this->parseDateTime($closedDayData->startDate);
+            $endDate = $this->parseDateTime($closedDayData->endDate);
 
             if ($startDate > $endDate) {
                 $errors[] = new SchemaError(
@@ -51,13 +41,8 @@ final class ClosedDaysValidator
 
             // For periodic calendars, validate that closed days are within the periodic range
             if (isset($data->calendarType) && $data->calendarType === 'periodic' && isset($data->startDate, $data->endDate)) {
-                try {
-                    $periodicStart = $this->parseDateTime($data->startDate);
-                    $periodicEnd = $this->parseDateTime($data->endDate);
-                } catch (\Throwable $e) {
-                    // Skip - calendar dates should be validated by DateRangeValidator
-                    continue;
-                }
+                $periodicStart = $this->parseDateTime($data->startDate);
+                $periodicEnd = $this->parseDateTime($data->endDate);
 
                 if ($startDate < $periodicStart) {
                     $errors[] = new SchemaError(
