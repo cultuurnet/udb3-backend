@@ -8,8 +8,7 @@ Feature: Test the Search API v3 common filters
     And I send and accept "application/json"
 
   Scenario: Search for a single label using the common filter
-    When I create a random labelname of 10 characters
-    And I create a minimal place and save the "id" as "uuid_place"
+    When I create a minimal place and save the "id" as "uuid_place"
     And I publish the place at "/places/%{uuid_place}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I create a random labelname of 10 characters
