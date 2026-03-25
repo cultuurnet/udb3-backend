@@ -69,8 +69,8 @@ Feature: Test opening hours closed days
       ],
       "openingHoursClosedDays": [
         {
-          "startDate": "2024-01-01",
-          "endDate": "2024-01-01",
+          "startDate": "2024-06-15",
+          "endDate": "2024-06-15",
           "description": {
             "nl": "Gesloten met Nieuwjaarsdag",
             "en": "Closed on New Year's Day",
@@ -94,7 +94,7 @@ Feature: Test opening hours closed days
     And I keep the value of the JSON response at "url" as "eventUrl"
     And I get the event at "%{eventUrl}"
     And the JSON response should have "openingHoursClosedDays"
-    And the JSON response at "openingHoursClosedDays/0/startDate" should be "2024-01-01"
+    And the JSON response at "openingHoursClosedDays/0/startDate" should be "2024-06-15"
     And the JSON response at "openingHoursClosedDays/0/description/nl" should be "Gesloten met Nieuwjaarsdag"
     And the JSON response at "openingHoursClosedDays/0/description/en" should be "Closed on New Year's Day"
     And the JSON response at "openingHoursClosedDays/1/startDate" should be "2024-12-25"
@@ -335,8 +335,8 @@ Feature: Test opening hours closed days
       ],
       "openingHoursClosedDays": [
         {
-          "startDate": "2025-01-01",
-          "endDate": "2025-01-01"
+          "startDate": "2026-01-01",
+          "endDate": "2026-01-01"
         }
       ]
     }
