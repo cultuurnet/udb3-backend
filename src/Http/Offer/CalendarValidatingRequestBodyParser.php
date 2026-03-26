@@ -27,7 +27,8 @@ final class CalendarValidatingRequestBodyParser implements RequestBodyParser
                     $errors,
                     (new DateRangeValidator())->validate($data),
                     (new OpeningHoursRangeValidator())->validate($data),
-                    (new OpeningHourChildcareValidator())->validate($data)
+                    (new OpeningHourChildcareValidator())->validate($data),
+                    (new ClosedDaysValidator())->validate($data)
                 );
                 break;
 
@@ -35,7 +36,8 @@ final class CalendarValidatingRequestBodyParser implements RequestBodyParser
                 $errors = array_merge(
                     $errors,
                     (new OpeningHoursRangeValidator())->validate($data),
-                    (new OpeningHourChildcareValidator())->validate($data)
+                    (new OpeningHourChildcareValidator())->validate($data),
+                    (new ClosedDaysValidator())->validate($data)
                 );
                 break;
 

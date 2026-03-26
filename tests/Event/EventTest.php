@@ -38,6 +38,8 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
@@ -2197,6 +2199,91 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(fn (Event $event) => $event->updateFaqs($faqs))
             ->then([new FaqsUpdated($eventId, $faqs)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_periodic_calendar_with_closed_days(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $closedDay = new ClosedDay(
+            DateTimeFactory::fromISO8601('2024-12-25T00:00:00+00:00'),
+            DateTimeFactory::fromISO8601('2024-12-25T23:59:59+00:00')
+        );
+        $calendar = (new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromISO8601('2024-01-01T00:00:00+00:00'),
+                DateTimeFactory::fromISO8601('2024-12-31T23:59:59+00:00')
+            ),
+            new OpeningHours()
+        ))->withClosedDays(new ClosedDays($closedDay));
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([new CalendarUpdated($eventId, $calendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_permanent_calendar_with_closed_days(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $closedDay1 = new ClosedDay(
+            DateTimeFactory::fromISO8601('2024-01-01T00:00:00+00:00'),
+            DateTimeFactory::fromISO8601('2024-01-01T23:59:59+00:00')
+        );
+        $closedDay2 = new ClosedDay(
+            DateTimeFactory::fromISO8601('2024-12-25T00:00:00+00:00'),
+            DateTimeFactory::fromISO8601('2024-12-26T23:59:59+00:00')
+        );
+        $calendar = (new PermanentCalendar(
+            new OpeningHours()
+        ))->withClosedDays(new ClosedDays($closedDay1, $closedDay2));
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([new CalendarUpdated($eventId, $calendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_closed_days_when_updating_calendar_without_them(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $oldClosedDay = new ClosedDay(
+            DateTimeFactory::fromISO8601('2024-12-25T00:00:00+00:00'),
+            DateTimeFactory::fromISO8601('2024-12-25T23:59:59+00:00')
+        );
+        $oldCalendar = (new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromISO8601('2024-01-01T00:00:00+00:00'),
+                DateTimeFactory::fromISO8601('2024-12-31T23:59:59+00:00')
+            ),
+            new OpeningHours()
+        ))->withClosedDays(new ClosedDays($oldClosedDay));
+
+        $newCalendar = new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromISO8601('2024-01-01T00:00:00+00:00'),
+                DateTimeFactory::fromISO8601('2024-12-31T23:59:59+00:00')
+            ),
+            new OpeningHours()
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated($eventId, $oldCalendar),
+            ])
+            ->when(fn (Event $event) => $event->updateCalendar($newCalendar))
+            ->then([new CalendarUpdated($eventId, $newCalendar)]);
     }
 
     protected function getSample(string $file): string

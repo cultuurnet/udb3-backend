@@ -88,4 +88,14 @@ final class DateTimeFactory
             new DateTimeZone('Europe/Brussels')
         );
     }
+
+    public static function fromDateOrISO8601(string $datetime): DateTimeImmutable
+    {
+        $dateOnly = DateTimeImmutable::createFromFormat('Y-m-d|', $datetime, new DateTimeZone('Europe/Brussels'));
+        if ($dateOnly instanceof DateTimeImmutable) {
+            return $dateOnly;
+        }
+
+        return self::fromISO8601($datetime);
+    }
 }
