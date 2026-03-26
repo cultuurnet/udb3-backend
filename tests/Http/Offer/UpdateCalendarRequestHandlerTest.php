@@ -1285,6 +1285,30 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     new SchemaError('/openingHoursClosedDays/0/endDate', 'the end date of a closed day should not be after the calendar end date'),
                 ],
             ],
+            'periodic_closed_day_invalid_date_format' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-01-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursClosedDays' => [
+                        (object) [
+                            'startDate' => '25-12-2024',
+                            'endDate' => '25-12-2024',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursClosedDays/0/startDate', 'The data must match the \'date\' format'),
+                    new SchemaError('/openingHoursClosedDays/0/endDate', 'The data must match the \'date\' format'),
+                ],
+            ],
         ];
     }
 
