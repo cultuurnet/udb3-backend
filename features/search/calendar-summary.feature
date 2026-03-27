@@ -14,7 +14,7 @@ Feature: Test the Search API v3 calendar summary
 
   Scenario: Calendar summaries are not embedded by default
     When I send a GET request to "/offers" with parameters:
-      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | q | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response should not include:
     """
     calendarSummary
