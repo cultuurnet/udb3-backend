@@ -22,31 +22,235 @@ Feature: Test the Search API v3 calendar summary
     When I send a GET request to "/offers" with parameters:
       | q                        | id:(%{uuid_place} OR %{eventId}) |
       | embedCalendarSummaries[] | xs-text                          |
-    Then the JSON response should include:
+    Then the JSON response at "member/0/calendarSummary" should be:
     """
-    calendarSummary
+    {
+      "nl": {
+        "text": {
+          "xs": "Alle dagen open"
+        }
+      },
+      "fr": {
+        "text": {
+          "xs": "Ouvert tous les jours"
+        }
+      },
+      "de": {
+        "text": {
+          "xs": "Jeden Tag geöffnet"
+        }
+      },
+      "en": {
+        "text": {
+          "xs": "Open every day"
+        }
+      }
+    }
+    """
+    Then the JSON response at "member/1/calendarSummary" should be:
+    """
+    {
+      "nl": {
+        "text": {
+          "xs": "Alle dagen open"
+        }
+      },
+      "fr": {
+        "text": {
+          "xs": "Ouvert tous les jours"
+        }
+      },
+      "de": {
+        "text": {
+          "xs": "Jeden Tag geöffnet"
+        }
+      },
+      "en": {
+        "text": {
+          "xs": "Open every day"
+        }
+      }
+    }
+    """
+    When I send a GET request to "/places" with parameters:
+      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | embedCalendarSummaries[] | lg-text                          |
+    Then the JSON response at "member/0/calendarSummary" should be:
+    """
+    {
+      "nl": {
+        "text": {
+          "lg": "Alle dagen open"
+        }
+      },
+      "fr": {
+        "text": {
+          "lg": "Ouvert tous les jours"
+        }
+      },
+      "de": {
+        "text": {
+          "lg": "Jeden Tag geöffnet"
+        }
+      },
+      "en": {
+        "text": {
+          "lg": "Open every day"
+        }
+      }
+    }
+    """
+    When I send a GET request to "/events" with parameters:
+      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | embedCalendarSummaries[] | md-text                          |
+    Then the JSON response at "member/0/calendarSummary" should be:
+    """
+    {
+      "nl": {
+        "text": {
+          "md": "Alle dagen open"
+        }
+      },
+      "fr": {
+        "text": {
+          "md": "Ouvert tous les jours"
+        }
+      },
+      "de": {
+        "text": {
+          "md": "Jeden Tag geöffnet"
+        }
+      },
+      "en": {
+        "text": {
+          "md": "Open every day"
+        }
+      }
+    }
     """
 
   Scenario: I can include various html calendar summaries
     When I send a GET request to "/offers" with parameters:
       | q                        | id:(%{uuid_place} OR %{eventId}) |
       | embedCalendarSummaries[] | xs-html                          |
-    Then the JSON response should include:
+    Then the JSON response at "member/0/calendarSummary" should be:
     """
-    calendarSummary
+    {
+      "nl": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Alle dagen open</p>"
+        }
+      },
+      "fr": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Ouvert tous les jours</p>"
+        }
+      },
+      "de": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Jeden Tag geöffnet</p>"
+        }
+      },
+      "en": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Open every day</p>"
+        }
+      }
+    }
+    """
+    Then the JSON response at "member/1/calendarSummary" should be:
+    """
+    {
+      "nl": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Alle dagen open</p>"
+        }
+      },
+      "fr": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Ouvert tous les jours</p>"
+        }
+      },
+      "de": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Jeden Tag geöffnet</p>"
+        }
+      },
+      "en": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Open every day</p>"
+        }
+      }
+    }
+    """
+    When I send a GET request to "/places" with parameters:
+      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | embedCalendarSummaries[] | lg-html                          |
+    Then the JSON response at "member/0/calendarSummary" should be:
+    """
+    {
+      "nl": {
+        "html": {
+          "lg": "<p class=\"cf-openinghours\">Alle dagen open</p>"
+        }
+      },
+      "fr": {
+        "html": {
+          "lg": "<p class=\"cf-openinghours\">Ouvert tous les jours</p>"
+        }
+      },
+      "de": {
+        "html": {
+          "lg": "<p class=\"cf-openinghours\">Jeden Tag geöffnet</p>"
+        }
+      },
+      "en": {
+        "html": {
+          "lg": "<p class=\"cf-openinghours\">Open every day</p>"
+        }
+      }
+    }
+    """
+    When I send a GET request to "/events" with parameters:
+      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | embedCalendarSummaries[] | md-html                          |
+    Then the JSON response at "member/0/calendarSummary" should be:
+    """
+    {
+      "nl": {
+        "html": {
+          "md": "<p class=\"cf-openinghours\">Alle dagen open</p>"
+        }
+      },
+      "fr": {
+        "html": {
+          "md": "<p class=\"cf-openinghours\">Ouvert tous les jours</p>"
+        }
+      },
+      "de": {
+        "html": {
+          "md": "<p class=\"cf-openinghours\">Jeden Tag geöffnet</p>"
+        }
+      },
+      "en": {
+        "html": {
+          "md": "<p class=\"cf-openinghours\">Open every day</p>"
+        }
+      }
+    }
     """
 
-  Scenario: I can use an unspported format
+  Scenario: I cannot use an unsupported format
     When I am using the Search API v3 base URL
     And I send a GET request to "/offers" with parameters:
       | q                        | id:(%{uuid_place} OR %{eventId}) |
       | embedCalendarSummaries[] | md-pdf                           |
     Then the JSON response should be:
     """
-    {
-      "title": "Not Found",
-      "type": "https:\/\/api.publiq.be\/probs\/url\/not-found",
-      "status": 404,
-      "detail": "Invalid type: pdf. Use one of: text,html"
-    }
-    """
+  {
+  "title": "Not Found",
+  "type": "https:\/\/api.publiq.be\/probs\/url\/not-found",
+  "status": 404,
+  "detail": "Invalid type: pdf. Use one of: text,html"
+  }
+  """
