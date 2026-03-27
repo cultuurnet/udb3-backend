@@ -396,16 +396,30 @@ Feature: Test the Search API v3 calendar summary
     }
     """
 
-  Scenario: I cannot use an unsupported format
+  Scenario: I cannot use an unsupported type
     When I send a GET request to "/offers" with parameters:
       | q                        | id:(%{uuid_place} OR %{eventId}) |
-      | embedCalendarSummaries[] | md-pdf                           |
+      | embedCalendarSummaries[] | md-yaml                           |
     Then the JSON response should be:
     """
     {
       "title": "Not Found",
       "type": "https:\/\/api.publiq.be\/probs\/url\/not-found",
       "status": 404,
-      "detail": "Invalid type: pdf. Use one of: text,html"
+      "detail": "Invalid type: yaml. Use one of: text,html"
+    }
+    """
+
+  Scenario: I cannot use an unsupported format
+    When I send a GET request to "/offers" with parameters:
+      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | embedCalendarSummaries[] | xl-text                           |
+    Then the JSON response should be:
+    """
+    {
+      "title": "Not Found",
+      "type": "https:\/\/api.publiq.be\/probs\/url\/not-found",
+      "status": 404,
+      "detail": "Invalid format: xl. Use one of: xs,sm,md,lg"
     }
     """
