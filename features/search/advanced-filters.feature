@@ -8,8 +8,7 @@ Feature: Test the Search API v3 advanced filters
     And I send and accept "application/json"
 
   Scenario: Search for a single label using an advanced query
-    When I create a random labelname of 10 characters
-    And I create a minimal place and save the "id" as "uuid_place"
+    When I create a minimal place and save the "id" as "uuid_place"
     And I publish the place at "/places/%{uuid_place}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I create a random labelname of 10 characters
@@ -56,8 +55,7 @@ Feature: Test the Search API v3 advanced filters
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for multiple labels using an advanced query
-    When I create a random labelname of 10 characters
-    And I create a minimal place and save the "id" as "uuid_place"
+    When I create a minimal place and save the "id" as "uuid_place"
     And I publish the place at "/places/%{uuid_place}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I create a random labelname of 10 characters
@@ -101,7 +99,7 @@ Feature: Test the Search API v3 advanced filters
 
   Scenario: Search for ages using an advanced query
     When I create a minimal place and save the "url" as "placeUrl"
-    And I create an event from "events/event-with-age-range.json" and save the "id" as "eventId"
+    And I create an event from "events/event-with-age-range-6-to-12.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
@@ -443,43 +441,43 @@ Feature: Test the Search API v3 advanced filters
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | availableTo   | *                                                               |
-      | availableFrom | *                                                               |
+      | availableTo   | *                                                                |
+      | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[2021-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/offers" with parameters:
-      | availableTo   | *                                                               |
-      | availableFrom | *                                                               |
+      | availableTo   | *                                                                |
+      | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | availableTo   | *                                                               |
-      | availableFrom | *                                                               |
+      | availableTo   | *                                                                |
+      | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[2021-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | availableTo   | *                                                               |
-      | availableFrom | *                                                               |
+      | availableTo   | *                                                                |
+      | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | availableTo   | *                                                               |
-      | availableFrom | *                                                               |
+      | availableTo   | *                                                                |
+      | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[* TO 2090-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/offers" with parameters:
-      | availableTo   | *                                                               |
-      | availableFrom | *                                                               |
+      | availableTo   | *                                                                |
+      | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[* TO 2020-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | availableTo   | *                                                               |
-      | availableFrom | *                                                               |
+      | availableTo   | *                                                                |
+      | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[* TO 2090-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | availableTo   | *                                                               |
-      | availableFrom | *                                                               |
+      | availableTo   | *                                                                |
+      | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[* TO 2020-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
 
@@ -498,11 +496,11 @@ Feature: Test the Search API v3 advanced filters
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND description.nl:"%{name}" |
+      | q | id:(%{uuid_place} OR %{eventId}) AND "%{name}" |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND description.nl:"%{name}" |
+      | q | id:(%{uuid_place} OR %{eventId}) AND "%{name}" |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND description.nl:"%{name}" |
+      | q | id:(%{uuid_place} OR %{eventId}) AND "%{name}" |
     Then the JSON response at "totalItems" should be 1
