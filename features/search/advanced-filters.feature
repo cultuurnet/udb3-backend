@@ -504,3 +504,135 @@ Feature: Test the Search API v3 advanced filters
     When I send a GET request to "/events" with parameters:
       | q | id:(%{uuid_place} OR %{eventId}) AND "%{name}" |
     Then the JSON response at "totalItems" should be 1
+
+  Scenario: Search for a location id using an advanced query
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND location.id:%{uuid_place} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND location.id:00000000-0000-0000-0000-000000000000 |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for an organizer id using an advanced query
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create a minimal organizer and save the "url" as "organizerUrl"
+    And I keep the value of the JSON response at "id" as "organizerId"
+    And I create an event from "events/event-minimal-permanent-with-organizer.json" and save the "id" as "eventId"
+    And I publish the event at "/events/%{eventId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND organizer.id:%{organizerId} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND organizer.id:00000000-0000-0000-0000-000000000000 |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for organizer labels using an advanced query
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create a minimal organizer and save the "url" as "organizerUrl"
+    And I create a random labelname of 10 characters
+    And I send a PUT request to "%{organizerUrl}/labels/%{labelname}"
+    And I create an event from "events/event-minimal-permanent-with-organizer.json" and save the "id" as "eventId"
+    And I publish the event at "/events/%{eventId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND organizer.labels:%{labelname} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND organizer.labels:non-existing-label |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for location terms using an advanced query
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND location.terms.id:Yf4aZBfsUEu2NsQqsprngw |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND location.terms.id:0.50.4.0.0 |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND location.terms.label:"Cultuur- of ontmoetingscentrum" |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND location.terms.label:Concert |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for audience type using an advanced query
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId"
+    And I publish the event at "/events/%{eventId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | audienceType | *                                           |
+      | q            | id:%{eventId} AND audienceType:childrenOnly |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | audienceType | *                                       |
+      | q            | id:%{eventId} AND audienceType:everyone |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for attendance mode using an advanced query
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/attendance-mode/event-with-attendance-mode-offline.json" and save the "id" as "eventId"
+    And I publish the event at "/events/%{eventId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND attendanceMode:offline |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND attendanceMode:online |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for workflow status using an advanced query
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND workflowStatus:READY_FOR_VALIDATION |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND workflowStatus:APPROVED |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for duplicate status using an advanced query
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | isDuplicate | * |
+      | q           | id:%{eventId} AND isDuplicate:false |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | isDuplicate | * |
+      | q           | id:%{eventId} AND isDuplicate:true |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for creator using an advanced query
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND creator:edcee0f7-5906-4e92-8551-a7f5d37ba453 |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND creator:00000000-0000-0000-0000-000000000000 |
+    Then the JSON response at "totalItems" should be 0
