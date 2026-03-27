@@ -77,3 +77,64 @@ Feature: Test the Search API v3 boosting
       }
     ]
     """
+
+  Scenario: I can negatively boost search results
+    When I am using the Search API v3 base URL
+    And I send a GET request to "/offers" with parameters:
+      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedeventId}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
+      | sort[score] | desc                                                                                                                                         |
+      | limit       | 2                                                                                                                                            |
+    Then the JSON response at "totalItems" should be 4
+    And show me the unparsed response
+    And the JSON response should include:
+    """
+    %{nonBoostedeventId}
+    """
+    And the JSON response should include:
+    """
+    %{uuid_place}
+    """
+    And the JSON response should not include:
+    """
+    %{boostedEvent}
+    """
+    And the JSON response should not include:
+    """
+    %{boostedPlace}
+    """
+    When I send a GET request to "/places" with parameters:
+      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedeventId}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
+      | sort[score] | desc                                                                                                               |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/place/%{uuid_place}",
+        "@type": "Place"
+
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/place/%{boostedPlace}",
+        "@type": "Place"
+      }
+    ]
+    """
+    When I send a GET request to "/events" with parameters:
+      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedeventId}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
+      | sort[score] | desc                                                                                                               |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/event/%{nonBoostedeventId}",
+        "@type": "Event"
+
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/event/%{boostedEvent}",
+        "@type": "Event"
+      }
+    ]
+    """
