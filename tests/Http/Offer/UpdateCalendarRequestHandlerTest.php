@@ -13,6 +13,8 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
@@ -598,6 +600,137 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     )
                 ),
             ],
+            'periodic_with_single_closed_day' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-01-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+                        ],
+                    ],
+                    'openingHoursClosedDays' => [
+                        (object) [
+                            'startDate' => '2024-12-25',
+                            'endDate' => '2024-12-25',
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    (new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromISO8601('2024-01-01T00:00:00+00:00'),
+                            DateTimeFactory::fromISO8601('2024-12-31T23:59:59+00:00')
+                        ),
+                        new OpeningHours(
+                            new OpeningHour(
+                                new Days(Day::monday(), Day::tuesday(), Day::wednesday(), Day::thursday(), Day::friday()),
+                                new Time(new Hour(9), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0))
+                            )
+                        )
+                    ))->withClosedDays(
+                        new ClosedDays(
+                            new ClosedDay(
+                                DateTimeFactory::fromDateOrISO8601('2024-12-25'),
+                                DateTimeFactory::fromDateOrISO8601('2024-12-25')
+                            )
+                        )
+                    )
+                ),
+            ],
+            'periodic_with_multiple_closed_days' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-01-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursClosedDays' => [
+                        (object) [
+                            'startDate' => '2024-06-15',
+                            'endDate' => '2024-06-15',
+                        ],
+                        (object) [
+                            'startDate' => '2024-12-25',
+                            'endDate' => '2024-12-26',
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    (new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromISO8601('2024-01-01T00:00:00+00:00'),
+                            DateTimeFactory::fromISO8601('2024-12-31T23:59:59+00:00')
+                        ),
+                        new OpeningHours(
+                            new OpeningHour(
+                                new Days(Day::monday()),
+                                new Time(new Hour(9), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0))
+                            )
+                        )
+                    ))->withClosedDays(
+                        new ClosedDays(
+                            new ClosedDay(
+                                DateTimeFactory::fromDateOrISO8601('2024-06-15'),
+                                DateTimeFactory::fromDateOrISO8601('2024-06-15')
+                            ),
+                            new ClosedDay(
+                                DateTimeFactory::fromDateOrISO8601('2024-12-25'),
+                                DateTimeFactory::fromDateOrISO8601('2024-12-26')
+                            )
+                        )
+                    )
+                ),
+            ],
+            'permanent_with_closed_days' => [
+                'data' => (object) [
+                    'calendarType' => 'permanent',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+                        ],
+                    ],
+                    'openingHoursClosedDays' => [
+                        (object) [
+                            'startDate' => '2024-12-25',
+                            'endDate' => '2024-12-25',
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    (new PermanentCalendar(
+                        new OpeningHours(
+                            new OpeningHour(
+                                new Days(Day::monday(), Day::tuesday(), Day::wednesday(), Day::thursday(), Day::friday(), Day::saturday(), Day::sunday()),
+                                new Time(new Hour(9), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0))
+                            )
+                        )
+                    ))->withClosedDays(
+                        new ClosedDays(
+                            new ClosedDay(
+                                DateTimeFactory::fromDateOrISO8601('2024-12-25'),
+                                DateTimeFactory::fromDateOrISO8601('2024-12-25')
+                            )
+                        )
+                    )
+                ),
+            ],
         ];
     }
 
@@ -1081,6 +1214,99 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/subEvent/0/bookingInfo', '\'urlLabel\' property is required by \'url\' property'),
+                ],
+            ],
+            'periodic_closed_day_endDate_before_startDate' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-01-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursClosedDays' => [
+                        (object) [
+                            'startDate' => '2024-12-25',
+                            'endDate' => '2024-12-24',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursClosedDays/0/endDate', 'endDate should not be before startDate'),
+                ],
+            ],
+            'periodic_closed_day_before_calendar_start' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-03-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursClosedDays' => [
+                        (object) [
+                            'startDate' => '2024-01-01',
+                            'endDate' => '2024-01-01',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursClosedDays/0/startDate', 'the start date of a closed day should not be before the calendar start date'),
+                ],
+            ],
+            'periodic_closed_day_after_calendar_end' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-01-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursClosedDays' => [
+                        (object) [
+                            'startDate' => '2026-01-01',
+                            'endDate' => '2026-01-01',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursClosedDays/0/endDate', 'the end date of a closed day should not be after the calendar end date'),
+                ],
+            ],
+            'periodic_closed_day_invalid_date_format' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2024-01-01T00:00:00+00:00',
+                    'endDate' => '2024-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursClosedDays' => [
+                        (object) [
+                            'startDate' => '25-12-2024',
+                            'endDate' => '25-12-2024',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursClosedDays/0/startDate', 'The data must match the \'date\' format'),
+                    new SchemaError('/openingHoursClosedDays/0/endDate', 'The data must match the \'date\' format'),
                 ],
             ],
         ];

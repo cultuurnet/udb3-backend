@@ -7,9 +7,11 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
@@ -57,6 +59,14 @@ final class CalendarNormalizer implements NormalizerInterface
                     $data['openingHours'][] = (new OpeningHourNormalizer())->normalize($openingHour);
                 }
             }
+        }
+
+        if ($calendar instanceof CalendarWithClosedDays && !$calendar->getClosedDays()->isEmpty()) {
+            $closedDayNormalizer = new ClosedDayNormalizer();
+            $data['openingHoursClosedDays'] = array_map(
+                fn (ClosedDay $cd) => $closedDayNormalizer->normalize($cd),
+                $calendar->getClosedDays()->toArray()
+            );
         }
 
         return $data;

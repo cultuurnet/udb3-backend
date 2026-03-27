@@ -9,9 +9,12 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
@@ -107,9 +110,19 @@ final class CalendarSerializer implements Serializable
                 break;
             case CalendarType::periodic():
                 $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), new OpeningHours(...$openingHours));
+                if (!empty($data['openingHoursClosedDays'])) {
+                    $calendar = $calendar->withClosedDays(
+                        (new ClosedDaysDenormalizer())->denormalize($data['openingHoursClosedDays'], ClosedDays::class)
+                    );
+                }
                 break;
             case CalendarType::permanent():
                 $calendar = new PermanentCalendar(new OpeningHours(...$openingHours));
+                if (!empty($data['openingHoursClosedDays'])) {
+                    $calendar = $calendar->withClosedDays(
+                        (new ClosedDaysDenormalizer())->denormalize($data['openingHoursClosedDays'], ClosedDays::class)
+                    );
+                }
                 break;
             default:
                 throw new InvalidArgumentException('Invalid calendar type provided!');
@@ -161,6 +174,16 @@ final class CalendarSerializer implements Serializable
             if (!empty($serializedOpeningHours)) {
                 $calendar['openingHours'] = $serializedOpeningHours;
             }
+        }
+
+        if ($this->calendar instanceof CalendarWithClosedDays && !$this->calendar->getClosedDays()->isEmpty()) {
+            $closedDayNormalizer = new ClosedDayNormalizer();
+            $calendar['openingHoursClosedDays'] = array_map(
+                function (ClosedDay $closedDay) use ($closedDayNormalizer) {
+                    return $closedDayNormalizer->normalize($closedDay);
+                },
+                $this->calendar->getClosedDays()->toArray()
+            );
         }
 
         if ($this->calendar instanceof CalendarWithDateRange) {

@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 class PeriodicCalendarTest extends TestCase
@@ -138,5 +139,65 @@ class PeriodicCalendarTest extends TestCase
         $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
 
         $this->assertEquals($openingHours, $calendar->getOpeningHours());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_empty_closed_days_by_default(): void
+    {
+        $this->assertTrue($this->periodicCalendar->getClosedDays()->isEmpty());
+        $this->assertEquals(0, $this->periodicCalendar->getClosedDays()->count());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_closed_days(): void
+    {
+        $closedDay = new ClosedDay(
+            new DateTimeImmutable('2024-12-25'),
+            new DateTimeImmutable('2024-12-25')
+        );
+        $closedDays = new ClosedDays($closedDay);
+
+        $calendar = $this->periodicCalendar->withClosedDays($closedDays);
+
+        $this->assertFalse($calendar->getClosedDays()->isEmpty());
+        $this->assertEquals(1, $calendar->getClosedDays()->count());
+
+        $array = $calendar->getClosedDays()->toArray();
+        $this->assertSame($closedDay, $array[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_replacing_closed_days(): void
+    {
+        $closedDay1 = new ClosedDay(
+            new DateTimeImmutable('2024-12-25'),
+            new DateTimeImmutable('2024-12-25')
+        );
+        $closedDays1 = new ClosedDays($closedDay1);
+
+        $calendar = $this->periodicCalendar->withClosedDays($closedDays1);
+        $this->assertEquals(1, $calendar->getClosedDays()->count());
+
+        $closedDay2 = new ClosedDay(
+            new DateTimeImmutable('2024-01-01'),
+            new DateTimeImmutable('2024-01-01')
+        );
+        $closedDay3 = new ClosedDay(
+            new DateTimeImmutable('2024-07-21'),
+            new DateTimeImmutable('2024-07-21')
+        );
+        $closedDays2 = new ClosedDays($closedDay2, $closedDay3);
+
+        $updatedCalendar = $calendar->withClosedDays($closedDays2);
+        $this->assertEquals(2, $updatedCalendar->getClosedDays()->count());
+
+        // Original calendar should be unchanged
+        $this->assertEquals(1, $calendar->getClosedDays()->count());
     }
 }

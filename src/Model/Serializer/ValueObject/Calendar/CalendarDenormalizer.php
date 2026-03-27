@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\RemainingCapacityExceedsCapacity;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
@@ -32,12 +33,14 @@ class CalendarDenormalizer implements DenormalizerInterface
     private StatusDenormalizer $statusDenormalizer;
     private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
     private BookingInfoDenormalizer $bookingInfoDenormalizer;
+    private ClosedDaysDenormalizer $closedDaysDenormalizer;
 
     public function __construct()
     {
         $this->statusDenormalizer = new StatusDenormalizer();
         $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
         $this->bookingInfoDenormalizer = new BookingInfoDenormalizer();
+        $this->closedDaysDenormalizer = new ClosedDaysDenormalizer();
     }
 
     /**
@@ -119,11 +122,19 @@ class CalendarDenormalizer implements DenormalizerInterface
             case 'periodic':
                 $dateRange = $this->denormalizeDateRange($data);
                 $calendar = new PeriodicCalendar($dateRange, $openingHours);
+                if (isset($data['openingHoursClosedDays'])) {
+                    $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
+                    $calendar = $calendar->withClosedDays($closedDays);
+                }
                 break;
 
             case 'permanent':
             default:
                 $calendar = new PermanentCalendar($openingHours);
+                if (isset($data['openingHoursClosedDays'])) {
+                    $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
+                    $calendar = $calendar->withClosedDays($closedDays);
+                }
                 break;
         }
 

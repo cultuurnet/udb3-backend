@@ -6,8 +6,11 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
@@ -701,5 +704,85 @@ final class CalendarDenormalizerTest extends TestCase
             $expected,
             $this->denormalizer->denormalize($data, Calendar::class)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_periodic_calendar_with_closed_days(): void
+    {
+        $data = [
+            'calendarType' => 'periodic',
+            'startDate' => '2024-01-01T00:00:00+00:00',
+            'endDate' => '2024-12-31T23:59:59+00:00',
+            'openingHours' => [],
+            'openingHoursClosedDays' => [
+                [
+                    'startDate' => '2024-12-25T00:00:00+00:00',
+                    'endDate' => '2024-12-25T23:59:59+00:00',
+                ],
+            ],
+        ];
+
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PeriodicCalendar::class, $result);
+        $this->assertFalse($result->getClosedDays()->isEmpty());
+        $this->assertCount(1, $result->getClosedDays()->toArray());
+
+        $closedDay = $result->getClosedDays()->toArray()[0];
+        $this->assertInstanceOf(ClosedDay::class, $closedDay);
+        $this->assertEquals(new DateTimeImmutable('2024-12-25T00:00:00+00:00'), $closedDay->getStartDate());
+        $this->assertEquals(new DateTimeImmutable('2024-12-25T23:59:59+00:00'), $closedDay->getEndDate());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_permanent_calendar_with_closed_days(): void
+    {
+        $data = [
+            'calendarType' => 'permanent',
+            'openingHours' => [],
+            'openingHoursClosedDays' => [
+                [
+                    'startDate' => '2024-01-01T00:00:00+00:00',
+                    'endDate' => '2024-01-01T23:59:59+00:00',
+                ],
+                [
+                    'startDate' => '2024-12-25T00:00:00+00:00',
+                    'endDate' => '2024-12-25T23:59:59+00:00',
+                ],
+            ],
+        ];
+
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PermanentCalendar::class, $result);
+        $this->assertFalse($result->getClosedDays()->isEmpty());
+        $this->assertCount(2, $result->getClosedDays()->toArray());
+
+        // Should be sorted by startDate
+        $closedDays = $result->getClosedDays()->toArray();
+        $this->assertEquals(new DateTimeImmutable('2024-01-01T00:00:00+00:00'), $closedDays[0]->getStartDate());
+        $this->assertEquals(new DateTimeImmutable('2024-12-25T00:00:00+00:00'), $closedDays[1]->getStartDate());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_periodic_calendar_without_closed_days(): void
+    {
+        $data = [
+            'calendarType' => 'periodic',
+            'startDate' => '2024-01-01T00:00:00+00:00',
+            'endDate' => '2024-12-31T23:59:59+00:00',
+            'openingHours' => [],
+        ];
+
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PeriodicCalendar::class, $result);
+        $this->assertTrue($result->getClosedDays()->isEmpty());
     }
 }

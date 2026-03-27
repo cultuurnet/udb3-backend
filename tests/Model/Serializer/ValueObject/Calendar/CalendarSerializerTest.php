@@ -5,13 +5,19 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -350,5 +356,129 @@ final class CalendarSerializerTest extends TestCase
             ),
             CalendarSerializer::deserialize($data)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_serialize_a_periodic_calendar_with_closed_days(): void
+    {
+        $closedDay = new ClosedDay(
+            new DateTimeImmutable('2024-12-25'),
+            new DateTimeImmutable('2024-12-25')
+        );
+        $calendar = new PeriodicCalendar(
+            new DateRange(
+                new DateTimeImmutable('2024-01-01T00:00:00+00:00'),
+                new DateTimeImmutable('2024-12-31T23:59:59+00:00')
+            ),
+            new OpeningHours()
+        );
+        $calendar = $calendar->withClosedDays(new ClosedDays($closedDay));
+
+        $serializer = new CalendarSerializer($calendar);
+        $data = $serializer->serialize();
+
+        $this->assertArrayHasKey('openingHoursClosedDays', $data);
+        $this->assertCount(1, $data['openingHoursClosedDays']);
+        $this->assertEquals('2024-12-25', $data['openingHoursClosedDays'][0]['startDate']);
+        $this->assertEquals('2024-12-25', $data['openingHoursClosedDays'][0]['endDate']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_deserialize_a_periodic_calendar_with_closed_days(): void
+    {
+        $data = [
+            'type' => 'periodic',
+            'status' => ['type' => 'Available'],
+            'bookingAvailability' => ['type' => 'Available'],
+            'startDate' => '2024-01-01T00:00:00+00:00',
+            'endDate' => '2024-12-31T23:59:59+00:00',
+            'openingHours' => [],
+            'openingHoursClosedDays' => [
+                [
+                    'startDate' => '2024-12-25',
+                    'endDate' => '2024-12-25',
+                ],
+            ],
+        ];
+
+        $calendar = CalendarSerializer::deserialize($data);
+
+        $this->assertInstanceOf(PeriodicCalendar::class, $calendar);
+        $this->assertInstanceOf(CalendarWithClosedDays::class, $calendar);
+        /** @var CalendarWithClosedDays $calendar */
+        $this->assertFalse($calendar->getClosedDays()->isEmpty());
+        $this->assertEquals(1, $calendar->getClosedDays()->count());
+
+        $closedDays = $calendar->getClosedDays()->toArray();
+        // Date-only format creates DateTimeImmutable, check date part only
+        $this->assertEquals('2024-12-25', $closedDays[0]->getStartDate()->format('Y-m-d'));
+        $this->assertEquals('2024-12-25', $closedDays[0]->getEndDate()->format('Y-m-d'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_serialize_a_permanent_calendar_with_closed_days(): void
+    {
+        $closedDay1 = new ClosedDay(
+            new DateTimeImmutable('2024-01-01'),
+            new DateTimeImmutable('2024-01-01')
+        );
+        $closedDay2 = new ClosedDay(
+            new DateTimeImmutable('2024-12-25'),
+            new DateTimeImmutable('2024-12-25')
+        );
+        $calendar = new PermanentCalendar(new OpeningHours());
+        $calendar = $calendar->withClosedDays(new ClosedDays($closedDay1, $closedDay2));
+
+        $serializer = new CalendarSerializer($calendar);
+        $data = $serializer->serialize();
+
+        $this->assertArrayHasKey('openingHoursClosedDays', $data);
+        $this->assertCount(2, $data['openingHoursClosedDays']);
+        // Should be sorted by startDate
+        $this->assertEquals('2024-01-01', $data['openingHoursClosedDays'][0]['startDate']);
+        $this->assertEquals('2024-12-25', $data['openingHoursClosedDays'][1]['startDate']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_deserialize_a_permanent_calendar_with_closed_days(): void
+    {
+        $data = [
+            'type' => 'permanent',
+            'status' => ['type' => 'Available'],
+            'bookingAvailability' => ['type' => 'Available'],
+            'openingHours' => [],
+            'openingHoursClosedDays' => [
+                [
+                    'startDate' => '2024-12-25',
+                    'endDate' => '2024-12-25',
+                ],
+                [
+                    'startDate' => '2024-01-01',
+                    'endDate' => '2024-01-01',
+                ],
+            ],
+        ];
+
+        $calendar = CalendarSerializer::deserialize($data);
+
+        $this->assertInstanceOf(PermanentCalendar::class, $calendar);
+        $this->assertInstanceOf(CalendarWithClosedDays::class, $calendar);
+        /** @var CalendarWithClosedDays $calendar */
+        $this->assertFalse($calendar->getClosedDays()->isEmpty());
+        $this->assertEquals(2, $calendar->getClosedDays()->count());
+
+        // Should be sorted by startDate
+        $closedDays = $calendar->getClosedDays()->toArray();
+        // Date-only format creates DateTimeImmutable, check date part only
+        $this->assertEquals('2024-01-01', $closedDays[0]->getStartDate()->format('Y-m-d'));
+        $this->assertEquals('2024-12-25', $closedDays[1]->getStartDate()->format('Y-m-d'));
     }
 }
