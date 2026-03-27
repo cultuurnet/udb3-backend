@@ -240,6 +240,160 @@ Feature: Test the Search API v3 calendar summary
     }
     """
 
+  Scenario: I can combine various calendar summaries
+    When I send a GET request to "/offers" with parameters:
+      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | embedCalendarSummaries[] | lg-text                          |
+      | embedCalendarSummaries[] | xs-html                          |
+    Then the JSON response at "member/0/calendarSummary" should be:
+    """
+    {
+      "nl": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Alle dagen open</p>"
+        },
+        "text": {
+          "lg": "Alle dagen open"
+        }
+      },
+      "fr": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Ouvert tous les jours</p>"
+        },
+        "text": {
+          "lg": "Ouvert tous les jours"
+        }
+      },
+      "de": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Jeden Tag geöffnet</p>"
+        },
+        "text": {
+          "lg": "Jeden Tag geöffnet"
+        }
+      },
+      "en": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Open every day</p>"
+        },
+        "text": {
+          "lg": "Open every day"
+        }
+      }
+    }
+    """
+    Then the JSON response at "member/1/calendarSummary" should be:
+    """
+    {
+      "nl": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Alle dagen open</p>"
+        },
+        "text": {
+          "lg": "Alle dagen open"
+        }
+      },
+      "fr": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Ouvert tous les jours</p>"
+        },
+        "text": {
+          "lg": "Ouvert tous les jours"
+        }
+      },
+      "de": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Jeden Tag geöffnet</p>"
+        },
+        "text": {
+          "lg": "Jeden Tag geöffnet"
+        }
+      },
+      "en": {
+        "html": {
+          "xs": "<p class=\"cf-openinghours\">Open every day</p>"
+        },
+        "text": {
+          "lg": "Open every day"
+        }
+      }
+    }
+    """
+    When I send a GET request to "/places" with parameters:
+      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | embedCalendarSummaries[] | xs-text                          |
+      | embedCalendarSummaries[] | lg-html                          |
+    Then the JSON response at "member/0/calendarSummary" should be:
+    """
+    {
+      "nl": {
+        "html": {
+          "lg": "<p class=\"cf-openinghours\">Alle dagen open</p>"
+        },
+        "text": {
+          "xs": "Alle dagen open"
+        }
+      },
+      "fr": {
+        "html": {
+          "lg": "<p class=\"cf-openinghours\">Ouvert tous les jours</p>"
+        },
+        "text": {
+          "xs": "Ouvert tous les jours"
+        }
+      },
+      "de": {
+        "html": {
+          "lg": "<p class=\"cf-openinghours\">Jeden Tag geöffnet</p>"
+        },
+        "text": {
+          "xs": "Jeden Tag geöffnet"
+        }
+      },
+      "en": {
+        "html": {
+          "lg": "<p class=\"cf-openinghours\">Open every day</p>"
+        },
+        "text": {
+          "xs": "Open every day"
+        }
+      }
+    }
+    """
+    When I send a GET request to "/events" with parameters:
+      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | embedCalendarSummaries[] | xs-html                          |
+      | embedCalendarSummaries[] | md-html                          |
+    Then the JSON response at "member/0/calendarSummary" should be:
+    """
+    {
+      "nl": {
+        "html": {
+          "md": "<p class=\"cf-openinghours\">Alle dagen open</p>",
+          "xs": "<p class=\"cf-openinghours\">Alle dagen open</p>"
+        }
+      },
+      "fr": {
+        "html": {
+          "md": "<p class=\"cf-openinghours\">Ouvert tous les jours</p>",
+          "xs": "<p class=\"cf-openinghours\">Ouvert tous les jours</p>"
+        }
+      },
+      "de": {
+        "html": {
+          "md": "<p class=\"cf-openinghours\">Jeden Tag geöffnet</p>",
+          "xs": "<p class=\"cf-openinghours\">Jeden Tag geöffnet</p>"
+        }
+      },
+      "en": {
+        "html": {
+          "md": "<p class=\"cf-openinghours\">Open every day</p>",
+          "xs": "<p class=\"cf-openinghours\">Open every day</p>"
+        }
+      }
+    }
+    """
+
   Scenario: I cannot use an unsupported format
     When I am using the Search API v3 base URL
     And I send a GET request to "/offers" with parameters:
