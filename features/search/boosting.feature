@@ -11,7 +11,7 @@ Feature: Test the Search API v3 boosting
     And I create a minimal place and save the "id" as "boostedPlace"
     And I publish the place at "/places/%{boostedPlace}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "boostedEvent"
-    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "nonBoostedeventId"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "nonBoostedevent"
     And I create a random labelname of 10 characters
     And I send a PUT request to "/events/%{boostedEvent}/labels/%{labelname}"
     And I send a PUT request to "/places/%{boostedPlace}/labels/%{labelname}"
@@ -20,7 +20,7 @@ Feature: Test the Search API v3 boosting
   Scenario: I can positively boost search results
     When I am using the Search API v3 base URL
     And I send a GET request to "/offers" with parameters:
-      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedeventId}) AND ((labels:%{labelname}^10) OR (NOT labels:%{labelname})) |
+      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^10) OR (NOT labels:%{labelname})) |
       | sort[score] | desc                                                                                                                                         |
       | limit       | 2                                                                                                                                            |
     Then the JSON response at "totalItems" should be 4
@@ -35,14 +35,14 @@ Feature: Test the Search API v3 boosting
     """
     And the JSON response should not include:
     """
-    %{nonBoostedeventId}
+    %{nonBoostedevent}
     """
     And the JSON response should not include:
     """
     %{uuid_place}
     """
     When I send a GET request to "/places" with parameters:
-      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedeventId}) AND ((labels:%{labelname}^10) OR (NOT labels:%{labelname})) |
+      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^10) OR (NOT labels:%{labelname})) |
       | sort[score] | desc                                                                                                               |
     Then the JSON response at "totalItems" should be 2
     And the JSON response at "member" should be:
@@ -60,7 +60,7 @@ Feature: Test the Search API v3 boosting
     ]
     """
     When I send a GET request to "/events" with parameters:
-      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedeventId}) AND ((labels:%{labelname}^10) OR (NOT labels:%{labelname})) |
+      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^10) OR (NOT labels:%{labelname})) |
       | sort[score] | desc                                                                                                               |
     Then the JSON response at "totalItems" should be 2
     And the JSON response at "member" should be:
@@ -71,7 +71,7 @@ Feature: Test the Search API v3 boosting
         "@type": "Event"
       },
       {
-        "@id": "http://io.uitdatabank.local:80/event/%{nonBoostedeventId}",
+        "@id": "http://io.uitdatabank.local:80/event/%{nonBoostedevent}",
         "@type": "Event"
 
       }
@@ -81,14 +81,14 @@ Feature: Test the Search API v3 boosting
   Scenario: I can negatively boost search results
     When I am using the Search API v3 base URL
     And I send a GET request to "/offers" with parameters:
-      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedeventId}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
+      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
       | sort[score] | desc                                                                                                                                         |
       | limit       | 2                                                                                                                                            |
     Then the JSON response at "totalItems" should be 4
     And show me the unparsed response
     And the JSON response should include:
     """
-    %{nonBoostedeventId}
+    %{nonBoostedevent}
     """
     And the JSON response should include:
     """
@@ -103,7 +103,7 @@ Feature: Test the Search API v3 boosting
     %{boostedPlace}
     """
     When I send a GET request to "/places" with parameters:
-      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedeventId}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
+      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
       | sort[score] | desc                                                                                                               |
     Then the JSON response at "totalItems" should be 2
     And the JSON response at "member" should be:
@@ -121,14 +121,14 @@ Feature: Test the Search API v3 boosting
     ]
     """
     When I send a GET request to "/events" with parameters:
-      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedeventId}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
+      | q           | id:(%{uuid_place} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
       | sort[score] | desc                                                                                                               |
     Then the JSON response at "totalItems" should be 2
     And the JSON response at "member" should be:
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/event/%{nonBoostedeventId}",
+        "@id": "http://io.uitdatabank.local:80/event/%{nonBoostedevent}",
         "@type": "Event"
 
       },
