@@ -36,6 +36,7 @@ use CultuurNet\UDB3\Event\CommandHandlers\DeleteOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAudienceHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateDeparturePlacesHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateFaqsHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateEducationalDescriptionHandler;
@@ -244,6 +245,7 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe($container->get(UpdateUiTPASPricesHandler::class));
                         $commandBus->subscribe($container->get(CopyEventHandler::class));
                         $commandBus->subscribe($container->get(UpdateFaqsHandler::class));
+                        $commandBus->subscribe($container->get(UpdateDeparturePlacesHandler::class));
 
                         // Organizer command handlers
                         $commandBus->subscribe($container->get(\CultuurNet\UDB3\Organizer\CommandHandler\DeleteOrganizerHandler::class));
