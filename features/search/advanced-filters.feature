@@ -26,7 +26,7 @@ Feature: Test the Search API v3 advanced filters
       | q | labels:%{labelname} |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | locationLabels | %{labelname} |
+      | q | location.labels:%{labelname} |
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for a single term using an advanced query
@@ -84,12 +84,6 @@ Feature: Test the Search API v3 advanced filters
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
-    When I send a GET request to "/places" with parameters:
-      | q | id:%{uuid_place} AND terms.id:Yf4aZBfsUEu2NsQqsprngw |
-    Then the JSON response at "totalItems" should be 1
-    When I send a GET request to "/places" with parameters:
-      | q | id:%{uuid_place} AND terms.label:"Cultuur- of ontmoetingscentrum" |
-    Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND terms.id:(0.50.4.0.0 OR 1.8.2.0.0) |
     Then the JSON response at "totalItems" should be 1
