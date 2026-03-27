@@ -15,6 +15,9 @@ use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
+use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
@@ -2001,6 +2004,43 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $this->assertFalse(property_exists($body, 'faqs'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_and_removes_departure_places(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+            new Url('https://io.uitdatabank.be/places/1b2c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e'),
+        );
+
+        $body = $this->project(
+            new DeparturePlacesUpdated($eventId, $departurePlaces),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertEquals(
+            [
+                'https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f',
+                'https://io.uitdatabank.be/places/1b2c3d4e-5f6a-7b8c-9d0e-1f2a3b4c5d6e',
+            ],
+            $body->departurePlaces
+        );
+
+        $body = $this->project(
+            new DeparturePlacesUpdated($eventId, new Urls()),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertFalse(property_exists($body, 'departurePlaces'));
     }
 
     /**

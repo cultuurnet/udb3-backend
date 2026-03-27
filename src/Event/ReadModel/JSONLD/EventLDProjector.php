@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
+use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
@@ -581,6 +582,20 @@ final class EventLDProjector extends OfferLDProjector implements
             unset($jsonLD->faqs);
         } else {
             $jsonLD->faqs = $faqsArray;
+        }
+
+        return $document->withBody($jsonLD);
+    }
+
+    protected function applyDeparturePlacesUpdated(DeparturePlacesUpdated $departurePlacesUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($departurePlacesUpdated);
+        $jsonLD = $document->getBody();
+
+        if ($departurePlacesUpdated->departurePlaces->isEmpty()) {
+            unset($jsonLD->departurePlaces);
+        } else {
+            $jsonLD->departurePlaces = $departurePlacesUpdated->departurePlaces->toStringArray();
         }
 
         return $document->withBody($jsonLD);
