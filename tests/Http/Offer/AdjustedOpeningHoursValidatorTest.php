@@ -197,7 +197,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
         $errors = $this->validator->validate($data);
 
         $this->assertNotEmpty($errors);
-        $this->assertStringContainsString($expectedErrorPath, $errors[0]->getPath());
+        $this->assertStringContainsString($expectedErrorPath, $errors[0]->getJsonPointer());
         $this->assertStringContainsString($expectedErrorMessage, $errors[0]->getError());
     }
 
