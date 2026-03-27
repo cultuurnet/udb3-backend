@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateDeparturePlacesRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateFaqsRequestHandler;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\LegacyEventRequestBodyParser;
@@ -45,6 +46,7 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             DeleteOnlineUrlRequestHandler::class,
             UpdateAudienceRequestHandler::class,
             UpdateFaqsRequestHandler::class,
+            UpdateDeparturePlacesRequestHandler::class,
             CopyEventRequestHandler::class,
             UpdateMajorInfoRequestHandler::class,
         ];
@@ -147,6 +149,15 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             UpdateFaqsRequestHandler::class,
             fn () => new UpdateFaqsRequestHandler(
                 $container->get('event_command_bus')
+            )
+        );
+
+        $container->addShared(
+            UpdateDeparturePlacesRequestHandler::class,
+            fn () => new UpdateDeparturePlacesRequestHandler(
+                $container->get('event_command_bus'),
+                $container->get('place_jsonld_repository'),
+                $container->get('iri_offer_identifier_factory'),
             )
         );
 
