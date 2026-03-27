@@ -76,7 +76,6 @@ Feature: Test the Search API v3 boosting
       {
         "@id": "http://io.uitdatabank.local:80/event/%{eventIdToBeBoosted}",
         "@type": "Event"
-
       }
     ]
     """
@@ -94,7 +93,6 @@ Feature: Test the Search API v3 boosting
       {
         "@id": "http://io.uitdatabank.local:80/event/%{eventIdToBeBoosted}",
         "@type": "Event"
-
       }
     ]
     """
