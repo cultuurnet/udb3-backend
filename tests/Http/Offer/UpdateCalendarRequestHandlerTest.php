@@ -1309,6 +1309,228 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     new SchemaError('/openingHoursClosedDays/0/endDate', 'The data must match the \'date\' format'),
                 ],
             ],
+            'periodic_adjusted_opening_hours_endDate_before_startDate' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-26',
+                            'endDate' => '2026-12-21',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/0/endDate', 'endDate should not be before startDate'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_before_calendar_start' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-03-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-01-01',
+                            'endDate' => '2026-01-15',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/0/startDate', 'the start date of adjusted opening hours should not be before the calendar start date'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_after_calendar_end' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-11-30T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/0/endDate', 'the end date of adjusted opening hours should not be after the calendar end date'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_overlapping_entries' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                        (object) [
+                            'startDate' => '2026-12-25',
+                            'endDate' => '2026-12-31',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '14:00',
+                                    'closes' => '16:00',
+                                    'dayOfWeek' => ['saturday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/1/startDate', 'adjusted opening hours entries must not overlap'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_missing_required_fields' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/0', 'The required properties (endDate, openingHours) are missing'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_invalid_opening_hours_time' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '25:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/0/openingHours/0/opens', 'The data (string) does not match the regex pattern'),
+                ],
+            ],
+            'permanent_adjusted_opening_hours_overlapping_entries' => [
+                'data' => (object) [
+                    'calendarType' => 'permanent',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                        (object) [
+                            'startDate' => '2026-12-24',
+                            'endDate' => '2026-12-30',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '14:00',
+                                    'closes' => '16:00',
+                                    'dayOfWeek' => ['saturday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/1/startDate', 'adjusted opening hours entries must not overlap'),
+                ],
+            ],
         ];
     }
 
