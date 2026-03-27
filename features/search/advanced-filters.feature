@@ -636,3 +636,41 @@ Feature: Test the Search API v3 advanced filters
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND creator:00000000-0000-0000-0000-000000000000 |
     Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for videos count using an advanced query
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-videos.json" and save the "id" as "eventId"
+    And I publish the event at "/events/%{eventId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND videosCount:[1 TO *] |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND videosCount:0 |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for media objects count using an advanced query
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I set the form data properties to:
+      | description     | logo |
+      | copyrightHolder | me   |
+      | language        | nl   |
+    And I upload "file" from path "images/udb.jpg" to "/images/"
+    And I keep the value of the JSON response at "imageId" as "imageId"
+    And I set the JSON request payload to:
+    """
+    { "mediaObjectId": "%{imageId}" }
+    """
+    And I send a POST request to "/events/%{eventId}/images"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND mediaObjectsCount:[1 TO *] |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND mediaObjectsCount:0 |
+    Then the JSON response at "totalItems" should be 0
