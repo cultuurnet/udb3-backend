@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
+use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\Events\ImageAdded;
@@ -2284,6 +2285,157 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(fn (Event $event) => $event->updateCalendar($newCalendar))
             ->then([new CalendarUpdated($eventId, $newCalendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_departure_places_on_children_only_event(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+            ])
+            ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
+            ->then([new DeparturePlacesUpdated($eventId, $departurePlaces)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_departure_places_when_content_is_unchanged(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new DeparturePlacesUpdated($eventId, $departurePlaces),
+            ])
+            ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_departure_places_with_empty_list(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new DeparturePlacesUpdated($eventId, $departurePlaces),
+            ])
+            ->when(fn (Event $event) => $event->updateDeparturePlaces(new Urls()))
+            ->then([new DeparturePlacesUpdated($eventId, new Urls())]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_setting_departure_places_on_non_children_only_event(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->expectException(IncompatibleAudienceType::class);
+        $this->expectExceptionMessage(
+            'Departure places can only be set on events with audienceType "childrenOnly". Event: ' . $eventId
+        );
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_clearing_departure_places_on_non_children_only_event(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new DeparturePlacesUpdated($eventId, $departurePlaces),
+                new AudienceUpdated($eventId, AudienceType::everyone()),
+            ])
+            ->when(fn (Event $event) => $event->updateDeparturePlaces(new Urls()))
+            ->then([new DeparturePlacesUpdated($eventId, new Urls())]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_departure_places_when_changing_audience_type_away_from_children_only(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new DeparturePlacesUpdated($eventId, $departurePlaces),
+            ])
+            ->when(fn (Event $event) => $event->updateAudience(AudienceType::everyone()))
+            ->then([new AudienceUpdated($eventId, AudienceType::everyone())]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_departure_places_on_event_imported_from_udb2(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                new EventImportedFromUDB2(
+                    $eventId,
+                    $this->getSample('event_without_price.cdbxml.xml'),
+                    self::NS_CDBXML_3_2
+                ),
+                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+            ])
+            ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
+            ->then([new DeparturePlacesUpdated($eventId, $departurePlaces)]);
     }
 
     protected function getSample(string $file): string
