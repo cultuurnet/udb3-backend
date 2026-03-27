@@ -399,7 +399,7 @@ Feature: Test the Search API v3 calendar summary
   Scenario: I cannot use an unsupported type
     When I send a GET request to "/offers" with parameters:
       | q                        | id:(%{uuid_place} OR %{eventId}) |
-      | embedCalendarSummaries[] | md-yaml                           |
+      | embedCalendarSummaries[] | md-yaml                          |
     Then the JSON response should be:
     """
     {
@@ -413,7 +413,7 @@ Feature: Test the Search API v3 calendar summary
   Scenario: I cannot use an unsupported format
     When I send a GET request to "/offers" with parameters:
       | q                        | id:(%{uuid_place} OR %{eventId}) |
-      | embedCalendarSummaries[] | xl-text                           |
+      | embedCalendarSummaries[] | xl-text                          |
     Then the JSON response should be:
     """
     {
