@@ -126,6 +126,10 @@ class CalendarDenormalizer implements DenormalizerInterface
                     $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
                     $calendar = $calendar->withClosedDays($closedDays);
                 }
+                if (isset($data['openingHoursAdjusted'])) {
+                    $adjustedOpeningHours = (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], \CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection::class);
+                    $calendar = $calendar->withAdjustedOpeningHours($adjustedOpeningHours);
+                }
                 break;
 
             case 'permanent':
@@ -134,6 +138,10 @@ class CalendarDenormalizer implements DenormalizerInterface
                 if (isset($data['openingHoursClosedDays'])) {
                     $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
                     $calendar = $calendar->withClosedDays($closedDays);
+                }
+                if (isset($data['openingHoursAdjusted'])) {
+                    $adjustedOpeningHours = (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], \CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection::class);
+                    $calendar = $calendar->withAdjustedOpeningHours($adjustedOpeningHours);
                 }
                 break;
         }

@@ -19,7 +19,8 @@ class OfferUpdate
                 $body->endDate,
                 $body->subEvent,
                 $body->openingHours,
-                $body->openingHoursClosedDays
+                $body->openingHoursClosedDays,
+                $body->openingHoursAdjusted
             );
 
             return (object) array_merge(
