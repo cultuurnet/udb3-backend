@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fb2ce0eb29915cb5298859d900ef74a3",
+    "content-hash": "e40e7c536212fa26f7e5e65d6e1f4d26",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6144,7 +6144,7 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-7089-departurePlaces-on-events",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
@@ -6156,6 +6156,7 @@
                 "reference": "b6289bdc07415127fc9f45dcb76010e127207839",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
