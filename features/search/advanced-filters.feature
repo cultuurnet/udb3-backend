@@ -39,7 +39,7 @@ Feature: Test the Search API v3 advanced filters
       | q | id:%{uuid_place} AND terms.id:Yf4aZBfsUEu2NsQqsprngw |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q          | id:%{uuid_place} AND terms.label:"Cultuur- of ontmoetingscentrum" |
+      | q | id:%{uuid_place} AND terms.label:"Cultuur- of ontmoetingscentrum" |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
       | q       | id:%{eventId} AND terms.id:0.50.4.0.0 |
