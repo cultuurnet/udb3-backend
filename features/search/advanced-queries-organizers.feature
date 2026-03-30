@@ -33,6 +33,12 @@ Feature: Test the Search API v3 advanced queries on organizers
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND labels:(%{labelname} AND nonexistentlabel) |
     Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND labels:(%{labelname} OR nonexistentlabel) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND NOT labels:%{labelname} |
+    Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for country using an advanced query
     Given I create an organizer from "organizers/organizer-with-address.json" and save the "id" as "belgianOrganizerId"
