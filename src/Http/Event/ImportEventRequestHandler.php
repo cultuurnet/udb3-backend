@@ -76,6 +76,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
     private ImageCollectionFactory $imageCollectionFactory;
     private DocumentRepository $locationDocumentRepository;
     private DocumentRepository $organizerDocumentRepository;
+    private DeparturePlacesLimitLogger $departurePlacesLimitLogger;
 
     public function __construct(
         Repository $aggregateRepository,
@@ -86,7 +87,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         CommandBus $commandBus,
         ImageCollectionFactory $imageCollectionFactory,
         DocumentRepository $locationDocumentRepository,
-        DocumentRepository $organizerDocumentRepository
+        DocumentRepository $organizerDocumentRepository,
+        DeparturePlacesLimitLogger $departurePlacesLimitLogger
     ) {
         $this->aggregateRepository = $aggregateRepository;
         $this->uuidGenerator = $uuidGenerator;
@@ -97,6 +99,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $this->imageCollectionFactory = $imageCollectionFactory;
         $this->locationDocumentRepository = $locationDocumentRepository;
         $this->organizerDocumentRepository = $organizerDocumentRepository;
+        $this->departurePlacesLimitLogger = $departurePlacesLimitLogger;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -117,16 +120,21 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             }
         }
 
-        /** @var Event $event */
-        $event = RequestBodyParserFactory::createBaseParser(
-            $this->combinedRequestBodyParser,
-            new IdPropertyPolyfillRequestBodyParser($this->eventIriGenerator, $eventId),
-            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
-            new AttendanceModeValidatingRequestBodyParser(),
-            new AgeRangeValidatingRequestBodyParser(),
-            new OfferValidatingRequestBodyParser(OfferType::event()),
-            new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class)
-        )->parse($request)->getParsedBody();
+        try {
+            /** @var Event $event */
+            $event = RequestBodyParserFactory::createBaseParser(
+                $this->combinedRequestBodyParser,
+                new IdPropertyPolyfillRequestBodyParser($this->eventIriGenerator, $eventId),
+                new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
+                new AttendanceModeValidatingRequestBodyParser(),
+                new AgeRangeValidatingRequestBodyParser(),
+                new OfferValidatingRequestBodyParser(OfferType::event()),
+                new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class)
+            )->parse($request)->getParsedBody();
+        } catch (ApiProblem $apiProblem) {
+            $this->departurePlacesLimitLogger->logIfLimitExceeded($apiProblem, $eventId, '/departurePlaces');
+            throw $apiProblem;
+        }
 
         $title = $event->getTitle()->getOriginalValue();
         $type = $event->getTerms()->getEventType();
