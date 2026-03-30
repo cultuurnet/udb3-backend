@@ -66,6 +66,44 @@ Feature: Test event departure places
     And I send a PUT request to "%{eventUrl}/departurePlaces/"
     Then the response status should be "400"
 
+  Scenario: Reject departure places exceeding the limit via PUT departurePlaces
+    When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    [
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000001",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000002",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000003",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000004",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000005",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000006",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000007",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000008",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000009",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000010",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000011",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000012",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000013",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000014",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000015",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000016",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000017",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000018",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000019",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000020",
+      "%{baseUrl}/place/00000000-0000-0000-0000-000000000021"
+    ]
+    """
+    And I send a PUT request to "%{eventUrl}/departurePlaces/"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors/0/error" should be "Array should have at most 20 items, 21 found"
+
+  Scenario: Reject departure places exceeding the limit via POST event
+    When I set the JSON request payload from "events/departure-places/event-with-21-departure-places.json"
+    And I send a POST request to "/events/"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors/0/error" should be "Array should have at most 20 items, 21 found"
+
   Scenario: Changing audienceType away from childrenOnly keeps departure places
     When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
