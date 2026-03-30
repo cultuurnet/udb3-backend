@@ -1,5 +1,5 @@
 @sapi3
-Feature: Test the Search API v3 common filters
+Feature: Test the Search API v3 url parameters on offers
 
   Background:
     Given I am using the UDB3 base URL
