@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e40e7c536212fa26f7e5e65d6e1f4d26",
+    "content-hash": "a45eb017214b0e472278f98fef8ba7e6",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6144,19 +6144,18 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-main",
+            "version": "dev-III-7089-limit-depaturePlaces-to-20",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "b6289bdc07415127fc9f45dcb76010e127207839"
+                "reference": "f8a102af9fa998577bb8721b6ec1bd22c88d2dd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/b6289bdc07415127fc9f45dcb76010e127207839",
-                "reference": "b6289bdc07415127fc9f45dcb76010e127207839",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/f8a102af9fa998577bb8721b6ec1bd22c88d2dd7",
+                "reference": "f8a102af9fa998577bb8721b6ec1bd22c88d2dd7",
                 "shasum": ""
             },
-            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6171,9 +6170,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7089-departurePlaces-on-events"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7089-limit-depaturePlaces-to-20"
             },
-            "time": "2026-03-27T09:28:46+00:00"
+            "time": "2026-03-30T14:12:19+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
