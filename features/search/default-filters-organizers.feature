@@ -20,7 +20,7 @@ Feature: Test the Search API v3 default filters on organizers
       | q              | id:%{organizerId} |
     Then the JSON response at "totalItems" should be 1
 
-  Scenario: Unlike offers, by default Organizers outside Belgium are shown
+  Scenario: Unlike offers, by default organizers outside Belgium are shown
     Given I create an organizer from "organizers/organizer-in-the-netherlands.json" and save the "id" as "organizerId"
     And I wait for the organizer with url "organizers/%{organizerId}" to be indexed
     And I am using the Search API v3 base URL
