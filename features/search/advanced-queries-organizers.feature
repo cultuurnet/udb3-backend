@@ -67,7 +67,19 @@ Feature: Test the Search API v3 advanced queries on organizers
       | q | id:%{organizerId} AND address.nl.postalCode:1080 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND address.fr.postalCode:1080 |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND address.\*.postalCode:1080 |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND address.nl.postalCode:9000 |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND address.fr.postalCode:9000 |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND address.\*.postalCode:9000 |
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for a single region using an advanced query
