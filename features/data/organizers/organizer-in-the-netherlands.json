@@ -3,7 +3,7 @@
   "name": {
     "nl": "%{name}"
   },
-  "url": "https://www.%{name}.be",
+  "url": "https://www.%{name}.nl",
   "address": {
     "nl": {
       "addressCountry": "NL",
