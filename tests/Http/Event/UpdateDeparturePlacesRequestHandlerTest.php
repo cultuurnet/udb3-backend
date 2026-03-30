@@ -18,7 +18,9 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactory;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 final class UpdateDeparturePlacesRequestHandlerTest extends TestCase
 {
@@ -30,6 +32,7 @@ final class UpdateDeparturePlacesRequestHandlerTest extends TestCase
     private const BASE_URL = 'http://io.uitdatabank.local:80';
 
     private TraceableCommandBus $commandBus;
+    private LoggerInterface&MockObject $logger;
     private UpdateDeparturePlacesRequestHandler $handler;
     private Psr7RequestBuilder $psr7RequestBuilder;
 
@@ -42,12 +45,15 @@ final class UpdateDeparturePlacesRequestHandlerTest extends TestCase
         $this->commandBus = new TraceableCommandBus();
         $this->commandBus->record();
 
+        $this->logger = $this->createMock(LoggerInterface::class);
+
         $this->handler = new UpdateDeparturePlacesRequestHandler(
             $this->commandBus,
             $placeRepository,
             new IriOfferIdentifierFactory(
                 'http://io\\.uitdatabank\\.local\\:80/(?<offertype>[event|place]+)/(?<offerid>[a-zA-Z0-9\\-]+)'
             ),
+            new DeparturePlacesLimitLogger($this->logger),
         );
 
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
@@ -162,6 +168,7 @@ final class UpdateDeparturePlacesRequestHandlerTest extends TestCase
             new IriOfferIdentifierFactory(
                 'http://io\\.uitdatabank\\.local\\:80/(?<offertype>[event|place]+)/(?<offerid>[a-zA-Z0-9\\-]+)'
             ),
+            new DeparturePlacesLimitLogger($this->logger),
         );
 
         $request = $this->psr7RequestBuilder
@@ -214,5 +221,32 @@ final class UpdateDeparturePlacesRequestHandlerTest extends TestCase
                 ),
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_an_error_when_departure_places_limit_is_exceeded(): void
+    {
+        $places = array_map(
+            fn (int $i) => self::BASE_URL . '/place/' . sprintf('00000000-0000-0000-0000-%012d', $i),
+            range(1, 21)
+        );
+
+        $request = $this->psr7RequestBuilder
+            ->withRouteParameter('eventId', self::EVENT_ID)
+            ->withJsonBodyFromArray($places)
+            ->build('PUT');
+
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with($this->stringContains('Departure places limit exceeded for event ' . self::EVENT_ID));
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/', 'Array should have at most 20 items, 21 found')
+            ),
+            fn () => $this->handler->handle($request)
+        );
     }
 }

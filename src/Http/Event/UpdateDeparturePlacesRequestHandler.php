@@ -30,6 +30,7 @@ final class UpdateDeparturePlacesRequestHandler implements RequestHandlerInterfa
         private readonly CommandBus $commandBus,
         private readonly DocumentRepository $placeDocumentRepository,
         private readonly IriOfferIdentifierFactory $iriOfferIdentifierFactory,
+        private readonly DeparturePlacesLimitLogger $departurePlacesLimitLogger,
     ) {
     }
 
@@ -43,8 +44,13 @@ final class UpdateDeparturePlacesRequestHandler implements RequestHandlerInterfa
             new DenormalizingRequestBodyParser(new UrlsDenormalizer(), Urls::class),
         );
 
-        /** @var Urls $departurePlaces */
-        $departurePlaces = $parser->parse($request)->getParsedBody();
+        try {
+            /** @var Urls $departurePlaces */
+            $departurePlaces = $parser->parse($request)->getParsedBody();
+        } catch (ApiProblem $apiProblem) {
+            $this->departurePlacesLimitLogger->logIfLimitExceeded($apiProblem, $eventId, '/');
+            throw $apiProblem;
+        }
 
         $this->guardPlacesExist($departurePlaces);
 

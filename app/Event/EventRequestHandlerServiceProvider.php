@@ -162,6 +162,7 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
                 $container->get('event_command_bus'),
                 $container->get('place_jsonld_repository'),
                 $container->get('iri_offer_identifier_factory'),
+                new DeparturePlacesLimitLogger(LoggerFactory::create($container, LoggerName::forWeb())),
             )
         );
 
