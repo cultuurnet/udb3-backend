@@ -70,6 +70,7 @@ Feature: Test the Search API v3 url parameters on organizers
 
   Scenario: Search for an organizer using the addressCountry filter
     Given I create an organizer from "organizers/organizer-with-address.json" and save the "id" as "belgianOrganizerId"
+    And I wait for the organizer with url "/organizers/%{belgianOrganizerId}" to be indexed
     And I create an organizer from "organizers/organizer-in-the-netherlands.json" and save the "id" as "dutchOrganizerId"
     And I wait for the organizer with url "/organizers/%{dutchOrganizerId}" to be indexed
     And I am using the Search API v3 base URL
