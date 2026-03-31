@@ -8,11 +8,11 @@ Feature: Test the Search API v3 advanced queries on offers
     And I send and accept "application/json"
 
   Scenario: Search for a single label using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I create a random labelname of 10 characters
-    And I send a PUT request to "/places/%{uuid_place}/labels/%{labelname}"
+    And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
     And I send a PUT request to "/events/%{eventId}/labels/%{labelname}"
     And I wait 2 seconds
     And I am using the Search API v3 base URL
@@ -27,7 +27,7 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 1
     When I am using the UDB3 base URL
     And I create a random labelname of 10 characters
-    And I send a PUT request to "/places/%{uuid_place}/labels/%{labelname}"
+    And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
@@ -35,16 +35,16 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for a single term using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/places" with parameters:
-      | q | id:%{uuid_place} AND terms.id:Yf4aZBfsUEu2NsQqsprngw |
+      | q | id:%{placeId} AND terms.id:Yf4aZBfsUEu2NsQqsprngw |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:%{uuid_place} AND terms.label:"Cultuur- of ontmoetingscentrum" |
+      | q | id:%{placeId} AND terms.label:"Cultuur- of ontmoetingscentrum" |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
       | q       | id:%{eventId} AND terms.id:0.50.4.0.0 |
@@ -60,13 +60,13 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for multiple labels using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I create a random labelname of 10 characters
-    And I send a PUT request to "/places/%{uuid_place}/labels/%{labelname}"
+    And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
     And I send a PUT request to "/events/%{eventId}/labels/%{labelname}"
-    And I send a PUT request to "/places/%{uuid_place}/labels/foobar"
+    And I send a PUT request to "/places/%{placeId}/labels/foobar"
     And I send a PUT request to "/events/%{eventId}/labels/foobar"
     And I wait 2 seconds
     And I am using the Search API v3 base URL
@@ -84,8 +84,8 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for multiple terms using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
@@ -124,163 +124,163 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for country using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND address.nl.addressCountry:NL |
+      | q | id:(%{placeId} OR %{eventId}) AND address.nl.addressCountry:NL |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND address.nl.addressCountry:BE |
+      | q | id:(%{placeId} OR %{eventId}) AND address.nl.addressCountry:BE |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND address.nl.addressCountry:NL |
+      | q | id:(%{placeId} OR %{eventId}) AND address.nl.addressCountry:NL |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND address.nl.addressCountry:BE |
+      | q | id:(%{placeId} OR %{eventId}) AND address.nl.addressCountry:BE |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND address.nl.addressCountry:NL |
+      | q | id:(%{placeId} OR %{eventId}) AND address.nl.addressCountry:NL |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND address.nl.addressCountry:BE |
+      | q | id:(%{placeId} OR %{eventId}) AND address.nl.addressCountry:BE |
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for a single region using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND regions:nis-24020 |
+      | q | id:(%{placeId} OR %{eventId}) AND regions:nis-24020 |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND regions:nis-24134 |
+      | q | id:(%{placeId} OR %{eventId}) AND regions:nis-24134 |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND regions:nis-24020 |
+      | q | id:(%{placeId} OR %{eventId}) AND regions:nis-24020 |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND regions:nis-24134 |
+      | q | id:(%{placeId} OR %{eventId}) AND regions:nis-24134 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND regions:nis-24020 |
+      | q | id:(%{placeId} OR %{eventId}) AND regions:nis-24020 |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND regions:nis-24134 |
+      | q | id:(%{placeId} OR %{eventId}) AND regions:nis-24134 |
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for multiple regions using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND regions:(nis-20001 AND nis-24020) |
+      | q | id:(%{placeId} OR %{eventId}) AND regions:(nis-20001 AND nis-24020) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND regions:(nis-20001 AND nis-24134) |
+      | q | id:(%{placeId} OR %{eventId}) AND regions:(nis-20001 AND nis-24134) |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND regions:(nis-20001 AND nis-24020) |
+      | q | id:(%{placeId} OR %{eventId}) AND regions:(nis-20001 AND nis-24020) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND regions:(nis-20001 AND nis-24134) |
+      | q | id:(%{placeId} OR %{eventId}) AND regions:(nis-20001 AND nis-24134) |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND regions:(nis-20001 AND nis-24020) |
+      | q | id:(%{placeId} OR %{eventId}) AND regions:(nis-20001 AND nis-24020) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND regions:(nis-20001 AND nis-24134) |
+      | q | id:(%{placeId} OR %{eventId}) AND regions:(nis-20001 AND nis-24134) |
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for languages using an advanced query
     When I create a random name of 10 characters
-    And I create a place from "places/place-in-german-and-french.json" and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    And I create a place from "places/place-in-german-and-french.json" and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-in-german-and-french.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND languages:nl |
+      | q | id:(%{placeId} OR %{eventId}) AND languages:nl |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND languages:de |
+      | q | id:(%{placeId} OR %{eventId}) AND languages:de |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND languages:(de OR fr) |
+      | q | id:(%{placeId} OR %{eventId}) AND languages:(de OR fr) |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completedLanguages:nl |
+      | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:nl |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completedLanguages:de |
+      | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:de |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completedLanguages:(de OR fr) |
+      | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:(de OR fr) |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND mainLanguage:de |
+      | q | id:(%{placeId} OR %{eventId}) AND mainLanguage:de |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND mainLanguage:fr |
+      | q | id:(%{placeId} OR %{eventId}) AND mainLanguage:fr |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND languages:nl |
+      | q | id:(%{placeId} OR %{eventId}) AND languages:nl |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND languages:de |
+      | q | id:(%{placeId} OR %{eventId}) AND languages:de |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND languages:(de OR fr) |
+      | q | id:(%{placeId} OR %{eventId}) AND languages:(de OR fr) |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completedLanguages:nl |
+      | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:nl |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completedLanguages:de |
+      | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:de |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completedLanguages:(de OR fr) |
+      | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:(de OR fr) |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND mainLanguage:de |
+      | q | id:(%{placeId} OR %{eventId}) AND mainLanguage:de |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND mainLanguage:fr |
+      | q | id:(%{placeId} OR %{eventId}) AND mainLanguage:fr |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND languages:nl |
+      | q | id:(%{placeId} OR %{eventId}) AND languages:nl |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND languages:de |
+      | q | id:(%{placeId} OR %{eventId}) AND languages:de |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND languages:(de OR fr) |
+      | q | id:(%{placeId} OR %{eventId}) AND languages:(de OR fr) |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completedLanguages:nl |
+      | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:nl |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completedLanguages:de |
+      | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:de |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completedLanguages:(de OR fr) |
+      | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:(de OR fr) |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND mainLanguage:de |
+      | q | id:(%{placeId} OR %{eventId}) AND mainLanguage:de |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND mainLanguage:fr |
+      | q | id:(%{placeId} OR %{eventId}) AND mainLanguage:fr |
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for status using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I create a random name of 10 characters
@@ -293,32 +293,32 @@ Feature: Test the Search API v3 advanced queries on offers
       }
     }
     """
-    And I send a PUT request to "/places/%{uuid_place}/status"
+    And I send a PUT request to "/places/%{placeId}/status"
     And I send a PUT request to "/events/%{eventId}/status"
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND status:TemporarilyUnavailable |
+      | q | id:(%{placeId} OR %{eventId}) AND status:TemporarilyUnavailable |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND status:Available |
+      | q | id:(%{placeId} OR %{eventId}) AND status:Available |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND status:TemporarilyUnavailable |
+      | q | id:(%{placeId} OR %{eventId}) AND status:TemporarilyUnavailable |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND status:Available |
+      | q | id:(%{placeId} OR %{eventId}) AND status:Available |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND status:TemporarilyUnavailable |
+      | q | id:(%{placeId} OR %{eventId}) AND status:TemporarilyUnavailable |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND status:Available |
+      | q | id:(%{placeId} OR %{eventId}) AND status:Available |
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for booking availability using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-unavailable-sub-events.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I publish the event at "/events/%{eventId}"
@@ -327,110 +327,110 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/events" with parameters:
       | availableTo   | *                                                                    |
       | availableFrom | *                                                                    |
-      | q             | id:(%{uuid_place} OR %{eventId}) AND bookingAvailability:Unavailable |
+      | q             | id:(%{placeId} OR %{eventId}) AND bookingAvailability:Unavailable |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
       | availableTo   | *                                                                  |
       | availableFrom | *                                                                  |
-      | q             | id:(%{uuid_place} OR %{eventId}) AND bookingAvailability:Available |
+      | q             | id:(%{placeId} OR %{eventId}) AND bookingAvailability:Available |
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for date & time using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I publish the event at "/events/%{eventId}"
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND calendarType:permanent |
+      | q | id:(%{placeId} OR %{eventId}) AND calendarType:permanent |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND calendarType:periodic |
+      | q | id:(%{placeId} OR %{eventId}) AND calendarType:periodic |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND calendarType:permanent |
+      | q | id:(%{placeId} OR %{eventId}) AND calendarType:permanent |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND calendarType:periodic |
+      | q | id:(%{placeId} OR %{eventId}) AND calendarType:periodic |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND calendarType:permanent |
+      | q | id:(%{placeId} OR %{eventId}) AND calendarType:permanent |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND calendarType:periodic |
+      | q | id:(%{placeId} OR %{eventId}) AND calendarType:periodic |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND created:[2024-01-01T00:00:00%2B01:00 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND created:[2024-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND created:[2090-01-01T00:00:00%2B01:00 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND created:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND created:[2024-01-01T00:00:00%2B01:00 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND created:[2024-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND created:[2090-01-01T00:00:00%2B01:00 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND created:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND created:[2024-01-01T00:00:00%2B01:00 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND created:[2024-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND created:[2090-01-01T00:00:00%2B01:00 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND created:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND created:[* TO 2090-01-01T00:00:00%2B01:00] |
+      | q | id:(%{placeId} OR %{eventId}) AND created:[* TO 2090-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND created:[* TO 2024-01-01T00:00:00%2B01:00] |
+      | q | id:(%{placeId} OR %{eventId}) AND created:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND created:[* TO 2090-01-01T00:00:00%2B01:00] |
+      | q | id:(%{placeId} OR %{eventId}) AND created:[* TO 2090-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND created:[* TO 2024-01-01T00:00:00%2B01:00] |
+      | q | id:(%{placeId} OR %{eventId}) AND created:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND created:[* TO 2090-01-01T00:00:00%2B01:00] |
+      | q | id:(%{placeId} OR %{eventId}) AND created:[* TO 2090-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND created:[* TO 2024-01-01T00:00:00%2B01:00] |
+      | q | id:(%{placeId} OR %{eventId}) AND created:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND modified:[2024-01-01T00:00:00%2B01:00 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND modified:[2024-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND modified:[2090-01-01T00:00:00%2B01:00 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND modified:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND modified:[2024-01-01T00:00:00%2B01:00 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND modified:[2024-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND modified:[2090-01-01T00:00:00%2B01:00 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND modified:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND modified:[2024-01-01T00:00:00%2B01:00 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND modified:[2024-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND modified:[2090-01-01T00:00:00%2B01:00 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND modified:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND modified:[* TO 2090-01-01T00:00:00%2B01:00] |
+      | q | id:(%{placeId} OR %{eventId}) AND modified:[* TO 2090-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND modified:[* TO 2024-01-01T00:00:00%2B01:00] |
+      | q | id:(%{placeId} OR %{eventId}) AND modified:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND modified:[* TO 2090-01-01T00:00:00%2B01:00] |
+      | q | id:(%{placeId} OR %{eventId}) AND modified:[* TO 2090-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND modified:[* TO 2024-01-01T00:00:00%2B01:00] |
+      | q | id:(%{placeId} OR %{eventId}) AND modified:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND modified:[* TO 2090-01-01T00:00:00%2B01:00] |
+      | q | id:(%{placeId} OR %{eventId}) AND modified:[* TO 2090-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND modified:[* TO 2024-01-01T00:00:00%2B01:00] |
+      | q | id:(%{placeId} OR %{eventId}) AND modified:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for timestamps using an advanced query
@@ -481,8 +481,8 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for text using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I create a random name of 10 characters
@@ -490,28 +490,28 @@ Feature: Test the Search API v3 advanced queries on offers
     """
     { "description": "%{name}" }
     """
-    And I send a PUT request to "/places/%{uuid_place}/description/nl"
+    And I send a PUT request to "/places/%{placeId}/description/nl"
     And I send a PUT request to "/events/%{eventId}/description/nl"
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND "%{name}" |
+      | q | id:(%{placeId} OR %{eventId}) AND "%{name}" |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND "%{name}" |
+      | q | id:(%{placeId} OR %{eventId}) AND "%{name}" |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND "%{name}" |
+      | q | id:(%{placeId} OR %{eventId}) AND "%{name}" |
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for a location id using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | q | id:%{eventId} AND location.id:%{uuid_place} |
+      | q | id:%{eventId} AND location.id:%{placeId} |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND location.id:00000000-0000-0000-0000-000000000000 |
@@ -549,8 +549,8 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for location terms using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
@@ -596,8 +596,8 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for workflow status using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
@@ -609,8 +609,8 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for duplicate status using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
@@ -624,8 +624,8 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for creator using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
@@ -637,8 +637,8 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for videos count using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-videos.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
     And I wait 2 seconds
@@ -651,8 +651,8 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for media objects count using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I set the form data properties to:
       | description     | logo |
@@ -675,26 +675,26 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for completeness using an advanced query
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completeness:[1 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND completeness:[1 TO *] |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completeness:[90 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND completeness:[90 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completeness:[1 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND completeness:[1 TO *] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completeness:[90 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND completeness:[90 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completeness:[1 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND completeness:[1 TO *] |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) AND completeness:[90 TO *] |
+      | q | id:(%{placeId} OR %{eventId}) AND completeness:[90 TO *] |
     Then the JSON response at "totalItems" should be 0

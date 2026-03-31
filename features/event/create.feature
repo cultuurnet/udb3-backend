@@ -10,7 +10,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-with-unavailable-sub-events.json"
     When I send a POST request to "/events/"
@@ -66,7 +66,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-with-sub-events-capacity.json"
     When I send a POST request to "/events/"
@@ -128,7 +128,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-single-calendar-with-capacity.json"
     When I send a POST request to "/events/"
@@ -172,7 +172,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-single-calendar-with-capacity.json"
     When I send a POST request to "/events/"
@@ -214,7 +214,7 @@ Feature: Test the UDB3 events API
     And I upload "file" from path "images/udb.jpg" to "/images/"
     And the response status should be "201"
     And I keep the value of the JSON response at "imageId" as "image_id"
-    And I create a place from "places/place.json" and save the "placeId" as "uuid_place"
+    And I create a place from "places/place.json" and save the "placeId" as "placeId"
     And I keep the value of the JSON response at "url" as "placeUrl"
     And I create an event from "events/event-with-all-fields.json" and save the "url" as "eventUrl"
     When I update the event at "%{eventUrl}" from "events/event-minimal-permanent-with-null-or-empty-values.json"
@@ -243,7 +243,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-with-workflow-status-ready-for-validation.json"
     When I send a POST request to "/events/"
@@ -261,7 +261,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-with-workflow-status-approved.json"
     When I send a POST request to "/events/"
@@ -279,7 +279,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-with-workflow-status-deleted.json"
     When I send a POST request to "/events/"
@@ -297,7 +297,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-with-contact-point-missing-fields.json"
     When I send a POST request to "/events/"
@@ -324,7 +324,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-with-single-calendar-but-missing-sub-event.json"
     When I send a POST request to "/events/"
@@ -360,7 +360,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-with-multiple-calendar-but-only-one-sub-event.json"
     When I send a POST request to "/events/"
@@ -395,7 +395,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-with-single-calendar-but-multiple-sub-events.json"
     When I send a POST request to "/events/"
@@ -445,7 +445,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-with-unavailable-sub-events.json"
     When I send a POST request to "/imports/events/"
@@ -500,7 +500,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-with-videos.json"
     When I send a POST request to "/imports/events/"
@@ -588,8 +588,8 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
-    And I send a GET request to "/places/%{uuid_place}"
+    And I keep the value of the JSON response at "placeId" as "placeId"
+    And I send a GET request to "/places/%{placeId}"
     And I keep the value of the JSON response at "address/nl/streetAddress" as "street_place"
     And I keep the value of the JSON response at "address/nl/addressLocality" as "city_place"
     And I keep the value of the JSON response at "address/nl/postalCode" as "zip_place"
@@ -634,7 +634,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/legacy/event-with-referenced-location.json"
     When I send a POST request to "/events/"
@@ -652,7 +652,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/legacy/event-with-referenced-location-as-string.json"
     When I send a POST request to "/events/"
@@ -670,7 +670,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/legacy/event-with-address.json"
     When I send a POST request to "/events/"
@@ -687,7 +687,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-referenced-location.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
@@ -737,7 +737,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/legacy/event-with-referenced-location.json"
     When I send a POST request to "/events/"
@@ -789,7 +789,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/legacy/event-missing-calendar.json"
     When I send a POST request to "/events/"
@@ -805,7 +805,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/legacy/event-missing-calendar-type-but-single-time-span.json"
     When I send a POST request to "/events/"
@@ -838,7 +838,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/legacy/event-missing-calendar-type-but-multiple-time-spans.json"
     When I send a POST request to "/events/"
@@ -883,7 +883,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/legacy/event-missing-calendar-type-but-start-date-and-end-date.json"
     When I send a POST request to "/events/"

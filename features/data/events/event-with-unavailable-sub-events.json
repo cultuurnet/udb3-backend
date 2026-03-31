@@ -17,7 +17,7 @@
     "domain": "theme"
   },
   "location": {
-    "@id": "%{baseUrl}/places/%{uuid_place}"
+    "@id": "%{baseUrl}/places/%{placeId}"
   },
   "calendarType": "multiple",
   "startDate": "2018-05-05T18:00:00+01:00",
