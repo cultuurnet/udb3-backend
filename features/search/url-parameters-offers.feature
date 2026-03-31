@@ -248,6 +248,79 @@ Feature: Test the Search API v3 url parameters on offers
       | q         | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
 
+  Scenario: Search for offers using the geo distance filter
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/offers" with parameters:
+      | coordinates | 50.99,4.97                       |
+      | distance    | 5km                              |
+      | q           | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 2
+    When I send a GET request to "/places" with parameters:
+      | coordinates | 50.99,4.97                       |
+      | distance    | 5km                              |
+      | q           | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | coordinates | 50.99,4.97                       |
+      | distance    | 5km                              |
+      | q           | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/offers" with parameters:
+      | coordinates | 51.054,3.717                     |
+      | distance    | 5km                              |
+      | q           | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | coordinates | 51.054,3.717                     |
+      | distance    | 5km                              |
+      | q           | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/places" with parameters:
+      | coordinates | 51.054,3.717                     |
+      | distance    | 5km                              |
+      | q           | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | coordinates | 51.054,3.717                     |
+      | distance    | 5km                              |
+      | q           | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for offers using the geo bounds filter
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/offers" with parameters:
+      | bounds | 50.8,4.7%7C51.2,5.2              |
+      | q      | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 2
+    When I send a GET request to "/places" with parameters:
+      | bounds | 50.8,4.7%7C51.2,5.2                 |
+      | q      | id:(%{uuid_place} OR %{eventId})    |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | bounds | 50.8,4.7%7C51.2,5.2                    |
+      | q      | id:(%{uuid_place} OR %{eventId})       |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/offers" with parameters:
+      | bounds | 52.0,4.0%7C53.0,6.0              |
+      | q      | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/places" with parameters:
+      | bounds | 52.0,4.0%7C53.0,6.0              |
+      | q      | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | bounds | 52.0,4.0%7C53.0,6.0              |
+      | q      | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+
   Scenario: Search for languages using the common filters
     When I create a random name of 10 characters
     And I create a place from "places/place-in-german-and-french.json" and save the "id" as "uuid_place"
@@ -632,3 +705,171 @@ Feature: Test the Search API v3 url parameters on offers
       | text      | %{name}                          |
       | q         | id:(%{uuid_place} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+
+  Scenario: Search for an offer using the id filter
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/offers" with parameters:
+      | id | %{uuid_place} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/offers" with parameters:
+      | id | %{eventId} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/places" with parameters:
+      | id | %{uuid_place} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/places" with parameters:
+      | id | ffffffff-ffff-ffff-ffff-ffffffffffff |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | id | %{eventId} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | id | ffffffff-ffff-ffff-ffff-ffffffffffff |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for offers using the postalCode filter
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/offers" with parameters:
+      | postalCode | 3271                             |
+      | q          | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 2
+    When I send a GET request to "/offers" with parameters:
+      | postalCode | 9000                             |
+      | q          | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/places" with parameters:
+      | postalCode | 3271                             |
+      | q          | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/places" with parameters:
+      | postalCode | 9000                             |
+      | q          | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | postalCode | 3271                             |
+      | q          | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | postalCode | 9000                             |
+      | q          | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for offers using the creator filter
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/offers" with parameters:
+      | creator | edcee0f7-5906-4e92-8551-a7f5d37ba453 |
+      | q       | id:(%{uuid_place} OR %{eventId})     |
+    Then the JSON response at "totalItems" should be 2
+    When I send a GET request to "/offers" with parameters:
+      | creator | ffffffff-ffff-ffff-ffff-ffffffffffff |
+      | q       | id:(%{uuid_place} OR %{eventId})     |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/places" with parameters:
+      | creator | edcee0f7-5906-4e92-8551-a7f5d37ba453 |
+      | q       | id:(%{uuid_place} OR %{eventId})     |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/places" with parameters:
+      | creator | ffffffff-ffff-ffff-ffff-ffffffffffff |
+      | q       | id:(%{uuid_place} OR %{eventId})     |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | creator | edcee0f7-5906-4e92-8551-a7f5d37ba453 |
+      | q       | id:(%{uuid_place} OR %{eventId})     |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | creator | ffffffff-ffff-ffff-ffff-ffffffffffff |
+      | q       | id:(%{uuid_place} OR %{eventId})     |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for offers using the audienceType filter
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId"
+    And I publish the event at "/events/%{eventId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | audienceType | childrenOnly  |
+      | q            | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | audienceType | everyone      |
+      | q            | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for offers using the attendanceMode filter
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/attendance-mode/event-with-attendance-mode-offline.json" and save the "id" as "offLineEventId"
+    And I create an event from "events/attendance-mode/event-with-attendance-mode-mixed.json" and save the "id" as "mixedEventId"
+    And I create an event from "events/attendance-mode/event-with-attendance-mode-online.json" and save the "id" as "onlineEventId"
+    And I publish the event at "/events/%{offLineEventId}"
+    And I publish the event at "/events/%{mixedEventId}"
+    And I publish the event at "/events/%{onlineEventId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | attendanceMode | offline                                                       |
+      | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | attendanceMode | offline                                  |
+      | q              | id:(%{mixedEventId} OR %{onlineEventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | attendanceMode | mixed                                                         |
+      | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | attendanceMode | mixed                                                         |
+      | q              | id:(%{offLineEventId} OR %{onlineEventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | attendanceMode | online                                                         |
+      | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | attendanceMode | online                                                         |
+      | q              | id:(%{offLineEventId} OR %{mixedEventId}) |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for offers using the hasMediaObjects filter
+    When I create a minimal place and save the "id" as "uuid_place"
+    And I publish the place at "/places/%{uuid_place}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/offers" with parameters:
+      | hasMediaObjects | false                            |
+      | q               | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 2
+    When I send a GET request to "/offers" with parameters:
+      | hasMediaObjects | true                             |
+      | q               | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/places" with parameters:
+      | hasMediaObjects | false                            |
+      | q               | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/places" with parameters:
+      | hasMediaObjects | true                             |
+      | q               | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | hasMediaObjects | false                            |
+      | q               | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | hasMediaObjects | true                             |
+      | q               | id:(%{uuid_place} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
