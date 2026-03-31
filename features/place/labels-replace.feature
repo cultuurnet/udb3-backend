@@ -60,11 +60,11 @@ Feature: Test replace labels for places endpoint
   Scenario: Replace initial manual labels as normal user on a place
     Given I am authorized as JWT provider user "validator_diest"
     And I create a minimal place and save the "url" as "placeUrl"
-    And I create a random name of 10 characters and keep it as "label1"
+    And I create a random string of 10 characters and keep it as "label1"
     And I send a PUT request to "%{placeUrl}/labels/%{label1}"
-    And I create a random name of 10 characters and keep it as "label2"
+    And I create a random string of 10 characters and keep it as "label2"
     And I send a PUT request to "%{placeUrl}/labels/%{label2}"
-    And I create a random name of 10 characters and keep it as "label3"
+    And I create a random string of 10 characters and keep it as "label3"
     And I send a PUT request to "%{placeUrl}/labels/%{label3}"
     When I set the JSON request payload to:
     """
@@ -96,7 +96,7 @@ Feature: Test replace labels for places endpoint
     And I am authorized as JWT provider user "centraal_beheerder"
     And I send a PUT request to "%{placeUrl}/labels/private-visible"
     And I send a PUT request to "%{placeUrl}/labels/private-invisible"
-    And I create a random name of 10 characters and keep it as "label1"
+    And I create a random string of 10 characters and keep it as "label1"
     And I send a PUT request to "%{placeUrl}/labels/%{label1}"
     And I am authorized as JWT provider user "validator_diest"
     When I set the JSON request payload to:
@@ -124,11 +124,11 @@ Feature: Test replace labels for places endpoint
   Scenario: Remove all initial manual labels as normal user on a place
     Given I am authorized as JWT provider user "validator_diest"
     And I create a minimal place and save the "url" as "placeUrl"
-    And I create a random name of 10 characters and keep it as "label1"
+    And I create a random string of 10 characters and keep it as "label1"
     And I send a PUT request to "%{placeUrl}/labels/%{label1}"
-    And I create a random name of 10 characters and keep it as "label2"
+    And I create a random string of 10 characters and keep it as "label2"
     And I send a PUT request to "%{placeUrl}/labels/%{label2}"
-    And I create a random name of 10 characters and keep it as "label3"
+    And I create a random string of 10 characters and keep it as "label3"
     And I send a PUT request to "%{placeUrl}/labels/%{label3}"
     When I set the JSON request payload to:
     """

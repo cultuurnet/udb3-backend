@@ -27,21 +27,21 @@ Feature: Test the Search API v3 advanced queries on organizers
   Scenario: Search for a description using an advanced query
     Given I create a random name of 10 characters
     And I create a minimal organizer and save the "id" as "organizerId"
-    And I create a random name of 10 characters
+    And I create a random string of 20 characters and keep it as "description"
     And I set the JSON request payload to:
     """
-    { "description": "%{name}" }
+    { "description": "%{description}" }
     """
     And I send a PUT request to "/organizers/%{organizerId}/description/nl"
     And I wait 2 seconds
     When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND description.\*:%{name} |
+      | q | id:%{organizerId} AND description.\*:%{description} |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND description.\*:nonexistingdescription |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND description.nl:%{name} |
+      | q | id:%{organizerId} AND description.nl:%{description} |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND description.nl:nonexistingorganizer |
@@ -50,18 +50,18 @@ Feature: Test the Search API v3 advanced queries on organizers
   Scenario: Search for text using an advanced query
     Given I create a random name of 10 characters
     And I create a minimal organizer and save the "id" as "organizerId"
-    And I create a random name of 10 characters
+    And I create a random string of 20 characters and keep it as "freeText"
     And I set the JSON request payload to:
     """
-    { "description": "%{name}" }
+    { "description": "%{freeText}" }
     """
     And I send a PUT request to "/organizers/%{organizerId}/description/nl"
     And I wait 2 seconds
     When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND %{name} |
+      | q | id:%{organizerId} AND %{freeText} |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND nonexistingorganizer |
+      | q | id:%{organizerId} AND nonexistingfreetext |
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for a name using an advanced query
