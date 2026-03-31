@@ -227,7 +227,7 @@ Feature: Test status updates
     And I send a POST request to "/events/%{uuid_event}/copies"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "new_uuid_event"
+    And I keep the value of the JSON response at "eventId" as "newEventId"
 
     When I set the JSON request payload to:
       """
@@ -240,10 +240,10 @@ Feature: Test status updates
            }
         ]
       """
-    And I send a PATCH request to "/events/%{new_uuid_event}/sub-events"
+    And I send a PATCH request to "/events/%{newEventId}/sub-events"
     Then the response status should be "204"
 
-    When I send a GET request to "/events/%{new_uuid_event}"
+    When I send a GET request to "/events/%{newEventId}"
     Then the response status should be "200"
     And the response body should be valid JSON
     And the JSON response at "subEvent/0/status/type" should be "Unavailable"
@@ -296,7 +296,7 @@ Feature: Test status updates
     And I send a POST request to "/events/%{uuid_event}/copies"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "new_uuid_event"
+    And I keep the value of the JSON response at "eventId" as "newEventId"
 
     When I set the JSON request payload to:
       """
@@ -312,10 +312,10 @@ Feature: Test status updates
            }
         ]
       """
-    And I send a PATCH request to "/events/%{new_uuid_event}/sub-events"
+    And I send a PATCH request to "/events/%{newEventId}/sub-events"
     Then the response status should be "204"
 
-    When I send a GET request to "/events/%{new_uuid_event}"
+    When I send a GET request to "/events/%{newEventId}"
     Then the response status should be "200"
     And the response body should be valid JSON
     And the JSON response at "calendarType" should be "single"
