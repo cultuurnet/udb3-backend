@@ -86,12 +86,12 @@ Feature: Test the UDB3 roles API
 
   Scenario: Add a label to a role by uuid
     Given I create a label with a random name of 10 characters
-    And I keep the value of the JSON response at "uuid" as "label_uuid"
+    And I keep the value of the JSON response at "uuid" as "labelId"
 
-    When I send a PUT request to "/roles/%{roleId}/labels/%{label_uuid}"
+    When I send a PUT request to "/roles/%{roleId}/labels/%{labelId}"
 
     Then the response status should be "204"
-    And I send a GET request to "/labels/%{label_uuid}"
+    And I send a GET request to "/labels/%{labelId}"
     And I keep the JSON response as "label_json"
     And I send a GET request to "/roles/%{roleId}/labels/"
     Then the JSON response should include:
@@ -101,8 +101,8 @@ Feature: Test the UDB3 roles API
 
   Scenario: Add a label to a role by name
     Given I create a label with a random name of 10 characters
-    And I keep the value of the JSON response at "uuid" as "label_uuid"
-    And I send a GET request to "/labels/%{label_uuid}"
+    And I keep the value of the JSON response at "uuid" as "labelId"
+    And I send a GET request to "/labels/%{labelId}"
     And I keep the JSON response as "label_json"
     And I keep the value of the JSON response at "name" as "label_name"
 
@@ -117,12 +117,12 @@ Feature: Test the UDB3 roles API
 
   Scenario: Delete a label from role by uuid
     Given I create a label with a random name of 10 characters
-    And I keep the value of the JSON response at "uuid" as "label_uuid"
-    And I send a GET request to "/labels/%{label_uuid}"
+    And I keep the value of the JSON response at "uuid" as "labelId"
+    And I send a GET request to "/labels/%{labelId}"
     And I keep the JSON response as "label_json"
-    And I send a PUT request to "/roles/%{roleId}/labels/%{label_uuid}"
+    And I send a PUT request to "/roles/%{roleId}/labels/%{labelId}"
 
-    When I send a DELETE request to "/roles/%{roleId}/labels/%{label_uuid}"
+    When I send a DELETE request to "/roles/%{roleId}/labels/%{labelId}"
 
     Then the response status should be "204"
     And I send a GET request to "/roles/%{roleId}/labels/"
@@ -133,8 +133,8 @@ Feature: Test the UDB3 roles API
 
     Scenario: Delete a label from role by name
       Given I create a label with a random name of 10 characters
-      And I keep the value of the JSON response at "uuid" as "label_uuid"
-      And I send a GET request to "/labels/%{label_uuid}"
+      And I keep the value of the JSON response at "uuid" as "labelId"
+      And I send a GET request to "/labels/%{labelId}"
       And I keep the JSON response as "label_json"
       And I keep the value of the JSON response at "name" as "label_name"
       And I send a PUT request to "/roles/%{roleId}/labels/%{label_name}"
