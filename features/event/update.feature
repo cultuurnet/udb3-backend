@@ -11,7 +11,7 @@ Feature: Test the UDB3 events API
       | copyrightHolder | publiq vzw  |
       | language        | nl          |
     When I upload "file" from path "images/publiq.png" to "/images/"
-    And I keep the value of the JSON response at "imageId" as "image_id"
+    And I keep the value of the JSON response at "imageId" as "imageId"
 
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
@@ -802,17 +802,17 @@ Feature: Test the UDB3 events API
     And the JSON response at "mediaObject" should be:
     """
     [{
-      "@id": "%{baseUrl}/images/%{image_id}",
+      "@id": "%{baseUrl}/images/%{imageId}",
       "@type": "schema:ImageObject",
-      "id": "%{image_id}",
-      "contentUrl": "https://images.uitdatabank.dev/%{image_id}.png",
-      "thumbnailUrl": "https://images.uitdatabank.dev/%{image_id}.png",
+      "id": "%{imageId}",
+      "contentUrl": "https://images.uitdatabank.dev/%{imageId}.png",
+      "thumbnailUrl": "https://images.uitdatabank.dev/%{imageId}.png",
       "copyrightHolder": "publiq vzw",
       "description": "A nice logo",
       "inLanguage": "en"
     }]
     """
-    And the JSON response at "image" should be "https://images.uitdatabank.dev/%{image_id}.png"
+    And the JSON response at "image" should be "https://images.uitdatabank.dev/%{imageId}.png"
     And the JSON response at "videos" should be:
     """
     [{

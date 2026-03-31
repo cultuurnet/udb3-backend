@@ -104,9 +104,9 @@
   },
   "mediaObject": [
     {
-      "@id": "%{baseUrl}/images/%{image_id}",
-      "contentUrl": "https://images.uitdatabank.dev/%{image_id}.png",
-      "thumbnailUrl": "https://images.uitdatabank.dev/%{image_id}.png",
+      "@id": "%{baseUrl}/images/%{imageId}",
+      "contentUrl": "https://images.uitdatabank.dev/%{imageId}.png",
+      "thumbnailUrl": "https://images.uitdatabank.dev/%{imageId}.png",
       "copyrightHolder": "publiq vzw",
       "description": "A nice logo",
       "inLanguage": "en"

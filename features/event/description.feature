@@ -11,7 +11,7 @@ Feature: Test event description property
       | copyrightHolder | publiq vzw  |
       | language        | nl          |
     When I upload "file" from path "images/publiq.png" to "/images/"
-    And I keep the value of the JSON response at "imageId" as "image_id"
+    And I keep the value of the JSON response at "imageId" as "imageId"
 
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
