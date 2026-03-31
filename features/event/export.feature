@@ -13,7 +13,7 @@ Feature: Test the UDB3 events export API
     And I send a POST request to "/events/"
     And the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent_export"
+    And I keep the value of the JSON response at "eventId" as "eventId"
 
   @mails
   Scenario: Export events to OOXML - basic
