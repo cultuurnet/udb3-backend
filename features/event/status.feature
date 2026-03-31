@@ -189,7 +189,7 @@ Feature: Test status updates
     When I set the JSON request payload from "events/legacy/event-with-referenced-location.json"
     And I send a POST request to "/events/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "eventId" as "uuid_event"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     And the response body should be valid JSON
 
     When I set the JSON request payload to:
@@ -209,7 +209,7 @@ Feature: Test status updates
          }
       ]
       """
-    And I send a PATCH request to "/events/%{uuid_event}/sub-events"
+    And I send a PATCH request to "/events/%{eventId}/sub-events"
     Then the response status should be "204"
 
     When I set the JSON request payload to:
@@ -224,7 +224,7 @@ Feature: Test status updates
           ]
         }
         """
-    And I send a POST request to "/events/%{uuid_event}/copies"
+    And I send a POST request to "/events/%{eventId}/copies"
     Then the response status should be "201"
     And the response body should be valid JSON
     And I keep the value of the JSON response at "eventId" as "newEventId"
@@ -258,7 +258,7 @@ Feature: Test status updates
     When I set the JSON request payload from "events/legacy/event-with-referenced-location.json"
     And I send a POST request to "/events/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "eventId" as "uuid_event"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     And the response body should be valid JSON
 
     When I set the JSON request payload to:
@@ -278,7 +278,7 @@ Feature: Test status updates
          }
       ]
       """
-    And I send a PATCH request to "/events/%{uuid_event}/sub-events"
+    And I send a PATCH request to "/events/%{eventId}/sub-events"
     Then the response status should be "204"
 
     When I set the JSON request payload to:
@@ -293,7 +293,7 @@ Feature: Test status updates
           ]
         }
         """
-    And I send a POST request to "/events/%{uuid_event}/copies"
+    And I send a POST request to "/events/%{eventId}/copies"
     Then the response status should be "201"
     And the response body should be valid JSON
     And I keep the value of the JSON response at "eventId" as "newEventId"

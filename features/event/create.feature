@@ -691,7 +691,7 @@ Feature: Test the UDB3 events API
     And I set the JSON request payload from "events/legacy/event-with-referenced-location.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "eventId" as "uuid_event"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     And the response body should be valid JSON
 
     Given I set the JSON request payload to:
@@ -706,7 +706,7 @@ Feature: Test the UDB3 events API
           ]
         }
         """
-    When I send a POST request to "/events/%{uuid_event}/copies"
+    When I send a POST request to "/events/%{eventId}/copies"
     Then the response status should be "201"
     And the response body should be valid JSON
     And I keep the value of the JSON response at "eventId" as "newEventId"
@@ -742,7 +742,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "events/legacy/event-with-referenced-location.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "eventId" as "uuid_event"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     And the response body should be valid JSON
 
     Given I set the JSON request payload to:
@@ -757,7 +757,7 @@ Feature: Test the UDB3 events API
           ]
         }
         """
-    When I send a POST request to "/events/%{uuid_event}/copies"
+    When I send a POST request to "/events/%{eventId}/copies"
     Then the response status should be "201"
     And the response body should be valid JSON
     And I keep the value of the JSON response at "eventId" as "newEventId"
