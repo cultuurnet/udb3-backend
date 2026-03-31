@@ -205,7 +205,7 @@ Feature: Test the Search API v3 advanced queries on organizers
       | q | id:%{organizerId} AND modified:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
 
-  Scenario: Search for main language using an advanced query
+  Scenario: Search for languages using an advanced query
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I am using the Search API v3 base URL
@@ -214,4 +214,27 @@ Feature: Test the Search API v3 advanced queries on organizers
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND mainLanguage:fr |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND languages:nl |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND languages:fr |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND completedLanguages:nl |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND completedLanguages:fr |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for completeness using an advanced query
+    Given I create a minimal organizer and save the "id" as "organizerId"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND completeness:[1 TO *] |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND completeness:[90 TO *] |
     Then the JSON response at "totalItems" should be 0
