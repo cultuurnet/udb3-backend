@@ -7,6 +7,80 @@ Feature: Test the Search API v3 advanced queries on organizers
     And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
 
+  Scenario: Search for a name using an advanced query
+    Given I create a random name of 10 characters
+    And I create an organizer from "organizers/organizer-minimal.json" and save the "id" as "organizerId"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND name.\*:%{name} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND name.\*:nonexistingorganizer |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND name.nl:%{name} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND name.nl:nonexistingorganizer |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for a description using an advanced query
+    Given I create a random name of 10 characters
+    And I create a minimal organizer and save the "id" as "organizerId"
+    And I create a random name of 10 characters
+    And I set the JSON request payload to:
+    """
+    { "description": "%{name}" }
+    """
+    And I send a PUT request to "/organizers/%{organizerId}/description/nl"
+    And I wait 2 seconds
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND description.\*:%{name} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND description.\*:nonexistingorganizer |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND description.nl:%{name} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND description.nl:nonexistingorganizer |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for text using an advanced query
+    Given I create a random name of 10 characters
+    And I create a minimal organizer and save the "id" as "organizerId"
+    And I create a random name of 10 characters
+    And I set the JSON request payload to:
+    """
+    { "description": "%{name}" }
+    """
+    And I send a PUT request to "/organizers/%{organizerId}/description/nl"
+    And I wait 2 seconds
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND %{name} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND nonexistingorganizer |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for a name using an advanced query
+    Given I create a random name of 10 characters
+    And I create an organizer from "organizers/organizer-minimal.json" and save the "id" as "organizerId"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND name.\*:%{name} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND name.\*:nonexistingorganizer |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND name.nl:%{name} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/organizers" with parameters:
+      | q | id:%{organizerId} AND name.nl:nonexistingorganizer |
+    Then the JSON response at "totalItems" should be 0
+
   Scenario: Search for a single label using an advanced query
     Given I create a random labelname of 10 characters
     And I create a minimal organizer and save the "id" as "organizerId"
