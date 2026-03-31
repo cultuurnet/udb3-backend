@@ -988,7 +988,7 @@ Feature: Test the UDB3 events API
     Then the response status should be "201"
     And I keep the value of the JSON response at "url" as "placeUrl"
 
-    Given I create a random name of 100 characters and keep it as "name"
+    Given I create a random name of 100 characters
     Given I set the JSON request payload from "events/event-minimal-permanent-with-variable-name.json"
     When I send a POST request to "/events/"
     Then the response status should be "400"
