@@ -38,7 +38,7 @@ Feature: Test the Search API v3 advanced queries on organizers
       | q | id:%{organizerId} AND description.\*:%{name} |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND description.\*:nonexistingorganizer |
+      | q | id:%{organizerId} AND description.\*:nonexistingdescription |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND description.nl:%{name} |
