@@ -341,20 +341,20 @@ Feature: Test the UDB3 events API
           """
     And I send a POST request to "/events/%{eventId}/videos/"
     Then the response status should be "200"
-    And I keep the value of the JSON response at "videoId" as "uuid_video"
+    And I keep the value of the JSON response at "videoId" as "videoId"
     When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "videos" should be:
           """
           [{
-            "id": "%{uuid_video}",
+            "id": "%{videoId}",
             "url": "https://www.youtube.com/watch?v=sddser23",
             "embedUrl": "https://www.youtube.com/embed/sddser23",
             "language": "nl",
             "copyrightHolder": "I am the owner"
           }]
           """
-    Given I send a DELETE request to "/events/%{eventId}/videos/%{uuid_video}"
+    Given I send a DELETE request to "/events/%{eventId}/videos/%{videoId}"
     Then the response status should be "204"
     When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
@@ -379,13 +379,13 @@ Feature: Test the UDB3 events API
           """
     And I send a POST request to "/events/%{eventId}/videos/"
     Then the response status should be "200"
-    And I keep the value of the JSON response at "videoId" as "uuid_video"
+    And I keep the value of the JSON response at "videoId" as "videoId"
     When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "videos" should be:
           """
           [{
-            "id": "%{uuid_video}",
+            "id": "%{videoId}",
             "url": "https://www.youtube.com/watch?v=sddser23",
             "embedUrl": "https://www.youtube.com/embed/sddser23",
             "language": "nl",
@@ -395,7 +395,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload to:
           """
           [{
-            "id": "%{uuid_video}",
+            "id": "%{videoId}",
             "url": "https://www.youtube.com/watch?v=123"
           }]
           """
@@ -406,7 +406,7 @@ Feature: Test the UDB3 events API
     And the JSON response at "videos" should be:
             """
             [{
-              "id": "%{uuid_video}",
+              "id": "%{videoId}",
               "url": "https://www.youtube.com/watch?v=123",
               "embedUrl": "https://www.youtube.com/embed/123",
               "language": "nl",
@@ -416,7 +416,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload to:
           """
           [{
-            "id": "%{uuid_video}",
+            "id": "%{videoId}",
             "copyrightHolder": "publiq",
             "language": "fr"
           }]
@@ -428,7 +428,7 @@ Feature: Test the UDB3 events API
     And the JSON response at "videos" should be:
             """
             [{
-              "id": "%{uuid_video}",
+              "id": "%{videoId}",
               "url": "https://www.youtube.com/watch?v=123",
               "embedUrl": "https://www.youtube.com/embed/123",
               "language": "fr",
