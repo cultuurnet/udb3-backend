@@ -16,7 +16,7 @@
     }
   ],
   "location": {
-    "@id": "%{baseUrl}/places/%{uuid_place}"
+    "@id": "%{baseUrl}/places/%{placeId}"
   },
   "calendarType": "multiple",
   "subEvent": [

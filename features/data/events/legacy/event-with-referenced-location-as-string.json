@@ -11,7 +11,7 @@
     "label": "Jazz en blues",
     "domain": "theme"
   },
-  "location": "%{uuid_place}",
+  "location": "%{placeId}",
   "calendar": {
     "calendarType": "multiple",
     "timeSpans": [

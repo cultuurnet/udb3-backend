@@ -409,11 +409,11 @@ Feature: Test organizer labels property
   Scenario: Replace initial manual labels as normal user on an organizer
     Given I am authorized as JWT provider user "validator_diest"
     And I create a minimal organizer and save the "url" as "organizerUrl"
-    And I create a random name of 10 characters and keep it as "label1"
+    And I create a random string of 10 characters and keep it as "label1"
     And I send a PUT request to "%{organizerUrl}/labels/%{label1}"
-    And I create a random name of 10 characters and keep it as "label2"
+    And I create a random string of 10 characters and keep it as "label2"
     And I send a PUT request to "%{organizerUrl}/labels/%{label2}"
-    And I create a random name of 10 characters and keep it as "label3"
+    And I create a random string of 10 characters and keep it as "label3"
     And I send a PUT request to "%{organizerUrl}/labels/%{label3}"
     When I set the JSON request payload to:
     """
@@ -445,7 +445,7 @@ Feature: Test organizer labels property
     And I am authorized as JWT provider user "centraal_beheerder"
     And I send a PUT request to "%{organizerUrl}/labels/private-visible"
     And I send a PUT request to "%{organizerUrl}/labels/private-invisible"
-    And I create a random name of 10 characters and keep it as "label1"
+    And I create a random string of 10 characters and keep it as "label1"
     And I send a PUT request to "%{organizerUrl}/labels/%{label1}"
     And I am authorized as JWT provider user "validator_diest"
     When I set the JSON request payload to:
@@ -473,11 +473,11 @@ Feature: Test organizer labels property
   Scenario: Remove all initial manual labels as normal user on an organizer
     Given I am authorized as JWT provider user "validator_diest"
     And I create a minimal organizer and save the "url" as "organizerUrl"
-    And I create a random name of 10 characters and keep it as "label1"
+    And I create a random string of 10 characters and keep it as "label1"
     And I send a PUT request to "%{organizerUrl}/labels/%{label1}"
-    And I create a random name of 10 characters and keep it as "label2"
+    And I create a random string of 10 characters and keep it as "label2"
     And I send a PUT request to "%{organizerUrl}/labels/%{label2}"
-    And I create a random name of 10 characters and keep it as "label3"
+    And I create a random string of 10 characters and keep it as "label3"
     And I send a PUT request to "%{organizerUrl}/labels/%{label3}"
     When I set the JSON request payload to:
     """
