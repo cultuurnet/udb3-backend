@@ -6,15 +6,15 @@ Feature: Test the Search API v3 calendar summary
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
-    When I create a minimal place and save the "id" as "uuid_place"
-    And I publish the place at "/places/%{uuid_place}"
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
 
   Scenario: Calendar summaries are not embedded by default
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{uuid_place} OR %{eventId}) |
+      | q | id:(%{placeId} OR %{eventId}) |
     Then the JSON response should not include:
     """
     calendarSummary
@@ -22,7 +22,7 @@ Feature: Test the Search API v3 calendar summary
 
   Scenario: I can include various text calendar summaries
     When I send a GET request to "/offers" with parameters:
-      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | q                        | id:(%{placeId} OR %{eventId}) |
       | embedCalendarSummaries[] | xs-text                          |
     Then the JSON response at "member/0/calendarSummary" should be:
     """
@@ -75,7 +75,7 @@ Feature: Test the Search API v3 calendar summary
     }
     """
     When I send a GET request to "/places" with parameters:
-      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | q                        | id:(%{placeId} OR %{eventId}) |
       | embedCalendarSummaries[] | lg-text                          |
     Then the JSON response at "member/0/calendarSummary" should be:
     """
@@ -103,7 +103,7 @@ Feature: Test the Search API v3 calendar summary
     }
     """
     When I send a GET request to "/events" with parameters:
-      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | q                        | id:(%{placeId} OR %{eventId}) |
       | embedCalendarSummaries[] | md-text                          |
     Then the JSON response at "member/0/calendarSummary" should be:
     """
@@ -133,7 +133,7 @@ Feature: Test the Search API v3 calendar summary
 
   Scenario: I can include various html calendar summaries
     When I send a GET request to "/offers" with parameters:
-      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | q                        | id:(%{placeId} OR %{eventId}) |
       | embedCalendarSummaries[] | xs-html                          |
     Then the JSON response at "member/0/calendarSummary" should be:
     """
@@ -186,7 +186,7 @@ Feature: Test the Search API v3 calendar summary
     }
     """
     When I send a GET request to "/places" with parameters:
-      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | q                        | id:(%{placeId} OR %{eventId}) |
       | embedCalendarSummaries[] | lg-html                          |
     Then the JSON response at "member/0/calendarSummary" should be:
     """
@@ -214,7 +214,7 @@ Feature: Test the Search API v3 calendar summary
     }
     """
     When I send a GET request to "/events" with parameters:
-      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | q                        | id:(%{placeId} OR %{eventId}) |
       | embedCalendarSummaries[] | md-html                          |
     Then the JSON response at "member/0/calendarSummary" should be:
     """
@@ -244,7 +244,7 @@ Feature: Test the Search API v3 calendar summary
 
   Scenario: I can combine various calendar summaries
     When I send a GET request to "/offers" with parameters:
-      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | q                        | id:(%{placeId} OR %{eventId}) |
       | embedCalendarSummaries[] | lg-text                          |
       | embedCalendarSummaries[] | xs-html                          |
     Then the JSON response at "member/0/calendarSummary" should be:
@@ -322,7 +322,7 @@ Feature: Test the Search API v3 calendar summary
     }
     """
     When I send a GET request to "/places" with parameters:
-      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | q                        | id:(%{placeId} OR %{eventId}) |
       | embedCalendarSummaries[] | xs-text                          |
       | embedCalendarSummaries[] | lg-html                          |
     Then the JSON response at "member/0/calendarSummary" should be:
@@ -363,7 +363,7 @@ Feature: Test the Search API v3 calendar summary
     }
     """
     When I send a GET request to "/events" with parameters:
-      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | q                        | id:(%{placeId} OR %{eventId}) |
       | embedCalendarSummaries[] | xs-html                          |
       | embedCalendarSummaries[] | md-html                          |
     Then the JSON response at "member/0/calendarSummary" should be:
@@ -398,7 +398,7 @@ Feature: Test the Search API v3 calendar summary
 
   Scenario: I cannot use an unsupported type
     When I send a GET request to "/offers" with parameters:
-      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | q                        | id:(%{placeId} OR %{eventId}) |
       | embedCalendarSummaries[] | md-yaml                          |
     Then the JSON response should be:
     """
@@ -412,7 +412,7 @@ Feature: Test the Search API v3 calendar summary
 
   Scenario: I cannot use an unsupported format
     When I send a GET request to "/offers" with parameters:
-      | q                        | id:(%{uuid_place} OR %{eventId}) |
+      | q                        | id:(%{placeId} OR %{eventId}) |
       | embedCalendarSummaries[] | xl-text                          |
     Then the JSON response should be:
     """
