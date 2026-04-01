@@ -104,7 +104,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | termIds | 0.50.4.0.0    |
+      | termIds | 0.50.4.0.0 |
     Then the JSON response should be:
     """
     {
@@ -121,7 +121,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | termLabels | Concert   |
+      | termLabels | Concert |
     Then the JSON response should be:
     """
     {
@@ -138,7 +138,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | termIds | 1.8.2.0.0     |
+      | termIds | 1.8.2.0.0 |
     Then the JSON response should be:
     """
     {
@@ -155,7 +155,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | termLabels | Jazz en blues     |
+      | termLabels | Jazz en blues |
     Then the JSON response should be:
     """
     {
@@ -179,8 +179,8 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | termIds[] | 0.50.4.0.0    |
-      | termIds[] | 1.8.2.0.0     |
+      | termIds[] | 0.50.4.0.0 |
+      | termIds[] | 1.8.2.0.0  |
     Then the JSON response should be:
     """
     {
@@ -221,7 +221,7 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | minAge | 18            |
+      | minAge | 18 |
     Then the JSON response should be:
     """
     {
@@ -233,7 +233,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | minAge | 7             |
+      | minAge | 7 |
     Then the JSON response should be:
     """
     {
@@ -250,7 +250,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | maxAge | 5            |
+      | maxAge | 5 |
     Then the JSON response should be:
     """
     {
@@ -262,7 +262,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | maxAge | 11            |
+      | maxAge | 11 |
     Then the JSON response should be:
     """
     {
@@ -279,7 +279,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | allAges | true          |
+      | allAges | true |
     Then the JSON response should be:
     """
     {
@@ -291,7 +291,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | allAges | false         |
+      | allAges | false |
     Then the JSON response should be:
     """
     {
@@ -308,7 +308,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | allAges | *             |
+      | allAges | * |
     Then the JSON response should be:
     """
     {
@@ -384,7 +384,7 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | regions   | nis-24020 |
+      | regions | nis-24020 |
     Then the JSON response should be:
     """
     {
@@ -408,10 +408,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/offers" with parameters:
-      | regions   | nis-24134 |
+      | regions | nis-24134 |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/places" with parameters:
-      | regions   | nis-24020 |
+      | regions | nis-24020 |
     Then the JSON response should be:
     """
     {
@@ -423,10 +423,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | regions   | nis-24134                        |
+      | regions | nis-24134 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | regions   | nis-24020                        |
+      | regions | nis-24020 |
     Then the JSON response should be:
     """
     {
@@ -438,7 +438,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | regions   | nis-24134                        |
+      | regions | nis-24134 |
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for multiple regions using the common filters
@@ -448,8 +448,8 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24020                        |
+      | regions[] | nis-20001 |
+      | regions[] | nis-24020 |
     Then the JSON response should be:
     """
     {
@@ -461,12 +461,12 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/offers" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24134                        |
+      | regions[] | nis-20001 |
+      | regions[] | nis-24134 |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/places" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24020                        |
+      | regions[] | nis-20001 |
+      | regions[] | nis-24020 |
     Then the JSON response should be:
     """
     {
@@ -478,12 +478,12 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24134                        |
+      | regions[] | nis-20001 |
+      | regions[] | nis-24134 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24020                        |
+      | regions[] | nis-20001 |
+      | regions[] | nis-24020 |
     Then the JSON response should be:
     """
     {
@@ -495,8 +495,8 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24134                        |
+      | regions[] | nis-20001 |
+      | regions[] | nis-24134 |
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for offers using the geo distance filter
@@ -506,20 +506,20 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | coordinates | 50.99,4.97                       |
-      | distance    | 5km                              |
+      | coordinates | 50.99,4.97 |
+      | distance    | 5km        |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/places" with parameters:
-      | coordinates | 50.99,4.97                       |
-      | distance    | 5km                              |
+      | coordinates | 50.99,4.97 |
+      | distance    | 5km        |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | coordinates | 50.99,4.97                       |
-      | distance    | 5km                              |
+      | coordinates | 50.99,4.97 |
+      | distance    | 5km        |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/offers" with parameters:
-      | coordinates | 51.054,3.717                     |
-      | distance    | 5km                              |
+      | coordinates | 51.054,3.717 |
+      | distance    | 5km          |
     Then the JSON response should be:
     """
     {
@@ -531,8 +531,8 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | coordinates | 51.054,3.717                     |
-      | distance    | 5km                              |
+      | coordinates | 51.054,3.717 |
+      | distance    | 5km          |
     Then the JSON response should be:
     """
     {
@@ -544,8 +544,8 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | coordinates | 51.054,3.717                     |
-      | distance    | 5km                              |
+      | coordinates | 51.054,3.717 |
+      | distance    | 5km          |
     Then the JSON response should be:
     """
     {
@@ -557,8 +557,8 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | coordinates | 51.054,3.717                     |
-      | distance    | 5km                              |
+      | coordinates | 51.054,3.717 |
+      | distance    | 5km          |
     Then the JSON response should be:
     """
     {
@@ -577,16 +577,16 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | bounds | 50.8,4.7%7C51.2,5.2              |
+      | bounds | 50.8,4.7%7C51.2,5.2 |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/places" with parameters:
-      | bounds | 50.8,4.7%7C51.2,5.2                 |
+      | bounds | 50.8,4.7%7C51.2,5.2 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | bounds | 50.8,4.7%7C51.2,5.2                    |
+      | bounds | 50.8,4.7%7C51.2,5.2 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/offers" with parameters:
-      | bounds | 52.0,4.0%7C53.0,6.0              |
+      | bounds | 52.0,4.0%7C53.0,6.0 |
     Then the JSON response should be:
     """
     {
@@ -598,7 +598,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | bounds | 52.0,4.0%7C53.0,6.0              |
+      | bounds | 52.0,4.0%7C53.0,6.0 |
     Then the JSON response should be:
     """
     {
@@ -610,7 +610,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | bounds | 52.0,4.0%7C53.0,6.0              |
+      | bounds | 52.0,4.0%7C53.0,6.0 |
     Then the JSON response should be:
     """
     {
@@ -630,7 +630,7 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | languages[] | nl                               |
+      | languages[] | nl |
     Then the JSON response should be:
     """
     {
@@ -642,14 +642,14 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/offers" with parameters:
-      | languages[] | de                               |
+      | languages[] | de |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | languages[] | de                               |
-      | languages[] | fr                               |
+      | languages[] | de |
+      | languages[] | fr |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | completedLanguages[] | nl                               |
+      | completedLanguages[] | nl |
     Then the JSON response should be:
     """
     {
@@ -661,17 +661,17 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/offers" with parameters:
-      | completedLanguages[] | de                               |
+      | completedLanguages[] | de |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | completedLanguages[] | de                               |
-      | completedLanguages[] | fr                               |
+      | completedLanguages[] | de |
+      | completedLanguages[] | fr |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | mainLanguage | de                               |
+      | mainLanguage | de |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | mainLanguage | fr                               |
+      | mainLanguage | fr |
     Then the JSON response should be:
     """
     {
@@ -683,7 +683,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | languages[] | nl                               |
+      | languages[] | nl |
     Then the JSON response should be:
     """
     {
@@ -695,14 +695,14 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | languages[] | de                               |
+      | languages[] | de |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | languages[] | de                               |
-      | languages[] | fr                               |
+      | languages[] | de |
+      | languages[] | fr |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | completedLanguages[] | nl                               |
+      | completedLanguages[] | nl |
     Then the JSON response should be:
     """
     {
@@ -714,17 +714,17 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | completedLanguages[] | de                               |
+      | completedLanguages[] | de |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | completedLanguages[] | de                               |
-      | completedLanguages[] | fr                               |
+      | completedLanguages[] | de |
+      | completedLanguages[] | fr |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | mainLanguage | de                               |
+      | mainLanguage | de |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | mainLanguage | fr                               |
+      | mainLanguage | fr |
     Then the JSON response should be:
     """
     {
@@ -736,7 +736,7 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | languages[] | nl                               |
+      | languages[] | nl |
     Then the JSON response should be:
     """
     {
@@ -748,14 +748,14 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | languages[] | de                               |
+      | languages[] | de |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | languages[] | de                               |
-      | languages[] | fr                               |
+      | languages[] | de |
+      | languages[] | fr |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | completedLanguages[] | nl                               |
+      | completedLanguages[] | nl |
     Then the JSON response should be:
     """
     {
@@ -767,17 +767,17 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | completedLanguages[] | de                               |
+      | completedLanguages[] | de |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | completedLanguages[] | de                               |
-      | completedLanguages[] | fr                               |
+      | completedLanguages[] | de |
+      | completedLanguages[] | fr |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | mainLanguage | de                               |
+      | mainLanguage | de |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | mainLanguage | fr                               |
+      | mainLanguage | fr |
     Then the JSON response should be:
     """
     {
@@ -809,10 +809,10 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | status | TemporarilyUnavailable           |
+      | status | TemporarilyUnavailable |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | status | Available                        |
+      | status | Available |
     Then the JSON response should be:
     """
     {
@@ -824,10 +824,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | status | TemporarilyUnavailable           |
+      | status | TemporarilyUnavailable |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | status | Available                        |
+      | status | Available |
     Then the JSON response should be:
     """
     {
@@ -839,10 +839,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | status | TemporarilyUnavailable           |
+      | status | TemporarilyUnavailable |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | status | Available                        |
+      | status | Available |
     Then the JSON response should be:
     """
     {
@@ -863,14 +863,14 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | bookingAvailability | Unavailable                      |
-      | availableTo         | *                                |
-      | availableFrom       | *                                |
+      | bookingAvailability | Unavailable |
+      | availableTo         | *           |
+      | availableFrom       | *           |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | bookingAvailability | Available                        |
-      | availableTo         | *                                |
-      | availableFrom       | *                                |
+      | bookingAvailability | Available |
+      | availableTo         | *         |
+      | availableFrom       | *         |
     Then the JSON response should be:
     """
     {
@@ -890,10 +890,10 @@ Feature: Test the Search API v3 url parameters on offers
     And I publish the event at "/events/%{eventId}"
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | calendarType | permanent                        |
+      | calendarType | permanent |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | calendarType | periodic                         |
+      | calendarType | periodic |
     Then the JSON response should be:
     """
     {
@@ -905,10 +905,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | calendarType | permanent                        |
+      | calendarType | permanent |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | calendarType | periodic                         |
+      | calendarType | periodic |
     Then the JSON response should be:
     """
     {
@@ -920,10 +920,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | calendarType | permanent                        |
+      | calendarType | permanent |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | calendarType | periodic                         |
+      | calendarType | periodic |
     Then the JSON response should be:
     """
     {
@@ -935,10 +935,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/offers" with parameters:
-      | createdFrom | 2024-01-01T00:00:00%2B01:00      |
+      | createdFrom | 2024-01-01T00:00:00%2B01:00 |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | createdFrom | 2090-01-01T00:00:00%2B01:00      |
+      | createdFrom | 2090-01-01T00:00:00%2B01:00 |
     Then the JSON response should be:
     """
     {
@@ -950,10 +950,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | createdFrom | 2024-01-01T00:00:00%2B01:00      |
+      | createdFrom | 2024-01-01T00:00:00%2B01:00 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | createdFrom | 2090-01-01T00:00:00%2B01:00      |
+      | createdFrom | 2090-01-01T00:00:00%2B01:00 |
     Then the JSON response should be:
     """
     {
@@ -965,10 +965,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | createdFrom | 2024-01-01T00:00:00%2B01:00      |
+      | createdFrom | 2024-01-01T00:00:00%2B01:00 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | createdFrom | 2090-01-01T00:00:00%2B01:00      |
+      | createdFrom | 2090-01-01T00:00:00%2B01:00 |
     Then the JSON response should be:
     """
     {
@@ -980,10 +980,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/offers" with parameters:
-      | createdTo | 2090-01-01T00:00:00%2B01:00      |
+      | createdTo | 2090-01-01T00:00:00%2B01:00 |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | createdTo | 2024-01-01T00:00:00%2B01:00      |
+      | createdTo | 2024-01-01T00:00:00%2B01:00 |
     Then the JSON response should be:
     """
     {
@@ -995,10 +995,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | createdTo | 2090-01-01T00:00:00%2B01:00      |
+      | createdTo | 2090-01-01T00:00:00%2B01:00 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | createdTo | 2024-01-01T00:00:00%2B01:00      |
+      | createdTo | 2024-01-01T00:00:00%2B01:00 |
     Then the JSON response should be:
     """
     {
@@ -1010,10 +1010,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | createdTo | 2090-01-01T00:00:00%2B01:00      |
+      | createdTo | 2090-01-01T00:00:00%2B01:00 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | createdTo | 2024-01-01T00:00:00%2B01:00      |
+      | createdTo | 2024-01-01T00:00:00%2B01:00 |
     Then the JSON response should be:
     """
     {
@@ -1025,10 +1025,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/offers" with parameters:
-      | modifiedFrom | 2024-01-01T00:00:00%2B01:00     |
+      | modifiedFrom | 2024-01-01T00:00:00%2B01:00 |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | modifiedFrom | 2090-01-01T00:00:00%2B01:00      |
+      | modifiedFrom | 2090-01-01T00:00:00%2B01:00 |
     Then the JSON response should be:
     """
     {
@@ -1040,10 +1040,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | modifiedFrom | 2024-01-01T00:00:00%2B01:00      |
+      | modifiedFrom | 2024-01-01T00:00:00%2B01:00 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | modifiedFrom | 2090-01-01T00:00:00%2B01:00      |
+      | modifiedFrom | 2090-01-01T00:00:00%2B01:00 |
     Then the JSON response should be:
     """
     {
@@ -1055,10 +1055,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | modifiedFrom | 2024-01-01T00:00:00%2B01:00      |
+      | modifiedFrom | 2024-01-01T00:00:00%2B01:00 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | modifiedFrom | 2090-01-01T00:00:00%2B01:00      |
+      | modifiedFrom | 2090-01-01T00:00:00%2B01:00 |
     Then the JSON response should be:
     """
     {
@@ -1070,10 +1070,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/offers" with parameters:
-      | modifiedTo | 2090-01-01T00:00:00%2B01:00      |
+      | modifiedTo | 2090-01-01T00:00:00%2B01:00 |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | modifiedTo | 2024-01-01T00:00:00%2B01:00      |
+      | modifiedTo | 2024-01-01T00:00:00%2B01:00 |
     Then the JSON response should be:
     """
     {
@@ -1085,10 +1085,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | modifiedTo | 2090-01-01T00:00:00%2B01:00      |
+      | modifiedTo | 2090-01-01T00:00:00%2B01:00 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | modifiedTo | 2024-01-01T00:00:00%2B01:00      |
+      | modifiedTo | 2024-01-01T00:00:00%2B01:00 |
     Then the JSON response should be:
     """
     {
@@ -1100,10 +1100,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | modifiedTo | 2090-01-01T00:00:00%2B01:00      |
+      | modifiedTo | 2090-01-01T00:00:00%2B01:00 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | modifiedTo | 2024-01-01T00:00:00%2B01:00      |
+      | modifiedTo | 2024-01-01T00:00:00%2B01:00 |
     Then the JSON response should be:
     """
     {
@@ -1213,13 +1213,13 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | text      | %{name}                          |
+      | text | %{name} |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/places" with parameters:
-      | text      | %{name}                          |
+      | text | %{name} |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | text      | %{name}                          |
+      | text | %{name} |
     Then the JSON response at "totalItems" should be 1
 
   Scenario: Search for an offer using the id filter
@@ -1272,10 +1272,10 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | postalCode | 3271                             |
+      | postalCode | 3271 |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | postalCode | 9000                             |
+      | postalCode | 9000 |
     Then the JSON response should be:
     """
     {
@@ -1287,10 +1287,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | postalCode | 3271                             |
+      | postalCode | 3271 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | postalCode | 9000                             |
+      | postalCode | 9000 |
     Then the JSON response should be:
     """
     {
@@ -1302,10 +1302,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | postalCode | 3271                             |
+      | postalCode | 3271 |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | postalCode | 9000                             |
+      | postalCode | 9000 |
     Then the JSON response should be:
     """
     {
@@ -1376,10 +1376,10 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | audienceType | childrenOnly  |
+      | audienceType | childrenOnly |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | audienceType | everyone      |
+      | audienceType | everyone |
     Then the JSON response should be:
     """
     {
@@ -1460,10 +1460,10 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | hasMediaObjects | false                            |
+      | hasMediaObjects | false |
     Then the JSON response at "totalItems" should be 2
     When I send a GET request to "/offers" with parameters:
-      | hasMediaObjects | true                             |
+      | hasMediaObjects | true |
     Then the JSON response should be:
     """
     {
@@ -1475,10 +1475,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/places" with parameters:
-      | hasMediaObjects | false                            |
+      | hasMediaObjects | false |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/places" with parameters:
-      | hasMediaObjects | true                             |
+      | hasMediaObjects | true |
     Then the JSON response should be:
     """
     {
@@ -1490,10 +1490,10 @@ Feature: Test the Search API v3 url parameters on offers
     }
     """
     When I send a GET request to "/events" with parameters:
-      | hasMediaObjects | false                            |
+      | hasMediaObjects | false |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | hasMediaObjects | true                             |
+      | hasMediaObjects | true |
     Then the JSON response should be:
     """
     {
