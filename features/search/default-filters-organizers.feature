@@ -19,6 +19,10 @@ Feature: Test the Search API v3 default filters on organizers
       | workflowStatus | *                 |
       | q              | id:%{organizerId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{organizerId}
+    """
 
   Scenario: Unlike offers, by default organizers outside Belgium are shown
     Given I create an organizer from "organizers/organizer-in-the-netherlands.json" and save the "id" as "organizerId"
@@ -27,3 +31,7 @@ Feature: Test the Search API v3 default filters on organizers
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{organizerId}
+    """

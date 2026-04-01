@@ -19,12 +19,28 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/offers" with parameters:
       | labels | %{labelname} |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | labels | %{labelname} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
       | labels | %{labelname} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I am using the UDB3 base URL
     And I create a random labelname of 10 characters
     And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
@@ -33,6 +49,10 @@ Feature: Test the Search API v3 url parameters on offers
     And I send a GET request to "/events" with parameters:
       | locationLabels | %{labelname} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: Search for a multiple labels using the common filter
     When I create a random labelname of 10 characters
@@ -50,18 +70,38 @@ Feature: Test the Search API v3 url parameters on offers
       | labels[] | %{labelname} |
       | labels[] | foobar       |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | labels[] | %{labelname} |
       | labels[] | foobar       |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
       | labels[] | %{labelname} |
       | labels[] | foobar       |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
       | locationLabels[] | %{labelname} |
       | locationLabels[] | foobar       |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: Search for a single term using the common filter
     When I create a minimal place and save the "id" as "placeId"
@@ -71,28 +111,52 @@ Feature: Test the Search API v3 url parameters on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/places" with parameters:
       | termIds | Yf4aZBfsUEu2NsQqsprngw |
-      | q       | id:%{placeId}       |
+      | q       | id:%{placeId}          |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
       | termLabels | Cultuur- of ontmoetingscentrum |
-      | q          | id:%{placeId}               |
+      | q          | id:%{placeId}                  |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
       | termIds | 0.50.4.0.0    |
       | q       | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | termLabels | Concert   |
+      | termLabels | Concert       |
       | q          | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
       | termIds | 1.8.2.0.0     |
       | q       | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | termLabels | Jazz en blues     |
-      | q          | id:%{eventId}     |
+      | termLabels | Jazz en blues |
+      | q          | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: Search for a multiple terms using the common filter
     When I create a minimal place and save the "id" as "placeId"
@@ -105,11 +169,19 @@ Feature: Test the Search API v3 url parameters on offers
       | termIds[] | 1.8.2.0.0     |
       | q         | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
       | termLabels[] | Concert       |
       | termLabels[] | Jazz en blues |
       | q            | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: Search for ages using the common filter
     When I create a minimal place and save the "url" as "placeUrl"
@@ -124,14 +196,22 @@ Feature: Test the Search API v3 url parameters on offers
       | minAge | 7             |
       | q      | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | maxAge | 5            |
+      | maxAge | 5             |
       | q      | id:%{eventId} |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | maxAge | 11            |
       | q      | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
       | allAges | true          |
       | q       | id:%{eventId} |
@@ -140,10 +220,18 @@ Feature: Test the Search API v3 url parameters on offers
       | allAges | false         |
       | q       | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
       | allAges | *             |
       | q       | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: Search for country using the common filters
     When I create a minimal place and save the "id" as "placeId"
@@ -152,29 +240,45 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | addressCountry | NL                               |
+      | addressCountry | NL                            |
       | q              | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | addressCountry | BE                               |
+      | addressCountry | BE                            |
       | q              | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
-      | addressCountry | NL                               |
+      | addressCountry | NL                            |
       | q              | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | addressCountry | BE                               |
+      | addressCountry | BE                            |
       | q              | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
-      | addressCountry | NL                               |
+      | addressCountry | NL                            |
       | q              | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | addressCountry | BE                               |
+      | addressCountry | BE                            |
       | q              | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: Search for a single region using the common filters
     When I create a minimal place and save the "id" as "placeId"
@@ -183,33 +287,49 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | regions   | nis-24020                        |
+      | regions | nis-24020                     |
+      | q       | id:(%{placeId} OR %{eventId}) |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/offers" with parameters:
+      | regions[] | nis-24020                     |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | regions[] | nis-24020                        |
-      | q         | id:(%{placeId} OR %{eventId}) |
-    Then the JSON response at "totalItems" should be 0
-    When I send a GET request to "/offers" with parameters:
-      | regions   | nis-24134                        |
-      | q         | id:(%{placeId} OR %{eventId}) |
+      | regions | nis-24134                     |
+      | q       | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
-      | regions   | nis-24020                        |
-      | q         | id:(%{placeId} OR %{eventId}) |
+      | regions | nis-24020                     |
+      | q       | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | regions   | nis-24134                        |
-      | q         | id:(%{placeId} OR %{eventId}) |
+      | regions | nis-24134                     |
+      | q       | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
-      | regions   | nis-24020                        |
-      | q         | id:(%{placeId} OR %{eventId}) |
+      | regions | nis-24020                     |
+      | q       | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | regions   | nis-24134                        |
-      | q         | id:(%{placeId} OR %{eventId}) |
+      | regions | nis-24134                     |
+      | q       | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: Search for multiple regions using the common filters
     When I create a minimal place and save the "id" as "placeId"
@@ -218,35 +338,51 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24020                        |
+      | regions[] | nis-20001                     |
+      | regions[] | nis-24020                     |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24134                        |
+      | regions[] | nis-20001                     |
+      | regions[] | nis-24134                     |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24020                        |
+      | regions[] | nis-20001                     |
+      | regions[] | nis-24020                     |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24134                        |
+      | regions[] | nis-20001                     |
+      | regions[] | nis-24134                     |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24020                        |
+      | regions[] | nis-20001                     |
+      | regions[] | nis-24020                     |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | regions[] | nis-20001                        |
-      | regions[] | nis-24134                        |
+      | regions[] | nis-20001                     |
+      | regions[] | nis-24134                     |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: Search for offers using the geo distance filter
     When I create a minimal place and save the "id" as "placeId"
@@ -255,38 +391,54 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | coordinates | 50.99,4.97                       |
-      | distance    | 5km                              |
+      | coordinates | 50.99,4.97                    |
+      | distance    | 5km                           |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
-      | coordinates | 50.99,4.97                       |
-      | distance    | 5km                              |
+      | coordinates | 50.99,4.97                    |
+      | distance    | 5km                           |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
-      | coordinates | 50.99,4.97                       |
-      | distance    | 5km                              |
+      | coordinates | 50.99,4.97                    |
+      | distance    | 5km                           |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | coordinates | 51.054,3.717                     |
-      | distance    | 5km                              |
+      | coordinates | 51.054,3.717                  |
+      | distance    | 5km                           |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | coordinates | 51.054,3.717                     |
-      | distance    | 5km                              |
+      | coordinates | 51.054,3.717                  |
+      | distance    | 5km                           |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | coordinates | 51.054,3.717                     |
-      | distance    | 5km                              |
+      | coordinates | 51.054,3.717                  |
+      | distance    | 5km                           |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | coordinates | 51.054,3.717                     |
-      | distance    | 5km                              |
+      | coordinates | 51.054,3.717                  |
+      | distance    | 5km                           |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
 
@@ -297,27 +449,43 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | bounds | 50.8,4.7%7C51.2,5.2              |
+      | bounds | 50.8,4.7%7C51.2,5.2           |
       | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
-      | bounds | 50.8,4.7%7C51.2,5.2                 |
-      | q      | id:(%{placeId} OR %{eventId})    |
+      | bounds | 50.8,4.7%7C51.2,5.2           |
+      | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
-      | bounds | 50.8,4.7%7C51.2,5.2                    |
-      | q      | id:(%{placeId} OR %{eventId})       |
+      | bounds | 50.8,4.7%7C51.2,5.2           |
+      | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | bounds | 52.0,4.0%7C53.0,6.0              |
+      | bounds | 52.0,4.0%7C53.0,6.0           |
       | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | bounds | 52.0,4.0%7C53.0,6.0              |
+      | bounds | 52.0,4.0%7C53.0,6.0           |
       | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | bounds | 52.0,4.0%7C53.0,6.0              |
+      | bounds | 52.0,4.0%7C53.0,6.0           |
       | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
 
@@ -329,105 +497,185 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | languages[] | nl                               |
+      | languages[] | nl                            |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | languages[] | de                               |
+      | languages[] | de                            |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | languages[] | de                               |
-      | languages[] | fr                               |
+      | languages[] | de                            |
+      | languages[] | fr                            |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | completedLanguages[] | nl                               |
+      | completedLanguages[] | nl                            |
       | q                    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | completedLanguages[] | de                               |
+      | completedLanguages[] | de                            |
       | q                    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | completedLanguages[] | de                               |
-      | completedLanguages[] | fr                               |
+      | completedLanguages[] | de                            |
+      | completedLanguages[] | fr                            |
       | q                    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | mainLanguage | de                               |
+      | mainLanguage | de                            |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | mainLanguage | fr                               |
+      | mainLanguage | fr                            |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | languages[] | nl                               |
+      | languages[] | nl                            |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | languages[] | de                               |
+      | languages[] | de                            |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | languages[] | de                               |
-      | languages[] | fr                               |
+      | languages[] | de                            |
+      | languages[] | fr                            |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | completedLanguages[] | nl                               |
+      | completedLanguages[] | nl                            |
       | q                    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | completedLanguages[] | de                               |
+      | completedLanguages[] | de                            |
       | q                    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | completedLanguages[] | de                               |
-      | completedLanguages[] | fr                               |
+      | completedLanguages[] | de                            |
+      | completedLanguages[] | fr                            |
       | q                    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | mainLanguage | de                               |
+      | mainLanguage | de                            |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | mainLanguage | fr                               |
+      | mainLanguage | fr                            |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | languages[] | nl                               |
+      | languages[] | nl                            |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | languages[] | de                               |
+      | languages[] | de                            |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | languages[] | de                               |
-      | languages[] | fr                               |
+      | languages[] | de                            |
+      | languages[] | fr                            |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | completedLanguages[] | nl                               |
+      | completedLanguages[] | nl                            |
       | q                    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | completedLanguages[] | de                               |
+      | completedLanguages[] | de                            |
       | q                    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | completedLanguages[] | de                               |
-      | completedLanguages[] | fr                               |
+      | completedLanguages[] | de                            |
+      | completedLanguages[] | fr                            |
       | q                    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | mainLanguage | de                               |
+      | mainLanguage | de                            |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | mainLanguage | fr                               |
+      | mainLanguage | fr                            |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
 
@@ -451,27 +699,43 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | status | TemporarilyUnavailable           |
+      | status | TemporarilyUnavailable        |
       | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | status | Available                        |
+      | status | Available                     |
       | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | status | TemporarilyUnavailable           |
+      | status | TemporarilyUnavailable        |
       | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | status | Available                        |
+      | status | Available                     |
       | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | status | TemporarilyUnavailable           |
+      | status | TemporarilyUnavailable        |
       | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | status | Available                        |
+      | status | Available                     |
       | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
 
@@ -484,15 +748,19 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | bookingAvailability | Unavailable                      |
-      | availableTo         | *                                |
-      | availableFrom       | *                                |
+      | bookingAvailability | Unavailable                   |
+      | availableTo         | *                             |
+      | availableFrom       | *                             |
       | q                   | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | bookingAvailability | Available                        |
-      | availableTo         | *                                |
-      | availableFrom       | *                                |
+      | bookingAvailability | Available                     |
+      | availableTo         | *                             |
+      | availableFrom       | *                             |
       | q                   | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
 
@@ -504,123 +772,203 @@ Feature: Test the Search API v3 url parameters on offers
     And I publish the event at "/events/%{eventId}"
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | calendarType | permanent                        |
+      | calendarType | permanent                     |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | calendarType | periodic                         |
+      | calendarType | periodic                      |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | calendarType | permanent                        |
+      | calendarType | permanent                     |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | calendarType | periodic                         |
+      | calendarType | periodic                      |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | calendarType | permanent                        |
+      | calendarType | permanent                     |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | calendarType | periodic                         |
+      | calendarType | periodic                      |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | createdFrom | 2024-01-01T00:00:00%2B01:00      |
+      | createdFrom | 2024-01-01T00:00:00%2B01:00   |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | createdFrom | 2090-01-01T00:00:00%2B01:00      |
+      | createdFrom | 2090-01-01T00:00:00%2B01:00   |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | createdFrom | 2024-01-01T00:00:00%2B01:00      |
+      | createdFrom | 2024-01-01T00:00:00%2B01:00   |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | createdFrom | 2090-01-01T00:00:00%2B01:00      |
+      | createdFrom | 2090-01-01T00:00:00%2B01:00   |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | createdFrom | 2024-01-01T00:00:00%2B01:00      |
+      | createdFrom | 2024-01-01T00:00:00%2B01:00   |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | createdFrom | 2090-01-01T00:00:00%2B01:00      |
+      | createdFrom | 2090-01-01T00:00:00%2B01:00   |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | createdTo | 2090-01-01T00:00:00%2B01:00      |
+      | createdTo | 2090-01-01T00:00:00%2B01:00   |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | createdTo | 2024-01-01T00:00:00%2B01:00      |
+      | createdTo | 2024-01-01T00:00:00%2B01:00   |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | createdTo | 2090-01-01T00:00:00%2B01:00      |
+      | createdTo | 2090-01-01T00:00:00%2B01:00   |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | createdTo | 2024-01-01T00:00:00%2B01:00      |
+      | createdTo | 2024-01-01T00:00:00%2B01:00   |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | createdTo | 2090-01-01T00:00:00%2B01:00      |
+      | createdTo | 2090-01-01T00:00:00%2B01:00   |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | createdTo | 2024-01-01T00:00:00%2B01:00      |
+      | createdTo | 2024-01-01T00:00:00%2B01:00   |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | modifiedFrom | 2024-01-01T00:00:00%2B01:00     |
-      | q           | id:(%{placeId} OR %{eventId}) |
+      | modifiedFrom | 2024-01-01T00:00:00%2B01:00   |
+      | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | modifiedFrom | 2090-01-01T00:00:00%2B01:00      |
+      | modifiedFrom | 2090-01-01T00:00:00%2B01:00   |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | modifiedFrom | 2024-01-01T00:00:00%2B01:00      |
+      | modifiedFrom | 2024-01-01T00:00:00%2B01:00   |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | modifiedFrom | 2090-01-01T00:00:00%2B01:00      |
+      | modifiedFrom | 2090-01-01T00:00:00%2B01:00   |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | modifiedFrom | 2024-01-01T00:00:00%2B01:00      |
+      | modifiedFrom | 2024-01-01T00:00:00%2B01:00   |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | modifiedFrom | 2090-01-01T00:00:00%2B01:00      |
+      | modifiedFrom | 2090-01-01T00:00:00%2B01:00   |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | modifiedTo | 2090-01-01T00:00:00%2B01:00      |
+      | modifiedTo | 2090-01-01T00:00:00%2B01:00   |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | modifiedTo | 2024-01-01T00:00:00%2B01:00      |
+      | modifiedTo | 2024-01-01T00:00:00%2B01:00   |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | modifiedTo | 2090-01-01T00:00:00%2B01:00      |
+      | modifiedTo | 2090-01-01T00:00:00%2B01:00   |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | modifiedTo | 2024-01-01T00:00:00%2B01:00      |
+      | modifiedTo | 2024-01-01T00:00:00%2B01:00   |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | modifiedTo | 2090-01-01T00:00:00%2B01:00      |
+      | modifiedTo | 2090-01-01T00:00:00%2B01:00   |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | modifiedTo | 2024-01-01T00:00:00%2B01:00      |
+      | modifiedTo | 2024-01-01T00:00:00%2B01:00   |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
 
@@ -636,6 +984,10 @@ Feature: Test the Search API v3 url parameters on offers
       | availableFrom | *                           |
       | q             | id:(%{eventId})             |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | dateFrom      | 2090-01-01T00:00:00%2B01:00 |
       | availableTo   | *                           |
@@ -648,6 +1000,10 @@ Feature: Test the Search API v3 url parameters on offers
       | availableFrom | *                           |
       | q             | id:(%{eventId})             |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
       | dateFrom      | 2090-01-01T00:00:00%2B01:00 |
       | availableTo   | *                           |
@@ -660,6 +1016,10 @@ Feature: Test the Search API v3 url parameters on offers
       | availableFrom | *                           |
       | q             | id:(%{eventId})             |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | dateTo        | 2020-01-01T00:00:00%2B01:00 |
       | availableTo   | *                           |
@@ -672,6 +1032,10 @@ Feature: Test the Search API v3 url parameters on offers
       | availableFrom | *                           |
       | q             | id:(%{eventId})             |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
       | dateTo        | 2020-01-01T00:00:00%2B01:00 |
       | availableTo   | *                           |
@@ -694,17 +1058,33 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | text      | %{name}                          |
-      | q         | id:(%{placeId} OR %{eventId}) |
+      | text | %{name}                       |
+      | q    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
-      | text      | %{name}                          |
-      | q         | id:(%{placeId} OR %{eventId}) |
+      | text | %{name}                       |
+      | q    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
-      | text      | %{name}                          |
-      | q         | id:(%{placeId} OR %{eventId}) |
+      | text | %{name}                       |
+      | q    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: Search for an offer using the id filter
     When I create a minimal place and save the "id" as "placeId"
@@ -715,18 +1095,34 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/offers" with parameters:
       | id | %{placeId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/offers" with parameters:
       | id | %{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | id | %{placeId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
       | id | ffffffff-ffff-ffff-ffff-ffffffffffff |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | id | %{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
       | id | ffffffff-ffff-ffff-ffff-ffffffffffff |
     Then the JSON response at "totalItems" should be 0
@@ -738,27 +1134,43 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | postalCode | 3271                             |
+      | postalCode | 3271                          |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | postalCode | 9000                             |
+      | postalCode | 9000                          |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | postalCode | 3271                             |
+      | postalCode | 3271                          |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | postalCode | 9000                             |
+      | postalCode | 9000                          |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | postalCode | 3271                             |
+      | postalCode | 3271                          |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | postalCode | 9000                             |
+      | postalCode | 9000                          |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
 
@@ -770,27 +1182,43 @@ Feature: Test the Search API v3 url parameters on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | creator | edcee0f7-5906-4e92-8551-a7f5d37ba453 |
-      | q       | id:(%{placeId} OR %{eventId})     |
+      | q       | id:(%{placeId} OR %{eventId})        |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | creator | ffffffff-ffff-ffff-ffff-ffffffffffff |
-      | q       | id:(%{placeId} OR %{eventId})     |
+      | q       | id:(%{placeId} OR %{eventId})        |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | creator | edcee0f7-5906-4e92-8551-a7f5d37ba453 |
-      | q       | id:(%{placeId} OR %{eventId})     |
+      | q       | id:(%{placeId} OR %{eventId})        |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
       | creator | ffffffff-ffff-ffff-ffff-ffffffffffff |
-      | q       | id:(%{placeId} OR %{eventId})     |
+      | q       | id:(%{placeId} OR %{eventId})        |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | creator | edcee0f7-5906-4e92-8551-a7f5d37ba453 |
-      | q       | id:(%{placeId} OR %{eventId})     |
+      | q       | id:(%{placeId} OR %{eventId})        |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
       | creator | ffffffff-ffff-ffff-ffff-ffffffffffff |
-      | q       | id:(%{placeId} OR %{eventId})     |
+      | q       | id:(%{placeId} OR %{eventId})        |
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for offers using the audienceType filter
@@ -803,6 +1231,10 @@ Feature: Test the Search API v3 url parameters on offers
       | audienceType | childrenOnly  |
       | q            | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
       | audienceType | everyone      |
       | q            | id:%{eventId} |
@@ -822,6 +1254,10 @@ Feature: Test the Search API v3 url parameters on offers
       | attendanceMode | offline                                                       |
       | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{offLineEventId}
+    """
     When I send a GET request to "/events" with parameters:
       | attendanceMode | offline                                  |
       | q              | id:(%{mixedEventId} OR %{onlineEventId}) |
@@ -830,16 +1266,24 @@ Feature: Test the Search API v3 url parameters on offers
       | attendanceMode | mixed                                                         |
       | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{mixedEventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | attendanceMode | mixed                                                         |
+      | attendanceMode | mixed                                      |
       | q              | id:(%{offLineEventId} OR %{onlineEventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | attendanceMode | online                                                         |
+      | attendanceMode | online                                                        |
       | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{onlineEventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | attendanceMode | online                                                         |
+      | attendanceMode | online                                    |
       | q              | id:(%{offLineEventId} OR %{mixedEventId}) |
     Then the JSON response at "totalItems" should be 0
 
@@ -850,26 +1294,42 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | hasMediaObjects | false                            |
+      | hasMediaObjects | false                         |
       | q               | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
-      | hasMediaObjects | true                             |
+      | hasMediaObjects | true                          |
       | q               | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | hasMediaObjects | false                            |
+      | hasMediaObjects | false                         |
       | q               | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | hasMediaObjects | true                             |
+      | hasMediaObjects | true                          |
       | q               | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | hasMediaObjects | false                            |
+      | hasMediaObjects | false                         |
       | q               | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/events" with parameters:
-      | hasMediaObjects | true                             |
+      | hasMediaObjects | true                          |
       | q               | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0

@@ -16,8 +16,7 @@ Feature: Test the Search API v3 default queries from the config file when using 
     And I am using an UiTID v1 API key of consumer "sapi3KeyWithConfigFileFilterForScherpenheuvel"
     And I am not using a x-client-id header
     When I send a GET request to "/places" with parameters:
-      | limit                 | 1 |
-      | disableDefaultFilters | true |
+      | disableDefaultFilters | true          |
       | q                     | id:%{placeId} |
     Then the JSON response at "totalItems" should be 0
 
@@ -30,8 +29,7 @@ Feature: Test the Search API v3 default queries from the config file when using 
     And I am using an UiTID v1 API key of consumer "sapi3KeyWithConfigFileFilterForScherpenheuvel"
     And I am not using a x-client-id header
     When I send a GET request to "/events" with parameters:
-      | limit                 | 1 |
-      | disableDefaultFilters | true |
+      | disableDefaultFilters | true          |
       | q                     | id:%{eventId} |
     Then the JSON response at "totalItems" should be 0
 
@@ -43,10 +41,13 @@ Feature: Test the Search API v3 default queries from the config file when using 
     And I am using an UiTID v1 API key of consumer "sapi3KeyWithConfigFileFilterForScherpenheuvel"
     And I am not using a x-client-id header
     When I send a GET request to "/places" with parameters:
-      | limit                 | 1 |
-      | disableDefaultFilters | true |
+      | disableDefaultFilters | true          |
       | q                     | id:%{placeId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
 
   Scenario: Search for an event within by the default query
     Given I create a place from "places/hemmekes.json" and save the "url" as "placeUrl"
@@ -57,7 +58,10 @@ Feature: Test the Search API v3 default queries from the config file when using 
     And I am using an UiTID v1 API key of consumer "sapi3KeyWithConfigFileFilterForScherpenheuvel"
     And I am not using a x-client-id header
     When I send a GET request to "/events" with parameters:
-      | limit                 | 1 |
-      | disableDefaultFilters | true |
+      | disableDefaultFilters | true          |
       | q                     | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """

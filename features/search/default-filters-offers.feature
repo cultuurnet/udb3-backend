@@ -17,23 +17,39 @@ Feature: Test the Search API v3 default filters on offers
       | q | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | addressCountry | *                                |
+      | addressCountry | *                             |
       | q              | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | addressCountry | *                                |
+      | addressCountry | *                             |
       | q              | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    Then the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | addressCountry | *                                |
+      | addressCountry | *                             |
       | q              | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: By default non public audienceTypes are not shown
     Given I create a minimal place and save the "url" as "placeUrl"
@@ -47,39 +63,60 @@ Feature: Test the Search API v3 default filters on offers
       | audienceType | *             |
       | q            | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: By default draft offers are not shown
     Given I create a minimal place and save the "url" as "placeUrl"
+    And I keep the value of the JSON response at "id" as "placeId"
     And I create a minimal permanent event and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
-      | q | id:(%{eventId} OR %{placeUrl}) |
+      | q | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
       | workflowStatus | *                              |
       | availableFrom  | *                              |
       | availableTo    | *                              |
-      | q              | id:(%{eventId} OR %{placeUrl}) |
+      | q              | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
-      | q | id:(%{eventId} OR %{placeUrl}) |
+      | q | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | workflowStatus | *                              |
       | availableFrom  | *                              |
       | availableTo    | *                              |
-      | q              | id:(%{eventId} OR %{placeUrl}) |
+      | q              | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{eventId} OR %{placeUrl}) |
+      | q | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | workflowStatus | *                              |
       | availableFrom  | *                              |
       | availableTo    | *                              |
-      | q              | id:(%{eventId} OR %{placeUrl}) |
+      | q              | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: By default rejected offers are no longer shown
     Given I create a minimal place and save the "id" as "placeId"
@@ -94,23 +131,39 @@ Feature: Test the Search API v3 default filters on offers
       | q | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | workflowStatus | *                                |
+      | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | workflowStatus | *                                |
+      | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | workflowStatus | *                                |
+      | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: By default deleted offers are no longer shown
     Given I create a minimal place and save the "id" as "placeId"
@@ -125,23 +178,39 @@ Feature: Test the Search API v3 default filters on offers
       | q | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
-      | workflowStatus | *                                |
+      | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | workflowStatus | *                                |
+      | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | workflowStatus | *                                |
+      | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: By default events with available to in the past should not be shown
     Given I create a minimal place and save the "url" as "placeUrl"
@@ -151,13 +220,17 @@ Feature: Test the Search API v3 default filters on offers
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | q            | id:%{eventId} |
+      | q | id:%{eventId} |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | availableFrom | *             |
       | availableTo   | *             |
       | q             | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
 
   Scenario: By default events with available from in the future should not be shown
     Given I create a minimal place and save the "id" as "placeId"
@@ -165,10 +238,14 @@ Feature: Test the Search API v3 default filters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | q            | id:%{eventId} |
+      | q | id:%{eventId} |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | availableFrom | *             |
       | availableTo   | *             |
       | q             | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
