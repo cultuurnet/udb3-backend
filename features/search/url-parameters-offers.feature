@@ -19,6 +19,14 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/offers" with parameters:
       | labels | %{labelname} |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | labels | %{labelname} |
     Then the JSON response should be:
@@ -92,6 +100,14 @@ Feature: Test the Search API v3 url parameters on offers
       | labels[] | %{labelname} |
       | labels[] | foobar       |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | labels[] | %{labelname} |
       | labels[] | foobar       |
@@ -411,6 +427,14 @@ Feature: Test the Search API v3 url parameters on offers
       | addressCountry | BE                            |
       | q              | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | addressCountry | NL                            |
       | q              | id:(%{placeId} OR %{eventId}) |
@@ -474,6 +498,14 @@ Feature: Test the Search API v3 url parameters on offers
       | regions | nis-24134                     |
       | q       | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | regions | nis-24020                     |
       | q       | id:(%{placeId} OR %{eventId}) |
@@ -535,6 +567,14 @@ Feature: Test the Search API v3 url parameters on offers
       | regions[] | nis-24134                     |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | regions[] | nis-20001                     |
       | regions[] | nis-24020                     |
@@ -595,6 +635,14 @@ Feature: Test the Search API v3 url parameters on offers
       | distance    | 5km                           |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | coordinates | 50.99,4.97                    |
       | distance    | 5km                           |
@@ -664,6 +712,14 @@ Feature: Test the Search API v3 url parameters on offers
       | bounds | 50.8,4.7%7C51.2,5.2           |
       | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | bounds | 50.8,4.7%7C51.2,5.2           |
       | q      | id:(%{placeId} OR %{eventId}) |
@@ -728,11 +784,27 @@ Feature: Test the Search API v3 url parameters on offers
       | languages[] | de                            |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | languages[] | de                            |
       | languages[] | fr                            |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | completedLanguages[] | nl                            |
       | q                    | id:(%{placeId} OR %{eventId}) |
@@ -741,15 +813,39 @@ Feature: Test the Search API v3 url parameters on offers
       | completedLanguages[] | de                            |
       | q                    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | completedLanguages[] | de                            |
       | completedLanguages[] | fr                            |
       | q                    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | mainLanguage | de                            |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | mainLanguage | fr                            |
       | q            | id:(%{placeId} OR %{eventId}) |
@@ -986,6 +1082,14 @@ Feature: Test the Search API v3 url parameters on offers
       | status | TemporarilyUnavailable        |
       | q      | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | status | Available                     |
       | q      | id:(%{placeId} OR %{eventId}) |
@@ -1081,6 +1185,14 @@ Feature: Test the Search API v3 url parameters on offers
       | calendarType | permanent                     |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | calendarType | periodic                      |
       | q            | id:(%{placeId} OR %{eventId}) |
@@ -1133,6 +1245,14 @@ Feature: Test the Search API v3 url parameters on offers
       | createdFrom | 2024-01-01T00:00:00%2B01:00   |
       | q           | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | createdFrom | 2090-01-01T00:00:00%2B01:00   |
       | q           | id:(%{placeId} OR %{eventId}) |
@@ -1185,6 +1305,14 @@ Feature: Test the Search API v3 url parameters on offers
       | createdTo | 2090-01-01T00:00:00%2B01:00   |
       | q         | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | createdTo | 2024-01-01T00:00:00%2B01:00   |
       | q         | id:(%{placeId} OR %{eventId}) |
@@ -1237,6 +1365,14 @@ Feature: Test the Search API v3 url parameters on offers
       | modifiedFrom | 2024-01-01T00:00:00%2B01:00   |
       | q            | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | modifiedFrom | 2090-01-01T00:00:00%2B01:00   |
       | q            | id:(%{placeId} OR %{eventId}) |
@@ -1289,6 +1425,14 @@ Feature: Test the Search API v3 url parameters on offers
       | modifiedTo | 2090-01-01T00:00:00%2B01:00   |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | modifiedTo | 2024-01-01T00:00:00%2B01:00   |
       | q          | id:(%{placeId} OR %{eventId}) |
@@ -1467,6 +1611,14 @@ Feature: Test the Search API v3 url parameters on offers
       | text | %{name}                       |
       | q    | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | text | %{name}                       |
       | q    | id:(%{placeId} OR %{eventId}) |
@@ -1595,6 +1747,14 @@ Feature: Test the Search API v3 url parameters on offers
       | postalCode | 3271                          |
       | q          | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | postalCode | 9000                          |
       | q          | id:(%{placeId} OR %{eventId}) |
@@ -1654,6 +1814,14 @@ Feature: Test the Search API v3 url parameters on offers
       | creator | edcee0f7-5906-4e92-8551-a7f5d37ba453 |
       | q       | id:(%{placeId} OR %{eventId})        |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | creator | ffffffff-ffff-ffff-ffff-ffffffffffff |
       | q       | id:(%{placeId} OR %{eventId})        |
@@ -1819,6 +1987,14 @@ Feature: Test the Search API v3 url parameters on offers
       | hasMediaObjects | false                         |
       | q               | id:(%{placeId} OR %{eventId}) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | hasMediaObjects | true                          |
       | q               | id:(%{placeId} OR %{eventId}) |
