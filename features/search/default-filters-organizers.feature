@@ -25,7 +25,7 @@ Feature: Test the Search API v3 default filters on organizers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
           "@type": "Organizer"
@@ -47,7 +47,7 @@ Feature: Test the Search API v3 default filters on organizers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
           "@type": "Organizer"

@@ -50,7 +50,7 @@ Feature: Test the Search API v3 default queries from the config file when using 
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -77,7 +77,7 @@ Feature: Test the Search API v3 default queries from the config file when using 
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
