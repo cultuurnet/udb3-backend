@@ -36,7 +36,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -53,7 +53,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -75,7 +75,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -118,7 +118,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -136,7 +136,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -154,7 +154,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -179,7 +179,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -197,7 +197,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -215,7 +215,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -233,7 +233,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -251,7 +251,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -269,7 +269,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -295,7 +295,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -314,7 +314,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -342,7 +342,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -364,7 +364,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -386,7 +386,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -404,7 +404,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -449,7 +449,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -471,7 +471,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -520,7 +520,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -542,7 +542,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -591,7 +591,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -615,7 +615,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -654,7 +654,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -673,7 +673,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -730,7 +730,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -748,7 +748,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -864,7 +864,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -883,7 +883,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -905,7 +905,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -924,7 +924,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -942,7 +942,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -968,7 +968,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -987,7 +987,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1009,7 +1009,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1028,7 +1028,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1046,7 +1046,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1104,7 +1104,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -1126,7 +1126,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1159,7 +1159,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1207,7 +1207,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -1229,7 +1229,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1267,7 +1267,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -1289,7 +1289,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1327,7 +1327,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -1349,7 +1349,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1387,7 +1387,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -1409,7 +1409,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1447,7 +1447,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -1469,7 +1469,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1500,7 +1500,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1526,7 +1526,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1552,7 +1552,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1578,7 +1578,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1629,7 +1629,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -1647,7 +1647,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1671,7 +1671,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -1688,7 +1688,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1705,7 +1705,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -1725,7 +1725,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1769,7 +1769,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -1791,7 +1791,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1836,7 +1836,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -1858,7 +1858,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1887,7 +1887,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"
@@ -1920,7 +1920,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{offLineEventId}",
           "@type": "Event"
@@ -1942,7 +1942,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{mixedEventId}",
           "@type": "Event"
@@ -1964,7 +1964,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{onlineEventId}",
           "@type": "Event"
@@ -2009,7 +2009,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
           "@type": "Place"
@@ -2031,7 +2031,7 @@ Feature: Test the Search API v3 url parameters on offers
       "@type": "PagedCollection",
       "itemsPerPage": 30,
       "totalItems": 1,
-      "member" : [
+      "member": [
         {
           "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
           "@type": "Event"

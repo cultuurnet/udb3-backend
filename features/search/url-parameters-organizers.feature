@@ -13,7 +13,21 @@ Feature: Test the Search API v3 url parameters on organizers
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | id | %{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | id | ffffffff-ffff-ffff-ffff-ffffffffffff |
     Then the JSON response at "totalItems" should be 0
@@ -25,7 +39,21 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | name | %{name}           |
       | q    | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | name | nonexistent       |
       | q    | id:%{organizerId} |
@@ -37,7 +65,21 @@ Feature: Test the Search API v3 url parameters on organizers
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | website | https://www.%{name}.be |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | website | https://www.nonexistent-organizer.be |
     Then the JSON response at "totalItems" should be 0
@@ -49,7 +91,21 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | domain | %{name}.be        |
       | q      | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | domain | nonexistent-organizer.be |
       | q      | id:%{organizerId}        |
@@ -62,7 +118,21 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | postalCode | 1080              |
       | q          | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | postalCode | 9000              |
       | q          | id:%{organizerId} |
@@ -77,7 +147,21 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | addressCountry | BE                       |
       | q              | id:%{belgianOrganizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{belgianOrganizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | addressCountry | NL                       |
       | q              | id:%{belgianOrganizerId} |
@@ -85,7 +169,21 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | addressCountry | NL                     |
       | q              | id:%{dutchOrganizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{dutchOrganizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | addressCountry | BE                     |
       | q              | id:%{dutchOrganizerId} |
@@ -98,7 +196,21 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | regions | nis-21012         |
       | q       | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | regions | nis-21016         |
       | q       | id:%{organizerId} |
@@ -117,7 +229,21 @@ Feature: Test the Search API v3 url parameters on organizers
       | regions[] | nis-01000         |
       | regions[] | nis-21012         |
       | q         | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
 
   Scenario: Search for an organizer using the geo distance filter
     Given I create an organizer from "organizers/organizer-with-address.json" and save the "id" as "organizerId"
@@ -127,7 +253,21 @@ Feature: Test the Search API v3 url parameters on organizers
       | coordinates | 50.8511740,4.3386740 |
       | distance    | 5km                  |
       | q           | id:%{organizerId}    |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | coordinates | 51.054,3.717      |
       | distance    | 5km               |
@@ -141,7 +281,21 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | bounds | 50.0,2.0%7C51.5,6.0 |
       | q      | id:%{organizerId}   |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | bounds | 52.0,4.0%7C53.0,6.0 |
       | q      | id:%{organizerId}   |
@@ -154,7 +308,21 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | creator | edcee0f7-5906-4e92-8551-a7f5d37ba453 |
       | q       | id:%{organizerId}                    |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | creator | ffffffff-ffff-ffff-ffff-ffffffffffff |
       | q       | id:%{organizerId}                    |
@@ -167,7 +335,21 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | hasImages | false             |
       | q         | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | hasImages | true              |
       | q         | id:%{organizerId} |
@@ -182,7 +364,21 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | labels | %{labelname}      |
       | q      | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | labels | nonexistentlabel    |
       | q      | id:%{organizerId}   |
@@ -199,7 +395,21 @@ Feature: Test the Search API v3 url parameters on organizers
       | labels[] | %{labelname}      |
       | labels[] | foobar            |
       | q        | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | labels[] | %{labelname}        |
       | labels[] | nonexistentlabel    |
@@ -213,7 +423,21 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | workflowStatus | ACTIVE            |
       | q              | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | workflowStatus | DELETED           |
       | q              | id:%{organizerId} |
@@ -225,7 +449,21 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | workflowStatus | DELETED           |
       | q              | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/organizers" with parameters:
       | workflowStatus | ACTIVE            |
       | q              | id:%{organizerId} |
@@ -238,5 +476,59 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | facets[] | regions           |
       | q        | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    And show me the unparsed response
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member": [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ],
+      "facet": {
+        "regions": {
+          "nis-01000": {
+            "name": {
+              "nl": "Brussels Hoofdstedelijk Gewest",
+              "fr": "R\u00e9gion de Bruxelles-Capitale",
+              "de": "Region Br\u00fcssel-Hauptstadt"
+            },
+            "count": 1,
+            "children": {
+              "reg-brussel": {
+                "name": {
+                  "nl": "Brussel",
+                  "fr": "Bruxelles",
+                  "de": "Br\u00fcssel"
+                  },
+                  "count":1,
+                  "children": {
+                    "nis-21012": {
+                      "name":{
+                        "nl": "Sint-Jans-Molenbeek"
+                      },
+                      "count":1,
+                      "children": {
+                        "nis-21012A": {
+                          "name":{
+                          "nl": "Sint-Jans-Molenbeek",
+                          "fr":"Molenbeek-Saint-Jean"
+                        },
+                      "count":1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    """
     And the JSON response at "facet/regions/nis-01000/children/reg-brussel/children/nis-21012/count" should be 1
