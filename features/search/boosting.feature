@@ -24,7 +24,6 @@ Feature: Test the Search API v3 boosting
       | sort[score] | desc                                                                                                                                         |
       | limit       | 2                                                                                                                                            |
     Then the JSON response at "totalItems" should be 4
-    And show me the unparsed response
     And the JSON response should include:
     """
     %{boostedEvent}
@@ -85,7 +84,6 @@ Feature: Test the Search API v3 boosting
       | sort[score] | desc                                                                                                                                         |
       | limit       | 2                                                                                                                                            |
     Then the JSON response at "totalItems" should be 4
-    And show me the unparsed response
     And the JSON response should include:
     """
     %{nonBoostedevent}
