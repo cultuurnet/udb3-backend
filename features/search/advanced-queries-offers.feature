@@ -19,12 +19,48 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/offers" with parameters:
       | q | labels:%{labelname} |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | q | labels:%{labelname} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | labels:%{labelname} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I am using the UDB3 base URL
     And I create a random labelname of 10 characters
     And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
@@ -32,7 +68,21 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | location.labels:%{labelname} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
 
   Scenario: Search for a single term using an advanced query
     When I create a minimal place and save the "id" as "placeId"
@@ -42,22 +92,106 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/places" with parameters:
       | q | id:%{placeId} AND terms.id:Yf4aZBfsUEu2NsQqsprngw |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:%{placeId} AND terms.label:"Cultuur- of ontmoetingscentrum" |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
-      | q       | id:%{eventId} AND terms.id:0.50.4.0.0 |
-    Then the JSON response at "totalItems" should be 1
+      | q | id:%{eventId} AND terms.id:0.50.4.0.0 |
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
-      | q          | id:%{eventId} AND terms.label:Concert |
-    Then the JSON response at "totalItems" should be 1
+      | q | id:%{eventId} AND terms.label:Concert |
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
-      | q       | id:%{eventId} AND terms.id:1.8.2.0.0 |
-    Then the JSON response at "totalItems" should be 1
+      | q | id:%{eventId} AND terms.id:1.8.2.0.0 |
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
-      | q          | id:%{eventId} AND terms.label:"Jazz en blues" |
-    Then the JSON response at "totalItems" should be 1
+      | q | id:%{eventId} AND terms.label:"Jazz en blues" |
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
 
   Scenario: Search for multiple labels using an advanced query
     When I create a minimal place and save the "id" as "placeId"
@@ -73,15 +207,65 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/offers" with parameters:
       | q | labels:(%{labelname} AND foobar) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | q | labels:(%{labelname} AND foobar) |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | labels:(%{labelname} AND foobar) |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | location.labels:(%{labelname} AND foobar) |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
 
   Scenario: Search for multiple terms using an advanced query
     When I create a minimal place and save the "id" as "placeId"
@@ -91,10 +275,38 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND terms.id:(0.50.4.0.0 OR 1.8.2.0.0) |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND terms.label:(Concert OR "Jazz en blues") |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
 
   Scenario: Search for ages using an advanced query
     When I create a minimal place and save the "url" as "placeUrl"
@@ -106,22 +318,78 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND typicalAgeRange:[7 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND typicalAgeRange:[* TO 5] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND typicalAgeRange:[* TO 11] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND allAges:true |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND allAges:false |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND allAges:* |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
 
   Scenario: Search for country using an advanced query
     When I create a minimal place and save the "id" as "placeId"
@@ -135,18 +403,54 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND address.nl.addressCountry:BE |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND address.nl.addressCountry:NL |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND address.nl.addressCountry:BE |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND address.nl.addressCountry:NL |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND address.nl.addressCountry:BE |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
 
   Scenario: Search for a single region using an advanced query
     When I create a minimal place and save the "id" as "placeId"
@@ -160,18 +464,54 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND regions:nis-24134 |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND regions:nis-24020 |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND regions:nis-24134 |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND regions:nis-24020 |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND regions:nis-24134 |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
 
   Scenario: Search for multiple regions using an advanced query
     When I create a minimal place and save the "id" as "placeId"
@@ -185,18 +525,54 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND regions:(nis-20001 AND nis-24134) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND regions:(nis-20001 AND nis-24020) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND regions:(nis-20001 AND nis-24134) |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND regions:(nis-20001 AND nis-24020) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND regions:(nis-20001 AND nis-24134) |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
 
   Scenario: Search for languages using an advanced query
     When I create a random name of 10 characters
@@ -211,21 +587,61 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND languages:de |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND languages:(de OR fr) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:nl |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:de |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:(de OR fr) |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND mainLanguage:de |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND mainLanguage:fr |
     Then the JSON response at "totalItems" should be 0
@@ -234,22 +650,92 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND languages:de |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND languages:(de OR fr) |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:nl |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:de |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:(de OR fr) |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND mainLanguage:de |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND mainLanguage:fr |
     Then the JSON response at "totalItems" should be 0
@@ -258,22 +744,92 @@ Feature: Test the Search API v3 advanced queries on offers
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND languages:de |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND languages:(de OR fr) |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:nl |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:de |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completedLanguages:(de OR fr) |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND mainLanguage:de |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND mainLanguage:fr |
     Then the JSON response at "totalItems" should be 0
@@ -300,18 +856,54 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND status:TemporarilyUnavailable |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND status:Available |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND status:TemporarilyUnavailable |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND status:Available |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND status:TemporarilyUnavailable |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND status:Available |
     Then the JSON response at "totalItems" should be 0
@@ -325,13 +917,27 @@ Feature: Test the Search API v3 advanced queries on offers
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | availableTo   | *                                                                    |
-      | availableFrom | *                                                                    |
+      | availableTo   | *                                                                 |
+      | availableFrom | *                                                                 |
       | q             | id:(%{placeId} OR %{eventId}) AND bookingAvailability:Unavailable |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
-      | availableTo   | *                                                                  |
-      | availableFrom | *                                                                  |
+      | availableTo   | *                                                               |
+      | availableFrom | *                                                               |
       | q             | id:(%{placeId} OR %{eventId}) AND bookingAvailability:Available |
     Then the JSON response at "totalItems" should be 0
 
@@ -345,90 +951,270 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND calendarType:permanent |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND calendarType:periodic |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND calendarType:permanent |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND calendarType:periodic |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND calendarType:permanent |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND calendarType:periodic |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND created:[2024-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND created:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND created:[2024-01-01T00:00:00%2B01:00 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND created:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND created:[2024-01-01T00:00:00%2B01:00 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND created:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND created:[* TO 2090-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND created:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND created:[* TO 2090-01-01T00:00:00%2B01:00] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND created:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND created:[* TO 2090-01-01T00:00:00%2B01:00] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND created:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND modified:[2024-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND modified:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND modified:[2024-01-01T00:00:00%2B01:00 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND modified:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND modified:[2024-01-01T00:00:00%2B01:00 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND modified:[2090-01-01T00:00:00%2B01:00 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND modified:[* TO 2090-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND modified:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND modified:[* TO 2090-01-01T00:00:00%2B01:00] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND modified:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND modified:[* TO 2090-01-01T00:00:00%2B01:00] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND modified:[* TO 2024-01-01T00:00:00%2B01:00] |
     Then the JSON response at "totalItems" should be 0
@@ -443,7 +1229,21 @@ Feature: Test the Search API v3 advanced queries on offers
       | availableTo   | *                                                                |
       | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[2021-01-01T00:00:00%2B01:00 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/offers" with parameters:
       | availableTo   | *                                                                |
       | availableFrom | *                                                                |
@@ -453,7 +1253,21 @@ Feature: Test the Search API v3 advanced queries on offers
       | availableTo   | *                                                                |
       | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[2021-01-01T00:00:00%2B01:00 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | availableTo   | *                                                                |
       | availableFrom | *                                                                |
@@ -463,7 +1277,21 @@ Feature: Test the Search API v3 advanced queries on offers
       | availableTo   | *                                                                |
       | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[* TO 2090-01-01T00:00:00%2B01:00] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/offers" with parameters:
       | availableTo   | *                                                                |
       | availableFrom | *                                                                |
@@ -473,7 +1301,21 @@ Feature: Test the Search API v3 advanced queries on offers
       | availableTo   | *                                                                |
       | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[* TO 2090-01-01T00:00:00%2B01:00] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | availableTo   | *                                                                |
       | availableFrom | *                                                                |
@@ -497,12 +1339,48 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND "%{name}" |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND "%{name}" |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND "%{name}" |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
 
   Scenario: Search for a location id using an advanced query
     When I create a minimal place and save the "id" as "placeId"
@@ -512,9 +1390,23 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND location.id:%{placeId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
-      | q | id:%{eventId} AND location.id:00000000-0000-0000-0000-000000000000 |
+      | q | id:%{eventId} AND location.id:ffffffff-ffff-ffff-ffff-ffffffffffff |
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for an organizer id using an advanced query
@@ -527,9 +1419,23 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND organizer.id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
-      | q | id:%{eventId} AND organizer.id:00000000-0000-0000-0000-000000000000 |
+      | q | id:%{eventId} AND organizer.id:ffffffff-ffff-ffff-ffff-ffffffffffff |
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for organizer labels using an advanced query
@@ -543,7 +1449,21 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND organizer.labels:%{labelname} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND organizer.labels:non-existing-label |
     Then the JSON response at "totalItems" should be 0
@@ -556,13 +1476,41 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND location.terms.id:Yf4aZBfsUEu2NsQqsprngw |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND location.terms.id:0.50.4.0.0 |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND location.terms.label:"Cultuur- of ontmoetingscentrum" |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND location.terms.label:Concert |
     Then the JSON response at "totalItems" should be 0
@@ -576,7 +1524,21 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/events" with parameters:
       | audienceType | *                                           |
       | q            | id:%{eventId} AND audienceType:childrenOnly |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | audienceType | *                                       |
       | q            | id:%{eventId} AND audienceType:everyone |
@@ -590,7 +1552,21 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND attendanceMode:offline |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND attendanceMode:online |
     Then the JSON response at "totalItems" should be 0
@@ -603,7 +1579,21 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND workflowStatus:READY_FOR_VALIDATION |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND workflowStatus:APPROVED |
     Then the JSON response at "totalItems" should be 0
@@ -615,11 +1605,25 @@ Feature: Test the Search API v3 advanced queries on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | isDuplicate | * |
+      | isDuplicate | *                                   |
       | q           | id:%{eventId} AND isDuplicate:false |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
-      | isDuplicate | * |
+      | isDuplicate | *                                  |
       | q           | id:%{eventId} AND isDuplicate:true |
     Then the JSON response at "totalItems" should be 0
 
@@ -631,9 +1635,23 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND creator:edcee0f7-5906-4e92-8551-a7f5d37ba453 |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
-      | q | id:%{eventId} AND creator:00000000-0000-0000-0000-000000000000 |
+      | q | id:%{eventId} AND creator:ffffffff-ffff-ffff-ffff-ffffffffffff |
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for videos count using an advanced query
@@ -645,7 +1663,21 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND videosCount:[1 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND videosCount:0 |
     Then the JSON response at "totalItems" should be 0
@@ -669,7 +1701,21 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND mediaObjectsCount:[1 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND mediaObjectsCount:0 |
     Then the JSON response at "totalItems" should be 0
@@ -683,18 +1729,54 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completeness:[1 TO *] |
     Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{placeId}
+    """
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completeness:[90 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completeness:[1 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/places" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completeness:[90 TO *] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completeness:[1 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND completeness:[90 TO *] |
     Then the JSON response at "totalItems" should be 0
