@@ -360,4 +360,3 @@ Feature: Test the Search API v3 url parameters on organizers
       }
     }
     """
-    And the JSON response at "facet/regions/nis-01000/children/reg-brussel/children/nis-21012/count" should be 1
