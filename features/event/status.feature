@@ -41,12 +41,12 @@ Feature: Test status updates
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-single-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     Given I set the JSON request payload to:
           """
             [
@@ -61,9 +61,9 @@ Feature: Test status updates
               }
             ]
           """
-    And I send a PATCH request to "/events/%{uuid_testevent}/subEvents"
+    And I send a PATCH request to "/events/%{eventId}/subEvents"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "status" should be:
           """
@@ -88,12 +88,12 @@ Feature: Test status updates
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-multiple-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     Given I set the JSON request payload to:
           """
             [
@@ -114,9 +114,9 @@ Feature: Test status updates
               }
             ]
           """
-    And I send a PATCH request to "/events/%{uuid_testevent}/subEvents"
+    And I send a PATCH request to "/events/%{eventId}/subEvents"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "status" should be:
           """
@@ -140,12 +140,12 @@ Feature: Test status updates
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-multiple-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     Given I set the JSON request payload to:
           """
             [
@@ -163,9 +163,9 @@ Feature: Test status updates
               }
             ]
           """
-    And I send a PATCH request to "/events/%{uuid_testevent}/subEvents"
+    And I send a PATCH request to "/events/%{eventId}/subEvents"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "status" should be:
           """
@@ -184,12 +184,12 @@ Feature: Test status updates
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     When I set the JSON request payload from "events/legacy/event-with-referenced-location.json"
     And I send a POST request to "/events/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "eventId" as "uuid_event"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     And the response body should be valid JSON
 
     When I set the JSON request payload to:
@@ -209,7 +209,7 @@ Feature: Test status updates
          }
       ]
       """
-    And I send a PATCH request to "/events/%{uuid_event}/sub-events"
+    And I send a PATCH request to "/events/%{eventId}/sub-events"
     Then the response status should be "204"
 
     When I set the JSON request payload to:
@@ -224,10 +224,10 @@ Feature: Test status updates
           ]
         }
         """
-    And I send a POST request to "/events/%{uuid_event}/copies"
+    And I send a POST request to "/events/%{eventId}/copies"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "new_uuid_event"
+    And I keep the value of the JSON response at "eventId" as "newEventId"
 
     When I set the JSON request payload to:
       """
@@ -240,10 +240,10 @@ Feature: Test status updates
            }
         ]
       """
-    And I send a PATCH request to "/events/%{new_uuid_event}/sub-events"
+    And I send a PATCH request to "/events/%{newEventId}/sub-events"
     Then the response status should be "204"
 
-    When I send a GET request to "/events/%{new_uuid_event}"
+    When I send a GET request to "/events/%{newEventId}"
     Then the response status should be "200"
     And the response body should be valid JSON
     And the JSON response at "subEvent/0/status/type" should be "Unavailable"
@@ -253,12 +253,12 @@ Feature: Test status updates
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     When I set the JSON request payload from "events/legacy/event-with-referenced-location.json"
     And I send a POST request to "/events/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "eventId" as "uuid_event"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     And the response body should be valid JSON
 
     When I set the JSON request payload to:
@@ -278,7 +278,7 @@ Feature: Test status updates
          }
       ]
       """
-    And I send a PATCH request to "/events/%{uuid_event}/sub-events"
+    And I send a PATCH request to "/events/%{eventId}/sub-events"
     Then the response status should be "204"
 
     When I set the JSON request payload to:
@@ -293,10 +293,10 @@ Feature: Test status updates
           ]
         }
         """
-    And I send a POST request to "/events/%{uuid_event}/copies"
+    And I send a POST request to "/events/%{eventId}/copies"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "new_uuid_event"
+    And I keep the value of the JSON response at "eventId" as "newEventId"
 
     When I set the JSON request payload to:
       """
@@ -312,10 +312,10 @@ Feature: Test status updates
            }
         ]
       """
-    And I send a PATCH request to "/events/%{new_uuid_event}/sub-events"
+    And I send a PATCH request to "/events/%{newEventId}/sub-events"
     Then the response status should be "204"
 
-    When I send a GET request to "/events/%{new_uuid_event}"
+    When I send a GET request to "/events/%{newEventId}"
     Then the response status should be "200"
     And the response body should be valid JSON
     And the JSON response at "calendarType" should be "single"

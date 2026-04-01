@@ -10,7 +10,7 @@ Feature: Auto approving events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/event-with-workflow-status-ready-for-validation.json"
     When I send a POST request to "/events/"
@@ -29,7 +29,7 @@ Feature: Auto approving events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/legacy/event-with-permanent-calendar.json"
     When I send a POST request to "/events/"
@@ -48,7 +48,7 @@ Feature: Auto approving events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/legacy/event-with-permanent-calendar.json"
     When I send a POST request to "/imports/events/"

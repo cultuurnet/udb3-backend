@@ -12,7 +12,7 @@
     "nl": "Faith no more"
   },
   "location": {
-    "@id": "%{baseUrl}/places/%{uuid_place}"
+    "@id": "%{baseUrl}/places/%{placeId}"
   },
   "mediaObject": [
     {
