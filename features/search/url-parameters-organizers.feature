@@ -476,7 +476,6 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | facets[] | regions           |
       | q        | id:%{organizerId} |
-    And show me the unparsed response
     Then the JSON response should be:
     """
     {

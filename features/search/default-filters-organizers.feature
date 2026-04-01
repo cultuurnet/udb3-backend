@@ -18,7 +18,21 @@ Feature: Test the Search API v3 default filters on organizers
     When I send a GET request to "/organizers" with parameters:
       | workflowStatus | *                 |
       | q              | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """
 
   Scenario: Unlike offers, by default organizers outside Belgium are shown
     Given I create an organizer from "organizers/organizer-in-the-netherlands.json" and save the "id" as "organizerId"
@@ -26,4 +40,18 @@ Feature: Test the Search API v3 default filters on organizers
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/organizers\/%{organizerId}",
+          "@type": "Organizer"
+        }
+      ]
+    }
+    """

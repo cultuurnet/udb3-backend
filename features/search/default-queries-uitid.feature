@@ -16,8 +16,7 @@ Feature: Test the Search API v3 default queries from UiTID
     And I am using an UiTID v1 API key of consumer "sapi3KeyWithUitIdFilterForDiest"
     And I am not using a x-client-id header
     When I send a GET request to "/places" with parameters:
-      | limit                 | 1 |
-      | disableDefaultFilters | true |
+      | disableDefaultFilters | true          |
       | q                     | id:%{placeId} |
     Then the JSON response at "totalItems" should be 0
 
@@ -30,8 +29,7 @@ Feature: Test the Search API v3 default queries from UiTID
     And I am using an UiTID v1 API key of consumer "sapi3KeyWithUitIdFilterForDiest"
     And I am not using a x-client-id header
     When I send a GET request to "/events" with parameters:
-      | limit                 | 1 |
-      | disableDefaultFilters | true |
+      | disableDefaultFilters | true          |
       | q                     | id:%{eventId} |
     Then the JSON response at "totalItems" should be 0
 
@@ -43,10 +41,23 @@ Feature: Test the Search API v3 default queries from UiTID
     And I am using an UiTID v1 API key of consumer "sapi3KeyWithUitIdFilterForDiest"
     And I am not using a x-client-id header
     When I send a GET request to "/places" with parameters:
-      | limit                 | 1 |
-      | disableDefaultFilters | true |
+      | disableDefaultFilters | true          |
       | q                     | id:%{placeId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
+          "@type": "Place"
+        }
+      ]
+    }
+    """
 
   Scenario: Search for an event within by the default query
     Given I create a place from "places/citadel.json" and save the "url" as "placeUrl"
@@ -57,7 +68,20 @@ Feature: Test the Search API v3 default queries from UiTID
     And I am using an UiTID v1 API key of consumer "sapi3KeyWithUitIdFilterForDiest"
     And I am not using a x-client-id header
     When I send a GET request to "/events" with parameters:
-      | limit                 | 1 |
-      | disableDefaultFilters | true |
+      | disableDefaultFilters | true          |
       | q                     | id:%{eventId} |
-    Then the JSON response at "totalItems" should be 1
+    Then the JSON response should be:
+    """
+    {
+      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
+      "@type": "PagedCollection",
+      "itemsPerPage": 30,
+      "totalItems": 1,
+      "member" : [
+        {
+          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
+          "@type": "Event"
+        }
+      ]
+    }
+    """
