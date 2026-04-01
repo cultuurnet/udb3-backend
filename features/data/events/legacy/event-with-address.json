@@ -12,7 +12,7 @@
     "domain": "theme"
   },
   "location": {
-    "id": "%{uuid_place}"
+    "id": "%{placeId}"
   },
   "address":{
     "addressCountry":"BE",

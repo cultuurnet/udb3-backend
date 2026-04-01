@@ -31,7 +31,7 @@
     "en": "This is a description"
   },
   "location": {
-    "@id": "%{baseUrl}/place/%{uuid_place_citadel}"
+    "@id": "%{baseUrl}/place/%{placeId_citadel}"
   },
   "mainLanguage": "nl",
   "name": {

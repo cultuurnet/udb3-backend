@@ -275,7 +275,7 @@ Feature: Test capacity and remainingCapacity on sub-events
   Scenario: SubEvent type is Available when remainingCapacity=100 even with top-level Unavailable
     Given I set the JSON request payload from "places/place.json"
     And I send a POST request to "/places/"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/event-with-unavailable-sub-events.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
