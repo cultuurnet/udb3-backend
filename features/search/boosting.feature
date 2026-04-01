@@ -21,8 +21,8 @@ Feature: Test the Search API v3 boosting
     When I am using the Search API v3 base URL
     And I send a GET request to "/offers" with parameters:
       | q           | id:(%{placeId} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^10) OR (NOT labels:%{labelname})) |
-      | sort[score] | desc                                                                                                                                         |
-      | limit       | 2                                                                                                                                            |
+      | sort[score] | desc                                                                                                                                    |
+      | limit       | 2                                                                                                                                       |
     Then the JSON response at "totalItems" should be 4
     And the JSON response should include:
     """
@@ -42,7 +42,7 @@ Feature: Test the Search API v3 boosting
     """
     When I send a GET request to "/places" with parameters:
       | q           | id:(%{placeId} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^10) OR (NOT labels:%{labelname})) |
-      | sort[score] | desc                                                                                                               |
+      | sort[score] | desc                                                                                                                                    |
     Then the JSON response at "totalItems" should be 2
     And the JSON response at "member" should be:
     """
@@ -60,7 +60,7 @@ Feature: Test the Search API v3 boosting
     """
     When I send a GET request to "/events" with parameters:
       | q           | id:(%{placeId} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^10) OR (NOT labels:%{labelname})) |
-      | sort[score] | desc                                                                                                               |
+      | sort[score] | desc                                                                                                                                    |
     Then the JSON response at "totalItems" should be 2
     And the JSON response at "member" should be:
     """
@@ -81,8 +81,8 @@ Feature: Test the Search API v3 boosting
     When I am using the Search API v3 base URL
     And I send a GET request to "/offers" with parameters:
       | q           | id:(%{placeId} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
-      | sort[score] | desc                                                                                                                                         |
-      | limit       | 2                                                                                                                                            |
+      | sort[score] | desc                                                                                                                                     |
+      | limit       | 2                                                                                                                                        |
     Then the JSON response at "totalItems" should be 4
     And the JSON response should include:
     """
@@ -102,7 +102,7 @@ Feature: Test the Search API v3 boosting
     """
     When I send a GET request to "/places" with parameters:
       | q           | id:(%{placeId} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
-      | sort[score] | desc                                                                                                               |
+      | sort[score] | desc                                                                                                                                     |
     Then the JSON response at "totalItems" should be 2
     And the JSON response at "member" should be:
     """
@@ -120,7 +120,7 @@ Feature: Test the Search API v3 boosting
     """
     When I send a GET request to "/events" with parameters:
       | q           | id:(%{placeId} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
-      | sort[score] | desc                                                                                                               |
+      | sort[score] | desc                                                                                                                                     |
     Then the JSON response at "totalItems" should be 2
     And the JSON response at "member" should be:
     """
