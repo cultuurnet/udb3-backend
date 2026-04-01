@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
+use CultuurNet\UDB3\Event\Commands\UpdateDeparturePlaces;
 use CultuurNet\UDB3\Event\Commands\UpdateFaqs;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
@@ -270,6 +271,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         $commands[] = new ImportVideos($eventId, $event->getVideos());
         $commands[] = new UpdateFaqs($eventId, $event->getFaq());
+        $commands[] = new UpdateDeparturePlaces($eventId, $event->getDeparturePlaces());
 
         if ($workflowStatus->sameAs(WorkflowStatus::DELETED())) {
             $commands[] = new DeleteOffer($eventId);

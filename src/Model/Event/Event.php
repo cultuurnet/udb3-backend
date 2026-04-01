@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 
 interface Event extends Offer
 {
@@ -22,4 +23,6 @@ interface Event extends Offer
     public function getPlaceReference(): PlaceReference;
 
     public function getFaq(): Faqs;
+
+    public function getDeparturePlaces(): Urls;
 }
