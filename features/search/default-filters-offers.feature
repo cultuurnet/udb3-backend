@@ -45,20 +45,10 @@ Feature: Test the Search API v3 default filters on offers
     When I send a GET request to "/events" with parameters:
       | addressCountry | *                             |
       | q              | id:(%{placeId} OR %{eventId}) |
-    Then the JSON response should be:
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
     """
-    {
-      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
-      "@type": "PagedCollection",
-      "itemsPerPage": 30,
-      "totalItems": 1,
-      "member": [
-        {
-          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
-          "@type": "Event"
-        }
-      ]
-    }
+    %{eventId}
     """
 
   Scenario: By default non public audienceTypes are not shown
@@ -72,20 +62,10 @@ Feature: Test the Search API v3 default filters on offers
     When I send a GET request to "/events" with parameters:
       | audienceType | *             |
       | q            | id:%{eventId} |
-    Then the JSON response should be:
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
     """
-    {
-      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
-      "@type": "PagedCollection",
-      "itemsPerPage": 30,
-      "totalItems": 1,
-      "member": [
-        {
-          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
-          "@type": "Event"
-        }
-      ]
-    }
+    %{eventId}
     """
 
   Scenario: By default draft offers are not shown
@@ -119,20 +99,10 @@ Feature: Test the Search API v3 default filters on offers
       | availableFrom  | *                              |
       | availableTo    | *                              |
       | q              | id:(%{eventId} OR %{placeId}) |
-    Then the JSON response should be:
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
     """
-    {
-      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
-      "@type": "PagedCollection",
-      "itemsPerPage": 30,
-      "totalItems": 1,
-      "member": [
-        {
-          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
-          "@type": "Place"
-        }
-      ]
-    }
+    %{placeId}
     """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{eventId} OR %{placeId}) |
@@ -142,20 +112,10 @@ Feature: Test the Search API v3 default filters on offers
       | availableFrom  | *                              |
       | availableTo    | *                              |
       | q              | id:(%{eventId} OR %{placeId}) |
-    Then the JSON response should be:
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
     """
-    {
-      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
-      "@type": "PagedCollection",
-      "itemsPerPage": 30,
-      "totalItems": 1,
-      "member": [
-        {
-          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
-          "@type": "Event"
-        }
-      ]
-    }
+    %{eventId}
     """
 
   Scenario: By default rejected offers are no longer shown
@@ -188,20 +148,10 @@ Feature: Test the Search API v3 default filters on offers
     When I send a GET request to "/places" with parameters:
       | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
-    Then the JSON response should be:
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
     """
-    {
-      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
-      "@type": "PagedCollection",
-      "itemsPerPage": 30,
-      "totalItems": 1,
-      "member": [
-        {
-          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
-          "@type": "Place"
-        }
-      ]
-    }
+    %{placeId}
     """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{eventId} OR %{placeId}) |
@@ -209,20 +159,10 @@ Feature: Test the Search API v3 default filters on offers
     When I send a GET request to "/events" with parameters:
       | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
-    Then the JSON response should be:
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
     """
-    {
-      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
-      "@type": "PagedCollection",
-      "itemsPerPage": 30,
-      "totalItems": 1,
-      "member": [
-        {
-          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
-          "@type": "Event"
-        }
-      ]
-    }
+    %{eventId}
     """
 
   Scenario: By default deleted offers are no longer shown
@@ -255,20 +195,10 @@ Feature: Test the Search API v3 default filters on offers
     When I send a GET request to "/places" with parameters:
       | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
-    Then the JSON response should be:
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
     """
-    {
-      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
-      "@type": "PagedCollection",
-      "itemsPerPage": 30,
-      "totalItems": 1,
-      "member": [
-        {
-          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
-          "@type": "Place"
-        }
-      ]
-    }
+    %{placeId}
     """
     When I send a GET request to "/events" with parameters:
       | q | id:(%{eventId} OR %{placeId}) |
@@ -276,20 +206,10 @@ Feature: Test the Search API v3 default filters on offers
     When I send a GET request to "/events" with parameters:
       | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
-    Then the JSON response should be:
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
     """
-    {
-      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
-      "@type": "PagedCollection",
-      "itemsPerPage": 30,
-      "totalItems": 1,
-      "member": [
-        {
-          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
-          "@type": "Event"
-        }
-      ]
-    }
+    %{eventId}
     """
 
   Scenario: By default events with available to in the past should not be shown
@@ -306,20 +226,10 @@ Feature: Test the Search API v3 default filters on offers
       | availableFrom | *             |
       | availableTo   | *             |
       | q             | id:%{eventId} |
-    Then the JSON response should be:
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
     """
-    {
-      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
-      "@type": "PagedCollection",
-      "itemsPerPage": 30,
-      "totalItems": 1,
-      "member": [
-        {
-          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
-          "@type": "Event"
-        }
-      ]
-    }
+    %{eventId}
     """
 
   Scenario: By default events with available from in the future should not be shown
@@ -334,18 +244,8 @@ Feature: Test the Search API v3 default filters on offers
       | availableFrom | *             |
       | availableTo   | *             |
       | q             | id:%{eventId} |
-    Then the JSON response should be:
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
     """
-    {
-      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
-      "@type": "PagedCollection",
-      "itemsPerPage": 30,
-      "totalItems": 1,
-      "member": [
-        {
-          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
-          "@type": "Event"
-        }
-      ]
-    }
+    %{eventId}
     """

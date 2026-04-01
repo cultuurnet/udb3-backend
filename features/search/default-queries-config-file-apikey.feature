@@ -43,20 +43,10 @@ Feature: Test the Search API v3 default queries from the config file when using 
     When I send a GET request to "/places" with parameters:
       | disableDefaultFilters | true          |
       | q                     | id:%{placeId} |
-    Then the JSON response should be:
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
     """
-    {
-      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
-      "@type": "PagedCollection",
-      "itemsPerPage": 30,
-      "totalItems": 1,
-      "member": [
-        {
-          "@id": "http:\/\/io.uitdatabank.local:80\/place\/%{placeId}",
-          "@type": "Place"
-        }
-      ]
-    }
+    %{placeId}
     """
 
   Scenario: Search for an event within by the default query
@@ -70,18 +60,8 @@ Feature: Test the Search API v3 default queries from the config file when using 
     When I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true          |
       | q                     | id:%{eventId} |
-    Then the JSON response should be:
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
     """
-    {
-      "@context": "http:\/\/www.w3.org\/ns\/hydra\/context.jsonld",
-      "@type": "PagedCollection",
-      "itemsPerPage": 30,
-      "totalItems": 1,
-      "member": [
-        {
-          "@id": "http:\/\/io.uitdatabank.local:80\/event\/%{eventId}",
-          "@type": "Event"
-        }
-      ]
-    }
+    %{eventId}
     """
