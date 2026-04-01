@@ -65,7 +65,7 @@ class UpdateAudienceRequestHandlerTest extends TestCase
         $commandBus = $this->createMock(CommandBus::class);
         $commandBus->expects($this->once())
             ->method('dispatch')
-            ->willThrowException(IncompatibleAudienceType::forEvent($eventId, AudienceType::members()));
+            ->willThrowException(IncompatibleAudienceType::forDummyPlaceForEducation($eventId, AudienceType::members()));
         $updateAudienceRequestHandler = new UpdateAudienceRequestHandler($commandBus);
 
         $this->assertCallableThrowsApiProblem(
