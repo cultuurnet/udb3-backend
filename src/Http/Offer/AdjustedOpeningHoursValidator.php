@@ -10,7 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use InvalidArgumentException;
 
-/***
+/**
  * Note: The JSON schema already validates date format (Y-m-d or ISO8601) via "format" and pattern rules.
  * Domain validation (startDate <= endDate) is delegated to AdjustedOpeningHours value object.
  */
