@@ -54,18 +54,15 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_always_emits_opening_hours_key_even_when_empty(): void
+    public function it_throws_when_constructed_with_empty_opening_hours(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $this->expectException(\InvalidArgumentException::class);
+
+        new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours()
         );
-
-        $result = $this->normalizer->normalize($adjustedOpeningHours);
-
-        $this->assertArrayHasKey('openingHours', $result);
-        $this->assertSame([], $result['openingHours']);
     }
 
     /**
@@ -138,7 +135,9 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
         $adjustedOpeningHours = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-01-01T08:30:00+00:00'),
             new DateTimeImmutable('2026-01-31T18:45:00+00:00'),
-            new OpeningHours()
+            new OpeningHours(
+                new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+            )
         );
 
         $result = $this->normalizer->normalize($adjustedOpeningHours);
@@ -155,7 +154,9 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
         $adjustedOpeningHours = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
-            new OpeningHours()
+            new OpeningHours(
+                new OpeningHour(new Days(Day::friday()), Time::fromString('13:00'), Time::fromString('15:00'))
+            )
         );
 
         $this->assertTrue($this->normalizer->supportsNormalization($adjustedOpeningHours));

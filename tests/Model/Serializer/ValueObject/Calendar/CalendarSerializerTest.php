@@ -502,7 +502,9 @@ final class CalendarSerializerTest extends TestCase
         $adjustedOpeningHours = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
-            new OpeningHours(),
+            new OpeningHours(
+                new OpeningHour(new Days(Day::friday()), Time::fromString('13:00'), Time::fromString('15:00'))
+            ),
             $description
         );
         $calendar = new PeriodicCalendar(
@@ -578,7 +580,9 @@ final class CalendarSerializerTest extends TestCase
                 [
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
-                    'openingHours' => [],
+                    'openingHours' => [
+                        ['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
+                    ],
                     'description' => ['nl' => 'Kerstvakantie', 'fr' => 'Vacances de Noël'],
                 ],
             ],
@@ -601,7 +605,9 @@ final class CalendarSerializerTest extends TestCase
         $adjustedOpeningHours = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
-            new OpeningHours()
+            new OpeningHours(
+                new OpeningHour(new Days(Day::friday()), Time::fromString('13:00'), Time::fromString('15:00'))
+            )
         );
         $calendar = new PermanentCalendar(new OpeningHours());
         $calendar = $calendar->withAdjustedOpeningHours(new AdjustedOpeningHoursCollection($adjustedOpeningHours));
@@ -628,7 +634,9 @@ final class CalendarSerializerTest extends TestCase
                 [
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
-                    'openingHours' => [],
+                    'openingHours' => [
+                        ['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
+                    ],
                 ],
             ],
         ];
@@ -649,22 +657,29 @@ final class CalendarSerializerTest extends TestCase
     /**
      * @test
      */
-    public function it_round_trips_adjusted_opening_hours_with_empty_opening_hours(): void
+    public function it_skips_adjusted_opening_hours_entries_with_empty_opening_hours_on_deserialize(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
-            new DateTimeImmutable('2026-12-21'),
-            new DateTimeImmutable('2026-12-26'),
-            new OpeningHours()
-        );
-        $calendar = new PermanentCalendar(new OpeningHours());
-        $calendar = $calendar->withAdjustedOpeningHours(new AdjustedOpeningHoursCollection($adjustedOpeningHours));
+        // Old event-store data may contain entries with empty openingHours (written before the invariant was enforced).
+        // These should be silently skipped rather than causing a fatal error.
+        $data = [
+            'type' => 'permanent',
+            'status' => ['type' => 'Available'],
+            'bookingAvailability' => ['type' => 'Available'],
+            'openingHours' => [],
+            'openingHoursAdjusted' => [
+                [
+                    'startDate' => '2026-12-21',
+                    'endDate' => '2026-12-26',
+                    'openingHours' => [],
+                ],
+            ],
+        ];
 
-        $serialized = (new CalendarSerializer($calendar))->serialize();
-        $deserialized = CalendarSerializer::deserialize($serialized);
+        $calendar = CalendarSerializer::deserialize($data);
 
-        $this->assertInstanceOf(CalendarWithAdjustedOpeningHours::class, $deserialized);
-        /** @var CalendarWithAdjustedOpeningHours $deserialized */
-        $this->assertEquals(1, $deserialized->getAdjustedOpeningHours()->count());
+        $this->assertInstanceOf(CalendarWithAdjustedOpeningHours::class, $calendar);
+        /** @var CalendarWithAdjustedOpeningHours $calendar */
+        $this->assertTrue($calendar->getAdjustedOpeningHours()->isEmpty());
     }
 
     /**
@@ -677,6 +692,34 @@ final class CalendarSerializerTest extends TestCase
         $serializer = new CalendarSerializer($calendar);
         $data = $serializer->serialize();
 
+        $this->assertArrayNotHasKey('openingHoursAdjusted', $data);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_remove_adjusted_opening_hours_by_passing_an_empty_collection(): void
+    {
+        $adjustedOpeningHours = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-12-21'),
+            new DateTimeImmutable('2026-12-26'),
+            new OpeningHours(
+                new OpeningHour(new Days(Day::friday()), Time::fromString('13:00'), Time::fromString('15:00'))
+            )
+        );
+        $calendar = new PermanentCalendar(new OpeningHours());
+        $calendar = $calendar->withAdjustedOpeningHours(new AdjustedOpeningHoursCollection($adjustedOpeningHours));
+
+        // Verify it was set
+        $this->assertEquals(1, $calendar->getAdjustedOpeningHours()->count());
+
+        // Remove by passing an empty collection
+        $calendar = $calendar->withAdjustedOpeningHours(new AdjustedOpeningHoursCollection());
+
+        $this->assertTrue($calendar->getAdjustedOpeningHours()->isEmpty());
+
+        // Confirm it is also absent from the serialized output
+        $data = (new CalendarSerializer($calendar))->serialize();
         $this->assertArrayNotHasKey('openingHoursAdjusted', $data);
     }
 

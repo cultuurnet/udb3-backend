@@ -33,6 +33,10 @@ final class AdjustedOpeningHoursDenormalizer implements DenormalizerInterface
                 continue;
             }
 
+            if (empty($adjustedOpeningHoursData['openingHours'])) {
+                continue;
+            }
+
             $startDate = DateTimeFactory::fromDateOrISO8601($adjustedOpeningHoursData['startDate']);
             $endDate = DateTimeFactory::fromDateOrISO8601($adjustedOpeningHoursData['endDate']);
 

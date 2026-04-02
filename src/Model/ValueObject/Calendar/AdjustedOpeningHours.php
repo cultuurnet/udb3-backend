@@ -19,6 +19,10 @@ final class AdjustedOpeningHours
         if ($startDate > $endDate) {
             throw new InvalidArgumentException('"startDate" should not be later than "endDate".');
         }
+
+        if ($openingHours->toArray() === []) {
+            throw new InvalidArgumentException('AdjustedOpeningHours must contain at least one OpeningHour.');
+        }
     }
 
     public function getStartDate(): DateTimeImmutable
