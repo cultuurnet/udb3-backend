@@ -9,6 +9,13 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class AdjustedOpeningHoursNormalizer implements NormalizerInterface
 {
+    private OpeningHourNormalizer $openingHourNormalizer;
+
+    public function __construct()
+    {
+        $this->openingHourNormalizer = new OpeningHourNormalizer();
+    }
+
     /**
      * @param AdjustedOpeningHours $object
      */
@@ -19,9 +26,8 @@ final class AdjustedOpeningHoursNormalizer implements NormalizerInterface
             'endDate' => $object->getEndDate()->format('Y-m-d'),
         ];
 
-        $openingHourNormalizer = new OpeningHourNormalizer();
         foreach ($object->getOpeningHours()->toArray() as $openingHour) {
-            $data['openingHours'][] = $openingHourNormalizer->normalize($openingHour);
+            $data['openingHours'][] = $this->openingHourNormalizer->normalize($openingHour);
         }
 
         if ($object->getDescription() !== null) {
