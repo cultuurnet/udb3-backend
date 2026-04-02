@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
+use CultuurNet\UDB3\Event\Commands\UpdateDeparturePlaces;
 use CultuurNet\UDB3\Event\Commands\UpdateFaqs;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
@@ -96,6 +97,7 @@ use Money\Currency;
 use Money\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 
 final class ImportEventRequestHandlerTest extends TestCase
 {
@@ -111,6 +113,8 @@ final class ImportEventRequestHandlerTest extends TestCase
 
     private MockObject $eventCategoryResolver;
 
+    private LoggerInterface&MockObject $logger;
+
     private ImportEventRequestHandler $importEventRequestHandler;
 
     protected function setUp(): void
@@ -119,6 +123,8 @@ final class ImportEventRequestHandlerTest extends TestCase
         $this->uuidGenerator = $this->createMock(UuidGeneratorInterface::class);
         $this->commandBus = new TraceableCommandBus();
         $this->imageCollectionFactory = $this->createMock(ImageCollectionFactory::class);
+
+        $this->logger = $this->createMock(LoggerInterface::class);
 
         // Create and configure the EventCategoryResolver mock
         $this->eventCategoryResolver = $this->createMock(CategoryResolverInterface::class);
@@ -200,7 +206,8 @@ final class ImportEventRequestHandlerTest extends TestCase
             $this->commandBus,
             $this->imageCollectionFactory,
             $locationRepository,
-            $organizerRepository
+            $organizerRepository,
+            new DeparturePlacesLimitLogger($this->logger),
         );
 
         $this->commandBus->record();
@@ -272,6 +279,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -355,6 +363,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -475,6 +484,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -551,6 +561,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -831,6 +842,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                     )
                 ),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -904,6 +916,58 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_imports_departure_places(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+                'terms' => [['id' => '1.50.0.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'permanent',
+                'departurePlaces' => [
+                    'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+                ],
+            ])
+            ->build('POST');
+
+        $this->importEventRequestHandler->handle($request);
+
+        $expectedDeparturePlaces = new Urls(
+            new Url('https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'),
+        );
+
+        $recordedCommands = $this->commandBus->getRecordedCommands();
+        $updateDeparturePlacesCommand = array_values(array_filter(
+            $recordedCommands,
+            fn ($c) => $c instanceof UpdateDeparturePlaces
+        ))[0];
+
+        $this->assertEquals(
+            new UpdateDeparturePlaces($eventId, $expectedDeparturePlaces),
+            $updateDeparturePlacesCommand
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_ignores_an_empty_timeSpan(): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
@@ -970,6 +1034,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1042,6 +1107,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1241,6 +1307,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1312,6 +1379,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1393,6 +1461,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1472,6 +1541,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1550,6 +1620,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1632,6 +1703,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1708,6 +1780,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1788,6 +1861,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1862,6 +1936,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -2143,6 +2218,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -2955,6 +3031,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -4219,6 +4296,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteOffer($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
@@ -4555,6 +4633,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -5048,6 +5127,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -5153,6 +5233,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
+                new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -6705,6 +6786,45 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(...$expectedErrors),
+            fn () => $this->importEventRequestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_an_error_when_departure_places_limit_is_exceeded(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $departurePlaces = array_map(
+            fn (int $i) => 'https://io.uitdatabank.dev/places/' . sprintf('00000000-0000-0000-0000-%012d', $i),
+            range(1, 21)
+        );
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+                'terms' => [['id' => '1.50.0.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'permanent',
+                'departurePlaces' => $departurePlaces,
+            ])
+            ->build('POST');
+
+        $this->logger->expects($this->once())
+            ->method('error')
+            ->with($this->stringContains('Departure places limit exceeded for event ' . $eventId));
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/departurePlaces', 'Array should have at most 20 items, 21 found')
+            ),
             fn () => $this->importEventRequestHandler->handle($request)
         );
     }

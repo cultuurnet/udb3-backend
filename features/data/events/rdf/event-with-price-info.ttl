@@ -19,7 +19,7 @@
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
+  prov:atLocation <http://data.uitdatabank.local:80/places/%{placeId}> ;
   cpa:prijs <http://data.uitdatabank.local:80/events/%{eventId}#priceSpecification-77836465>, <http://data.uitdatabank.local:80/events/%{eventId}#priceSpecification-2daf745e> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}>

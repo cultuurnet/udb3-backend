@@ -9,8 +9,17 @@ use Exception;
 
 final class IncompatibleAudienceType extends Exception
 {
-    public static function forEvent(string $eventId, AudienceType $audienceType): IncompatibleAudienceType
+    public static function forDummyPlaceForEducation(string $eventId, AudienceType $audienceType): self
     {
-        return new self('Audience type ' . $audienceType->toString() . ' is incompatible with event ' . $eventId);
+        return new self(
+            'Audience type "' . $audienceType->toString() . '" is not allowed for events with a dummy place for education. Event: ' . $eventId
+        );
+    }
+
+    public static function forDeparturePlaces(string $eventId): self
+    {
+        return new self(
+            'Departure places can only be set on events with audienceType "childrenOnly". Event: ' . $eventId
+        );
     }
 }

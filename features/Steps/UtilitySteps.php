@@ -59,9 +59,9 @@ trait UtilitySteps
     }
 
     /**
-     * @Given I create a random name of :nrOfCharacters characters and keep it as :variableName
+     * @Given I create a random string of :nrOfCharacters characters and keep it as :variableName
      */
-    public function iCreateARandomNameOfCharactersAndKeepItAs(int $nrOfCharacters, string $variableName): void
+    public function iCreateARandomStringOfCharactersAndKeepItAs(int $nrOfCharacters, string $variableName): void
     {
         $this->variableState->setRandomVariable($variableName, $nrOfCharacters);
     }

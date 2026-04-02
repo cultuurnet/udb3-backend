@@ -10,6 +10,8 @@ use CultuurNet\UDB3\Event\ReadModel\Relations\EventRelationsRepository;
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
+use CultuurNet\UDB3\Http\Event\DeparturePlacesLimitLogger;
+use CultuurNet\UDB3\Http\Event\UpdateDeparturePlacesRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateFaqsRequestHandler;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\LegacyEventRequestBodyParser;
@@ -27,6 +29,8 @@ use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 
@@ -45,6 +49,7 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             DeleteOnlineUrlRequestHandler::class,
             UpdateAudienceRequestHandler::class,
             UpdateFaqsRequestHandler::class,
+            UpdateDeparturePlacesRequestHandler::class,
             CopyEventRequestHandler::class,
             UpdateMajorInfoRequestHandler::class,
         ];
@@ -76,7 +81,8 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
                     $container->get('event_command_bus'),
                     $container->get('import_image_collection_factory'),
                     $container->get('place_jsonld_repository'),
-                    $container->get('organizer_jsonld_repository')
+                    $container->get('organizer_jsonld_repository'),
+                    new DeparturePlacesLimitLogger(LoggerFactory::create($container, LoggerName::forWeb()))
                 );
             }
         );
@@ -147,6 +153,16 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             UpdateFaqsRequestHandler::class,
             fn () => new UpdateFaqsRequestHandler(
                 $container->get('event_command_bus')
+            )
+        );
+
+        $container->addShared(
+            UpdateDeparturePlacesRequestHandler::class,
+            fn () => new UpdateDeparturePlacesRequestHandler(
+                $container->get('event_command_bus'),
+                $container->get('place_jsonld_repository'),
+                $container->get('iri_offer_identifier_factory'),
+                new DeparturePlacesLimitLogger(LoggerFactory::create($container, LoggerName::forWeb())),
             )
         );
 
