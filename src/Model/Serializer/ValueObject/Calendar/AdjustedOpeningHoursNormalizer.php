@@ -19,12 +19,9 @@ final class AdjustedOpeningHoursNormalizer implements NormalizerInterface
             'endDate' => $object->getEndDate()->format('Y-m-d'),
         ];
 
-        $openingHours = $object->getOpeningHours()->toArray();
-        if (!empty($openingHours)) {
-            $data['openingHours'] = [];
-            foreach ($openingHours as $openingHour) {
-                $data['openingHours'][] = (new OpeningHourNormalizer())->normalize($openingHour);
-            }
+        $data['openingHours'] = [];
+        foreach ($object->getOpeningHours()->toArray() as $openingHour) {
+            $data['openingHours'][] = (new OpeningHourNormalizer())->normalize($openingHour);
         }
 
         if ($object->getDescription() !== null) {

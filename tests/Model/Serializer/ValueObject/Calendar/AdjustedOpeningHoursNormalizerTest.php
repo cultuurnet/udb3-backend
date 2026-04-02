@@ -54,6 +54,23 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_always_emits_opening_hours_key_even_when_empty(): void
+    {
+        $adjustedOpeningHours = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-12-21'),
+            new DateTimeImmutable('2026-12-26'),
+            new OpeningHours()
+        );
+
+        $result = $this->normalizer->normalize($adjustedOpeningHours);
+
+        $this->assertArrayHasKey('openingHours', $result);
+        $this->assertSame([], $result['openingHours']);
+    }
+
+    /**
+     * @test
+     */
     public function it_normalizes_adjusted_opening_hours_with_description(): void
     {
         $description = new TranslatedAdjustedOpeningHoursDescription(

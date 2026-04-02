@@ -649,6 +649,27 @@ final class CalendarSerializerTest extends TestCase
     /**
      * @test
      */
+    public function it_round_trips_adjusted_opening_hours_with_empty_opening_hours(): void
+    {
+        $adjustedOpeningHours = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-12-21'),
+            new DateTimeImmutable('2026-12-26'),
+            new OpeningHours()
+        );
+        $calendar = new PermanentCalendar(new OpeningHours());
+        $calendar = $calendar->withAdjustedOpeningHours(new AdjustedOpeningHoursCollection($adjustedOpeningHours));
+
+        $serialized = (new CalendarSerializer($calendar))->serialize();
+        $deserialized = CalendarSerializer::deserialize($serialized);
+
+        $this->assertInstanceOf(CalendarWithAdjustedOpeningHours::class, $deserialized);
+        /** @var CalendarWithAdjustedOpeningHours $deserialized */
+        $this->assertEquals(1, $deserialized->getAdjustedOpeningHours()->count());
+    }
+
+    /**
+     * @test
+     */
     public function it_does_not_serialize_adjusted_opening_hours_when_empty(): void
     {
         $calendar = new PermanentCalendar(new OpeningHours());
