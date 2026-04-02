@@ -41,7 +41,6 @@ final class AdjustedOpeningHoursValidator
                 $errors = $this->checkIfTimeIsValid('closes', $openingHour, $index, $ohIndex, $errors);
             }
 
-
             try {
                 new AdjustedOpeningHours($startDate, $endDate, new OpeningHours());
             } catch (InvalidArgumentException) {

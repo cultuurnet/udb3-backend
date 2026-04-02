@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -119,7 +120,7 @@ final class CalendarSerializer implements Serializable
                 }
                 if (!empty($data['openingHoursAdjusted'])) {
                     $calendar = $calendar->withAdjustedOpeningHours(
-                        (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], \CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection::class)
+                        (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedOpeningHoursCollection::class)
                     );
                 }
                 break;
@@ -132,7 +133,7 @@ final class CalendarSerializer implements Serializable
                 }
                 if (!empty($data['openingHoursAdjusted'])) {
                     $calendar = $calendar->withAdjustedOpeningHours(
-                        (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], \CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection::class)
+                        (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedOpeningHoursCollection::class)
                     );
                 }
                 break;
