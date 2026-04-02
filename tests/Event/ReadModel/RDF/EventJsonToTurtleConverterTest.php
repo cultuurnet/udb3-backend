@@ -1077,6 +1077,22 @@ class EventJsonToTurtleConverterTest extends TestCase
     /**
      * @test
      */
+    public function it_converts_an_event_with_audience_type(): void
+    {
+        $this->givenThereIsAnEvent([
+            'audience' => [
+                'audienceType' => 'education',
+            ],
+        ]);
+
+        $turtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals(SampleFiles::read(__DIR__ . '/ttl/event-with-audience-type.ttl'), $turtle);
+    }
+
+    /**
+     * @test
+     */
     public function it_converts_an_event_with_images(): void
     {
         $url = 'https://images-acc.uitdatabank.be/6bab1cba-18d0-42e7-b0c9-3b869eb68934.jpeg';
