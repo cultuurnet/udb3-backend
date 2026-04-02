@@ -36,6 +36,23 @@ final class AdjustedOpeningHoursTest extends TestCase
     /**
      * @test
      */
+    public function it_creates_with_same_day_start_and_end_date(): void
+    {
+        $adjustedOpeningHours = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-12-25'),
+            new DateTimeImmutable('2026-12-25'),
+            new OpeningHours(
+                new OpeningHour(new Days(Day::friday()), Time::fromString('10:00'), Time::fromString('16:00'))
+            )
+        );
+
+        $this->assertSame('2026-12-25', $adjustedOpeningHours->getStartDate()->format('Y-m-d'));
+        $this->assertSame('2026-12-25', $adjustedOpeningHours->getEndDate()->format('Y-m-d'));
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_start_date_is_after_end_date(): void
     {
         $this->expectException(InvalidArgumentException::class);
