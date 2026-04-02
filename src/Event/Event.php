@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
+use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
@@ -94,6 +95,7 @@ use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use CultuurNet\UDB3\Offer\Events\AbstractOwnerChanged;
 use CultuurNet\UDB3\Offer\LabelsArray;
@@ -119,6 +121,8 @@ final class Event extends Offer
     private ?string $themeId = null;
 
     private Faqs $faqs;
+
+    private Urls $departurePlaces;
 
     public static function getOfferType(): OfferType
     {
@@ -226,6 +230,7 @@ final class Event extends Offer
         $this->mainLanguage = $eventCreated->getMainLanguage();
         $this->workflowStatus = WorkflowStatus::DRAFT();
         $this->faqs = new Faqs();
+        $this->departurePlaces = new Urls();
     }
 
     protected function applyEventCopied(EventCopied $eventCopied): void
@@ -235,6 +240,7 @@ final class Event extends Offer
         $this->workflowStatus = WorkflowStatus::DRAFT();
         $this->labels = new LabelsArray();
         $this->faqs = new Faqs();
+        $this->departurePlaces = new Urls();
     }
 
     protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImported): void
@@ -243,6 +249,7 @@ final class Event extends Offer
         // When importing from UDB2 the default main language is always 'nl'.
         $this->mainLanguage = new Language('nl');
         $this->faqs = new Faqs();
+        $this->departurePlaces = new Urls();
         $this->setUDB2Data($eventImported);
     }
 
@@ -495,7 +502,7 @@ final class Event extends Offer
             $this->locationId->isDummyPlaceForEducation() &&
             !$audienceType->sameAs(AudienceType::education())
         ) {
-            throw IncompatibleAudienceType::forEvent($this->eventId, $audienceType);
+            throw IncompatibleAudienceType::forDummyPlaceForEducation($this->eventId, $audienceType);
         }
 
         if (is_null($this->audienceType) || !$this->audienceType->sameAs($audienceType)) {
@@ -550,6 +557,26 @@ final class Event extends Offer
     protected function applyFaqsUpdated(FaqsUpdated $faqsUpdated): void
     {
         $this->faqs = $faqsUpdated->faqs;
+    }
+
+    public function updateDeparturePlaces(Urls $departurePlaces): void
+    {
+        if ($departurePlaces->sameAs($this->departurePlaces)) {
+            return;
+        }
+
+        if (!$departurePlaces->isEmpty() &&
+            ($this->audienceType === null || !$this->audienceType->sameAs(AudienceType::childrenOnly()))
+        ) {
+            throw IncompatibleAudienceType::forDeparturePlaces($this->eventId);
+        }
+
+        $this->apply(new DeparturePlacesUpdated($this->eventId, $departurePlaces));
+    }
+
+    protected function applyDeparturePlacesUpdated(DeparturePlacesUpdated $departurePlacesUpdated): void
+    {
+        $this->departurePlaces = $departurePlacesUpdated->departurePlaces;
     }
 
     public function updateUiTPASPrices(Tariffs $tariffs): void

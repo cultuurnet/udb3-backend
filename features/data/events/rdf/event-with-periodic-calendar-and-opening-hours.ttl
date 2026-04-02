@@ -35,7 +35,7 @@
 
 <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-7d299e51>
   a cidoc:E92_Spacetime_Volume ;
-  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
+  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{placeId}> ;
   cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-c7a7795e> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-c7a7795e>

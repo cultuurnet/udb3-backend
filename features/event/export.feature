@@ -8,12 +8,12 @@ Feature: Test the UDB3 events export API
     And I set the JSON request payload from "places/place.json"
     And I send a POST request to "/places/"
     And the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-referenced-location.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent_export"
+    And I keep the value of the JSON response at "eventId" as "eventId"
 
   @mails
   Scenario: Export events to OOXML - basic

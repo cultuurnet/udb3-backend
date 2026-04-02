@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateDeparturePlacesHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateFaqsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\DeleteOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
@@ -33,6 +34,7 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
             UpdateUiTPASPricesHandler::class,
             CopyEventHandler::class,
             UpdateFaqsHandler::class,
+            UpdateDeparturePlacesHandler::class,
         ];
     }
 
@@ -113,6 +115,11 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
         $container->addShared(
             UpdateFaqsHandler::class,
             fn () => new UpdateFaqsHandler($container->get('event_repository'))
+        );
+
+        $container->addShared(
+            UpdateDeparturePlacesHandler::class,
+            fn () => new UpdateDeparturePlacesHandler($container->get('event_repository'))
         );
     }
 }

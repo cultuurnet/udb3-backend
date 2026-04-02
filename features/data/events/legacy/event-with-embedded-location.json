@@ -12,7 +12,7 @@
     "domain": "theme"
   },
   "location": {
-    "id": "%{uuid_place}",
+    "id": "%{placeId}",
     "name": "%{name_place}",
     "address": {
       "addressCountry": "%{country_place}",

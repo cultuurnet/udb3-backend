@@ -342,12 +342,12 @@ Feature: Test the curator API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-referenced-location.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
 
     Given I am not using an UiTID v1 API key
     And I am not authorized
@@ -357,7 +357,7 @@ Feature: Test the curator API
       "headline": "publiq wint API award",
       "inLanguage": "nl",
       "text": "Op 10 januari 2020 wint publiq de API award",
-      "about": "%{uuid_testevent}",
+      "about": "%{eventId}",
       "publisher": "BRUZZ",
       "publisherLogo": "https://www.bruzz.be/img/favicon.png",
       "url": "https://www.bruzz.be/blog/%{name}"
@@ -367,7 +367,7 @@ Feature: Test the curator API
     Then the response status should be "201"
 
     Given I am using the UDB3 base URL
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the response body should be valid JSON
     And the JSON response at "hiddenLabels" should be:
