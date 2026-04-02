@@ -1077,7 +1077,7 @@ class EventJsonToTurtleConverterTest extends TestCase
     /**
      * @test
      */
-    public function it_converts_an_event_with_audience_type(): void
+    public function it_converts_an_event_with_an_audience_type_other_than_everyone(): void
     {
         $this->givenThereIsAnEvent([
             'audience' => [
