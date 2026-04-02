@@ -68,7 +68,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
                         ],
                         (object)[
                             'startDate' => '2026-12-27',
-                            'endDate' => '2027-01-03',
+                            'endDate' => '2026-12-31',
                             'openingHours' => [
                                 (object)[
                                     'opens' => '14:00',
@@ -88,7 +88,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
                     'openingHoursAdjusted' => [
                         (object)[
                             'startDate' => '2026-12-21',
-                            'endDate' => '2027-01-03',
+                            'endDate' => '2026-12-31',
                             'description' => (object)['nl' => 'Kerstvakantie'],
                             'openingHours' => [
                                 (object)[
@@ -269,6 +269,50 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
                 ],
                 '/openingHoursAdjusted/0/endDate',
                 'the end date of adjusted opening hours should not be after the calendar end date',
+            ],
+            'invalid opens time' => [
+                (object)[
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHoursAdjusted' => [
+                        (object)[
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object)[
+                                    'opens' => '25:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                '/openingHoursAdjusted/0/openingHours/0/opens',
+                'Invalid time format (hh:mm)',
+            ],
+            'invalid closes time' => [
+                (object)[
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHoursAdjusted' => [
+                        (object)[
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object)[
+                                    'opens' => '13:00',
+                                    'closes' => '24:60',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                '/openingHoursAdjusted/0/openingHours/0/closes',
+                'Invalid time format (hh:mm)',
             ],
             'overlapping entries' => [
                 (object)[
