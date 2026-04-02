@@ -128,17 +128,19 @@ Feature: Test RDF projection of events
     And I calculate the image hash with description "A cute dog", copyright "publiq vzw" and language "nl" for "%{imageId}" as "imageHash"
     Then the RDF response should match event projection "events/rdf/event-with-all-fields.ttl"
 
-  Scenario: Create an event with a not for everyone audienceType
+  Scenario: Create an event with audienceType members
     Given I create an event from "events/rdf/event-with-audience-type-members.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match event projection "events/rdf/event-with-audience-type-members.ttl"
 
+  Scenario: Create an event with audienceType education
     Given I create an event from "events/rdf/event-with-audience-type-education.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match event projection "events/rdf/event-with-audience-type-education.ttl"
 
+  Scenario: Create an event with audienceType children only
     Given I create an event from "events/rdf/event-with-audience-type-children-only.json" and save the "id" as "eventId"
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
