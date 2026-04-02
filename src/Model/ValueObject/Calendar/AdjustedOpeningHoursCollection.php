@@ -31,7 +31,7 @@ final class AdjustedOpeningHoursCollection
 
     public function isEmpty(): bool
     {
-        return count($this->adjustedOpeningHours) === 0;
+        return $this->count() === 0;
     }
 
     public function count(): int
