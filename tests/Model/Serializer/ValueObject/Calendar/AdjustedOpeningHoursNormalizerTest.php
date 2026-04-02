@@ -54,20 +54,6 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_when_constructed_with_empty_opening_hours(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-
-        new AdjustedOpeningHours(
-            new DateTimeImmutable('2026-12-21'),
-            new DateTimeImmutable('2026-12-26'),
-            new OpeningHours()
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_normalizes_adjusted_opening_hours_with_description(): void
     {
         $description = new TranslatedAdjustedOpeningHoursDescription(

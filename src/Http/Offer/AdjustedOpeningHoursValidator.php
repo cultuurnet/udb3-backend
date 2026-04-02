@@ -6,10 +6,8 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use InvalidArgumentException;
 
 /***
@@ -39,9 +37,7 @@ final class AdjustedOpeningHoursValidator
                 $errors = $this->checkIfTimeIsValid('closes', $openingHour, $index, $ohIndex, $errors);
             }
 
-            try {
-                new AdjustedOpeningHours($startDate, $endDate, new OpeningHours());
-            } catch (InvalidArgumentException) {
+            if ($startDate > $endDate) {
                 $errors[] = new SchemaError(
                     '/openingHoursAdjusted/' . $index . '/endDate',
                     'endDate should not be before startDate'
