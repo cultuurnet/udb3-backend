@@ -74,6 +74,8 @@ Feature: Test the Search API v3 url parameters on offers
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I create a minimal organizer and save the "id" as "organizerId"
     And I send a PUT request to "/events/%{eventId}/organizer/%{organizerId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | locationId | %{placeId} |
     Then the JSON response at "totalItems" should be 1
