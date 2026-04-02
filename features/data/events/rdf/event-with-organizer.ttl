@@ -19,6 +19,7 @@
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.2.0.0> ;
   cidoc:P14_carried_out_by <http://data.uitdatabank.local:80/organizers/%{organizerId}> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
+  udb:audienceType <https://data.publiq.be/concepts/audienceType/everyone> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://data.uitdatabank.local:80/places/%{placeId}> .
 
