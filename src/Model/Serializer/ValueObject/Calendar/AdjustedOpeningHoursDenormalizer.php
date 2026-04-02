@@ -14,10 +14,12 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class AdjustedOpeningHoursDenormalizer implements DenormalizerInterface
 {
+    private OpeningHourDenormalizer $openingHourDenormalizer;
     private TranslatedAdjustedOpeningHoursDescriptionDenormalizer $translatedDescriptionDenormalizer;
 
     public function __construct()
     {
+        $this->openingHourDenormalizer = new OpeningHourDenormalizer();
         $this->translatedDescriptionDenormalizer = new TranslatedAdjustedOpeningHoursDescriptionDenormalizer();
     }
 
@@ -63,9 +65,8 @@ final class AdjustedOpeningHoursDenormalizer implements DenormalizerInterface
 
     private function denormalizeOpeningHours(array $openingHoursData): OpeningHours
     {
-        $denormalizer = new OpeningHourDenormalizer();
         $openingHours = array_map(
-            fn (array $data) => $denormalizer->denormalize($data, OpeningHour::class),
+            fn (array $data) => $this->openingHourDenormalizer->denormalize($data, OpeningHour::class),
             $openingHoursData
         );
         return new OpeningHours(...$openingHours);
