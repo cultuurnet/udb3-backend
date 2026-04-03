@@ -61,8 +61,8 @@ See `src/Doctrine/DatabaseConnectionChecker.php` and `src/Doctrine/DBALDatabaseC
 
 - Use `@test` annotation style for test methods
 - Mock objects use intersection types: `Connection&MockObject`
-- Allow use of dataproviders for testing related use cases. for example different input for code validation
-- Prefer different methods for testing distinct flows instead of dataProviders to make it more clear which use case fails
+- Allow use of dataproviders for testing related use cases. For example, different input for code validation
+- Prefer different methods for testing distinct flows instead of dataProviders to clarify which use case fails
 - Test file location mirrors source: `src/Foo/Bar.php` → `tests/Foo/BarTest.php`
 
 ## Gotchas & Pitfalls
