@@ -109,5 +109,4 @@ final class AdjustedOpeningHoursCollectionTest extends TestCase
         $this->assertEquals(new DateTimeImmutable('2026-12-25T00:00:00'), $array[0]->getStartDate());
         $this->assertEquals(new DateTimeImmutable('2026-12-31T00:00:00'), $array[0]->getEndDate());
     }
-
 }
