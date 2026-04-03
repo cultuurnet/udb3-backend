@@ -1,0 +1,15 @@
+{
+  "mainLanguage":"nl",
+  "name": {
+    "nl": "%{name}"
+  },
+  "url": "https://www.%{name}.nl",
+  "address": {
+    "nl": {
+      "addressCountry": "NL",
+      "addressLocality": "Rotterdam",
+      "postalCode": "3044BC",
+      "streetAddress": "Van Nelleweg 1"
+    }
+  }
+}

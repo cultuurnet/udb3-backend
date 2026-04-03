@@ -64,7 +64,7 @@ Feature: Test event workflowStatus property
     Then the JSON response at "workflowStatus" should be "DELETED"
 
   Scenario: Update event to deleted status with complete overwrite
-    Given I create a place from "places/place.json" and save the "placeId" as "uuid_place"
+    Given I create a place from "places/place.json" and save the "placeId" as "placeId"
     When I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "url" as "eventUrl"
     And I get the event at "%{eventUrl}"
     Then the JSON response at "workflowStatus" should be "READY_FOR_VALIDATION"
@@ -74,7 +74,7 @@ Feature: Test event workflowStatus property
     Then the JSON response at "workflowStatus" should be "DELETED"
 
   Scenario: Ignore an event workflowStatus update from APPROVED to READY FOR VALIDATION via complete overwrite
-    Given I create a place from "places/place.json" and save the "placeId" as "uuid_place"
+    Given I create a place from "places/place.json" and save the "placeId" as "placeId"
     Given I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "url" as "eventUrl"
     When I approve the event via legacy PATCH at "%{eventUrl}"
     And I get the event at "%{eventUrl}"
@@ -85,7 +85,7 @@ Feature: Test event workflowStatus property
     Then the JSON response at "workflowStatus" should be "APPROVED"
 
   Scenario: Ignore an event workflowStatus update from REJECTED to READY FOR VALIDATION via complete overwrite
-    Given I create a place from "places/place.json" and save the "placeId" as "uuid_place"
+    Given I create a place from "places/place.json" and save the "placeId" as "placeId"
     Given I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "url" as "eventUrl"
     When I reject the event via legacy PATCH at "%{eventUrl}" with reason "Rejected reason"
     And I get the event at "%{eventUrl}"
@@ -96,7 +96,7 @@ Feature: Test event workflowStatus property
     Then the JSON response at "workflowStatus" should be "REJECTED"
 
   Scenario: Ignore an event workflowStatus update from DELETED to READY FOR VALIDATION via complete overwrite
-    Given I create a place from "places/place.json" and save the "placeId" as "uuid_place"
+    Given I create a place from "places/place.json" and save the "placeId" as "placeId"
     Given I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "url" as "eventUrl"
     When I approve the event via legacy PATCH at "%{eventUrl}"
     When I delete the event at "%{eventUrl}"

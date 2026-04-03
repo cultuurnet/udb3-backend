@@ -17,7 +17,7 @@
     }
   ],
   "location": {
-    "@id": "%{baseUrl}/places/%{uuid_place}"
+    "@id": "%{baseUrl}/places/%{placeId}"
   },
   "bookingInfo": {
     "phone": "string",

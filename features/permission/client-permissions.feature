@@ -5,13 +5,13 @@ Feature: Test the client permissions in UDB3
     And I send and accept "application/json"
     And I am not using an UiTID v1 API key
     And I am authorized with an OAuth client access token for "test_client"
-    And I create a place from "places/molenhuis.json" and save the "id" as "uuid_place_molenhuis"
+    And I create a place from "places/molenhuis.json" and save the "id" as "placeId_molenhuis"
 
   Scenario: update place not created by the client but WITH permission
     When I set the JSON request payload from "places/molenhuis-updated-name.json"
-    And I send a PUT request to "/places/%{uuid_place_molenhuis}"
+    And I send a PUT request to "/places/%{placeId_molenhuis}"
     Then the response status should be "200"
-    And I send a GET request to "/places/%{uuid_place_molenhuis}"
+    And I send a GET request to "/places/%{placeId_molenhuis}"
     Then the response status should be "200"
     And the JSON response at "name/nl" should be "Aangepaste naam"
 
@@ -20,13 +20,13 @@ Feature: Test the client permissions in UDB3
     And I am authorized as JWT provider user "invoerder_gbm"
     And I set the JSON request payload from "places/hemmekes.json"
     And I send a POST request to "/imports/places/"
-    And I keep the value of the JSON response at "id" as "uuid_place_hemmekes"
+    And I keep the value of the JSON response at "id" as "placeId_hemmekes"
     When I am not using an UiTID v1 API key
     And I am authorized with an OAuth client access token for "test_client"
     And I set the JSON request payload from "places/molenhuis-updated-name.json"
-    And I send a PUT request to "/places/%{uuid_place_hemmekes}"
+    And I send a PUT request to "/places/%{placeId_hemmekes}"
     Then the response status should be "403"
-    And I send a GET request to "/places/%{uuid_place_hemmekes}"
+    And I send a GET request to "/places/%{placeId_hemmekes}"
     And the response status should be "200"
     And the JSON response at "name/nl" should not be "Aangepaste naam"
 
