@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedOpeningHoursDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
