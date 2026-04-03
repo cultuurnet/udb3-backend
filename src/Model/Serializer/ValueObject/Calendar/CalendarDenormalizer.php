@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\RemainingCapacityExceedsCapacity;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -35,6 +36,7 @@ class CalendarDenormalizer implements DenormalizerInterface
     private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
     private BookingInfoDenormalizer $bookingInfoDenormalizer;
     private ClosedDaysDenormalizer $closedDaysDenormalizer;
+    private AdjustedOpeningHoursDenormalizer $adjustedOpeningHoursDenormalizer;
 
     public function __construct()
     {
@@ -42,6 +44,7 @@ class CalendarDenormalizer implements DenormalizerInterface
         $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
         $this->bookingInfoDenormalizer = new BookingInfoDenormalizer();
         $this->closedDaysDenormalizer = new ClosedDaysDenormalizer();
+        $this->adjustedOpeningHoursDenormalizer = new AdjustedOpeningHoursDenormalizer();
     }
 
     /**
@@ -121,30 +124,19 @@ class CalendarDenormalizer implements DenormalizerInterface
                 break;
 
             case 'periodic':
-                $dateRange = $this->denormalizeDateRange($data);
-                $calendar = new PeriodicCalendar($dateRange, $openingHours);
-                if (isset($data['openingHoursClosedDays'])) {
-                    $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
-                    $calendar = $calendar->withClosedDays($closedDays);
-                }
-                if (isset($data['openingHoursAdjusted'])) {
-                    $adjustedOpeningHours = (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedOpeningHoursCollection::class);
-                    $calendar = $calendar->withAdjustedOpeningHours($adjustedOpeningHours);
-                }
+                $calendar = $this->applyOpeningHours(
+                    $data,
+                    new PeriodicCalendar($this->denormalizeDateRange($data), $openingHours)
+                );
                 break;
 
             case 'permanent':
             default:
-                $calendar = new PermanentCalendar($openingHours);
-                if (isset($data['openingHoursClosedDays'])) {
-                    $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
-                    $calendar = $calendar->withClosedDays($closedDays);
-                }
-                if (isset($data['openingHoursAdjusted'])) {
-                    $adjustedOpeningHours = (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedOpeningHoursCollection::class);
-                    $calendar = $calendar->withAdjustedOpeningHours($adjustedOpeningHours);
-                }
-                break;
+                $calendar = $this->applyOpeningHours(
+                    $data,
+                    new PermanentCalendar($openingHours)
+                );
+            break;
         }
 
         if ($topLevelStatus !== null) {
@@ -233,5 +225,20 @@ class CalendarDenormalizer implements DenormalizerInterface
         }
 
         return $subEvent;
+    }
+
+    private function applyOpeningHours(array $data, CalendarWithOpeningHours $calendar): CalendarWithOpeningHours
+    {
+        if (isset($data['openingHoursClosedDays'])) {
+            $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
+            $calendar = $calendar->withClosedDays($closedDays);
+        }
+
+        if (isset($data['openingHoursAdjusted'])) {
+            $adjustedOpeningHours = $this->adjustedOpeningHoursDenormalizer->denormalize($data['openingHoursAdjusted'], AdjustedOpeningHoursCollection::class);
+            $calendar = $calendar->withAdjustedOpeningHours($adjustedOpeningHours);
+        }
+
+        return $calendar;
     }
 }
