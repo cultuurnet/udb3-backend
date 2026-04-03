@@ -13,8 +13,12 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedOpeningHoursDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
@@ -694,6 +698,232 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     )
                 ),
             ],
+            'periodic_with_adjusted_opening_hours' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday', 'saturday', 'sunday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    (new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2026-01-01T00:00:00+00:00'),
+                            DateTimeFactory::fromAtom('2026-12-31T23:59:59+00:00')
+                        ),
+                        new OpeningHours(
+                            new OpeningHour(
+                                new Days(Day::monday(), Day::tuesday(), Day::wednesday(), Day::thursday(), Day::friday()),
+                                new Time(new Hour(9), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0))
+                            )
+                        )
+                    ))->withAdjustedOpeningHours(
+                        new AdjustedOpeningHoursCollection(
+                            new AdjustedOpeningHours(
+                                DateTimeFactory::fromDateOrISO8601('2026-12-21'),
+                                DateTimeFactory::fromDateOrISO8601('2026-12-26'),
+                                new OpeningHours(
+                                    new OpeningHour(
+                                        new Days(Day::friday(), Day::saturday(), Day::sunday()),
+                                        new Time(new Hour(13), new Minute(0)),
+                                        new Time(new Hour(15), new Minute(0))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+            ],
+            'periodic_with_adjusted_opening_hours_and_description' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'description' => (object) ['nl' => 'Kerstvakantie', 'fr' => 'Vacances de Noël'],
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday', 'saturday', 'sunday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    (new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2026-01-01T00:00:00+00:00'),
+                            DateTimeFactory::fromAtom('2026-12-31T23:59:59+00:00')
+                        ),
+                        new OpeningHours()
+                    ))->withAdjustedOpeningHours(
+                        new AdjustedOpeningHoursCollection(
+                            new AdjustedOpeningHours(
+                                DateTimeFactory::fromDateOrISO8601('2026-12-21'),
+                                DateTimeFactory::fromDateOrISO8601('2026-12-26'),
+                                new OpeningHours(
+                                    new OpeningHour(
+                                        new Days(Day::friday(), Day::saturday(), Day::sunday()),
+                                        new Time(new Hour(13), new Minute(0)),
+                                        new Time(new Hour(15), new Minute(0))
+                                    )
+                                ),
+                                (new TranslatedAdjustedOpeningHoursDescription(
+                                    new Language('nl'),
+                                    new AdjustedOpeningHoursDescription('Kerstvakantie')
+                                ))->withTranslation(
+                                    new Language('fr'),
+                                    new AdjustedOpeningHoursDescription('Vacances de Noël')
+                                )
+                            )
+                        )
+                    )
+                ),
+            ],
+            'periodic_with_multiple_adjusted_opening_hours_sorted_by_start_date' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-27',
+                            'endDate' => '2026-12-31',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '14:00',
+                                    'closes' => '16:00',
+                                    'dayOfWeek' => ['saturday', 'sunday'],
+                                ],
+                            ],
+                        ],
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    (new PeriodicCalendar(
+                        new DateRange(
+                            DateTimeFactory::fromAtom('2026-01-01T00:00:00+00:00'),
+                            DateTimeFactory::fromAtom('2026-12-31T23:59:59+00:00')
+                        ),
+                        new OpeningHours()
+                    ))->withAdjustedOpeningHours(
+                        new AdjustedOpeningHoursCollection(
+                            new AdjustedOpeningHours(
+                                DateTimeFactory::fromDateOrISO8601('2026-12-21'),
+                                DateTimeFactory::fromDateOrISO8601('2026-12-26'),
+                                new OpeningHours(
+                                    new OpeningHour(
+                                        new Days(Day::friday()),
+                                        new Time(new Hour(13), new Minute(0)),
+                                        new Time(new Hour(15), new Minute(0))
+                                    )
+                                )
+                            ),
+                            new AdjustedOpeningHours(
+                                DateTimeFactory::fromDateOrISO8601('2026-12-27'),
+                                DateTimeFactory::fromDateOrISO8601('2026-12-31'),
+                                new OpeningHours(
+                                    new OpeningHour(
+                                        new Days(Day::saturday(), Day::sunday()),
+                                        new Time(new Hour(14), new Minute(0)),
+                                        new Time(new Hour(16), new Minute(0))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+            ],
+            'permanent_with_adjusted_opening_hours' => [
+                'data' => (object) [
+                    'calendarType' => 'permanent',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-24',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '10:00',
+                                    'closes' => '14:00',
+                                    'dayOfWeek' => ['wednesday', 'thursday', 'friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    (new PermanentCalendar(
+                        new OpeningHours(
+                            new OpeningHour(
+                                new Days(Day::monday(), Day::tuesday(), Day::wednesday(), Day::thursday(), Day::friday()),
+                                new Time(new Hour(9), new Minute(0)),
+                                new Time(new Hour(17), new Minute(0))
+                            )
+                        )
+                    ))->withAdjustedOpeningHours(
+                        new AdjustedOpeningHoursCollection(
+                            new AdjustedOpeningHours(
+                                DateTimeFactory::fromDateOrISO8601('2026-12-24'),
+                                DateTimeFactory::fromDateOrISO8601('2026-12-26'),
+                                new OpeningHours(
+                                    new OpeningHour(
+                                        new Days(Day::wednesday(), Day::thursday(), Day::friday()),
+                                        new Time(new Hour(10), new Minute(0)),
+                                        new Time(new Hour(14), new Minute(0))
+                                    )
+                                )
+                            )
+                        )
+                    )
+                ),
+            ],
             'permanent_with_closed_days' => [
                 'data' => (object) [
                     'calendarType' => 'permanent',
@@ -1307,6 +1537,275 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 'expectedSchemaErrors' => [
                     new SchemaError('/openingHoursClosedDays/0/startDate', 'The data must match the \'date\' format'),
                     new SchemaError('/openingHoursClosedDays/0/endDate', 'The data must match the \'date\' format'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_endDate_before_startDate' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-26',
+                            'endDate' => '2026-12-21',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/0/endDate', 'endDate should not be before startDate'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_before_calendar_start' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-03-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-01-01',
+                            'endDate' => '2026-01-15',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/0/startDate', 'the start date of adjusted opening hours should not be before the calendar start date'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_after_calendar_end' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-11-30T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/0/endDate', 'the end date of adjusted opening hours should not be after the calendar end date'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_overlapping_entries' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                        (object) [
+                            'startDate' => '2026-12-25',
+                            'endDate' => '2026-12-31',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '14:00',
+                                    'closes' => '16:00',
+                                    'dayOfWeek' => ['saturday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/1/startDate', 'adjusted opening hours entries must not overlap'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_missing_required_fields' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/0', 'The required properties (endDate, openingHours) are missing'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_invalid_opening_hours_time' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '25:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/0/openingHours/0/opens', 'Invalid time format (hh:mm)'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_invalid_closes_time' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '25:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/0/openingHours/0/closes', 'Invalid time format (hh:mm)'),
+                ],
+            ],
+            'periodic_adjusted_opening_hours_description_too_long' => [
+                'data' => (object) [
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-01-01T00:00:00+00:00',
+                    'endDate' => '2026-12-31T23:59:59+00:00',
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'description' => (object) ['nl' => str_repeat('a', 1001)],
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/0/description/nl', 'Maximum string length is 1000, found 1001'),
+                ],
+            ],
+            'permanent_adjusted_opening_hours_overlapping_entries' => [
+                'data' => (object) [
+                    'calendarType' => 'permanent',
+                    'openingHours' => [
+                        (object) [
+                            'opens' => '09:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['monday'],
+                        ],
+                    ],
+                    'openingHoursAdjusted' => [
+                        (object) [
+                            'startDate' => '2026-12-21',
+                            'endDate' => '2026-12-26',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '13:00',
+                                    'closes' => '15:00',
+                                    'dayOfWeek' => ['friday'],
+                                ],
+                            ],
+                        ],
+                        (object) [
+                            'startDate' => '2026-12-24',
+                            'endDate' => '2026-12-30',
+                            'openingHours' => [
+                                (object) [
+                                    'opens' => '14:00',
+                                    'closes' => '16:00',
+                                    'dayOfWeek' => ['saturday'],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/openingHoursAdjusted/1/startDate', 'adjusted opening hours entries must not overlap'),
                 ],
             ],
         ];
