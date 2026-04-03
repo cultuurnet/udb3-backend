@@ -31,10 +31,12 @@ final class AdjustedOpeningHoursDenormalizer implements DenormalizerInterface
 
         $adjustedOpeningHours = [];
         foreach ($data as $adjustedOpeningHoursData) {
-            if (!is_array($adjustedOpeningHoursData) || !isset($adjustedOpeningHoursData['startDate'], $adjustedOpeningHoursData['endDate'], $adjustedOpeningHoursData['openingHours'])) {
+            if (!is_array($adjustedOpeningHoursData)) {
                 continue;
             }
-
+            if (!isset($adjustedOpeningHoursData['startDate'], $adjustedOpeningHoursData['endDate'])) {
+                continue;
+            }
             if (empty($adjustedOpeningHoursData['openingHours'])) {
                 continue;
             }
