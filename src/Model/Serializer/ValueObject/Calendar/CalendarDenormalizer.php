@@ -11,7 +11,8 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\RemainingCapacityExceedsCapacity;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -227,7 +228,7 @@ class CalendarDenormalizer implements DenormalizerInterface
         return $subEvent;
     }
 
-    private function applyOpeningHours(array $data, CalendarWithOpeningHours $calendar): CalendarWithOpeningHours
+    private function applyOpeningHours(array $data, CalendarWithClosedDays|CalendarWithAdjustedOpeningHours $calendar): CalendarWithClosedDays|CalendarWithAdjustedOpeningHours
     {
         if (isset($data['openingHoursClosedDays'])) {
             $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
