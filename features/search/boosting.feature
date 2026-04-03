@@ -48,11 +48,11 @@ Feature: Test the Search API v3 boosting
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/place/%{boostedPlace}",
+        "@id": "http://io.uitdatabank.local:80/places/%{boostedPlace}",
         "@type": "Place"
       },
       {
-        "@id": "http://io.uitdatabank.local:80/place/%{placeId}",
+        "@id": "http://io.uitdatabank.local:80/places/%{placeId}",
         "@type": "Place"
 
       }
@@ -108,12 +108,12 @@ Feature: Test the Search API v3 boosting
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/place/%{placeId}",
+        "@id": "http://io.uitdatabank.local:80/places/%{placeId}",
         "@type": "Place"
 
       },
       {
-        "@id": "http://io.uitdatabank.local:80/place/%{boostedPlace}",
+        "@id": "http://io.uitdatabank.local:80/places/%{boostedPlace}",
         "@type": "Place"
       }
     ]

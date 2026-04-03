@@ -288,7 +288,7 @@ trait ResponseSteps
     public function theJsonResponseAtIsAnOnlineLocation(string $jsonPath): void
     {
         assertEquals(
-            $this->requestState->getBaseUrl() . '/place/' . Uuid::NIL,
+            $this->requestState->getBaseUrl() . '/places/' . Uuid::NIL,
             $this->responseState->getValueOnPath($jsonPath)
         );
     }
