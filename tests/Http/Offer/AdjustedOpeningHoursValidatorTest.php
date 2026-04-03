@@ -190,164 +190,171 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
 
     /**
      * @test
-     * @dataProvider invalidAdjustedOpeningHoursProvider
      */
-    public function it_rejects_invalid_adjusted_opening_hours(object $data, string $expectedErrorPath, string $expectedErrorMessage): void
+    public function it_rejects_entry_where_start_date_is_after_end_date(): void
     {
+        $data = (object)[
+            'calendarType' => 'periodic',
+            'startDate' => '2026-01-01T00:00:00+00:00',
+            'endDate' => '2026-12-31T23:59:59+00:00',
+            'openingHoursAdjusted' => [
+                (object)[
+                    'startDate' => '2026-12-26',
+                    'endDate' => '2026-12-21',
+                    'openingHours' => [
+                        (object)['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
+                    ],
+                ],
+            ],
+        ];
+
         $errors = $this->validator->validate($data);
 
         $this->assertNotEmpty($errors);
-        $this->assertStringContainsString($expectedErrorPath, $errors[0]->getJsonPointer());
-        $this->assertStringContainsString($expectedErrorMessage, $errors[0]->getError());
+        $this->assertSame('/openingHoursAdjusted/0/endDate', $errors[0]->getJsonPointer());
+        $this->assertSame('endDate should not be before startDate', $errors[0]->getError());
     }
 
-    public function invalidAdjustedOpeningHoursProvider(): array
+    /**
+     * @test
+     */
+    public function it_rejects_entry_that_starts_before_periodic_calendar_start(): void
     {
-        return [
-            'startDate after endDate' => [
+        $data = (object)[
+            'calendarType' => 'periodic',
+            'startDate' => '2026-03-01T00:00:00+00:00',
+            'endDate' => '2026-12-31T23:59:59+00:00',
+            'openingHoursAdjusted' => [
                 (object)[
-                    'calendarType' => 'periodic',
-                    'startDate' => '2026-01-01T00:00:00+00:00',
-                    'endDate' => '2026-12-31T23:59:59+00:00',
-                    'openingHoursAdjusted' => [
-                        (object)[
-                            'startDate' => '2026-12-26',
-                            'endDate' => '2026-12-21',
-                            'openingHours' => [
-                                (object)[
-                                    'opens' => '13:00',
-                                    'closes' => '15:00',
-                                    'dayOfWeek' => ['friday'],
-                                ],
-                            ],
-                        ],
+                    'startDate' => '2026-01-01',
+                    'endDate' => '2026-01-15',
+                    'openingHours' => [
+                        (object)['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
                     ],
                 ],
-                '/openingHoursAdjusted/0/endDate',
-                'endDate should not be before startDate',
-            ],
-            'entry before periodic start' => [
-                (object)[
-                    'calendarType' => 'periodic',
-                    'startDate' => '2026-03-01T00:00:00+00:00',
-                    'endDate' => '2026-12-31T23:59:59+00:00',
-                    'openingHoursAdjusted' => [
-                        (object)[
-                            'startDate' => '2026-01-01',
-                            'endDate' => '2026-01-15',
-                            'openingHours' => [
-                                (object)[
-                                    'opens' => '13:00',
-                                    'closes' => '15:00',
-                                    'dayOfWeek' => ['friday'],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                '/openingHoursAdjusted/0/startDate',
-                'the start date of adjusted opening hours should not be before the calendar start date',
-            ],
-            'entry after periodic end' => [
-                (object)[
-                    'calendarType' => 'periodic',
-                    'startDate' => '2026-01-01T00:00:00+00:00',
-                    'endDate' => '2026-11-30T23:59:59+00:00',
-                    'openingHoursAdjusted' => [
-                        (object)[
-                            'startDate' => '2026-12-21',
-                            'endDate' => '2026-12-26',
-                            'openingHours' => [
-                                (object)[
-                                    'opens' => '13:00',
-                                    'closes' => '15:00',
-                                    'dayOfWeek' => ['friday'],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                '/openingHoursAdjusted/0/endDate',
-                'the end date of adjusted opening hours should not be after the calendar end date',
-            ],
-            'invalid opens time' => [
-                (object)[
-                    'calendarType' => 'periodic',
-                    'startDate' => '2026-01-01T00:00:00+00:00',
-                    'endDate' => '2026-12-31T23:59:59+00:00',
-                    'openingHoursAdjusted' => [
-                        (object)[
-                            'startDate' => '2026-12-21',
-                            'endDate' => '2026-12-26',
-                            'openingHours' => [
-                                (object)[
-                                    'opens' => '25:00',
-                                    'closes' => '15:00',
-                                    'dayOfWeek' => ['friday'],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                '/openingHoursAdjusted/0/openingHours/0/opens',
-                'Invalid time format (hh:mm)',
-            ],
-            'invalid closes time' => [
-                (object)[
-                    'calendarType' => 'periodic',
-                    'startDate' => '2026-01-01T00:00:00+00:00',
-                    'endDate' => '2026-12-31T23:59:59+00:00',
-                    'openingHoursAdjusted' => [
-                        (object)[
-                            'startDate' => '2026-12-21',
-                            'endDate' => '2026-12-26',
-                            'openingHours' => [
-                                (object)[
-                                    'opens' => '13:00',
-                                    'closes' => '24:60',
-                                    'dayOfWeek' => ['friday'],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                '/openingHoursAdjusted/0/openingHours/0/closes',
-                'Invalid time format (hh:mm)',
-            ],
-            'overlapping entries' => [
-                (object)[
-                    'calendarType' => 'periodic',
-                    'startDate' => '2026-01-01T00:00:00+00:00',
-                    'endDate' => '2026-12-31T23:59:59+00:00',
-                    'openingHoursAdjusted' => [
-                        (object)[
-                            'startDate' => '2026-12-21',
-                            'endDate' => '2026-12-26',
-                            'openingHours' => [
-                                (object)[
-                                    'opens' => '13:00',
-                                    'closes' => '15:00',
-                                    'dayOfWeek' => ['friday'],
-                                ],
-                            ],
-                        ],
-                        (object)[
-                            'startDate' => '2026-12-25',
-                            'endDate' => '2026-12-31',
-                            'openingHours' => [
-                                (object)[
-                                    'opens' => '14:00',
-                                    'closes' => '16:00',
-                                    'dayOfWeek' => ['saturday'],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                '/openingHoursAdjusted/1/startDate',
-                'adjusted opening hours entries must not overlap',
             ],
         ];
+
+        $errors = $this->validator->validate($data);
+
+        $this->assertNotEmpty($errors);
+        $this->assertSame('/openingHoursAdjusted/0/startDate', $errors[0]->getJsonPointer());
+        $this->assertSame('the start date of adjusted opening hours should not be before the calendar start date', $errors[0]->getError());
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_entry_that_ends_after_periodic_calendar_end(): void
+    {
+        $data = (object)[
+            'calendarType' => 'periodic',
+            'startDate' => '2026-01-01T00:00:00+00:00',
+            'endDate' => '2026-11-30T23:59:59+00:00',
+            'openingHoursAdjusted' => [
+                (object)[
+                    'startDate' => '2026-12-21',
+                    'endDate' => '2026-12-26',
+                    'openingHours' => [
+                        (object)['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
+                    ],
+                ],
+            ],
+        ];
+
+        $errors = $this->validator->validate($data);
+
+        $this->assertNotEmpty($errors);
+        $this->assertSame('/openingHoursAdjusted/0/endDate', $errors[0]->getJsonPointer());
+        $this->assertSame('the end date of adjusted opening hours should not be after the calendar end date', $errors[0]->getError());
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_entry_with_invalid_opens_time(): void
+    {
+        $data = (object)[
+            'calendarType' => 'periodic',
+            'startDate' => '2026-01-01T00:00:00+00:00',
+            'endDate' => '2026-12-31T23:59:59+00:00',
+            'openingHoursAdjusted' => [
+                (object)[
+                    'startDate' => '2026-12-21',
+                    'endDate' => '2026-12-26',
+                    'openingHours' => [
+                        (object)['opens' => '25:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
+                    ],
+                ],
+            ],
+        ];
+
+        $errors = $this->validator->validate($data);
+
+        $this->assertNotEmpty($errors);
+        $this->assertSame('/openingHoursAdjusted/0/openingHours/0/opens', $errors[0]->getJsonPointer());
+        $this->assertSame('Invalid time format (hh:mm)', $errors[0]->getError());
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_entry_with_invalid_closes_time(): void
+    {
+        $data = (object)[
+            'calendarType' => 'periodic',
+            'startDate' => '2026-01-01T00:00:00+00:00',
+            'endDate' => '2026-12-31T23:59:59+00:00',
+            'openingHoursAdjusted' => [
+                (object)[
+                    'startDate' => '2026-12-21',
+                    'endDate' => '2026-12-26',
+                    'openingHours' => [
+                        (object)['opens' => '13:00', 'closes' => '24:60', 'dayOfWeek' => ['friday']],
+                    ],
+                ],
+            ],
+        ];
+
+        $errors = $this->validator->validate($data);
+
+        $this->assertNotEmpty($errors);
+        $this->assertSame('/openingHoursAdjusted/0/openingHours/0/closes', $errors[0]->getJsonPointer());
+        $this->assertSame('Invalid time format (hh:mm)', $errors[0]->getError());
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_overlapping_entries(): void
+    {
+        $data = (object)[
+            'calendarType' => 'periodic',
+            'startDate' => '2026-01-01T00:00:00+00:00',
+            'endDate' => '2026-12-31T23:59:59+00:00',
+            'openingHoursAdjusted' => [
+                (object)[
+                    'startDate' => '2026-12-21',
+                    'endDate' => '2026-12-26',
+                    'openingHours' => [
+                        (object)['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
+                    ],
+                ],
+                (object)[
+                    'startDate' => '2026-12-25',
+                    'endDate' => '2026-12-31',
+                    'openingHours' => [
+                        (object)['opens' => '14:00', 'closes' => '16:00', 'dayOfWeek' => ['saturday']],
+                    ],
+                ],
+            ],
+        ];
+
+        $errors = $this->validator->validate($data);
+
+        $this->assertNotEmpty($errors);
+        $this->assertSame('/openingHoursAdjusted/1/startDate', $errors[0]->getJsonPointer());
+        $this->assertSame('adjusted opening hours entries must not overlap', $errors[0]->getError());
     }
 
     /**
