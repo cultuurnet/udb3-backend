@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDayDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
@@ -96,7 +96,7 @@ final class ClosedDaysDenormalizerTest extends TestCase
         $this->assertInstanceOf(TranslatedClosedDayDescription::class, $closedDay->getDescription());
 
         $nlDescription = $closedDay->getDescription()->getTranslation(new Language('nl'));
-        $this->assertInstanceOf(ClosedDayDescription::class, $nlDescription);
+        $this->assertInstanceOf(AdjustedDescription::class, $nlDescription);
         $this->assertEquals('Kerstfeest gesloten', $nlDescription->toString());
 
         $frDescription = $closedDay->getDescription()->getTranslation(new Language('fr'));

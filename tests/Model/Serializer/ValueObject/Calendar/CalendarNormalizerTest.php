@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDayDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
@@ -189,11 +189,11 @@ final class CalendarNormalizerTest extends TestCase
 
         $description = new TranslatedClosedDayDescription(
             new Language('nl'),
-            new ClosedDayDescription('Kerstfeest')
+            new AdjustedDescription('Kerstfeest')
         );
         $description = $description->withTranslation(
             new Language('fr'),
-            new ClosedDayDescription('Noël')
+            new AdjustedDescription('Noël')
         );
 
         $closedDays = new ClosedDays(

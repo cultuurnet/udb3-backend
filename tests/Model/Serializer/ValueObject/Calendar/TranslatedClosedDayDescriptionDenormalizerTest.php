@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDayDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
@@ -32,7 +32,7 @@ final class TranslatedClosedDayDescriptionDenormalizerTest extends TestCase
         $this->assertTrue($result->getOriginalLanguage()->sameAs(new Language('nl')));
 
         $nlDescription = $result->getTranslation(new Language('nl'));
-        $this->assertInstanceOf(ClosedDayDescription::class, $nlDescription);
+        $this->assertInstanceOf(AdjustedDescription::class, $nlDescription);
         $this->assertSame('Kerstfeest gesloten', $nlDescription->toString());
     }
 

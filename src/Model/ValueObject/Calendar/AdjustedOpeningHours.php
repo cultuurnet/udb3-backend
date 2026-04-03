@@ -20,7 +20,7 @@ final class AdjustedOpeningHours
             throw new InvalidArgumentException('"startDate" should not be later than "endDate".');
         }
 
-        if ($openingHours->toArray() === []) {
+        if ($openingHours->isEmpty()) {
             throw new InvalidArgumentException('AdjustedOpeningHours must contain at least one OpeningHour.');
         }
     }

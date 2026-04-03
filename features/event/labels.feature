@@ -10,7 +10,7 @@ Feature: Test labelling events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/labels/event-with-public-labels.json"
     When I send a POST request to "/imports/events/"
@@ -34,7 +34,7 @@ Feature: Test labelling events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/labels/event-with-public-and-private-labels.json"
     When I send a POST request to "/imports/events/"
@@ -58,7 +58,7 @@ Feature: Test labelling events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I am authorized as JWT provider user "validator_scherpenheuvel"
 
@@ -84,7 +84,7 @@ Feature: Test labelling events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/labels/event-without-labels.json"
     When I send a POST request to "/imports/events/"
@@ -120,7 +120,7 @@ Feature: Test labelling events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/labels/event-with-public-labels.json"
     When I send a POST request to "/imports/events/"
@@ -158,7 +158,7 @@ Feature: Test labelling events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/labels/event-without-labels.json"
     When I send a POST request to "/imports/events/"
@@ -205,7 +205,7 @@ Feature: Test labelling events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/labels/event-without-labels.json"
     When I send a POST request to "/imports/events/"
@@ -258,7 +258,7 @@ Feature: Test labelling events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/labels/event-with-wrong-invisible-label.json"
     When I send a POST request to "/events/"
@@ -280,7 +280,7 @@ Feature: Test labelling events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/labels/event-with-wrong-visible-label.json"
     When I send a POST request to "/events/"
@@ -302,7 +302,7 @@ Feature: Test labelling events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I create a random name of 10 characters
     When I set the JSON request payload from "events/labels/event-with-new-visible-label.json"
@@ -325,7 +325,7 @@ Feature: Test labelling events
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I create a random name of 10 characters
     Given I set the JSON request payload from "events/labels/event-with-new-invisible-label.json"

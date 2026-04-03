@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\HasMaxLength;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
 use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
 
-final class AdjustedOpeningHoursDescription
+final class AdjustedDescription
 {
     use IsString;
     use IsNotEmpty;
@@ -19,7 +19,7 @@ final class AdjustedOpeningHoursDescription
     public function __construct(string $value)
     {
         $this->guardNotEmpty($value);
-        $this->guardTooLong(AdjustedOpeningHoursDescription::class, $value, self::MAX_LENGTH);
+        $this->guardTooLong(AdjustedDescription::class, $value, self::MAX_LENGTH);
         $this->setValue($value);
     }
 }

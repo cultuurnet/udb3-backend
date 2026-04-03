@@ -534,7 +534,7 @@ Feature: Test creating places
     """
 
   Scenario: I should not be able to create a place with a very long title
-    Given I create a random name of 100 characters and keep it as "name"
+    Given I create a random name of 100 characters
     Given I create a minimal place then I should get a "400" response code
     Then the JSON response should be:
     """

@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +31,30 @@ final class AdjustedOpeningHoursTest extends TestCase
 
         $this->assertSame('2026-12-21', $adjustedOpeningHours->getStartDate()->format('Y-m-d'));
         $this->assertSame('2026-12-26', $adjustedOpeningHours->getEndDate()->format('Y-m-d'));
+        $this->assertCount(1, $adjustedOpeningHours->getOpeningHours()->toArray());
         $this->assertNull($adjustedOpeningHours->getDescription());
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_with_optional_description(): void
+    {
+        $description = new TranslatedAdjustedOpeningHoursDescription(
+            new Language('nl'),
+            new AdjustedDescription('Kerstvakantie')
+        );
+
+        $adjustedOpeningHours = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-12-21'),
+            new DateTimeImmutable('2026-12-26'),
+            new OpeningHours(
+                new OpeningHour(new Days(Day::friday()), Time::fromString('13:00'), Time::fromString('15:00'))
+            ),
+            $description
+        );
+
+        $this->assertSame($description, $adjustedOpeningHours->getDescription());
     }
 
     /**
@@ -56,6 +80,7 @@ final class AdjustedOpeningHoursTest extends TestCase
     public function it_throws_when_start_date_is_after_end_date(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('"startDate" should not be later than "endDate".');
 
         new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-26'),
@@ -72,6 +97,7 @@ final class AdjustedOpeningHoursTest extends TestCase
     public function it_throws_when_opening_hours_is_empty(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('AdjustedOpeningHours must contain at least one OpeningHour.');
 
         new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-21'),

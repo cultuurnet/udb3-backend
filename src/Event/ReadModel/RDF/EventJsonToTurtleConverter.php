@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Geography\TranslatedAddressNorm
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\MoneyNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TariffNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -115,6 +116,8 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     private const PROPERTY_PRIJS_CATEGORY = 'cpp:prijscategorie';
     private const PROPERTY_PREF_LABEL = 'skos:prefLabel';
 
+    private const PROPERTY_AUDIENCE_TYPE = 'udb:audienceType';
+
     public function __construct(
         IriGeneratorInterface $eventsIriGenerator,
         IriGeneratorInterface $placesIriGenerator,
@@ -207,6 +210,8 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         if ($event->getAvailableFrom()) {
             $workflowStatusEditor->setAvailableFrom($resource, $event->getAvailableFrom());
         }
+
+        $this->setAudienceType($resource, $event->getAudienceType());
 
         $this->setLocatieType($resource, $event->getAttendanceMode());
 
@@ -600,5 +605,13 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
             'from' => $subEvent->getDateRange()->getFrom()->format(DateTime::ATOM),
             'to' => $subEvent->getDateRange()->getTo()->format(DateTime::ATOM),
         ];
+    }
+
+    private function setAudienceType(Resource $resource, AudienceType $audienceType): void
+    {
+        $resource->set(
+            self::PROPERTY_AUDIENCE_TYPE,
+            new Resource('https://data.publiq.be/concepts/audienceType/' . $audienceType->toString())
+        );
     }
 }

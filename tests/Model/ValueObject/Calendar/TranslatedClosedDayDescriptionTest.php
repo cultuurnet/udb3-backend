@@ -16,7 +16,7 @@ final class TranslatedClosedDayDescriptionTest extends TestCase
     {
         $description = new TranslatedClosedDayDescription(
             new Language('nl'),
-            new ClosedDayDescription('Gesloten op eerste kerstdag')
+            new AdjustedDescription('Gesloten op eerste kerstdag')
         );
 
         $nlTranslation = $description->getTranslation(new Language('nl'));
@@ -30,17 +30,17 @@ final class TranslatedClosedDayDescriptionTest extends TestCase
     {
         $description = new TranslatedClosedDayDescription(
             new Language('nl'),
-            new ClosedDayDescription('Gesloten op eerste kerstdag')
+            new AdjustedDescription('Gesloten op eerste kerstdag')
         );
 
         $description = $description->withTranslation(
             new Language('fr'),
-            new ClosedDayDescription('Fermé pour Noël')
+            new AdjustedDescription('Fermé pour Noël')
         );
 
         $description = $description->withTranslation(
             new Language('en'),
-            new ClosedDayDescription('Closed for Christmas')
+            new AdjustedDescription('Closed for Christmas')
         );
 
         $nlTranslation = $description->getTranslation(new Language('nl'));
@@ -60,12 +60,12 @@ final class TranslatedClosedDayDescriptionTest extends TestCase
     {
         $description = new TranslatedClosedDayDescription(
             new Language('nl'),
-            new ClosedDayDescription('Gesloten op eerste kerstdag')
+            new AdjustedDescription('Gesloten op eerste kerstdag')
         );
 
         $description = $description->withTranslation(
             new Language('fr'),
-            new ClosedDayDescription('Fermé pour Noël')
+            new AdjustedDescription('Fermé pour Noël')
         );
 
         $languages = $description->getLanguages();
@@ -83,12 +83,12 @@ final class TranslatedClosedDayDescriptionTest extends TestCase
     {
         $description = new TranslatedClosedDayDescription(
             new Language('nl'),
-            new ClosedDayDescription('Eerste versie')
+            new AdjustedDescription('Eerste versie')
         );
 
         $description = $description->withTranslation(
             new Language('nl'),
-            new ClosedDayDescription('Tweede versie')
+            new AdjustedDescription('Tweede versie')
         );
 
         $nlTranslation = $description->getTranslation(new Language('nl'));
@@ -107,7 +107,7 @@ final class TranslatedClosedDayDescriptionTest extends TestCase
         $originalLanguage = new Language('nl');
         $description = new TranslatedClosedDayDescription(
             $originalLanguage,
-            new ClosedDayDescription('Gesloten op eerste kerstdag')
+            new AdjustedDescription('Gesloten op eerste kerstdag')
         );
 
         $this->assertEquals($originalLanguage, $description->getOriginalLanguage());

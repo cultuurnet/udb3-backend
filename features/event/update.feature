@@ -11,17 +11,17 @@ Feature: Test the UDB3 events API
       | copyrightHolder | publiq vzw  |
       | language        | nl          |
     When I upload "file" from path "images/publiq.png" to "/images/"
-    And I keep the value of the JSON response at "imageId" as "image_id"
+    And I keep the value of the JSON response at "imageId" as "imageId"
 
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-referenced-location.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
 
   Scenario: Update event price info
     And I set the JSON request payload to:
@@ -40,24 +40,24 @@ Feature: Test the UDB3 events API
         }
         ]
         """
-    When I send a PUT request to "/events/%{uuid_testevent}/priceInfo"
+    When I send a PUT request to "/events/%{eventId}/priceInfo"
     Then the response status should be "204"
 
   Scenario: Update major info
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     Given I set the JSON request payload from "events/legacy/event-with-single-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     When I set the JSON request payload to:
           """
           {
             "name": "Updated title",
-            "location": "%{uuid_place}",
+            "location": "%{placeId}",
             "type": {
               "id": "0.17.0.0.0",
               "label": "Route"
@@ -67,26 +67,26 @@ Feature: Test the UDB3 events API
             }
           }
           """
-    And I send a PUT request to "/events/%{uuid_testevent}/majorInfo"
+    And I send a PUT request to "/events/%{eventId}/majorInfo"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "name/nl" should be "Updated title"
     And the JSON response at "calendarType" should be "permanent"
     And the JSON response at "terms/0/id" should be "0.17.0.0.0"
-    And the JSON response at "location/@id" should be "%{baseUrl}/place/%{uuid_place}"
+    And the JSON response at "location/@id" should be "%{baseUrl}/place/%{placeId}"
 
   Scenario: update booking availability single calendar type
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-single-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    And I keep the value of the JSON response at "eventId" as "eventId"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "bookingAvailability" should be:
             """
@@ -104,9 +104,9 @@ Feature: Test the UDB3 events API
           """
           {"type":"Available"}
           """
-    And I send a PUT request to "/events/%{uuid_testevent}/bookingAvailability"
+    And I send a PUT request to "/events/%{eventId}/bookingAvailability"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "bookingAvailability" should be:
           """
@@ -124,9 +124,9 @@ Feature: Test the UDB3 events API
           """
           {"type":"Unavailable"}
           """
-    And I send a PUT request to "/events/%{uuid_testevent}/bookingAvailability"
+    And I send a PUT request to "/events/%{eventId}/bookingAvailability"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "bookingAvailability" should be:
           """
@@ -145,13 +145,13 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-multiple-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    And I keep the value of the JSON response at "eventId" as "eventId"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "bookingAvailability" should be:
             """
@@ -173,9 +173,9 @@ Feature: Test the UDB3 events API
           """
           {"type":"Unavailable"}
           """
-    And I send a PUT request to "/events/%{uuid_testevent}/bookingAvailability"
+    And I send a PUT request to "/events/%{eventId}/bookingAvailability"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "bookingAvailability" should be:
           """
@@ -198,17 +198,17 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-permanent-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     Given I set the JSON request payload to:
           """
           {"type":"Available"}
           """
-    And I send a PUT request to "/events/%{uuid_testevent}/bookingAvailability"
+    And I send a PUT request to "/events/%{eventId}/bookingAvailability"
     Then the response status should be "400"
     And the JSON response at "type" should be:
           """
@@ -227,17 +227,17 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-periodic-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     Given I set the JSON request payload to:
           """
           {"type":"Available"}
           """
-    And I send a PUT request to "/events/%{uuid_testevent}/bookingAvailability"
+    And I send a PUT request to "/events/%{eventId}/bookingAvailability"
     Then the response status should be "400"
     And the JSON response at "type" should be:
           """
@@ -256,12 +256,12 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-multiple-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     Given I set the JSON request payload to:
           """
             [
@@ -273,9 +273,9 @@ Feature: Test the UDB3 events API
               }
             ]
           """
-    And I send a PATCH request to "/events/%{uuid_testevent}/subEvents"
+    And I send a PATCH request to "/events/%{eventId}/subEvents"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "bookingAvailability" should be:
           """
@@ -294,12 +294,12 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-multiple-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     Given I set the JSON request payload to:
           """
             [
@@ -309,7 +309,7 @@ Feature: Test the UDB3 events API
               }
             ]
           """
-    And I send a PATCH request to "/events/%{uuid_testevent}/subEvents"
+    And I send a PATCH request to "/events/%{eventId}/subEvents"
     Then the response status should be "400"
     And the JSON response should be:
          """
@@ -325,12 +325,12 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-permanent-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     Given I set the JSON request payload to:
           """
           {
@@ -339,36 +339,36 @@ Feature: Test the UDB3 events API
             "language": "nl"
           }
           """
-    And I send a POST request to "/events/%{uuid_testevent}/videos/"
+    And I send a POST request to "/events/%{eventId}/videos/"
     Then the response status should be "200"
-    And I keep the value of the JSON response at "videoId" as "uuid_video"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    And I keep the value of the JSON response at "videoId" as "videoId"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "videos" should be:
           """
           [{
-            "id": "%{uuid_video}",
+            "id": "%{videoId}",
             "url": "https://www.youtube.com/watch?v=sddser23",
             "embedUrl": "https://www.youtube.com/embed/sddser23",
             "language": "nl",
             "copyrightHolder": "I am the owner"
           }]
           """
-    Given I send a DELETE request to "/events/%{uuid_testevent}/videos/%{uuid_video}"
+    Given I send a DELETE request to "/events/%{eventId}/videos/%{videoId}"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
 
   Scenario: add a video to an event and then update it
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-permanent-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     Given I set the JSON request payload to:
           """
           {
@@ -377,15 +377,15 @@ Feature: Test the UDB3 events API
             "language": "nl"
           }
           """
-    And I send a POST request to "/events/%{uuid_testevent}/videos/"
+    And I send a POST request to "/events/%{eventId}/videos/"
     Then the response status should be "200"
-    And I keep the value of the JSON response at "videoId" as "uuid_video"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    And I keep the value of the JSON response at "videoId" as "videoId"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "videos" should be:
           """
           [{
-            "id": "%{uuid_video}",
+            "id": "%{videoId}",
             "url": "https://www.youtube.com/watch?v=sddser23",
             "embedUrl": "https://www.youtube.com/embed/sddser23",
             "language": "nl",
@@ -395,18 +395,18 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload to:
           """
           [{
-            "id": "%{uuid_video}",
+            "id": "%{videoId}",
             "url": "https://www.youtube.com/watch?v=123"
           }]
           """
-    And I send a PATCH request to "/events/%{uuid_testevent}/videos/"
+    And I send a PATCH request to "/events/%{eventId}/videos/"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "videos" should be:
             """
             [{
-              "id": "%{uuid_video}",
+              "id": "%{videoId}",
               "url": "https://www.youtube.com/watch?v=123",
               "embedUrl": "https://www.youtube.com/embed/123",
               "language": "nl",
@@ -416,19 +416,19 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload to:
           """
           [{
-            "id": "%{uuid_video}",
+            "id": "%{videoId}",
             "copyrightHolder": "publiq",
             "language": "fr"
           }]
           """
-    And I send a PATCH request to "/events/%{uuid_testevent}/videos/"
+    And I send a PATCH request to "/events/%{eventId}/videos/"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "videos" should be:
             """
             [{
-              "id": "%{uuid_video}",
+              "id": "%{videoId}",
               "url": "https://www.youtube.com/watch?v=123",
               "embedUrl": "https://www.youtube.com/embed/123",
               "language": "fr",
@@ -437,18 +437,18 @@ Feature: Test the UDB3 events API
             """
 
   Scenario: Update event type
-    When I send a PUT request to "/events/%{uuid_testevent}/type/0.5.0.0.0"
+    When I send a PUT request to "/events/%{eventId}/type/0.5.0.0.0"
     Then the response status should be "204"
-    And I send a GET request to "/events/%{uuid_testevent}"
+    And I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "terms/1/id" should be "0.5.0.0.0"
 
   Scenario: Update event type with type that is available till start
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "availableTo" should be "2020-05-12T21:00:00+00:00"
-    When I send a PUT request to "/events/%{uuid_testevent}/type/0.57.0.0.0"
-    And I send a GET request to "/events/%{uuid_testevent}"
+    When I send a PUT request to "/events/%{eventId}/type/0.57.0.0.0"
+    And I send a GET request to "/events/%{eventId}"
     Then the JSON response at "availableTo" should be "2020-05-05T18:00:00+00:00"
     And the JSON response at "terms/1/id" should be "0.57.0.0.0"
 
@@ -463,7 +463,7 @@ Feature: Test the UDB3 events API
     And the JSON response at "terms/1/id" should be "0.50.4.0.0"
 
   Scenario: Update event type with term id that is not an eventtype
-    When I send a PUT request to "/events/%{uuid_testevent}/type/1.17.0.0.0"
+    When I send a PUT request to "/events/%{eventId}/type/1.17.0.0.0"
     Then the response status should be "404"
     And the JSON response should be:
          """
@@ -476,7 +476,7 @@ Feature: Test the UDB3 events API
          """
 
   Scenario: Update event type with term id that does not exist
-    When I send a PUT request to "/events/%{uuid_testevent}/type/foo"
+    When I send a PUT request to "/events/%{eventId}/type/foo"
     Then the response status should be "404"
     And the JSON response should be:
          """
@@ -489,7 +489,7 @@ Feature: Test the UDB3 events API
          """
 
   Scenario: Update event type with term id that is not an eventtype for events
-    When I send a PUT request to "/events/%{uuid_testevent}/type/3CuHvenJ+EGkcvhXLg9Ykg"
+    When I send a PUT request to "/events/%{eventId}/type/3CuHvenJ+EGkcvhXLg9Ykg"
     Then the response status should be "404"
     And the JSON response should be:
          """
@@ -502,14 +502,14 @@ Feature: Test the UDB3 events API
          """
 
   Scenario: Update event theme
-    When I send a PUT request to "/events/%{uuid_testevent}/theme/1.8.3.5.0"
+    When I send a PUT request to "/events/%{eventId}/theme/1.8.3.5.0"
     Then the response status should be "204"
-    And I send a GET request to "/events/%{uuid_testevent}"
+    And I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "terms/1/id" should be "1.8.3.5.0"
 
   Scenario: Update event theme with term id that is not a theme
-    When I send a PUT request to "/events/%{uuid_testevent}/theme/3CuHvenJ+EGkcvhXLg9Ykg"
+    When I send a PUT request to "/events/%{eventId}/theme/3CuHvenJ+EGkcvhXLg9Ykg"
     Then the response status should be "404"
     And the JSON response should be:
          """
@@ -522,7 +522,7 @@ Feature: Test the UDB3 events API
          """
 
   Scenario: Update event theme with term id that does not exist
-    When I send a PUT request to "/events/%{uuid_testevent}/theme/foo"
+    When I send a PUT request to "/events/%{eventId}/theme/foo"
     Then the response status should be "404"
     And the JSON response should be:
          """
@@ -535,9 +535,9 @@ Feature: Test the UDB3 events API
          """
 
   Scenario: Delete event theme
-    When I send a DELETE request to "/events/%{uuid_testevent}/theme/"
+    When I send a DELETE request to "/events/%{eventId}/theme/"
     Then the response status should be "204"
-    And I send a GET request to "/events/%{uuid_testevent}"
+    And I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response should not have "terms/1"
 
@@ -551,9 +551,9 @@ Feature: Test the UDB3 events API
         ]
       }
       """
-    When I send a PUT request to "/events/%{uuid_testevent}/facilities"
+    When I send a PUT request to "/events/%{eventId}/facilities"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "terms/0/id" should be "0.50.4.0.0"
     And the JSON response at "terms/1/id" should be "1.8.2.0.0"
@@ -568,9 +568,9 @@ Feature: Test the UDB3 events API
         "3.32.0.0.0"
       ]
       """
-    And I send a PUT request to "/events/%{uuid_testevent}/facilities"
+    And I send a PUT request to "/events/%{eventId}/facilities"
     Then the response status should be "204"
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "terms/0/id" should be "0.50.4.0.0"
     And the JSON response at "terms/1/id" should be "1.8.2.0.0"
@@ -585,7 +585,7 @@ Feature: Test the UDB3 events API
         "foobar"
       ]
       """
-    And I send a PUT request to "/events/%{uuid_testevent}/facilities"
+    And I send a PUT request to "/events/%{eventId}/facilities"
     Then the response status should be "400"
     And the JSON response should be:
       """
@@ -596,7 +596,7 @@ Feature: Test the UDB3 events API
         "detail": "Category with id foobar not found in facility domain or not applicable for Event."
       }
       """
-    When I send a GET request to "/events/%{uuid_testevent}"
+    When I send a GET request to "/events/%{eventId}"
     Then the response status should be "200"
     And the JSON response at "terms/0/id" should be "0.50.4.0.0"
     And the JSON response at "terms/1/id" should be "1.8.2.0.0"
@@ -606,19 +606,19 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
     And I set the JSON request payload from "events/legacy/event-with-permanent-calendar.json"
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
-    And I keep the value of the JSON response at "eventId" as "uuid_testevent"
+    And I keep the value of the JSON response at "eventId" as "eventId"
     When I set the JSON request payload to:
       """
       [
         "3.33.0.0.0"
       ]
       """
-    And I send a PUT request to "/events/%{uuid_testevent}/facilities"
+    And I send a PUT request to "/events/%{eventId}/facilities"
     Then the response status should be "403"
     And the JSON response should be:
       """
@@ -626,7 +626,7 @@ Feature: Test the UDB3 events API
         "type": "https://api.publiq.be/probs/auth/forbidden",
         "title": "Forbidden",
         "status": 403,
-        "detail": "User 26808daa-e194-4ca8-ac93-2b69e3c722bd has no permission \"Voorzieningen bewerken\" on resource %{uuid_testevent}"
+        "detail": "User 26808daa-e194-4ca8-ac93-2b69e3c722bd has no permission \"Voorzieningen bewerken\" on resource %{eventId}"
       }
       """
 
@@ -634,7 +634,7 @@ Feature: Test the UDB3 events API
     Given I set the JSON request payload from "places/place.json"
     When I send a POST request to "/places/"
     Then the response status should be "201"
-    And I keep the value of the JSON response at "placeId" as "uuid_place"
+    And I keep the value of the JSON response at "placeId" as "placeId"
 
     Given I set the JSON request payload from "events/legacy/event-with-permanent-calendar.json"
     When I send a POST request to "/events/"
@@ -802,17 +802,17 @@ Feature: Test the UDB3 events API
     And the JSON response at "mediaObject" should be:
     """
     [{
-      "@id": "%{baseUrl}/images/%{image_id}",
+      "@id": "%{baseUrl}/images/%{imageId}",
       "@type": "schema:ImageObject",
-      "id": "%{image_id}",
-      "contentUrl": "https://images.uitdatabank.dev/%{image_id}.png",
-      "thumbnailUrl": "https://images.uitdatabank.dev/%{image_id}.png",
+      "id": "%{imageId}",
+      "contentUrl": "https://images.uitdatabank.dev/%{imageId}.png",
+      "thumbnailUrl": "https://images.uitdatabank.dev/%{imageId}.png",
       "copyrightHolder": "publiq vzw",
       "description": "A nice logo",
       "inLanguage": "en"
     }]
     """
-    And the JSON response at "image" should be "https://images.uitdatabank.dev/%{image_id}.png"
+    And the JSON response at "image" should be "https://images.uitdatabank.dev/%{imageId}.png"
     And the JSON response at "videos" should be:
     """
     [{
