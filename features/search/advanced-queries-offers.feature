@@ -869,6 +869,23 @@ Feature: Test the Search API v3 advanced queries on offers
       | q | id:%{eventId} AND location.id:ffffffff-ffff-ffff-ffff-ffffffffffff |
     Then the JSON response at "totalItems" should be 0
 
+  Scenario: Search for a location name using an advanced query
+    When I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND location.name.nl:%{name} |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND location.name.nl:Foobar |
+    Then the JSON response at "totalItems" should be 0
+
   Scenario: Search for an organizer id using an advanced query
     When I create a minimal place and save the "url" as "placeUrl"
     And I create a minimal organizer and save the "url" as "organizerUrl"
@@ -886,6 +903,25 @@ Feature: Test the Search API v3 advanced queries on offers
     """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND organizer.id:ffffffff-ffff-ffff-ffff-ffffffffffff |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search for an organizer name using an advanced query
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create a minimal organizer and save the "url" as "organizerUrl"
+    And I keep the value of the JSON response at "id" as "organizerId"
+    And I create an event from "events/event-minimal-permanent-with-organizer.json" and save the "id" as "eventId"
+    And I publish the event at "/events/%{eventId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND organizer.name.nl:%{name} |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} AND organizer.name.nl:Foobar |
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for organizer labels using an advanced query
