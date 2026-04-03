@@ -16,7 +16,7 @@ class IriOfferIdentifierFactoryTest extends TestCase
     public function setUp(): void
     {
         $this->iriOfferIdentifierFactory = new IriOfferIdentifierFactory(
-            'https?://foo\.bar/(?<offertype>[event|place]+)/(?<offerid>[a-zA-Z0-9\-]+)'
+            'https?://foo\.bar/(?<offertype>(?:event|place))s?/(?<offerid>[a-zA-Z0-9\-]+)'
         );
     }
 
@@ -47,10 +47,22 @@ class IriOfferIdentifierFactoryTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_an_error_when_using_an_invalid_offer_type_that_only_matches_as_character_class(): void
+    {
+        $this->expectException(RuntimeException::class);
+
+        $this->iriOfferIdentifierFactory->fromIri(
+            new Url('https://foo.bar/eeevvv/1234')
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_an_error_when_the_offertype_index_is_not_found_in_the_regex(): void
     {
         $iriOfferIdentifierFactory = new IriOfferIdentifierFactory(
-            'https?://foo\.bar/(?<offer>[event|place]+)/(?<offerid>[a-zA-Z0-9\-]+)'
+            'https?://foo\.bar/(?<offer>(?:event|place))s?/(?<offerid>[a-zA-Z0-9\-]+)'
         );
 
         $this->expectException(InvalidArgumentException::class);
@@ -67,7 +79,7 @@ class IriOfferIdentifierFactoryTest extends TestCase
     public function it_throws_an_error_when_the_offerid_index_is_not_found_in_the_regex(): void
     {
         $iriOfferIdentifierFactory = new IriOfferIdentifierFactory(
-            'https?://foo\.bar/(?<offertype>[event|place]+)/(?<id>[a-zA-Z0-9\-]+)'
+            'https?://foo\.bar/(?<offertype>(?:event|place))s?/(?<id>[a-zA-Z0-9\-]+)'
         );
 
         $this->expectException(InvalidArgumentException::class);
@@ -89,6 +101,42 @@ class IriOfferIdentifierFactoryTest extends TestCase
 
         $expectedIriOfferIdentifier = new IriOfferIdentifier(
             new Url('https://foo.bar/place/1234'),
+            '1234',
+            OfferType::place()
+        );
+
+        $this->assertEquals($expectedIriOfferIdentifier, $iriOfferIdentifier);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_correct_iri_offer_identifier_when_plural_event_url_is_used(): void
+    {
+        $iriOfferIdentifier = $this->iriOfferIdentifierFactory->fromIri(
+            new Url('https://foo.bar/events/1234')
+        );
+
+        $expectedIriOfferIdentifier = new IriOfferIdentifier(
+            new Url('https://foo.bar/events/1234'),
+            '1234',
+            OfferType::event()
+        );
+
+        $this->assertEquals($expectedIriOfferIdentifier, $iriOfferIdentifier);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_correct_iri_offer_identifier_when_plural_place_url_is_used(): void
+    {
+        $iriOfferIdentifier = $this->iriOfferIdentifierFactory->fromIri(
+            new Url('https://foo.bar/places/1234')
+        );
+
+        $expectedIriOfferIdentifier = new IriOfferIdentifier(
+            new Url('https://foo.bar/places/1234'),
             '1234',
             OfferType::place()
         );
