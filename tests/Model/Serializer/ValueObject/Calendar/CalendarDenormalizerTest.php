@@ -790,6 +790,42 @@ final class CalendarDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_denormalizes_a_periodic_calendar_with_empty_adjusted_opening_hours(): void
+    {
+        $data = [
+            'calendarType' => 'periodic',
+            'startDate' => '2026-01-01T00:00:00+00:00',
+            'endDate' => '2026-12-31T23:59:59+00:00',
+            'openingHours' => [],
+            'openingHoursAdjusted' => [],
+        ];
+
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PeriodicCalendar::class, $result);
+        $this->assertTrue($result->getAdjustedOpeningHours()->isEmpty());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_permanent_calendar_with_empty_adjusted_opening_hours(): void
+    {
+        $data = [
+            'calendarType' => 'permanent',
+            'openingHours' => [],
+            'openingHoursAdjusted' => [],
+        ];
+
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PermanentCalendar::class, $result);
+        $this->assertTrue($result->getAdjustedOpeningHours()->isEmpty());
+    }
+
+    /**
+     * @test
+     */
     public function it_denormalizes_a_periodic_calendar_with_adjusted_opening_hours(): void
     {
         $data = [

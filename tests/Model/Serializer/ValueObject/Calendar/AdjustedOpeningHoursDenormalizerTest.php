@@ -200,6 +200,28 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_treats_empty_description_array_as_no_description(): void
+    {
+        $data = [
+            [
+                'startDate' => '2026-12-21',
+                'endDate' => '2026-12-26',
+                'openingHours' => [
+                    ['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
+                ],
+                'description' => [],
+            ],
+        ];
+
+        $result = $this->denormalizer->denormalize($data, AdjustedOpeningHoursCollection::class);
+
+        $this->assertEquals(1, $result->count());
+        $this->assertNull($result->toArray()[0]->getDescription());
+    }
+
+    /**
+     * @test
+     */
     public function it_supports_denormalization_of_adjusted_opening_hours_collection(): void
     {
         $this->assertTrue($this->denormalizer->supportsDenormalization([], AdjustedOpeningHoursCollection::class));
