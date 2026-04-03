@@ -10,6 +10,6 @@ final class TranslatedClosedDayDescription extends TranslatedValueObject
 {
     protected function getValueObjectClassName(): string
     {
-        return ClosedDayDescription::class;
+        return AdjustedDescription::class;
     }
 }

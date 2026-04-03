@@ -10,6 +10,6 @@ final class TranslatedAdjustedOpeningHoursDescription extends TranslatedValueObj
 {
     protected function getValueObjectClassName(): string
     {
-        return AdjustedOpeningHoursDescription::class;
+        return AdjustedDescription::class;
     }
 }
