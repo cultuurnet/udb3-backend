@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedOpeningHoursDescription;
@@ -58,11 +59,11 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
     {
         $description = new TranslatedAdjustedOpeningHoursDescription(
             new Language('nl'),
-            new AdjustedOpeningHoursDescription('Kerstvakantie')
+            new AdjustedDescription('Kerstvakantie')
         );
         $description = $description->withTranslation(
             new Language('fr'),
-            new AdjustedOpeningHoursDescription('Vacances de Noël')
+            new AdjustedDescription('Vacances de Noël')
         );
 
         $adjustedOpeningHours = new AdjustedOpeningHours(

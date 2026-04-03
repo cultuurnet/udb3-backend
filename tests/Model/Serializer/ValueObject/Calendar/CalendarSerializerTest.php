@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursDescription;
@@ -497,7 +498,7 @@ final class CalendarSerializerTest extends TestCase
     {
         $description = new TranslatedAdjustedOpeningHoursDescription(
             new Language('nl'),
-            new AdjustedOpeningHoursDescription('Kerstvakantie')
+            new AdjustedDescription('Kerstvakantie')
         );
         $adjustedOpeningHours = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-21'),

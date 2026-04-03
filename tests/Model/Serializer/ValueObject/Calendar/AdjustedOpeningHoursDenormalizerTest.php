@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursDescription;
@@ -106,7 +107,7 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
         $this->assertInstanceOf(TranslatedAdjustedOpeningHoursDescription::class, $entries[0]->getDescription());
 
         $nlDescription = $entries[0]->getDescription()->getTranslation(new Language('nl'));
-        $this->assertInstanceOf(AdjustedOpeningHoursDescription::class, $nlDescription);
+        $this->assertInstanceOf(AdjustedDescription::class, $nlDescription);
         $this->assertEquals('Kerstvakantie', $nlDescription->toString());
 
         $frDescription = $entries[0]->getDescription()->getTranslation(new Language('fr'));
