@@ -30,6 +30,7 @@ final class AdjustedOpeningHoursTest extends TestCase
 
         $this->assertSame('2026-12-21', $adjustedOpeningHours->getStartDate()->format('Y-m-d'));
         $this->assertSame('2026-12-26', $adjustedOpeningHours->getEndDate()->format('Y-m-d'));
+        $this->assertCount(1, $adjustedOpeningHours->getOpeningHours()->toArray());
         $this->assertNull($adjustedOpeningHours->getDescription());
     }
 

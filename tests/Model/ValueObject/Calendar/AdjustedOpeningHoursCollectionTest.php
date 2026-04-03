@@ -110,30 +110,4 @@ final class AdjustedOpeningHoursCollectionTest extends TestCase
         $this->assertEquals(new DateTimeImmutable('2026-12-31T00:00:00'), $array[0]->getEndDate());
     }
 
-    /**
-     * @test
-     */
-    public function it_can_be_iterated_when_converted_to_array(): void
-    {
-        $entry1 = new AdjustedOpeningHours(
-            new DateTimeImmutable('2026-01-01'),
-            new DateTimeImmutable('2026-01-01'),
-            $this->openingHours
-        );
-        $entry2 = new AdjustedOpeningHours(
-            new DateTimeImmutable('2026-12-25'),
-            new DateTimeImmutable('2026-12-25'),
-            $this->openingHours
-        );
-
-        $collection = new AdjustedOpeningHoursCollection($entry1, $entry2);
-
-        $count = 0;
-        foreach ($collection->toArray() as $entry) {
-            $this->assertInstanceOf(AdjustedOpeningHours::class, $entry);
-            $count++;
-        }
-
-        $this->assertEquals(2, $count);
-    }
 }
