@@ -19,6 +19,7 @@
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
+  udb:audienceType <https://data.publiq.be/concepts/audienceType/everyone> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <http://data.uitdatabank.local:80/places/%{placeId}> ;
   schema:contactPoint <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-f20d8319>, <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-35306b47>, <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-953ce804>, <http://data.uitdatabank.local:80/events/%{eventId}#contactPoint-94fe8233> .
