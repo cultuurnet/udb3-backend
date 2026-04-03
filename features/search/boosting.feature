@@ -66,11 +66,11 @@ Feature: Test the Search API v3 boosting
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/event/%{boostedEvent}",
+        "@id": "http://io.uitdatabank.local:80/events/%{boostedEvent}",
         "@type": "Event"
       },
       {
-        "@id": "http://io.uitdatabank.local:80/event/%{nonBoostedevent}",
+        "@id": "http://io.uitdatabank.local:80/events/%{nonBoostedevent}",
         "@type": "Event"
 
       }
@@ -126,12 +126,12 @@ Feature: Test the Search API v3 boosting
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/event/%{nonBoostedevent}",
+        "@id": "http://io.uitdatabank.local:80/events/%{nonBoostedevent}",
         "@type": "Event"
 
       },
       {
-        "@id": "http://io.uitdatabank.local:80/event/%{boostedEvent}",
+        "@id": "http://io.uitdatabank.local:80/events/%{boostedEvent}",
         "@type": "Event"
       }
     ]
