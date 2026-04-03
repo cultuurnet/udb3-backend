@@ -11,6 +11,8 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I create a minimal organizer and save the "id" as "organizerId"
+    And I send a PUT request to "/events/%{eventId}/organizer/%{organizerId}"
     And I create a random labelname of 10 characters
     And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
     And I send a PUT request to "/events/%{eventId}/labels/%{labelname}"
@@ -48,6 +50,41 @@ Feature: Test the Search API v3 url parameters on offers
     And I am using the Search API v3 base URL
     And I send a GET request to "/events" with parameters:
       | locationLabels | %{labelname} |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
+    When I am using the UDB3 base URL
+    And I create a random labelname of 10 characters
+    And I send a PUT request to "/organizers/%{organizerId}/labels/%{labelname}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    And I send a GET request to "/events" with parameters:
+      | organizerLabels | %{labelname} |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
+
+  Scenario: Search for an event via location & organizer id
+    Given I create a minimal place and save the "id" as "placeId"
+    And I publish the place at "/places/%{placeId}"
+    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I create a minimal organizer and save the "id" as "organizerId"
+    And I send a PUT request to "/events/%{eventId}/organizer/%{organizerId}"
+    And I wait 2 seconds
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/offers" with parameters:
+      | locationId | %{placeId} |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId}
+    """
+    When I send a GET request to "/events" with parameters:
+      | organizerId | %{organizerId} |
     Then the JSON response at "totalItems" should be 1
     And the JSON response should include:
     """

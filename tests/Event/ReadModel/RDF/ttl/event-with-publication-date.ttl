@@ -19,6 +19,7 @@
   cp:thema <https://mock.taxonomy.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/approved> ;
   udb:availableFrom "2023-04-23T12:30:15+02:00"^^xsd:dateTime ;
+  udb:audienceType <https://data.publiq.be/concepts/audienceType/everyone> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   prov:atLocation <https://mock.data.publiq.be/places/bfc60a14-6208-4372-942e-86e63744769a> .
 
