@@ -149,7 +149,7 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_sorts_entries_by_start_date(): void
+    public function it_returns_entries_sorted_by_start_date_via_collection(): void
     {
         $data = [
             [
