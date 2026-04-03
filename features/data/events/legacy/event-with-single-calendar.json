@@ -12,7 +12,7 @@
     "domain": "theme"
   },
   "location": {
-    "id": "%{uuid_place}",
+    "id": "%{placeId}",
     "name": "Cafe Den Hemel",
     "address": {
       "addressCountry": "BE",

@@ -44,7 +44,7 @@
 
 <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-8b563a39>
   a cidoc:E92_Spacetime_Volume ;
-  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
+  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{placeId}> ;
   cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-31d8dd36> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-31d8dd36>
@@ -54,7 +54,7 @@
 
 <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-5da8175b>
   a cidoc:E92_Spacetime_Volume ;
-  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
+  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{placeId}> ;
   cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-3bce2ab9> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-3bce2ab9>

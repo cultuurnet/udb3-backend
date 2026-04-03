@@ -12,7 +12,7 @@
     }
   ],
   "location": {
-    "@id": "%{baseUrl}/places/%{uuid_place}"
+    "@id": "%{baseUrl}/places/%{placeId}"
   },
   "calendarType": "single",
   "startDate": "2021-05-17T08:00:00+00:00",

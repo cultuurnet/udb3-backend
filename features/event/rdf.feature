@@ -5,7 +5,7 @@ Feature: Test RDF projection of events
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
-    And I create a minimal place and save the "id" as "uuid_place"
+    And I create a minimal place and save the "id" as "placeId"
 
   Scenario: Create an event with only the required fields
     Given I create an event from "events/rdf/event-with-required-fields.json" and save the "id" as "eventId"

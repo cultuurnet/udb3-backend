@@ -1,4 +1,4 @@
-.PHONY: up down bash config install migrate init ci stan cs cs-fix test feature
+.PHONY: up down bash config install migrate init ci stan cs cs-fix test feature destroy
 
 up:
 	docker compose up -d
@@ -70,3 +70,6 @@ rector:
 
 rector-fix:
 	docker compose exec php composer rector-fix
+
+destroy:
+	docker compose down --rmi all --volumes

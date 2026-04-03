@@ -32,7 +32,7 @@ Feature: Test the UDB3 roles API
     """
     And I send a POST request to "/roles/"
     And I keep the value of the JSON response at "roleId" as "roleId"
-    And I create a random name of 11 characters and keep it as "firstLabelName"
+    And I create a random string of 11 characters and keep it as "firstLabelName"
     And I set the JSON request payload to:
       """
       { "name": "%{firstLabelName}", "visibility": "visible", "privacy": "public" }
@@ -40,7 +40,7 @@ Feature: Test the UDB3 roles API
     And I send a POST request to "/labels/"
     And I keep the value of the JSON response at "uuid" as "firstLabelId"
     And I send a PUT request to "/roles/%{roleId}/labels/%{firstLabelId}"
-    And I create a random name of 11 characters and keep it as "secondLabelName"
+    And I create a random string of 11 characters and keep it as "secondLabelName"
     And I set the JSON request payload to:
       """
       { "name": "%{secondLabelName}", "visibility": "visible", "privacy": "public" }
