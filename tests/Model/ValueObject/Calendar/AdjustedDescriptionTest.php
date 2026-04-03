@@ -38,6 +38,9 @@ final class AdjustedDescriptionTest extends TestCase
         $tooLongText = str_repeat('a', 1001);
 
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Given CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription should not be longer than 1000 characters.'
+        );
 
         new AdjustedDescription($tooLongText);
     }
@@ -48,6 +51,7 @@ final class AdjustedDescriptionTest extends TestCase
     public function it_throws_when_description_is_empty(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Given string should not be empty.');
 
         new AdjustedDescription('');
     }
@@ -59,7 +63,6 @@ final class AdjustedDescriptionTest extends TestCase
     {
         $description = new AdjustedDescription('   ');
 
-        // Whitespace is allowed, only truly empty string is not
         $this->assertEquals('   ', $description->toString());
     }
 }

@@ -56,6 +56,7 @@ final class AdjustedOpeningHoursTest extends TestCase
     public function it_throws_when_start_date_is_after_end_date(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('"startDate" should not be later than "endDate".');
 
         new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-26'),
@@ -72,6 +73,7 @@ final class AdjustedOpeningHoursTest extends TestCase
     public function it_throws_when_opening_hours_is_empty(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('AdjustedOpeningHours must contain at least one OpeningHour.');
 
         new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-21'),
