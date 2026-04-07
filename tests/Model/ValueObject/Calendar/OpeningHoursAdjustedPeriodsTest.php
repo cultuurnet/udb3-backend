@@ -89,27 +89,22 @@ final class OpeningHoursAdjustedPeriodsTest extends TestCase
     /**
      * @test
      */
-    public function it_sorts_by_start_time_when_start_dates_fall_on_the_same_day(): void
+    public function it_throws_when_two_entries_share_the_same_start_day(): void
     {
-        $entry1 = new OpeningHoursAdjusted(
-            new DateTimeImmutable('2026-12-25T00:00:00'),
-            new DateTimeImmutable('2026-12-31T00:00:00'),
-            $this->openingHours
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('OpeningHoursAdjustedPeriods cannot contain two entries with the same start date.');
+
+        new OpeningHoursAdjustedPeriods(
+            new OpeningHoursAdjusted(
+                new DateTimeImmutable('2026-12-25T00:00:00'),
+                new DateTimeImmutable('2026-12-31T00:00:00'),
+                $this->openingHours
+            ),
+            new OpeningHoursAdjusted(
+                new DateTimeImmutable('2026-12-25T10:00:00'),
+                new DateTimeImmutable('2026-12-26T00:00:00'),
+                $this->openingHours
+            )
         );
-        $entry2 = new OpeningHoursAdjusted(
-            new DateTimeImmutable('2026-12-25T10:00:00'),
-            new DateTimeImmutable('2026-12-26T00:00:00'),
-            $this->openingHours
-        );
-
-        $collection = new OpeningHoursAdjustedPeriods($entry1, $entry2);
-
-        $array = $collection->toArray();
-
-        $this->assertCount(2, $array);
-        $this->assertEquals(new DateTimeImmutable('2026-12-25T00:00:00'), $array[0]->getStartDate());
-        $this->assertEquals(new DateTimeImmutable('2026-12-31T00:00:00'), $array[0]->getEndDate());
-        $this->assertEquals(new DateTimeImmutable('2026-12-25T10:00:00'), $array[1]->getStartDate());
-        $this->assertEquals(new DateTimeImmutable('2026-12-26T00:00:00'), $array[1]->getEndDate());
     }
 }

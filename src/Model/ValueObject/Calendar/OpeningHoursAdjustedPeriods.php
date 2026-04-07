@@ -13,6 +13,15 @@ final class OpeningHoursAdjustedPeriods
 
     public function __construct(OpeningHoursAdjusted ...$openingHoursAdjusted)
     {
+        $startDates = array_map(
+            fn (OpeningHoursAdjusted $entry) => $entry->getStartDate()->format('Y-m-d'),
+            $openingHoursAdjusted
+        );
+
+        if (count($startDates) !== count(array_unique($startDates))) {
+            throw new \InvalidArgumentException('OpeningHoursAdjustedPeriods cannot contain two entries with the same start date.');
+        }
+
         usort(
             $openingHoursAdjusted,
             fn (OpeningHoursAdjusted $a, OpeningHoursAdjusted $b) => $a->getStartDate() <=> $b->getStartDate()

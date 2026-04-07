@@ -105,29 +105,20 @@ final class ClosedDaysTest extends TestCase
     /**
      * @test
      */
-    public function it_maintains_order_when_start_dates_are_equal(): void
+    public function it_throws_when_two_entries_share_the_same_start_day(): void
     {
-        $closedDay1 = new ClosedDay(
-            new DateTimeImmutable('2024-12-25T00:00:00'),
-            new DateTimeImmutable('2024-12-25T23:59:59')
-        );
-        $closedDay2 = new ClosedDay(
-            new DateTimeImmutable('2024-12-25T10:00:00'),
-            new DateTimeImmutable('2024-12-25T11:00:00')
-        );
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('ClosedDays cannot contain two entries with the same start date.');
 
-        $closedDays = new ClosedDays($closedDay1, $closedDay2);
-
-        $array = $closedDays->toArray();
-
-        // When startDates are equal, maintain input order
-        $this->assertEquals(
-            new DateTimeImmutable('2024-12-25T00:00:00'),
-            $array[0]->getStartDate()
-        );
-        $this->assertEquals(
-            new DateTimeImmutable('2024-12-25T23:59:59'),
-            $array[0]->getEndDate()
+        new ClosedDays(
+            new ClosedDay(
+                new DateTimeImmutable('2024-12-25T00:00:00'),
+                new DateTimeImmutable('2024-12-25T23:59:59')
+            ),
+            new ClosedDay(
+                new DateTimeImmutable('2024-12-25T10:00:00'),
+                new DateTimeImmutable('2024-12-25T11:00:00')
+            )
         );
     }
 
