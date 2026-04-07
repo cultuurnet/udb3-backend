@@ -6,11 +6,11 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
 
-final class TranslatedAdjustedOpeningHoursDescription extends TranslatedValueObject
+final class TranslatedOpeningHoursAdjustedDescription extends TranslatedValueObject
 {
     protected function getValueObjectClassName(): string
     {
-        // Both ClosedDay and AdjustedOpeningHours descriptions share the same constraints
+        // Both ClosedDay and OpeningHoursAdjusted descriptions share the same constraints
         // (non-empty string, max 1000 characters), so they reuse AdjustedDescription as the
         // leaf value object. If the constraints ever diverge, split into separate classes.
         return AdjustedDescription::class;

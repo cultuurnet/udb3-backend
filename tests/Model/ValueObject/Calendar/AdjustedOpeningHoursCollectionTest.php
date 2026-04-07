@@ -28,7 +28,7 @@ final class AdjustedOpeningHoursCollectionTest extends TestCase
      */
     public function it_creates_an_empty_collection(): void
     {
-        $collection = new AdjustedOpeningHoursCollection();
+        $collection = new OpeningHoursAdjustedPeriods();
 
         $this->assertTrue($collection->isEmpty());
         $this->assertEquals(0, $collection->count());
@@ -40,13 +40,13 @@ final class AdjustedOpeningHoursCollectionTest extends TestCase
      */
     public function it_creates_a_collection_with_a_single_entry(): void
     {
-        $entry = new AdjustedOpeningHours(
+        $entry = new OpeningHoursAdjusted(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-25'),
             $this->openingHours
         );
 
-        $collection = new AdjustedOpeningHoursCollection($entry);
+        $collection = new OpeningHoursAdjustedPeriods($entry);
 
         $this->assertFalse($collection->isEmpty());
         $this->assertEquals(1, $collection->count());
@@ -61,23 +61,23 @@ final class AdjustedOpeningHoursCollectionTest extends TestCase
      */
     public function it_sorts_entries_by_start_date_ascending(): void
     {
-        $entry1 = new AdjustedOpeningHours(
+        $entry1 = new OpeningHoursAdjusted(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-25'),
             $this->openingHours
         );
-        $entry2 = new AdjustedOpeningHours(
+        $entry2 = new OpeningHoursAdjusted(
             new DateTimeImmutable('2026-01-01'),
             new DateTimeImmutable('2026-01-01'),
             $this->openingHours
         );
-        $entry3 = new AdjustedOpeningHours(
+        $entry3 = new OpeningHoursAdjusted(
             new DateTimeImmutable('2026-07-21'),
             new DateTimeImmutable('2026-07-21'),
             $this->openingHours
         );
 
-        $collection = new AdjustedOpeningHoursCollection($entry1, $entry2, $entry3);
+        $collection = new OpeningHoursAdjustedPeriods($entry1, $entry2, $entry3);
 
         $array = $collection->toArray();
 
@@ -91,18 +91,18 @@ final class AdjustedOpeningHoursCollectionTest extends TestCase
      */
     public function it_sorts_by_start_time_when_start_dates_fall_on_the_same_day(): void
     {
-        $entry1 = new AdjustedOpeningHours(
+        $entry1 = new OpeningHoursAdjusted(
             new DateTimeImmutable('2026-12-25T00:00:00'),
             new DateTimeImmutable('2026-12-31T00:00:00'),
             $this->openingHours
         );
-        $entry2 = new AdjustedOpeningHours(
+        $entry2 = new OpeningHoursAdjusted(
             new DateTimeImmutable('2026-12-25T10:00:00'),
             new DateTimeImmutable('2026-12-26T00:00:00'),
             $this->openingHours
         );
 
-        $collection = new AdjustedOpeningHoursCollection($entry1, $entry2);
+        $collection = new OpeningHoursAdjustedPeriods($entry1, $entry2);
 
         $array = $collection->toArray();
 

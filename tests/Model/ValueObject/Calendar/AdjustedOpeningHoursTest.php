@@ -21,7 +21,7 @@ final class AdjustedOpeningHoursTest extends TestCase
      */
     public function it_creates_with_valid_dates_and_opening_hours(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedOpeningHours = new OpeningHoursAdjusted(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -40,12 +40,12 @@ final class AdjustedOpeningHoursTest extends TestCase
      */
     public function it_creates_with_optional_description(): void
     {
-        $description = new TranslatedAdjustedOpeningHoursDescription(
+        $description = new TranslatedOpeningHoursAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Kerstvakantie')
         );
 
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedOpeningHours = new OpeningHoursAdjusted(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -62,7 +62,7 @@ final class AdjustedOpeningHoursTest extends TestCase
      */
     public function it_creates_with_same_day_start_and_end_date(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedOpeningHours = new OpeningHoursAdjusted(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-25'),
             new OpeningHours(
@@ -82,7 +82,7 @@ final class AdjustedOpeningHoursTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"startDate" should not be later than "endDate".');
 
-        new AdjustedOpeningHours(
+        new OpeningHoursAdjusted(
             new DateTimeImmutable('2026-12-26'),
             new DateTimeImmutable('2026-12-21'),
             new OpeningHours(
@@ -99,7 +99,7 @@ final class AdjustedOpeningHoursTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('AdjustedOpeningHours must contain at least one OpeningHour.');
 
-        new AdjustedOpeningHours(
+        new OpeningHoursAdjusted(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours()

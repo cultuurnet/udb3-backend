@@ -8,20 +8,20 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use DateTimeImmutable;
 use InvalidArgumentException;
 
-final class AdjustedOpeningHours
+final class OpeningHoursAdjusted
 {
     public function __construct(
         private readonly DateTimeImmutable $startDate,
         private readonly DateTimeImmutable $endDate,
         private readonly OpeningHours $openingHours,
-        private readonly ?TranslatedAdjustedOpeningHoursDescription $description = null
+        private readonly ?TranslatedOpeningHoursAdjustedDescription $description = null
     ) {
         if ($startDate > $endDate) {
             throw new InvalidArgumentException('"startDate" should not be later than "endDate".');
         }
 
         if ($openingHours->isEmpty()) {
-            throw new InvalidArgumentException('AdjustedOpeningHours must contain at least one OpeningHour.');
+            throw new InvalidArgumentException('OpeningHoursAdjusted must contain at least one OpeningHour.');
         }
     }
 
@@ -40,7 +40,7 @@ final class AdjustedOpeningHours
         return $this->openingHours;
     }
 
-    public function getDescription(): ?TranslatedAdjustedOpeningHoursDescription
+    public function getDescription(): ?TranslatedOpeningHoursAdjustedDescription
     {
         return $this->description;
     }

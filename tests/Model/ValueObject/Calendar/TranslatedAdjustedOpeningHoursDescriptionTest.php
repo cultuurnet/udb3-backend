@@ -14,7 +14,7 @@ final class TranslatedAdjustedOpeningHoursDescriptionTest extends TestCase
      */
     public function it_creates_a_translated_description_with_single_language(): void
     {
-        $description = new TranslatedAdjustedOpeningHoursDescription(
+        $description = new TranslatedOpeningHoursAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Kerstvakantie')
         );
@@ -28,7 +28,7 @@ final class TranslatedAdjustedOpeningHoursDescriptionTest extends TestCase
      */
     public function it_creates_a_translated_description_with_multiple_languages(): void
     {
-        $description = new TranslatedAdjustedOpeningHoursDescription(
+        $description = new TranslatedOpeningHoursAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Kerstvakantie')
         );
@@ -53,7 +53,7 @@ final class TranslatedAdjustedOpeningHoursDescriptionTest extends TestCase
      */
     public function it_returns_all_languages(): void
     {
-        $description = new TranslatedAdjustedOpeningHoursDescription(
+        $description = new TranslatedOpeningHoursAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Kerstvakantie')
         );
@@ -76,7 +76,7 @@ final class TranslatedAdjustedOpeningHoursDescriptionTest extends TestCase
      */
     public function it_updates_existing_translation(): void
     {
-        $description = new TranslatedAdjustedOpeningHoursDescription(
+        $description = new TranslatedOpeningHoursAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Eerste versie')
         );
@@ -98,7 +98,7 @@ final class TranslatedAdjustedOpeningHoursDescriptionTest extends TestCase
     public function it_gets_original_language(): void
     {
         $originalLanguage = new Language('nl');
-        $description = new TranslatedAdjustedOpeningHoursDescription(
+        $description = new TranslatedOpeningHoursAdjustedDescription(
             $originalLanguage,
             new AdjustedDescription('Kerstvakantie')
         );
