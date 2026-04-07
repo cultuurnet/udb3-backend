@@ -113,7 +113,7 @@ final class CalendarSerializer implements Serializable
                 break;
             case CalendarType::periodic():
                 $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), new OpeningHours(...$openingHours));
-                if (!empty($data['openingHoursClosedDays'])) {
+                if (isset($data['openingHoursClosedDays'])) {
                     $calendar = $calendar->withClosedDays(
                         (new ClosedDaysDenormalizer())->denormalize($data['openingHoursClosedDays'], ClosedDays::class)
                     );
@@ -126,7 +126,7 @@ final class CalendarSerializer implements Serializable
                 break;
             case CalendarType::permanent():
                 $calendar = new PermanentCalendar(new OpeningHours(...$openingHours));
-                if (!empty($data['openingHoursClosedDays'])) {
+                if (isset($data['openingHoursClosedDays'])) {
                     $calendar = $calendar->withClosedDays(
                         (new ClosedDaysDenormalizer())->denormalize($data['openingHoursClosedDays'], ClosedDays::class)
                     );
