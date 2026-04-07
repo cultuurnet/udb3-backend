@@ -14,7 +14,7 @@ use DateTimeImmutable;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-final class AdjustedOpeningHoursTest extends TestCase
+final class OpeningHoursAdjustedTest extends TestCase
 {
     /**
      * @test

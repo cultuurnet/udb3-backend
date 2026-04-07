@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-final class AdjustedOpeningHoursCollectionTest extends TestCase
+final class OpeningHoursAdjustedPeriodsTest extends TestCase
 {
     private OpeningHours $openingHours;
 
