@@ -155,10 +155,13 @@ class PeriodicCalendarTest extends TestCase
      */
     public function it_allows_setting_adjusted_opening_hours(): void
     {
+        $openingHours = new OpeningHours(
+            new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+        );
         $entry = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-26'),
-            new OpeningHours()
+            $openingHours
         );
         $collection = new AdjustedOpeningHoursCollection($entry);
 
@@ -176,10 +179,13 @@ class PeriodicCalendarTest extends TestCase
      */
     public function it_allows_replacing_adjusted_opening_hours(): void
     {
+        $openingHours = new OpeningHours(
+            new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+        );
         $entry1 = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-26'),
-            new OpeningHours()
+            $openingHours
         );
         $collection1 = new AdjustedOpeningHoursCollection($entry1);
 
@@ -189,12 +195,12 @@ class PeriodicCalendarTest extends TestCase
         $entry2 = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-01-01'),
             new DateTimeImmutable('2026-01-02'),
-            new OpeningHours()
+            $openingHours
         );
         $entry3 = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-07-21'),
             new DateTimeImmutable('2026-07-22'),
-            new OpeningHours()
+            $openingHours
         );
         $collection2 = new AdjustedOpeningHoursCollection($entry2, $entry3);
 

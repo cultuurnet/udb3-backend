@@ -134,10 +134,13 @@ class PermanentCalendarTest extends TestCase
     {
         $calendar = new PermanentCalendar(new OpeningHours());
 
+        $openingHours = new OpeningHours(
+            new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+        );
         $entry = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-26'),
-            new OpeningHours()
+            $openingHours
         );
         $collection = new AdjustedOpeningHoursCollection($entry);
 
@@ -157,10 +160,13 @@ class PermanentCalendarTest extends TestCase
     {
         $calendar = new PermanentCalendar(new OpeningHours());
 
+        $openingHours = new OpeningHours(
+            new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+        );
         $entry1 = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-26'),
-            new OpeningHours()
+            $openingHours
         );
         $collection1 = new AdjustedOpeningHoursCollection($entry1);
 
@@ -170,12 +176,12 @@ class PermanentCalendarTest extends TestCase
         $entry2 = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-01-01'),
             new DateTimeImmutable('2026-01-02'),
-            new OpeningHours()
+            $openingHours
         );
         $entry3 = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-07-21'),
             new DateTimeImmutable('2026-07-22'),
-            new OpeningHours()
+            $openingHours
         );
         $collection2 = new AdjustedOpeningHoursCollection($entry2, $entry3);
 
