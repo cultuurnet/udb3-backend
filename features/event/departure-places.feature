@@ -7,6 +7,7 @@ Feature: Test event departure places
     And I send and accept "application/json"
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
     And I create a minimal place and save the "url" as "departurePlaceUrl1"
+    And I keep the value of the JSON response at "id" as "departurePlaceId"
     And I create a minimal place and save the "url" as "departurePlaceUrl2"
 
   Scenario: Set departure places on a childrenOnly event
@@ -23,6 +24,19 @@ Feature: Test event departure places
     And I get the event at "%{eventUrl}"
     And the JSON response at "departurePlaces/0" should be "%{departurePlaceUrl1}"
     And the JSON response at "departurePlaces/1" should be "%{departurePlaceUrl2}"
+
+  Scenario: Set departure places with legacy singular place URL
+    When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    [
+      "%{baseUrl}/place/%{departurePlaceId}"
+    ]
+    """
+    And I send a PUT request to "%{eventUrl}/departurePlaces/"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "departurePlaces/0" should be "%{baseUrl}/place/%{departurePlaceId}"
 
   Scenario: Remove departure places with empty array
     When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
