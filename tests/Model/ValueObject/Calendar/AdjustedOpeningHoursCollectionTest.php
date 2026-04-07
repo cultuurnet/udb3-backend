@@ -89,7 +89,7 @@ final class AdjustedOpeningHoursCollectionTest extends TestCase
     /**
      * @test
      */
-    public function it_maintains_order_when_start_dates_are_equal(): void
+    public function it_sorts_by_start_time_when_start_dates_fall_on_the_same_day(): void
     {
         $entry1 = new AdjustedOpeningHours(
             new DateTimeImmutable('2026-12-25T00:00:00'),

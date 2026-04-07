@@ -119,6 +119,76 @@ class PermanentCalendarTest extends TestCase
     /**
      * @test
      */
+    public function it_has_empty_adjusted_opening_hours_by_default(): void
+    {
+        $calendar = new PermanentCalendar(new OpeningHours());
+
+        $this->assertTrue($calendar->getAdjustedOpeningHours()->isEmpty());
+        $this->assertEquals(0, $calendar->getAdjustedOpeningHours()->count());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_adjusted_opening_hours(): void
+    {
+        $calendar = new PermanentCalendar(new OpeningHours());
+
+        $entry = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-12-25'),
+            new DateTimeImmutable('2026-12-26'),
+            new OpeningHours()
+        );
+        $collection = new AdjustedOpeningHoursCollection($entry);
+
+        $updatedCalendar = $calendar->withAdjustedOpeningHours($collection);
+
+        $this->assertFalse($updatedCalendar->getAdjustedOpeningHours()->isEmpty());
+        $this->assertEquals(1, $updatedCalendar->getAdjustedOpeningHours()->count());
+
+        $array = $updatedCalendar->getAdjustedOpeningHours()->toArray();
+        $this->assertSame($entry, $array[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_replacing_adjusted_opening_hours(): void
+    {
+        $calendar = new PermanentCalendar(new OpeningHours());
+
+        $entry1 = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-12-25'),
+            new DateTimeImmutable('2026-12-26'),
+            new OpeningHours()
+        );
+        $collection1 = new AdjustedOpeningHoursCollection($entry1);
+
+        $calendar = $calendar->withAdjustedOpeningHours($collection1);
+        $this->assertEquals(1, $calendar->getAdjustedOpeningHours()->count());
+
+        $entry2 = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-01-01'),
+            new DateTimeImmutable('2026-01-02'),
+            new OpeningHours()
+        );
+        $entry3 = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-07-21'),
+            new DateTimeImmutable('2026-07-22'),
+            new OpeningHours()
+        );
+        $collection2 = new AdjustedOpeningHoursCollection($entry2, $entry3);
+
+        $updatedCalendar = $calendar->withAdjustedOpeningHours($collection2);
+        $this->assertEquals(2, $updatedCalendar->getAdjustedOpeningHours()->count());
+
+        // Original calendar should be unchanged
+        $this->assertEquals(1, $calendar->getAdjustedOpeningHours()->count());
+    }
+
+    /**
+     * @test
+     */
     public function it_has_empty_closed_days_by_default(): void
     {
         $calendar = new PermanentCalendar(new OpeningHours());
