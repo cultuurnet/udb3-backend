@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
@@ -137,7 +137,7 @@ final class CalendarNormalizer implements NormalizerInterface
         // Get the reason when there is only one sub event and the top level status has no reason.
         $reason = null;
         if (count($calendar->getSubEvents()->toArray()) === 1 && $calendar->getStatus()->getReason() === null) {
-            $reason =  $calendar->getSubEvents()->toArray()[0]->getStatus()->getReason();
+            $reason = $calendar->getSubEvents()->toArray()[0]->getStatus()->getReason();
         }
 
         // If the calendar has subEvents, the top level status is valid if it is the same type as the type derived from
