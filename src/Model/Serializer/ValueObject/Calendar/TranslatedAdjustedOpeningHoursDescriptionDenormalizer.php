@@ -16,12 +16,12 @@ final class TranslatedAdjustedOpeningHoursDescriptionDenormalizer extends Transl
         return $type === TranslatedAdjustedOpeningHoursDescription::class;
     }
 
-    protected function createTranslatedValueObject(Language $originalLanguage, object $originalValue)
+    protected function createTranslatedValueObject(Language $originalLanguage, object $originalValue): TranslatedAdjustedOpeningHoursDescription
     {
         return new TranslatedAdjustedOpeningHoursDescription($originalLanguage, $originalValue);
     }
 
-    protected function createValueObject($value)
+    protected function createValueObject($value): AdjustedDescription
     {
         return new AdjustedDescription($value);
     }
