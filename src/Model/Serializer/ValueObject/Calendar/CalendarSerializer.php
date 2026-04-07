@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use Broadway\Serializer\Serializable;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
@@ -14,8 +16,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
