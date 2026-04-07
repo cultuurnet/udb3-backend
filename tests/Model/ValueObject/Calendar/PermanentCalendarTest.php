@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-class PermanentCalendarTest extends TestCase
+final class PermanentCalendarTest extends TestCase
 {
     /**
      * @test
