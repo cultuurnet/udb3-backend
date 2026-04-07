@@ -89,7 +89,7 @@ final class TranslatedAdjustedOpeningHoursDescriptionTest extends TestCase
         $this->assertEquals('Tweede versie', $description->getTranslation(new Language('nl'))->toString());
 
         // Should still have only one language
-        $this->assertCount(1, $description->getLanguages());
+        $this->assertCount(1, iterator_to_array($description->getLanguages()));
     }
 
     /**

@@ -158,7 +158,7 @@ class PermanentCalendarTest extends TestCase
      */
     public function it_allows_replacing_adjusted_opening_hours(): void
     {
-        $calendar = new PermanentCalendar(new OpeningHours());
+        $originalCalendar = new PermanentCalendar(new OpeningHours());
 
         $openingHours = new OpeningHours(
             new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
@@ -170,7 +170,7 @@ class PermanentCalendarTest extends TestCase
         );
         $collection1 = new AdjustedOpeningHoursCollection($entry1);
 
-        $calendar = $calendar->withAdjustedOpeningHours($collection1);
+        $calendar = $originalCalendar->withAdjustedOpeningHours($collection1);
         $this->assertEquals(1, $calendar->getAdjustedOpeningHours()->count());
 
         $entry2 = new AdjustedOpeningHours(
@@ -188,8 +188,9 @@ class PermanentCalendarTest extends TestCase
         $updatedCalendar = $calendar->withAdjustedOpeningHours($collection2);
         $this->assertEquals(2, $updatedCalendar->getAdjustedOpeningHours()->count());
 
-        // Original calendar should be unchanged
+        // Original calendar should be unchanged (still has count=1 from first update)
         $this->assertEquals(1, $calendar->getAdjustedOpeningHours()->count());
+        $this->assertTrue($originalCalendar->getAdjustedOpeningHours()->isEmpty());
     }
 
     /**
