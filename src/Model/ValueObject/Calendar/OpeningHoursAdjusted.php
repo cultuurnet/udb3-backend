@@ -14,7 +14,7 @@ final class OpeningHoursAdjusted
         private readonly DateTimeImmutable $startDate,
         private readonly DateTimeImmutable $endDate,
         private readonly OpeningHours $openingHours,
-        private readonly ?TranslatedOpeningHoursAdjustedDescription $description = null
+        private readonly ?TranslatedAdjustedDescription $description = null
     ) {
         if ($startDate > $endDate) {
             throw new InvalidArgumentException('"startDate" should not be later than "endDate".');
@@ -40,7 +40,7 @@ final class OpeningHoursAdjusted
         return $this->openingHours;
     }
 
-    public function getDescription(): ?TranslatedOpeningHoursAdjustedDescription
+    public function getDescription(): ?TranslatedAdjustedDescription
     {
         return $this->description;
     }

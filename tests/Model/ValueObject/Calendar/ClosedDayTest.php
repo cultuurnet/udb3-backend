@@ -47,7 +47,7 @@ final class ClosedDayTest extends TestCase
     {
         $startDate = new DateTimeImmutable('2024-12-25');
         $endDate = new DateTimeImmutable('2024-12-25');
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Gesloten op eerste kerstdag')
         );

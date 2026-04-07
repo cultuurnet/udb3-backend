@@ -7,20 +7,20 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 
-final class TranslatedAdjustedOpeningHoursDescriptionTest extends TestCase
+final class TranslatedAdjustedDescriptionTest extends TestCase
 {
     /**
      * @test
      */
     public function it_creates_a_translated_description_with_single_language(): void
     {
-        $description = new TranslatedOpeningHoursAdjustedDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
-            new AdjustedDescription('Kerstvakantie')
+            new AdjustedDescription('Gesloten op eerste kerstdag')
         );
 
         $nlTranslation = $description->getTranslation(new Language('nl'));
-        $this->assertEquals('Kerstvakantie', $nlTranslation->toString());
+        $this->assertEquals('Gesloten op eerste kerstdag', $nlTranslation->toString());
     }
 
     /**
@@ -28,24 +28,29 @@ final class TranslatedAdjustedOpeningHoursDescriptionTest extends TestCase
      */
     public function it_creates_a_translated_description_with_multiple_languages(): void
     {
-        $description = new TranslatedOpeningHoursAdjustedDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
-            new AdjustedDescription('Kerstvakantie')
+            new AdjustedDescription('Gesloten op eerste kerstdag')
         );
 
         $description = $description->withTranslation(
             new Language('fr'),
-            new AdjustedDescription('Vacances de Noël')
+            new AdjustedDescription('Fermé pour Noël')
         );
 
         $description = $description->withTranslation(
             new Language('en'),
-            new AdjustedDescription('Christmas holiday')
+            new AdjustedDescription('Closed for Christmas')
         );
 
-        $this->assertEquals('Kerstvakantie', $description->getTranslation(new Language('nl'))->toString());
-        $this->assertEquals('Vacances de Noël', $description->getTranslation(new Language('fr'))->toString());
-        $this->assertEquals('Christmas holiday', $description->getTranslation(new Language('en'))->toString());
+        $nlTranslation = $description->getTranslation(new Language('nl'));
+        $this->assertEquals('Gesloten op eerste kerstdag', $nlTranslation->toString());
+
+        $frTranslation = $description->getTranslation(new Language('fr'));
+        $this->assertEquals('Fermé pour Noël', $frTranslation->toString());
+
+        $enTranslation = $description->getTranslation(new Language('en'));
+        $this->assertEquals('Closed for Christmas', $enTranslation->toString());
     }
 
     /**
@@ -53,14 +58,14 @@ final class TranslatedAdjustedOpeningHoursDescriptionTest extends TestCase
      */
     public function it_returns_all_languages(): void
     {
-        $description = new TranslatedOpeningHoursAdjustedDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
-            new AdjustedDescription('Kerstvakantie')
+            new AdjustedDescription('Gesloten op eerste kerstdag')
         );
 
         $description = $description->withTranslation(
             new Language('fr'),
-            new AdjustedDescription('Vacances de Noël')
+            new AdjustedDescription('Fermé pour Noël')
         );
 
         $languages = $description->getLanguages();
@@ -76,7 +81,7 @@ final class TranslatedAdjustedOpeningHoursDescriptionTest extends TestCase
      */
     public function it_updates_existing_translation(): void
     {
-        $description = new TranslatedOpeningHoursAdjustedDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Eerste versie')
         );
@@ -86,10 +91,12 @@ final class TranslatedAdjustedOpeningHoursDescriptionTest extends TestCase
             new AdjustedDescription('Tweede versie')
         );
 
-        $this->assertEquals('Tweede versie', $description->getTranslation(new Language('nl'))->toString());
+        $nlTranslation = $description->getTranslation(new Language('nl'));
+        $this->assertEquals('Tweede versie', $nlTranslation->toString());
 
         // Should still have only one language
-        $this->assertCount(1, iterator_to_array($description->getLanguages()));
+        $languages = $description->getLanguages();
+        $this->assertCount(1, $languages);
     }
 
     /**
@@ -98,9 +105,9 @@ final class TranslatedAdjustedOpeningHoursDescriptionTest extends TestCase
     public function it_gets_original_language(): void
     {
         $originalLanguage = new Language('nl');
-        $description = new TranslatedOpeningHoursAdjustedDescription(
+        $description = new TranslatedAdjustedDescription(
             $originalLanguage,
-            new AdjustedDescription('Kerstvakantie')
+            new AdjustedDescription('Gesloten op eerste kerstdag')
         );
 
         $this->assertEquals($originalLanguage, $description->getOriginalLanguage());

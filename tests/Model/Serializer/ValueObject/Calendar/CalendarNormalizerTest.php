@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -187,7 +187,7 @@ final class CalendarNormalizerTest extends TestCase
             )
         );
 
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Kerstfeest')
         );

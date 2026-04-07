@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -42,7 +42,7 @@ final class ClosedDayNormalizerTest extends TestCase
      */
     public function it_normalizes_a_closed_day_with_single_language_description(): void
     {
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Kerstfeest gesloten')
         );
@@ -66,7 +66,7 @@ final class ClosedDayNormalizerTest extends TestCase
      */
     public function it_normalizes_a_closed_day_with_multiple_language_descriptions(): void
     {
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Kerstfeest gesloten')
         );

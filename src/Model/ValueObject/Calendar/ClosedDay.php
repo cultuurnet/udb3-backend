@@ -12,7 +12,7 @@ final class ClosedDay
     public function __construct(
         private readonly DateTimeImmutable $startDate,
         private readonly DateTimeImmutable $endDate,
-        private readonly ?TranslatedClosedDayDescription $description = null
+        private readonly ?TranslatedAdjustedDescription $description = null
     ) {
         if ($startDate > $endDate) {
             throw new InvalidArgumentException('"startDate" should not be later than "endDate".');
@@ -29,7 +29,7 @@ final class ClosedDay
         return $this->endDate;
     }
 
-    public function getDescription(): ?TranslatedClosedDayDescription
+    public function getDescription(): ?TranslatedAdjustedDescription
     {
         return $this->description;
     }

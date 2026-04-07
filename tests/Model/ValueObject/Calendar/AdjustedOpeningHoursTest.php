@@ -40,7 +40,7 @@ final class AdjustedOpeningHoursTest extends TestCase
      */
     public function it_creates_with_optional_description(): void
     {
-        $description = new TranslatedOpeningHoursAdjustedDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Kerstvakantie')
         );
