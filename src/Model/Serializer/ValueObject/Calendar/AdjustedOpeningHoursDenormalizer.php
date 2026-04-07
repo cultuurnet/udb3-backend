@@ -47,7 +47,7 @@ final class AdjustedOpeningHoursDenormalizer implements DenormalizerInterface
             $openingHours = $this->denormalizeOpeningHours($adjustedOpeningHoursData['openingHours']);
 
             $description = null;
-            if (isset($adjustedOpeningHoursData['description']) && is_array($adjustedOpeningHoursData['description']) && !empty($adjustedOpeningHoursData['description'])) {
+            if (!empty($adjustedOpeningHoursData['description']) && is_array($adjustedOpeningHoursData['description'])) {
                 $description = $this->translatedDescriptionDenormalizer->denormalize(
                     $adjustedOpeningHoursData['description'],
                     TranslatedAdjustedOpeningHoursDescription::class

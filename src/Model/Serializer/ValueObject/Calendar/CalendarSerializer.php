@@ -202,9 +202,7 @@ final class CalendarSerializer implements Serializable
         if ($this->calendar instanceof CalendarWithAdjustedOpeningHours && !$this->calendar->getAdjustedOpeningHours()->isEmpty()) {
             $adjustedOpeningHoursNormalizer = new AdjustedOpeningHoursNormalizer();
             $calendar['openingHoursAdjusted'] = array_map(
-                function (AdjustedOpeningHours $aoh) use ($adjustedOpeningHoursNormalizer) {
-                    return $adjustedOpeningHoursNormalizer->normalize($aoh);
-                },
+                fn (AdjustedOpeningHours $aoh) => $adjustedOpeningHoursNormalizer->normalize($aoh),
                 $this->calendar->getAdjustedOpeningHours()->toArray()
             );
         }

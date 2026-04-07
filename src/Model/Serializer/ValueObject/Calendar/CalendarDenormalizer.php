@@ -137,7 +137,7 @@ final class CalendarDenormalizer implements DenormalizerInterface
                     $data,
                     new PermanentCalendar($openingHours)
                 );
-            break;
+                break;
         }
 
         if ($topLevelStatus !== null) {
