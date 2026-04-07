@@ -14,7 +14,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-class PermanentCalendarTest extends TestCase
+final class PermanentCalendarTest extends TestCase
 {
     /**
      * @test
@@ -114,6 +114,83 @@ class PermanentCalendarTest extends TestCase
         $calendar = new PermanentCalendar($openingHours);
 
         $this->assertEquals($openingHours, $calendar->getOpeningHours());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_empty_adjusted_opening_hours_by_default(): void
+    {
+        $calendar = new PermanentCalendar(new OpeningHours());
+
+        $this->assertTrue($calendar->getAdjustedOpeningHours()->isEmpty());
+        $this->assertEquals(0, $calendar->getAdjustedOpeningHours()->count());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_adjusted_opening_hours(): void
+    {
+        $calendar = new PermanentCalendar(new OpeningHours());
+
+        $openingHours = new OpeningHours(
+            new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+        );
+        $entry = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-12-25'),
+            new DateTimeImmutable('2026-12-26'),
+            $openingHours
+        );
+        $collection = new AdjustedOpeningHoursCollection($entry);
+
+        $updatedCalendar = $calendar->withAdjustedOpeningHours($collection);
+
+        $this->assertFalse($updatedCalendar->getAdjustedOpeningHours()->isEmpty());
+        $this->assertEquals(1, $updatedCalendar->getAdjustedOpeningHours()->count());
+
+        $array = $updatedCalendar->getAdjustedOpeningHours()->toArray();
+        $this->assertSame($entry, $array[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_replacing_adjusted_opening_hours(): void
+    {
+        $originalCalendar = new PermanentCalendar(new OpeningHours());
+
+        $openingHours = new OpeningHours(
+            new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+        );
+        $entry1 = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-12-25'),
+            new DateTimeImmutable('2026-12-26'),
+            $openingHours
+        );
+        $collection1 = new AdjustedOpeningHoursCollection($entry1);
+
+        $calendar = $originalCalendar->withAdjustedOpeningHours($collection1);
+        $this->assertEquals(1, $calendar->getAdjustedOpeningHours()->count());
+
+        $entry2 = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-01-01'),
+            new DateTimeImmutable('2026-01-02'),
+            $openingHours
+        );
+        $entry3 = new AdjustedOpeningHours(
+            new DateTimeImmutable('2026-07-21'),
+            new DateTimeImmutable('2026-07-22'),
+            $openingHours
+        );
+        $collection2 = new AdjustedOpeningHoursCollection($entry2, $entry3);
+
+        $updatedCalendar = $calendar->withAdjustedOpeningHours($collection2);
+        $this->assertEquals(2, $updatedCalendar->getAdjustedOpeningHours()->count());
+
+        // Original calendar should be unchanged (still has count=1 from first update)
+        $this->assertEquals(1, $calendar->getAdjustedOpeningHours()->count());
+        $this->assertTrue($originalCalendar->getAdjustedOpeningHours()->isEmpty());
     }
 
     /**

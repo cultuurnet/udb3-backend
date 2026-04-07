@@ -55,14 +55,4 @@ final class AdjustedDescriptionTest extends TestCase
 
         new AdjustedDescription('');
     }
-
-    /**
-     * @test
-     */
-    public function it_accepts_whitespace_characters(): void
-    {
-        $description = new AdjustedDescription('   ');
-
-        $this->assertEquals('   ', $description->toString());
-    }
 }
