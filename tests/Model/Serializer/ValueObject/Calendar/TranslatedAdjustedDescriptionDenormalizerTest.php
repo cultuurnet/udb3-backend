@@ -107,6 +107,7 @@ final class TranslatedAdjustedDescriptionDenormalizerTest extends TestCase
         // Should have nl and fr, but not invalid-code
         $this->assertSame('Kerstfeest gesloten', $result->getTranslation(new Language('nl'))->toString());
         $this->assertSame('Fermé pour Noël', $result->getTranslation(new Language('fr'))->toString());
+        $this->assertCount(2, iterator_to_array($result->getLanguages()));
 
         // Invalid code should raise exception when trying to access it
         $this->expectException(\OutOfBoundsException::class);
