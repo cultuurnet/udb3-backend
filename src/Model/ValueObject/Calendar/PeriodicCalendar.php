@@ -89,12 +89,12 @@ final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeni
         return $clone;
     }
 
-    public function getOpeningHoursAdjusted(): OpeningHoursAdjustedPeriods
+    public function getOpeningHoursAdjustedPeriods(): OpeningHoursAdjustedPeriods
     {
         return $this->openingHoursAdjustedPeriods;
     }
 
-    public function withOpeningHoursAdjusted(OpeningHoursAdjustedPeriods $openingHoursAdjustedPeriods): static
+    public function withOpeningHoursAdjustedPeriods(OpeningHoursAdjustedPeriods $openingHoursAdjustedPeriods): static
     {
         $clone = clone $this;
         $clone->openingHoursAdjustedPeriods = $openingHoursAdjustedPeriods;

@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHoursAdjusted
 
 interface CalendarWithOpeningHoursAdjusted extends Calendar
 {
-    public function getOpeningHoursAdjusted(): OpeningHoursAdjustedPeriods;
+    public function getOpeningHoursAdjustedPeriods(): OpeningHoursAdjustedPeriods;
 
-    public function withOpeningHoursAdjusted(OpeningHoursAdjustedPeriods $openingHoursAdjustedPeriods): static;
+    public function withOpeningHoursAdjustedPeriods(OpeningHoursAdjustedPeriods $openingHoursAdjustedPeriods): static;
 }
