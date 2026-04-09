@@ -67,7 +67,6 @@ final class TranslatedAdjustedDescriptionDenormalizerTest extends TestCase
 
         $result = $this->denormalizer->denormalize($data, TranslatedAdjustedDescription::class);
 
-        // First key should be original language
         $this->assertTrue($result->getOriginalLanguage()->sameAs(new Language('fr')));
     }
 
@@ -91,9 +90,7 @@ final class TranslatedAdjustedDescriptionDenormalizerTest extends TestCase
         $this->assertTrue($result->getOriginalLanguage()->sameAs(new Language('nl')));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function it_skips_invalid_language_codes(): void
     {
         $data = [
@@ -104,12 +101,22 @@ final class TranslatedAdjustedDescriptionDenormalizerTest extends TestCase
 
         $result = $this->denormalizer->denormalize($data, TranslatedAdjustedDescription::class);
 
-        // Should have nl and fr, but not invalid-code
         $this->assertSame('Kerstfeest gesloten', $result->getTranslation(new Language('nl'))->toString());
         $this->assertSame('Fermé pour Noël', $result->getTranslation(new Language('fr'))->toString());
         $this->assertCount(2, iterator_to_array($result->getLanguages()));
+    }
 
-        // Invalid code should raise exception when trying to access it
+    /** @test */
+    public function it_throws_when_accessing_a_skipped_language(): void
+    {
+        $data = [
+            'nl' => 'Kerstfeest gesloten',
+            'invalid-code' => 'Invalid',
+            'fr' => 'Fermé pour Noël',
+        ];
+
+        $result = $this->denormalizer->denormalize($data, TranslatedAdjustedDescription::class);
+
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage('No translation found');
         $result->getTranslation(new Language('de'));
