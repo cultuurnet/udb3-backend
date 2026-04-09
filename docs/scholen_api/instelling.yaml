@@ -1,0 +1,898 @@
+---
+swagger: "2.0"
+info:
+  description: "Gebruik deze REST API om actuele informatie te bekomen over instellingen\
+    \ en de achterliggende hiërarchische structuren. <br/> Een instelling is in eerste\
+    \ instantie een door de Vlaamse of andere overheid erkende structuur die onderwijs\
+    \ verstrekt (school, centrum, academie, hogeschool of universiteit). In tweede\
+    \ instantie gaat het om structuren die een ondersteunende of groeperende rol spelen\
+    \ bij het verstrekken van onderwijs (CLB, internaat, scholengemeenschap, associatie\
+    \ …)."
+  version: "2.6.0"
+  title: "Instelling API"
+  contact:
+    name: "Eline Meeus - Ministerie van onderwijs en vorming"
+    email: "eline.meeus@ond.vlaanderen.be"
+  license:
+    name: "Vlaamse Overheid Modellicentie Gratis Hergebruik - v 1.0,"
+    url: "https://www.vlaanderen.be/digitaal-vlaanderen/onze-oplossingen/open-data/voorwaarden-voor-het-hergebruik-van-overheidsinformatie/modellicentie-gratis-hergebruik"
+externalDocs:
+  description: "Lees meer over de Instellingsgegevens API's"
+  url: "https://onderwijs-vlaanderen-portaalov.apigee.io/api-documentatie/instellingsgegevens"
+host: "onderwijs.api.vlaanderen.be"
+basePath: "/instellingsgegevens/instelling/v2"
+tags:
+- name: "Instellingen"
+  description: "Operaties om informatie over instellingen op te vragen."
+schemes:
+- "https"
+produces:
+- "application/json;charset=UTF-8"
+security:
+- ApiKeyAuthQueryParam: []
+- ApiKeyAuthHeader: []
+paths:
+  /instelling:
+    get:
+      tags:
+      - "Instellingen"
+      summary: "Lijst instellingen"
+      description: "Raadpleeg een lijst met instellingen rekening houdend met zoektermen\
+        \ en filters."
+      parameters:
+      - name: "filter_instelling_bestuur"
+        in: "query"
+        description: "Filteren op instellingen die bestuurd worden door een bepaald\
+          \ schoolbestuur. De waarde van deze filter is steeds het instellingsnummer\
+          \ van het schoolbestuur."
+        required: false
+        type: "array"
+        items:
+          type: "integer"
+          format: "int32"
+        collectionFormat: "csv"
+      - name: "filter_instelling_biedt_deeltijds_aan"
+        in: "query"
+        description: "Filteren op deeltijds onderwijs."
+        required: false
+        type: "boolean"
+        x-example: true
+      - name: "filter_instelling_biedt_voltijds_aan"
+        in: "query"
+        description: "Filteren op voltijds onderwijs."
+        required: false
+        type: "boolean"
+        x-example: true
+      - name: "filter_instelling_buitengewoon"
+        in: "query"
+        description: "Filteren op gewoon of buitengewoon onderwijs."
+        required: false
+        type: "boolean"
+        x-example: "false"
+      - name: "filter_instelling_gemeente"
+        in: "query"
+        description: "Filteren op gemeentenaam van de instelling."
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+      - name: "filter_instelling_hoofdstructuur"
+        in: "query"
+        description: " Filteren op de hoofdstructuur ingericht door een instelling"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+        collectionFormat: "csv"
+      - name: "filter_instelling_koepel"
+        in: "query"
+        description: "Filteren op instellingen die aangesloten zijn bij een bepaalde\
+          \ koepel of instellingen waarvan het bestuur aangesloten is bij een bepaalde\
+          \ koepel."
+        required: false
+        type: "array"
+        items:
+          type: "integer"
+          format: "int32"
+        collectionFormat: "csv"
+      - name: "filter_instelling_levensbeschouwing"
+        in: "query"
+        description: "Filteren op levensbeschouwing die de instelling volgt."
+        required: false
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "1"
+          - "2"
+          - "3"
+          - "4"
+          - "5"
+        collectionFormat: "csv"
+      - name: "filter_instelling_net"
+        in: "query"
+        description: "Filteren op net waartoe de instelling behoort."
+        required: false
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "1"
+          - "2"
+          - "3"
+          - "4"
+        collectionFormat: "csv"
+      - name: "filter_instelling_niveau"
+        in: "query"
+        description: "Filteren op het niveau van de instelling."
+        required: false
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "BAO"
+          - "DKO"
+          - "HO"
+          - "CLB"
+          - "SO"
+          - "VWO"
+          - "ANDERE"
+          - "INTERNAAT"
+          - "SB"
+        collectionFormat: "csv"
+      - name: "filter_instelling_pedagogische_methode"
+        in: "query"
+        description: "Filteren op pedagogische methode die de instelling toepast."
+        required: false
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "1"
+          - "2"
+          - "3"
+          - "4"
+          - "5"
+          - "6"
+          - "7"
+          - "8"
+          - "9"
+          - "10"
+        collectionFormat: "csv"
+      - name: "filter_instelling_postcode"
+        in: "query"
+        description: "Filteren op postcode van de instelling."
+        required: false
+        type: "array"
+        items:
+          type: "integer"
+          format: "int32"
+          minimum: 1000
+          maximum: 9999
+          exclusiveMinimum: false
+          exclusiveMaximum: false
+        collectionFormat: "csv"
+      - name: "filter_instelling_scholengemeenschap"
+        in: "query"
+        description: "Filteren op instellingen die deel uitmaken van een bepaalde\
+          \ scholengemeenschap. De waarde van deze filter is steeds het instellingsnummer\
+          \ van de scholengemeenschap."
+        required: false
+        type: "array"
+        items:
+          type: "integer"
+          format: "int32"
+        collectionFormat: "csv"
+      - name: "filter_instelling_soort_bestuur"
+        in: "query"
+        description: "Filteren op code van het soort bestuur dat een schoolbestuur\
+          \ is. "
+        required: false
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "1"
+          - "2"
+          - "3"
+          - "4"
+          - "5"
+          - "6"
+          - "7"
+          - "8"
+          - "9"
+        collectionFormat: "csv"
+      - name: "filter_instelling_status_erkenning"
+        in: "query"
+        description: "Filteren op de code van de status van de erkenning van de instelling."
+        required: false
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "E"
+          - "I"
+          - "S"
+          - "W"
+          - "X"
+        collectionFormat: "csv"
+      - name: "filter_instelling_taalstelsel"
+        in: "query"
+        description: "Filteren op taalstelsel dat toegelaten is voor de instelling."
+        required: false
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "1"
+          - "3"
+          - "5"
+          - "7"
+        collectionFormat: "csv"
+      - name: "filter_instelling_type"
+        in: "query"
+        description: "Filteren op het type instelling"
+        required: false
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "1000"
+          - "1100"
+          - "111"
+          - "112"
+          - "113"
+          - "115"
+          - "116"
+          - "1200"
+          - "121"
+          - "122"
+          - "123"
+          - "124"
+          - "125"
+          - "126"
+          - "131"
+          - "132"
+          - "133"
+          - "134"
+          - "135"
+          - "141"
+          - "142"
+          - "151"
+          - "200"
+          - "300"
+          - "400"
+          - "500"
+          - "600"
+          - "700"
+          - "900"
+        collectionFormat: "csv"
+      - name: "filter_situatiedatum"
+        in: "query"
+        description: "Datum waarop de getoonde gegevens van toepassing zijn."
+        required: false
+        type: "string"
+        format: "date"
+        x-example: "2024-09-01"
+      - name: "zoek_inclusief_fusiegemeente"
+        in: "query"
+        description: "Bij het zoeken op gemeentenaam of postcode ook alle bijhorende\
+          \ fusiegemeenten (naam of postcode) mee betrekken."
+        required: false
+        type: "boolean"
+        x-example: true
+      - name: "zoek_inclusief_toekomst"
+        in: "query"
+        description: "Bij het zoeken op instellingen ook alle instellingen in de nabije\
+          \ toekomst betrekken."
+        required: false
+        type: "boolean"
+        x-example: true
+      - name: "zoek_instelling_gemeente"
+        in: "query"
+        description: "Zoeken op gemeentenaam van de instelling."
+        required: false
+        type: "string"
+        x-example: "MECHELEN"
+      - name: "zoek_instelling_gewijzigd_sinds"
+        in: "query"
+        description: "Bij het zoeken op instellingen enkel instellingen tonen die\
+          \ sinds de opgegeven datum gewijzigd werden."
+        required: false
+        type: "string"
+        format: "date"
+        x-example: "2021-04-20"
+      - name: "zoek_instelling_naam"
+        in: "query"
+        description: "Zoeken op naam van de instelling."
+        required: false
+        type: "string"
+        x-example: "Technische Scholen Mechelen"
+      - name: "zoek_instelling_provincie"
+        in: "query"
+        description: "Zoeken op provincienaam van de instelling."
+        required: false
+        type: "string"
+        x-example: "Provincie Antwerpen"
+      - name: "zoek_instelling_straatnaam"
+        in: "query"
+        description: "Zoeken op straatnaam van de instelling."
+        required: false
+        type: "string"
+        x-example: "Jef Denynplein"
+      - name: "page"
+        in: "query"
+        description: "page"
+        required: false
+        type: "integer"
+        default: 1
+        format: "int32"
+      - name: "size"
+        in: "query"
+        description: "size"
+        required: false
+        type: "integer"
+        default: 20
+        format: "int32"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/LijstInstellingen"
+        "400":
+          description: "Ongeldige request"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Uitzondering"
+        "404":
+          description: "Er zijn geen gegevens gevonden."
+        "429":
+          description: "Te veel aanroepen op te korte tijd"
+        "500":
+          description: "Er is een fout opgetreden."
+      deprecated: false
+  /instelling/{instellingsnummer}:
+    get:
+      tags:
+      - "Instellingen"
+      summary: "Instelling"
+      description: "Raadpleeg de detailgegevens van één instelling op basis van een\
+        \ instellingsnummer."
+      parameters:
+      - name: "instellingsnummer"
+        in: "path"
+        description: "Sleutel om de instelling uniek te identificeren"
+        required: true
+        type: "integer"
+        minimum: 1
+        exclusiveMinimum: false
+        format: "int32"
+        x-example: 123456
+      - name: "filter_situatiedatum"
+        in: "query"
+        description: "Datum waarop de getoonde gegevens van toepassing zijn."
+        required: false
+        type: "string"
+        format: "date"
+        allowEmptyValue: false
+        x-example: "2024-09-01"
+      responses:
+        "200":
+          description: "OK"
+          schema:
+            $ref: "#/definitions/Instelling"
+        "400":
+          description: "Ongeldige request"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Uitzondering"
+        "404":
+          description: "Er zijn geen gegevens gevonden."
+        "429":
+          description: "Te veel aanroepen op te korte tijd"
+        "500":
+          description: "Er is een fout opgetreden."
+      deprecated: false
+securityDefinitions:
+  ApiKeyAuthHeader:
+    type: "apiKey"
+    name: "x-api-key"
+    in: "header"
+  ApiKeyAuthQueryParam:
+    type: "apiKey"
+    name: "apikey"
+    in: "query"
+definitions:
+  Instelling:
+    type: "object"
+    required:
+    - "instelling_nummer"
+    - "instelling_naam"
+    - "instelling_naam_volledig"
+    - "instelling_niveau"
+    - "instelling_type"
+    - "situatiedatum"
+    - "instelling_datum_laatste_wijziging"
+    properties:
+      instelling_nummer:
+        type: "integer"
+        format: "int32"
+        example: 109892
+        description: "Nummer van de instelling"
+      instelling_naam:
+        type: "string"
+        example: "TSM"
+        description: "Naam van de instelling"
+      instelling_naam_volledig:
+        type: "string"
+        example: "Technische Scholen Mechelen"
+        description: "Volledige naam van de instelling"
+      instelling_begindatum:
+        type: "string"
+        format: "date"
+        example: "1998-09-01"
+        description: "Datum waarop de instelling opgericht is."
+      instelling_einddatum:
+        type: "string"
+        format: "date"
+        example: "2020-08-31"
+        description: "Datum waarop de instelling opgeheven is."
+      instelling_niveau:
+        description: "Niveau van de instelling"
+        $ref: "#/definitions/CodeOmschrijving"
+      instelling_type:
+        description: "Type van de instelling"
+        $ref: "#/definitions/CodeOmschrijving"
+      situatiedatum:
+        type: "string"
+        format: "date"
+        example: "2024-09-01"
+        description: "Datum waarop de getoonde gegevens van toepassing zijn."
+      instelling_datum_laatste_wijziging:
+        type: "string"
+        format: "date"
+        example: "2021-01-30"
+        description: "Datum waarop de gegevens over de instelling voor het laatst\
+          \ gewijzigd werden."
+      instelling_straatnaam:
+        type: "string"
+        example: "Jef Denynplein"
+        description: "Straatnaam waar de instelling gelegen is."
+      instelling_huisnummer:
+        type: "string"
+        example: "2"
+        description: "Huisnummer waar de instelling gelegen is."
+      instelling_busnummer:
+        type: "string"
+        description: "Busnummer waar de instelling gelegen is."
+      instelling_postcode:
+        type: "string"
+        example: "2800"
+        description: "Postcode waar de instelling gelegen is."
+      instelling_gemeente:
+        type: "string"
+        example: "MECHELEN"
+        description: "Gemeente waar de instelling gelegen is."
+      instelling_provincie:
+        type: "string"
+        example: "Provincie Antwerpen"
+        description: "Provincie waar de instelling gelegen is."
+      instelling_telefoon:
+        type: "string"
+        example: "09 999 99 99"
+        description: "Telefoonnummer van de instelling. Dit attribuut is deprecated.\
+          \ Gebruik het nieuwe attribuut instelling_telefoonnummers."
+      instelling_telefoonnummers:
+        type: "array"
+        items:
+          type: "string"
+          example: "09 999 99 99"
+        maxItems: 2
+        description: "Telefoonnummer(s) van de instelling"
+      instelling_email:
+        type: "string"
+        example: "info@tsmmechelen.be"
+        description: "E-mailadres van de instelling"
+      instelling_website:
+        type: "string"
+        example: "www.tsmmechelen.be"
+        description: "Website van de instelling"
+      instelling_gemeente_nis:
+        type: "string"
+        example: "12025"
+        description: "Niscode van de fusiegemeente waar de instelling gelegen is."
+      instelling_crab_code:
+        type: "string"
+        example: "10635"
+        description: "Crabcode van de straat waar de instelling gelegen is. "
+      best_address_id:
+        type: "string"
+        example: "1628534"
+        description: "Unieke ID van het adres in Best Address"
+      lambert72_x_coordinaat:
+        type: "number"
+        example: 86500.76
+        description: "Lambert 72 X-coördinaat van het adres van de instelling"
+      lambert72_y_coordinaat:
+        type: "number"
+        example: 181374.3
+        description: "Lambert 72 Y-coördinaat van het adres van de instelling"
+      gps_lengtegraad:
+        type: "number"
+        example: 3.46531
+        description: "GPS-lengtegraad van het adres van de instelling"
+      gps_breedtegraad:
+        type: "number"
+        example: 50.93919
+        description: "GPS-breedtegraad van het adres van de instelling"
+      instelling_status_erkenning:
+        description: "Status van de erkenning van de instelling."
+        $ref: "#/definitions/CodeOmschrijving"
+      instelling_hoofdstructuur:
+        type: "array"
+        description: "Hoofdstructuren die door een onderwijsinstelling ingericht worden."
+        items:
+          $ref: "#/definitions/CodeOmschrijving"
+      instelling_buitengewoon:
+        type: "boolean"
+        example: false
+        description: "Aanduiding of de instelling gewoon of buitengewoon onderwijs\
+          \ aanbiedt"
+      instelling_biedt_deeltijds_aan:
+        type: "boolean"
+        example: true
+        description: "Instelling biedt deeltijds onderwijs aan."
+      instelling_biedt_voltijds_aan:
+        type: "boolean"
+        example: true
+        description: "Instelling biedt voltijds onderwijs aan."
+      instelling_net:
+        description: "Specificeert het onderwijsnet waartoe de instelling behoort\
+          \ Een onderwijsnet is een drie-indeling van het onderwijslandschap op basis\
+          \ van het wettelijk statuut van de inrichtende macht/ het schoolbestuur/\
+          \ centrumbestuur waartoe de onderwijsinstelling of het centrum behoort,\
+          \ namelijk gemeenschapsonderwijs, officieel gesubsidieerd onderwijs en vrij\
+          \ gesubsidieerd onderwijs Een onderwijsnet wordt ook net genoemd"
+        $ref: "#/definitions/CodeOmschrijving"
+      instelling_levensbeschouwing:
+        description: "Specificeert de levensbeschouwing die de instelling volgt."
+        $ref: "#/definitions/CodeOmschrijving"
+      instelling_taalstelsel:
+        description: "Specificeert het toegelaten taalstelsel van de instelling."
+        $ref: "#/definitions/CodeOmschrijving"
+      instelling_pedagogische_methode:
+        description: "Pedagogische methode van de instelling. Dit attribuut is deprecated.\
+          \ Gebruik het nieuwe attribuut instellingslocatie_pedagogische_methode in\
+          \ de Instellingslocatie API."
+        $ref: "#/definitions/CodeOmschrijving"
+      instelling_kbo_vestigingseenheidsnummer:
+        type: "string"
+        example: "2152680616"
+        description: "Specificeert het Vestigingseenheidsnummer van de instelling.\
+          \ Het Vestigingseenheidsnummer is enkel van toepassing voor instellingen\
+          \ van het niveau VWO."
+      instelling_soort_bestuur:
+        description: "Soort Bestuur van de instelling."
+        $ref: "#/definitions/CodeOmschrijving"
+      instelling_kbo_ondernemingsnummer:
+        type: "string"
+        example: "0870585094"
+        description: "Specificeert het ondernemingsnummer van de instelling. Het ondernemingsnummer\
+          \ is enkel van toepassing voor instellingen van het niveau schoolbestuur."
+      instelling_type_buitengewoon:
+        type: "array"
+        example: "Type 4: voor kinderen met een motorische beperking"
+        description: "Types buitengewoon onderwijs die het specifiek leersteuncentrum\
+          \ ondersteunt."
+        items:
+          $ref: "#/definitions/CodeOmschrijving"
+      instelling_hoofdzetel_vestigingsnr:
+        type: "integer"
+        format: "int32"
+        example: 1
+        description: "Vestigingsnummer van de hoofdzetel van de instelling"
+      instelling_directeur:
+        description: "Directeur(s) van de instelling. Dit attribuut is deprecated.\
+          \ Gebruik het nieuwe attribuut instelling_directeurs"
+        $ref: "#/definitions/Directeur"
+      instelling_directeurs:
+        description: "Directeur(s) van de instelling."
+        type: "array"
+        items:
+          $ref: "#/definitions/Directeur"
+        maxItems: 2
+      instelling_bestuur:
+        description: "Een bestuur/ inrichtende macht/schoolbestuur is een rechtspersoon\
+          \ of natuurlijk persoon die verantwoordelijk is voor één of meer onderwijsinstellingen.\
+          \ Een centrumbestuur is de inrichtende macht of orgaan die ten aanzien van\
+          \ het centrum bestuurshandelingen verricht, in overeenstemming met de door\
+          \ de wet, het decreet, het bijzonder decreet of de statuten toegewezen bevoegdheden.\
+          \ \nEen overheid is ook een rechtspersoon en één IM is altijd een rechtspersoon.\
+          \ Wat het GO betreft zijn deze bevoegdheden verdeeld over verschillende\
+          \ bestuursorganen (cfr. het bijzonder decreet)."
+        $ref: "#/definitions/Bestuur"
+      instelling_clb:
+        description: "Centrum voor leerlingenbegeleiding"
+        $ref: "#/definitions/Clb"
+      instelling_koepel:
+        description: "Centrum voor leerlingenbegeleiding"
+        $ref: "#/definitions/Koepel"
+      instelling_contactschool:
+        description: "De school die als contactschool optreedt voor een scholengemeenschap"
+        $ref: "#/definitions/Contactschool"
+      instelling_scholengemeenschap:
+        description: "Een scholengemeenschap is een vrijwillig tot stand gebracht\
+          \ en geografisch afgebakend samenwerkingsverband tussen scholen waaraan\
+          \ een aantal bevoegdheden worden toegekend."
+        $ref: "#/definitions/Scholengemeenschap"
+      internaat:
+        description: "Instelling die opvang van leerlingen en/of studenten organiseert\
+          \ buiten de openstelling van de school."
+        $ref: "#/definitions/Internaat"
+      instelling_leersteuncentrum:
+        description: "Algemeen leersteuncentrum dat ondersteuning biedt aan de instelling\
+          \ gewoon onderwijs."
+        $ref: "#/definitions/Leersteuncentrum"
+      instelling_leersteuncentrum_onderdeel:
+        description: "Specifiek leersteuncentrum dat een  onderdeel is van de instelling\
+          \ buitengewoon onderwijs."
+        $ref: "#/definitions/LeersteuncentrumOnderdeel"
+      instelling_leersteuncentrum_samenwerking:
+        type: "array"
+        description: "Leersteuncentra waarmee het leersteuncentrum een structurele\
+          \ samenwerking heeft."
+        items:
+          $ref: "#/definitions/LeersteuncentrumSamenwerking"
+    title: "Instelling"
+  Bestuur:
+    type: "object"
+    properties:
+      instellingsnummer:
+        type: "integer"
+        format: "int32"
+        example: 123539
+        description: "Instellingsnummer van het bestuur"
+      naam:
+        type: "string"
+        example: "VZW Katholiek Onderwijs Mechelen en Omgeving"
+        description: "Naam van het bestuur"
+    title: "Bestuur"
+    description: "Een bestuur/ inrichtende macht/schoolbestuur is een rechtspersoon\
+      \ of natuurlijk persoon die verantwoordelijk is voor één of meer onderwijsinstellingen.\
+      \ Een centrumbestuur is de inrichtende macht of orgaan die ten aanzien van het\
+      \ centrum bestuurshandelingen verricht, in overeenstemming met de door de wet,\
+      \ het decreet, het bijzonder decreet of de statuten toegewezen bevoegdheden.\
+      \ \nEen overheid is ook een rechtspersoon en één IM is altijd een rechtspersoon.\
+      \ Wat het GO betreft zijn deze bevoegdheden verdeeld over verschillende bestuursorganen\
+      \ (cfr. het bijzonder decreet)."
+  Clb:
+    type: "object"
+    properties:
+      instellingsnummer:
+        type: "integer"
+        format: "int32"
+        example: 114777
+        description: "Instellingsnummer van het CLB"
+      naam:
+        type: "string"
+        example: "Centrum voor leerlingenbegeleiding Het Kompas"
+        description: "Naam van het CLB"
+    title: "Clb"
+    description: "Centrum voor leerlingenbegeleiding"
+  Contactschool:
+    type: "object"
+    properties:
+      instellingsnummer:
+        type: "integer"
+        format: "int32"
+        example: 123919
+        description: "Instellingsnummer van de contactschool"
+      naam:
+        type: "string"
+        example: "Technische Scholen Mechelen"
+        description: "Naam van de contactschool"
+    title: "Contactschool"
+    description: "De school die als contactschool optreedt voor een scholengemeenschap"
+  Directeur:
+    type: "object"
+    properties:
+      naam:
+        type: "string"
+        example: "Cools"
+        description: "Familienaam van de directeur"
+      voornaam:
+        type: "string"
+        example: "Luk"
+        description: "Voornaam van de directeur"
+    title: "Directeur"
+    description: "Directeur(s) van de instelling"
+  Internaat:
+    type: "object"
+    properties:
+      instellingsnummer:
+        type: "integer"
+        format: "int32"
+        example: 123919
+        description: "Instellingsnummer van het internaat"
+      naam:
+        type: "string"
+        example: "Internaat Berthoutinstituut - Klein Seminarie 1"
+        description: "Naam van het internaat"
+    title: "Internaat"
+    description: "Instelling die opvang van leerlingen en/of studenten organiseert\
+      \ buiten de openstelling van de school."
+  Koepel:
+    type: "object"
+    properties:
+      instellingsnummer:
+        type: "integer"
+        format: "int32"
+        example: 61581
+        description: "Instellingsnummer van de koepel"
+      naam:
+        type: "string"
+        example: "Katholiek Onderwijs Vlaanderen"
+        description: "Naam van de koepel"
+    title: "Koepel"
+    description: "Koepel waarbij het bestuur van de instelling of het bestuur zelf\
+      \ is aangesloten."
+  Leersteuncentrum:
+    type: "object"
+    properties:
+      instellingsnummer:
+        type: "integer"
+        format: "int32"
+        example: 145276
+        description: "Instellingsnummer van leersteuncentrum"
+      naam:
+        type: "string"
+        example: "Leersteuncentrum GO! Kolibrie"
+        description: "Naam van het leersteuncentrum"
+    title: "Leersteuncentrum"
+    description: "Algemeen leersteuncentrum dat ondersteuning biedt aan de instelling\
+      \ gewoon onderwijs."
+  LeersteuncentrumOnderdeel:
+    type: "object"
+    properties:
+      instellingsnummer:
+        type: "integer"
+        format: "int32"
+        example: 112813
+        description: "Instellingsnummer van leersteuncentrum"
+      naam:
+        type: "string"
+        example: "Leersteuncentrum GO! Kolibrie"
+        description: "Naam van het leersteuncentrum"
+    title: "LeersteuncentrumOnderdeel"
+    description: "Specifiek leersteuncentrum dat een onderdeel is van de instelling\
+      \ buitengewoon onderwijs."
+  LeersteuncentrumSamenwerking:
+    type: "object"
+    properties:
+      instellingsnummer:
+        type: "integer"
+        format: "int32"
+        example: 112813
+        description: "Instellingsnummer van leersteuncentrum samenwerking"
+      naam:
+        type: "string"
+        example: "Leersteuncentrum GO! Kolibrie"
+        description: "Naam van de leersteuncentrum samenwerking"
+      type_buitengewoon:
+        example: "Type 4: voor kinderen met een motorische beperking"
+        description: "Type buitengewoon onderwijs waarvoor de leersteuncentra een\
+          \ structurele samenwerking hebben."
+        $ref: "#/definitions/CodeOmschrijving"
+    title: "LeersteuncentrumSamenwerking"
+    description: "Leersteuncentra waarmee het leersteuncentrum een structurele samenwerking\
+      \ heeft."
+  Scholengemeenschap:
+    type: "object"
+    properties:
+      instellingsnummer:
+        type: "integer"
+        format: "int32"
+        example: 112813
+        description: "Instellingsnummer van de scholengemeenschap"
+      naam:
+        type: "string"
+        example: "Scholengemeenschap voor katholiek secundair onderwijs Regio Mechelen"
+        description: "Naam van de scholengemeenschap"
+    title: "Scholengemeenschap"
+    description: "Een scholengemeenschap is een vrijwillig tot stand gebracht en geografisch\
+      \ afgebakend samenwerkingsverband tussen scholen waaraan een aantal bevoegdheden\
+      \ worden toegekend."
+  LijstInstellingen:
+    type: "object"
+    properties:
+      meta:
+        $ref: "#/definitions/MetaContent"
+      content:
+        type: "array"
+        items:
+          $ref: "#/definitions/Instelling"
+      links:
+        $ref: "#/definitions/Links"
+    title: "Lijst instellingen"
+  MetaContent:
+    type: "object"
+    properties:
+      total_elements:
+        type: "integer"
+        format: "int64"
+        description: "Totaal aantal elementen dat voldoet aan de zoekopdracht"
+      total_pages:
+        type: "integer"
+        format: "int32"
+        description: "Totaal aantal pagina's"
+      number:
+        type: "integer"
+        format: "int32"
+        description: "Huidige paginanummer"
+      number_of_elements:
+        type: "integer"
+        format: "int32"
+        description: "Aantal elementen op deze pagina"
+      size:
+        type: "integer"
+        format: "int32"
+        description: "Aantal elementen per pagina"
+      first:
+        type: "boolean"
+        description: "Aanduiding of het eerste element op huidige pagina staat"
+      last:
+        type: "boolean"
+        description: "Aanduiding of het eerste element op huidige pagina staat"
+      timestamp:
+        type: "string"
+        format: "datetime"
+        description: "Tijdstip waarop de gegevens laatst geactualiseerd werden."
+    title: "MetaContent"
+  Links:
+    type: "array"
+    items:
+      type: "string"
+  CodeOmschrijving:
+    type: "object"
+    required:
+    - "code"
+    properties:
+      code:
+        type: "string"
+      omschrijving:
+        type: "string"
+    title: "CodeOmschrijving"
+  Uitzondering:
+    type: "object"
+    properties:
+      identificatie:
+        type: "string"
+        description: "Identificatienummer van de foutmelding"
+      diagnose:
+        type: "string"
+        description: "Omschrijving van de uitzondering"
+      type:
+        type: "string"
+        description: "Het type van de uitzondering"
+        enum:
+        - "FOUT"
+        - "WAARSCHUWING"
+        - "INFORMATIEF"
+      annotaties:
+        type: "array"
+        items:
+          $ref: "#/definitions/UitzonderingAnnotatie"
+    title: "Uitzondering"
+  UitzonderingAnnotatie:
+    type: "object"
+    properties:
+      naam:
+        type: "string"
+        description: "Naam van de annotatie"
+      waarde:
+        type: "string"
+        description: "Waarde van de annotatie"
+    title: "UitzonderingAnnotatie"
