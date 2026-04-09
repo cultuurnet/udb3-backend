@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
-final class OpeningHoursAdjustedPeriods
+use Countable;
+
+final class OpeningHoursAdjustedPeriods implements Countable
 {
     /**
      * @var OpeningHoursAdjusted[]
