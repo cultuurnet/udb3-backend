@@ -13,15 +13,6 @@ final class ClosedDays
 
     public function __construct(ClosedDay ...$closedDays)
     {
-        $startDates = array_map(
-            fn (ClosedDay $entry) => $entry->getStartDate()->format('Y-m-d'),
-            $closedDays
-        );
-
-        if (count($startDates) !== count(array_unique($startDates))) {
-            throw new \InvalidArgumentException('ClosedDays cannot contain two entries with the same start date.');
-        }
-
         usort(
             $closedDays,
             fn (ClosedDay $a, ClosedDay $b) => $a->getStartDate() <=> $b->getStartDate()
