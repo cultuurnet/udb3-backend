@@ -190,7 +190,6 @@ final class PermanentCalendarTest extends TestCase
         $updatedCalendar = $calendar->withOpeningHoursAdjustedPeriods($collection2);
         $this->assertEquals(2, $updatedCalendar->getOpeningHoursAdjustedPeriods()->count());
 
-        // Original calendar should be unchanged (still has count=1 from first update)
         $this->assertEquals(1, $calendar->getOpeningHoursAdjustedPeriods()->count());
         $this->assertTrue($originalCalendar->getOpeningHoursAdjustedPeriods()->isEmpty());
     }

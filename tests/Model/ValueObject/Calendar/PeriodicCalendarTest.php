@@ -209,7 +209,6 @@ final class PeriodicCalendarTest extends TestCase
         $updatedCalendar = $calendar->withOpeningHoursAdjustedPeriods($collection2);
         $this->assertEquals(2, $updatedCalendar->getOpeningHoursAdjustedPeriods()->count());
 
-        // Original calendar should be unchanged
         $this->assertEquals(1, $calendar->getOpeningHoursAdjustedPeriods()->count());
     }
 
