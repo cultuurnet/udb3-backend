@@ -103,7 +103,7 @@ Feature: Test permissions based on ownership
     And I keep the value of the JSON response at "url" as "organizerUrl"
     And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I create a place from "places/place-with-organizer.json" and save the "id" as "placeId"
-    And I wait for the place with url "/place/%{placeId}" to be indexed
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I am authorized as JWT provider user "invoerder_ownerships"
     And I set the JSON request payload to:
     """
