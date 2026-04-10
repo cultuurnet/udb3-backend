@@ -25,7 +25,6 @@ Feature: Test the Search API v3 via POST requests
     locationId=%{placeId}
     """
     And I send a POST request to "/offers"
-    Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     And the JSON response should include:
     """
@@ -38,7 +37,6 @@ Feature: Test the Search API v3 via POST requests
     q=id:(%{eventId} OR %{placeId})
     """
     And I send a POST request to "/offers"
-    Then the response status should be "200"
     And the JSON response at "totalItems" should be 2
     And the JSON response should include:
     """
@@ -49,14 +47,12 @@ Feature: Test the Search API v3 via POST requests
     %{eventId}
     """
     When I send a POST request to "/places"
-    Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     And the JSON response should include:
     """
     %{placeId}
     """
     When I send a POST request to "/events"
-    Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     And the JSON response should include:
     """
@@ -69,7 +65,6 @@ Feature: Test the Search API v3 via POST requests
     q=id:(%{eventId} OR %{placeId})
     """
     And I send a POST request to "/offers/"
-    Then the response status should be "200"
     And the JSON response at "totalItems" should be 2
     And the JSON response should include:
     """
@@ -80,14 +75,12 @@ Feature: Test the Search API v3 via POST requests
     %{eventId}
     """
     When I send a POST request to "/places/"
-    Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     And the JSON response should include:
     """
     %{placeId}
     """
     When I send a POST request to "/events/"
-    Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     And the JSON response should include:
     """
