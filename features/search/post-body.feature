@@ -120,3 +120,19 @@ Feature: Test the Search API v3 via POST requests
     """
     %{eventId}
     """
+
+    Scenario: I get an error when using unsupported parameters or values
+      When I set the plain text request payload to:
+      """
+      Country=BE
+      """
+      And I send a POST request to "/offers"
+      Then the response status should be "404"
+      And the JSON response at "detail" should be "Unknown query parameter(s): Country"
+      When I set the plain text request payload to:
+      """
+      addressCountry=Belgium
+      """
+      And I send a POST request to "/offers"
+      Then the response status should be "404"
+      And the JSON response at "detail" should be "Unknown country code 'Belgium'."
