@@ -60,6 +60,16 @@ trait RequestSteps
     }
 
     /**
+     * @Given I set the plain text request payload to:
+     */
+    public function iSetThePlainTextRequestPayloadTo(PyStringNode $plainTextPayload): void
+    {
+        $this->requestState->setJson(
+            $this->variableState->replaceVariables($plainTextPayload->getRaw())
+        );
+    }
+
+    /**
      * @Given I set the form data properties to:
      */
     public function iSetTheFormDataPropertiesTo(TableNode $table): void
