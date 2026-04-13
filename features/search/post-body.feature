@@ -87,21 +87,14 @@ Feature: Test the Search API v3 via POST requests
     %{eventId}
     """
 
-  Scenario: When using a POST Body, url parameters are ignored.
+  Scenario: When using a POST Body, url parameters are not allowed.
     When I set the plain text request payload to:
     """
     q=id:%{eventId}
     """
     And I send a POST request to "/offers?q=id:%{placeId}"
-    Then the JSON response at "totalItems" should be 1
-    And the JSON response should include:
-    """
-    %{eventId}
-    """
-    And the JSON response should not include:
-    """
-    %{placeId}
-    """
+    Then the response status should be "400"
+    And the JSON response at "detail" should be 'POST requests do not allow query parameters in the URL. Use the request body instead.'
 
   Scenario: Use a combination of parameters & advanced queries
     When I set the plain text request payload to:
