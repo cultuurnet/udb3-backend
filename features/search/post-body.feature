@@ -10,11 +10,12 @@ Feature: Test the Search API v3 via POST requests
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
-    And I send and accept "text/plain"
+    And I send "text/plain"
+    And I accept "application/json"
     And I am using the Search API v3 base URL
 
   Scenario: Only content-type text/plain is accepted
-    When I send and accept "application/json"
+    When I send "application/json"
     And I send a POST request to "/offers"
     Then the response status should be "415"
     And the JSON response at "detail" should be 'POST requests require Content-Type text/plain.'
