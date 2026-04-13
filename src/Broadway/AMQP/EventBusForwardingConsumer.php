@@ -31,7 +31,8 @@ final class EventBusForwardingConsumer extends AbstractConsumer
         string $queueName,
         UuidFactory $uuidFactory,
         DatabaseConnectionChecker $databaseConnectionChecker,
-        int $delay = 0
+        int $delay = 0,
+        bool $declareQueue = true
     ) {
         $this->eventBus = $eventBus;
         $this->uuidFactory = $uuidFactory;
@@ -44,7 +45,8 @@ final class EventBusForwardingConsumer extends AbstractConsumer
             $exchangeName,
             $queueName,
             $delay,
-            'event bus'
+            'event bus',
+            $declareQueue
         );
     }
 
