@@ -41,7 +41,8 @@ abstract class AbstractConsumer implements ConsumerInterface
         string $exchangeName,
         string $queueName,
         int $delay = 0,
-        string $messageHandlerName = 'message handler'
+        string $messageHandlerName = 'message handler',
+        bool $declareQueue = true
     ) {
         $this->connection = $connection;
         $this->channel = $connection->channel();
@@ -54,7 +55,10 @@ abstract class AbstractConsumer implements ConsumerInterface
         $this->delay = $delay;
         $this->messageHandlerName = $messageHandlerName;
 
-        $this->declareQueue();
+        if ($declareQueue) {
+            $this->declareQueue();
+        }
+
         $this->registerConsumeCallback();
     }
 

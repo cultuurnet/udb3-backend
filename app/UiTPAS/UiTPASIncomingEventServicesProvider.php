@@ -67,7 +67,8 @@ final class UiTPASIncomingEventServicesProvider extends AbstractServiceProvider
                     new DBALDatabaseConnectionChecker(
                         $container->get('dbal_connection'),
                         $logger
-                    )
+                    ),
+                    $container->get('config')['amqp']['declare_queues'] ?? true
                 );
 
                 $consumerConfig = $container->get('config')['amqp']['consumers']['uitpas'];
