@@ -24,7 +24,8 @@ When working on this codebase, prefer:
 - Integration with existing patterns over introducing new ones
 - Inline expressions over unnecessary local variables (if a variable is only used once and doesn't improve readability, inline it)
 - When one needs to serialize() or deserialize(), implement a new NormalizerInterface or DenormalizerInterface, this Normalizer can be called in the serialize method of Broadway\Serializer\Serializable
-
+- When making collections, try to extend from \CultuurNet\UDB3\Model\ValueObject\Collection\Collection.
+- Avoid postfix for classes with technical terms as "Collection" or "Interface". Try to make plurals for collection classes. For example, instead of "EventCollection" or "EventInterface", use "Events" and "Event". This is more concise and still clear in context.
 ## Comments & Self-Documenting Code
 
 Avoid comments in favor of self-documenting code:
