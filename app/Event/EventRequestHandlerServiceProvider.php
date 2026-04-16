@@ -23,6 +23,8 @@ use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateTypicalBirthDateRequestHandler;
+use CultuurNet\UDB3\Http\Event\DeleteTypicalBirthDateRequestHandler;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
@@ -52,6 +54,8 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             UpdateDeparturePlacesRequestHandler::class,
             CopyEventRequestHandler::class,
             UpdateMajorInfoRequestHandler::class,
+            UpdateTypicalBirthDateRequestHandler::class,
+            DeleteTypicalBirthDateRequestHandler::class,
         ];
     }
 
@@ -182,6 +186,16 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             function () use ($container): UpdateMajorInfoRequestHandler {
                 return new UpdateMajorInfoRequestHandler($container->get('event_command_bus'));
             }
+        );
+
+        $container->addShared(
+            UpdateTypicalBirthDateRequestHandler::class,
+            fn () => new UpdateTypicalBirthDateRequestHandler($container->get('event_command_bus'))
+        );
+
+        $container->addShared(
+            DeleteTypicalBirthDateRequestHandler::class,
+            fn () => new DeleteTypicalBirthDateRequestHandler($container->get('event_command_bus'))
         );
     }
 }
