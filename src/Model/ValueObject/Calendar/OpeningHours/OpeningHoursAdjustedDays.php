@@ -6,17 +6,17 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
 use Countable;
 
-final class OpeningHoursAdjustedPeriods implements Countable
+final class OpeningHoursAdjustedDays implements Countable
 {
     /**
-     * @var OpeningHoursAdjusted[]
+     * @var OpeningHoursAdjustedDay[]
      */
     private array $openingHoursAdjusted;
 
-    public function __construct(OpeningHoursAdjusted ...$openingHoursAdjusted)
+    public function __construct(OpeningHoursAdjustedDay ...$openingHoursAdjusted)
     {
         $startDates = array_map(
-            fn (OpeningHoursAdjusted $entry) => $entry->getStartDate()->format('Y-m-d'),
+            fn (OpeningHoursAdjustedDay $entry) => $entry->getStartDate()->format('Y-m-d'),
             $openingHoursAdjusted
         );
 
@@ -26,14 +26,14 @@ final class OpeningHoursAdjustedPeriods implements Countable
 
         usort(
             $openingHoursAdjusted,
-            fn (OpeningHoursAdjusted $a, OpeningHoursAdjusted $b) => $a->getStartDate() <=> $b->getStartDate()
+            fn (OpeningHoursAdjustedDay $a, OpeningHoursAdjustedDay $b) => $a->getStartDate() <=> $b->getStartDate()
         );
 
         $this->openingHoursAdjusted = $openingHoursAdjusted;
     }
 
     /**
-     * @return OpeningHoursAdjusted[]
+     * @return OpeningHoursAdjustedDay[]
      */
     public function toArray(): array
     {

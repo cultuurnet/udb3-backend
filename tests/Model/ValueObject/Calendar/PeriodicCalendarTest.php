@@ -11,8 +11,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHoursAdjusted;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHoursAdjustedPeriods;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHoursAdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHoursAdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -160,12 +160,12 @@ final class PeriodicCalendarTest extends TestCase
         $openingHours = new OpeningHours(
             new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
         );
-        $entry = new OpeningHoursAdjusted(
+        $entry = new OpeningHoursAdjustedDay(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-26'),
             $openingHours
         );
-        $collection = new OpeningHoursAdjustedPeriods($entry);
+        $collection = new OpeningHoursAdjustedDays($entry);
 
         $calendar = $this->periodicCalendar->withOpeningHoursAdjustedPeriods($collection);
 
@@ -184,27 +184,27 @@ final class PeriodicCalendarTest extends TestCase
         $openingHours = new OpeningHours(
             new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
         );
-        $entry1 = new OpeningHoursAdjusted(
+        $entry1 = new OpeningHoursAdjustedDay(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-26'),
             $openingHours
         );
-        $collection1 = new OpeningHoursAdjustedPeriods($entry1);
+        $collection1 = new OpeningHoursAdjustedDays($entry1);
 
         $calendar = $this->periodicCalendar->withOpeningHoursAdjustedPeriods($collection1);
         $this->assertEquals(1, $calendar->getOpeningHoursAdjustedPeriods()->count());
 
-        $entry2 = new OpeningHoursAdjusted(
+        $entry2 = new OpeningHoursAdjustedDay(
             new DateTimeImmutable('2026-01-01'),
             new DateTimeImmutable('2026-01-02'),
             $openingHours
         );
-        $entry3 = new OpeningHoursAdjusted(
+        $entry3 = new OpeningHoursAdjustedDay(
             new DateTimeImmutable('2026-07-21'),
             new DateTimeImmutable('2026-07-22'),
             $openingHours
         );
-        $collection2 = new OpeningHoursAdjustedPeriods($entry2, $entry3);
+        $collection2 = new OpeningHoursAdjustedDays($entry2, $entry3);
 
         $updatedCalendar = $calendar->withOpeningHoursAdjustedPeriods($collection2);
         $this->assertEquals(2, $updatedCalendar->getOpeningHoursAdjustedPeriods()->count());

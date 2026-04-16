@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHoursAdjustedPeriods;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHoursAdjustedDays;
 
 final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeningHours, CalendarWithClosedDays, CalendarWithOpeningHoursAdjusted
 {
@@ -15,7 +15,7 @@ final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeni
 
     private ClosedDays $closedDays;
 
-    private OpeningHoursAdjustedPeriods $openingHoursAdjustedPeriods;
+    private OpeningHoursAdjustedDays $openingHoursAdjustedPeriods;
 
     private Status $status;
 
@@ -28,7 +28,7 @@ final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeni
         $this->dateRange = $dateRange;
         $this->openingHours = $openingHours;
         $this->closedDays = new ClosedDays();
-        $this->openingHoursAdjustedPeriods = new OpeningHoursAdjustedPeriods();
+        $this->openingHoursAdjustedPeriods = new OpeningHoursAdjustedDays();
         $this->status = new Status(StatusType::Available());
         $this->bookingAvailability = new BookingAvailability(BookingAvailabilityType::Available());
     }
@@ -89,12 +89,12 @@ final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeni
         return $clone;
     }
 
-    public function getOpeningHoursAdjustedPeriods(): OpeningHoursAdjustedPeriods
+    public function getOpeningHoursAdjustedPeriods(): OpeningHoursAdjustedDays
     {
         return $this->openingHoursAdjustedPeriods;
     }
 
-    public function withOpeningHoursAdjustedPeriods(OpeningHoursAdjustedPeriods $openingHoursAdjustedPeriods): static
+    public function withOpeningHoursAdjustedPeriods(OpeningHoursAdjustedDays $openingHoursAdjustedPeriods): static
     {
         $clone = clone $this;
         $clone->openingHoursAdjustedPeriods = $openingHoursAdjustedPeriods;
