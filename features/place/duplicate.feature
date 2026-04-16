@@ -26,7 +26,7 @@ Feature: Test creating places
       "title": "Duplicate place",
       "status": 409,
       "detail": "A place with this address / name combination already exists. Please use the existing place for your purposes.",
-      "duplicatePlaceUri": "%{baseUrl}/place/%{originalPlaceId}"
+      "duplicatePlaceUri": "%{baseUrl}/places/%{originalPlaceId}"
     }
     """
 
@@ -42,6 +42,6 @@ Feature: Test creating places
       "title": "Duplicate place",
       "status": 409,
       "detail": "A place with this address / name combination already exists. Please use the existing place for your purposes.",
-      "duplicatePlaceUri": "%{baseUrl}/place/%{originalPlaceId}"
+      "duplicatePlaceUri": "%{baseUrl}/places/%{originalPlaceId}"
     }
     """
