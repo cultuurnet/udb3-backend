@@ -27,6 +27,8 @@ use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler as UpdateEventMajor
 use CultuurNet\UDB3\Http\Event\UpdateOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateTypicalBirthDateRequestHandler;
+use CultuurNet\UDB3\Http\Event\DeleteTypicalBirthDateRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
@@ -458,6 +460,9 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
         $router->put('/{offerType:events|places}/{offerId}/typical-age-range/', UpdateTypicalAgeRangeRequestHandler::class);
         $router->delete('/{offerType:events|places}/{offerId}/typical-age-range/', DeleteTypicalAgeRangeRequestHandler::class);
+
+        $router->put('/events/{eventId}/typical-birth-date/', UpdateTypicalBirthDateRequestHandler::class);
+        $router->delete('/events/{eventId}/typical-birth-date/', DeleteTypicalBirthDateRequestHandler::class);
 
         $router->put('/{offerType:events|places}/{offerId}/booking-info/', UpdateBookingInfoRequestHandler::class);
 
