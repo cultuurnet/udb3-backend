@@ -14,7 +14,7 @@ final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithC
 
     private ClosedDays $closedDays;
 
-    private AdjustedDays $openingHoursAdjustedPeriods;
+    private AdjustedDays $adjustedDays;
 
     private Status $status;
 
@@ -24,7 +24,7 @@ final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithC
     {
         $this->openingHours = $openingHours;
         $this->closedDays = new ClosedDays();
-        $this->openingHoursAdjustedPeriods = new AdjustedDays();
+        $this->adjustedDays = new AdjustedDays();
         $this->status = new Status(StatusType::Available());
         $this->bookingAvailability = new BookingAvailability(BookingAvailabilityType::Available());
     }
@@ -77,13 +77,13 @@ final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithC
 
     public function getAdjustedDays(): AdjustedDays
     {
-        return $this->openingHoursAdjustedPeriods;
+        return $this->adjustedDays;
     }
 
     public function withAdjustedDays(AdjustedDays $adjustedDays): static
     {
         $clone = clone $this;
-        $clone->openingHoursAdjustedPeriods = $adjustedDays;
+        $clone->adjustedDays = $adjustedDays;
         return $clone;
     }
 }
