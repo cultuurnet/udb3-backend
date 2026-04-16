@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\Moderation\Reject;
 use CultuurNet\UDB3\Event\Commands\RemoveImage;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
+use CultuurNet\UDB3\Event\Commands\DeleteTypicalBirthDate;
 use CultuurNet\UDB3\Event\Commands\SelectMainImage;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
@@ -23,6 +24,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateImage;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateMajorInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
+use CultuurNet\UDB3\Event\Commands\UpdateTypicalBirthDate;
 use CultuurNet\UDB3\Offer\OfferCommandHandler;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -69,6 +71,26 @@ final class EventCommandHandler extends OfferCommandHandler implements LoggerAwa
         $event = $this->offerRepository->load($updateLocation->getItemId());
 
         $event->updateLocation($updateLocation->getLocationId());
+
+        $this->offerRepository->save($event);
+    }
+
+    public function handleUpdateTypicalBirthDate(UpdateTypicalBirthDate $updateTypicalBirthDate): void
+    {
+        /** @var Event $event */
+        $event = $this->offerRepository->load($updateTypicalBirthDate->getItemId());
+
+        $event->updateTypicalBirthDate($updateTypicalBirthDate->getTypicalBirthDate());
+
+        $this->offerRepository->save($event);
+    }
+
+    public function handleDeleteTypicalBirthDate(DeleteTypicalBirthDate $deleteTypicalBirthDate): void
+    {
+        /** @var Event $event */
+        $event = $this->offerRepository->load($deleteTypicalBirthDate->getItemId());
+
+        $event->deleteTypicalBirthDate();
 
         $this->offerRepository->save($event);
     }
