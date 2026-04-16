@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
+namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
 final class ClosedDays implements \Countable
 {

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
