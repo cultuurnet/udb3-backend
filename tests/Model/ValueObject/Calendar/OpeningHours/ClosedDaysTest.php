@@ -2,10 +2,8 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
+namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
