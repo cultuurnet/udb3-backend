@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDayDescription;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -42,9 +42,9 @@ final class ClosedDayNormalizerTest extends TestCase
      */
     public function it_normalizes_a_closed_day_with_single_language_description(): void
     {
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
-            new ClosedDayDescription('Kerstfeest gesloten')
+            new AdjustedDescription('Kerstfeest gesloten')
         );
 
         $closedDay = new ClosedDay(
@@ -66,17 +66,17 @@ final class ClosedDayNormalizerTest extends TestCase
      */
     public function it_normalizes_a_closed_day_with_multiple_language_descriptions(): void
     {
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
-            new ClosedDayDescription('Kerstfeest gesloten')
+            new AdjustedDescription('Kerstfeest gesloten')
         );
         $description = $description->withTranslation(
             new Language('fr'),
-            new ClosedDayDescription('Fermé pour Noël')
+            new AdjustedDescription('Fermé pour Noël')
         );
         $description = $description->withTranslation(
             new Language('en'),
-            new ClosedDayDescription('Closed for Christmas')
+            new AdjustedDescription('Closed for Christmas')
         );
 
         $closedDay = new ClosedDay(

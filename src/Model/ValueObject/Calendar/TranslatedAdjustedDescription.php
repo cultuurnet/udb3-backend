@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Translation\TranslatedValueObject;
 
-final class TranslatedClosedDayDescription extends TranslatedValueObject
+final class TranslatedAdjustedDescription extends TranslatedValueObject
 {
     protected function getValueObjectClassName(): string
     {
-        return ClosedDayDescription::class;
+        return AdjustedDescription::class;
     }
 }

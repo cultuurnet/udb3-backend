@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDayDescription;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -22,7 +22,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -187,13 +187,13 @@ final class CalendarNormalizerTest extends TestCase
             )
         );
 
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
-            new ClosedDayDescription('Kerstfeest')
+            new AdjustedDescription('Kerstfeest')
         );
         $description = $description->withTranslation(
             new Language('fr'),
-            new ClosedDayDescription('Noël')
+            new AdjustedDescription('Noël')
         );
 
         $closedDays = new ClosedDays(
