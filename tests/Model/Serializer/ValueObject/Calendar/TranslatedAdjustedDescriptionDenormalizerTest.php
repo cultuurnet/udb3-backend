@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDayDescription;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
-final class TranslatedClosedDayDescriptionDenormalizerTest extends TestCase
+final class TranslatedAdjustedDescriptionDenormalizerTest extends TestCase
 {
-    private TranslatedClosedDayDescriptionDenormalizer $denormalizer;
+    private TranslatedAdjustedDescriptionDenormalizer $denormalizer;
 
     protected function setUp(): void
     {
-        $this->denormalizer = new TranslatedClosedDayDescriptionDenormalizer();
+        $this->denormalizer = new TranslatedAdjustedDescriptionDenormalizer();
     }
 
     /**
@@ -26,13 +26,13 @@ final class TranslatedClosedDayDescriptionDenormalizerTest extends TestCase
     {
         $data = ['nl' => 'Kerstfeest gesloten'];
 
-        $result = $this->denormalizer->denormalize($data, TranslatedClosedDayDescription::class);
+        $result = $this->denormalizer->denormalize($data, TranslatedAdjustedDescription::class);
 
-        $this->assertInstanceOf(TranslatedClosedDayDescription::class, $result);
+        $this->assertInstanceOf(TranslatedAdjustedDescription::class, $result);
         $this->assertTrue($result->getOriginalLanguage()->sameAs(new Language('nl')));
 
         $nlDescription = $result->getTranslation(new Language('nl'));
-        $this->assertInstanceOf(ClosedDayDescription::class, $nlDescription);
+        $this->assertInstanceOf(AdjustedDescription::class, $nlDescription);
         $this->assertSame('Kerstfeest gesloten', $nlDescription->toString());
     }
 
@@ -47,9 +47,9 @@ final class TranslatedClosedDayDescriptionDenormalizerTest extends TestCase
             'en' => 'Closed for Christmas',
         ];
 
-        $result = $this->denormalizer->denormalize($data, TranslatedClosedDayDescription::class);
+        $result = $this->denormalizer->denormalize($data, TranslatedAdjustedDescription::class);
 
-        $this->assertInstanceOf(TranslatedClosedDayDescription::class, $result);
+        $this->assertInstanceOf(TranslatedAdjustedDescription::class, $result);
         $this->assertSame('Kerstfeest gesloten', $result->getTranslation(new Language('nl'))->toString());
         $this->assertSame('Fermé pour Noël', $result->getTranslation(new Language('fr'))->toString());
         $this->assertSame('Closed for Christmas', $result->getTranslation(new Language('en'))->toString());
@@ -65,9 +65,8 @@ final class TranslatedClosedDayDescriptionDenormalizerTest extends TestCase
             'nl' => 'Kerstfeest gesloten',
         ];
 
-        $result = $this->denormalizer->denormalize($data, TranslatedClosedDayDescription::class);
+        $result = $this->denormalizer->denormalize($data, TranslatedAdjustedDescription::class);
 
-        // First key should be original language
         $this->assertTrue($result->getOriginalLanguage()->sameAs(new Language('fr')));
     }
 
@@ -83,7 +82,7 @@ final class TranslatedClosedDayDescriptionDenormalizerTest extends TestCase
 
         $result = $this->denormalizer->denormalize(
             $data,
-            TranslatedClosedDayDescription::class,
+            TranslatedAdjustedDescription::class,
             null,
             ['originalLanguage' => 'nl']
         );
@@ -91,9 +90,7 @@ final class TranslatedClosedDayDescriptionDenormalizerTest extends TestCase
         $this->assertTrue($result->getOriginalLanguage()->sameAs(new Language('nl')));
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function it_skips_invalid_language_codes(): void
     {
         $data = [
@@ -102,13 +99,24 @@ final class TranslatedClosedDayDescriptionDenormalizerTest extends TestCase
             'fr' => 'Fermé pour Noël',
         ];
 
-        $result = $this->denormalizer->denormalize($data, TranslatedClosedDayDescription::class);
+        $result = $this->denormalizer->denormalize($data, TranslatedAdjustedDescription::class);
 
-        // Should have nl and fr, but not invalid-code
         $this->assertSame('Kerstfeest gesloten', $result->getTranslation(new Language('nl'))->toString());
         $this->assertSame('Fermé pour Noël', $result->getTranslation(new Language('fr'))->toString());
+        $this->assertCount(2, iterator_to_array($result->getLanguages()));
+    }
 
-        // Invalid code should raise exception when trying to access it
+    /** @test */
+    public function it_throws_when_accessing_a_skipped_language(): void
+    {
+        $data = [
+            'nl' => 'Kerstfeest gesloten',
+            'invalid-code' => 'Invalid',
+            'fr' => 'Fermé pour Noël',
+        ];
+
+        $result = $this->denormalizer->denormalize($data, TranslatedAdjustedDescription::class);
+
         $this->expectException(\OutOfBoundsException::class);
         $this->expectExceptionMessage('No translation found');
         $result->getTranslation(new Language('de'));
@@ -122,7 +130,7 @@ final class TranslatedClosedDayDescriptionDenormalizerTest extends TestCase
         $this->expectException(UnsupportedException::class);
         $this->expectExceptionMessage('at least one value');
 
-        $this->denormalizer->denormalize([], TranslatedClosedDayDescription::class);
+        $this->denormalizer->denormalize([], TranslatedAdjustedDescription::class);
     }
 
     /**
@@ -132,7 +140,7 @@ final class TranslatedClosedDayDescriptionDenormalizerTest extends TestCase
     {
         $this->assertTrue($this->denormalizer->supportsDenormalization(
             ['nl' => 'Test'],
-            TranslatedClosedDayDescription::class
+            TranslatedAdjustedDescription::class
         ));
 
         $this->assertFalse($this->denormalizer->supportsDenormalization(

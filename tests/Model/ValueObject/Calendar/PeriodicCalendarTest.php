@@ -5,17 +5,21 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-class PeriodicCalendarTest extends TestCase
+final class PeriodicCalendarTest extends TestCase
 {
     private PeriodicCalendar $periodicCalendar;
 
@@ -139,6 +143,75 @@ class PeriodicCalendarTest extends TestCase
         $calendar = new PeriodicCalendar(new DateRange($startDate, $endDate), $openingHours);
 
         $this->assertEquals($openingHours, $calendar->getOpeningHours());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_empty_adjusted_opening_hours_by_default(): void
+    {
+        $this->assertTrue($this->periodicCalendar->getAdjustedDays()->isEmpty());
+        $this->assertEquals(0, $this->periodicCalendar->getAdjustedDays()->count());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_adjusted_opening_hours(): void
+    {
+        $openingHours = new OpeningHours(
+            new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+        );
+        $entry = new AdjustedDay(
+            new DateTimeImmutable('2026-12-25'),
+            new DateTimeImmutable('2026-12-26'),
+            $openingHours
+        );
+        $collection = new AdjustedDays($entry);
+
+        $calendar = $this->periodicCalendar->withAdjustedDays($collection);
+
+        $this->assertFalse($calendar->getAdjustedDays()->isEmpty());
+        $this->assertEquals(1, $calendar->getAdjustedDays()->count());
+
+        $array = $calendar->getAdjustedDays()->toArray();
+        $this->assertSame($entry, $array[0]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_replacing_adjusted_opening_hours(): void
+    {
+        $openingHours = new OpeningHours(
+            new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+        );
+        $entry1 = new AdjustedDay(
+            new DateTimeImmutable('2026-12-25'),
+            new DateTimeImmutable('2026-12-26'),
+            $openingHours
+        );
+        $collection1 = new AdjustedDays($entry1);
+
+        $calendar = $this->periodicCalendar->withAdjustedDays($collection1);
+        $this->assertEquals(1, $calendar->getAdjustedDays()->count());
+
+        $entry2 = new AdjustedDay(
+            new DateTimeImmutable('2026-01-01'),
+            new DateTimeImmutable('2026-01-02'),
+            $openingHours
+        );
+        $entry3 = new AdjustedDay(
+            new DateTimeImmutable('2026-07-21'),
+            new DateTimeImmutable('2026-07-22'),
+            $openingHours
+        );
+        $collection2 = new AdjustedDays($entry2, $entry3);
+
+        $updatedCalendar = $calendar->withAdjustedDays($collection2);
+        $this->assertEquals(2, $updatedCalendar->getAdjustedDays()->count());
+
+        $this->assertEquals(1, $calendar->getAdjustedDays()->count());
     }
 
     /**

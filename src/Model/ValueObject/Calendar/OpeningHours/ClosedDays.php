@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
+namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
-final class ClosedDays
+use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
+
+final class ClosedDays extends Collection
 {
     /**
      * @var ClosedDay[]
