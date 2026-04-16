@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHoursAdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 
 interface CalendarWithOpeningHoursAdjusted extends Calendar
 {
-    public function getOpeningHoursAdjustedPeriods(): OpeningHoursAdjustedDays;
+    public function getAdjustedDays(): AdjustedDays;
 
-    public function withOpeningHoursAdjustedPeriods(OpeningHoursAdjustedDays $openingHoursAdjustedPeriods): static;
+    public function withAdjustedDays(AdjustedDays $adjustedDays): static;
 }

@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-final class OpeningHoursAdjustedDaysTest extends TestCase
+final class AdjustedDaysTest extends TestCase
 {
     private OpeningHours $openingHours;
 
@@ -23,7 +23,7 @@ final class OpeningHoursAdjustedDaysTest extends TestCase
      */
     public function it_creates_an_empty_collection(): void
     {
-        $collection = new OpeningHoursAdjustedDays();
+        $collection = new AdjustedDays();
 
         $this->assertTrue($collection->isEmpty());
         $this->assertEquals(0, $collection->count());
@@ -35,13 +35,13 @@ final class OpeningHoursAdjustedDaysTest extends TestCase
      */
     public function it_creates_a_collection_with_a_single_entry(): void
     {
-        $entry = new OpeningHoursAdjustedDay(
+        $entry = new AdjustedDay(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-25'),
             $this->openingHours
         );
 
-        $collection = new OpeningHoursAdjustedDays($entry);
+        $collection = new AdjustedDays($entry);
 
         $this->assertFalse($collection->isEmpty());
         $this->assertEquals(1, $collection->count());
@@ -56,23 +56,23 @@ final class OpeningHoursAdjustedDaysTest extends TestCase
      */
     public function it_sorts_entries_by_start_date_ascending(): void
     {
-        $entry1 = new OpeningHoursAdjustedDay(
+        $entry1 = new AdjustedDay(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-25'),
             $this->openingHours
         );
-        $entry2 = new OpeningHoursAdjustedDay(
+        $entry2 = new AdjustedDay(
             new DateTimeImmutable('2026-01-01'),
             new DateTimeImmutable('2026-01-01'),
             $this->openingHours
         );
-        $entry3 = new OpeningHoursAdjustedDay(
+        $entry3 = new AdjustedDay(
             new DateTimeImmutable('2026-07-21'),
             new DateTimeImmutable('2026-07-21'),
             $this->openingHours
         );
 
-        $collection = new OpeningHoursAdjustedDays($entry1, $entry2, $entry3);
+        $collection = new AdjustedDays($entry1, $entry2, $entry3);
 
         $array = $collection->toArray();
 
@@ -89,13 +89,13 @@ final class OpeningHoursAdjustedDaysTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('OpeningHoursAdjustedPeriods cannot contain two entries with the same start date.');
 
-        new OpeningHoursAdjustedDays(
-            new OpeningHoursAdjustedDay(
+        new AdjustedDays(
+            new AdjustedDay(
                 new DateTimeImmutable('2026-12-25T00:00:00'),
                 new DateTimeImmutable('2026-12-31T00:00:00'),
                 $this->openingHours
             ),
-            new OpeningHoursAdjustedDay(
+            new AdjustedDay(
                 new DateTimeImmutable('2026-12-25T10:00:00'),
                 new DateTimeImmutable('2026-12-26T00:00:00'),
                 $this->openingHours

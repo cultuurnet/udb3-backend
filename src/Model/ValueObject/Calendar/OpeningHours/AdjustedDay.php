@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use DateTimeImmutable;
 use InvalidArgumentException;
 
-final class OpeningHoursAdjustedDay
+final class AdjustedDay
 {
     public function __construct(
         private readonly DateTimeImmutable $startDate,

@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHoursAdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 
 final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeningHours, CalendarWithClosedDays, CalendarWithOpeningHoursAdjusted
 {
@@ -16,7 +16,7 @@ final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeni
 
     private ClosedDays $closedDays;
 
-    private OpeningHoursAdjustedDays $openingHoursAdjustedPeriods;
+    private AdjustedDays $adjustedDays;
 
     private Status $status;
 
@@ -29,7 +29,7 @@ final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeni
         $this->dateRange = $dateRange;
         $this->openingHours = $openingHours;
         $this->closedDays = new ClosedDays();
-        $this->openingHoursAdjustedPeriods = new OpeningHoursAdjustedDays();
+        $this->adjustedDays = new AdjustedDays();
         $this->status = new Status(StatusType::Available());
         $this->bookingAvailability = new BookingAvailability(BookingAvailabilityType::Available());
     }
@@ -90,15 +90,15 @@ final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeni
         return $clone;
     }
 
-    public function getOpeningHoursAdjustedPeriods(): OpeningHoursAdjustedDays
+    public function getAdjustedDays(): AdjustedDays
     {
-        return $this->openingHoursAdjustedPeriods;
+        return $this->adjustedDays;
     }
 
-    public function withOpeningHoursAdjustedPeriods(OpeningHoursAdjustedDays $openingHoursAdjustedPeriods): static
+    public function withAdjustedDays(AdjustedDays $adjustedDays): static
     {
         $clone = clone $this;
-        $clone->openingHoursAdjustedPeriods = $openingHoursAdjustedPeriods;
+        $clone->adjustedDays = $adjustedDays;
         return $clone;
     }
 }

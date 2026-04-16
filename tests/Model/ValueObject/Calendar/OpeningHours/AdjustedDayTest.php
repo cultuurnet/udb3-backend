@@ -11,14 +11,14 @@ use DateTimeImmutable;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-final class OpeningHoursAdjustedDayTest extends TestCase
+final class AdjustedDayTest extends TestCase
 {
     /**
      * @test
      */
     public function it_creates_with_valid_dates_and_opening_hours(): void
     {
-        $adjustedOpeningHours = new OpeningHoursAdjustedDay(
+        $adjustedOpeningHours = new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -42,7 +42,7 @@ final class OpeningHoursAdjustedDayTest extends TestCase
             new AdjustedDescription('Kerstvakantie')
         );
 
-        $adjustedOpeningHours = new OpeningHoursAdjustedDay(
+        $adjustedOpeningHours = new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -59,7 +59,7 @@ final class OpeningHoursAdjustedDayTest extends TestCase
      */
     public function it_creates_with_same_day_start_and_end_date(): void
     {
-        $adjustedOpeningHours = new OpeningHoursAdjustedDay(
+        $adjustedOpeningHours = new AdjustedDay(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-25'),
             new OpeningHours(
@@ -79,7 +79,7 @@ final class OpeningHoursAdjustedDayTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"startDate" should not be later than "endDate".');
 
-        new OpeningHoursAdjustedDay(
+        new AdjustedDay(
             new DateTimeImmutable('2026-12-26'),
             new DateTimeImmutable('2026-12-21'),
             new OpeningHours(
@@ -96,7 +96,7 @@ final class OpeningHoursAdjustedDayTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('OpeningHoursAdjusted must contain at least one OpeningHour.');
 
-        new OpeningHoursAdjustedDay(
+        new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours()

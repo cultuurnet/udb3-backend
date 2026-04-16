@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHoursAdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 
 final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithClosedDays, CalendarWithOpeningHoursAdjusted
 {
@@ -14,7 +14,7 @@ final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithC
 
     private ClosedDays $closedDays;
 
-    private OpeningHoursAdjustedDays $openingHoursAdjustedPeriods;
+    private AdjustedDays $openingHoursAdjustedPeriods;
 
     private Status $status;
 
@@ -24,7 +24,7 @@ final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithC
     {
         $this->openingHours = $openingHours;
         $this->closedDays = new ClosedDays();
-        $this->openingHoursAdjustedPeriods = new OpeningHoursAdjustedDays();
+        $this->openingHoursAdjustedPeriods = new AdjustedDays();
         $this->status = new Status(StatusType::Available());
         $this->bookingAvailability = new BookingAvailability(BookingAvailabilityType::Available());
     }
@@ -75,15 +75,15 @@ final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithC
         return $clone;
     }
 
-    public function getOpeningHoursAdjustedPeriods(): OpeningHoursAdjustedDays
+    public function getAdjustedDays(): AdjustedDays
     {
         return $this->openingHoursAdjustedPeriods;
     }
 
-    public function withOpeningHoursAdjustedPeriods(OpeningHoursAdjustedDays $openingHoursAdjustedPeriods): static
+    public function withAdjustedDays(AdjustedDays $adjustedDays): static
     {
         $clone = clone $this;
-        $clone->openingHoursAdjustedPeriods = $openingHoursAdjustedPeriods;
+        $clone->openingHoursAdjustedPeriods = $adjustedDays;
         return $clone;
     }
 }
