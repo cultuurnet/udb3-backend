@@ -60,6 +60,8 @@ use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Event\Events\TypicalBirthDateDeleted;
+use CultuurNet\UDB3\Event\Events\TypicalBirthDateUpdated;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\Events\VideoUpdated;
@@ -123,6 +125,8 @@ final class Event extends Offer
     private Faqs $faqs;
 
     private Urls $departurePlaces;
+
+    private ?DateTimeImmutable $typicalBirthDate = null;
 
     public static function getOfferType(): OfferType
     {
@@ -710,6 +714,31 @@ final class Event extends Offer
     protected function createTypicalAgeRangeDeletedEvent(): TypicalAgeRangeDeleted
     {
         return new TypicalAgeRangeDeleted($this->eventId);
+    }
+
+    public function updateTypicalBirthDate(DateTimeImmutable $typicalBirthDate): void
+    {
+        if ($this->typicalBirthDate === null ||
+            $this->typicalBirthDate->format('Y-m-d') !== $typicalBirthDate->format('Y-m-d')) {
+            $this->apply(new TypicalBirthDateUpdated($this->eventId, $typicalBirthDate));
+        }
+    }
+
+    protected function applyTypicalBirthDateUpdated(TypicalBirthDateUpdated $typicalBirthDateUpdated): void
+    {
+        $this->typicalBirthDate = $typicalBirthDateUpdated->getTypicalBirthDate();
+    }
+
+    public function deleteTypicalBirthDate(): void
+    {
+        if ($this->typicalBirthDate !== null) {
+            $this->apply(new TypicalBirthDateDeleted($this->eventId));
+        }
+    }
+
+    protected function applyTypicalBirthDateDeleted(TypicalBirthDateDeleted $typicalBirthDateDeleted): void
+    {
+        $this->typicalBirthDate = null;
     }
 
     protected function createOrganizerUpdatedEvent(string $organizerId): OrganizerUpdated

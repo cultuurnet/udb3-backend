@@ -32,6 +32,8 @@ use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Event\Events\TypicalBirthDateDeleted;
+use CultuurNet\UDB3\Event\Events\TypicalBirthDateUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -78,6 +80,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\SampleFiles;
+use DateTimeImmutable;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use Money\Currency;
 use Money\Money;
@@ -609,6 +612,101 @@ class EventTest extends AggregateRootScenarioTestCase
                     new TypicalAgeRangeDeleted($eventId),
                 ]
             );
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_update_typical_birth_date(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $createEvent = $this->getCreationEvent();
+
+        $birthDate = new DateTimeImmutable('2020-03-15');
+
+        $this->scenario
+            ->given([$createEvent])
+            ->when(
+                function (Event $event) use ($birthDate): void {
+                    $event->updateTypicalBirthDate($birthDate);
+                }
+            )
+            ->then(
+                [
+                    new TypicalBirthDateUpdated($eventId, $birthDate),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_typical_birth_date_when_unchanged(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $createEvent = $this->getCreationEvent();
+
+        $birthDate = new DateTimeImmutable('2020-03-15');
+
+        $this->scenario
+            ->given(
+                [
+                    $createEvent,
+                    new TypicalBirthDateUpdated($eventId, $birthDate),
+                ]
+            )
+            ->when(
+                function (Event $event) use ($birthDate): void {
+                    $event->updateTypicalBirthDate($birthDate);
+                }
+            )
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_delete_typical_birth_date(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $createEvent = $this->getCreationEvent();
+
+        $birthDate = new DateTimeImmutable('2020-03-15');
+
+        $this->scenario
+            ->given(
+                [
+                    $createEvent,
+                    new TypicalBirthDateUpdated($eventId, $birthDate),
+                ]
+            )
+            ->when(
+                function (Event $event): void {
+                    $event->deleteTypicalBirthDate();
+                }
+            )
+            ->then(
+                [
+                    new TypicalBirthDateDeleted($eventId),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_delete_typical_birth_date_when_not_set(): void
+    {
+        $createEvent = $this->getCreationEvent();
+
+        $this->scenario
+            ->given([$createEvent])
+            ->when(
+                function (Event $event): void {
+                    $event->deleteTypicalBirthDate();
+                }
+            )
+            ->then([]);
     }
 
     /**
