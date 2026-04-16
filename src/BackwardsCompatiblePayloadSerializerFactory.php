@@ -21,6 +21,8 @@ use CultuurNet\UDB3\Event\Events\PriceInfoUpdated as EventPriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted as EventTypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated as EventTypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Event\Events\TypicalBirthDateDeleted as EventTypicalBirthDateDeleted;
+use CultuurNet\UDB3\Event\Events\TypicalBirthDateUpdated as EventTypicalBirthDateUpdated;
 use CultuurNet\UDB3\EventSourcing\PayloadManipulatingSerializer;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
@@ -329,6 +331,8 @@ class BackwardsCompatiblePayloadSerializerFactory
         $refactoredEventEvents = [
             EventTypicalAgeRangeDeleted::class,
             EventTypicalAgeRangeUpdated::class,
+            EventTypicalBirthDateDeleted::class,
+            EventTypicalBirthDateUpdated::class,
             EventOrganizerUpdated::class,
             EventOrganizerDeleted::class,
             EventDeleted::class,
