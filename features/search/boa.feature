@@ -12,7 +12,7 @@ Feature: Test the Search API v3 boa feature
     And I am not authorized
     And I am not using an UiTID v1 API key
 
-  Scenario: When I do not have the boa scope I can only search for children only events created by myself
+  Scenario: When I do not have the boa scope I can only find children only events created by myself
     When I am authorized with an OAuth client access token for "test_client"
     And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
