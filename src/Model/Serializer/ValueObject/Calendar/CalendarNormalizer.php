@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHoursAdjusted;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
@@ -71,11 +72,11 @@ final class CalendarNormalizer implements NormalizerInterface
             );
         }
 
-        if ($calendar instanceof CalendarWithAdjustedOpeningHours && !$calendar->getAdjustedOpeningHours()->isEmpty()) {
-            $adjustedOpeningHoursNormalizer = new AdjustedOpeningHoursNormalizer();
+        if ($calendar instanceof CalendarWithOpeningHoursAdjusted && !$calendar->getAdjustedDays()->isEmpty()) {
+            $adjustedOpeningHoursNormalizer = new AdjustedDayNormalizer();
             $data['openingHoursAdjusted'] = array_map(
-                fn (AdjustedOpeningHours $aoh) => $adjustedOpeningHoursNormalizer->normalize($aoh),
-                $calendar->getAdjustedOpeningHours()->toArray()
+                fn (AdjustedDay $aoh) => $adjustedOpeningHoursNormalizer->normalize($aoh),
+                $calendar->getAdjustedDays()->toArray()
             );
         }
 

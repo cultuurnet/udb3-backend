@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedOpeningHoursDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 
@@ -25,9 +26,9 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
      */
     public function it_denormalizes_a_non_array_to_empty_collection(): void
     {
-        $result = $this->denormalizer->denormalize(null, AdjustedOpeningHoursCollection::class);
+        $result = $this->denormalizer->denormalize(null, AdjustedDays::class);
 
-        $this->assertInstanceOf(AdjustedOpeningHoursCollection::class, $result);
+        $this->assertInstanceOf(AdjustedDays::class, $result);
         $this->assertTrue($result->isEmpty());
     }
 
@@ -36,9 +37,9 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
      */
     public function it_denormalizes_an_empty_array_to_empty_collection(): void
     {
-        $result = $this->denormalizer->denormalize([], AdjustedOpeningHoursCollection::class);
+        $result = $this->denormalizer->denormalize([], AdjustedDays::class);
 
-        $this->assertInstanceOf(AdjustedOpeningHoursCollection::class, $result);
+        $this->assertInstanceOf(AdjustedDays::class, $result);
         $this->assertTrue($result->isEmpty());
         $this->assertEquals(0, $result->count());
     }
@@ -62,13 +63,13 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
             ],
         ];
 
-        $result = $this->denormalizer->denormalize($data, AdjustedOpeningHoursCollection::class);
+        $result = $this->denormalizer->denormalize($data, AdjustedDays::class);
 
         $this->assertFalse($result->isEmpty());
         $this->assertEquals(1, $result->count());
 
         $entries = $result->toArray();
-        $this->assertInstanceOf(AdjustedOpeningHours::class, $entries[0]);
+        $this->assertInstanceOf(AdjustedDay::class, $entries[0]);
         $this->assertSame('2026-12-21', $entries[0]->getStartDate()->format('Y-m-d'));
         $this->assertSame('2026-12-26', $entries[0]->getEndDate()->format('Y-m-d'));
         $this->assertNull($entries[0]->getDescription());
@@ -97,13 +98,13 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
             ],
         ];
 
-        $result = $this->denormalizer->denormalize($data, AdjustedOpeningHoursCollection::class);
+        $result = $this->denormalizer->denormalize($data, AdjustedDays::class);
 
         $this->assertEquals(1, $result->count());
 
         $entries = $result->toArray();
         $this->assertNotNull($entries[0]->getDescription());
-        $this->assertInstanceOf(TranslatedAdjustedOpeningHoursDescription::class, $entries[0]->getDescription());
+        $this->assertInstanceOf(TranslatedAdjustedDescription::class, $entries[0]->getDescription());
 
         $nlDescription = $entries[0]->getDescription()->getTranslation(new Language('nl'));
         $this->assertInstanceOf(AdjustedDescription::class, $nlDescription);
@@ -141,7 +142,7 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
             ],
         ];
 
-        $result = $this->denormalizer->denormalize($data, AdjustedOpeningHoursCollection::class);
+        $result = $this->denormalizer->denormalize($data, AdjustedDays::class);
 
         $this->assertEquals(2, $result->count());
     }
@@ -164,7 +165,7 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
             ],
         ];
 
-        $result = $this->denormalizer->denormalize($data, AdjustedOpeningHoursCollection::class);
+        $result = $this->denormalizer->denormalize($data, AdjustedDays::class);
 
         $this->assertEquals(2, $result->count());
 
@@ -191,7 +192,7 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
             ],
         ];
 
-        $result = $this->denormalizer->denormalize($data, AdjustedOpeningHoursCollection::class);
+        $result = $this->denormalizer->denormalize($data, AdjustedDays::class);
 
         $this->assertEquals(1, $result->count());
         $this->assertSame('2026-12-27', $result->toArray()[0]->getStartDate()->format('Y-m-d'));
@@ -213,7 +214,7 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
             ],
         ];
 
-        $result = $this->denormalizer->denormalize($data, AdjustedOpeningHoursCollection::class);
+        $result = $this->denormalizer->denormalize($data, AdjustedDays::class);
 
         $this->assertEquals(1, $result->count());
         $this->assertNull($result->toArray()[0]->getDescription());
@@ -224,7 +225,7 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
      */
     public function it_supports_denormalization_of_adjusted_opening_hours_collection(): void
     {
-        $this->assertTrue($this->denormalizer->supportsDenormalization([], AdjustedOpeningHoursCollection::class));
+        $this->assertTrue($this->denormalizer->supportsDenormalization([], AdjustedDays::class));
         $this->assertFalse($this->denormalizer->supportsDenormalization([], 'SomeOtherClass'));
     }
 }

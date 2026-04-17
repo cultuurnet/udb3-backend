@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-final class AdjustedOpeningHoursNormalizer implements NormalizerInterface
+final class AdjustedDayNormalizer implements NormalizerInterface
 {
     private OpeningHourNormalizer $openingHourNormalizer;
 
@@ -17,7 +18,7 @@ final class AdjustedOpeningHoursNormalizer implements NormalizerInterface
     }
 
     /**
-     * @param AdjustedOpeningHours $object
+     * @param AdjustedDay $object
      */
     public function normalize($object, $format = null, array $context = []): array
     {
@@ -44,6 +45,6 @@ final class AdjustedOpeningHoursNormalizer implements NormalizerInterface
 
     public function supportsNormalization($data, $format = null): bool
     {
-        return $data instanceof AdjustedOpeningHours;
+        return $data instanceof AdjustedDay;
     }
 }

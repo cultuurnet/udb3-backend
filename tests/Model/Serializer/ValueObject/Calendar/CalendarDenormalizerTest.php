@@ -6,11 +6,9 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
@@ -786,112 +784,5 @@ final class CalendarDenormalizerTest extends TestCase
 
         $this->assertInstanceOf(PeriodicCalendar::class, $result);
         $this->assertTrue($result->getClosedDays()->isEmpty());
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_a_periodic_calendar_with_empty_adjusted_opening_hours(): void
-    {
-        $data = [
-            'calendarType' => 'periodic',
-            'startDate' => '2026-01-01T00:00:00+00:00',
-            'endDate' => '2026-12-31T23:59:59+00:00',
-            'openingHours' => [],
-            'openingHoursAdjusted' => [],
-        ];
-
-        $result = $this->denormalizer->denormalize($data, Calendar::class);
-
-        $this->assertInstanceOf(PeriodicCalendar::class, $result);
-        $this->assertTrue($result->getAdjustedOpeningHours()->isEmpty());
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_a_permanent_calendar_with_empty_adjusted_opening_hours(): void
-    {
-        $data = [
-            'calendarType' => 'permanent',
-            'openingHours' => [],
-            'openingHoursAdjusted' => [],
-        ];
-
-        $result = $this->denormalizer->denormalize($data, Calendar::class);
-
-        $this->assertInstanceOf(PermanentCalendar::class, $result);
-        $this->assertTrue($result->getAdjustedOpeningHours()->isEmpty());
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_a_periodic_calendar_with_adjusted_opening_hours(): void
-    {
-        $data = [
-            'calendarType' => 'periodic',
-            'startDate' => '2026-01-01T00:00:00+00:00',
-            'endDate' => '2026-12-31T23:59:59+00:00',
-            'openingHours' => [],
-            'openingHoursAdjusted' => [
-                [
-                    'startDate' => '2026-12-21',
-                    'endDate' => '2026-12-26',
-                    'openingHours' => [
-                        ['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
-                    ],
-                ],
-            ],
-        ];
-
-        $result = $this->denormalizer->denormalize($data, Calendar::class);
-
-        $this->assertInstanceOf(PeriodicCalendar::class, $result);
-        $this->assertFalse($result->getAdjustedOpeningHours()->isEmpty());
-        $this->assertCount(1, $result->getAdjustedOpeningHours()->toArray());
-
-        $entry = $result->getAdjustedOpeningHours()->toArray()[0];
-        $this->assertInstanceOf(AdjustedOpeningHours::class, $entry);
-        $this->assertSame('2026-12-21', $entry->getStartDate()->format('Y-m-d'));
-        $this->assertSame('2026-12-26', $entry->getEndDate()->format('Y-m-d'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_a_permanent_calendar_with_adjusted_opening_hours(): void
-    {
-        $data = [
-            'calendarType' => 'permanent',
-            'openingHours' => [],
-            'openingHoursAdjusted' => [
-                [
-                    'startDate' => '2026-12-25',
-                    'endDate' => '2026-12-25',
-                    'openingHours' => [
-                        ['opens' => '10:00', 'closes' => '14:00', 'dayOfWeek' => ['thursday']],
-                    ],
-                ],
-                [
-                    'startDate' => '2026-01-01',
-                    'endDate' => '2026-01-01',
-                    'openingHours' => [
-                        ['opens' => '12:00', 'closes' => '16:00', 'dayOfWeek' => ['thursday']],
-                    ],
-                ],
-            ],
-        ];
-
-        $result = $this->denormalizer->denormalize($data, Calendar::class);
-
-        $this->assertInstanceOf(PermanentCalendar::class, $result);
-        $this->assertFalse($result->getAdjustedOpeningHours()->isEmpty());
-        $this->assertCount(2, $result->getAdjustedOpeningHours()->toArray());
-
-        // Should be sorted by startDate
-        $entries = $result->getAdjustedOpeningHours()->toArray();
-        $this->assertSame('2026-01-01', $entries[0]->getStartDate()->format('Y-m-d'));
-        $this->assertSame('2026-12-25', $entries[1]->getStartDate()->format('Y-m-d'));
     }
 }

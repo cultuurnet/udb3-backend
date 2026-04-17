@@ -5,24 +5,24 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedOpeningHoursDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-final class AdjustedOpeningHoursNormalizerTest extends TestCase
+final class AdjustedDayNormalizerTest extends TestCase
 {
-    private AdjustedOpeningHoursNormalizer $normalizer;
+    private AdjustedDayNormalizer $normalizer;
 
     protected function setUp(): void
     {
-        $this->normalizer = new AdjustedOpeningHoursNormalizer();
+        $this->normalizer = new AdjustedDayNormalizer();
     }
 
     /**
@@ -30,7 +30,7 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
      */
     public function it_normalizes_adjusted_opening_hours_without_description(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedDay = new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -42,7 +42,7 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
             )
         );
 
-        $result = $this->normalizer->normalize($adjustedOpeningHours);
+        $result = $this->normalizer->normalize($adjustedDay);
 
         $this->assertSame('2026-12-21', $result['startDate']);
         $this->assertSame('2026-12-26', $result['endDate']);
@@ -56,7 +56,7 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
      */
     public function it_normalizes_adjusted_opening_hours_with_description(): void
     {
-        $description = new TranslatedAdjustedOpeningHoursDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Kerstvakantie')
         );
@@ -65,7 +65,7 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
             new AdjustedDescription('Vacances de Noël')
         );
 
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedDay = new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -78,7 +78,7 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
             $description
         );
 
-        $result = $this->normalizer->normalize($adjustedOpeningHours);
+        $result = $this->normalizer->normalize($adjustedDay);
 
         $this->assertSame('2026-12-21', $result['startDate']);
         $this->assertSame('2026-12-26', $result['endDate']);
@@ -92,7 +92,7 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
      */
     public function it_normalizes_opening_hours_within_adjusted_opening_hours(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedDay = new AdjustedDay(
             new DateTimeImmutable('2026-12-27'),
             new DateTimeImmutable('2026-12-31'),
             new OpeningHours(
@@ -104,7 +104,7 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
             )
         );
 
-        $result = $this->normalizer->normalize($adjustedOpeningHours);
+        $result = $this->normalizer->normalize($adjustedDay);
 
         $this->assertCount(1, $result['openingHours']);
         $this->assertSame('14:00', $result['openingHours'][0]['opens']);
@@ -118,7 +118,7 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
      */
     public function it_formats_dates_as_y_m_d(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedDay = new AdjustedDay(
             new DateTimeImmutable('2026-01-01T08:30:00+00:00'),
             new DateTimeImmutable('2026-01-31T18:45:00+00:00'),
             new OpeningHours(
@@ -126,7 +126,7 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
             )
         );
 
-        $result = $this->normalizer->normalize($adjustedOpeningHours);
+        $result = $this->normalizer->normalize($adjustedDay);
 
         $this->assertSame('2026-01-01', $result['startDate']);
         $this->assertSame('2026-01-31', $result['endDate']);
@@ -137,7 +137,7 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
      */
     public function it_supports_normalization_of_adjusted_opening_hours(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedDay = new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -145,7 +145,7 @@ final class AdjustedOpeningHoursNormalizerTest extends TestCase
             )
         );
 
-        $this->assertTrue($this->normalizer->supportsNormalization($adjustedOpeningHours));
+        $this->assertTrue($this->normalizer->supportsNormalization($adjustedDay));
         $this->assertFalse($this->normalizer->supportsNormalization(new \stdClass()));
         $this->assertFalse($this->normalizer->supportsNormalization('some string'));
     }

@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use Broadway\Serializer\Serializable;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHoursAdjusted;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
@@ -21,7 +22,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
@@ -119,8 +119,8 @@ final class CalendarSerializer implements Serializable
                     );
                 }
                 if (isset($data['openingHoursAdjusted'])) {
-                    $calendar = $calendar->withAdjustedOpeningHours(
-                        (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedOpeningHoursCollection::class)
+                    $calendar = $calendar->withAdjustedDays(
+                        (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedDays::class)
                     );
                 }
                 break;
@@ -132,8 +132,8 @@ final class CalendarSerializer implements Serializable
                     );
                 }
                 if (isset($data['openingHoursAdjusted'])) {
-                    $calendar = $calendar->withAdjustedOpeningHours(
-                        (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedOpeningHoursCollection::class)
+                    $calendar = $calendar->withAdjustedDays(
+                        (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedDays::class)
                     );
                 }
                 break;
@@ -199,11 +199,11 @@ final class CalendarSerializer implements Serializable
             );
         }
 
-        if ($this->calendar instanceof CalendarWithAdjustedOpeningHours && !$this->calendar->getAdjustedOpeningHours()->isEmpty()) {
-            $adjustedOpeningHoursNormalizer = new AdjustedOpeningHoursNormalizer();
+        if ($this->calendar instanceof CalendarWithOpeningHoursAdjusted && !$this->calendar->getAdjustedDays()->isEmpty()) {
+            $adjustedDayNormalizer = new AdjustedDayNormalizer();
             $calendar['openingHoursAdjusted'] = array_map(
-                fn (AdjustedOpeningHours $aoh) => $adjustedOpeningHoursNormalizer->normalize($aoh),
-                $this->calendar->getAdjustedOpeningHours()->toArray()
+                fn (AdjustedDay $aoh) => $adjustedDayNormalizer->normalize($aoh),
+                $this->calendar->getAdjustedDays()->toArray()
             );
         }
 

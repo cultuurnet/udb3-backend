@@ -6,15 +6,9 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedOpeningHoursDescription;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -28,6 +22,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
@@ -234,8 +230,8 @@ final class CalendarNormalizerTest extends TestCase
             )
         );
 
-        $adjustedOpeningHours = new AdjustedOpeningHoursCollection(
-            new AdjustedOpeningHours(
+        $adjustedDays = new AdjustedDays(
+            new AdjustedDay(
                 new DateTimeImmutable('2026-12-25T00:00:00+00:00'),
                 new DateTimeImmutable('2026-12-31T00:00:00+00:00'),
                 $openingHours
@@ -243,7 +239,7 @@ final class CalendarNormalizerTest extends TestCase
         );
 
         $calendar = (new PermanentCalendar($openingHours))
-            ->withAdjustedOpeningHours($adjustedOpeningHours);
+            ->withAdjustedDays($adjustedDays);
 
         $normalized = $this->normalizer->normalize($calendar);
 
@@ -268,13 +264,13 @@ final class CalendarNormalizerTest extends TestCase
             )
         );
 
-        $description = (new TranslatedAdjustedOpeningHoursDescription(
+        $description = (new TranslatedAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Kerstvakantie')
         ))->withTranslation(new Language('fr'), new AdjustedDescription('Vacances de Noël'));
 
-        $adjustedOpeningHours = new AdjustedOpeningHoursCollection(
-            new AdjustedOpeningHours(
+        $adjustedDays = new AdjustedDays(
+            new AdjustedDay(
                 new DateTimeImmutable('2026-12-25T00:00:00+00:00'),
                 new DateTimeImmutable('2026-12-31T00:00:00+00:00'),
                 $openingHours,
@@ -283,7 +279,7 @@ final class CalendarNormalizerTest extends TestCase
         );
 
         $calendar = (new PermanentCalendar($openingHours))
-            ->withAdjustedOpeningHours($adjustedOpeningHours);
+            ->withAdjustedDays($adjustedDays);
 
         $normalized = $this->normalizer->normalize($calendar);
 

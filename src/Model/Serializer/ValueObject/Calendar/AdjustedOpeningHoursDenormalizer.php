@@ -5,31 +5,31 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedOpeningHoursDescription;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class AdjustedOpeningHoursDenormalizer implements DenormalizerInterface
 {
     private OpeningHourDenormalizer $openingHourDenormalizer;
-    private TranslatedAdjustedOpeningHoursDescriptionDenormalizer $translatedDescriptionDenormalizer;
+    private TranslatedAdjustedDescriptionDenormalizer $translatedDescriptionDenormalizer;
 
     public function __construct()
     {
         $this->openingHourDenormalizer = new OpeningHourDenormalizer();
-        $this->translatedDescriptionDenormalizer = new TranslatedAdjustedOpeningHoursDescriptionDenormalizer();
+        $this->translatedDescriptionDenormalizer = new TranslatedAdjustedDescriptionDenormalizer();
     }
 
-    public function denormalize($data, $class, $format = null, array $context = []): AdjustedOpeningHoursCollection
+    public function denormalize($data, $class, $format = null, array $context = []): AdjustedDays
     {
         if (!is_array($data)) {
-            return new AdjustedOpeningHoursCollection();
+            return new AdjustedDays();
         }
 
-        $adjustedOpeningHours = [];
+        $adjustedDays = [];
         foreach ($data as $adjustedOpeningHoursData) {
             if (!is_array($adjustedOpeningHoursData)) {
                 continue;
@@ -50,19 +50,19 @@ final class AdjustedOpeningHoursDenormalizer implements DenormalizerInterface
             if (!empty($adjustedOpeningHoursData['description']) && is_array($adjustedOpeningHoursData['description'])) {
                 $description = $this->translatedDescriptionDenormalizer->denormalize(
                     $adjustedOpeningHoursData['description'],
-                    TranslatedAdjustedOpeningHoursDescription::class
+                    TranslatedAdjustedDescription::class
                 );
             }
 
-            $adjustedOpeningHours[] = new AdjustedOpeningHours($startDate, $endDate, $openingHours, $description);
+            $adjustedDays[] = new AdjustedDay($startDate, $endDate, $openingHours, $description);
         }
 
-        return new AdjustedOpeningHoursCollection(...$adjustedOpeningHours);
+        return new AdjustedDays(...$adjustedDays);
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool
     {
-        return $type === AdjustedOpeningHoursCollection::class;
+        return $type === AdjustedDays::class;
     }
 
     private function denormalizeOpeningHours(array $openingHoursData): OpeningHours
