@@ -120,7 +120,7 @@ final class CalendarSerializer implements Serializable
                 }
                 if (isset($data['openingHoursAdjusted'])) {
                     $calendar = $calendar->withAdjustedDays(
-                        (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedDays::class)
+                        (new AdjustedDayDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedDays::class)
                     );
                 }
                 break;
@@ -133,7 +133,7 @@ final class CalendarSerializer implements Serializable
                 }
                 if (isset($data['openingHoursAdjusted'])) {
                     $calendar = $calendar->withAdjustedDays(
-                        (new AdjustedOpeningHoursDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedDays::class)
+                        (new AdjustedDayDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedDays::class)
                     );
                 }
                 break;

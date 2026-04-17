@@ -14,11 +14,11 @@ use PHPUnit\Framework\TestCase;
 
 final class AdjustedOpeningHoursDenormalizerTest extends TestCase
 {
-    private AdjustedOpeningHoursDenormalizer $denormalizer;
+    private AdjustedDayDenormalizer $denormalizer;
 
     protected function setUp(): void
     {
-        $this->denormalizer = new AdjustedOpeningHoursDenormalizer();
+        $this->denormalizer = new AdjustedDayDenormalizer();
     }
 
     /**

@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-final class AdjustedOpeningHoursDenormalizer implements DenormalizerInterface
+final class AdjustedDayDenormalizer implements DenormalizerInterface
 {
     private OpeningHourDenormalizer $openingHourDenormalizer;
     private TranslatedAdjustedDescriptionDenormalizer $translatedDescriptionDenormalizer;

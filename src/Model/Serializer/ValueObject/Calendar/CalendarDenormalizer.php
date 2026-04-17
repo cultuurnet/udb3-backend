@@ -36,7 +36,7 @@ final class CalendarDenormalizer implements DenormalizerInterface
     private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
     private BookingInfoDenormalizer $bookingInfoDenormalizer;
     private ClosedDaysDenormalizer $closedDaysDenormalizer;
-    private AdjustedOpeningHoursDenormalizer $adjustedOpeningHoursDenormalizer;
+    private AdjustedDayDenormalizer $adjustedOpeningHoursDenormalizer;
 
     public function __construct()
     {
@@ -44,7 +44,7 @@ final class CalendarDenormalizer implements DenormalizerInterface
         $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
         $this->bookingInfoDenormalizer = new BookingInfoDenormalizer();
         $this->closedDaysDenormalizer = new ClosedDaysDenormalizer();
-        $this->adjustedOpeningHoursDenormalizer = new AdjustedOpeningHoursDenormalizer();
+        $this->adjustedOpeningHoursDenormalizer = new AdjustedDayDenormalizer();
     }
 
     /**
