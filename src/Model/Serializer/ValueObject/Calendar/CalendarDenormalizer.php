@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHoursAdjusted;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -227,15 +228,15 @@ final class CalendarDenormalizer implements DenormalizerInterface
         return $subEvent;
     }
 
-    private function applyOpeningHours(array $data, CalendarWithClosedDays|CalendarWithOpeningHoursAdjusted $calendar): CalendarWithClosedDays|CalendarWithOpeningHoursAdjusted
+    private function applyOpeningHours(array $data, CalendarWithClosedDays&CalendarWithOpeningHoursAdjusted $calendar): CalendarWithClosedDays&CalendarWithOpeningHoursAdjusted
     {
         if (isset($data['openingHoursClosedDays'])) {
             $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
             $calendar = $calendar->withClosedDays($closedDays);
         }
 
-        if (isset($data['openingHoursAdjusted'])) {
-            $adjustedOpeningHours = $this->adjustedOpeningHoursDenormalizer->denormalize($data['openingHoursAdjusted'], OpeningHours::class);
+        if (isset($data['openingHoursAdjustedDays'])) {
+            $adjustedOpeningHours = $this->adjustedOpeningHoursDenormalizer->denormalize($data['openingHoursAdjustedDays'], AdjustedDays::class);
             $calendar = $calendar->withAdjustedDays($adjustedOpeningHours);
         }
 

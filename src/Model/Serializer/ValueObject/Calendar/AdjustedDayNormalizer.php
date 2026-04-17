@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class AdjustedDayNormalizer implements NormalizerInterface
@@ -27,7 +28,7 @@ final class AdjustedDayNormalizer implements NormalizerInterface
         ];
 
         $data['openingHours'] = array_map(
-            fn ($openingHour) => $this->openingHourNormalizer->normalize($openingHour),
+            fn (OpeningHour $openingHour) => $this->openingHourNormalizer->normalize($openingHour),
             $object->getOpeningHours()->toArray()
         );
 
