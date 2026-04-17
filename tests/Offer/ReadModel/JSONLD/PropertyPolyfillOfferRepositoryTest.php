@@ -612,7 +612,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
                         ],
                     ])
             ->assertReturnedDocumentContains([
-                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                '@id' => 'https://io.uitdatabank.dev/events/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
                 'mainLanguage' => 'nl',
                 'name' => [
                     'nl' => 'Kopieertest',
@@ -634,7 +634,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
                 ],
             ])
             ->assertReturnedDocumentContains([
-                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                '@id' => 'https://io.uitdatabank.dev/events/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
                 'mainLanguage' => 'nl',
                 'name' => [
                     'fr' => 'Kopieertest',
@@ -656,7 +656,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
                 ],
             ])
             ->assertReturnedDocumentContains([
-                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                '@id' => 'https://io.uitdatabank.dev/events/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
                 'name' => [
                     'fr' => 'Test de copie',
                 ],
