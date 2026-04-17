@@ -483,11 +483,11 @@ final class CalendarSerializerTest extends TestCase
         $serializer = new CalendarSerializer($calendar);
         $data = $serializer->serialize();
 
-        $this->assertArrayHasKey('openingHoursAdjusted', $data);
-        $this->assertCount(1, $data['openingHoursAdjusted']);
-        $this->assertEquals('2026-12-21', $data['openingHoursAdjusted'][0]['startDate']);
-        $this->assertEquals('2026-12-26', $data['openingHoursAdjusted'][0]['endDate']);
-        $this->assertArrayNotHasKey('description', $data['openingHoursAdjusted'][0]);
+        $this->assertArrayHasKey('openingHoursAdjustedDays', $data);
+        $this->assertCount(1, $data['openingHoursAdjustedDays']);
+        $this->assertEquals('2026-12-21', $data['openingHoursAdjustedDays'][0]['startDate']);
+        $this->assertEquals('2026-12-26', $data['openingHoursAdjustedDays'][0]['endDate']);
+        $this->assertArrayNotHasKey('description', $data['openingHoursAdjustedDays'][0]);
     }
 
     /**
@@ -519,8 +519,8 @@ final class CalendarSerializerTest extends TestCase
         $serializer = new CalendarSerializer($calendar);
         $data = $serializer->serialize();
 
-        $this->assertArrayHasKey('openingHoursAdjusted', $data);
-        $this->assertEquals('Kerstvakantie', $data['openingHoursAdjusted'][0]['description']['nl']);
+        $this->assertArrayHasKey('openingHoursAdjustedDays', $data);
+        $this->assertEquals('Kerstvakantie', $data['openingHoursAdjustedDays'][0]['description']['nl']);
     }
 
     /**
@@ -535,7 +535,7 @@ final class CalendarSerializerTest extends TestCase
             'startDate' => '2026-01-01T00:00:00+00:00',
             'endDate' => '2026-12-31T23:59:59+00:00',
             'openingHours' => [],
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 [
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -576,7 +576,7 @@ final class CalendarSerializerTest extends TestCase
             'startDate' => '2026-01-01T00:00:00+00:00',
             'endDate' => '2026-12-31T23:59:59+00:00',
             'openingHours' => [],
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 [
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -615,9 +615,9 @@ final class CalendarSerializerTest extends TestCase
         $serializer = new CalendarSerializer($calendar);
         $data = $serializer->serialize();
 
-        $this->assertArrayHasKey('openingHoursAdjusted', $data);
-        $this->assertCount(1, $data['openingHoursAdjusted']);
-        $this->assertEquals('2026-12-21', $data['openingHoursAdjusted'][0]['startDate']);
+        $this->assertArrayHasKey('openingHoursAdjustedDays', $data);
+        $this->assertCount(1, $data['openingHoursAdjustedDays']);
+        $this->assertEquals('2026-12-21', $data['openingHoursAdjustedDays'][0]['startDate']);
     }
 
     /**
@@ -630,7 +630,7 @@ final class CalendarSerializerTest extends TestCase
             'status' => ['type' => 'Available'],
             'bookingAvailability' => ['type' => 'Available'],
             'openingHours' => [],
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 [
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -666,7 +666,7 @@ final class CalendarSerializerTest extends TestCase
             'status' => ['type' => 'Available'],
             'bookingAvailability' => ['type' => 'Available'],
             'openingHours' => [],
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 [
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -692,7 +692,7 @@ final class CalendarSerializerTest extends TestCase
         $serializer = new CalendarSerializer($calendar);
         $data = $serializer->serialize();
 
-        $this->assertArrayNotHasKey('openingHoursAdjusted', $data);
+        $this->assertArrayNotHasKey('openingHoursAdjustedDays', $data);
     }
 
     /**
@@ -720,7 +720,7 @@ final class CalendarSerializerTest extends TestCase
 
         // Confirm it is also absent from the serialized output
         $data = (new CalendarSerializer($calendar))->serialize();
-        $this->assertArrayNotHasKey('openingHoursAdjusted', $data);
+        $this->assertArrayNotHasKey('openingHoursAdjustedDays', $data);
     }
 
     /**

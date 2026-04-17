@@ -243,12 +243,12 @@ final class CalendarNormalizerTest extends TestCase
 
         $normalized = $this->normalizer->normalize($calendar);
 
-        $this->assertArrayHasKey('openingHoursAdjusted', $normalized);
-        $this->assertIsArray($normalized['openingHoursAdjusted']);
-        $this->assertCount(1, $normalized['openingHoursAdjusted']);
-        $this->assertSame('2026-12-25', $normalized['openingHoursAdjusted'][0]['startDate']);
-        $this->assertSame('2026-12-31', $normalized['openingHoursAdjusted'][0]['endDate']);
-        $this->assertIsArray($normalized['openingHoursAdjusted'][0]['openingHours']);
+        $this->assertArrayHasKey('openingHoursAdjustedDays', $normalized);
+        $this->assertIsArray($normalized['openingHoursAdjustedDays']);
+        $this->assertCount(1, $normalized['openingHoursAdjustedDays']);
+        $this->assertSame('2026-12-25', $normalized['openingHoursAdjustedDays'][0]['startDate']);
+        $this->assertSame('2026-12-31', $normalized['openingHoursAdjustedDays'][0]['endDate']);
+        $this->assertIsArray($normalized['openingHoursAdjustedDays'][0]['openingHours']);
     }
 
     /**
@@ -283,10 +283,10 @@ final class CalendarNormalizerTest extends TestCase
 
         $normalized = $this->normalizer->normalize($calendar);
 
-        $this->assertArrayHasKey('openingHoursAdjusted', $normalized);
-        $this->assertIsArray($normalized['openingHoursAdjusted'][0]['description']);
-        $this->assertSame('Kerstvakantie', $normalized['openingHoursAdjusted'][0]['description']['nl']);
-        $this->assertSame('Vacances de Noël', $normalized['openingHoursAdjusted'][0]['description']['fr']);
+        $this->assertArrayHasKey('openingHoursAdjustedDays', $normalized);
+        $this->assertIsArray($normalized['openingHoursAdjustedDays'][0]['description']);
+        $this->assertSame('Kerstvakantie', $normalized['openingHoursAdjustedDays'][0]['description']['nl']);
+        $this->assertSame('Vacances de Noël', $normalized['openingHoursAdjustedDays'][0]['description']['fr']);
     }
 
     /**
@@ -304,7 +304,7 @@ final class CalendarNormalizerTest extends TestCase
 
         $normalized = $this->normalizer->normalize($calendar);
 
-        $this->assertArrayNotHasKey('openingHoursAdjusted', $normalized);
+        $this->assertArrayNotHasKey('openingHoursAdjustedDays', $normalized);
     }
 
     /**

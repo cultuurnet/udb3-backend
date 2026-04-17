@@ -73,7 +73,7 @@ final class CalendarNormalizer implements NormalizerInterface
 
         if ($calendar instanceof CalendarWithOpeningHoursAdjusted && !$calendar->getAdjustedDays()->isEmpty()) {
             $adjustedOpeningHoursNormalizer = new AdjustedDayNormalizer();
-            $data['openingHoursAdjusted'] = array_map(
+            $data['openingHoursAdjustedDays'] = array_map(
                 fn (AdjustedDay $aoh) => $adjustedOpeningHoursNormalizer->normalize($aoh),
                 $calendar->getAdjustedDays()->toArray()
             );

@@ -118,9 +118,9 @@ final class CalendarSerializer implements Serializable
                         (new ClosedDaysDenormalizer())->denormalize($data['openingHoursClosedDays'], ClosedDays::class)
                     );
                 }
-                if (isset($data['openingHoursAdjusted'])) {
+                if (isset($data['openingHoursAdjustedDays'])) {
                     $calendar = $calendar->withAdjustedDays(
-                        (new AdjustedDayDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedDays::class)
+                        (new AdjustedDayDenormalizer())->denormalize($data['openingHoursAdjustedDays'], AdjustedDays::class)
                     );
                 }
                 break;
@@ -131,9 +131,9 @@ final class CalendarSerializer implements Serializable
                         (new ClosedDaysDenormalizer())->denormalize($data['openingHoursClosedDays'], ClosedDays::class)
                     );
                 }
-                if (isset($data['openingHoursAdjusted'])) {
+                if (isset($data['openingHoursAdjustedDays'])) {
                     $calendar = $calendar->withAdjustedDays(
-                        (new AdjustedDayDenormalizer())->denormalize($data['openingHoursAdjusted'], AdjustedDays::class)
+                        (new AdjustedDayDenormalizer())->denormalize($data['openingHoursAdjustedDays'], AdjustedDays::class)
                     );
                 }
                 break;
@@ -201,7 +201,7 @@ final class CalendarSerializer implements Serializable
 
         if ($this->calendar instanceof CalendarWithOpeningHoursAdjusted && !$this->calendar->getAdjustedDays()->isEmpty()) {
             $adjustedDayNormalizer = new AdjustedDayNormalizer();
-            $calendar['openingHoursAdjusted'] = array_map(
+            $calendar['openingHoursAdjustedDays'] = array_map(
                 fn (AdjustedDay $aoh) => $adjustedDayNormalizer->normalize($aoh),
                 $this->calendar->getAdjustedDays()->toArray()
             );
