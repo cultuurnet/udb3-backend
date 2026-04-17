@@ -2,26 +2,23 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
+namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-final class AdjustedOpeningHoursTest extends TestCase
+final class AdjustedDayTest extends TestCase
 {
     /**
      * @test
      */
     public function it_creates_with_valid_dates_and_opening_hours(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedOpeningHours = new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -40,12 +37,12 @@ final class AdjustedOpeningHoursTest extends TestCase
      */
     public function it_creates_with_optional_description(): void
     {
-        $description = new TranslatedAdjustedOpeningHoursDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Kerstvakantie')
         );
 
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedOpeningHours = new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -62,7 +59,7 @@ final class AdjustedOpeningHoursTest extends TestCase
      */
     public function it_creates_with_same_day_start_and_end_date(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedOpeningHours = new AdjustedDay(
             new DateTimeImmutable('2026-12-25'),
             new DateTimeImmutable('2026-12-25'),
             new OpeningHours(
@@ -82,7 +79,7 @@ final class AdjustedOpeningHoursTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('"startDate" should not be later than "endDate".');
 
-        new AdjustedOpeningHours(
+        new AdjustedDay(
             new DateTimeImmutable('2026-12-26'),
             new DateTimeImmutable('2026-12-21'),
             new OpeningHours(
@@ -97,9 +94,9 @@ final class AdjustedOpeningHoursTest extends TestCase
     public function it_throws_when_opening_hours_is_empty(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('AdjustedOpeningHours must contain at least one OpeningHour.');
+        $this->expectExceptionMessage('OpeningHoursAdjusted must contain at least one OpeningHour.');
 
-        new AdjustedOpeningHours(
+        new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours()

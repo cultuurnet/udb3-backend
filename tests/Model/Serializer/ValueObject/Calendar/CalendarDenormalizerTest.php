@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;

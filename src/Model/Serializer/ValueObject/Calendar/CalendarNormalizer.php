@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;

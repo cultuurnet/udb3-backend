@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 
-final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeningHours, CalendarWithClosedDays, CalendarWithAdjustedOpeningHours
+final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeningHours, CalendarWithClosedDays, CalendarWithOpeningHoursAdjusted
 {
     private DateRange $dateRange;
 
@@ -14,7 +16,7 @@ final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeni
 
     private ClosedDays $closedDays;
 
-    private AdjustedOpeningHoursCollection $adjustedOpeningHours;
+    private AdjustedDays $adjustedDays;
 
     private Status $status;
 
@@ -27,7 +29,7 @@ final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeni
         $this->dateRange = $dateRange;
         $this->openingHours = $openingHours;
         $this->closedDays = new ClosedDays();
-        $this->adjustedOpeningHours = new AdjustedOpeningHoursCollection();
+        $this->adjustedDays = new AdjustedDays();
         $this->status = new Status(StatusType::Available());
         $this->bookingAvailability = new BookingAvailability(BookingAvailabilityType::Available());
     }
@@ -88,15 +90,15 @@ final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeni
         return $clone;
     }
 
-    public function getAdjustedOpeningHours(): AdjustedOpeningHoursCollection
+    public function getAdjustedDays(): AdjustedDays
     {
-        return $this->adjustedOpeningHours;
+        return $this->adjustedDays;
     }
 
-    public function withAdjustedOpeningHours(AdjustedOpeningHoursCollection $adjustedOpeningHours): static
+    public function withAdjustedDays(AdjustedDays $adjustedDays): static
     {
         $clone = clone $this;
-        $clone->adjustedOpeningHours = $adjustedOpeningHours;
+        $clone->adjustedDays = $adjustedDays;
         return $clone;
     }
 }

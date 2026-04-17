@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
+namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use InvalidArgumentException;
@@ -47,7 +49,7 @@ final class ClosedDayTest extends TestCase
     {
         $startDate = new DateTimeImmutable('2024-12-25');
         $endDate = new DateTimeImmutable('2024-12-25');
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
             new AdjustedDescription('Gesloten op eerste kerstdag')
         );
