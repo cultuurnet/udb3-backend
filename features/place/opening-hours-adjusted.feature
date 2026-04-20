@@ -45,7 +45,7 @@ Feature: Test that places do not support opening hours adjusted
             ]
         }
     ],
-    "openingHoursAdjusted": [
+    "openingHoursAdjustedDays": [
         {
             "startDate": "2026-12-21",
             "endDate": "2027-01-03",
@@ -71,4 +71,4 @@ Feature: Test that places do not support opening hours adjusted
     Then the response status should be "201"
     And I keep the value of the JSON response at "url" as "placeUrl"
     And I get the place at "%{placeUrl}"
-    Then the JSON response should not have "openingHoursAdjusted"
+    Then the JSON response should not have "openingHoursAdjustedDays"

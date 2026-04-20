@@ -26,7 +26,7 @@ Feature: Test opening hours adjusted for events
           "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"]
         }
       ],
-      "openingHoursAdjusted": [
+      "openingHoursAdjustedDays": [
         {
           "startDate": "2026-12-27",
           "endDate": "2026-12-31",
@@ -60,13 +60,13 @@ Feature: Test opening hours adjusted for events
     Then the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
     And I get the event at "%{eventUrl}"
-    Then the JSON response should have "openingHoursAdjusted"
-    And the JSON response at "openingHoursAdjusted/0/startDate" should be "2026-12-21"
-    And the JSON response at "openingHoursAdjusted/0/endDate" should be "2026-12-26"
-    And the JSON response at "openingHoursAdjusted/0/description/nl" should be "Kerstvakantie"
-    And the JSON response at "openingHoursAdjusted/0/description/fr" should be "fêtes de Noël"
-    And the JSON response at "openingHoursAdjusted/1/startDate" should be "2026-12-27"
-    And the JSON response at "openingHoursAdjusted/1/endDate" should be "2026-12-31"
+    Then the JSON response should have "openingHoursAdjustedDays"
+    And the JSON response at "openingHoursAdjustedDays/0/startDate" should be "2026-12-21"
+    And the JSON response at "openingHoursAdjustedDays/0/endDate" should be "2026-12-26"
+    And the JSON response at "openingHoursAdjustedDays/0/description/nl" should be "Kerstvakantie"
+    And the JSON response at "openingHoursAdjustedDays/0/description/fr" should be "fêtes de Noël"
+    And the JSON response at "openingHoursAdjustedDays/1/startDate" should be "2026-12-27"
+    And the JSON response at "openingHoursAdjustedDays/1/endDate" should be "2026-12-31"
 
   Scenario: Create permanent event with opening hours adjusted
     When I set the JSON request payload to:
@@ -84,7 +84,7 @@ Feature: Test opening hours adjusted for events
           "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
         }
       ],
-      "openingHoursAdjusted": [
+      "openingHoursAdjustedDays": [
         {
           "startDate": "2026-12-21",
           "endDate": "2026-12-26",
@@ -106,10 +106,10 @@ Feature: Test opening hours adjusted for events
     Then the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
     And I get the event at "%{eventUrl}"
-    Then the JSON response should have "openingHoursAdjusted"
-    And the JSON response at "openingHoursAdjusted/0/startDate" should be "2026-12-21"
-    And the JSON response at "openingHoursAdjusted/0/endDate" should be "2026-12-26"
-    And the JSON response at "openingHoursAdjusted/0/description/nl" should be "Kerstvakantie"
+    Then the JSON response should have "openingHoursAdjustedDays"
+    And the JSON response at "openingHoursAdjustedDays/0/startDate" should be "2026-12-21"
+    And the JSON response at "openingHoursAdjustedDays/0/endDate" should be "2026-12-26"
+    And the JSON response at "openingHoursAdjustedDays/0/description/nl" should be "Kerstvakantie"
 
   Scenario: Update event calendar to add opening hours adjusted
     Given I set the JSON request payload to:
@@ -147,7 +147,7 @@ Feature: Test opening hours adjusted for events
           "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"]
         }
       ],
-      "openingHoursAdjusted": [
+      "openingHoursAdjustedDays": [
         {
           "startDate": "2026-12-21",
           "endDate": "2026-12-26",
@@ -165,9 +165,9 @@ Feature: Test opening hours adjusted for events
     And I send a PUT request to "%{eventUrl}/calendar"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    Then the JSON response should have "openingHoursAdjusted"
-    And the JSON response at "openingHoursAdjusted/0/startDate" should be "2026-12-21"
-    And the JSON response at "openingHoursAdjusted/0/endDate" should be "2026-12-26"
+    Then the JSON response should have "openingHoursAdjustedDays"
+    And the JSON response at "openingHoursAdjustedDays/0/startDate" should be "2026-12-21"
+    And the JSON response at "openingHoursAdjustedDays/0/endDate" should be "2026-12-26"
 
   Scenario: Clear opening hours adjusted by updating calendar without the field
     Given I set the JSON request payload to:
@@ -187,7 +187,7 @@ Feature: Test opening hours adjusted for events
           "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"]
         }
       ],
-      "openingHoursAdjusted": [
+      "openingHoursAdjustedDays": [
         {
           "startDate": "2026-12-21",
           "endDate": "2026-12-26",
@@ -223,7 +223,7 @@ Feature: Test opening hours adjusted for events
     And I send a PUT request to "%{eventUrl}/calendar"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    Then the JSON response should not have "openingHoursAdjusted"
+    Then the JSON response should not have "openingHoursAdjustedDays"
 
   Scenario: Opening hours adjusted with childcare
     When I set the JSON request payload to:
@@ -243,7 +243,7 @@ Feature: Test opening hours adjusted for events
           "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"]
         }
       ],
-      "openingHoursAdjusted": [
+      "openingHoursAdjustedDays": [
         {
           "startDate": "2026-12-21",
           "endDate": "2026-12-26",
@@ -266,9 +266,9 @@ Feature: Test opening hours adjusted for events
     Then the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
     And I get the event at "%{eventUrl}"
-    Then the JSON response should have "openingHoursAdjusted"
-    And the JSON response at "openingHoursAdjusted/0/openingHours/0/childcare/start" should be "13:30"
-    And the JSON response at "openingHoursAdjusted/0/openingHours/0/childcare/end" should be "14:30"
+    Then the JSON response should have "openingHoursAdjustedDays"
+    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/childcare/start" should be "13:30"
+    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/childcare/end" should be "14:30"
 
   Scenario: Cannot create event when adjusted opening hours startDate is after endDate
     When I set the JSON request payload to:
@@ -288,7 +288,7 @@ Feature: Test opening hours adjusted for events
           "dayOfWeek": ["monday"]
         }
       ],
-      "openingHoursAdjusted": [
+      "openingHoursAdjustedDays": [
         {
           "startDate": "2026-12-26",
           "endDate": "2026-12-21",
@@ -305,7 +305,7 @@ Feature: Test opening hours adjusted for events
     """
     And I send a POST request to "/events/"
     Then the response status should be "400"
-    And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursAdjusted/0/endDate"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursAdjustedDays/0/endDate"
     And the JSON response at "schemaErrors/0/error" should be "endDate should not be before startDate"
 
   Scenario: Cannot create periodic event when adjusted opening hours is before calendar startDate
@@ -326,7 +326,7 @@ Feature: Test opening hours adjusted for events
           "dayOfWeek": ["monday"]
         }
       ],
-      "openingHoursAdjusted": [
+      "openingHoursAdjustedDays": [
         {
           "startDate": "2026-01-01",
           "endDate": "2026-01-15",
@@ -343,7 +343,7 @@ Feature: Test opening hours adjusted for events
     """
     And I send a POST request to "/events/"
     Then the response status should be "400"
-    And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursAdjusted/0/startDate"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursAdjustedDays/0/startDate"
     And the JSON response at "schemaErrors/0/error" should be "the start date of adjusted opening hours should not be before the calendar start date"
 
   Scenario: Cannot create periodic event when adjusted opening hours is after calendar endDate
@@ -364,7 +364,7 @@ Feature: Test opening hours adjusted for events
           "dayOfWeek": ["monday"]
         }
       ],
-      "openingHoursAdjusted": [
+      "openingHoursAdjustedDays": [
         {
           "startDate": "2026-12-21",
           "endDate": "2026-12-26",
@@ -381,5 +381,5 @@ Feature: Test opening hours adjusted for events
     """
     And I send a POST request to "/events/"
     Then the response status should be "400"
-    And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursAdjusted/0/endDate"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursAdjustedDays/0/endDate"
     And the JSON response at "schemaErrors/0/error" should be "the end date of adjusted opening hours should not be after the calendar end date"

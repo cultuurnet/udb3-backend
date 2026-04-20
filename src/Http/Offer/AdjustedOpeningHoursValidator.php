@@ -21,14 +21,14 @@ final class AdjustedOpeningHoursValidator
      */
     public function validate(object $data): array
     {
-        if (!isset($data->openingHoursAdjusted) || !is_array($data->openingHoursAdjusted)) {
+        if (!isset($data->openingHoursAdjustedDays) || !is_array($data->openingHoursAdjustedDays)) {
             return [];
         }
 
         $errors = [];
         $parsedEntries = [];
 
-        foreach ($data->openingHoursAdjusted as $index => $adjustedOpeningHoursData) {
+        foreach ($data->openingHoursAdjustedDays as $index => $adjustedOpeningHoursData) {
             $startDate = DateTimeFactory::fromDateOrISO8601($adjustedOpeningHoursData->startDate);
             $endDate = DateTimeFactory::fromDateOrISO8601($adjustedOpeningHoursData->endDate);
 
@@ -39,7 +39,7 @@ final class AdjustedOpeningHoursValidator
 
             if ($startDate > $endDate) {
                 $errors[] = new SchemaError(
-                    '/openingHoursAdjusted/' . $index . '/endDate',
+                    '/openingHoursAdjustedDays/' . $index . '/endDate',
                     'endDate should not be before startDate'
                 );
                 continue;
@@ -54,14 +54,14 @@ final class AdjustedOpeningHoursValidator
 
                 if ($startDate < $periodicStart) {
                     $errors[] = new SchemaError(
-                        '/openingHoursAdjusted/' . $index . '/startDate',
+                        '/openingHoursAdjustedDays/' . $index . '/startDate',
                         'the start date of adjusted opening hours should not be before the calendar start date'
                     );
                 }
 
                 if ($endDate > $periodicEnd) {
                     $errors[] = new SchemaError(
-                        '/openingHoursAdjusted/' . $index . '/endDate',
+                        '/openingHoursAdjustedDays/' . $index . '/endDate',
                         'the end date of adjusted opening hours should not be after the calendar end date'
                     );
                 }
@@ -83,7 +83,7 @@ final class AdjustedOpeningHoursValidator
         for ($i = 1, $iMax = count($parsedEntries); $i < $iMax; $i++) {
             if ($parsedEntries[$i]['startDate'] <= $parsedEntries[$i - 1]['endDate']) {
                 $errors[] = new SchemaError(
-                    '/openingHoursAdjusted/' . $parsedEntries[$i]['index'] . '/startDate',
+                    '/openingHoursAdjustedDays/' . $parsedEntries[$i]['index'] . '/startDate',
                     'adjusted opening hours entries must not overlap'
                 );
             }
@@ -102,7 +102,7 @@ final class AdjustedOpeningHoursValidator
                 new Minute((int)$minutes);
             } catch (InvalidArgumentException) {
                 $errors[] = new SchemaError(
-                    '/openingHoursAdjusted/' . $index . '/openingHours/' . $ohIndex . '/' . $field,
+                    '/openingHoursAdjustedDays/' . $index . '/openingHours/' . $ohIndex . '/' . $field,
                     'Invalid time format (hh:mm)'
                 );
             }

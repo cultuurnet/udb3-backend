@@ -34,7 +34,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
                     'calendarType' => 'periodic',
                     'startDate' => '2026-01-01T00:00:00+00:00',
                     'endDate' => '2026-12-31T23:59:59+00:00',
-                    'openingHoursAdjusted' => [
+                    'openingHoursAdjustedDays' => [
                         (object)[
                             'startDate' => '2026-12-21',
                             'endDate' => '2026-12-26',
@@ -54,7 +54,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
                     'calendarType' => 'periodic',
                     'startDate' => '2026-01-01T00:00:00+00:00',
                     'endDate' => '2026-12-31T23:59:59+00:00',
-                    'openingHoursAdjusted' => [
+                    'openingHoursAdjustedDays' => [
                         (object)[
                             'startDate' => '2026-12-21',
                             'endDate' => '2026-12-26',
@@ -85,7 +85,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
                     'calendarType' => 'periodic',
                     'startDate' => '2026-01-01T00:00:00+00:00',
                     'endDate' => '2026-12-31T23:59:59+00:00',
-                    'openingHoursAdjusted' => [
+                    'openingHoursAdjustedDays' => [
                         (object)[
                             'startDate' => '2026-12-21',
                             'endDate' => '2026-12-31',
@@ -106,7 +106,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
                     'calendarType' => 'periodic',
                     'startDate' => '2026-01-01T00:00:00+00:00',
                     'endDate' => '2026-12-31T23:59:59+00:00',
-                    'openingHoursAdjusted' => [
+                    'openingHoursAdjustedDays' => [
                         (object)[
                             'startDate' => '2026-01-01',
                             'endDate' => '2026-12-31',
@@ -141,7 +141,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
             'any date for permanent' => [
                 (object)[
                     'calendarType' => 'permanent',
-                    'openingHoursAdjusted' => [
+                    'openingHoursAdjustedDays' => [
                         (object)[
                             'startDate' => '2027-12-21',
                             'endDate' => '2027-12-26',
@@ -159,7 +159,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
             'multiple entries for permanent' => [
                 (object)[
                     'calendarType' => 'permanent',
-                    'openingHoursAdjusted' => [
+                    'openingHoursAdjustedDays' => [
                         (object)[
                             'startDate' => '2026-12-21',
                             'endDate' => '2026-12-26',
@@ -197,7 +197,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
             'calendarType' => 'periodic',
             'startDate' => '2026-01-01T00:00:00+00:00',
             'endDate' => '2026-12-31T23:59:59+00:00',
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 (object)[
                     'startDate' => '2026-12-26',
                     'endDate' => '2026-12-21',
@@ -211,7 +211,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
         $errors = $this->validator->validate($data);
 
         $this->assertNotEmpty($errors);
-        $this->assertSame('/openingHoursAdjusted/0/endDate', $errors[0]->getJsonPointer());
+        $this->assertSame('/openingHoursAdjustedDays/0/endDate', $errors[0]->getJsonPointer());
         $this->assertSame('endDate should not be before startDate', $errors[0]->getError());
     }
 
@@ -224,7 +224,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
             'calendarType' => 'periodic',
             'startDate' => '2026-03-01T00:00:00+00:00',
             'endDate' => '2026-12-31T23:59:59+00:00',
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 (object)[
                     'startDate' => '2026-01-01',
                     'endDate' => '2026-01-15',
@@ -238,7 +238,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
         $errors = $this->validator->validate($data);
 
         $this->assertNotEmpty($errors);
-        $this->assertSame('/openingHoursAdjusted/0/startDate', $errors[0]->getJsonPointer());
+        $this->assertSame('/openingHoursAdjustedDays/0/startDate', $errors[0]->getJsonPointer());
         $this->assertSame('the start date of adjusted opening hours should not be before the calendar start date', $errors[0]->getError());
     }
 
@@ -251,7 +251,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
             'calendarType' => 'periodic',
             'startDate' => '2026-01-01T00:00:00+00:00',
             'endDate' => '2026-11-30T23:59:59+00:00',
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 (object)[
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -265,7 +265,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
         $errors = $this->validator->validate($data);
 
         $this->assertNotEmpty($errors);
-        $this->assertSame('/openingHoursAdjusted/0/endDate', $errors[0]->getJsonPointer());
+        $this->assertSame('/openingHoursAdjustedDays/0/endDate', $errors[0]->getJsonPointer());
         $this->assertSame('the end date of adjusted opening hours should not be after the calendar end date', $errors[0]->getError());
     }
 
@@ -278,7 +278,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
             'calendarType' => 'periodic',
             'startDate' => '2026-01-01T00:00:00+00:00',
             'endDate' => '2026-12-31T23:59:59+00:00',
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 (object)[
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -292,7 +292,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
         $errors = $this->validator->validate($data);
 
         $this->assertNotEmpty($errors);
-        $this->assertSame('/openingHoursAdjusted/0/openingHours/0/opens', $errors[0]->getJsonPointer());
+        $this->assertSame('/openingHoursAdjustedDays/0/openingHours/0/opens', $errors[0]->getJsonPointer());
         $this->assertSame('Invalid time format (hh:mm)', $errors[0]->getError());
     }
 
@@ -305,7 +305,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
             'calendarType' => 'periodic',
             'startDate' => '2026-01-01T00:00:00+00:00',
             'endDate' => '2026-12-31T23:59:59+00:00',
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 (object)[
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -319,7 +319,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
         $errors = $this->validator->validate($data);
 
         $this->assertNotEmpty($errors);
-        $this->assertSame('/openingHoursAdjusted/0/openingHours/0/closes', $errors[0]->getJsonPointer());
+        $this->assertSame('/openingHoursAdjustedDays/0/openingHours/0/closes', $errors[0]->getJsonPointer());
         $this->assertSame('Invalid time format (hh:mm)', $errors[0]->getError());
     }
 
@@ -332,7 +332,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
             'calendarType' => 'periodic',
             'startDate' => '2026-01-01T00:00:00+00:00',
             'endDate' => '2026-12-31T23:59:59+00:00',
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 (object)[
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -353,7 +353,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
         $errors = $this->validator->validate($data);
 
         $this->assertNotEmpty($errors);
-        $this->assertSame('/openingHoursAdjusted/1/startDate', $errors[0]->getJsonPointer());
+        $this->assertSame('/openingHoursAdjustedDays/1/startDate', $errors[0]->getJsonPointer());
         $this->assertSame('adjusted opening hours entries must not overlap', $errors[0]->getError());
     }
 
@@ -382,7 +382,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
             'calendarType' => 'periodic',
             // startDate missing
             'endDate' => '2026-12-31T23:59:59+00:00',
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 (object)[
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -412,7 +412,7 @@ final class AdjustedOpeningHoursValidatorTest extends TestCase
             'calendarType' => 'periodic',
             'startDate' => '2026-01-01T00:00:00+00:00',
             // endDate missing
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 (object)[
                     'startDate' => '2026-12-21',
                     'endDate' => '2027-01-03',
