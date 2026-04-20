@@ -9,8 +9,8 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Exception\EmptyOpeningHoursException;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Exception\StartDateAfterEndDateException;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Exception\EmptyOpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Exception\StartDateAfterEndDate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
@@ -86,13 +86,13 @@ final class OpeningHoursAdjustedDaysValidator
 
             try {
                 new AdjustedDay($startDate, $endDate, new OpeningHours(...$openingHourObjects), null);
-            } catch (StartDateAfterEndDateException $e) {
+            } catch (StartDateAfterEndDate $e) {
                 $errors[] = new SchemaError(
                     '/openingHoursAdjustedDays/' . $index . '/endDate',
                     $e->getMessage()
                 );
                 continue;
-            } catch (EmptyOpeningHoursException $e) {
+            } catch (EmptyOpeningHours $e) {
                 $errors[] = new SchemaError(
                     '/openingHoursAdjustedDays/' . $index . '/openingHours',
                     $e->getMessage()
