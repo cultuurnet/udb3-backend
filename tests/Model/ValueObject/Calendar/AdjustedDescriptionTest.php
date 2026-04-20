@@ -7,14 +7,14 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-final class ClosedDayDescriptionTest extends TestCase
+final class AdjustedDescriptionTest extends TestCase
 {
     /**
      * @test
      */
-    public function it_creates_a_closed_day_description(): void
+    public function it_creates_an_adjusted_description(): void
     {
-        $description = new ClosedDayDescription('Gesloten op eerste kerstdag');
+        $description = new AdjustedDescription('Gesloten op eerste kerstdag');
 
         $this->assertEquals('Gesloten op eerste kerstdag', $description->toString());
     }
@@ -22,10 +22,10 @@ final class ClosedDayDescriptionTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_closed_day_description_with_max_length(): void
+    public function it_creates_an_adjusted_description_with_max_length(): void
     {
         $maxLengthText = str_repeat('a', 1000);
-        $description = new ClosedDayDescription($maxLengthText);
+        $description = new AdjustedDescription($maxLengthText);
 
         $this->assertEquals($maxLengthText, $description->toString());
     }
@@ -38,8 +38,11 @@ final class ClosedDayDescriptionTest extends TestCase
         $tooLongText = str_repeat('a', 1001);
 
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Given CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription should not be longer than 1000 characters.'
+        );
 
-        new ClosedDayDescription($tooLongText);
+        new AdjustedDescription($tooLongText);
     }
 
     /**
@@ -48,18 +51,8 @@ final class ClosedDayDescriptionTest extends TestCase
     public function it_throws_when_description_is_empty(): void
     {
         $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Given string should not be empty.');
 
-        new ClosedDayDescription('');
-    }
-
-    /**
-     * @test
-     */
-    public function it_accepts_whitespace_characters(): void
-    {
-        $description = new ClosedDayDescription('   ');
-
-        // Whitespace is allowed, only truly empty string is not
-        $this->assertEquals('   ', $description->toString());
+        new AdjustedDescription('');
     }
 }

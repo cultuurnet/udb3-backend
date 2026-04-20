@@ -11,15 +11,15 @@ Several CI checks have been provided to make sure any changes are compliant with
 
 You can run all CI checks combined using the following composer script:
 ```
-composer ci
+make ci
 ```
 
 Or run them individually:
 
-- `composer test` for tests
-- `composer phpstan` for static analysis
-- `composer cs` for detecting coding standards violations
-- `composer cs-fix` for fixing coding standards violations (where possible)
+- `make test` for tests
+- `make phpstan` for static analysis
+- `make cs` for detecting coding standards violations
+- `make cs-fix` for fixing coding standards violations (where possible)
 
 These checks will also run automatically for every PR.
 
@@ -29,7 +29,7 @@ We use [Doctrine Migrations](http://doctrine-migrations.readthedocs.org/en/lates
 
 To run the migrations, you can use the following composer script:
 ```
-composer migrate
+make migrate
 ```
 
 ## Docker with Xdebug
