@@ -6,13 +6,13 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use PHPUnit\Framework\TestCase;
 
-final class AdjustedOpeningHoursValidatorTest extends TestCase
+final class OpeningHoursAdjustedDaysValidatorTest extends TestCase
 {
-    private AdjustedOpeningHoursValidator $validator;
+    private OpeningHoursAdjustedDaysValidator $validator;
 
     protected function setUp(): void
     {
-        $this->validator = new AdjustedOpeningHoursValidator();
+        $this->validator = new OpeningHoursAdjustedDaysValidator();
     }
 
     /**

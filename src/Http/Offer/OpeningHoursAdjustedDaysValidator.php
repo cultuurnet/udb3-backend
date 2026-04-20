@@ -14,7 +14,7 @@ use InvalidArgumentException;
  * Note: The JSON schema already validates date format (Y-m-d or ISO8601) via "format" and pattern rules.
  * Domain validation (startDate <= endDate) is delegated to AdjustedOpeningHours value object.
  */
-final class AdjustedOpeningHoursValidator
+final class OpeningHoursAdjustedDaysValidator
 {
     /**
      * @return SchemaError[]

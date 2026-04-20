@@ -29,7 +29,7 @@ final class CalendarValidatingRequestBodyParser implements RequestBodyParser
                     (new OpeningHoursRangeValidator())->validate($data),
                     (new OpeningHourChildcareValidator())->validate($data),
                     (new ClosedDaysValidator())->validate($data),
-                    (new AdjustedOpeningHoursValidator())->validate($data)
+                    (new OpeningHoursAdjustedDaysValidator())->validate($data)
                 );
                 break;
 
@@ -39,7 +39,7 @@ final class CalendarValidatingRequestBodyParser implements RequestBodyParser
                     (new OpeningHoursRangeValidator())->validate($data),
                     (new OpeningHourChildcareValidator())->validate($data),
                     (new ClosedDaysValidator())->validate($data),
-                    (new AdjustedOpeningHoursValidator())->validate($data)
+                    (new OpeningHoursAdjustedDaysValidator())->validate($data)
                 );
                 break;
 
