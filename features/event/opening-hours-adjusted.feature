@@ -383,3 +383,40 @@ Feature: Test opening hours adjusted for events
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursAdjustedDays/0/endDate"
     And the JSON response at "schemaErrors/0/error" should be "the end date of adjusted opening hours should not be after the calendar end date"
+
+  Scenario: Cannot create event when adjusted opening hours entries overlap
+    When I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {"nl": "Ongeldig event"},
+      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+      "location": {"@id": "%{placeUrl}"},
+      "calendarType": "periodic",
+      "startDate": "2026-01-01T00:00:00+00:00",
+      "endDate": "2026-12-31T23:59:59+00:00",
+      "openingHours": [
+        {
+          "opens": "09:00",
+          "closes": "17:00",
+          "dayOfWeek": ["monday"]
+        }
+      ],
+      "openingHoursAdjustedDays": [
+        {
+          "startDate": "2026-12-21",
+          "endDate": "2026-12-26",
+          "openingHours": [{"opens": "13:00", "closes": "15:00", "dayOfWeek": ["friday"]}]
+        },
+        {
+          "startDate": "2026-12-25",
+          "endDate": "2026-12-31",
+          "openingHours": [{"opens": "14:00", "closes": "16:00", "dayOfWeek": ["saturday"]}]
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursAdjustedDays/1/startDate"
+    And the JSON response at "schemaErrors/0/error" should be "adjusted opening hours entries must not overlap"
