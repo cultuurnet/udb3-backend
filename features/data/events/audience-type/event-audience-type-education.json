@@ -14,8 +14,7 @@
     "@id": "%{placeUrl}"
   },
   "calendarType": "permanent",
-  "workflowStatus": "READY_FOR_VALIDATION",
   "audience": {
-    "audienceType": "members"
+    "audienceType": "education"
   }
 }

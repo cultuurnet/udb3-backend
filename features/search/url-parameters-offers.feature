@@ -1260,12 +1260,12 @@ Feature: Test the Search API v3 url parameters on offers
 
   Scenario: Search for offers using the audienceType filter
     When I create a minimal place and save the "url" as "placeUrl"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId"
+    And I create an event from "events/audience-type/event-audience-type-members.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | audienceType | childrenOnly  |
+      | audienceType | members       |
       | q            | id:%{eventId} |
     Then the JSON response at "totalItems" should be 1
     And the JSON response should include:
