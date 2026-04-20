@@ -306,7 +306,7 @@ Feature: Test opening hours adjusted for events
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursAdjustedDays/0/endDate"
-    And the JSON response at "schemaErrors/0/error" should be "endDate should not be before startDate"
+    And the JSON response at "schemaErrors/0/error" should be "startDate should not be later than endDate"
 
   Scenario: Cannot create periodic event when adjusted opening hours is before calendar startDate
     When I set the JSON request payload to:

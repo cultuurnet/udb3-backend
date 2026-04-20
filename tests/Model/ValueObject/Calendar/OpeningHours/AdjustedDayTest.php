@@ -77,7 +77,7 @@ final class AdjustedDayTest extends TestCase
     public function it_throws_when_start_date_is_after_end_date(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('"startDate" should not be later than "endDate".');
+        $this->expectExceptionMessage('startDate should not be later than endDate');
 
         new AdjustedDay(
             new DateTimeImmutable('2026-12-26'),

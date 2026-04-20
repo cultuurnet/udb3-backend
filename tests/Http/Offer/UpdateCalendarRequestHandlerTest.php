@@ -1560,7 +1560,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/openingHoursAdjustedDays/0/endDate', '"startDate" should not be later than "endDate".'),
+                    new SchemaError('/openingHoursAdjustedDays/0/endDate', 'startDate should not be later than endDate'),
                 ],
             ],
             'periodic_adjusted_opening_hours_before_calendar_start' => [

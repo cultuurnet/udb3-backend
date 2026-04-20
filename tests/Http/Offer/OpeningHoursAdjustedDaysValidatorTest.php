@@ -212,7 +212,7 @@ final class OpeningHoursAdjustedDaysValidatorTest extends TestCase
 
         $this->assertNotEmpty($errors);
         $this->assertSame('/openingHoursAdjustedDays/0/endDate', $errors[0]->getJsonPointer());
-        $this->assertSame('"startDate" should not be later than "endDate".', $errors[0]->getError());
+        $this->assertSame('startDate should not be later than endDate', $errors[0]->getError());
     }
 
     /**
