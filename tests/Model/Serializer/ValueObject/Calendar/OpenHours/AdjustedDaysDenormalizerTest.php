@@ -2,23 +2,22 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
+namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpenHours;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 
-final class AdjustedOpeningHoursDenormalizerTest extends TestCase
+final class AdjustedDaysDenormalizerTest extends TestCase
 {
-    private AdjustedDayDenormalizer $denormalizer;
+    private AdjustedDaysDenormalizer $denormalizer;
 
     protected function setUp(): void
     {
-        $this->denormalizer = new AdjustedDayDenormalizer();
+        $this->denormalizer = new AdjustedDaysDenormalizer();
     }
 
     /**

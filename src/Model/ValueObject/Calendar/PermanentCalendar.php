@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 
-final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithClosedDays, CalendarWithOpeningHoursAdjusted
+final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithClosedDays, CalendarWithAdjustedDays
 {
     private OpeningHours $openingHours;
 
