@@ -105,39 +105,6 @@ final class AdjustedDaysDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_skips_entries_missing_required_fields(): void
-    {
-        $data = [
-            [
-                'startDate' => '2026-12-21',
-                'endDate' => '2026-12-26',
-                'openingHours' => [['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']]],
-            ],
-            // Missing startDate
-            [
-                'endDate' => '2026-12-26',
-                'openingHours' => [['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']]],
-            ],
-            // Missing openingHours
-            [
-                'startDate' => '2026-12-27',
-                'endDate' => '2026-12-31',
-            ],
-            [
-                'startDate' => '2026-12-27',
-                'endDate' => '2026-12-31',
-                'openingHours' => [['opens' => '14:00', 'closes' => '16:00', 'dayOfWeek' => ['saturday']]],
-            ],
-        ];
-
-        $result = $this->denormalizer->denormalize($data, AdjustedDays::class);
-
-        $this->assertEquals(2, $result->count());
-    }
-
-    /**
-     * @test
-     */
     public function it_returns_entries_sorted_by_start_date_via_collection(): void
     {
         $data = [

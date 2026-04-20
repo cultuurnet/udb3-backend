@@ -29,16 +29,6 @@ final class AdjustedDaysDenormalizer implements DenormalizerInterface
     {
         $adjustedDays = [];
         foreach ($data as $adjustedOpeningHoursData) {
-            if (!is_array($adjustedOpeningHoursData)) {
-                continue;
-            }
-            if (!isset($adjustedOpeningHoursData['startDate'], $adjustedOpeningHoursData['endDate'])) {
-                continue;
-            }
-            if (empty($adjustedOpeningHoursData['openingHours'])) {
-                continue;
-            }
-
             $startDate = DateTimeFactory::fromDateOrISO8601($adjustedOpeningHoursData['startDate']);
             $endDate = DateTimeFactory::fromDateOrISO8601($adjustedOpeningHoursData['endDate']);
 
