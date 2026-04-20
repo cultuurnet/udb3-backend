@@ -31,6 +31,17 @@ Feature: Test the Search API v3 boa feature
     """
     %{otherChildrenOnlyEventId}
     """
+    And I send a GET request to "/events" with parameters:
+      | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId}) |
+    Then the JSON response at "totalItems" should be 0
+    And the JSON response should not include:
+    """
+    %{myChildrenOnlyEventId}
+    """
+    And the JSON response should not include:
+    """
+    %{otherChildrenOnlyEventId}
+    """
 
   # Todo: this test cannot work till PK-476 is done, so in the meantime it is marked as external
   @external
