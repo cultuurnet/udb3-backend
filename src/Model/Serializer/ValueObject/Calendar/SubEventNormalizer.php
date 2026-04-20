@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours\ChildcareTimeRangeNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use DateTimeInterface;
