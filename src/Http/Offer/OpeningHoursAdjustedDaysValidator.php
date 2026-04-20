@@ -86,16 +86,16 @@ final class OpeningHoursAdjustedDaysValidator
 
             try {
                 new AdjustedDay($startDate, $endDate, new OpeningHours(...$openingHourObjects), null);
-            } catch (StartDateAfterEndDateException) {
+            } catch (StartDateAfterEndDateException $e) {
                 $errors[] = new SchemaError(
                     '/openingHoursAdjustedDays/' . $index . '/endDate',
-                    'endDate should not be before startDate'
+                    $e->getMessage()
                 );
                 continue;
-            } catch (EmptyOpeningHoursException) {
+            } catch (EmptyOpeningHoursException $e) {
                 $errors[] = new SchemaError(
                     '/openingHoursAdjustedDays/' . $index . '/openingHours',
-                    'openingHours must contain at least one entry'
+                    $e->getMessage()
                 );
                 continue;
             }

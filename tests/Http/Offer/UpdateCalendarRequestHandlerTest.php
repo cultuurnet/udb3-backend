@@ -158,13 +158,11 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
                     new SingleSubEventCalendar(
-                        (
-                            SubEvent::createAvailable(
+                        SubEvent::createAvailable(
                             new DateRange(
                                 DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
                                 DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                             )
-                        )
                         )
                             ->withStatus(new Status(StatusType::Unavailable(), null))
                             ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable()))
@@ -188,13 +186,11 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
                     new SingleSubEventCalendar(
-                        (
-                            SubEvent::createAvailable(
+                        SubEvent::createAvailable(
                             new DateRange(
                                 DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
                                 DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
                             )
-                        )
                         )
                             ->withStatus(
                                 new Status(
@@ -225,8 +221,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
-                    (
-                        (new SingleSubEventCalendar(
+                    (new SingleSubEventCalendar(
                         SubEvent::createAvailable(
                             new DateRange(
                                 DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
@@ -254,7 +249,6 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                             )
                         )
                         ->withBookingAvailability(BookingAvailability::Unavailable())
-                    )
                 ),
             ],
             'multiple_with_one_subEvent' => [
@@ -1566,7 +1560,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/openingHoursAdjustedDays/0/endDate', 'endDate should not be before startDate'),
+                    new SchemaError('/openingHoursAdjustedDays/0/endDate', '"startDate" should not be later than "endDate".'),
                 ],
             ],
             'periodic_adjusted_opening_hours_before_calendar_start' => [
