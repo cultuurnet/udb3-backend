@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
+namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\ChildcareTimeRangeNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\DaysNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 

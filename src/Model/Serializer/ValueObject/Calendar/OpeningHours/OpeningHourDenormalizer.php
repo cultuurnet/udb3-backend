@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
+namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\DaysDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
