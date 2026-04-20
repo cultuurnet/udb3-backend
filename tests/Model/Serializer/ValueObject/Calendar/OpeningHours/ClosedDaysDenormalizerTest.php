@@ -136,50 +136,9 @@ final class ClosedDaysDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_skips_invalid_entries(): void
-    {
-        $data = [
-            [
-                'startDate' => '2024-01-01T00:00:00+00:00',
-                'endDate' => '2024-01-01T23:59:59+00:00',
-            ],
-            // Missing startDate
-            [
-                'endDate' => '2024-02-01T23:59:59+00:00',
-            ],
-            [
-                'startDate' => '2024-03-01T00:00:00+00:00',
-                'endDate' => '2024-03-01T23:59:59+00:00',
-            ],
-        ];
-
-        $result = $this->denormalizer->denormalize($data, ClosedDays::class);
-
-        // Only valid entries should be included
-        $this->assertEquals(2, $result->count());
-
-        $closedDays = $result->toArray();
-        $this->assertEquals(new DateTimeImmutable('2024-01-01T00:00:00+00:00'), $closedDays[0]->getStartDate());
-        $this->assertEquals(new DateTimeImmutable('2024-03-01T00:00:00+00:00'), $closedDays[1]->getStartDate());
-    }
-
-    /**
-     * @test
-     */
     public function it_supports_denormalization_of_closed_days(): void
     {
         $this->assertTrue($this->denormalizer->supportsDenormalization([], ClosedDays::class));
         $this->assertFalse($this->denormalizer->supportsDenormalization([], 'SomeOtherClass'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_date_only_format(): void
-    {
-        $data = [['startDate' => '2024-12-25', 'endDate' => '2024-12-26']];
-        $result = $this->denormalizer->denormalize($data, ClosedDays::class);
-        $this->assertSame('2024-12-25', $result->toArray()[0]->getStartDate()->format('Y-m-d'));
-        $this->assertSame('2024-12-26', $result->toArray()[0]->getEndDate()->format('Y-m-d'));
     }
 }

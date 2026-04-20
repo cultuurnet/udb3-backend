@@ -27,10 +27,6 @@ final class ClosedDaysDenormalizer implements DenormalizerInterface
 
         $closedDays = [];
         foreach ($data as $closedDayData) {
-            if (!is_array($closedDayData) || !isset($closedDayData['startDate'], $closedDayData['endDate'])) {
-                continue;
-            }
-
             $startDate = DateTimeFactory::fromDateOrISO8601($closedDayData['startDate']);
             $endDate = DateTimeFactory::fromDateOrISO8601($closedDayData['endDate']);
 
