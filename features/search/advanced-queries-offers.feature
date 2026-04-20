@@ -973,13 +973,13 @@ Feature: Test the Search API v3 advanced queries on offers
 
   Scenario: Search for audience type using an advanced query
     When I create a minimal place and save the "url" as "placeUrl"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId"
+    And I create an event from "events/audience-type/event-audience-type-members.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
     And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | audienceType | *                                           |
-      | q            | id:%{eventId} AND audienceType:childrenOnly |
+      | audienceType | *                                      |
+      | q            | id:%{eventId} AND audienceType:members |
     Then the JSON response at "totalItems" should be 1
     And the JSON response should include:
     """
