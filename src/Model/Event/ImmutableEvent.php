@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use InvalidArgumentException;
 
 class ImmutableEvent extends ImmutableOffer implements Event
@@ -28,6 +29,8 @@ class ImmutableEvent extends ImmutableOffer implements Event
     private AudienceType $audience;
 
     private Faqs $faqs;
+
+    private Urls $departurePlaces;
 
     public function __construct(
         Uuid $id,
@@ -51,6 +54,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
         $this->attendanceMode = AttendanceMode::offline();
         $this->audience = AudienceType::everyone();
         $this->faqs = new Faqs();
+        $this->departurePlaces = new Urls();
     }
 
     public function getPlaceReference(): PlaceReference
@@ -110,6 +114,18 @@ class ImmutableEvent extends ImmutableOffer implements Event
     {
         $c = clone $this;
         $c->faqs = $faqs;
+        return $c;
+    }
+
+    public function getDeparturePlaces(): Urls
+    {
+        return $this->departurePlaces;
+    }
+
+    public function withDeparturePlaces(Urls $departurePlaces): ImmutableEvent
+    {
+        $c = clone $this;
+        $c->departurePlaces = $departurePlaces;
         return $c;
     }
 

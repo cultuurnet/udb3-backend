@@ -19,6 +19,7 @@
   dcterms:title "Permanent event"@nl ;
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
+  udb:audienceType <https://data.publiq.be/concepts/audienceType/everyone> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/online> ;
   platform:virtueleLocatie <http://data.uitdatabank.local:80/events/%{eventId}#virtualLocation-b4e9ae58> ;
   cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-2aac7354>, <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-cbeaaec0> .

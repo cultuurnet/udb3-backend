@@ -5,39 +5,39 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\RemainingCapacityExceedsCapacity;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHoursAdjusted;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\RemainingCapacityExceedsCapacity;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class CalendarDenormalizer implements DenormalizerInterface
+final class CalendarDenormalizer implements DenormalizerInterface
 {
     private StatusDenormalizer $statusDenormalizer;
     private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
     private BookingInfoDenormalizer $bookingInfoDenormalizer;
     private ClosedDaysDenormalizer $closedDaysDenormalizer;
-    private AdjustedOpeningHoursDenormalizer $adjustedOpeningHoursDenormalizer;
+    private AdjustedDayDenormalizer $adjustedOpeningHoursDenormalizer;
 
     public function __construct()
     {
@@ -45,7 +45,7 @@ class CalendarDenormalizer implements DenormalizerInterface
         $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
         $this->bookingInfoDenormalizer = new BookingInfoDenormalizer();
         $this->closedDaysDenormalizer = new ClosedDaysDenormalizer();
-        $this->adjustedOpeningHoursDenormalizer = new AdjustedOpeningHoursDenormalizer();
+        $this->adjustedOpeningHoursDenormalizer = new AdjustedDayDenormalizer();
     }
 
     /**
@@ -137,7 +137,7 @@ class CalendarDenormalizer implements DenormalizerInterface
                     $data,
                     new PermanentCalendar($openingHours)
                 );
-            break;
+                break;
         }
 
         if ($topLevelStatus !== null) {
@@ -228,16 +228,16 @@ class CalendarDenormalizer implements DenormalizerInterface
         return $subEvent;
     }
 
-    private function applyOpeningHours(array $data, CalendarWithClosedDays|CalendarWithAdjustedOpeningHours $calendar): CalendarWithClosedDays|CalendarWithAdjustedOpeningHours
+    private function applyOpeningHours(array $data, CalendarWithClosedDays&CalendarWithOpeningHoursAdjusted $calendar): CalendarWithClosedDays&CalendarWithOpeningHoursAdjusted
     {
         if (isset($data['openingHoursClosedDays'])) {
             $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
             $calendar = $calendar->withClosedDays($closedDays);
         }
 
-        if (isset($data['openingHoursAdjusted'])) {
-            $adjustedOpeningHours = $this->adjustedOpeningHoursDenormalizer->denormalize($data['openingHoursAdjusted'], AdjustedOpeningHoursCollection::class);
-            $calendar = $calendar->withAdjustedOpeningHours($adjustedOpeningHours);
+        if (isset($data['openingHoursAdjustedDays'])) {
+            $adjustedOpeningHours = $this->adjustedOpeningHoursDenormalizer->denormalize($data['openingHoursAdjustedDays'], AdjustedDays::class);
+            $calendar = $calendar->withAdjustedDays($adjustedOpeningHours);
         }
 
         return $calendar;

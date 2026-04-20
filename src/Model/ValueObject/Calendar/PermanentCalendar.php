@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 
-final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithClosedDays, CalendarWithAdjustedOpeningHours
+final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithClosedDays, CalendarWithOpeningHoursAdjusted
 {
     private OpeningHours $openingHours;
 
     private ClosedDays $closedDays;
 
-    private AdjustedOpeningHoursCollection $adjustedOpeningHours;
+    private AdjustedDays $adjustedDays;
 
     private Status $status;
 
@@ -22,7 +24,7 @@ final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithC
     {
         $this->openingHours = $openingHours;
         $this->closedDays = new ClosedDays();
-        $this->adjustedOpeningHours = new AdjustedOpeningHoursCollection();
+        $this->adjustedDays = new AdjustedDays();
         $this->status = new Status(StatusType::Available());
         $this->bookingAvailability = new BookingAvailability(BookingAvailabilityType::Available());
     }
@@ -73,15 +75,15 @@ final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithC
         return $clone;
     }
 
-    public function getAdjustedOpeningHours(): AdjustedOpeningHoursCollection
+    public function getAdjustedDays(): AdjustedDays
     {
-        return $this->adjustedOpeningHours;
+        return $this->adjustedDays;
     }
 
-    public function withAdjustedOpeningHours(AdjustedOpeningHoursCollection $adjustedOpeningHours): static
+    public function withAdjustedDays(AdjustedDays $adjustedDays): static
     {
         $clone = clone $this;
-        $clone->adjustedOpeningHours = $adjustedOpeningHours;
+        $clone->adjustedDays = $adjustedDays;
         return $clone;
     }
 }

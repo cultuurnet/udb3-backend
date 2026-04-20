@@ -22,6 +22,7 @@
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
+  udb:audienceType <https://data.publiq.be/concepts/audienceType/everyone> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
   cp:ruimtetijd <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-8b563a39>, <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-5da8175b> ;
   dcterms:description "Nederlandse beschrijving"@nl, "English description"@en ;
@@ -44,7 +45,7 @@
 
 <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-8b563a39>
   a cidoc:E92_Spacetime_Volume ;
-  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
+  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{placeId}> ;
   cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-31d8dd36> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-31d8dd36>
@@ -54,7 +55,7 @@
 
 <http://data.uitdatabank.local:80/events/%{eventId}#e92_Spacetime_Volume-5da8175b>
   a cidoc:E92_Spacetime_Volume ;
-  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
+  cidoc:P161_has_spatial_projection <http://data.uitdatabank.local:80/places/%{placeId}> ;
   cidoc:P160_has_temporal_projection <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-3bce2ab9> .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#periodOfTime-3bce2ab9>

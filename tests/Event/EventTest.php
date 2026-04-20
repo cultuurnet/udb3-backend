@@ -12,12 +12,13 @@ use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
-use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
+use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\ImageAdded;
 use CultuurNet\UDB3\Event\Events\ImageRemoved;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
@@ -38,9 +39,9 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -48,8 +49,14 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
+use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TariffName;
@@ -62,13 +69,8 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
-use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
-use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
-use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
-use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
-use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
+use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
 use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
@@ -77,7 +79,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\SampleFiles;
-use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use Money\Currency;
 use Money\Money;
 use RuntimeException;
@@ -2284,6 +2285,157 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(fn (Event $event) => $event->updateCalendar($newCalendar))
             ->then([new CalendarUpdated($eventId, $newCalendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_departure_places_on_children_only_event(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+            ])
+            ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
+            ->then([new DeparturePlacesUpdated($eventId, $departurePlaces)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_departure_places_when_content_is_unchanged(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new DeparturePlacesUpdated($eventId, $departurePlaces),
+            ])
+            ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_departure_places_with_empty_list(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new DeparturePlacesUpdated($eventId, $departurePlaces),
+            ])
+            ->when(fn (Event $event) => $event->updateDeparturePlaces(new Urls()))
+            ->then([new DeparturePlacesUpdated($eventId, new Urls())]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_setting_departure_places_on_non_children_only_event(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->expectException(IncompatibleAudienceType::class);
+        $this->expectExceptionMessage(
+            'Departure places can only be set on events with audienceType "childrenOnly". Event: ' . $eventId
+        );
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_clearing_departure_places_on_non_children_only_event(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new DeparturePlacesUpdated($eventId, $departurePlaces),
+                new AudienceUpdated($eventId, AudienceType::everyone()),
+            ])
+            ->when(fn (Event $event) => $event->updateDeparturePlaces(new Urls()))
+            ->then([new DeparturePlacesUpdated($eventId, new Urls())]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_departure_places_when_changing_audience_type_away_from_children_only(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new DeparturePlacesUpdated($eventId, $departurePlaces),
+            ])
+            ->when(fn (Event $event) => $event->updateAudience(AudienceType::everyone()))
+            ->then([new AudienceUpdated($eventId, AudienceType::everyone())]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_departure_places_on_event_imported_from_udb2(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                new EventImportedFromUDB2(
+                    $eventId,
+                    $this->getSample('event_without_price.cdbxml.xml'),
+                    self::NS_CDBXML_3_2
+                ),
+                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+            ])
+            ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
+            ->then([new DeparturePlacesUpdated($eventId, $departurePlaces)]);
     }
 
     protected function getSample(string $file): string

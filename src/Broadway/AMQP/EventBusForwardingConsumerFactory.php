@@ -36,6 +36,8 @@ final class EventBusForwardingConsumerFactory
 
     private DatabaseConnectionChecker $databaseConnectionChecker;
 
+    private bool $declareQueue;
+
     public function __construct(
         int $executionDelay,
         AMQPStreamConnection $connection,
@@ -44,7 +46,8 @@ final class EventBusForwardingConsumerFactory
         EventBus $eventBus,
         string $consumerTag,
         UuidFactory $uuidFactory,
-        DatabaseConnectionChecker $databaseConnectionChecker
+        DatabaseConnectionChecker $databaseConnectionChecker,
+        bool $declareQueue = true
     ) {
         if ($executionDelay < 0) {
             throw new InvalidArgumentException('Execution delay should be zero or higher.');
@@ -58,6 +61,7 @@ final class EventBusForwardingConsumerFactory
         $this->consumerTag = $consumerTag;
         $this->uuidFactory = $uuidFactory;
         $this->databaseConnectionChecker = $databaseConnectionChecker;
+        $this->declareQueue = $declareQueue;
     }
 
     public function create(
@@ -73,7 +77,8 @@ final class EventBusForwardingConsumerFactory
             $queue,
             $this->uuidFactory,
             $this->databaseConnectionChecker,
-            $this->executionDelay
+            $this->executionDelay,
+            $this->declareQueue
         );
 
         $eventBusForwardingConsumer->setLogger($this->logger);

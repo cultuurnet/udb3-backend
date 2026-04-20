@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDayDescription;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
@@ -22,7 +22,9 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use DateTimeZone;
@@ -187,13 +189,13 @@ final class CalendarNormalizerTest extends TestCase
             )
         );
 
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
-            new ClosedDayDescription('Kerstfeest')
+            new AdjustedDescription('Kerstfeest')
         );
         $description = $description->withTranslation(
             new Language('fr'),
-            new ClosedDayDescription('Noël')
+            new AdjustedDescription('Noël')
         );
 
         $closedDays = new ClosedDays(
@@ -213,6 +215,96 @@ final class CalendarNormalizerTest extends TestCase
         $this->assertIsArray($normalized['openingHoursClosedDays'][0]['description']);
         $this->assertSame('Kerstfeest', $normalized['openingHoursClosedDays'][0]['description']['nl']);
         $this->assertSame('Noël', $normalized['openingHoursClosedDays'][0]['description']['fr']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_emits_opening_hours_adjusted_for_permanent_calendar(): void
+    {
+        $openingHours = new OpeningHours(
+            new OpeningHour(
+                new Days(Day::monday()),
+                new Time(new Hour(9), new Minute(0)),
+                new Time(new Hour(17), new Minute(0))
+            )
+        );
+
+        $adjustedDays = new AdjustedDays(
+            new AdjustedDay(
+                new DateTimeImmutable('2026-12-25T00:00:00+00:00'),
+                new DateTimeImmutable('2026-12-31T00:00:00+00:00'),
+                $openingHours
+            )
+        );
+
+        $calendar = (new PermanentCalendar($openingHours))
+            ->withAdjustedDays($adjustedDays);
+
+        $normalized = $this->normalizer->normalize($calendar);
+
+        $this->assertArrayHasKey('openingHoursAdjustedDays', $normalized);
+        $this->assertIsArray($normalized['openingHoursAdjustedDays']);
+        $this->assertCount(1, $normalized['openingHoursAdjustedDays']);
+        $this->assertSame('2026-12-25', $normalized['openingHoursAdjustedDays'][0]['startDate']);
+        $this->assertSame('2026-12-31', $normalized['openingHoursAdjustedDays'][0]['endDate']);
+        $this->assertIsArray($normalized['openingHoursAdjustedDays'][0]['openingHours']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_emits_opening_hours_adjusted_with_description(): void
+    {
+        $openingHours = new OpeningHours(
+            new OpeningHour(
+                new Days(Day::monday()),
+                new Time(new Hour(9), new Minute(0)),
+                new Time(new Hour(17), new Minute(0))
+            )
+        );
+
+        $description = (new TranslatedAdjustedDescription(
+            new Language('nl'),
+            new AdjustedDescription('Kerstvakantie')
+        ))->withTranslation(new Language('fr'), new AdjustedDescription('Vacances de Noël'));
+
+        $adjustedDays = new AdjustedDays(
+            new AdjustedDay(
+                new DateTimeImmutable('2026-12-25T00:00:00+00:00'),
+                new DateTimeImmutable('2026-12-31T00:00:00+00:00'),
+                $openingHours,
+                $description
+            )
+        );
+
+        $calendar = (new PermanentCalendar($openingHours))
+            ->withAdjustedDays($adjustedDays);
+
+        $normalized = $this->normalizer->normalize($calendar);
+
+        $this->assertArrayHasKey('openingHoursAdjustedDays', $normalized);
+        $this->assertIsArray($normalized['openingHoursAdjustedDays'][0]['description']);
+        $this->assertSame('Kerstvakantie', $normalized['openingHoursAdjustedDays'][0]['description']['nl']);
+        $this->assertSame('Vacances de Noël', $normalized['openingHoursAdjustedDays'][0]['description']['fr']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_emit_opening_hours_adjusted_when_empty(): void
+    {
+        $calendar = new PermanentCalendar(new OpeningHours(
+            new OpeningHour(
+                new Days(Day::monday()),
+                new Time(new Hour(9), new Minute(0)),
+                new Time(new Hour(17), new Minute(0))
+            )
+        ));
+
+        $normalized = $this->normalizer->normalize($calendar);
+
+        $this->assertArrayNotHasKey('openingHoursAdjustedDays', $normalized);
     }
 
     /**

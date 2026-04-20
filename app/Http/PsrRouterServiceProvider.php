@@ -17,6 +17,7 @@ use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateDeparturePlacesRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateFaqsRequestHandler;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAttendanceModeRequestHandler;
@@ -239,6 +240,11 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
                 $this->bindAddresses($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
+                // This proxy does not support the POST requests feature of SAPI 3
+                // to avoid confusion with the creation of items. In theory
+                // it should be possible because at the moment we use a different
+                // content-type. But we are not sure that every EntryAPI-partner
+                // uses content-type correctly.
                 $router->get('/events/', ProxyRequestHandler::class);
                 $router->get('/places/', ProxyRequestHandler::class);
                 $router->get('/offers/', ProxyRequestHandler::class);
@@ -513,6 +519,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->put('{eventId}/audience/', UpdateAudienceRequestHandler::class);
             $routeGroup->post('{eventId}/copies/', CopyEventRequestHandler::class);
             $routeGroup->put('{eventId}/faqs/', UpdateFaqsRequestHandler::class);
+            $routeGroup->put('{eventId}/departurePlaces/', UpdateDeparturePlacesRequestHandler::class);
 
             /**
              * Legacy routes that we need to keep for backward compatibility.

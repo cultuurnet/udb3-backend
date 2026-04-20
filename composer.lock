@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6b519db86c585c818d4a09fa54e3981",
+    "content-hash": "e40e7c536212fa26f7e5e65d6e1f4d26",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5385,16 +5385,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.50",
+            "version": "3.0.51",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "aa6ad8321ed103dc3624fb600a25b66ebf78ec7b"
+                "reference": "d59c94077f9c9915abb51ddb52ce85188ece1748"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/aa6ad8321ed103dc3624fb600a25b66ebf78ec7b",
-                "reference": "aa6ad8321ed103dc3624fb600a25b66ebf78ec7b",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/d59c94077f9c9915abb51ddb52ce85188ece1748",
+                "reference": "d59c94077f9c9915abb51ddb52ce85188ece1748",
                 "shasum": ""
             },
             "require": {
@@ -5475,7 +5475,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.50"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.51"
             },
             "funding": [
                 {
@@ -5491,7 +5491,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-03-19T02:57:58+00:00"
+            "time": "2026-04-10T01:33:53+00:00"
         },
         {
             "name": "predis/predis",
@@ -6144,18 +6144,19 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-7025/adjusted-closed-days-for-boa",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "9d21b791a0d5928a2530637eb8970d1da25c7809"
+                "reference": "f8a102af9fa998577bb8721b6ec1bd22c88d2dd7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/9d21b791a0d5928a2530637eb8970d1da25c7809",
-                "reference": "9d21b791a0d5928a2530637eb8970d1da25c7809",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/f8a102af9fa998577bb8721b6ec1bd22c88d2dd7",
+                "reference": "f8a102af9fa998577bb8721b6ec1bd22c88d2dd7",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6170,9 +6171,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7025/adjusted-closed-days-for-boa"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7089-limit-depaturePlaces-to-20"
             },
-            "time": "2026-03-23T10:05:29+00:00"
+            "time": "2026-03-30T14:12:19+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

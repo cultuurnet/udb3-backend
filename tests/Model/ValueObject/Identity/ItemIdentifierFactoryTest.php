@@ -14,7 +14,7 @@ final class ItemIdentifierFactoryTest extends TestCase
     protected function setUp(): void
     {
         $this->itemIdentifierFactory = new ItemIdentifierFactory(
-            'https?://.+\.uitdatabank\.dev/(?<itemType>[event|place|organizer]+)s?/(?<itemId>[a-zA-Z0-9\-]+)'
+            'https?://.+\.uitdatabank\.dev/(?<itemType>(?:event|place|organizer))s?/(?<itemId>[a-zA-Z0-9\-]+)'
         );
     }
 
@@ -74,13 +74,25 @@ final class ItemIdentifierFactoryTest extends TestCase
                 ),
             ],
             'An organizer with plural path' => [
-                new Url('https://io.uitdatabank.dev/organizer/3c3f714f-4695-4237-87c5-780d0e599267'),
+                new Url('https://io.uitdatabank.dev/organizers/3c3f714f-4695-4237-87c5-780d0e599267'),
                 new ItemIdentifier(
-                    new Url('https://io.uitdatabank.dev/organizer/3c3f714f-4695-4237-87c5-780d0e599267'),
+                    new Url('https://io.uitdatabank.dev/organizers/3c3f714f-4695-4237-87c5-780d0e599267'),
                     '3c3f714f-4695-4237-87c5-780d0e599267',
                     ItemType::organizer()
                 ),
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_error_when_using_an_invalid_item_type_that_only_matches_as_character_class(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->itemIdentifierFactory->fromUrl(
+            new Url('https://io.uitdatabank.dev/eeevvv/3c3f714f-4695-4237-87c5-780d0e599267')
+        );
     }
 }

@@ -1,0 +1,25 @@
+<?php
+
+declare(strict_types=1);
+
+namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
+
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\HasMaxLength;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsNotEmpty;
+use CultuurNet\UDB3\Model\ValueObject\String\Behaviour\IsString;
+
+final class AdjustedDescription
+{
+    use IsString;
+    use IsNotEmpty;
+    use HasMaxLength;
+
+    private const MAX_LENGTH = 1000;
+
+    public function __construct(string $value)
+    {
+        $this->guardNotEmpty($value);
+        $this->guardTooLong(AdjustedDescription::class, $value, self::MAX_LENGTH);
+        $this->setValue($value);
+    }
+}

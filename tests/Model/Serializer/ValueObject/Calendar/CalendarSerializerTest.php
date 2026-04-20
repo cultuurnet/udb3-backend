@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursCollection;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedOpeningHoursDescription;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedOpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedOpeningHoursDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHoursAdjusted;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
@@ -25,8 +25,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -460,7 +460,7 @@ final class CalendarSerializerTest extends TestCase
      */
     public function it_can_serialize_a_periodic_calendar_with_adjusted_opening_hours(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedDays = new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -478,16 +478,16 @@ final class CalendarSerializerTest extends TestCase
             ),
             new OpeningHours()
         );
-        $calendar = $calendar->withAdjustedOpeningHours(new AdjustedOpeningHoursCollection($adjustedOpeningHours));
+        $calendar = $calendar->withAdjustedDays(new AdjustedDays($adjustedDays));
 
         $serializer = new CalendarSerializer($calendar);
         $data = $serializer->serialize();
 
-        $this->assertArrayHasKey('openingHoursAdjusted', $data);
-        $this->assertCount(1, $data['openingHoursAdjusted']);
-        $this->assertEquals('2026-12-21', $data['openingHoursAdjusted'][0]['startDate']);
-        $this->assertEquals('2026-12-26', $data['openingHoursAdjusted'][0]['endDate']);
-        $this->assertArrayNotHasKey('description', $data['openingHoursAdjusted'][0]);
+        $this->assertArrayHasKey('openingHoursAdjustedDays', $data);
+        $this->assertCount(1, $data['openingHoursAdjustedDays']);
+        $this->assertEquals('2026-12-21', $data['openingHoursAdjustedDays'][0]['startDate']);
+        $this->assertEquals('2026-12-26', $data['openingHoursAdjustedDays'][0]['endDate']);
+        $this->assertArrayNotHasKey('description', $data['openingHoursAdjustedDays'][0]);
     }
 
     /**
@@ -495,11 +495,11 @@ final class CalendarSerializerTest extends TestCase
      */
     public function it_can_serialize_a_periodic_calendar_with_adjusted_opening_hours_and_description(): void
     {
-        $description = new TranslatedAdjustedOpeningHoursDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
-            new AdjustedOpeningHoursDescription('Kerstvakantie')
+            new AdjustedDescription('Kerstvakantie')
         );
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedDays = new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -514,13 +514,13 @@ final class CalendarSerializerTest extends TestCase
             ),
             new OpeningHours()
         );
-        $calendar = $calendar->withAdjustedOpeningHours(new AdjustedOpeningHoursCollection($adjustedOpeningHours));
+        $calendar = $calendar->withAdjustedDays(new AdjustedDays($adjustedDays));
 
         $serializer = new CalendarSerializer($calendar);
         $data = $serializer->serialize();
 
-        $this->assertArrayHasKey('openingHoursAdjusted', $data);
-        $this->assertEquals('Kerstvakantie', $data['openingHoursAdjusted'][0]['description']['nl']);
+        $this->assertArrayHasKey('openingHoursAdjustedDays', $data);
+        $this->assertEquals('Kerstvakantie', $data['openingHoursAdjustedDays'][0]['description']['nl']);
     }
 
     /**
@@ -535,7 +535,7 @@ final class CalendarSerializerTest extends TestCase
             'startDate' => '2026-01-01T00:00:00+00:00',
             'endDate' => '2026-12-31T23:59:59+00:00',
             'openingHours' => [],
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 [
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -553,12 +553,12 @@ final class CalendarSerializerTest extends TestCase
         $calendar = CalendarSerializer::deserialize($data);
 
         $this->assertInstanceOf(PeriodicCalendar::class, $calendar);
-        $this->assertInstanceOf(CalendarWithAdjustedOpeningHours::class, $calendar);
-        /** @var CalendarWithAdjustedOpeningHours $calendar */
-        $this->assertFalse($calendar->getAdjustedOpeningHours()->isEmpty());
-        $this->assertEquals(1, $calendar->getAdjustedOpeningHours()->count());
+        $this->assertInstanceOf(CalendarWithOpeningHoursAdjusted::class, $calendar);
+        /** @var CalendarWithOpeningHoursAdjusted $calendar */
+        $this->assertFalse($calendar->getAdjustedDays()->isEmpty());
+        $this->assertEquals(1, $calendar->getAdjustedDays()->count());
 
-        $entries = $calendar->getAdjustedOpeningHours()->toArray();
+        $entries = $calendar->getAdjustedDays()->toArray();
         $this->assertEquals('2026-12-21', $entries[0]->getStartDate()->format('Y-m-d'));
         $this->assertEquals('2026-12-26', $entries[0]->getEndDate()->format('Y-m-d'));
         $this->assertNull($entries[0]->getDescription());
@@ -576,7 +576,7 @@ final class CalendarSerializerTest extends TestCase
             'startDate' => '2026-01-01T00:00:00+00:00',
             'endDate' => '2026-12-31T23:59:59+00:00',
             'openingHours' => [],
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 [
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -590,8 +590,8 @@ final class CalendarSerializerTest extends TestCase
 
         $calendar = CalendarSerializer::deserialize($data);
 
-        /** @var CalendarWithAdjustedOpeningHours $calendar */
-        $entries = $calendar->getAdjustedOpeningHours()->toArray();
+        /** @var CalendarWithOpeningHoursAdjusted $calendar */
+        $entries = $calendar->getAdjustedDays()->toArray();
         $this->assertNotNull($entries[0]->getDescription());
         $this->assertEquals('Kerstvakantie', $entries[0]->getDescription()->getTranslation(new Language('nl'))->toString());
         $this->assertEquals('Vacances de Noël', $entries[0]->getDescription()->getTranslation(new Language('fr'))->toString());
@@ -602,7 +602,7 @@ final class CalendarSerializerTest extends TestCase
      */
     public function it_can_serialize_a_permanent_calendar_with_adjusted_opening_hours(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedDays = new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -610,14 +610,14 @@ final class CalendarSerializerTest extends TestCase
             )
         );
         $calendar = new PermanentCalendar(new OpeningHours());
-        $calendar = $calendar->withAdjustedOpeningHours(new AdjustedOpeningHoursCollection($adjustedOpeningHours));
+        $calendar = $calendar->withAdjustedDays(new AdjustedDays($adjustedDays));
 
         $serializer = new CalendarSerializer($calendar);
         $data = $serializer->serialize();
 
-        $this->assertArrayHasKey('openingHoursAdjusted', $data);
-        $this->assertCount(1, $data['openingHoursAdjusted']);
-        $this->assertEquals('2026-12-21', $data['openingHoursAdjusted'][0]['startDate']);
+        $this->assertArrayHasKey('openingHoursAdjustedDays', $data);
+        $this->assertCount(1, $data['openingHoursAdjustedDays']);
+        $this->assertEquals('2026-12-21', $data['openingHoursAdjustedDays'][0]['startDate']);
     }
 
     /**
@@ -630,7 +630,7 @@ final class CalendarSerializerTest extends TestCase
             'status' => ['type' => 'Available'],
             'bookingAvailability' => ['type' => 'Available'],
             'openingHours' => [],
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 [
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -644,12 +644,12 @@ final class CalendarSerializerTest extends TestCase
         $calendar = CalendarSerializer::deserialize($data);
 
         $this->assertInstanceOf(PermanentCalendar::class, $calendar);
-        $this->assertInstanceOf(CalendarWithAdjustedOpeningHours::class, $calendar);
-        /** @var CalendarWithAdjustedOpeningHours $calendar */
-        $this->assertFalse($calendar->getAdjustedOpeningHours()->isEmpty());
-        $this->assertEquals(1, $calendar->getAdjustedOpeningHours()->count());
+        $this->assertInstanceOf(CalendarWithOpeningHoursAdjusted::class, $calendar);
+        /** @var CalendarWithOpeningHoursAdjusted $calendar */
+        $this->assertFalse($calendar->getAdjustedDays()->isEmpty());
+        $this->assertEquals(1, $calendar->getAdjustedDays()->count());
 
-        $entries = $calendar->getAdjustedOpeningHours()->toArray();
+        $entries = $calendar->getAdjustedDays()->toArray();
         $this->assertEquals('2026-12-21', $entries[0]->getStartDate()->format('Y-m-d'));
         $this->assertEquals('2026-12-26', $entries[0]->getEndDate()->format('Y-m-d'));
     }
@@ -666,7 +666,7 @@ final class CalendarSerializerTest extends TestCase
             'status' => ['type' => 'Available'],
             'bookingAvailability' => ['type' => 'Available'],
             'openingHours' => [],
-            'openingHoursAdjusted' => [
+            'openingHoursAdjustedDays' => [
                 [
                     'startDate' => '2026-12-21',
                     'endDate' => '2026-12-26',
@@ -677,9 +677,9 @@ final class CalendarSerializerTest extends TestCase
 
         $calendar = CalendarSerializer::deserialize($data);
 
-        $this->assertInstanceOf(CalendarWithAdjustedOpeningHours::class, $calendar);
-        /** @var CalendarWithAdjustedOpeningHours $calendar */
-        $this->assertTrue($calendar->getAdjustedOpeningHours()->isEmpty());
+        $this->assertInstanceOf(CalendarWithOpeningHoursAdjusted::class, $calendar);
+        /** @var CalendarWithOpeningHoursAdjusted $calendar */
+        $this->assertTrue($calendar->getAdjustedDays()->isEmpty());
     }
 
     /**
@@ -692,7 +692,7 @@ final class CalendarSerializerTest extends TestCase
         $serializer = new CalendarSerializer($calendar);
         $data = $serializer->serialize();
 
-        $this->assertArrayNotHasKey('openingHoursAdjusted', $data);
+        $this->assertArrayNotHasKey('openingHoursAdjustedDays', $data);
     }
 
     /**
@@ -700,7 +700,7 @@ final class CalendarSerializerTest extends TestCase
      */
     public function it_can_remove_adjusted_opening_hours_by_passing_an_empty_collection(): void
     {
-        $adjustedOpeningHours = new AdjustedOpeningHours(
+        $adjustedDays = new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
             new DateTimeImmutable('2026-12-26'),
             new OpeningHours(
@@ -708,19 +708,19 @@ final class CalendarSerializerTest extends TestCase
             )
         );
         $calendar = new PermanentCalendar(new OpeningHours());
-        $calendar = $calendar->withAdjustedOpeningHours(new AdjustedOpeningHoursCollection($adjustedOpeningHours));
+        $calendar = $calendar->withAdjustedDays(new AdjustedDays($adjustedDays));
 
         // Verify it was set
-        $this->assertEquals(1, $calendar->getAdjustedOpeningHours()->count());
+        $this->assertEquals(1, $calendar->getAdjustedDays()->count());
 
         // Remove by passing an empty collection
-        $calendar = $calendar->withAdjustedOpeningHours(new AdjustedOpeningHoursCollection());
+        $calendar = $calendar->withAdjustedDays(new AdjustedDays());
 
-        $this->assertTrue($calendar->getAdjustedOpeningHours()->isEmpty());
+        $this->assertTrue($calendar->getAdjustedDays()->isEmpty());
 
         // Confirm it is also absent from the serialized output
         $data = (new CalendarSerializer($calendar))->serialize();
-        $this->assertArrayNotHasKey('openingHoursAdjusted', $data);
+        $this->assertArrayNotHasKey('openingHoursAdjustedDays', $data);
     }
 
     /**

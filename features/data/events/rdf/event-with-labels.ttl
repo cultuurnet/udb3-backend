@@ -20,8 +20,9 @@
   dcterms:type <https://taxonomy-test.uitdatabank.be/terms/0.50.4.0.0> ;
   cp:thema <https://taxonomy-test.uitdatabank.be/terms/1.8.3.1.0> ;
   udb:workflowStatus <https://data.publiq.be/concepts/workflowStatus/draft> ;
+  udb:audienceType <https://data.publiq.be/concepts/audienceType/everyone> ;
   cpa:locatieType <https://data.cultuurparticipatie.be/id/concept/Aanwezigheidsmodus/fysiek> ;
-  prov:atLocation <http://data.uitdatabank.local:80/places/%{uuid_place}> ;
+  prov:atLocation <http://data.uitdatabank.local:80/places/%{placeId}> ;
   dcat:keyword "public-visible-1"^^labeltype:publiek, "public-visible-2"^^labeltype:publiek, "public-invisible-1"^^labeltype:verborgen, "public-invisible-2"^^labeltype:verborgen .
 
 <http://data.uitdatabank.local:80/events/%{eventId}#identifier-%{identifier}>

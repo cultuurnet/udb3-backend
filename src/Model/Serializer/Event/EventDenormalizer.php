@@ -21,7 +21,9 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Web\UrlsDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -118,6 +120,7 @@ class EventDenormalizer extends OfferDenormalizer
         $offer = $this->denormalizeAttendanceMode($data, $offer);
         $offer = $this->denormalizeOnlineUrl($data, $offer);
         $offer = $this->denormalizeFaq($data, $offer);
+        $offer = $this->denormalizeDeparturePlaces($data, $offer);
         return $this->denormalizeAudienceType($data, $offer);
     }
 
@@ -144,6 +147,16 @@ class EventDenormalizer extends OfferDenormalizer
         if (isset($data['faqs'])) {
             $faqs = $this->faqsDenormalizer->denormalize($data['faqs'], Faqs::class);
             $event = $event->withFaq($faqs);
+        }
+
+        return $event;
+    }
+
+    private function denormalizeDeparturePlaces(array $data, ImmutableEvent $event): ImmutableEvent
+    {
+        if (isset($data['departurePlaces'])) {
+            $departurePlaces = (new UrlsDenormalizer())->denormalize($data['departurePlaces'], Urls::class);
+            $event = $event->withDeparturePlaces($departurePlaces);
         }
 
         return $event;
