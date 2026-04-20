@@ -7,16 +7,16 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 
-final class TranslatedClosedDayDescriptionTest extends TestCase
+final class TranslatedAdjustedDescriptionTest extends TestCase
 {
     /**
      * @test
      */
-    public function it_creates_a_translated_closed_day_description_with_single_language(): void
+    public function it_creates_a_translated_description_with_single_language(): void
     {
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
-            new ClosedDayDescription('Gesloten op eerste kerstdag')
+            new AdjustedDescription('Gesloten op eerste kerstdag')
         );
 
         $nlTranslation = $description->getTranslation(new Language('nl'));
@@ -26,21 +26,21 @@ final class TranslatedClosedDayDescriptionTest extends TestCase
     /**
      * @test
      */
-    public function it_creates_a_translated_closed_day_description_with_multiple_languages(): void
+    public function it_creates_a_translated_description_with_multiple_languages(): void
     {
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
-            new ClosedDayDescription('Gesloten op eerste kerstdag')
+            new AdjustedDescription('Gesloten op eerste kerstdag')
         );
 
         $description = $description->withTranslation(
             new Language('fr'),
-            new ClosedDayDescription('Fermé pour Noël')
+            new AdjustedDescription('Fermé pour Noël')
         );
 
         $description = $description->withTranslation(
             new Language('en'),
-            new ClosedDayDescription('Closed for Christmas')
+            new AdjustedDescription('Closed for Christmas')
         );
 
         $nlTranslation = $description->getTranslation(new Language('nl'));
@@ -58,14 +58,14 @@ final class TranslatedClosedDayDescriptionTest extends TestCase
      */
     public function it_returns_all_languages(): void
     {
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
-            new ClosedDayDescription('Gesloten op eerste kerstdag')
+            new AdjustedDescription('Gesloten op eerste kerstdag')
         );
 
         $description = $description->withTranslation(
             new Language('fr'),
-            new ClosedDayDescription('Fermé pour Noël')
+            new AdjustedDescription('Fermé pour Noël')
         );
 
         $languages = $description->getLanguages();
@@ -81,14 +81,14 @@ final class TranslatedClosedDayDescriptionTest extends TestCase
      */
     public function it_updates_existing_translation(): void
     {
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             new Language('nl'),
-            new ClosedDayDescription('Eerste versie')
+            new AdjustedDescription('Eerste versie')
         );
 
         $description = $description->withTranslation(
             new Language('nl'),
-            new ClosedDayDescription('Tweede versie')
+            new AdjustedDescription('Tweede versie')
         );
 
         $nlTranslation = $description->getTranslation(new Language('nl'));
@@ -105,9 +105,9 @@ final class TranslatedClosedDayDescriptionTest extends TestCase
     public function it_gets_original_language(): void
     {
         $originalLanguage = new Language('nl');
-        $description = new TranslatedClosedDayDescription(
+        $description = new TranslatedAdjustedDescription(
             $originalLanguage,
-            new ClosedDayDescription('Gesloten op eerste kerstdag')
+            new AdjustedDescription('Gesloten op eerste kerstdag')
         );
 
         $this->assertEquals($originalLanguage, $description->getOriginalLanguage());

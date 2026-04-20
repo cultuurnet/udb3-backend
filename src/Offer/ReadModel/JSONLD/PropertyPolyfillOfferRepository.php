@@ -42,6 +42,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = $this->removeMainImageWhenMediaObjectIsEmpty($document);
         $document = $this->removeActorType($document);
         $document = $this->removeBookingInfoWhenEmpty($document);
+        $document = $this->fixSingularId($document);
         return $this->fixDuplicateLabelVisibility($document);
     }
 
@@ -363,5 +364,27 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                 return $json;
             }
         );
+    }
+
+    private function fixSingularId(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                if (isset($json['@id']) && is_string($json['@id'])) {
+                    $json['@id'] = $this->pluralizeUrl($json['@id']);
+                }
+
+                if (isset($json['location']['@id']) && is_string($json['location']['@id'])) {
+                    $json['location']['@id'] = $this->pluralizeUrl($json['location']['@id']);
+                }
+
+                return $json;
+            }
+        );
+    }
+
+    private function pluralizeUrl(string $url): string
+    {
+        return str_replace(['/event/', '/place/'], ['/events/', '/places/'], $url);
     }
 }

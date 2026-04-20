@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDay;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\ClosedDays;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedClosedDayDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class ClosedDaysDenormalizer implements DenormalizerInterface
 {
-    private TranslatedClosedDayDescriptionDenormalizer $translatedClosedDayDescriptionDenormalizer;
+    private TranslatedAdjustedDescriptionDenormalizer $translatedAdjustedDescriptionDenormalizer;
 
     public function __construct()
     {
-        $this->translatedClosedDayDescriptionDenormalizer = new TranslatedClosedDayDescriptionDenormalizer();
+        $this->translatedAdjustedDescriptionDenormalizer = new TranslatedAdjustedDescriptionDenormalizer();
     }
 
     public function denormalize($data, $class, $format = null, array $context = []): ClosedDays
@@ -36,9 +36,9 @@ final class ClosedDaysDenormalizer implements DenormalizerInterface
 
             $description = null;
             if (isset($closedDayData['description']) && is_array($closedDayData['description'])) {
-                $description = $this->translatedClosedDayDescriptionDenormalizer->denormalize(
+                $description = $this->translatedAdjustedDescriptionDenormalizer->denormalize(
                     $closedDayData['description'],
-                    TranslatedClosedDayDescription::class
+                    TranslatedAdjustedDescription::class
                 );
             }
 
