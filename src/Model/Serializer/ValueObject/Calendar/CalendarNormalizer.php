@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpenHours\AdjustedDayNormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpenHours\ClosedDayNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours\AdjustedDayNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours\ClosedDayNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
