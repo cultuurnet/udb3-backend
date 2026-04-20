@@ -23,17 +23,6 @@ final class AdjustedDaysDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_denormalizes_a_non_array_to_empty_collection(): void
-    {
-        $result = $this->denormalizer->denormalize(null, AdjustedDays::class);
-
-        $this->assertInstanceOf(AdjustedDays::class, $result);
-        $this->assertTrue($result->isEmpty());
-    }
-
-    /**
-     * @test
-     */
     public function it_denormalizes_an_empty_array_to_empty_collection(): void
     {
         $result = $this->denormalizer->denormalize([], AdjustedDays::class);

@@ -27,10 +27,6 @@ final class AdjustedDaysDenormalizer implements DenormalizerInterface
 
     public function denormalize($data, $class, $format = null, array $context = []): AdjustedDays
     {
-        if (!is_array($data)) {
-            return new AdjustedDays();
-        }
-
         $adjustedDays = [];
         foreach ($data as $adjustedOpeningHoursData) {
             if (!is_array($adjustedOpeningHoursData)) {
