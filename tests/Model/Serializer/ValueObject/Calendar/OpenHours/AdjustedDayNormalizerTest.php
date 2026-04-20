@@ -28,7 +28,7 @@ final class AdjustedDayNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_normalizes_adjusted_opening_hours_without_description(): void
+    public function it_normalizes_adjusted_day_without_description(): void
     {
         $adjustedDay = new AdjustedDay(
             new DateTimeImmutable('2026-12-21T08:30:00+00:00'),
@@ -56,7 +56,7 @@ final class AdjustedDayNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_normalizes_adjusted_opening_hours_with_description(): void
+    public function it_normalizes_adjusted_day_with_description(): void
     {
         $description = new TranslatedAdjustedDescription(
             new Language('nl'),
@@ -92,7 +92,7 @@ final class AdjustedDayNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_supports_normalization_of_adjusted_opening_hours(): void
+    public function it_supports_normalization_of_adjusted_day(): void
     {
         $adjustedDay = new AdjustedDay(
             new DateTimeImmutable('2026-12-21'),
