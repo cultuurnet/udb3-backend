@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Exception\EmptyOpeningHoursException;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Exception\StartDateAfterEndDateException;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use DateTimeImmutable;
-use InvalidArgumentException;
 
 final class AdjustedDay
 {
@@ -17,11 +18,11 @@ final class AdjustedDay
         private readonly ?TranslatedAdjustedDescription $description = null
     ) {
         if ($startDate > $endDate) {
-            throw new InvalidArgumentException('"startDate" should not be later than "endDate".');
+            throw StartDateAfterEndDateException::create();
         }
 
         if ($openingHours->isEmpty()) {
-            throw new InvalidArgumentException('OpeningHoursAdjusted must contain at least one OpeningHour.');
+            throw EmptyOpeningHoursException::create();
         }
     }
 
