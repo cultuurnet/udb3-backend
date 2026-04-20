@@ -10,6 +10,6 @@ final class EmptyOpeningHours extends InvalidArgumentException
 {
     public static function create(): self
     {
-        return new self('OpeningHoursAdjusted must contain at least one OpeningHour.');
+        return new self('openingHours must not be empty');
     }
 }

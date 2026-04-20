@@ -72,7 +72,6 @@ final class OpeningHoursAdjustedDaysValidator
                     }
                 }
 
-                // Only build the OpeningHour if both times are present and valid.
                 // Missing fields are not flagged here — the JSON schema enforces their presence.
                 if ($opensTime !== null && $closesTime !== null) {
                     $days = new Days(...array_map(fn ($day) => new Day($day), (array) ($openingHour->dayOfWeek ?? [])));
