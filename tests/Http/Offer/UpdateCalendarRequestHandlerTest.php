@@ -159,7 +159,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     self::EVENT_ID,
                     new SingleSubEventCalendar(
                         (
-                            SubEvent::createAvailable(
+                        SubEvent::createAvailable(
                             new DateRange(
                                 DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
                                 DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
@@ -189,7 +189,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     self::EVENT_ID,
                     new SingleSubEventCalendar(
                         (
-                            SubEvent::createAvailable(
+                        SubEvent::createAvailable(
                             new DateRange(
                                 DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
                                 DateTimeFactory::fromAtom('2021-01-01T17:00:30+01:00')
@@ -226,7 +226,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateCalendar(
                     self::EVENT_ID,
                     (
-                        (new SingleSubEventCalendar(
+                    (new SingleSubEventCalendar(
                         SubEvent::createAvailable(
                             new DateRange(
                                 DateTimeFactory::fromAtom('2021-01-01T14:00:30+01:00'),
