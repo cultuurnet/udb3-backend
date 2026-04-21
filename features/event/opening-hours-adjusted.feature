@@ -313,3 +313,40 @@ Feature: Test opening hours adjusted for events
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursAdjustedDays/1/startDate"
     And the JSON response at "schemaErrors/0/error" should be "adjusted opening hours entries must not overlap"
+
+  Scenario: Cannot update event calendar when adjusted opening hours entries overlap
+    Given I set the JSON request payload from "events/opening-hours-adjusted/event-periodic-without-adjusted-hours.json"
+    And I send a POST request to "/events/"
+    And the response status should be "201"
+    And I keep the value of the JSON response at "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "calendarType": "periodic",
+      "startDate": "2026-01-01T00:00:00+00:00",
+      "endDate": "2026-12-31T23:59:59+00:00",
+      "openingHours": [
+        {
+          "opens": "09:00",
+          "closes": "17:00",
+          "dayOfWeek": ["monday"]
+        }
+      ],
+      "openingHoursAdjustedDays": [
+        {
+          "startDate": "2026-12-21",
+          "endDate": "2026-12-26",
+          "openingHours": [{"opens": "13:00", "closes": "15:00", "dayOfWeek": ["friday"]}]
+        },
+        {
+          "startDate": "2026-12-25",
+          "endDate": "2026-12-31",
+          "openingHours": [{"opens": "14:00", "closes": "16:00", "dayOfWeek": ["saturday"]}]
+        }
+      ]
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/calendar"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursAdjustedDays/1/startDate"
+    And the JSON response at "schemaErrors/0/error" should be "adjusted opening hours entries must not overlap"
