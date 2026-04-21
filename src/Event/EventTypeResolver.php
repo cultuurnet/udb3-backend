@@ -12,7 +12,7 @@ use Exception;
 
 final class EventTypeResolver implements TypeResolverInterface
 {
-    public const KAMP_OF_VAKANTIE_TERM_ID = '0.57.0.0.0';
+    public const CAMP_UUID = '0.57.0.0.0';
 
     public function __construct(readonly Categories $types)
     {
@@ -34,7 +34,7 @@ final class EventTypeResolver implements TypeResolverInterface
             $eventType->getId()->toString(),
             [
                 '0.3.1.0.0',
-                self::KAMP_OF_VAKANTIE_TERM_ID,
+                self::CAMP_UUID,
             ]
         );
     }
