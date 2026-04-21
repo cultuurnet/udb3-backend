@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours\AdjustedDayNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours\ClosedDayNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours\OpeningHourNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
@@ -66,6 +71,14 @@ final class CalendarNormalizer implements NormalizerInterface
             $data['openingHoursClosedDays'] = array_map(
                 fn (ClosedDay $cd) => $closedDayNormalizer->normalize($cd),
                 $calendar->getClosedDays()->toArray()
+            );
+        }
+
+        if ($calendar instanceof CalendarWithAdjustedDays && !$calendar->getAdjustedDays()->isEmpty()) {
+            $adjustedOpeningHoursNormalizer = new AdjustedDayNormalizer();
+            $data['openingHoursAdjustedDays'] = array_map(
+                fn (AdjustedDay $aoh) => $adjustedOpeningHoursNormalizer->normalize($aoh),
+                $calendar->getAdjustedDays()->toArray()
             );
         }
 
@@ -127,7 +140,7 @@ final class CalendarNormalizer implements NormalizerInterface
         // Get the reason when there is only one sub event and the top level status has no reason.
         $reason = null;
         if (count($calendar->getSubEvents()->toArray()) === 1 && $calendar->getStatus()->getReason() === null) {
-            $reason =  $calendar->getSubEvents()->toArray()[0]->getStatus()->getReason();
+            $reason = $calendar->getSubEvents()->toArray()[0]->getStatus()->getReason();
         }
 
         // If the calendar has subEvents, the top level status is valid if it is the same type as the type derived from

@@ -6,9 +6,11 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
@@ -784,5 +786,91 @@ final class CalendarDenormalizerTest extends TestCase
 
         $this->assertInstanceOf(PeriodicCalendar::class, $result);
         $this->assertTrue($result->getClosedDays()->isEmpty());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_periodic_calendar_with_adjusted_days(): void
+    {
+        $data = [
+            'calendarType' => 'periodic',
+            'startDate' => '2024-01-01T00:00:00+00:00',
+            'endDate' => '2024-12-31T23:59:59+00:00',
+            'openingHours' => [],
+            'openingHoursAdjustedDays' => [
+                [
+                    'startDate' => '2024-12-25',
+                    'endDate' => '2024-12-26',
+                    'openingHours' => [
+                        [
+                            'opens' => '13:00',
+                            'closes' => '17:00',
+                            'dayOfWeek' => ['wednesday'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PeriodicCalendar::class, $result);
+        $this->assertInstanceOf(CalendarWithAdjustedDays::class, $result);
+        $this->assertFalse($result->getAdjustedDays()->isEmpty());
+        $this->assertCount(1, $result->getAdjustedDays()->toArray());
+
+        $adjustedDay = $result->getAdjustedDays()->toArray()[0];
+        $this->assertInstanceOf(AdjustedDay::class, $adjustedDay);
+        $this->assertEquals('2024-12-25', $adjustedDay->getStartDate()->format('Y-m-d'));
+        $this->assertEquals('2024-12-26', $adjustedDay->getEndDate()->format('Y-m-d'));
+        $this->assertNull($adjustedDay->getDescription());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_permanent_calendar_with_adjusted_days(): void
+    {
+        $data = [
+            'calendarType' => 'permanent',
+            'openingHours' => [],
+            'openingHoursAdjustedDays' => [
+                [
+                    'startDate' => '2024-12-25',
+                    'endDate' => '2024-12-26',
+                    'openingHours' => [
+                        [
+                            'opens' => '10:00',
+                            'closes' => '16:00',
+                            'dayOfWeek' => ['wednesday'],
+                        ],
+                    ],
+                ],
+                [
+                    'startDate' => '2024-12-31',
+                    'endDate' => '2025-01-01',
+                    'openingHours' => [
+                        [
+                            'opens' => '09:00',
+                            'closes' => '12:00',
+                            'dayOfWeek' => ['tuesday'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PermanentCalendar::class, $result);
+        $this->assertInstanceOf(CalendarWithAdjustedDays::class, $result);
+        $this->assertFalse($result->getAdjustedDays()->isEmpty());
+        $this->assertCount(2, $result->getAdjustedDays()->toArray());
+
+        // Should be sorted by startDate
+        $adjustedDays = $result->getAdjustedDays()->toArray();
+        $this->assertEquals('2024-12-25', $adjustedDays[0]->getStartDate()->format('Y-m-d'));
+        $this->assertEquals('2024-12-31', $adjustedDays[1]->getStartDate()->format('Y-m-d'));
     }
 }
