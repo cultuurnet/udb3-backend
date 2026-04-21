@@ -236,6 +236,11 @@ Feature: Test opening hours adjusted for events
     And I keep the value of the JSON response at "url" as "eventUrl"
     And I get the event at "%{eventUrl}"
     Then the JSON response should have "openingHoursAdjustedDays"
+    And the JSON response at "openingHoursAdjustedDays/0/startDate" should be "2026-12-21"
+    And the JSON response at "openingHoursAdjustedDays/0/endDate" should be "2026-12-26"
+    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/opens" should be "13:00"
+    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/closes" should be "15:00"
+    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/dayOfWeek/0" should be "friday"
     And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/childcare/start" should be "13:30"
     And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/childcare/end" should be "14:30"
 
