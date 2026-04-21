@@ -9,8 +9,9 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 
 /**
  * Note: The JSON schema already validates date format (Y-m-d or ISO8601) via "format" and pattern rules.
- * Domain validation (startDate <= endDate) is delegated to the AdjustedDay value object.
- */
+ * * Cross-field validation (startDate <= endDate, range within periodic calendar, no overlapping entries) is handled here
+ * * because it cannot be expressed in JSON schema.
+ * */
 final class AdjustedDaysValidator
 {
     /**
@@ -71,7 +72,7 @@ final class AdjustedDaysValidator
         return $errors;
     }
 
-    public function checkForOverlaps(array $parsedEntries, array &$errors): array
+    private function checkForOverlaps(array $parsedEntries, array &$errors): void
     {
         usort(
             $parsedEntries,
@@ -86,7 +87,5 @@ final class AdjustedDaysValidator
                 );
             }
         }
-
-        return $errors;
     }
 }
