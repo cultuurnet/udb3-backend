@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 
 use PHPUnit\Framework\TestCase;
 
-final class OpeningHoursAdjustedDaysValidatorTest extends TestCase
+final class AdjustedDaysValidatorTest extends TestCase
 {
     private AdjustedDaysValidator $validator;
 
