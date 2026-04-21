@@ -9,30 +9,17 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Exception\EmptyOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Exception\StartDateAfterEndDate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 
 /**
  * Note: The JSON schema already validates date format (Y-m-d or ISO8601) via "format" and pattern rules.
- * Domain validation (startDate <= endDate and non-empty openingHours) is delegated to the AdjustedDay value object.
+ * Domain validation (startDate <= endDate) is delegated to the AdjustedDay value object.
  */
 final class AdjustedDaysValidator
 {
-    private function parseTime(string $value): ?Time
-    {
-        try {
-            [$h, $m] = explode(':', $value) + [null, null];
-            return new Time(new Hour((int)$h), new Minute((int)$m));
-        } catch (\InvalidArgumentException) {
-            return null;
-        }
-    }
-
     /**
      * @return SchemaError[]
      */
@@ -56,27 +43,26 @@ final class AdjustedDaysValidator
                 $opensTime = null;
                 $closesTime = null;
 
-                if (isset($openingHour->opens)) {
-                    $opensTime = $this->parseTime($openingHour->opens);
-                    if ($opensTime === null) {
-                        $hasTimeErrors = true;
-                        $errors[] = new SchemaError(
-                            '/openingHoursAdjustedDays/' . $index . '/openingHours/' . $ohIndex . '/opens',
-                            'Invalid time format (hh:mm)'
-                        );
-                    }
+                try {
+                    $opensTime = Time::fromString($openingHour->opens);
+                } catch (\Exception) {
+                    $hasTimeErrors = true;
+                    $errors[] = new SchemaError(
+                        '/openingHoursAdjustedDays/' . $index . '/openingHours/' . $ohIndex . '/opens',
+                        'Invalid time format (hh:mm)'
+                    );
                 }
 
-                if (isset($openingHour->closes)) {
-                    $closesTime = $this->parseTime($openingHour->closes);
-                    if ($closesTime === null) {
-                        $hasTimeErrors = true;
-                        $errors[] = new SchemaError(
-                            '/openingHoursAdjustedDays/' . $index . '/openingHours/' . $ohIndex . '/closes',
-                            'Invalid time format (hh:mm)'
-                        );
-                    }
+                try {
+                    $closesTime = Time::fromString($openingHour->closes);
+                } catch (\Exception) {
+                    $hasTimeErrors = true;
+                    $errors[] = new SchemaError(
+                        '/openingHoursAdjustedDays/' . $index . '/openingHours/' . $ohIndex . '/closes',
+                        'Invalid time format (hh:mm)'
+                    );
                 }
+
 
                 // Missing fields are not flagged here — the JSON schema enforces their presence.
                 if ($opensTime !== null && $closesTime !== null) {
@@ -94,12 +80,6 @@ final class AdjustedDaysValidator
             } catch (StartDateAfterEndDate $e) {
                 $errors[] = new SchemaError(
                     '/openingHoursAdjustedDays/' . $index . '/endDate',
-                    $e->getMessage()
-                );
-                continue;
-            } catch (EmptyOpeningHours $e) {
-                $errors[] = new SchemaError(
-                    '/openingHoursAdjustedDays/' . $index . '/openingHours',
                     $e->getMessage()
                 );
                 continue;
@@ -134,7 +114,13 @@ final class AdjustedDaysValidator
             ];
         }
 
-        // Check for overlaps
+        $this->checkForOverlaps($parsedEntries, $errors);
+
+        return $errors;
+    }
+
+    public function checkForOverlaps(array $parsedEntries, array &$errors): array
+    {
         usort(
             $parsedEntries,
             fn ($a, $b) => $a['startDate'] <=> $b['startDate']

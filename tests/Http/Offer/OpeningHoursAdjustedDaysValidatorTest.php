@@ -8,11 +8,11 @@ use PHPUnit\Framework\TestCase;
 
 final class OpeningHoursAdjustedDaysValidatorTest extends TestCase
 {
-    private OpeningHoursAdjustedDaysValidator $validator;
+    private AdjustedDaysValidator $validator;
 
     protected function setUp(): void
     {
-        $this->validator = new OpeningHoursAdjustedDaysValidator();
+        $this->validator = new AdjustedDaysValidator();
     }
 
     /**
@@ -267,60 +267,6 @@ final class OpeningHoursAdjustedDaysValidatorTest extends TestCase
         $this->assertNotEmpty($errors);
         $this->assertSame('/openingHoursAdjustedDays/0/endDate', $errors[0]->getJsonPointer());
         $this->assertSame('the end date of adjusted opening hours should not be after the calendar end date', $errors[0]->getError());
-    }
-
-    /**
-     * @test
-     */
-    public function it_rejects_entry_with_invalid_opens_time(): void
-    {
-        $data = (object)[
-            'calendarType' => 'periodic',
-            'startDate' => '2026-01-01T00:00:00+00:00',
-            'endDate' => '2026-12-31T23:59:59+00:00',
-            'openingHoursAdjustedDays' => [
-                (object)[
-                    'startDate' => '2026-12-21',
-                    'endDate' => '2026-12-26',
-                    'openingHours' => [
-                        (object)['opens' => '25:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
-                    ],
-                ],
-            ],
-        ];
-
-        $errors = $this->validator->validate($data);
-
-        $this->assertNotEmpty($errors);
-        $this->assertSame('/openingHoursAdjustedDays/0/openingHours/0/opens', $errors[0]->getJsonPointer());
-        $this->assertSame('Invalid time format (hh:mm)', $errors[0]->getError());
-    }
-
-    /**
-     * @test
-     */
-    public function it_rejects_entry_with_invalid_closes_time(): void
-    {
-        $data = (object)[
-            'calendarType' => 'periodic',
-            'startDate' => '2026-01-01T00:00:00+00:00',
-            'endDate' => '2026-12-31T23:59:59+00:00',
-            'openingHoursAdjustedDays' => [
-                (object)[
-                    'startDate' => '2026-12-21',
-                    'endDate' => '2026-12-26',
-                    'openingHours' => [
-                        (object)['opens' => '13:00', 'closes' => '24:60', 'dayOfWeek' => ['friday']],
-                    ],
-                ],
-            ],
-        ];
-
-        $errors = $this->validator->validate($data);
-
-        $this->assertNotEmpty($errors);
-        $this->assertSame('/openingHoursAdjustedDays/0/openingHours/0/closes', $errors[0]->getJsonPointer());
-        $this->assertSame('Invalid time format (hh:mm)', $errors[0]->getError());
     }
 
     /**

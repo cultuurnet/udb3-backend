@@ -20,10 +20,6 @@ final class AdjustedDay
         if ($startDate > $endDate) {
             throw StartDateAfterEndDate::create();
         }
-
-        if ($openingHours->isEmpty()) {
-            throw EmptyOpeningHours::create();
-        }
     }
 
     public function getStartDate(): DateTimeImmutable
