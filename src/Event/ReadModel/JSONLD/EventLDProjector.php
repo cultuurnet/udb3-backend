@@ -58,6 +58,8 @@ use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeDeleted;
+use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeUpdated;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\Events\VideoUpdated;
@@ -597,6 +599,26 @@ final class EventLDProjector extends OfferLDProjector implements
         } else {
             $jsonLD->departurePlaces = $departurePlacesUpdated->departurePlaces->toStringArray();
         }
+
+        return $document->withBody($jsonLD);
+    }
+
+    protected function applyTypicalBirthYearRangeUpdated(TypicalBirthYearRangeUpdated $typicalBirthYearRangeUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($typicalBirthYearRangeUpdated);
+        $jsonLD = $document->getBody();
+
+        $jsonLD->typicalBirthYearRange = $typicalBirthYearRangeUpdated->typicalBirthYearRange->toString();
+
+        return $document->withBody($jsonLD);
+    }
+
+    protected function applyTypicalBirthYearRangeDeleted(TypicalBirthYearRangeDeleted $typicalBirthYearRangeDeleted): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($typicalBirthYearRangeDeleted);
+        $jsonLD = $document->getBody();
+
+        unset($jsonLD->typicalBirthYearRange);
 
         return $document->withBody($jsonLD);
     }

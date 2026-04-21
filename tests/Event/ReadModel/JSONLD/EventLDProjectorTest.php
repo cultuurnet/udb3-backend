@@ -16,6 +16,8 @@ use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
+use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeDeleted;
+use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeUpdated;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Event\Events\FaqsUpdated;
@@ -55,6 +57,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -2041,6 +2044,51 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $this->assertFalse(property_exists($body, 'departurePlaces'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_typical_birth_year_range_updated(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $birthYearRange = new BirthYearRange(2014, 2020);
+
+        $body = $this->project(
+            new TypicalBirthYearRangeUpdated($eventId, $birthYearRange),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertEquals('2014-2020', $body->typicalBirthYearRange);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_typical_birth_year_range_from_projection_when_deleted(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $birthYearRange = new BirthYearRange(2014, 2020);
+
+        $this->project(
+            new TypicalBirthYearRangeUpdated($eventId, $birthYearRange),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $body = $this->project(
+            new TypicalBirthYearRangeDeleted($eventId),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertFalse(property_exists($body, 'typicalBirthYearRange'));
     }
 
     /**
