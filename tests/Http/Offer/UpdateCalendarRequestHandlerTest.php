@@ -42,7 +42,7 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use PHPUnit\Framework\TestCase;
 
-class UpdateCalendarRequestHandlerTest extends TestCase
+final class UpdateCalendarRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
