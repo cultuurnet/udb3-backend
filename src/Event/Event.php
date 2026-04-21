@@ -29,6 +29,8 @@ use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\FaqsUpdated;
+use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeDeleted;
+use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\Image\ImagesUpdatedFromUDB2;
@@ -71,6 +73,7 @@ use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
@@ -123,6 +126,8 @@ final class Event extends Offer
     private Faqs $faqs;
 
     private Urls $departurePlaces;
+
+    private ?BirthYearRange $typicalBirthYearRange = null;
 
     public static function getOfferType(): OfferType
     {
@@ -577,6 +582,34 @@ final class Event extends Offer
     protected function applyDeparturePlacesUpdated(DeparturePlacesUpdated $departurePlacesUpdated): void
     {
         $this->departurePlaces = $departurePlacesUpdated->departurePlaces;
+    }
+
+    public function updateTypicalBirthYearRange(BirthYearRange $typicalBirthYearRange): void
+    {
+        if ($this->typicalBirthYearRange !== null && $this->typicalBirthYearRange->sameAs($typicalBirthYearRange)) {
+            return;
+        }
+
+        $this->apply(new TypicalBirthYearRangeUpdated($this->eventId, $typicalBirthYearRange));
+    }
+
+    protected function applyTypicalBirthYearRangeUpdated(TypicalBirthYearRangeUpdated $typicalBirthYearRangeUpdated): void
+    {
+        $this->typicalBirthYearRange = $typicalBirthYearRangeUpdated->typicalBirthYearRange;
+    }
+
+    public function deleteTypicalBirthYearRange(): void
+    {
+        if ($this->typicalBirthYearRange === null) {
+            return;
+        }
+
+        $this->apply(new TypicalBirthYearRangeDeleted($this->eventId));
+    }
+
+    protected function applyTypicalBirthYearRangeDeleted(TypicalBirthYearRangeDeleted $typicalBirthYearRangeDeleted): void
+    {
+        $this->typicalBirthYearRange = null;
     }
 
     public function updateUiTPASPrices(Tariffs $tariffs): void

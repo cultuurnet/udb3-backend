@@ -32,6 +32,8 @@ use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
+use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeDeleted;
+use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -39,6 +41,7 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
@@ -2436,6 +2439,83 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
             ->then([new DeparturePlacesUpdated($eventId, $departurePlaces)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_typical_birth_year_range(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $birthYearRange = new BirthYearRange(2014, 2020);
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->updateTypicalBirthYearRange($birthYearRange))
+            ->then([new TypicalBirthYearRangeUpdated($eventId, $birthYearRange)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_an_existing_typical_birth_year_range(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $original = new BirthYearRange(2014, 2020);
+        $updated = new BirthYearRange(2015, 2021);
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new TypicalBirthYearRangeUpdated($eventId, $original),
+            ])
+            ->when(fn (Event $event) => $event->updateTypicalBirthYearRange($updated))
+            ->then([new TypicalBirthYearRangeUpdated($eventId, $updated)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_typical_birth_year_range_when_unchanged(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $birthYearRange = new BirthYearRange(2014, 2020);
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new TypicalBirthYearRangeUpdated($eventId, $birthYearRange),
+            ])
+            ->when(fn (Event $event) => $event->updateTypicalBirthYearRange($birthYearRange))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_delete_typical_birth_year_range(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $birthYearRange = new BirthYearRange(2014, 2020);
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new TypicalBirthYearRangeUpdated($eventId, $birthYearRange),
+            ])
+            ->when(fn (Event $event) => $event->deleteTypicalBirthYearRange())
+            ->then([new TypicalBirthYearRangeDeleted($eventId)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_delete_typical_birth_year_range_when_not_set(): void
+    {
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->deleteTypicalBirthYearRange())
+            ->then([]);
     }
 
     protected function getSample(string $file): string
