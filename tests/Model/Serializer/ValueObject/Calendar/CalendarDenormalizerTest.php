@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHoursAdjusted;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -816,7 +816,7 @@ final class CalendarDenormalizerTest extends TestCase
         $result = $this->denormalizer->denormalize($data, Calendar::class);
 
         $this->assertInstanceOf(PeriodicCalendar::class, $result);
-        $this->assertInstanceOf(CalendarWithOpeningHoursAdjusted::class, $result);
+        $this->assertInstanceOf(CalendarWithAdjustedDays::class, $result);
         $this->assertFalse($result->getAdjustedDays()->isEmpty());
         $this->assertCount(1, $result->getAdjustedDays()->toArray());
 
@@ -864,7 +864,7 @@ final class CalendarDenormalizerTest extends TestCase
         $result = $this->denormalizer->denormalize($data, Calendar::class);
 
         $this->assertInstanceOf(PermanentCalendar::class, $result);
-        $this->assertInstanceOf(CalendarWithOpeningHoursAdjusted::class, $result);
+        $this->assertInstanceOf(CalendarWithAdjustedDays::class, $result);
         $this->assertFalse($result->getAdjustedDays()->isEmpty());
         $this->assertCount(2, $result->getAdjustedDays()->toArray());
 

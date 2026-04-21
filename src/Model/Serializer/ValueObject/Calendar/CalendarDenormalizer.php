@@ -7,15 +7,18 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours\AdjustedDaysDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours\ClosedDaysDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours\OpeningHourDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithClosedDays;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHoursAdjusted;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
@@ -37,7 +40,7 @@ final class CalendarDenormalizer implements DenormalizerInterface
     private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
     private BookingInfoDenormalizer $bookingInfoDenormalizer;
     private ClosedDaysDenormalizer $closedDaysDenormalizer;
-    private AdjustedDayDenormalizer $adjustedOpeningHoursDenormalizer;
+    private AdjustedDaysDenormalizer $adjustedDaysDenormalizer;
 
     public function __construct()
     {
@@ -45,7 +48,7 @@ final class CalendarDenormalizer implements DenormalizerInterface
         $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
         $this->bookingInfoDenormalizer = new BookingInfoDenormalizer();
         $this->closedDaysDenormalizer = new ClosedDaysDenormalizer();
-        $this->adjustedOpeningHoursDenormalizer = new AdjustedDayDenormalizer();
+        $this->adjustedDaysDenormalizer = new AdjustedDaysDenormalizer();
     }
 
     /**
@@ -228,7 +231,7 @@ final class CalendarDenormalizer implements DenormalizerInterface
         return $subEvent;
     }
 
-    private function applyOpeningHours(array $data, CalendarWithClosedDays&CalendarWithOpeningHoursAdjusted $calendar): CalendarWithClosedDays&CalendarWithOpeningHoursAdjusted
+    private function applyOpeningHours(array $data, CalendarWithClosedDays&CalendarWithAdjustedDays $calendar): CalendarWithClosedDays&CalendarWithAdjustedDays
     {
         if (isset($data['openingHoursClosedDays'])) {
             $closedDays = $this->closedDaysDenormalizer->denormalize($data['openingHoursClosedDays'], ClosedDays::class);
@@ -236,7 +239,7 @@ final class CalendarDenormalizer implements DenormalizerInterface
         }
 
         if (isset($data['openingHoursAdjustedDays'])) {
-            $adjustedOpeningHours = $this->adjustedOpeningHoursDenormalizer->denormalize($data['openingHoursAdjustedDays'], AdjustedDays::class);
+            $adjustedOpeningHours = $this->adjustedDaysDenormalizer->denormalize($data['openingHoursAdjustedDays'], AdjustedDays::class);
             $calendar = $calendar->withAdjustedDays($adjustedOpeningHours);
         }
 
