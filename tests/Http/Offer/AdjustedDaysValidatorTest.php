@@ -295,7 +295,37 @@ final class AdjustedDaysValidatorTest extends TestCase
 
         $errors = $this->validator->validate($data);
 
-        $this->assertNotEmpty($errors);
+        $this->assertSame('/openingHoursAdjustedDays/1/startDate', $errors[0]->getJsonPointer());
+        $this->assertSame('adjusted opening hours entries must not overlap', $errors[0]->getError());
+    }
+
+    /**
+     * @test
+     */
+    public function it_rejects_overlapping_entries_for_permanent_calendar(): void
+    {
+        $data = (object)[
+            'calendarType' => 'permanent',
+            'openingHoursAdjustedDays' => [
+                (object)[
+                    'startDate' => '2026-12-21',
+                    'endDate' => '2026-12-26',
+                    'openingHours' => [
+                        (object)['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
+                    ],
+                ],
+                (object)[
+                    'startDate' => '2026-12-25',
+                    'endDate' => '2026-12-31',
+                    'openingHours' => [
+                        (object)['opens' => '14:00', 'closes' => '16:00', 'dayOfWeek' => ['saturday']],
+                    ],
+                ],
+            ],
+        ];
+
+        $errors = $this->validator->validate($data);
+
         $this->assertSame('/openingHoursAdjustedDays/1/startDate', $errors[0]->getJsonPointer());
         $this->assertSame('adjusted opening hours entries must not overlap', $errors[0]->getError());
     }
