@@ -2,34 +2,22 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
+namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use PHPUnit\Framework\TestCase;
 
-final class AdjustedOpeningHoursDenormalizerTest extends TestCase
+final class AdjustedDaysDenormalizerTest extends TestCase
 {
-    private AdjustedDayDenormalizer $denormalizer;
+    private AdjustedDaysDenormalizer $denormalizer;
 
     protected function setUp(): void
     {
-        $this->denormalizer = new AdjustedDayDenormalizer();
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_a_non_array_to_empty_collection(): void
-    {
-        $result = $this->denormalizer->denormalize(null, AdjustedDays::class);
-
-        $this->assertInstanceOf(AdjustedDays::class, $result);
-        $this->assertTrue($result->isEmpty());
+        $this->denormalizer = new AdjustedDaysDenormalizer();
     }
 
     /**
@@ -112,39 +100,6 @@ final class AdjustedOpeningHoursDenormalizerTest extends TestCase
 
         $frDescription = $entries[0]->getDescription()->getTranslation(new Language('fr'));
         $this->assertEquals('Vacances de Noël', $frDescription->toString());
-    }
-
-    /**
-     * @test
-     */
-    public function it_skips_entries_missing_required_fields(): void
-    {
-        $data = [
-            [
-                'startDate' => '2026-12-21',
-                'endDate' => '2026-12-26',
-                'openingHours' => [['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']]],
-            ],
-            // Missing startDate
-            [
-                'endDate' => '2026-12-26',
-                'openingHours' => [['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']]],
-            ],
-            // Missing openingHours
-            [
-                'startDate' => '2026-12-27',
-                'endDate' => '2026-12-31',
-            ],
-            [
-                'startDate' => '2026-12-27',
-                'endDate' => '2026-12-31',
-                'openingHours' => [['opens' => '14:00', 'closes' => '16:00', 'dayOfWeek' => ['saturday']]],
-            ],
-        ];
-
-        $result = $this->denormalizer->denormalize($data, AdjustedDays::class);
-
-        $this->assertEquals(2, $result->count());
     }
 
     /**

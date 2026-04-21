@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHoursAdjusted;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
@@ -553,8 +553,8 @@ final class CalendarSerializerTest extends TestCase
         $calendar = CalendarSerializer::deserialize($data);
 
         $this->assertInstanceOf(PeriodicCalendar::class, $calendar);
-        $this->assertInstanceOf(CalendarWithOpeningHoursAdjusted::class, $calendar);
-        /** @var CalendarWithOpeningHoursAdjusted $calendar */
+        $this->assertInstanceOf(CalendarWithAdjustedDays::class, $calendar);
+        /** @var CalendarWithAdjustedDays $calendar */
         $this->assertFalse($calendar->getAdjustedDays()->isEmpty());
         $this->assertEquals(1, $calendar->getAdjustedDays()->count());
 
@@ -590,7 +590,7 @@ final class CalendarSerializerTest extends TestCase
 
         $calendar = CalendarSerializer::deserialize($data);
 
-        /** @var CalendarWithOpeningHoursAdjusted $calendar */
+        /** @var CalendarWithAdjustedDays $calendar */
         $entries = $calendar->getAdjustedDays()->toArray();
         $this->assertNotNull($entries[0]->getDescription());
         $this->assertEquals('Kerstvakantie', $entries[0]->getDescription()->getTranslation(new Language('nl'))->toString());
@@ -644,8 +644,8 @@ final class CalendarSerializerTest extends TestCase
         $calendar = CalendarSerializer::deserialize($data);
 
         $this->assertInstanceOf(PermanentCalendar::class, $calendar);
-        $this->assertInstanceOf(CalendarWithOpeningHoursAdjusted::class, $calendar);
-        /** @var CalendarWithOpeningHoursAdjusted $calendar */
+        $this->assertInstanceOf(CalendarWithAdjustedDays::class, $calendar);
+        /** @var CalendarWithAdjustedDays $calendar */
         $this->assertFalse($calendar->getAdjustedDays()->isEmpty());
         $this->assertEquals(1, $calendar->getAdjustedDays()->count());
 
@@ -677,8 +677,8 @@ final class CalendarSerializerTest extends TestCase
 
         $calendar = CalendarSerializer::deserialize($data);
 
-        $this->assertInstanceOf(CalendarWithOpeningHoursAdjusted::class, $calendar);
-        /** @var CalendarWithOpeningHoursAdjusted $calendar */
+        $this->assertInstanceOf(CalendarWithAdjustedDays::class, $calendar);
+        /** @var CalendarWithAdjustedDays $calendar */
         $this->assertTrue($calendar->getAdjustedDays()->isEmpty());
     }
 

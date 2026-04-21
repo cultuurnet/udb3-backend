@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
+namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours;
 
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-final class AdjustedDayDenormalizer implements DenormalizerInterface
+final class AdjustedDaysDenormalizer implements DenormalizerInterface
 {
     private OpeningHourDenormalizer $openingHourDenormalizer;
     private TranslatedAdjustedDescriptionDenormalizer $translatedDescriptionDenormalizer;
@@ -25,18 +25,8 @@ final class AdjustedDayDenormalizer implements DenormalizerInterface
 
     public function denormalize($data, $class, $format = null, array $context = []): AdjustedDays
     {
-        if (!is_array($data)) {
-            return new AdjustedDays();
-        }
-
         $adjustedDays = [];
         foreach ($data as $adjustedOpeningHoursData) {
-            if (!is_array($adjustedOpeningHoursData)) {
-                continue;
-            }
-            if (!isset($adjustedOpeningHoursData['startDate'], $adjustedOpeningHoursData['endDate'])) {
-                continue;
-            }
             if (empty($adjustedOpeningHoursData['openingHours'])) {
                 continue;
             }
