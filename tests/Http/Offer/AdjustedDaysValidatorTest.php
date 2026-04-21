@@ -210,7 +210,6 @@ final class AdjustedDaysValidatorTest extends TestCase
 
         $errors = $this->validator->validate($data);
 
-        $this->assertNotEmpty($errors);
         $this->assertSame('/openingHoursAdjustedDays/0/endDate', $errors[0]->getJsonPointer());
         $this->assertSame('startDate should not be later than endDate', $errors[0]->getError());
     }
@@ -237,7 +236,6 @@ final class AdjustedDaysValidatorTest extends TestCase
 
         $errors = $this->validator->validate($data);
 
-        $this->assertNotEmpty($errors);
         $this->assertSame('/openingHoursAdjustedDays/0/startDate', $errors[0]->getJsonPointer());
         $this->assertSame('the start date of adjusted opening hours should not be before the calendar start date', $errors[0]->getError());
     }
@@ -264,7 +262,6 @@ final class AdjustedDaysValidatorTest extends TestCase
 
         $errors = $this->validator->validate($data);
 
-        $this->assertNotEmpty($errors);
         $this->assertSame('/openingHoursAdjustedDays/0/endDate', $errors[0]->getJsonPointer());
         $this->assertSame('the end date of adjusted opening hours should not be after the calendar end date', $errors[0]->getError());
     }
