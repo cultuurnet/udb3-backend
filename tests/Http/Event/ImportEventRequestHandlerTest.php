@@ -50,7 +50,20 @@ use CultuurNet\UDB3\Model\Import\MediaObject\ImageCollectionFactory;
 use CultuurNet\UDB3\Model\Serializer\Event\EventDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
@@ -6770,6 +6783,309 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'expectedErrors' => [new SchemaError('/openingHours/0/childcare/end', 'childcare.end must be after closes')],
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_new_periodic_event_with_adjusted_opening_hours(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Event met aangepaste openingsuren'],
+                'terms' => [['id' => '0.50.4.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-01-01T00:00:00+00:00',
+                'endDate' => '2026-12-31T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']],
+                ],
+                'openingHoursAdjustedDays' => [
+                    [
+                        'startDate' => '2026-12-21',
+                        'endDate' => '2026-12-26',
+                        'openingHours' => [
+                            ['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday', 'saturday', 'sunday']],
+                        ],
+                    ],
+                ],
+            ])
+            ->build('POST');
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_an_existing_periodic_event_with_adjusted_opening_hours(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->never())
+            ->method('generate');
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('save');
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', $eventId)
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Event met aangepaste openingsuren'],
+                'terms' => [['id' => '0.50.4.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-01-01T00:00:00+00:00',
+                'endDate' => '2026-12-31T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']],
+                ],
+                'openingHoursAdjustedDays' => [
+                    [
+                        'startDate' => '2026-12-21',
+                        'endDate' => '2026-12-26',
+                        'openingHours' => [
+                            ['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday', 'saturday', 'sunday']],
+                        ],
+                    ],
+                ],
+            ])
+            ->build('PUT');
+
+        $this->importEventRequestHandler->handle($request);
+
+        $expectedCalendar = (new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2026-01-01T00:00:00+00:00'),
+                DateTimeFactory::fromAtom('2026-12-31T23:59:59+00:00')
+            ),
+            new OpeningHours(
+                new OpeningHour(
+                    new Days(Day::monday(), Day::tuesday(), Day::wednesday(), Day::thursday(), Day::friday()),
+                    new Time(new Hour(9), new Minute(0)),
+                    new Time(new Hour(17), new Minute(0))
+                )
+            )
+        ))->withAdjustedDays(
+            new AdjustedDays(
+                new AdjustedDay(
+                    DateTimeFactory::fromDateOrISO8601('2026-12-21'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-26'),
+                    new OpeningHours(
+                        new OpeningHour(
+                            new Days(Day::friday(), Day::saturday(), Day::sunday()),
+                            new Time(new Hour(13), new Minute(0)),
+                            new Time(new Hour(15), new Minute(0))
+                        )
+                    )
+                )
+            )
+        );
+
+        $updateCalendarCommand = current(array_filter(
+            $this->commandBus->getRecordedCommands(),
+            fn ($cmd) => $cmd instanceof UpdateCalendar
+        ));
+
+        $this->assertEquals(new UpdateCalendar($eventId, $expectedCalendar), $updateCalendarCommand);
+    }
+
+    /**
+     * @test
+     */
+    public function it_creates_a_new_periodic_event_with_closed_days(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Event met gesloten dagen'],
+                'terms' => [['id' => '0.50.4.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-01-01T00:00:00+00:00',
+                'endDate' => '2026-12-31T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']],
+                ],
+                'openingHoursClosedDays' => [
+                    ['startDate' => '2026-12-25', 'endDate' => '2026-12-26'],
+                ],
+            ])
+            ->build('POST');
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_an_existing_periodic_event_with_closed_days(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->never())
+            ->method('generate');
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('load');
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('save');
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', $eventId)
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Event met gesloten dagen'],
+                'terms' => [['id' => '0.50.4.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-01-01T00:00:00+00:00',
+                'endDate' => '2026-12-31T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']],
+                ],
+                'openingHoursClosedDays' => [
+                    ['startDate' => '2026-12-25', 'endDate' => '2026-12-26'],
+                ],
+            ])
+            ->build('PUT');
+
+        $this->importEventRequestHandler->handle($request);
+
+        $expectedCalendar = (new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2026-01-01T00:00:00+00:00'),
+                DateTimeFactory::fromAtom('2026-12-31T23:59:59+00:00')
+            ),
+            new OpeningHours(
+                new OpeningHour(
+                    new Days(Day::monday(), Day::tuesday(), Day::wednesday(), Day::thursday(), Day::friday()),
+                    new Time(new Hour(9), new Minute(0)),
+                    new Time(new Hour(17), new Minute(0))
+                )
+            )
+        ))->withClosedDays(
+            new ClosedDays(
+                new ClosedDay(
+                    DateTimeFactory::fromDateOrISO8601('2026-12-25'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-26')
+                )
+            )
+        );
+
+        $updateCalendarCommand = current(array_filter(
+            $this->commandBus->getRecordedCommands(),
+            fn ($cmd) => $cmd instanceof UpdateCalendar
+        ));
+
+        $this->assertEquals(new UpdateCalendar($eventId, $expectedCalendar), $updateCalendarCommand);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_adjusted_days_start_date_is_after_end_date(): void
+    {
+        $this->assertValidationErrors(
+            [
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Ongeldig event'],
+                'terms' => [['id' => '0.50.4.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-01-01T00:00:00+00:00',
+                'endDate' => '2026-12-31T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday']],
+                ],
+                'openingHoursAdjustedDays' => [
+                    [
+                        'startDate' => '2026-12-26',
+                        'endDate' => '2026-12-21',
+                        'openingHours' => [
+                            ['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
+                        ],
+                    ],
+                ],
+            ],
+            [new SchemaError('/openingHoursAdjustedDays/0/endDate', 'startDate should not be later than endDate')]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_closed_day_end_date_is_before_start_date(): void
+    {
+        $this->assertValidationErrors(
+            [
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Ongeldig event'],
+                'terms' => [['id' => '0.50.4.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-01-01T00:00:00+00:00',
+                'endDate' => '2026-12-31T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday']],
+                ],
+                'openingHoursClosedDays' => [
+                    ['startDate' => '2026-12-25', 'endDate' => '2026-12-24'],
+                ],
+            ],
+            [new SchemaError('/openingHoursClosedDays/0/endDate', 'endDate should not be before startDate')]
+        );
     }
 
     private function assertValidationErrors(array $event, array $expectedErrors): void
