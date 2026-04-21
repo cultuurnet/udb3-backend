@@ -1246,7 +1246,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/openingHours/0/childcare/start', 'The string should match pattern: ^([01]?\d|2[0-3]):[0-5]\d$'),
+                    new SchemaError('/openingHours/0/childcare/start', 'The string should match pattern: ^\d?\d:\d\d$'),
                 ],
             ],
             'periodic_childcare_end_wrong_type' => [

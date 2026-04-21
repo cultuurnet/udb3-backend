@@ -647,7 +647,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/0/childcare/start', 'The string should match pattern: ^([01]?\d|2[0-3]):[0-5]\d$'),
+                    new SchemaError('/0/childcare/start', 'The string should match pattern: ^\d?\d:\d\d$'),
                 ],
             ],
             'one_subEvent_with_childcare_end_invalid_format' => [
@@ -658,7 +658,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/0/childcare/end', 'The string should match pattern: ^([01]?\d|2[0-3]):[0-5]\d$'),
+                    new SchemaError('/0/childcare/end', 'The string should match pattern: ^\d?\d:\d\d$'),
                 ],
             ],
             'one_subEvent_with_childcare_start_wrong_type' => [
