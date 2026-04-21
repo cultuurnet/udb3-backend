@@ -7,11 +7,9 @@ namespace CultuurNet\UDB3\Http\Offer;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 
-/**
- * Note: The JSON schema already validates date format (Y-m-d or ISO8601) via "format" and pattern rules.
- * * Cross-field validation (startDate <= endDate, range within periodic calendar, no overlapping entries) is handled here
- * * because it cannot be expressed in JSON schema.
- * */
+// The JSON schema already validates date format (Y-m-d or ISO8601) via "format" and pattern rules.
+// Cross-field validation (startDate <= endDate, range within periodic calendar, no overlapping entries)
+// is handled here because it cannot be expressed in JSON schema.
 final class AdjustedDaysValidator
 {
     /**
