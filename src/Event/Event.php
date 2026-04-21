@@ -58,7 +58,6 @@ use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
-use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
@@ -470,7 +469,7 @@ final class Event extends Offer
             }
 
             if ($hasOvernight) {
-                $resetSubEvents = array_map(fn(SubEvent $se) => $se->withOvernight(false), $subEvents);
+                $resetSubEvents = array_map(fn (SubEvent $se) => $se->withOvernight(false), $subEvents);
 
                 if ($this->calendar->getType()->sameAs(CalendarType::single())) {
                     $updatedCalendar = new SingleSubEventCalendar($resetSubEvents[0]);

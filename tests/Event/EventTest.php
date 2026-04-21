@@ -39,7 +39,6 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
-use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -2497,7 +2496,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernight)),
             ])
             ->when(
-                fn(Event $event) => $event->updateSubEvents(
+                fn (Event $event) => $event->updateSubEvents(
                     (new SubEventUpdate(0))->withStatus($unavailable)
                 )
             )
@@ -2569,7 +2568,7 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getKampOrVakantieCreationEvent(),
                 new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernight)),
             ])
-            ->when(fn(Event $event) => $event->updateType($concertType))
+            ->when(fn (Event $event) => $event->updateType($concertType))
             ->then([
                 new TypeUpdated(self::EVENT_ID, $concertType),
                 new CalendarUpdated(
@@ -2592,7 +2591,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $this->scenario
             ->given([$this->getKampOrVakantieCreationEvent()])
-            ->when(fn(Event $event) => $event->updateType($concertType))
+            ->when(fn (Event $event) => $event->updateType($concertType))
             ->then([new TypeUpdated(self::EVENT_ID, $concertType)]);
     }
 
@@ -2627,7 +2626,7 @@ class EventTest extends AggregateRootScenarioTestCase
                     new MultipleSubEventsCalendar(new SubEvents($subEvent1, $subEvent2))
                 ),
             ])
-            ->when(fn(Event $event) => $event->updateType($concertType))
+            ->when(fn (Event $event) => $event->updateType($concertType))
             ->then([
                 new TypeUpdated(self::EVENT_ID, $concertType),
                 new CalendarUpdated(
