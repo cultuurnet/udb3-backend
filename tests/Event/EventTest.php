@@ -94,6 +94,9 @@ class EventTest extends AggregateRootScenarioTestCase
     public const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
     public const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
+    private const EVENT_ID = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+    private const LOCATION_ID = '322d67b6-e84d-4649-9384-12ecad74eab3';
+
     protected function getAggregateRootClass(): string
     {
         return Event::class;
@@ -118,11 +121,11 @@ class EventTest extends AggregateRootScenarioTestCase
     private function getCreationEvent(): EventCreated
     {
         return new EventCreated(
-            'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+            self::EVENT_ID,
             new Language('en'),
             'some representative title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
-            new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
+            new LocationId(self::LOCATION_ID),
             new PermanentCalendar(new OpeningHours())
         );
     }
@@ -2448,9 +2451,6 @@ class EventTest extends AggregateRootScenarioTestCase
     // overnight
     // -------------------------------------------------------------------------
 
-    private const EVENT_ID = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-    private const LOCATION_ID = '322d67b6-e84d-4649-9384-12ecad74eab3';
-
     private function getKampOrVakantieCreationEvent(): EventCreated
     {
         return new EventCreated(
@@ -2458,7 +2458,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Language('nl'),
             'Zomerkamp',
             new Category(
-                new CategoryID(EventTypeResolver::KAMP_OF_VAKANTIE_TERM_ID),
+                new CategoryID(EventTypeResolver::CAMP_UUID),
                 new CategoryLabel('Kamp of vakantie'),
                 CategoryDomain::eventType()
             ),
@@ -2514,7 +2514,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_sub_events(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::KAMP_OF_VAKANTIE_TERM_ID);
+        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_UUID);
 
         // Set a single-subEvent calendar first (event is created with PermanentCalendar by default)
         $dateRange = new DateRange(
@@ -2531,7 +2531,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_calendar(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::KAMP_OF_VAKANTIE_TERM_ID);
+        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_UUID);
 
         $this->event->updateCalendar(
             new SingleSubEventCalendar(

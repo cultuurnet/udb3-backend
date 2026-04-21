@@ -416,22 +416,14 @@ final class Event extends Offer
                 $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareToApply);
             }
 
-            // null = not mentioned (preserve existing), true/false = explicit update
-            $overnight = $subEventUpdate->getOvernight() ?? $subEvent->isOvernight();
-            $updatedSubEvent = $updatedSubEvent->withOvernight($overnight);
+            $updatedSubEvent = $updatedSubEvent->withOvernight($subEventUpdate->getOvernight() ?? $subEvent->isOvernight());
 
             $subEvents[$index] = $updatedSubEvent;
         }
 
         $this->assertOvernightAllowed($subEvents);
 
-        if ($this->calendar->getType()->sameAs(CalendarType::single())) {
-            $updatedCalendar = new SingleSubEventCalendar($subEvents[0]);
-        } else {
-            $updatedCalendar = new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
-        }
-
-        $updatedCalendar = $updatedCalendar->withBookingAvailability($this->calendar->getBookingAvailability());
+        $updatedCalendar = $this->rebuildCalendarFromSubEvents($subEvents);
 
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(
@@ -451,13 +443,13 @@ final class Event extends Offer
 
     public function updateType(Category $category): void
     {
-        $wasKampOrVakantie = $this->typeId === EventTypeResolver::KAMP_OF_VAKANTIE_TERM_ID;
+        $wasCamp = $this->typeId === EventTypeResolver::CAMP_UUID;
 
         parent::updateType($category);
 
-        $isNowKampOrVakantie = $category->getId()->toString() === EventTypeResolver::KAMP_OF_VAKANTIE_TERM_ID;
+        $isNowCamp = $category->getId()->toString() === EventTypeResolver::CAMP_UUID;
 
-        if ($wasKampOrVakantie && !$isNowKampOrVakantie && $this->calendar instanceof CalendarWithSubEvents) {
+        if ($wasCamp && !$isNowCamp && $this->calendar instanceof CalendarWithSubEvents) {
             $subEvents = $this->calendar->getSubEvents()->toArray();
 
             $hasOvernight = false;
@@ -470,16 +462,7 @@ final class Event extends Offer
 
             if ($hasOvernight) {
                 $resetSubEvents = array_map(fn (SubEvent $se) => $se->withOvernight(false), $subEvents);
-
-                if ($this->calendar->getType()->sameAs(CalendarType::single())) {
-                    $updatedCalendar = new SingleSubEventCalendar($resetSubEvents[0]);
-                } else {
-                    $updatedCalendar = new MultipleSubEventsCalendar(new SubEvents(...$resetSubEvents));
-                }
-
-                $updatedCalendar = $updatedCalendar->withBookingAvailability($this->calendar->getBookingAvailability());
-
-                $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
+                $this->apply(new CalendarUpdated($this->eventId, $this->rebuildCalendarFromSubEvents($resetSubEvents)));
             }
         }
     }
@@ -487,16 +470,28 @@ final class Event extends Offer
     /**
      * @param SubEvent[] $subEvents
      */
+    private function rebuildCalendarFromSubEvents(array $subEvents): Calendar
+    {
+        $calendar = $this->calendar->getType()->sameAs(CalendarType::single())
+            ? new SingleSubEventCalendar($subEvents[0])
+            : new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
+
+        return $calendar->withBookingAvailability($this->calendar->getBookingAvailability());
+    }
+
+    /**
+     * @param SubEvent[] $subEvents
+     */
     private function assertOvernightAllowed(array $subEvents): void
     {
-        if ($this->typeId === EventTypeResolver::KAMP_OF_VAKANTIE_TERM_ID) {
+        if ($this->typeId === EventTypeResolver::CAMP_UUID) {
             return;
         }
 
         foreach ($subEvents as $subEvent) {
             if ($subEvent->isOvernight()) {
                 throw new \InvalidArgumentException(
-                    'overnight is only allowed when the event has term ' . EventTypeResolver::KAMP_OF_VAKANTIE_TERM_ID
+                    'overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_UUID
                 );
             }
         }
