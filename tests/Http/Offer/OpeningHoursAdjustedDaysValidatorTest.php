@@ -378,29 +378,4 @@ final class OpeningHoursAdjustedDaysValidatorTest extends TestCase
         // Should skip bounds check gracefully - no errors
         $this->assertEmpty($errors);
     }
-
-    /**
-     * @test
-     */
-    public function it_rejects_entry_with_empty_opening_hours(): void
-    {
-        $data = (object)[
-            'calendarType' => 'periodic',
-            'startDate' => '2026-01-01T00:00:00+00:00',
-            'endDate' => '2026-12-31T23:59:59+00:00',
-            'openingHoursAdjustedDays' => [
-                (object)[
-                    'startDate' => '2026-12-21',
-                    'endDate' => '2026-12-26',
-                    'openingHours' => [],
-                ],
-            ],
-        ];
-
-        $errors = $this->validator->validate($data);
-
-        $this->assertNotEmpty($errors);
-        $this->assertSame('/openingHoursAdjustedDays/0/openingHours', $errors[0]->getJsonPointer());
-        $this->assertSame('openingHours must not be empty', $errors[0]->getError());
-    }
 }

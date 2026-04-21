@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Exception\EmptyOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Exception\StartDateAfterEndDate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use DateTimeImmutable;

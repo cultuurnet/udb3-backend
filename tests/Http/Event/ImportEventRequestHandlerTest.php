@@ -2880,11 +2880,11 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/openingHours/0/opens',
-                'The string should match pattern: ^\d?\d:\d\d$'
+                'The string should match pattern: ^([01]?\d|2[0-3]):[0-5]\d$'
             ),
             new SchemaError(
                 '/openingHours/0/closes',
-                'The string should match pattern: ^\d?\d:\d\d$'
+                'The string should match pattern: ^([01]?\d|2[0-3]):[0-5]\d$'
             ),
         ];
 
@@ -6751,7 +6751,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         return [
             'childcare_start_invalid_format' => [
                 'openingHour' => ['opens' => '09:00', 'closes' => '17:00', 'childcare' => ['start' => '8:0'], 'dayOfWeek' => ['monday']],
-                'expectedErrors' => [new SchemaError('/openingHours/0/childcare/start', 'The string should match pattern: ^\d?\d:\d\d$')],
+                'expectedErrors' => [new SchemaError('/openingHours/0/childcare/start', 'The string should match pattern: ^([01]?\d|2[0-3]):[0-5]\d$')],
             ],
             'childcare_start_equals_opens' => [
                 'openingHour' => ['opens' => '09:00', 'closes' => '17:00', 'childcare' => ['start' => '09:00', 'end' => '18:00'], 'dayOfWeek' => ['monday']],

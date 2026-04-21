@@ -1188,7 +1188,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/openingHours/0/opens', 'The data (integer) must match the type: string'),
-                    new SchemaError('/openingHours/0/closes', 'The string should match pattern: ^\d?\d:\d\d$'),
+                    new SchemaError('/openingHours/0/closes', 'The string should match pattern: ^([01]?\d|2[0-3]):[0-5]\d$'),
                     new SchemaError('/openingHours/0/dayOfWeek', 'The data (string) must match the type: array'),
                 ],
             ],
@@ -1246,7 +1246,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/openingHours/0/childcare/start', 'The string should match pattern: ^\d?\d:\d\d$'),
+                    new SchemaError('/openingHours/0/childcare/start', 'The string should match pattern: ^([01]?\d|2[0-3]):[0-5]\d$'),
                 ],
             ],
             'periodic_childcare_end_wrong_type' => [
@@ -1713,7 +1713,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/openingHoursAdjustedDays/0/openingHours/0/opens', 'Invalid time format (hh:mm)'),
+                    new SchemaError('/openingHoursAdjustedDays/0/openingHours/0/opens', 'The string should match pattern: ^([01]?\d|2[0-3]):[0-5]\d$'),
                 ],
             ],
             'periodic_adjusted_opening_hours_invalid_closes_time' => [
@@ -1736,7 +1736,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/openingHoursAdjustedDays/0/openingHours/0/closes', 'Invalid time format (hh:mm)'),
+                    new SchemaError('/openingHoursAdjustedDays/0/openingHours/0/closes', 'The string should match pattern: ^([01]?\d|2[0-3]):[0-5]\d$'),
                 ],
             ],
             'periodic_adjusted_opening_hours_description_too_long' => [
@@ -2141,7 +2141,7 @@ class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/openingHours/0/opens', 'The data (integer) must match the type: string'),
-                    new SchemaError('/openingHours/0/closes', 'The string should match pattern: ^\d?\d:\d\d$'),
+                    new SchemaError('/openingHours/0/closes', 'The string should match pattern: ^([01]?\d|2[0-3]):[0-5]\d$'),
                     new SchemaError('/openingHours/0/dayOfWeek', 'The data (string) must match the type: array'),
                 ],
             ],

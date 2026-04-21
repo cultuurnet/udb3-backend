@@ -865,7 +865,7 @@ class CopyEventRequestHandlerTest extends TestCase
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/openingHours/0/opens', 'The data (integer) must match the type: string'),
-                    new SchemaError('/openingHours/0/closes', 'The string should match pattern: ^\d?\d:\d\d$'),
+                    new SchemaError('/openingHours/0/closes', 'The string should match pattern: ^([01]?\d|2[0-3]):[0-5]\d$'),
                     new SchemaError('/openingHours/0/dayOfWeek', 'The data (string) must match the type: array'),
                 ],
             ],

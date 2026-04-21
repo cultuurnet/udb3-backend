@@ -87,19 +87,4 @@ final class AdjustedDayTest extends TestCase
             )
         );
     }
-
-    /**
-     * @test
-     */
-    public function it_throws_when_opening_hours_is_empty(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('openingHours must not be empty');
-
-        new AdjustedDay(
-            new DateTimeImmutable('2026-12-21'),
-            new DateTimeImmutable('2026-12-26'),
-            new OpeningHours()
-        );
-    }
 }
