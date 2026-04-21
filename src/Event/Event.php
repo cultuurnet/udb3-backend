@@ -58,6 +58,7 @@ use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
+use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
@@ -416,8 +417,14 @@ final class Event extends Offer
                 $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareToApply);
             }
 
+            // null = not mentioned (preserve existing), true/false = explicit update
+            $overnight = $subEventUpdate->getOvernight() ?? $subEvent->isOvernight();
+            $updatedSubEvent = $updatedSubEvent->withOvernight($overnight);
+
             $subEvents[$index] = $updatedSubEvent;
         }
+
+        $this->assertOvernightAllowed($subEvents);
 
         if ($this->calendar->getType()->sameAs(CalendarType::single())) {
             $updatedCalendar = new SingleSubEventCalendar($subEvents[0]);
@@ -431,6 +438,68 @@ final class Event extends Offer
             $this->apply(
                 new CalendarUpdated($this->eventId, $updatedCalendar)
             );
+        }
+    }
+
+    public function updateCalendar(Calendar $calendar): void
+    {
+        if ($calendar instanceof CalendarWithSubEvents) {
+            $this->assertOvernightAllowed($calendar->getSubEvents()->toArray());
+        }
+
+        parent::updateCalendar($calendar);
+    }
+
+    public function updateType(Category $category): void
+    {
+        $wasKampOrVakantie = $this->typeId === EventTypeResolver::KAMP_OF_VAKANTIE_TERM_ID;
+
+        parent::updateType($category);
+
+        $isNowKampOrVakantie = $category->getId()->toString() === EventTypeResolver::KAMP_OF_VAKANTIE_TERM_ID;
+
+        if ($wasKampOrVakantie && !$isNowKampOrVakantie && $this->calendar instanceof CalendarWithSubEvents) {
+            $subEvents = $this->calendar->getSubEvents()->toArray();
+
+            $hasOvernight = false;
+            foreach ($subEvents as $subEvent) {
+                if ($subEvent->isOvernight()) {
+                    $hasOvernight = true;
+                    break;
+                }
+            }
+
+            if ($hasOvernight) {
+                $resetSubEvents = array_map(fn(SubEvent $se) => $se->withOvernight(false), $subEvents);
+
+                if ($this->calendar->getType()->sameAs(CalendarType::single())) {
+                    $updatedCalendar = new SingleSubEventCalendar($resetSubEvents[0]);
+                } else {
+                    $updatedCalendar = new MultipleSubEventsCalendar(new SubEvents(...$resetSubEvents));
+                }
+
+                $updatedCalendar = $updatedCalendar->withBookingAvailability($this->calendar->getBookingAvailability());
+
+                $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
+            }
+        }
+    }
+
+    /**
+     * @param SubEvent[] $subEvents
+     */
+    private function assertOvernightAllowed(array $subEvents): void
+    {
+        if ($this->typeId === EventTypeResolver::KAMP_OF_VAKANTIE_TERM_ID) {
+            return;
+        }
+
+        foreach ($subEvents as $subEvent) {
+            if ($subEvent->isOvernight()) {
+                throw new \InvalidArgumentException(
+                    'overnight is only allowed when the event has term ' . EventTypeResolver::KAMP_OF_VAKANTIE_TERM_ID
+                );
+            }
         }
     }
 
