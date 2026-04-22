@@ -449,20 +449,8 @@ final class Event extends Offer
         parent::updateType($category);
 
         if ($this->calendar instanceof CalendarWithSubEvents && $wasCamp && $this->typeId !== EventTypeResolver::CAMP_OR_VACATION_TERM_ID) {
-            $subEvents = $this->calendar->getSubEvents()->toArray();
-
-            $hasOvernight = false;
-            foreach ($subEvents as $subEvent) {
-                if ($subEvent->isOvernight()) {
-                    $hasOvernight = true;
-                    break;
-                }
-            }
-
-            if ($hasOvernight) {
-                $resetSubEvents = array_map(fn (SubEvent $se) => $se->withOvernight(false), $subEvents);
-                $this->apply(new CalendarUpdated($this->eventId, $this->rebuildCalendarFromSubEvents($resetSubEvents)));
-            }
+            $resetSubEvents = $this->calendar->getSubEvents()->withoutOvernight()->toArray();
+            $this->apply(new CalendarUpdated($this->eventId, $this->rebuildCalendarFromSubEvents($resetSubEvents)));
         }
     }
 
