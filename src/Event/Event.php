@@ -448,9 +448,7 @@ final class Event extends Offer
 
         parent::updateType($category);
 
-        $isNowCamp = $category->getId()->toString() === EventTypeResolver::CAMP_TERM_ID;
-
-        if ($wasCamp && !$isNowCamp && $this->calendar instanceof CalendarWithSubEvents) {
+        if ($this->calendar instanceof CalendarWithSubEvents && $wasCamp && !($category->getId()->toString() === EventTypeResolver::CAMP_TERM_ID)) {
             $subEvents = $this->calendar->getSubEvents()->toArray();
 
             $hasOvernight = false;
