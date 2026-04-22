@@ -2458,7 +2458,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Language('nl'),
             'Zomerkamp',
             new Category(
-                new CategoryID(EventTypeResolver::CAMP_UUID),
+                new CategoryID(EventTypeResolver::CAMP_TERM_ID),
                 new CategoryLabel('Kamp of vakantie'),
                 CategoryDomain::eventType()
             ),
@@ -2514,7 +2514,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_sub_events(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_UUID);
+        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_TERM_ID);
 
         // Set a single-subEvent calendar first (event is created with PermanentCalendar by default)
         $dateRange = new DateRange(
@@ -2531,7 +2531,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_calendar(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_UUID);
+        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_TERM_ID);
 
         $this->event->updateCalendar(
             new SingleSubEventCalendar(
