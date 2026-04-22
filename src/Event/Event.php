@@ -444,7 +444,7 @@ final class Event extends Offer
 
     public function updateType(Category $category): void
     {
-        $wasCamp = $this->typeId === EventTypeResolver::CAMP_OR_VACATION_TERM_ID;
+        $wasCamp = EventTypeResolver::isOvernightAllowed($this->typeId);
 
         parent::updateType($category);
 
@@ -483,7 +483,7 @@ final class Event extends Offer
      */
     private function assertOvernightAllowed(array $subEvents): void
     {
-        if ($this->typeId === EventTypeResolver::CAMP_OR_VACATION_TERM_ID) {
+        if (EventTypeResolver::isOvernightAllowed($this->typeId)) {
             return;
         }
 
