@@ -133,7 +133,7 @@ class EventTest extends AggregateRootScenarioTestCase
     private function getCreationEventWithTheme(): EventCreated
     {
         return new EventCreated(
-            'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+            self::EVENT_ID,
             new Language('en'),
             'some representative title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
@@ -2447,10 +2447,6 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([new DeparturePlacesUpdated($eventId, $departurePlaces)]);
     }
 
-    // -------------------------------------------------------------------------
-    // overnight
-    // -------------------------------------------------------------------------
-
     private function getKampOrVakantieCreationEvent(): EventCreated
     {
         return new EventCreated(
@@ -2504,6 +2500,36 @@ class EventTest extends AggregateRootScenarioTestCase
                 new CalendarUpdated(
                     self::EVENT_ID,
                     new SingleSubEventCalendar($subEventWithOvernight->withStatus($unavailable))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_explicitly_set_overnight_to_false_via_update_sub_events(): void
+    {
+        $subEventWithOvernight = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withOvernight(true);
+
+        $this->scenario
+            ->given([
+                $this->getKampOrVakantieCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernight)),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withOvernight(false)
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($subEventWithOvernight->withOvernight(false))
                 ),
             ]);
     }
