@@ -105,6 +105,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use DateTimeInterface;
+use InvalidArgumentException;
 
 final class Event extends Offer
 {
@@ -490,7 +491,7 @@ final class Event extends Offer
 
         foreach ($subEvents as $subEvent) {
             if ($subEvent->isOvernight()) {
-                throw new \InvalidArgumentException(
+                throw new InvalidArgumentException(
                     'overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_TERM_ID
                 );
             }
