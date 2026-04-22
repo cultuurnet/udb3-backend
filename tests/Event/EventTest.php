@@ -2454,7 +2454,7 @@ class EventTest extends AggregateRootScenarioTestCase
             new Language('nl'),
             'Zomerkamp',
             new Category(
-                new CategoryID(EventTypeResolver::CAMP_TERM_ID),
+                new CategoryID(EventTypeResolver::CAMP_OR_VACATION_TERM_ID),
                 new CategoryLabel('Kamp of vakantie'),
                 CategoryDomain::eventType()
             ),
@@ -2540,7 +2540,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_sub_events(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_TERM_ID);
+        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_OR_VACATION_TERM_ID);
 
         // Set a single-subEvent calendar first (event is created with PermanentCalendar by default)
         $dateRange = new DateRange(
@@ -2557,7 +2557,7 @@ class EventTest extends AggregateRootScenarioTestCase
     public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_calendar(): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_TERM_ID);
+        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_OR_VACATION_TERM_ID);
 
         $this->event->updateCalendar(
             new SingleSubEventCalendar(
@@ -2569,6 +2569,26 @@ class EventTest extends AggregateRootScenarioTestCase
                 )->withOvernight(true)
             )
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_overnight_on_update_calendar_when_event_has_kamp_of_vakantie_term(): void
+    {
+        $subEventWithOvernight = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withOvernight(true);
+
+        $calendar = new SingleSubEventCalendar($subEventWithOvernight);
+
+        $this->scenario
+            ->given([$this->getKampOrVakantieCreationEvent()])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([new CalendarUpdated(self::EVENT_ID, $calendar)]);
     }
 
     /**
