@@ -873,4 +873,75 @@ final class CalendarDenormalizerTest extends TestCase
         $this->assertEquals('2024-12-25', $adjustedDays[0]->getStartDate()->format('Y-m-d'));
         $this->assertEquals('2024-12-31', $adjustedDays[1]->getStartDate()->format('Y-m-d'));
     }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_single_calendar_with_overnight_true(): void
+    {
+        $data = [
+            'calendarType' => 'single',
+            'subEvent' => [
+                [
+                    'startDate' => '2026-07-01T09:00:00+02:00',
+                    'endDate' => '2026-07-05T17:00:00+02:00',
+                    'overnight' => true,
+                ],
+            ],
+        ];
+
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(SingleSubEventCalendar::class, $result);
+        $this->assertTrue($result->getSubEvents()->toArray()[0]->isOvernight());
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_set_overnight_when_key_is_absent(): void
+    {
+        $data = [
+            'calendarType' => 'single',
+            'subEvent' => [
+                [
+                    'startDate' => '2026-07-01T09:00:00+02:00',
+                    'endDate' => '2026-07-05T17:00:00+02:00',
+                ],
+            ],
+        ];
+
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(SingleSubEventCalendar::class, $result);
+        $this->assertFalse($result->getSubEvents()->toArray()[0]->isOvernight());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_multiple_calendar_with_overnight_on_one_sub_event(): void
+    {
+        $data = [
+            'calendarType' => 'multiple',
+            'subEvent' => [
+                [
+                    'startDate' => '2026-07-01T09:00:00+02:00',
+                    'endDate' => '2026-07-05T17:00:00+02:00',
+                    'overnight' => true,
+                ],
+                [
+                    'startDate' => '2026-07-10T09:00:00+02:00',
+                    'endDate' => '2026-07-14T17:00:00+02:00',
+                ],
+            ],
+        ];
+
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(MultipleSubEventsCalendar::class, $result);
+        $subEvents = $result->getSubEvents()->toArray();
+        $this->assertTrue($subEvents[0]->isOvernight());
+        $this->assertFalse($subEvents[1]->isOvernight());
+    }
 }
