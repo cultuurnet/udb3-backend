@@ -955,6 +955,29 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                     )
                 ),
             ],
+            'single_with_overnight_false' => [
+                'data' => (object)[
+                    'calendarType' => 'single',
+                    'subEvent' => [
+                        (object)[
+                            'startDate' => '2026-07-01T09:00:00+02:00',
+                            'endDate' => '2026-07-05T17:00:00+02:00',
+                            'overnight' => false,
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2026-07-01T09:00:00+02:00'),
+                                DateTimeFactory::fromAtom('2026-07-05T17:00:00+02:00')
+                            )
+                        )
+                    )
+                ),
+            ],
             'single_with_overnight_true' => [
                 'data' => (object)[
                     'calendarType' => 'single',
