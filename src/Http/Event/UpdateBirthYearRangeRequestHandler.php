@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdateTypicalBirthYearRange;
+use CultuurNet\UDB3\Event\Commands\UpdateBirthYearRange;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -19,7 +19,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class UpdateTypicalBirthYearRangeRequestHandler implements RequestHandlerInterface
+final class UpdateBirthYearRangeRequestHandler implements RequestHandlerInterface
 {
     public function __construct(private readonly CommandBus $commandBus)
     {
@@ -31,7 +31,7 @@ final class UpdateTypicalBirthYearRangeRequestHandler implements RequestHandlerI
         $eventId = $routeParameters->getEventId();
 
         $parser = RequestBodyParserFactory::createBaseParser(
-            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_TYPICAL_BIRTH_YEAR_RANGE_PUT),
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_BIRTH_YEAR_RANGE_PUT),
         );
 
         /** @var object $data */
@@ -49,7 +49,7 @@ final class UpdateTypicalBirthYearRangeRequestHandler implements RequestHandlerI
             );
         }
 
-        $this->commandBus->dispatch(new UpdateTypicalBirthYearRange($eventId, $birthYearRange));
+        $this->commandBus->dispatch(new UpdateBirthYearRange($eventId, $birthYearRange));
 
         return new NoContentResponse();
     }

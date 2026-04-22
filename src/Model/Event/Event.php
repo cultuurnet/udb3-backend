@@ -27,5 +27,5 @@ interface Event extends Offer
 
     public function getDeparturePlaces(): Urls;
 
-    public function getTypicalBirthYearRange(): ?BirthYearRange;
+    public function getBirthYearRange(): ?BirthYearRange;
 }

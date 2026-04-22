@@ -8,11 +8,11 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Event\Commands\DeleteTypicalBirthYearRange;
+use CultuurNet\UDB3\Event\Commands\DeleteBirthYearRange;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\EventCreated;
-use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeDeleted;
-use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeUpdated;
+use CultuurNet\UDB3\Event\Events\BirthYearRangeDeleted;
+use CultuurNet\UDB3\Event\Events\BirthYearRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
@@ -23,17 +23,17 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 
-final class DeleteTypicalBirthYearRangeHandlerTest extends CommandHandlerScenarioTestCase
+final class DeleteBirthYearRangeHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
-        return new DeleteTypicalBirthYearRangeHandler(new EventRepository($eventStore, $eventBus));
+        return new DeleteBirthYearRangeHandler(new EventRepository($eventStore, $eventBus));
     }
 
     /**
      * @test
      */
-    public function it_handles_deleting_typical_birth_year_range(): void
+    public function it_handles_deleting_birth_year_range(): void
     {
         $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
         $birthYearRange = new BirthYearRange(2014, 2020);
@@ -42,10 +42,10 @@ final class DeleteTypicalBirthYearRangeHandlerTest extends CommandHandlerScenari
             ->withAggregateId($eventId)
             ->given([
                 $this->getEventCreated($eventId),
-                new TypicalBirthYearRangeUpdated($eventId, $birthYearRange),
+                new BirthYearRangeUpdated($eventId, $birthYearRange),
             ])
-            ->when(new DeleteTypicalBirthYearRange($eventId))
-            ->then([new TypicalBirthYearRangeDeleted($eventId)]);
+            ->when(new DeleteBirthYearRange($eventId))
+            ->then([new BirthYearRangeDeleted($eventId)]);
     }
 
     /**
@@ -58,7 +58,7 @@ final class DeleteTypicalBirthYearRangeHandlerTest extends CommandHandlerScenari
         $this->scenario
             ->withAggregateId($eventId)
             ->given([$this->getEventCreated($eventId)])
-            ->when(new DeleteTypicalBirthYearRange($eventId))
+            ->when(new DeleteBirthYearRange($eventId))
             ->then([]);
     }
 

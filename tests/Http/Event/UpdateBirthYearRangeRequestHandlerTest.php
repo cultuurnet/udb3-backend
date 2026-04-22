@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdateTypicalBirthYearRange;
+use CultuurNet\UDB3\Event\Commands\UpdateBirthYearRange;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
 use PHPUnit\Framework\TestCase;
 
-final class UpdateTypicalBirthYearRangeRequestHandlerTest extends TestCase
+final class UpdateBirthYearRangeRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
@@ -21,14 +21,14 @@ final class UpdateTypicalBirthYearRangeRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    private UpdateTypicalBirthYearRangeRequestHandler $handler;
+    private UpdateBirthYearRangeRequestHandler $handler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
-        $this->handler = new UpdateTypicalBirthYearRangeRequestHandler($this->commandBus);
+        $this->handler = new UpdateBirthYearRangeRequestHandler($this->commandBus);
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
         $this->commandBus->record();
     }
@@ -36,7 +36,7 @@ final class UpdateTypicalBirthYearRangeRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_dispatches_update_typical_birth_year_range(): void
+    public function it_dispatches_update_birth_year_range(): void
     {
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
@@ -47,7 +47,7 @@ final class UpdateTypicalBirthYearRangeRequestHandlerTest extends TestCase
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
-            [new UpdateTypicalBirthYearRange(self::EVENT_ID, new BirthYearRange(2014, 2020))],
+            [new UpdateBirthYearRange(self::EVENT_ID, new BirthYearRange(2014, 2020))],
             $this->commandBus->getRecordedCommands()
         );
     }
@@ -66,7 +66,7 @@ final class UpdateTypicalBirthYearRangeRequestHandlerTest extends TestCase
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
-            [new UpdateTypicalBirthYearRange(self::EVENT_ID, new BirthYearRange(2014, 2014))],
+            [new UpdateBirthYearRange(self::EVENT_ID, new BirthYearRange(2014, 2014))],
             $this->commandBus->getRecordedCommands()
         );
     }

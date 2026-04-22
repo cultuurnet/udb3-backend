@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event\Events;
 
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
 use PHPUnit\Framework\TestCase;
 
-class TypicalBirthYearRangeDeletedTest extends TestCase
+class BirthYearRangeUpdatedTest extends TestCase
 {
     /**
      * @test
@@ -14,11 +15,11 @@ class TypicalBirthYearRangeDeletedTest extends TestCase
      */
     public function it_can_be_serialized_into_an_array(
         array $expectedSerializedValue,
-        TypicalBirthYearRangeDeleted $typicalBirthYearRangeDeleted
+        BirthYearRangeUpdated $birthYearRangeUpdated
     ): void {
         $this->assertEquals(
             $expectedSerializedValue,
-            $typicalBirthYearRangeDeleted->serialize()
+            $birthYearRangeUpdated->serialize()
         );
     }
 
@@ -28,23 +29,25 @@ class TypicalBirthYearRangeDeletedTest extends TestCase
      */
     public function it_can_be_deserialized_from_an_array(
         array $serializedValue,
-        TypicalBirthYearRangeDeleted $expectedTypicalBirthYearRangeDeleted
+        BirthYearRangeUpdated $expectedBirthYearRangeUpdated
     ): void {
         $this->assertEquals(
-            $expectedTypicalBirthYearRangeDeleted,
-            TypicalBirthYearRangeDeleted::deserialize($serializedValue)
+            $expectedBirthYearRangeUpdated,
+            BirthYearRangeUpdated::deserialize($serializedValue)
         );
     }
 
     public function serializationDataProvider(): array
     {
         return [
-            'typical birth year range' => [
+            'birth year range' => [
                 [
                     'item_id' => 'foo',
+                    'birthYearRange' => '2014-2020',
                 ],
-                new TypicalBirthYearRangeDeleted(
-                    'foo'
+                new BirthYearRangeUpdated(
+                    'foo',
+                    new BirthYearRange(2014, 2020)
                 ),
             ],
         ];

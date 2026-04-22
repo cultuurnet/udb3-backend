@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
-final class TypicalBirthYearRangeDeleted extends AbstractEvent
+final class BirthYearRangeDeleted extends AbstractEvent
 {
     public function __construct(string $itemId)
     {

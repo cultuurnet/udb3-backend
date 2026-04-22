@@ -32,8 +32,8 @@ use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeDeleted;
-use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeUpdated;
+use CultuurNet\UDB3\Event\Events\BirthYearRangeDeleted;
+use CultuurNet\UDB3\Event\Events\BirthYearRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -2444,21 +2444,21 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_update_typical_birth_year_range(): void
+    public function it_can_update_birth_year_range(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $birthYearRange = new BirthYearRange(2014, 2020);
 
         $this->scenario
             ->given([$this->getCreationEvent()])
-            ->when(fn (Event $event) => $event->updateTypicalBirthYearRange($birthYearRange))
-            ->then([new TypicalBirthYearRangeUpdated($eventId, $birthYearRange)]);
+            ->when(fn (Event $event) => $event->updateBirthYearRange($birthYearRange))
+            ->then([new BirthYearRangeUpdated($eventId, $birthYearRange)]);
     }
 
     /**
      * @test
      */
-    public function it_can_update_an_existing_typical_birth_year_range(): void
+    public function it_can_update_an_existing_birth_year_range(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $original = new BirthYearRange(2014, 2020);
@@ -2467,16 +2467,16 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new TypicalBirthYearRangeUpdated($eventId, $original),
+                new BirthYearRangeUpdated($eventId, $original),
             ])
-            ->when(fn (Event $event) => $event->updateTypicalBirthYearRange($updated))
-            ->then([new TypicalBirthYearRangeUpdated($eventId, $updated)]);
+            ->when(fn (Event $event) => $event->updateBirthYearRange($updated))
+            ->then([new BirthYearRangeUpdated($eventId, $updated)]);
     }
 
     /**
      * @test
      */
-    public function it_does_not_update_typical_birth_year_range_when_unchanged(): void
+    public function it_does_not_update_birth_year_range_when_unchanged(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $birthYearRange = new BirthYearRange(2014, 2020);
@@ -2484,16 +2484,16 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new TypicalBirthYearRangeUpdated($eventId, $birthYearRange),
+                new BirthYearRangeUpdated($eventId, $birthYearRange),
             ])
-            ->when(fn (Event $event) => $event->updateTypicalBirthYearRange($birthYearRange))
+            ->when(fn (Event $event) => $event->updateBirthYearRange($birthYearRange))
             ->then([]);
     }
 
     /**
      * @test
      */
-    public function it_can_delete_typical_birth_year_range(): void
+    public function it_can_delete_birth_year_range(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
         $birthYearRange = new BirthYearRange(2014, 2020);
@@ -2501,20 +2501,20 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new TypicalBirthYearRangeUpdated($eventId, $birthYearRange),
+                new BirthYearRangeUpdated($eventId, $birthYearRange),
             ])
-            ->when(fn (Event $event) => $event->deleteTypicalBirthYearRange())
-            ->then([new TypicalBirthYearRangeDeleted($eventId)]);
+            ->when(fn (Event $event) => $event->deleteBirthYearRange())
+            ->then([new BirthYearRangeDeleted($eventId)]);
     }
 
     /**
      * @test
      */
-    public function it_does_not_delete_typical_birth_year_range_when_not_set(): void
+    public function it_does_not_delete_birth_year_range_when_not_set(): void
     {
         $this->scenario
             ->given([$this->getCreationEvent()])
-            ->when(fn (Event $event) => $event->deleteTypicalBirthYearRange())
+            ->when(fn (Event $event) => $event->deleteBirthYearRange())
             ->then([]);
     }
 

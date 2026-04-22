@@ -58,8 +58,8 @@ use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeDeleted;
-use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeUpdated;
+use CultuurNet\UDB3\Event\Events\BirthYearRangeDeleted;
+use CultuurNet\UDB3\Event\Events\BirthYearRangeUpdated;
 use CultuurNet\UDB3\Event\Events\VideoAdded;
 use CultuurNet\UDB3\Event\Events\VideoDeleted;
 use CultuurNet\UDB3\Event\Events\VideoUpdated;
@@ -603,22 +603,22 @@ final class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
-    protected function applyTypicalBirthYearRangeUpdated(TypicalBirthYearRangeUpdated $typicalBirthYearRangeUpdated): JsonDocument
+    protected function applyBirthYearRangeUpdated(BirthYearRangeUpdated $birthYearRangeUpdated): JsonDocument
     {
-        $document = $this->loadDocumentFromRepository($typicalBirthYearRangeUpdated);
+        $document = $this->loadDocumentFromRepository($birthYearRangeUpdated);
         $jsonLD = $document->getBody();
 
-        $jsonLD->typicalBirthYearRange = $typicalBirthYearRangeUpdated->typicalBirthYearRange->toString();
+        $jsonLD->birthYearRange = $birthYearRangeUpdated->birthYearRange->toString();
 
         return $document->withBody($jsonLD);
     }
 
-    protected function applyTypicalBirthYearRangeDeleted(TypicalBirthYearRangeDeleted $typicalBirthYearRangeDeleted): JsonDocument
+    protected function applyBirthYearRangeDeleted(BirthYearRangeDeleted $birthYearRangeDeleted): JsonDocument
     {
-        $document = $this->loadDocumentFromRepository($typicalBirthYearRangeDeleted);
+        $document = $this->loadDocumentFromRepository($birthYearRangeDeleted);
         $jsonLD = $document->getBody();
 
-        unset($jsonLD->typicalBirthYearRange);
+        unset($jsonLD->birthYearRange);
 
         return $document->withBody($jsonLD);
     }

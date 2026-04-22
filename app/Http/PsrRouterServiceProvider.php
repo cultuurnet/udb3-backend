@@ -17,9 +17,9 @@ use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
-use CultuurNet\UDB3\Http\Event\DeleteTypicalBirthYearRangeRequestHandler;
+use CultuurNet\UDB3\Http\Event\DeleteBirthYearRangeRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateDeparturePlacesRequestHandler;
-use CultuurNet\UDB3\Http\Event\UpdateTypicalBirthYearRangeRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateBirthYearRangeRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateFaqsRequestHandler;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAttendanceModeRequestHandler;
@@ -522,8 +522,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->post('{eventId}/copies/', CopyEventRequestHandler::class);
             $routeGroup->put('{eventId}/faqs/', UpdateFaqsRequestHandler::class);
             $routeGroup->put('{eventId}/departurePlaces/', UpdateDeparturePlacesRequestHandler::class);
-            $routeGroup->put('{eventId}/typicalBirthYearRange/', UpdateTypicalBirthYearRangeRequestHandler::class);
-            $routeGroup->delete('{eventId}/typicalBirthYearRange/', DeleteTypicalBirthYearRangeRequestHandler::class);
+            $routeGroup->put('{eventId}/birthYearRange/', UpdateBirthYearRangeRequestHandler::class);
+            $routeGroup->delete('{eventId}/birthYearRange/', DeleteBirthYearRangeRequestHandler::class);
 
             /**
              * Legacy routes that we need to keep for backward compatibility.

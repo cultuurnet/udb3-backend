@@ -23,7 +23,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
-use CultuurNet\UDB3\Event\Commands\UpdateTypicalBirthYearRange;
+use CultuurNet\UDB3\Event\Commands\UpdateBirthYearRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
@@ -282,8 +282,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $commands[] = new UpdateFaqs($eventId, $event->getFaq());
         $commands[] = new UpdateDeparturePlaces($eventId, $event->getDeparturePlaces());
 
-        if ($event->getTypicalBirthYearRange() !== null) {
-            $commands[] = new UpdateTypicalBirthYearRange($eventId, $event->getTypicalBirthYearRange());
+        if ($event->getBirthYearRange() !== null) {
+            $commands[] = new UpdateBirthYearRange($eventId, $event->getBirthYearRange());
         }
 
         if ($workflowStatus->sameAs(WorkflowStatus::DELETED())) {

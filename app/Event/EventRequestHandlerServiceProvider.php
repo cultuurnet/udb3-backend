@@ -11,10 +11,10 @@ use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeparturePlacesLimitLogger;
-use CultuurNet\UDB3\Http\Event\DeleteTypicalBirthYearRangeRequestHandler;
+use CultuurNet\UDB3\Http\Event\DeleteBirthYearRangeRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateDeparturePlacesRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateFaqsRequestHandler;
-use CultuurNet\UDB3\Http\Event\UpdateTypicalBirthYearRangeRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateBirthYearRangeRequestHandler;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\LegacyEventRequestBodyParser;
 use CultuurNet\UDB3\Http\Event\OnlineLocationPolyfillRequestBodyParser;
@@ -52,8 +52,8 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             UpdateAudienceRequestHandler::class,
             UpdateFaqsRequestHandler::class,
             UpdateDeparturePlacesRequestHandler::class,
-            UpdateTypicalBirthYearRangeRequestHandler::class,
-            DeleteTypicalBirthYearRangeRequestHandler::class,
+            UpdateBirthYearRangeRequestHandler::class,
+            DeleteBirthYearRangeRequestHandler::class,
             CopyEventRequestHandler::class,
             UpdateMajorInfoRequestHandler::class,
         ];
@@ -171,15 +171,15 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            UpdateTypicalBirthYearRangeRequestHandler::class,
-            fn () => new UpdateTypicalBirthYearRangeRequestHandler(
+            UpdateBirthYearRangeRequestHandler::class,
+            fn () => new UpdateBirthYearRangeRequestHandler(
                 $container->get('event_command_bus')
             )
         );
 
         $container->addShared(
-            DeleteTypicalBirthYearRangeRequestHandler::class,
-            fn () => new DeleteTypicalBirthYearRangeRequestHandler(
+            DeleteBirthYearRangeRequestHandler::class,
+            fn () => new DeleteBirthYearRangeRequestHandler(
                 $container->get('event_command_bus')
             )
         );

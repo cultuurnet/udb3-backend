@@ -33,7 +33,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
 
     private Urls $departurePlaces;
 
-    private ?BirthYearRange $typicalBirthYearRange = null;
+    private ?BirthYearRange $birthYearRange = null;
 
     public function __construct(
         Uuid $id,
@@ -132,15 +132,15 @@ class ImmutableEvent extends ImmutableOffer implements Event
         return $c;
     }
 
-    public function getTypicalBirthYearRange(): ?BirthYearRange
+    public function getBirthYearRange(): ?BirthYearRange
     {
-        return $this->typicalBirthYearRange;
+        return $this->birthYearRange;
     }
 
-    public function withTypicalBirthYearRange(BirthYearRange $typicalBirthYearRange): ImmutableEvent
+    public function withBirthYearRange(BirthYearRange $birthYearRange): ImmutableEvent
     {
         $c = clone $this;
-        $c->typicalBirthYearRange = $typicalBirthYearRange;
+        $c->birthYearRange = $birthYearRange;
         return $c;
     }
 

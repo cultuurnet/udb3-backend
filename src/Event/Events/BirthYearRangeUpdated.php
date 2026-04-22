@@ -7,9 +7,9 @@ namespace CultuurNet\UDB3\Event\Events;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
-final class TypicalBirthYearRangeUpdated extends AbstractEvent
+final class BirthYearRangeUpdated extends AbstractEvent
 {
-    public function __construct(string $itemId, public readonly BirthYearRange $typicalBirthYearRange)
+    public function __construct(string $itemId, public readonly BirthYearRange $birthYearRange)
     {
         parent::__construct($itemId);
     }
@@ -17,12 +17,12 @@ final class TypicalBirthYearRangeUpdated extends AbstractEvent
     public function serialize(): array
     {
         return parent::serialize() + [
-            'typicalBirthYearRange' => $this->typicalBirthYearRange->toString(),
+            'birthYearRange' => $this->birthYearRange->toString(),
         ];
     }
 
     public static function deserialize(array $data): self
     {
-        return new self($data['item_id'], BirthYearRange::fromString($data['typicalBirthYearRange']));
+        return new self($data['item_id'], BirthYearRange::fromString($data['birthYearRange']));
     }
 }

@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Event\Commands\DeleteTypicalBirthYearRange;
+use CultuurNet\UDB3\Event\Commands\DeleteBirthYearRange;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventRepository;
 
-final class DeleteTypicalBirthYearRangeHandler implements CommandHandler
+final class DeleteBirthYearRangeHandler implements CommandHandler
 {
     public function __construct(private readonly EventRepository $eventRepository)
     {
@@ -17,14 +17,14 @@ final class DeleteTypicalBirthYearRangeHandler implements CommandHandler
 
     public function handle($command): void
     {
-        if (!$command instanceof DeleteTypicalBirthYearRange) {
+        if (!$command instanceof DeleteBirthYearRange) {
             return;
         }
 
         /** @var Event $event */
         $event = $this->eventRepository->load($command->getItemId());
 
-        $event->deleteTypicalBirthYearRange();
+        $event->deleteBirthYearRange();
 
         $this->eventRepository->save($event);
     }

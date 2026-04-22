@@ -122,7 +122,7 @@ class EventDenormalizer extends OfferDenormalizer
         $offer = $this->denormalizeOnlineUrl($data, $offer);
         $offer = $this->denormalizeFaq($data, $offer);
         $offer = $this->denormalizeDeparturePlaces($data, $offer);
-        $offer = $this->denormalizeTypicalBirthYearRange($data, $offer);
+        $offer = $this->denormalizeBirthYearRange($data, $offer);
         return $this->denormalizeAudienceType($data, $offer);
     }
 
@@ -164,11 +164,11 @@ class EventDenormalizer extends OfferDenormalizer
         return $event;
     }
 
-    private function denormalizeTypicalBirthYearRange(array $data, ImmutableEvent $event): ImmutableEvent
+    private function denormalizeBirthYearRange(array $data, ImmutableEvent $event): ImmutableEvent
     {
-        if (isset($data['typicalBirthYearRange'])) {
-            $birthYearRange = BirthYearRange::fromString($data['typicalBirthYearRange']);
-            $event = $event->withTypicalBirthYearRange($birthYearRange);
+        if (isset($data['birthYearRange'])) {
+            $birthYearRange = BirthYearRange::fromString($data['birthYearRange']);
+            $event = $event->withBirthYearRange($birthYearRange);
         }
 
         return $event;

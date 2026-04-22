@@ -1,4 +1,4 @@
-Feature: Test typicalBirthYearRange on events
+Feature: Test birthYearRange on events
 
   Background:
     Given I am using the UDB3 base URL
@@ -7,93 +7,93 @@ Feature: Test typicalBirthYearRange on events
     And I send and accept "application/json"
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
 
-  Scenario: New events do not have a typicalBirthYearRange
+  Scenario: New events do not have a birthYearRange
     When I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     Then the response status should be "201"
     And I get the event at "%{eventUrl}"
-    And the JSON response should not have "typicalBirthYearRange"
+    And the JSON response should not have "birthYearRange"
 
-  Scenario: Set typicalBirthYearRange on an event
+  Scenario: Set birthYearRange on an event
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """
-        { "typicalBirthYearRange": "2014-2020" }
+        { "birthYearRange": "2014-2020" }
         """
-    When I send a PUT request to "%{eventUrl}/typicalBirthYearRange"
+    When I send a PUT request to "%{eventUrl}/birthYearRange"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "typicalBirthYearRange" should be "2014-2020"
+    And the JSON response at "birthYearRange" should be "2014-2020"
 
-  Scenario: Update existing typicalBirthYearRange
+  Scenario: Update existing birthYearRange
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """
-        { "typicalBirthYearRange": "2014-2020" }
+        { "birthYearRange": "2014-2020" }
         """
-    And I send a PUT request to "%{eventUrl}/typicalBirthYearRange"
+    And I send a PUT request to "%{eventUrl}/birthYearRange"
     And I set the JSON request payload to:
         """
-        { "typicalBirthYearRange": "2015-2021" }
+        { "birthYearRange": "2015-2021" }
         """
-    When I send a PUT request to "%{eventUrl}/typicalBirthYearRange"
+    When I send a PUT request to "%{eventUrl}/birthYearRange"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "typicalBirthYearRange" should be "2015-2021"
+    And the JSON response at "birthYearRange" should be "2015-2021"
 
-  Scenario: Delete typicalBirthYearRange
+  Scenario: Delete birthYearRange
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """
-        { "typicalBirthYearRange": "2014-2020" }
+        { "birthYearRange": "2014-2020" }
         """
-    And I send a PUT request to "%{eventUrl}/typicalBirthYearRange"
-    When I send a DELETE request to "%{eventUrl}/typicalBirthYearRange"
+    And I send a PUT request to "%{eventUrl}/birthYearRange"
+    When I send a DELETE request to "%{eventUrl}/birthYearRange"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response should not have "typicalBirthYearRange"
+    And the JSON response should not have "birthYearRange"
 
-  Scenario: Set typicalBirthYearRange with open range
+  Scenario: Set birthYearRange with open range
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """
-        { "typicalBirthYearRange": "2014-" }
+        { "birthYearRange": "2014-" }
         """
-    When I send a PUT request to "%{eventUrl}/typicalBirthYearRange"
+    When I send a PUT request to "%{eventUrl}/birthYearRange"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "typicalBirthYearRange" should be "2014-"
+    And the JSON response at "birthYearRange" should be "2014-"
 
-  Scenario: Reject invalid typicalBirthYearRange format
+  Scenario: Reject invalid birthYearRange format
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """
-        { "typicalBirthYearRange": "abc" }
+        { "birthYearRange": "abc" }
         """
-    When I send a PUT request to "%{eventUrl}/typicalBirthYearRange"
+    When I send a PUT request to "%{eventUrl}/birthYearRange"
     Then the response status should be "400"
     And the JSON response at "schemaErrors" should be:
     """
     [
       {
-        "jsonPointer":"\/typicalBirthYearRange",
+        "jsonPointer":"\/birthYearRange",
         "error":"The string should match pattern: ^[\\d]*-[\\d]*$"
       }
     ]
     """
 
-  Scenario: Reject typicalBirthYearRange where from is greater than to
+  Scenario: Reject birthYearRange where from is greater than to
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """
-        { "typicalBirthYearRange": "2020-2014" }
+        { "birthYearRange": "2020-2014" }
         """
-    When I send a PUT request to "%{eventUrl}/typicalBirthYearRange"
+    When I send a PUT request to "%{eventUrl}/birthYearRange"
     Then the response status should be "400"
     And the JSON response at "schemaErrors" should be:
     """
     [
       {
-        "jsonPointer":"\/typicalBirthYearRange",
+        "jsonPointer":"\/birthYearRange",
         "error":"\"From\" birth year should not be greater than the \"to\" birth year."
       }
     ]

@@ -6,6 +6,6 @@ namespace CultuurNet\UDB3\Event\Commands;
 
 use CultuurNet\UDB3\Offer\Commands\AbstractCommand;
 
-final class DeleteTypicalBirthYearRange extends AbstractCommand
+final class DeleteBirthYearRange extends AbstractCommand
 {
 }

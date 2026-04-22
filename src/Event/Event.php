@@ -29,8 +29,8 @@ use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
 use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\FaqsUpdated;
-use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeDeleted;
-use CultuurNet\UDB3\Event\Events\TypicalBirthYearRangeUpdated;
+use CultuurNet\UDB3\Event\Events\BirthYearRangeDeleted;
+use CultuurNet\UDB3\Event\Events\BirthYearRangeUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\Image\ImagesUpdatedFromUDB2;
@@ -127,7 +127,7 @@ final class Event extends Offer
 
     private Urls $departurePlaces;
 
-    private ?BirthYearRange $typicalBirthYearRange = null;
+    private ?BirthYearRange $birthYearRange = null;
 
     public static function getOfferType(): OfferType
     {
@@ -584,32 +584,32 @@ final class Event extends Offer
         $this->departurePlaces = $departurePlacesUpdated->departurePlaces;
     }
 
-    public function updateTypicalBirthYearRange(BirthYearRange $typicalBirthYearRange): void
+    public function updateBirthYearRange(BirthYearRange $birthYearRange): void
     {
-        if ($this->typicalBirthYearRange !== null && $this->typicalBirthYearRange->sameAs($typicalBirthYearRange)) {
+        if ($this->birthYearRange !== null && $this->birthYearRange->sameAs($birthYearRange)) {
             return;
         }
 
-        $this->apply(new TypicalBirthYearRangeUpdated($this->eventId, $typicalBirthYearRange));
+        $this->apply(new BirthYearRangeUpdated($this->eventId, $birthYearRange));
     }
 
-    protected function applyTypicalBirthYearRangeUpdated(TypicalBirthYearRangeUpdated $typicalBirthYearRangeUpdated): void
+    protected function applyBirthYearRangeUpdated(BirthYearRangeUpdated $birthYearRangeUpdated): void
     {
-        $this->typicalBirthYearRange = $typicalBirthYearRangeUpdated->typicalBirthYearRange;
+        $this->birthYearRange = $birthYearRangeUpdated->birthYearRange;
     }
 
-    public function deleteTypicalBirthYearRange(): void
+    public function deleteBirthYearRange(): void
     {
-        if ($this->typicalBirthYearRange === null) {
+        if ($this->birthYearRange === null) {
             return;
         }
 
-        $this->apply(new TypicalBirthYearRangeDeleted($this->eventId));
+        $this->apply(new BirthYearRangeDeleted($this->eventId));
     }
 
-    protected function applyTypicalBirthYearRangeDeleted(TypicalBirthYearRangeDeleted $typicalBirthYearRangeDeleted): void
+    protected function applyBirthYearRangeDeleted(BirthYearRangeDeleted $birthYearRangeDeleted): void
     {
-        $this->typicalBirthYearRange = null;
+        $this->birthYearRange = null;
     }
 
     public function updateUiTPASPrices(Tariffs $tariffs): void
