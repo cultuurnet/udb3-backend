@@ -955,6 +955,64 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                     )
                 ),
             ],
+            'single_with_overnight_true' => [
+                'data' => (object)[
+                    'calendarType' => 'single',
+                    'subEvent' => [
+                        (object)[
+                            'startDate' => '2026-07-01T09:00:00+02:00',
+                            'endDate' => '2026-07-05T17:00:00+02:00',
+                            'overnight' => true,
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                DateTimeFactory::fromAtom('2026-07-01T09:00:00+02:00'),
+                                DateTimeFactory::fromAtom('2026-07-05T17:00:00+02:00')
+                            )
+                        )->withOvernight(true)
+                    )
+                ),
+            ],
+            'multiple_with_overnight_on_first_sub_event' => [
+                'data' => (object)[
+                    'calendarType' => 'multiple',
+                    'subEvent' => [
+                        (object)[
+                            'startDate' => '2026-07-01T09:00:00+02:00',
+                            'endDate' => '2026-07-05T17:00:00+02:00',
+                            'overnight' => true,
+                        ],
+                        (object)[
+                            'startDate' => '2026-07-10T09:00:00+02:00',
+                            'endDate' => '2026-07-14T17:00:00+02:00',
+                        ],
+                    ],
+                ],
+                'expected_command' => new UpdateCalendar(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    DateTimeFactory::fromAtom('2026-07-01T09:00:00+02:00'),
+                                    DateTimeFactory::fromAtom('2026-07-05T17:00:00+02:00')
+                                )
+                            )->withOvernight(true),
+                            SubEvent::createAvailable(
+                                new DateRange(
+                                    DateTimeFactory::fromAtom('2026-07-10T09:00:00+02:00'),
+                                    DateTimeFactory::fromAtom('2026-07-14T17:00:00+02:00')
+                                )
+                            )
+                        )
+                    )
+                ),
+            ],
         ];
     }
 
@@ -1800,6 +1858,36 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/openingHoursAdjustedDays/1/startDate', 'adjusted opening hours entries must not overlap'),
+                ],
+            ],
+            'single_overnight_wrong_type_string' => [
+                'data' => (object)[
+                    'calendarType' => 'single',
+                    'subEvent' => [
+                        (object)[
+                            'startDate' => '2026-07-01T09:00:00+02:00',
+                            'endDate' => '2026-07-05T17:00:00+02:00',
+                            'overnight' => 'yes',
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/subEvent/0/overnight', 'The data (string) must match the type: boolean'),
+                ],
+            ],
+            'single_overnight_wrong_type_integer' => [
+                'data' => (object)[
+                    'calendarType' => 'single',
+                    'subEvent' => [
+                        (object)[
+                            'startDate' => '2026-07-01T09:00:00+02:00',
+                            'endDate' => '2026-07-05T17:00:00+02:00',
+                            'overnight' => 1,
+                        ],
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/subEvent/0/overnight', 'The data (integer) must match the type: boolean'),
                 ],
             ],
         ];
