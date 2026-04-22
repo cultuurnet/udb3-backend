@@ -13,7 +13,7 @@ use DateTimeImmutable;
  * Validates childcare times against event dates.
  *
  * Note: The JSON schema already validates datetime format (RFC 3339) via "format": "date-time"
- * and time format (H:MM/HH:MM) via regex pattern "^\d?\d:\d\d$". If parsing exceptions occur
+ * and time format (H:MM/HH:MM) via regex pattern "^([01]?\d|2[0-3]):[0-5]\d$". If parsing exceptions occur
  * during validation, this indicates a schema validation bypass or broken validation pipeline.
  * Such exceptions should be logged to Sentry as they represent a system integrity issue.
  */

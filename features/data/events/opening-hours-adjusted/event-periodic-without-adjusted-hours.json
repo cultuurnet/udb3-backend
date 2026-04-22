@@ -1,0 +1,16 @@
+{
+  "mainLanguage": "nl",
+  "name": {"nl": "Periodiek event"},
+  "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+  "location": {"@id": "%{placeUrl}"},
+  "calendarType": "periodic",
+  "startDate": "2026-01-01T00:00:00+00:00",
+  "endDate": "2026-12-31T23:59:59+00:00",
+  "openingHours": [
+    {
+      "opens": "09:00",
+      "closes": "17:00",
+      "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+    }
+  ]
+}

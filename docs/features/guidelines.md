@@ -64,6 +64,24 @@ In JSON test data files, reference places and events by their saved URL variable
 }
 ```
 
+### Assert all fields of new structures
+
+When a scenario creates or updates a resource with a new field or nested structure (e.g. `openingHoursAdjustedDays`), assert **all** fields of that structure in the response — not just the top-level ones. Forgetting to assert nested properties like `openingHours[0]/opens`, `openingHours[0]/closes`, or `openingHours[0]/dayOfWeek` inside an adjusted-days entry leaves the serialisation untested.
+
+### Extract repeated payloads into data files
+
+Inline JSON payloads that appear in more than one scenario should be moved to a file under `features/data/`. Use `%{variable}` substitution for values that differ between scenarios:
+
+```gherkin
+When I set the variable "adjustedStartDate" to "2026-12-21"
+And I set the variable "adjustedEndDate" to "2026-12-26"
+And I set the JSON request payload from "events/opening-hours-adjusted/event-periodic-with-invalid-adjusted-hours.json"
+```
+
+Data files live in subdirectories that mirror the feature being tested (e.g. `features/data/events/opening-hours-adjusted/`). Scenarios that test validation errors often share the same outer event structure and differ only in the dates being validated — these are ideal candidates for a single parametrised data file.
+
+When a payload is unique to one scenario and its specific content is what is under test (e.g. two adjusted-day entries with bilingual descriptions), keep it inline.
+
 ### No waiting for command completion
 
 All API requests are processed synchronously (except exports). Some older tests still contain `wait for the command` steps; new tests should not include these.
