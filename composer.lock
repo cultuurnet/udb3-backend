@@ -6148,12 +6148,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "f8a102af9fa998577bb8721b6ec1bd22c88d2dd7"
+                "reference": "1f8dc0c69be0cfe9227b03d11d7a614f8a5983fa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/f8a102af9fa998577bb8721b6ec1bd22c88d2dd7",
-                "reference": "f8a102af9fa998577bb8721b6ec1bd22c88d2dd7",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/1f8dc0c69be0cfe9227b03d11d7a614f8a5983fa",
+                "reference": "1f8dc0c69be0cfe9227b03d11d7a614f8a5983fa",
                 "shasum": ""
             },
             "default-branch": true,
@@ -6171,9 +6171,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7089-limit-depaturePlaces-to-20"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7070/make-time-format-more-strict"
             },
-            "time": "2026-03-30T14:12:19+00:00"
+            "time": "2026-04-21T09:47:10+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -12846,6 +12846,6 @@
         "ext-tidy": "*",
         "ext-xmlreader": "*"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
 }
