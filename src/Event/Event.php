@@ -444,11 +444,11 @@ final class Event extends Offer
 
     public function updateType(Category $category): void
     {
-        $wasCamp = $this->typeId === EventTypeResolver::CAMP_TERM_ID;
+        $wasCamp = $this->typeId === EventTypeResolver::CAMP_OR_VACATION_TERM_ID;
 
         parent::updateType($category);
 
-        if ($this->calendar instanceof CalendarWithSubEvents && $wasCamp && !($category->getId()->toString() === EventTypeResolver::CAMP_TERM_ID)) {
+        if ($this->calendar instanceof CalendarWithSubEvents && $wasCamp && $this->typeId !== EventTypeResolver::CAMP_OR_VACATION_TERM_ID) {
             $subEvents = $this->calendar->getSubEvents()->toArray();
 
             $hasOvernight = false;
@@ -483,14 +483,14 @@ final class Event extends Offer
      */
     private function assertOvernightAllowed(array $subEvents): void
     {
-        if ($this->typeId === EventTypeResolver::CAMP_TERM_ID) {
+        if ($this->typeId === EventTypeResolver::CAMP_OR_VACATION_TERM_ID) {
             return;
         }
 
         foreach ($subEvents as $subEvent) {
             if ($subEvent->isOvernight()) {
                 throw new InvalidArgumentException(
-                    'overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_TERM_ID
+                    'overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_OR_VACATION_TERM_ID
                 );
             }
         }
