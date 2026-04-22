@@ -944,4 +944,25 @@ final class CalendarDenormalizerTest extends TestCase
         $this->assertTrue($subEvents[0]->isOvernight());
         $this->assertFalse($subEvents[1]->isOvernight());
     }
+
+    /**
+     * @test
+     */
+    public function it_does_not_set_overnight_when_key_is_explicitly_false(): void
+    {
+        $data = [
+            'calendarType' => 'single',
+            'subEvent' => [
+                [
+                    'startDate' => '2026-07-01T09:00:00+02:00',
+                    'endDate' => '2026-07-05T17:00:00+02:00',
+                    'overnight' => false,
+                ],
+            ],
+        ];
+
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertFalse($result->getSubEvents()->toArray()[0]->isOvernight());
+    }
 }
