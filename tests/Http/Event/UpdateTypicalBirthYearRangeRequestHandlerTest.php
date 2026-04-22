@@ -40,7 +40,7 @@ final class UpdateTypicalBirthYearRangeRequestHandlerTest extends TestCase
     {
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
-            ->withJsonBodyFromArray(['typicalBirthYearRange' => '2014-2020'])
+            ->withJsonBodyFromArray(['birthYear' => '2014-2020'])
             ->build('PUT');
 
         $response = $this->handler->handle($request);
@@ -55,18 +55,18 @@ final class UpdateTypicalBirthYearRangeRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_dispatches_update_with_open_range(): void
+    public function it_dispatches_update_with_single_year(): void
     {
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
-            ->withJsonBodyFromArray(['typicalBirthYearRange' => '2014-'])
+            ->withJsonBodyFromArray(['birthYear' => '2014'])
             ->build('PUT');
 
         $response = $this->handler->handle($request);
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
-            [new UpdateTypicalBirthYearRange(self::EVENT_ID, new BirthYearRange(2014))],
+            [new UpdateTypicalBirthYearRange(self::EVENT_ID, new BirthYearRange(2014, 2014))],
             $this->commandBus->getRecordedCommands()
         );
     }
@@ -99,16 +99,16 @@ final class UpdateTypicalBirthYearRangeRequestHandlerTest extends TestCase
                 '{{}',
                 ApiProblem::bodyInvalidSyntax('JSON'),
             ],
-            'missing typicalBirthYearRange' => [
+            'missing birthYear' => [
                 '{}',
                 ApiProblem::bodyInvalidData(
-                    new SchemaError('/', 'The required properties (typicalBirthYearRange) are missing')
+                    new SchemaError('/', 'The required properties (birthYear) are missing')
                 ),
             ],
             'invalid format' => [
-                '{"typicalBirthYearRange": "abc"}',
+                '{"birthYear": "abc"}',
                 ApiProblem::bodyInvalidData(
-                    new SchemaError('/typicalBirthYearRange', 'The string should match pattern: ^[\\d]*-[\\d]*$')
+                    new SchemaError('/birthYear', 'The string should match pattern: ^\\d{4}(-\\d{4})?$')
                 ),
             ],
         ];
@@ -121,12 +121,12 @@ final class UpdateTypicalBirthYearRangeRequestHandlerTest extends TestCase
     {
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
-            ->withJsonBodyFromArray(['typicalBirthYearRange' => '2020-2014'])
+            ->withJsonBodyFromArray(['birthYear' => '2020-2014'])
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/typicalBirthYearRange', '"From" birth year should not be greater than the "to" birth year.')
+                new SchemaError('/birthYear', '"From" birth year should not be greater than the "to" birth year.')
             ),
             fn () => $this->handler->handle($request)
         );

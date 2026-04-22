@@ -37,7 +37,7 @@ final class JsonSchemaLocator
     public const EVENT_STATUS = 'event-status.json';
     public const EVENT_SUB_EVENT_PATCH = 'event-subEvent-patch.json';
     public const EVENT_TYPICAL_AGE_RANGE_PUT = 'event-typicalAgeRange-put.json';
-    public const EVENT_TYPICAL_BIRTH_YEAR_RANGE_PUT = 'event-typicalBirthYearRange-put.json';
+    public const EVENT_TYPICAL_BIRTH_YEAR_RANGE_PUT = 'event-birthYear-put.json';
     public const EVENT_VIDEOS_PATCH = 'event-videos-patch.json';
     public const EVENT_VIDEOS_POST = 'event-videos-post.json';
     public const EVENT_WORKFLOW_STATUS_PUT = 'event-workflowStatus-put.json';

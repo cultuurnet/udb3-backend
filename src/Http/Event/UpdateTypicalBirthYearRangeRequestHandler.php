@@ -34,13 +34,18 @@ final class UpdateTypicalBirthYearRangeRequestHandler implements RequestHandlerI
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_TYPICAL_BIRTH_YEAR_RANGE_PUT),
         );
 
+        /** @var object $data */
         $data = $parser->parse($request)->getParsedBody();
 
         try {
-            $birthYearRange = BirthYearRange::fromString($data->typicalBirthYearRange);
+            $birthYearString = $data->birthYear;
+            if (!str_contains($birthYearString, '-')) {
+                $birthYearString = $birthYearString . '-' . $birthYearString;
+            }
+            $birthYearRange = BirthYearRange::fromString($birthYearString);
         } catch (InvalidAgeRangeException $exception) {
             throw ApiProblem::bodyInvalidData(
-                new SchemaError('/typicalBirthYearRange', $exception->getMessage())
+                new SchemaError('/birthYear', $exception->getMessage())
             );
         }
 
