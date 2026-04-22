@@ -1,0 +1,29 @@
+{
+  "mainLanguage": "nl",
+  "name": {"nl": "Ongeldig event"},
+  "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+  "location": {"@id": "%{placeUrl}"},
+  "calendarType": "periodic",
+  "startDate": "%{calendarStartDate}",
+  "endDate": "%{calendarEndDate}",
+  "openingHours": [
+    {
+      "opens": "09:00",
+      "closes": "17:00",
+      "dayOfWeek": ["monday"]
+    }
+  ],
+  "openingHoursAdjustedDays": [
+    {
+      "startDate": "%{adjustedStartDate}",
+      "endDate": "%{adjustedEndDate}",
+      "openingHours": [
+        {
+          "opens": "13:00",
+          "closes": "15:00",
+          "dayOfWeek": ["friday"]
+        }
+      ]
+    }
+  ]
+}
