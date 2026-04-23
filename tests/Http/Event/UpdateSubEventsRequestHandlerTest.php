@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Event;
 
+use Broadway\CommandHandling\CommandBus;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
+use CultuurNet\UDB3\Event\OvernightNotAllowed;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -719,5 +721,28 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_maps_overnight_not_allowed_to_400(): void
+    {
+        $commandBus = $this->createMock(CommandBus::class);
+        $commandBus->method('dispatch')->willThrowException(new OvernightNotAllowed());
+
+        $handler = new UpdateSubEventsRequestHandler($commandBus);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidDataWithDetail(OvernightNotAllowed::MESSAGE),
+            fn () => $handler->handle(
+                (new Psr7RequestBuilder())
+                    ->withJsonBodyFromArray([
+                        (object)['id' => 0, 'overnight' => true],
+                    ])
+                    ->withRouteParameter('eventId', self::EVENT_ID)
+                    ->build('PUT')
+            )
+        );
     }
 }
