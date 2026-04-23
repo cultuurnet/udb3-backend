@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\Event\Commands\DeleteBirthYearRange;
 use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
@@ -284,7 +285,10 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         if ($event->getBirthYearRange() !== null) {
             $commands[] = new UpdateBirthYearRange($eventId, $event->getBirthYearRange());
+        } else {
+            $commands[] = new DeleteBirthYearRange($eventId);
         }
+
 
         if ($workflowStatus->sameAs(WorkflowStatus::DELETED())) {
             $commands[] = new DeleteOffer($eventId);

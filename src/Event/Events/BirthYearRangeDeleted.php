@@ -8,11 +8,6 @@ use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
 final class BirthYearRangeDeleted extends AbstractEvent
 {
-    public function __construct(string $itemId)
-    {
-        parent::__construct($itemId);
-    }
-
     public static function deserialize(array $data): self
     {
         return new self($data['item_id']);

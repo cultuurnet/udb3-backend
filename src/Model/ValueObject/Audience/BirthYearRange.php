@@ -6,18 +6,13 @@ namespace CultuurNet\UDB3\Model\ValueObject\Audience;
 
 final class BirthYearRange
 {
-    private int $from;
-
-    private int $to;
-
-    public function __construct(int $from, int $to)
-    {
+    public function __construct(
+        private int $from,
+        private int $to
+    ) {
         if ($from > $to) {
             throw new InvalidAgeRangeException('"From" birth year should not be greater than the "to" birth year.');
         }
-
-        $this->from = $from;
-        $this->to = $to;
     }
 
     public function getFrom(): int
