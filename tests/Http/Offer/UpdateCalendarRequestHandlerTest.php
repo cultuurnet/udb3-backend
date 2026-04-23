@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
+use Broadway\CommandHandling\CommandBus;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
@@ -40,6 +41,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateCalendarRequestHandlerTest extends TestCase
@@ -2303,8 +2305,8 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
      */
     public function it_maps_domain_invalid_argument_exception_to_400(): void
     {
-        $commandBus = $this->createMock(\Broadway\CommandHandling\CommandBus::class);
-        $commandBus->method('dispatch')->willThrowException(new \InvalidArgumentException('overnight is only allowed when the event has term 0.57.0.0.0'));
+        $commandBus = $this->createMock(CommandBus::class);
+        $commandBus->method('dispatch')->willThrowException(new InvalidArgumentException('overnight is only allowed when the event has term 0.57.0.0.0'));
 
         $handler = new UpdateCalendarRequestHandler($commandBus);
 
