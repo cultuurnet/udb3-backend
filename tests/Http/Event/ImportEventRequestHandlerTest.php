@@ -4329,8 +4329,8 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
-                new DeleteOffer($eventId),
                 new DeleteBirthYearRange($eventId),
+                new DeleteOffer($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
