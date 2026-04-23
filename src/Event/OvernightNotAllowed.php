@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
-use CultuurNet\UDB3\Event\EventTypeResolver;
 use InvalidArgumentException;
 
 final class OvernightNotAllowed extends InvalidArgumentException

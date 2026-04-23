@@ -105,7 +105,6 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use DateTimeInterface;
-use CultuurNet\UDB3\Event\OvernightNotAllowed;
 
 final class Event extends Offer
 {

@@ -84,7 +84,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
-use CultuurNet\UDB3\Event\OvernightNotAllowed;
 use CultuurNet\UDB3\SampleFiles;
 use Money\Currency;
 use Money\Money;
