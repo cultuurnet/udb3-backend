@@ -447,25 +447,20 @@ final class Event extends Offer
 
     public function updateType(Category $category): void
     {
-        $wasCamp = $this->typeId === EventTypeResolver::CAMP_OR_VACATION_TERM_ID;
-
         parent::updateType($category);
 
-        if ($this->calendar instanceof CalendarWithSubEvents && $wasCamp && $this->typeId !== EventTypeResolver::CAMP_OR_VACATION_TERM_ID) {
-            $subEvents = $this->calendar->getSubEvents()->toArray();
+        if (!($this->calendar instanceof CalendarWithSubEvents)) {
+            return;
+        }
 
-            $hasOvernight = false;
-            foreach ($subEvents as $subEvent) {
-                if ($subEvent->isOvernight()) {
-                    $hasOvernight = true;
-                    break;
-                }
-            }
+        if (EventTypeResolver::isOvernightAllowed($this->typeId)) {
+            return;
+        }
 
-            if ($hasOvernight) {
-                $resetSubEvents = array_map(fn (SubEvent $se) => $se->withOvernight(false), $subEvents);
-                $this->apply(new CalendarUpdated($this->eventId, $this->rebuildCalendarFromSubEvents($resetSubEvents)));
-            }
+        $resetSubEvents = $this->calendar->getSubEvents()->withoutOvernight()->toArray();
+        $updatedCalendar = $this->rebuildCalendarFromSubEvents($resetSubEvents);
+        if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
+            $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
         }
     }
 
@@ -486,7 +481,7 @@ final class Event extends Offer
      */
     private function assertOvernightAllowed(array $subEvents): void
     {
-        if ($this->typeId === EventTypeResolver::CAMP_OR_VACATION_TERM_ID) {
+        if (EventTypeResolver::isOvernightAllowed($this->typeId)) {
             return;
         }
 

@@ -52,4 +52,9 @@ class SubEvents extends Collection
     {
         return $this->endDate;
     }
+
+    public function withoutOvernight(): self
+    {
+        return new self(...array_map(fn (SubEvent $se) => $se->withOvernight(false), $this->toArray()));
+    }
 }
