@@ -25,7 +25,7 @@ When working on this codebase, prefer:
 - Inline expressions over unnecessary local variables (if a variable is only used once and doesn't improve readability, inline it)
 - When one needs to serialize() or deserialize(), implement a new NormalizerInterface or DenormalizerInterface, this Normalizer can be called in the serialize method of Broadway\Serializer\Serializable
 - When making collections, try to extend from \CultuurNet\UDB3\Model\ValueObject\Collection\Collection.
-- **Avoid early-exit optimizations that duplicate domain guards**: if an apply method already checks for actual changes (e.g. via `sameCalendars`) before persisting, there is no need to pre-check whether anything changed before calling `apply()`.
+- **Use `sameCalendars` as the guard before `apply(new CalendarUpdated(...))`**: do not manually inspect individual fields (e.g. looping to check if any sub-event has `overnight = true`) to decide whether to call `apply()`. Build the updated calendar and let `sameCalendars` determine whether anything actually changed.
 
 ## Comments & Self-Documenting Code
 

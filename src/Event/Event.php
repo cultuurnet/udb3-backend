@@ -450,7 +450,10 @@ final class Event extends Offer
 
         if ($this->calendar instanceof CalendarWithSubEvents && $wasCamp && $this->typeId !== EventTypeResolver::CAMP_OR_VACATION_TERM_ID) {
             $resetSubEvents = $this->calendar->getSubEvents()->withoutOvernight()->toArray();
-            $this->apply(new CalendarUpdated($this->eventId, $this->rebuildCalendarFromSubEvents($resetSubEvents)));
+            $updatedCalendar = $this->rebuildCalendarFromSubEvents($resetSubEvents);
+            if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
+                $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
+            }
         }
     }
 
