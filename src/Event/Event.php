@@ -154,6 +154,10 @@ final class Event extends Offer
             )
         );
 
+        if ($calendar instanceof CalendarWithSubEvents) {
+            $event->assertOvernightAllowed($calendar->getSubEvents()->toArray());
+        }
+
         if ($location->isDummyPlaceForEducation()) {
             // Bookable education events should get education as their audience type. We record this explicitly so we
             // don't have to handle this edge case in every read model projector.

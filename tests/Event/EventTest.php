@@ -2599,6 +2599,31 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_throws_when_overnight_is_set_during_create_without_kamp_of_vakantie_term(): void
+    {
+        $this->expectException(OvernightNotAllowed::class);
+        $this->expectExceptionMessage(OvernightNotAllowed::MESSAGE);
+
+        Event::create(
+            self::EVENT_ID,
+            new Language('nl'),
+            new Title('Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId(self::LOCATION_ID),
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                        new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+                    )
+                )->withOvernight(true)
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_allows_overnight_on_update_calendar_when_event_has_kamp_of_vakantie_term(): void
     {
         $subEventWithOvernight = SubEvent::createAvailable(

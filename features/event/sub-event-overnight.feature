@@ -144,6 +144,30 @@ Feature: Test SubEvent overnight
     Then the response status should be "400"
     And the JSON response at "detail" should be "overnight is only allowed when the event has term 0.57.0.0.0"
 
+  Scenario: Cannot create an event with overnight true on a non-kamp event type via POST
+    When I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {"nl": "Concert"},
+      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+      "location": {"@id": "%{placeUrl}"},
+      "calendarType": "single",
+      "startDate": "2026-07-01T09:00:00+02:00",
+      "endDate": "2026-07-05T17:00:00+02:00",
+      "subEvent": [
+        {
+          "startDate": "2026-07-01T09:00:00+02:00",
+          "endDate": "2026-07-05T17:00:00+02:00",
+          "overnight": true
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/"
+    Then the response status should be "400"
+    And the JSON response at "detail" should be "overnight is only allowed when the event has term 0.57.0.0.0"
+
   Scenario: overnight with wrong type is rejected by the schema on POST
     When I set the JSON request payload to:
     """
