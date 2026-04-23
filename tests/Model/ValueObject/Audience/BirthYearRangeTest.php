@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Audience;
 
 use PHPUnit\Framework\TestCase;
 
-class BirthYearRangeTest extends TestCase
+final class BirthYearRangeTest extends TestCase
 {
     /**
      * @test

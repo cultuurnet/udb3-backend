@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Event\Events;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
 use PHPUnit\Framework\TestCase;
 
-class BirthYearRangeUpdatedTest extends TestCase
+final class BirthYearRangeUpdatedTest extends TestCase
 {
     /**
      * @test

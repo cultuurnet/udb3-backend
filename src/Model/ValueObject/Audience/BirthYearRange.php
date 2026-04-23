@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Audience;
 
-class BirthYearRange
+final class BirthYearRange
 {
     private ?int $from;
 

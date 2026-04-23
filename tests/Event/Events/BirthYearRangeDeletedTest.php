@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use PHPUnit\Framework\TestCase;
 
-class BirthYearRangeDeletedTest extends TestCase
+final class BirthYearRangeDeletedTest extends TestCase
 {
     /**
      * @test
