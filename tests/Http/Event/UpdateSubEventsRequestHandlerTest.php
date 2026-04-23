@@ -337,6 +337,30 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         ),
                 ),
             ],
+            'one_subEvent_with_overnight_true' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'overnight' => true,
+                    ],
+                ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(0))->withOvernight(true)
+                ),
+            ],
+            'one_subEvent_with_overnight_false' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'overnight' => false,
+                    ],
+                ],
+                'expected_command' => new UpdateSubEvents(
+                    self::EVENT_ID,
+                    (new SubEventUpdate(0))->withOvernight(false)
+                ),
+            ],
         ];
     }
 
@@ -670,6 +694,28 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/0/childcare/start', 'The data (integer) must match the type: string'),
+                ],
+            ],
+            'one_subEvent_with_overnight_wrong_type_string' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'overnight' => 'yes',
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/overnight', 'The data (string) must match the type: boolean'),
+                ],
+            ],
+            'one_subEvent_with_overnight_wrong_type_integer' => [
+                'data' => [
+                    (object)[
+                        'id' => 0,
+                        'overnight' => 1,
+                    ],
+                ],
+                'expectedSchemaErrors' => [
+                    new SchemaError('/0/overnight', 'The data (integer) must match the type: boolean'),
                 ],
             ],
         ];

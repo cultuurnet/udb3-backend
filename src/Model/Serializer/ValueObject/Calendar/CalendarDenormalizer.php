@@ -228,6 +228,10 @@ final class CalendarDenormalizer implements DenormalizerInterface
             );
         }
 
+        if (isset($subEventData['overnight'])) {
+            $subEvent = $subEvent->withOvernight($subEventData['overnight']);
+        }
+
         return $subEvent;
     }
 
