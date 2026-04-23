@@ -203,9 +203,9 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                                     new StatusReason('Geannuleerd wegens covid')
                                 )
                                 )->withTranslation(
-                                        new Language('fr'),
-                                        new StatusReason('Franse tekst')
-                                    )
+                                    new Language('fr'),
+                                    new StatusReason('Franse tekst')
+                                )
                             )
                         ),
                 ),
