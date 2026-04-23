@@ -2301,6 +2301,37 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_maps_domain_invalid_argument_exception_to_400(): void
+    {
+        $commandBus = $this->createMock(\Broadway\CommandHandling\CommandBus::class);
+        $commandBus->method('dispatch')->willThrowException(new \InvalidArgumentException('overnight is only allowed when the event has term 0.57.0.0.0'));
+
+        $handler = new UpdateCalendarRequestHandler($commandBus);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidDataWithDetail('overnight is only allowed when the event has term 0.57.0.0.0'),
+            fn () => $handler->handle(
+                (new Psr7RequestBuilder())
+                    ->withJsonBodyFromObject((object)[
+                        'calendarType' => 'single',
+                        'subEvent' => [
+                            (object)[
+                                'startDate' => '2026-07-01T09:00:00+02:00',
+                                'endDate' => '2026-07-05T17:00:00+02:00',
+                                'overnight' => true,
+                            ],
+                        ],
+                    ])
+                    ->withRouteParameter('offerType', 'events')
+                    ->withRouteParameter('offerId', self::EVENT_ID)
+                    ->build('PUT')
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throw_if_body_is_missing(): void
     {
         $request = (new Psr7RequestBuilder())

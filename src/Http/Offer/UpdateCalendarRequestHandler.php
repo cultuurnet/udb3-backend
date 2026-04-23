@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
@@ -14,6 +15,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\OfferType;
+use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -44,9 +46,13 @@ final class UpdateCalendarRequestHandler implements RequestHandlerInterface
         /** @var Calendar $calendar */
         $calendar = $parser->parse($request)->getParsedBody();
 
-        $this->commandBus->dispatch(
-            new UpdateCalendar($offerId, $calendar)
-        );
+        try {
+            $this->commandBus->dispatch(
+                new UpdateCalendar($offerId, $calendar)
+            );
+        } catch (InvalidArgumentException $exception) {
+            throw ApiProblem::bodyInvalidDataWithDetail($exception->getMessage());
+        }
 
         return new NoContentResponse();
     }
