@@ -71,40 +71,12 @@ Feature: Test SubEvent overnight
     And the JSON response should not have "subEvent/0/overnight"
 
   Scenario: overnight is omitted from GET response when not set
-    When I set the JSON request payload to:
-    """
-    {
-      "mainLanguage": "nl",
-      "name": {"nl": "Zomerkamp"},
-      "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
-      "location": {"@id": "%{placeUrl}"},
-      "calendarType": "single",
-      "startDate": "2026-07-01T09:00:00+02:00",
-      "endDate": "2026-07-05T17:00:00+02:00"
-    }
-    """
-    And I send a POST request to "/events/"
-    Then the response status should be "201"
-    And I keep the value of the JSON response at "url" as "eventUrl"
+    Given I create an event from "events/sub-event-overnight/event-single-kamp.json" and save the "url" as "eventUrl"
     And I get the event at "%{eventUrl}"
     And the JSON response should not have "subEvent/0/overnight"
 
   Scenario: Update overnight to true via PUT calendar
-    Given I set the JSON request payload to:
-    """
-    {
-      "mainLanguage": "nl",
-      "name": {"nl": "Zomerkamp"},
-      "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
-      "location": {"@id": "%{placeUrl}"},
-      "calendarType": "single",
-      "startDate": "2026-07-01T09:00:00+02:00",
-      "endDate": "2026-07-05T17:00:00+02:00"
-    }
-    """
-    And I send a POST request to "/events/"
-    And the response status should be "201"
-    And I keep the value of the JSON response at "url" as "eventUrl"
+    Given I create an event from "events/sub-event-overnight/event-single-kamp.json" and save the "url" as "eventUrl"
     When I set the JSON request payload to:
     """
     {
