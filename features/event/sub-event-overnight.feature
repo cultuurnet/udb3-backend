@@ -77,19 +77,7 @@ Feature: Test SubEvent overnight
 
   Scenario: Update overnight to true via PUT calendar
     Given I create an event from "events/sub-event-overnight/event-single-kamp.json" and save the "url" as "eventUrl"
-    When I set the JSON request payload to:
-    """
-    {
-      "calendarType": "single",
-      "subEvent": [
-        {
-          "startDate": "2026-07-01T09:00:00+02:00",
-          "endDate": "2026-07-05T17:00:00+02:00",
-          "overnight": true
-        }
-      ]
-    }
-    """
+    When I set the JSON request payload from "events/sub-event-overnight/calendar-single-with-overnight.json"
     And I send a PUT request to "%{eventUrl}/calendar"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
@@ -136,19 +124,7 @@ Feature: Test SubEvent overnight
 
   Scenario: Cannot set overnight on an event without the kamp of vakantie term via PUT calendar
     Given I create an event from "events/sub-event-overnight/event-single-concert.json" and save the "url" as "eventUrl"
-    When I set the JSON request payload to:
-    """
-    {
-      "calendarType": "single",
-      "subEvent": [
-        {
-          "startDate": "2026-07-01T09:00:00+02:00",
-          "endDate": "2026-07-05T17:00:00+02:00",
-          "overnight": true
-        }
-      ]
-    }
-    """
+    When I set the JSON request payload from "events/sub-event-overnight/calendar-single-with-overnight.json"
     And I send a PUT request to "%{eventUrl}/calendar"
     Then the response status should be "400"
     And the JSON response at "detail" should be "overnight is only allowed when the event has term 0.57.0.0.0"
