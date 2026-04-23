@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdateBirthYearRange;
+use CultuurNet\UDB3\Event\Commands\UpdateBirthdateRange;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -13,13 +13,13 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
-use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\InvalidAgeRangeException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class UpdateBirthYearRangeRequestHandler implements RequestHandlerInterface
+final class UpdateBirthdateRangeRequestHandler implements RequestHandlerInterface
 {
     public function __construct(private readonly CommandBus $commandBus)
     {
@@ -31,21 +31,24 @@ final class UpdateBirthYearRangeRequestHandler implements RequestHandlerInterfac
         $eventId = $routeParameters->getEventId();
 
         $parser = RequestBodyParserFactory::createBaseParser(
-            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_BIRTH_YEAR_RANGE_PUT),
+            new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_BIRTHDATE_RANGE_PUT),
         );
 
         /** @var object $data */
         $data = $parser->parse($request)->getParsedBody();
 
         try {
-            $birthYearRange = BirthYearRange::fromString($data->birthYear);
+            $birthdateRange = BirthdateRange::fromArray([
+                'from' => $data->birthdateRange->from,
+                'to' => $data->birthdateRange->to,
+            ]);
         } catch (InvalidAgeRangeException $exception) {
             throw ApiProblem::bodyInvalidData(
-                new SchemaError('/birthYear', $exception->getMessage())
+                new SchemaError('/birthdateRange', $exception->getMessage())
             );
         }
 
-        $this->commandBus->dispatch(new UpdateBirthYearRange($eventId, $birthYearRange));
+        $this->commandBus->dispatch(new UpdateBirthdateRange($eventId, $birthdateRange));
 
         return new NoContentResponse();
     }

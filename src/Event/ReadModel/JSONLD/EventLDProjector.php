@@ -14,8 +14,8 @@ use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
-use CultuurNet\UDB3\Event\Events\BirthYearRangeDeleted;
-use CultuurNet\UDB3\Event\Events\BirthYearRangeUpdated;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeDeleted;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
@@ -603,22 +603,23 @@ final class EventLDProjector extends OfferLDProjector implements
         return $document->withBody($jsonLD);
     }
 
-    protected function applyBirthYearRangeUpdated(BirthYearRangeUpdated $birthYearRangeUpdated): JsonDocument
+    protected function applyBirthdateRangeUpdated(BirthdateRangeUpdated $birthdateRangeUpdated): JsonDocument
     {
-        $document = $this->loadDocumentFromRepository($birthYearRangeUpdated);
+        $document = $this->loadDocumentFromRepository($birthdateRangeUpdated);
         $jsonLD = $document->getBody();
 
-        $jsonLD->birthYearRange = $birthYearRangeUpdated->birthYearRange->toString();
+        $birthdateArray = $birthdateRangeUpdated->birthdateRange->toArray();
+        $jsonLD->birthdateRange = (object) $birthdateArray;
 
         return $document->withBody($jsonLD);
     }
 
-    protected function applyBirthYearRangeDeleted(BirthYearRangeDeleted $birthYearRangeDeleted): JsonDocument
+    protected function applyBirthdateRangeDeleted(BirthdateRangeDeleted $birthdateRangeDeleted): JsonDocument
     {
-        $document = $this->loadDocumentFromRepository($birthYearRangeDeleted);
+        $document = $this->loadDocumentFromRepository($birthdateRangeDeleted);
         $jsonLD = $document->getBody();
 
-        unset($jsonLD->birthYearRange);
+        unset($jsonLD->birthdateRange);
 
         return $document->withBody($jsonLD);
     }

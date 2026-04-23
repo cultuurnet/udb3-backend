@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
-use CultuurNet\UDB3\Event\Commands\DeleteBirthYearRange;
+use CultuurNet\UDB3\Event\Commands\DeleteBirthdateRange;
 use CultuurNet\UDB3\Event\Commands\DeleteOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\DeleteTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\ImportImages;
@@ -24,7 +24,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
-use CultuurNet\UDB3\Event\Commands\UpdateBirthYearRange;
+use CultuurNet\UDB3\Event\Commands\UpdateBirthdateRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
@@ -283,10 +283,10 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $commands[] = new UpdateFaqs($eventId, $event->getFaq());
         $commands[] = new UpdateDeparturePlaces($eventId, $event->getDeparturePlaces());
 
-        if ($event->getBirthYearRange() !== null) {
-            $commands[] = new UpdateBirthYearRange($eventId, $event->getBirthYearRange());
+        if ($event->getBirthdateRange() !== null) {
+            $commands[] = new UpdateBirthdateRange($eventId, $event->getBirthdateRange());
         } else {
-            $commands[] = new DeleteBirthYearRange($eventId);
+            $commands[] = new DeleteBirthdateRange($eventId);
         }
 
 

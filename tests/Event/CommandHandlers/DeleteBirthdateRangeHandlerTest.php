@@ -8,13 +8,13 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Event\Commands\DeleteBirthYearRange;
+use CultuurNet\UDB3\Event\Commands\DeleteBirthdateRange;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\EventCreated;
-use CultuurNet\UDB3\Event\Events\BirthYearRangeDeleted;
-use CultuurNet\UDB3\Event\Events\BirthYearRangeUpdated;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeDeleted;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -22,30 +22,34 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use DateTimeImmutable;
 
-final class DeleteBirthYearRangeHandlerTest extends CommandHandlerScenarioTestCase
+final class DeleteBirthdateRangeHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
-        return new DeleteBirthYearRangeHandler(new EventRepository($eventStore, $eventBus));
+        return new DeleteBirthdateRangeHandler(new EventRepository($eventStore, $eventBus));
     }
 
     /**
      * @test
      */
-    public function it_handles_deleting_birth_year_range(): void
+    public function it_handles_deleting_birthdate_range(): void
     {
         $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
-        $birthYearRange = new BirthYearRange(2014, 2020);
+        $birthdateRange = new BirthdateRange(
+            new DateTimeImmutable('2014-01-01'),
+            new DateTimeImmutable('2020-12-31')
+        );
 
         $this->scenario
             ->withAggregateId($eventId)
             ->given([
                 $this->getEventCreated($eventId),
-                new BirthYearRangeUpdated($eventId, $birthYearRange),
+                new BirthdateRangeUpdated($eventId, $birthdateRange),
             ])
-            ->when(new DeleteBirthYearRange($eventId))
-            ->then([new BirthYearRangeDeleted($eventId)]);
+            ->when(new DeleteBirthdateRange($eventId))
+            ->then([new BirthdateRangeDeleted($eventId)]);
     }
 
     /**
@@ -58,7 +62,7 @@ final class DeleteBirthYearRangeHandlerTest extends CommandHandlerScenarioTestCa
         $this->scenario
             ->withAggregateId($eventId)
             ->given([$this->getEventCreated($eventId)])
-            ->when(new DeleteBirthYearRange($eventId))
+            ->when(new DeleteBirthdateRange($eventId))
             ->then([]);
     }
 

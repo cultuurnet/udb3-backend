@@ -12,7 +12,7 @@ use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
-use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqsDenormalizer;
@@ -122,7 +122,7 @@ class EventDenormalizer extends OfferDenormalizer
         $offer = $this->denormalizeOnlineUrl($data, $offer);
         $offer = $this->denormalizeFaq($data, $offer);
         $offer = $this->denormalizeDeparturePlaces($data, $offer);
-        $offer = $this->denormalizeBirthYearRange($data, $offer);
+        $offer = $this->denormalizeBirthdateRange($data, $offer);
         return $this->denormalizeAudienceType($data, $offer);
     }
 
@@ -164,11 +164,11 @@ class EventDenormalizer extends OfferDenormalizer
         return $event;
     }
 
-    private function denormalizeBirthYearRange(array $data, ImmutableEvent $event): ImmutableEvent
+    private function denormalizeBirthdateRange(array $data, ImmutableEvent $event): ImmutableEvent
     {
-        if (isset($data['birthYearRange'])) {
-            $birthYearRange = BirthYearRange::fromString($data['birthYearRange']);
-            $event = $event->withBirthYearRange($birthYearRange);
+        if (isset($data['birthdateRange'])) {
+            $birthdateRange = BirthdateRange::fromArray($data['birthdateRange']);
+            $event = $event->withBirthdateRange($birthdateRange);
         }
 
         return $event;

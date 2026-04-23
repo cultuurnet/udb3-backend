@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use PHPUnit\Framework\TestCase;
 
-final class BirthYearRangeDeletedTest extends TestCase
+final class BirthdateRangeDeletedTest extends TestCase
 {
     /**
      * @test
@@ -14,11 +14,11 @@ final class BirthYearRangeDeletedTest extends TestCase
      */
     public function it_can_be_serialized_into_an_array(
         array $expectedSerializedValue,
-        BirthYearRangeDeleted $birthYearRangeDeleted
+        BirthdateRangeDeleted $birthdateRangeDeleted
     ): void {
         $this->assertEquals(
             $expectedSerializedValue,
-            $birthYearRangeDeleted->serialize()
+            $birthdateRangeDeleted->serialize()
         );
     }
 
@@ -28,22 +28,22 @@ final class BirthYearRangeDeletedTest extends TestCase
      */
     public function it_can_be_deserialized_from_an_array(
         array $serializedValue,
-        BirthYearRangeDeleted $expectedBirthYearRangeDeleted
+        BirthdateRangeDeleted $expectedBirthdateRangeDeleted
     ): void {
         $this->assertEquals(
-            $expectedBirthYearRangeDeleted,
-            BirthYearRangeDeleted::deserialize($serializedValue)
+            $expectedBirthdateRangeDeleted,
+            BirthdateRangeDeleted::deserialize($serializedValue)
         );
     }
 
     public function serializationDataProvider(): array
     {
         return [
-            'birth year range' => [
+            'birthdate range' => [
                 [
                     'item_id' => 'foo',
                 ],
-                new BirthYearRangeDeleted(
+                new BirthdateRangeDeleted(
                     'foo'
                 ),
             ],

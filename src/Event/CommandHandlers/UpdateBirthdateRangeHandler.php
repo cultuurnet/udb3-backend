@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Event\CommandHandlers;
 
 use Broadway\CommandHandling\CommandHandler;
-use CultuurNet\UDB3\Event\Commands\UpdateBirthYearRange;
+use CultuurNet\UDB3\Event\Commands\UpdateBirthdateRange;
 use CultuurNet\UDB3\Event\Event;
 use CultuurNet\UDB3\Event\EventRepository;
 
-final class UpdateBirthYearRangeHandler implements CommandHandler
+final class UpdateBirthdateRangeHandler implements CommandHandler
 {
     public function __construct(private readonly EventRepository $eventRepository)
     {
@@ -17,14 +17,14 @@ final class UpdateBirthYearRangeHandler implements CommandHandler
 
     public function handle($command): void
     {
-        if (!$command instanceof UpdateBirthYearRange) {
+        if (!$command instanceof UpdateBirthdateRange) {
             return;
         }
 
         /** @var Event $event */
         $event = $this->eventRepository->load($command->getItemId());
 
-        $event->updateBirthYearRange($command->birthYearRange);
+        $event->updateBirthdateRange($command->birthdateRange);
 
         $this->eventRepository->save($event);
     }

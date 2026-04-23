@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\Event;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\DeleteBirthYearRangeHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\DeleteBirthdateRangeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateDeparturePlacesHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateFaqsHandler;
-use CultuurNet\UDB3\Event\CommandHandlers\UpdateBirthYearRangeHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateBirthdateRangeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\DeleteOnlineUrlHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\RemoveThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateAttendanceModeHandler;
@@ -37,8 +37,8 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
             CopyEventHandler::class,
             UpdateFaqsHandler::class,
             UpdateDeparturePlacesHandler::class,
-            UpdateBirthYearRangeHandler::class,
-            DeleteBirthYearRangeHandler::class,
+            UpdateBirthdateRangeHandler::class,
+            DeleteBirthdateRangeHandler::class,
         ];
     }
 
@@ -127,13 +127,13 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            UpdateBirthYearRangeHandler::class,
-            fn () => new UpdateBirthYearRangeHandler($container->get('event_repository'))
+            UpdateBirthdateRangeHandler::class,
+            fn () => new UpdateBirthdateRangeHandler($container->get('event_repository'))
         );
 
         $container->addShared(
-            DeleteBirthYearRangeHandler::class,
-            fn () => new DeleteBirthYearRangeHandler($container->get('event_repository'))
+            DeleteBirthdateRangeHandler::class,
+            fn () => new DeleteBirthdateRangeHandler($container->get('event_repository'))
         );
     }
 }

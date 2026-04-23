@@ -5,15 +5,16 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
-use CultuurNet\UDB3\Event\Commands\UpdateBirthYearRange;
+use CultuurNet\UDB3\Event\Commands\UpdateBirthdateRange;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
-final class UpdateBirthYearRangeRequestHandlerTest extends TestCase
+final class UpdateBirthdateRangeRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
@@ -21,14 +22,14 @@ final class UpdateBirthYearRangeRequestHandlerTest extends TestCase
 
     private TraceableCommandBus $commandBus;
 
-    private UpdateBirthYearRangeRequestHandler $handler;
+    private UpdateBirthdateRangeRequestHandler $handler;
 
     private Psr7RequestBuilder $psr7RequestBuilder;
 
     protected function setUp(): void
     {
         $this->commandBus = new TraceableCommandBus();
-        $this->handler = new UpdateBirthYearRangeRequestHandler($this->commandBus);
+        $this->handler = new UpdateBirthdateRangeRequestHandler($this->commandBus);
         $this->psr7RequestBuilder = new Psr7RequestBuilder();
         $this->commandBus->record();
     }
@@ -36,37 +37,29 @@ final class UpdateBirthYearRangeRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_dispatches_update_birth_year_range(): void
+    public function it_dispatches_update_birthdate_range(): void
     {
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
-            ->withJsonBodyFromArray(['birthYear' => '2014-2020'])
+            ->withJsonBodyFromArray([
+                'birthdateRange' => [
+                    'from' => '2014-01-01',
+                    'to' => '2020-12-31',
+                ],
+            ])
             ->build('PUT');
 
         $response = $this->handler->handle($request);
 
         $this->assertEquals(204, $response->getStatusCode());
         $this->assertEquals(
-            [new UpdateBirthYearRange(self::EVENT_ID, new BirthYearRange(2014, 2020))],
-            $this->commandBus->getRecordedCommands()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_dispatches_update_with_single_year(): void
-    {
-        $request = $this->psr7RequestBuilder
-            ->withRouteParameter('eventId', self::EVENT_ID)
-            ->withJsonBodyFromArray(['birthYear' => '2014'])
-            ->build('PUT');
-
-        $response = $this->handler->handle($request);
-
-        $this->assertEquals(204, $response->getStatusCode());
-        $this->assertEquals(
-            [new UpdateBirthYearRange(self::EVENT_ID, new BirthYearRange(2014, 2014))],
+            [new UpdateBirthdateRange(
+                self::EVENT_ID,
+                new BirthdateRange(
+                    new DateTimeImmutable('2014-01-01'),
+                    new DateTimeImmutable('2020-12-31')
+                )
+            )],
             $this->commandBus->getRecordedCommands()
         );
     }
@@ -99,16 +92,10 @@ final class UpdateBirthYearRangeRequestHandlerTest extends TestCase
                 '{{}',
                 ApiProblem::bodyInvalidSyntax('JSON'),
             ],
-            'missing birthYear' => [
+            'missing birthdateRange' => [
                 '{}',
                 ApiProblem::bodyInvalidData(
-                    new SchemaError('/', 'The required properties (birthYear) are missing')
-                ),
-            ],
-            'invalid format' => [
-                '{"birthYear": "abc"}',
-                ApiProblem::bodyInvalidData(
-                    new SchemaError('/birthYear', 'The string should match pattern: ^[12]\\d{3}(-[12]\\d{3})?$')
+                    new SchemaError('/', 'The required properties (birthdateRange) are missing')
                 ),
             ],
         ];
@@ -121,12 +108,17 @@ final class UpdateBirthYearRangeRequestHandlerTest extends TestCase
     {
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
-            ->withJsonBodyFromArray(['birthYear' => '2020-2014'])
+            ->withJsonBodyFromArray([
+                'birthdateRange' => [
+                    'from' => '2020-12-31',
+                    'to' => '2014-01-01',
+                ],
+            ])
             ->build('PUT');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidData(
-                new SchemaError('/birthYear', '"From" birth year should not be greater than the "to" birth year.')
+                new SchemaError('/birthdateRange', '"From" birthdate should not be greater than the "to" birthdate.')
             ),
             fn () => $this->handler->handle($request)
         );

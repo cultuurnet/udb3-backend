@@ -8,12 +8,12 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use CultuurNet\UDB3\Event\Commands\UpdateBirthYearRange;
+use CultuurNet\UDB3\Event\Commands\UpdateBirthdateRange;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\EventCreated;
-use CultuurNet\UDB3\Event\Events\BirthYearRangeUpdated;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -21,43 +21,53 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use DateTimeImmutable;
 
-final class UpdateBirthYearRangeHandlerTest extends CommandHandlerScenarioTestCase
+final class UpdateBirthdateRangeHandlerTest extends CommandHandlerScenarioTestCase
 {
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
-        return new UpdateBirthYearRangeHandler(new EventRepository($eventStore, $eventBus));
+        return new UpdateBirthdateRangeHandler(new EventRepository($eventStore, $eventBus));
     }
 
     /**
      * @test
      */
-    public function it_handles_updating_birth_year_range(): void
+    public function it_handles_updating_birthdate_range(): void
     {
         $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
-        $birthYearRange = new BirthYearRange(2014, 2020);
+        $birthdateRange = new BirthdateRange(
+            new DateTimeImmutable('2014-01-01'),
+            new DateTimeImmutable('2020-12-31')
+        );
 
         $this->scenario
             ->withAggregateId($eventId)
             ->given([$this->getEventCreated($eventId)])
-            ->when(new UpdateBirthYearRange($eventId, $birthYearRange))
-            ->then([new BirthYearRangeUpdated($eventId, $birthYearRange)]);
+            ->when(new UpdateBirthdateRange($eventId, $birthdateRange))
+            ->then([new BirthdateRangeUpdated($eventId, $birthdateRange)]);
     }
 
     /**
      * @test
      */
-    public function it_replaces_existing_birth_year_range(): void
+    public function it_replaces_existing_birthdate_range(): void
     {
         $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
-        $original = new BirthYearRange(2014, 2020);
-        $updated = new BirthYearRange(2015, 2021);
+        $original = new BirthdateRange(
+            new DateTimeImmutable('2014-01-01'),
+            new DateTimeImmutable('2020-12-31')
+        );
+        $updated = new BirthdateRange(
+            new DateTimeImmutable('2015-01-01'),
+            new DateTimeImmutable('2021-12-31')
+        );
 
         $this->scenario
             ->withAggregateId($eventId)
-            ->given([$this->getEventCreated($eventId), new BirthYearRangeUpdated($eventId, $original)])
-            ->when(new UpdateBirthYearRange($eventId, $updated))
-            ->then([new BirthYearRangeUpdated($eventId, $updated)]);
+            ->given([$this->getEventCreated($eventId), new BirthdateRangeUpdated($eventId, $original)])
+            ->when(new UpdateBirthdateRange($eventId, $updated))
+            ->then([new BirthdateRangeUpdated($eventId, $updated)]);
     }
 
     /**
@@ -66,12 +76,15 @@ final class UpdateBirthYearRangeHandlerTest extends CommandHandlerScenarioTestCa
     public function it_ignores_updating_when_unchanged(): void
     {
         $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
-        $birthYearRange = new BirthYearRange(2014, 2020);
+        $birthdateRange = new BirthdateRange(
+            new DateTimeImmutable('2014-01-01'),
+            new DateTimeImmutable('2020-12-31')
+        );
 
         $this->scenario
             ->withAggregateId($eventId)
-            ->given([$this->getEventCreated($eventId), new BirthYearRangeUpdated($eventId, $birthYearRange)])
-            ->when(new UpdateBirthYearRange($eventId, $birthYearRange))
+            ->given([$this->getEventCreated($eventId), new BirthdateRangeUpdated($eventId, $birthdateRange)])
+            ->when(new UpdateBirthdateRange($eventId, $birthdateRange))
             ->then([]);
     }
 

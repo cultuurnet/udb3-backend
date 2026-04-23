@@ -6,7 +6,7 @@ namespace CultuurNet\UDB3\Event\Events;
 
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 
-final class BirthYearRangeDeleted extends AbstractEvent
+final class BirthdateRangeDeleted extends AbstractEvent
 {
     public static function deserialize(array $data): self
     {

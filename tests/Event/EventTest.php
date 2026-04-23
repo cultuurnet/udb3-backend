@@ -9,8 +9,8 @@ use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
-use CultuurNet\UDB3\Event\Events\BirthYearRangeDeleted;
-use CultuurNet\UDB3\Event\Events\BirthYearRangeUpdated;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeDeleted;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
@@ -42,7 +42,7 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
-use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
@@ -2691,77 +2691,92 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_update_birth_year_range(): void
+    public function it_can_update_birthdate_range(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $birthYearRange = new BirthYearRange(2014, 2020);
+        $birthdateRange = new BirthdateRange(
+            new \DateTimeImmutable('2014-01-01'),
+            new \DateTimeImmutable('2020-12-31')
+        );
 
         $this->scenario
             ->given([$this->getCreationEvent()])
-            ->when(fn (Event $event) => $event->updateBirthYearRange($birthYearRange))
-            ->then([new BirthYearRangeUpdated($eventId, $birthYearRange)]);
+            ->when(fn (Event $event) => $event->updateBirthdateRange($birthdateRange))
+            ->then([new BirthdateRangeUpdated($eventId, $birthdateRange)]);
     }
 
     /**
      * @test
      */
-    public function it_can_update_an_existing_birth_year_range(): void
+    public function it_can_update_an_existing_birthdate_range(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $original = new BirthYearRange(2014, 2020);
-        $updated = new BirthYearRange(2015, 2021);
+        $original = new BirthdateRange(
+            new \DateTimeImmutable('2014-01-01'),
+            new \DateTimeImmutable('2020-12-31')
+        );
+        $updated = new BirthdateRange(
+            new \DateTimeImmutable('2015-01-01'),
+            new \DateTimeImmutable('2021-12-31')
+        );
 
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new BirthYearRangeUpdated($eventId, $original),
+                new BirthdateRangeUpdated($eventId, $original),
             ])
-            ->when(fn (Event $event) => $event->updateBirthYearRange($updated))
-            ->then([new BirthYearRangeUpdated($eventId, $updated)]);
+            ->when(fn (Event $event) => $event->updateBirthdateRange($updated))
+            ->then([new BirthdateRangeUpdated($eventId, $updated)]);
     }
 
     /**
      * @test
      */
-    public function it_does_not_update_birth_year_range_when_unchanged(): void
+    public function it_does_not_update_birthdate_range_when_unchanged(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $birthYearRange = new BirthYearRange(2014, 2020);
+        $birthdateRange = new BirthdateRange(
+            new \DateTimeImmutable('2014-01-01'),
+            new \DateTimeImmutable('2020-12-31')
+        );
 
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new BirthYearRangeUpdated($eventId, $birthYearRange),
+                new BirthdateRangeUpdated($eventId, $birthdateRange),
             ])
-            ->when(fn (Event $event) => $event->updateBirthYearRange($birthYearRange))
+            ->when(fn (Event $event) => $event->updateBirthdateRange($birthdateRange))
             ->then([]);
     }
 
     /**
      * @test
      */
-    public function it_can_delete_birth_year_range(): void
+    public function it_can_delete_birthdate_range(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
-        $birthYearRange = new BirthYearRange(2014, 2020);
+        $birthdateRange = new BirthdateRange(
+            new \DateTimeImmutable('2014-01-01'),
+            new \DateTimeImmutable('2020-12-31')
+        );
 
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new BirthYearRangeUpdated($eventId, $birthYearRange),
+                new BirthdateRangeUpdated($eventId, $birthdateRange),
             ])
-            ->when(fn (Event $event) => $event->deleteBirthYearRange())
-            ->then([new BirthYearRangeDeleted($eventId)]);
+            ->when(fn (Event $event) => $event->deleteBirthdateRange())
+            ->then([new BirthdateRangeDeleted($eventId)]);
     }
 
     /**
      * @test
      */
-    public function it_does_not_delete_birth_year_range_when_not_set(): void
+    public function it_does_not_delete_birthdate_range_when_not_set(): void
     {
         $this->scenario
             ->given([$this->getCreationEvent()])
-            ->when(fn (Event $event) => $event->deleteBirthYearRange())
+            ->when(fn (Event $event) => $event->deleteBirthdateRange())
             ->then([]);
     }
 
