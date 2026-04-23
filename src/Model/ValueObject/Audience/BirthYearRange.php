@@ -6,13 +6,13 @@ namespace CultuurNet\UDB3\Model\ValueObject\Audience;
 
 final class BirthYearRange
 {
-    private ?int $from;
+    private int $from;
 
-    private ?int $to;
+    private int $to;
 
-    public function __construct(?int $from = null, ?int $to = null)
+    public function __construct(int $from, int $to)
     {
-        if ($from !== null && $to !== null && $from > $to) {
+        if ($from > $to) {
             throw new InvalidAgeRangeException('"From" birth year should not be greater than the "to" birth year.');
         }
 
@@ -20,24 +20,29 @@ final class BirthYearRange
         $this->to = $to;
     }
 
-    public function getFrom(): ?int
+    public function getFrom(): int
     {
         return $this->from;
     }
 
-    public function getTo(): ?int
+    public function getTo(): int
     {
         return $this->to;
     }
 
     public static function fromString(string $birthYearRangeString): self
     {
-        $parts = explode('-', $birthYearRangeString);
-        if (!isset($parts[1])) {
-            throw new InvalidAgeRangeException(
-                'Birth year range string is not valid because it is missing a hyphen.'
-            );
+        if (!str_contains($birthYearRangeString, '-')) {
+            if (!is_numeric($birthYearRangeString)) {
+                throw new InvalidAgeRangeException(
+                    'The birth year should be a natural number.'
+                );
+            }
+            $year = (int) $birthYearRangeString;
+            return new self($year, $year);
         }
+
+        $parts = explode('-', $birthYearRangeString);
 
         if (count($parts) !== 2) {
             throw new InvalidAgeRangeException(
@@ -47,31 +52,28 @@ final class BirthYearRange
 
         [$fromString, $toString] = $parts;
 
-        if (is_numeric($fromString) || empty($fromString)) {
-            $from = is_numeric($fromString) ? (int) $fromString : null;
-        } else {
+        if (!is_numeric($fromString)) {
             throw new InvalidAgeRangeException(
-                'The "from" birth year should be a natural number or empty.'
+                'The "from" birth year should be a natural number.'
             );
         }
 
-        if (is_numeric($toString) || empty($toString)) {
-            $to = is_numeric($toString) ? (int) $toString : null;
-        } else {
+        if (!is_numeric($toString)) {
             throw new InvalidAgeRangeException(
-                'The "to" birth year should be a natural number or empty.'
+                'The "to" birth year should be a natural number.'
             );
         }
 
-        return new self($from, $to);
+        return new self((int) $fromString, (int) $toString);
     }
 
     public function toString(): string
     {
-        $from = $this->from !== null ? (string) $this->from : '';
-        $to = $this->to !== null ? (string) $this->to : '';
+        if ($this->from === $this->to) {
+            return (string) $this->from;
+        }
 
-        return $from . '-' . $to;
+        return $this->from . '-' . $this->to;
     }
 
     public function sameAs(BirthYearRange $other): bool

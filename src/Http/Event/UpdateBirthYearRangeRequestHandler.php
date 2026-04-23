@@ -38,11 +38,7 @@ final class UpdateBirthYearRangeRequestHandler implements RequestHandlerInterfac
         $data = $parser->parse($request)->getParsedBody();
 
         try {
-            $birthYearString = $data->birthYear;
-            if (!str_contains($birthYearString, '-')) {
-                $birthYearString = $birthYearString . '-' . $birthYearString;
-            }
-            $birthYearRange = BirthYearRange::fromString($birthYearString);
+            $birthYearRange = BirthYearRange::fromString($data->birthYear);
         } catch (InvalidAgeRangeException $exception) {
             throw ApiProblem::bodyInvalidData(
                 new SchemaError('/birthYear', $exception->getMessage())

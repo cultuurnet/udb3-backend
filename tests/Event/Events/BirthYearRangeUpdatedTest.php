@@ -50,6 +50,16 @@ final class BirthYearRangeUpdatedTest extends TestCase
                     new BirthYearRange(2014, 2020)
                 ),
             ],
+            'single birth year' => [
+                [
+                    'item_id' => 'foo',
+                    'birthYearRange' => '2018',
+                ],
+                new BirthYearRangeUpdated(
+                    'foo',
+                    new BirthYearRange(2018, 2018)
+                ),
+            ],
         ];
     }
 }

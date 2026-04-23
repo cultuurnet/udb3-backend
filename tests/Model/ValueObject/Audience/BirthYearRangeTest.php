@@ -32,39 +32,6 @@ final class BirthYearRangeTest extends TestCase
 
     /**
      * @test
-     */
-    public function it_should_be_creatable_with_just_a_from(): void
-    {
-        $range = new BirthYearRange(2014);
-
-        $this->assertEquals(2014, $range->getFrom());
-        $this->assertNull($range->getTo());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_be_creatable_with_just_a_to(): void
-    {
-        $range = new BirthYearRange(null, 2020);
-
-        $this->assertNull($range->getFrom());
-        $this->assertEquals(2020, $range->getTo());
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_be_creatable_with_no_bounds(): void
-    {
-        $range = new BirthYearRange();
-
-        $this->assertNull($range->getFrom());
-        $this->assertNull($range->getTo());
-    }
-
-    /**
-     * @test
      * @dataProvider birthYearRangeStringProvider
      */
     public function it_should_create_ranges_from_strings(
@@ -79,21 +46,13 @@ final class BirthYearRangeTest extends TestCase
     public function birthYearRangeStringProvider(): array
     {
         return [
-            'ALL' => [
-                'birthYearRangeString' => '-',
-                'expectedRange' => new BirthYearRange(),
+            'SINGLE' => [
+                'birthYearRangeString' => '2018',
+                'expectedRange' => new BirthYearRange(2018, 2018),
             ],
             'RANGE' => [
                 'birthYearRangeString' => '2014-2020',
                 'expectedRange' => new BirthYearRange(2014, 2020),
-            ],
-            'FROM_ONLY' => [
-                'birthYearRangeString' => '2014-',
-                'expectedRange' => new BirthYearRange(2014),
-            ],
-            'TO_ONLY' => [
-                'birthYearRangeString' => '-2020',
-                'expectedRange' => new BirthYearRange(null, 2020),
             ],
             'EXACT' => [
                 'birthYearRangeString' => '2015-2015',
@@ -116,21 +75,13 @@ final class BirthYearRangeTest extends TestCase
     public function birthYearRangeToStringProvider(): array
     {
         return [
+            'SINGLE' => [
+                'range' => new BirthYearRange(2018, 2018),
+                'expectedString' => '2018',
+            ],
             'RANGE' => [
                 'range' => new BirthYearRange(2014, 2020),
                 'expectedString' => '2014-2020',
-            ],
-            'FROM_ONLY' => [
-                'range' => new BirthYearRange(2014),
-                'expectedString' => '2014-',
-            ],
-            'TO_ONLY' => [
-                'range' => new BirthYearRange(null, 2020),
-                'expectedString' => '-2020',
-            ],
-            'ALL' => [
-                'range' => new BirthYearRange(),
-                'expectedString' => '-',
             ],
         ];
     }
@@ -165,25 +116,40 @@ final class BirthYearRangeTest extends TestCase
     public function invalidBirthYearRangeStringProvider(): array
     {
         return [
-            'no hyphen' => [
-                'birthYearRangeString' => '2014',
+            'non numeric single' => [
+                'birthYearRangeString' => 'abc',
                 'exception' => InvalidAgeRangeException::class,
-                'exceptionMessage' => 'Birth year range string is not valid because it is missing a hyphen.',
+                'exceptionMessage' => 'The birth year should be a natural number.',
             ],
             'too many hyphens' => [
                 'birthYearRangeString' => '2014--2020',
                 'exception' => InvalidAgeRangeException::class,
                 'exceptionMessage' => 'Birth year range string is not valid because it has too many hyphens.',
             ],
+            'open from' => [
+                'birthYearRangeString' => '-2020',
+                'exception' => InvalidAgeRangeException::class,
+                'exceptionMessage' => 'The "from" birth year should be a natural number.',
+            ],
+            'open to' => [
+                'birthYearRangeString' => '2014-',
+                'exception' => InvalidAgeRangeException::class,
+                'exceptionMessage' => 'The "to" birth year should be a natural number.',
+            ],
             'non numeric from' => [
                 'birthYearRangeString' => 'abc-2020',
                 'exception' => InvalidAgeRangeException::class,
-                'exceptionMessage' => 'The "from" birth year should be a natural number or empty.',
+                'exceptionMessage' => 'The "from" birth year should be a natural number.',
             ],
             'non numeric to' => [
                 'birthYearRangeString' => '2014-abc',
                 'exception' => InvalidAgeRangeException::class,
-                'exceptionMessage' => 'The "to" birth year should be a natural number or empty.',
+                'exceptionMessage' => 'The "to" birth year should be a natural number.',
+            ],
+            'just hyphen' => [
+                'birthYearRangeString' => '-',
+                'exception' => InvalidAgeRangeException::class,
+                'exceptionMessage' => 'The "from" birth year should be a natural number.',
             ],
             'from greater than to' => [
                 'birthYearRangeString' => '2020-2014',

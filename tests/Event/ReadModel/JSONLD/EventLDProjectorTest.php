@@ -2068,6 +2068,25 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
+    public function it_projects_single_birth_year_updated(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $birthYearRange = new BirthYearRange(2018, 2018);
+
+        $body = $this->project(
+            new BirthYearRangeUpdated($eventId, $birthYearRange),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertEquals('2018', $body->birthYearRange);
+    }
+
+    /**
+     * @test
+     */
     public function it_removes_birth_year_range_from_projection_when_deleted(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
