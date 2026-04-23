@@ -313,6 +313,8 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             try {
                 $this->commandBus->dispatch($command);
             } catch (InvalidWorkflowStatusTransition $notAllowedToPublish) {
+            } catch (OvernightNotAllowed $exception) {
+                throw ApiProblem::bodyInvalidDataWithDetail($exception->getMessage());
             }
         }
 
