@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\Address\GetStreetRequestHandler;
+use CultuurNet\UDB3\Http\Holidays\GetHolidaysRequestHandler;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
 use CultuurNet\UDB3\Http\Curators\CreateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\DeleteNewsArticleRequestHandler;
@@ -238,6 +239,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
                 $this->bindCultuurkuurEndpoints($router);
 
                 $this->bindAddresses($router);
+
+                $this->bindHolidays($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 // This proxy does not support the POST requests feature of SAPI 3
@@ -637,5 +640,10 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->get('regions/', GetRegionsRequestHandler::class);
             $routeGroup->get('education-levels/', GetEducationLevelsRequestHandler::class);
         });
+    }
+
+    private function bindHolidays(Router $router): void
+    {
+        $router->get('/holidays/', GetHolidaysRequestHandler::class);
     }
 }

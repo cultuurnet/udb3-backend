@@ -233,6 +233,9 @@ $container->addServiceProvider(new VerenigingsloketServiceProvider());
 /** Addresses */
 $container->addServiceProvider(new AddressServiceProvider());
 
+/** Holidays */
+$container->addServiceProvider(new \CultuurNet\UDB3\Holidays\HolidaysServiceProvider());
+
 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);
 }
