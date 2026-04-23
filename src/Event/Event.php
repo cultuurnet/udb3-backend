@@ -444,16 +444,20 @@ final class Event extends Offer
 
     public function updateType(Category $category): void
     {
-        $wasCamp = EventTypeResolver::isOvernightAllowed($this->typeId);
-
         parent::updateType($category);
 
-        if ($this->calendar instanceof CalendarWithSubEvents && $wasCamp && $this->typeId !== EventTypeResolver::CAMP_OR_VACATION_TERM_ID) {
-            $resetSubEvents = $this->calendar->getSubEvents()->withoutOvernight()->toArray();
-            $updatedCalendar = $this->rebuildCalendarFromSubEvents($resetSubEvents);
-            if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
-                $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
-            }
+        if (!($this->calendar instanceof CalendarWithSubEvents)) {
+            return;
+        }
+
+        if (EventTypeResolver::isOvernightAllowed($this->typeId)) {
+            return;
+        }
+
+        $resetSubEvents = $this->calendar->getSubEvents()->withoutOvernight()->toArray();
+        $updatedCalendar = $this->rebuildCalendarFromSubEvents($resetSubEvents);
+        if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
+            $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
         }
     }
 
