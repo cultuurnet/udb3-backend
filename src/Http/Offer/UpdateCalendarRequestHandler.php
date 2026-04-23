@@ -13,9 +13,9 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Event\OvernightNotAllowed;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\OfferType;
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -50,7 +50,7 @@ final class UpdateCalendarRequestHandler implements RequestHandlerInterface
             $this->commandBus->dispatch(
                 new UpdateCalendar($offerId, $calendar)
             );
-        } catch (InvalidArgumentException $exception) {
+        } catch (OvernightNotAllowed $exception) {
             throw ApiProblem::bodyInvalidDataWithDetail($exception->getMessage());
         }
 

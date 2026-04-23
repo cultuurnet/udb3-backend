@@ -41,7 +41,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
-use InvalidArgumentException;
+use CultuurNet\UDB3\Event\OvernightNotAllowed;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateCalendarRequestHandlerTest extends TestCase
@@ -2303,15 +2303,15 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_maps_domain_invalid_argument_exception_to_400(): void
+    public function it_maps_overnight_not_allowed_to_400(): void
     {
         $commandBus = $this->createMock(CommandBus::class);
-        $commandBus->method('dispatch')->willThrowException(new InvalidArgumentException('overnight is only allowed when the event has term 0.57.0.0.0'));
+        $commandBus->method('dispatch')->willThrowException(new OvernightNotAllowed());
 
         $handler = new UpdateCalendarRequestHandler($commandBus);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidDataWithDetail('overnight is only allowed when the event has term 0.57.0.0.0'),
+            ApiProblem::bodyInvalidDataWithDetail(OvernightNotAllowed::MESSAGE),
             fn () => $handler->handle(
                 (new Psr7RequestBuilder())
                     ->withJsonBodyFromObject((object)[

@@ -84,6 +84,7 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
+use CultuurNet\UDB3\Event\OvernightNotAllowed;
 use CultuurNet\UDB3\SampleFiles;
 use Money\Currency;
 use Money\Money;
@@ -2539,8 +2540,8 @@ class EventTest extends AggregateRootScenarioTestCase
      */
     public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_sub_events(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_OR_VACATION_TERM_ID);
+        $this->expectException(OvernightNotAllowed::class);
+        $this->expectExceptionMessage(OvernightNotAllowed::MESSAGE);
 
         // Set a single-subEvent calendar first (event is created with PermanentCalendar by default)
         $dateRange = new DateRange(
@@ -2556,8 +2557,8 @@ class EventTest extends AggregateRootScenarioTestCase
      */
     public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_calendar(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_OR_VACATION_TERM_ID);
+        $this->expectException(OvernightNotAllowed::class);
+        $this->expectExceptionMessage(OvernightNotAllowed::MESSAGE);
 
         $this->event->updateCalendar(
             new SingleSubEventCalendar(
