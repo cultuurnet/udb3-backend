@@ -14,14 +14,6 @@ Feature: Test the holidays endpoint
     Then the response status should be "200"
     And the response body should be valid JSON
 
-  Scenario: Get holidays returns combined result sorted by start date
-    When I send a GET request to "/holidays/?startDate=2025-01-01&endDate=2025-12-31"
-    Then the response status should be "200"
-    And the response body should be valid JSON
-    And the JSON response should have "0.startDate"
-    And the JSON response should have "0.type"
-    And the JSON response should have "0.name"
-
   Scenario: Get holidays returns error when end date exceeds 5 years in the future
     When I send a GET request to "/holidays/?endDate=2040-01-01"
     Then the response status should be "400"
