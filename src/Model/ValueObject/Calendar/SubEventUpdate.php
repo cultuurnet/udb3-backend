@@ -18,6 +18,8 @@ final class SubEventUpdate
     private ?BookingInfo $bookingInfo = null;
     private ?TimeImmutableRange $childcareTimeRange = null;
 
+    private ?bool $overnight = null;
+
     public function __construct(int $subEventId)
     {
         $this->subEventId = $subEventId;
@@ -97,6 +99,18 @@ final class SubEventUpdate
     {
         $c = clone $this;
         $c->childcareTimeRange = $childcareTimeRange;
+        return $c;
+    }
+
+    public function getOvernight(): ?bool
+    {
+        return $this->overnight;
+    }
+
+    public function withOvernight(?bool $overnight): self
+    {
+        $c = clone $this;
+        $c->overnight = $overnight;
         return $c;
     }
 }

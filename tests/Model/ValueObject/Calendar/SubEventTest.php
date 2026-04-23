@@ -67,4 +67,44 @@ final class SubEventTest extends TestCase
         $this->assertNotSame($this->subEvent, $updated);
         $this->assertNull($this->subEvent->getChildcareTimeRange());
     }
+
+    /**
+     * @test
+     */
+    public function it_is_not_overnight_by_default(): void
+    {
+        $this->assertFalse($this->subEvent->isOvernight());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_set_to_overnight(): void
+    {
+        $updated = $this->subEvent->withOvernight(true);
+
+        $this->assertTrue($updated->isOvernight());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_clear_overnight(): void
+    {
+        $withOvernight = $this->subEvent->withOvernight(true);
+        $cleared = $withOvernight->withOvernight(false);
+
+        $this->assertFalse($cleared->isOvernight());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_new_instance_when_setting_overnight(): void
+    {
+        $updated = $this->subEvent->withOvernight(true);
+
+        $this->assertNotSame($this->subEvent, $updated);
+        $this->assertFalse($this->subEvent->isOvernight());
+    }
 }

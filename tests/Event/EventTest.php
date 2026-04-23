@@ -9,6 +9,8 @@ use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
+use CultuurNet\UDB3\Event\Events\BirthYearRangeDeleted;
+use CultuurNet\UDB3\Event\Events\BirthYearRangeUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
@@ -30,10 +32,9 @@ use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
+use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
-use CultuurNet\UDB3\Event\Events\BirthYearRangeDeleted;
-use CultuurNet\UDB3\Event\Events\BirthYearRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description;
@@ -43,11 +44,16 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthYearRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -91,6 +97,9 @@ class EventTest extends AggregateRootScenarioTestCase
     public const NS_CDBXML_3_2 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.2/FINAL';
     public const NS_CDBXML_3_3 = 'http://www.cultuurdatabank.com/XMLSchema/CdbXSD/3.3/FINAL';
 
+    private const EVENT_ID = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+    private const LOCATION_ID = '322d67b6-e84d-4649-9384-12ecad74eab3';
+
     protected function getAggregateRootClass(): string
     {
         return Event::class;
@@ -115,11 +124,11 @@ class EventTest extends AggregateRootScenarioTestCase
     private function getCreationEvent(): EventCreated
     {
         return new EventCreated(
-            'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+            self::EVENT_ID,
             new Language('en'),
             'some representative title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
-            new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
+            new LocationId(self::LOCATION_ID),
             new PermanentCalendar(new OpeningHours())
         );
     }
@@ -127,7 +136,7 @@ class EventTest extends AggregateRootScenarioTestCase
     private function getCreationEventWithTheme(): EventCreated
     {
         return new EventCreated(
-            'd2b41f1d-598c-46af-a3a5-10e373faa6fe',
+            self::EVENT_ID,
             new Language('en'),
             'some representative title',
             new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
@@ -2439,6 +2448,244 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
             ->then([new DeparturePlacesUpdated($eventId, $departurePlaces)]);
+    }
+
+    private function getKampOrVakantieCreationEvent(): EventCreated
+    {
+        return new EventCreated(
+            self::EVENT_ID,
+            new Language('nl'),
+            'Zomerkamp',
+            new Category(
+                new CategoryID(EventTypeResolver::CAMP_OR_VACATION_TERM_ID),
+                new CategoryLabel('Kamp of vakantie'),
+                CategoryDomain::eventType()
+            ),
+            new LocationId(self::LOCATION_ID),
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                        new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+                    )
+                )
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_preserves_overnight_on_unrelated_sub_event_updates(): void
+    {
+        $unavailable = new \CultuurNet\UDB3\Model\ValueObject\Calendar\Status(
+            \CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType::Unavailable()
+        );
+
+        $subEventWithOvernight = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withOvernight(true);
+
+        $this->scenario
+            ->given([
+                $this->getKampOrVakantieCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernight)),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withStatus($unavailable)
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($subEventWithOvernight->withStatus($unavailable))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_explicitly_set_overnight_to_false_via_update_sub_events(): void
+    {
+        $subEventWithOvernight = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withOvernight(true);
+
+        $this->scenario
+            ->given([
+                $this->getKampOrVakantieCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernight)),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withOvernight(false)
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($subEventWithOvernight->withOvernight(false))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_sub_events(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_OR_VACATION_TERM_ID);
+
+        // Set a single-subEvent calendar first (event is created with PermanentCalendar by default)
+        $dateRange = new DateRange(
+            new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+            new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+        );
+        $this->event->updateCalendar(new SingleSubEventCalendar(SubEvent::createAvailable($dateRange)));
+        $this->event->updateSubEvents((new SubEventUpdate(0))->withOvernight(true));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_calendar(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_OR_VACATION_TERM_ID);
+
+        $this->event->updateCalendar(
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                        new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+                    )
+                )->withOvernight(true)
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_overnight_on_update_calendar_when_event_has_kamp_of_vakantie_term(): void
+    {
+        $subEventWithOvernight = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withOvernight(true);
+
+        $calendar = new SingleSubEventCalendar($subEventWithOvernight);
+
+        $this->scenario
+            ->given([$this->getKampOrVakantieCreationEvent()])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([new CalendarUpdated(self::EVENT_ID, $calendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_resets_overnight_on_all_sub_events_when_type_changes_away_from_kamp_of_vakantie(): void
+    {
+        $subEventWithOvernight = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withOvernight(true);
+
+        $concertType = new Category(
+            new CategoryID('0.50.4.0.0'),
+            new CategoryLabel('Concert'),
+            CategoryDomain::eventType()
+        );
+
+        $this->scenario
+            ->given([
+                $this->getKampOrVakantieCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernight)),
+            ])
+            ->when(fn (Event $event) => $event->updateType($concertType))
+            ->then([
+                new TypeUpdated(self::EVENT_ID, $concertType),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($subEventWithOvernight->withOvernight(false))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_emit_calendar_updated_when_type_changes_away_from_kamp_of_vakantie_but_no_overnight_is_set(): void
+    {
+        $concertType = new Category(
+            new CategoryID('0.50.4.0.0'),
+            new CategoryLabel('Concert'),
+            CategoryDomain::eventType()
+        );
+
+        $this->scenario
+            ->given([$this->getKampOrVakantieCreationEvent()])
+            ->when(fn (Event $event) => $event->updateType($concertType))
+            ->then([new TypeUpdated(self::EVENT_ID, $concertType)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_resets_overnight_on_multiple_sub_events_when_type_changes(): void
+    {
+        $dateRange1 = new DateRange(
+            new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+            new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+        );
+        $dateRange2 = new DateRange(
+            new \DateTimeImmutable('2026-08-01T09:00:00+02:00'),
+            new \DateTimeImmutable('2026-08-05T17:00:00+02:00')
+        );
+
+        $subEvent1 = SubEvent::createAvailable($dateRange1)->withOvernight(true);
+        $subEvent2 = SubEvent::createAvailable($dateRange2)->withOvernight(true);
+
+        $concertType = new Category(
+            new CategoryID('0.50.4.0.0'),
+            new CategoryLabel('Concert'),
+            CategoryDomain::eventType()
+        );
+
+        $this->scenario
+            ->given([
+                $this->getKampOrVakantieCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents($subEvent1, $subEvent2))
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateType($concertType))
+            ->then([
+                new TypeUpdated(self::EVENT_ID, $concertType),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $subEvent1->withOvernight(false),
+                        $subEvent2->withOvernight(false)
+                    ))
+                ),
+            ]);
     }
 
     /**
