@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Event\OvernightNotAllowed;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -13,7 +14,6 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
-use CultuurNet\UDB3\Event\OvernightNotAllowed;
 use CultuurNet\UDB3\Offer\Commands\UpdateCalendar;
 use CultuurNet\UDB3\Offer\OfferType;
 use Psr\Http\Message\ResponseInterface;

@@ -14,15 +14,15 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
-use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use DateTimeImmutable;
@@ -203,9 +203,9 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                                     new StatusReason('Geannuleerd wegens covid')
                                 )
                                 )->withTranslation(
-                                    new Language('fr'),
-                                    new StatusReason('Franse tekst')
-                                )
+                                        new Language('fr'),
+                                        new StatusReason('Franse tekst')
+                                    )
                             )
                         ),
                 ),
