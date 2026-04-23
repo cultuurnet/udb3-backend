@@ -76,7 +76,7 @@ Feature: Test birthYearRange on events
     [
       {
         "jsonPointer":"\/birthYear",
-        "error":"The string should match pattern: ^\\d{4}(-\\d{4})?$"
+        "error":"The string should match pattern: ^[12]\\d{3}(-[12]\\d{3})?$"
       }
     ]
     """

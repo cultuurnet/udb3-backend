@@ -108,7 +108,7 @@ final class UpdateBirthYearRangeRequestHandlerTest extends TestCase
             'invalid format' => [
                 '{"birthYear": "abc"}',
                 ApiProblem::bodyInvalidData(
-                    new SchemaError('/birthYear', 'The string should match pattern: ^\\d{4}(-\\d{4})?$')
+                    new SchemaError('/birthYear', 'The string should match pattern: ^[12]\\d{3}(-[12]\\d{3})?$')
                 ),
             ],
         ];
