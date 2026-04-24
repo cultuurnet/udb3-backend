@@ -65,3 +65,57 @@ Feature: Test the Search API v3 boosting
       }
     ]
     """
+
+  @testIsolation
+  Scenario: I can positively boost places
+    Given I create a random labelname of 10 characters
+    When I create a minimal place and save the "id" as "termBoostedPlace"
+    And I set the JSON request payload to:
+    """
+    {"name": "kerst%{labelname} sneeuw%{labelname}"}
+    """
+    And I send a PUT request to "/places/%{termBoostedPlace}/name/nl"
+    And I publish the place at "/places/%{termBoostedPlace}"
+    When I create a minimal place and save the "id" as "termNaturalPlace"
+    And I set the JSON request payload to:
+    """
+    {"name": "kerst%{labelname} kerst%{labelname}"}
+    """
+    And I send a PUT request to "/places/%{termNaturalPlace}/name/nl"
+    And I publish the place at "/places/%{termNaturalPlace}"
+    And I wait 2 seconds
+    When I am using the Search API v3 base URL
+    And I send a GET request to "/places" with parameters:
+      | text        | kerst%{labelname}                 |
+      | sort[score] | desc                              |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termNaturalPlace}",
+        "@type": "Place"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termBoostedPlace}",
+        "@type": "Place"
+      }
+    ]
+    """
+    When I send a GET request to "/places" with parameters:
+      | text        | kerst%{labelname}                                   |
+      | q           | (sneeuw%{labelname}^10) OR (NOT sneeuw%{labelname}) |
+      | sort[score] | desc                                                |
+    Then the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termBoostedPlace}",
+        "@type": "Place"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termNaturalPlace}",
+        "@type": "Place"
+      }
+    ]
+    """
