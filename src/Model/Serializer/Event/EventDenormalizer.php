@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\InvalidAgeRangeException;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqsDenormalizer;
@@ -25,6 +26,8 @@ use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Web\UrlsDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -167,7 +170,13 @@ class EventDenormalizer extends OfferDenormalizer
     private function denormalizeBirthdateRange(array $data, ImmutableEvent $event): ImmutableEvent
     {
         if (isset($data['birthdateRange'])) {
-            $birthdateRange = BirthdateRange::fromArray($data['birthdateRange']);
+            try {
+                $birthdateRange = BirthdateRange::fromArray($data['birthdateRange']);
+            } catch (InvalidAgeRangeException $exception) {
+                throw ApiProblem::bodyInvalidData(
+                    new SchemaError('/birthdateRange', $exception->getMessage())
+                );
+            }
             $event = $event->withBirthdateRange($birthdateRange);
         }
 
