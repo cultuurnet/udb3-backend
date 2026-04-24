@@ -43,14 +43,6 @@ final class BirthdateRange
         ];
     }
 
-    public static function fromBirthYearRange(BirthYearRange $birthYearRange): self
-    {
-        return new self(
-            new DateTimeImmutable($birthYearRange->getFrom() . '-01-01'),
-            new DateTimeImmutable($birthYearRange->getTo() . '-12-31')
-        );
-    }
-
     public function sameAs(BirthdateRange $other): bool
     {
         return $this->from->format('Y-m-d') === $other->from->format('Y-m-d')

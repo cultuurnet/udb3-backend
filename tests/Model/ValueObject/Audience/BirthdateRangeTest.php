@@ -67,18 +67,6 @@ final class BirthdateRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_create_from_birth_year_range(): void
-    {
-        $birthYearRange = new BirthYearRange(2014, 2020);
-        $range = BirthdateRange::fromBirthYearRange($birthYearRange);
-
-        $this->assertEquals('2014-01-01', $range->getFrom()->format('Y-m-d'));
-        $this->assertEquals('2020-12-31', $range->getTo()->format('Y-m-d'));
-    }
-
-    /**
-     * @test
-     */
     public function it_should_compare_two_ranges(): void
     {
         $range = new BirthdateRange(
