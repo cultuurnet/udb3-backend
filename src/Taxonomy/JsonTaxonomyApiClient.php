@@ -16,33 +16,13 @@ use Psr\Log\LoggerInterface;
 
 final class JsonTaxonomyApiClient implements TaxonomyApiClient
 {
-    private array $terms;
+    private ?array $terms = null;
 
     public function __construct(
         private readonly ClientInterface $client,
         private readonly string $termsEndpoint,
         private readonly LoggerInterface $logger
     ) {
-        $request = new Request(
-            'GET',
-            $this->termsEndpoint,
-        );
-
-        $response = $this->client->sendRequest($request);
-        if ($response->getStatusCode() !== 200) {
-            $this->logger->error('Taxonomy Api returned non-200 status code', [
-                'status_code' => $response->getStatusCode(),
-                'body' => $response->getBody()->getContents(),
-            ]);
-            throw new TaxonomyApiProblem('Taxonomy Api returned non-200 status code.');
-        }
-        $contents = $response->getBody()->getContents();
-        if (empty($contents)) {
-            $this->logger->error('Taxonomy Api returned no terms');
-            throw new TaxonomyApiProblem('Taxonomy Api returned no terms.');
-        }
-        $contentsAsJson = Json::decodeAssociatively($contents);
-        $this->terms = $contentsAsJson['terms'];
     }
 
     public function getPlaceTypes(): Categories
@@ -72,13 +52,31 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
 
     public function getNativeTerms(): array
     {
-        return $this->terms;
+        if ($this->terms !== null) {
+            return $this->terms;
+        }
+
+        $response = $this->client->sendRequest(new Request('GET', $this->termsEndpoint));
+        if ($response->getStatusCode() !== 200) {
+            $this->logger->error('Taxonomy Api returned non-200 status code', [
+                'status_code' => $response->getStatusCode(),
+                'body' => $response->getBody()->getContents(),
+            ]);
+            throw new TaxonomyApiProblem('Taxonomy Api returned non-200 status code.');
+        }
+        $contents = $response->getBody()->getContents();
+        if (empty($contents)) {
+            $this->logger->error('Taxonomy Api returned no terms');
+            throw new TaxonomyApiProblem('Taxonomy Api returned no terms.');
+        }
+        $contentsAsJson = Json::decodeAssociatively($contents);
+        return $this->terms = $contentsAsJson['terms'];
     }
 
     private function getTermsByDomainAndScope(CategoryDomain $domain, string $scope): Categories
     {
         $termsByDomainAndScope  = [];
-        foreach ($this->terms as $term) {
+        foreach ($this->getNativeTerms() as $term) {
             if ($term['domain'] === $domain->toString() && in_array($scope, $term['scope'])) {
                 $termsByDomainAndScope[] = new Category(new CategoryID($term['id']), new CategoryLabel($term['name']['nl']), $domain);
             }
