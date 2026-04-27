@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Taxonomy;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Categories;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
+use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Client\ClientInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
 
 final class CachedTaxonomyApiClientTest extends TestCase
@@ -235,5 +239,30 @@ final class CachedTaxonomyApiClientTest extends TestCase
             new JsonTaxonomyApiClient($httpClient, 'https://taxonomy.example.com/terms', new NullLogger()),
             new ArrayAdapter()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_calls_the_taxonomy_api_only_once_across_many_getter_calls(): void
+    {
+        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient->expects($this->once())
+            ->method('sendRequest')
+            ->willReturn(
+                new Response(200, [], Json::encode(['terms' => [
+                    ['id' => '0.50.4.0.0', 'domain' => 'eventtype', 'name' => ['nl' => 'Concert'], 'scope' => ['events']],
+                ]]))
+            );
+
+        $client = new CachedTaxonomyApiClient(
+            new JsonTaxonomyApiClient($httpClient, 'https://taxonomy.example.com/terms', new NullLogger()),
+            new ArrayAdapter()
+        );
+
+        $client->getEventTypes();
+        $client->getEventThemes();
+        $client->getPlaceTypes();
+        $client->getNativeTerms();
     }
 }
