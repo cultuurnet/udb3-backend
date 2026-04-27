@@ -217,4 +217,23 @@ final class CachedTaxonomyApiClientTest extends TestCase
         $this->assertEquals($placeTypes, $placeTypesResult2);
         $this->assertEquals($eventTypes, $eventTypesResult2);
     }
+
+    /**
+     * @test
+     *
+     * @bugfix https://jira.publiq.be/browse/III-7156
+     * Previously JsonTaxonomyApiClient performed the HTTP fetch in its constructor,
+     * so wrapping it in CachedTaxonomyApiClient never short-circuited the call.
+     * This test wires both real classes together and asserts no HTTP call happens until a getter is actually invoked.
+     */
+    public function it_does_not_call_the_taxonomy_api_when_no_getter_is_invoked(): void
+    {
+        $httpClient = $this->createMock(ClientInterface::class);
+        $httpClient->expects($this->never())->method('sendRequest');
+
+        new CachedTaxonomyApiClient(
+            new JsonTaxonomyApiClient($httpClient, 'https://taxonomy.example.com/terms', new NullLogger()),
+            new ArrayAdapter()
+        );
+    }
 }
