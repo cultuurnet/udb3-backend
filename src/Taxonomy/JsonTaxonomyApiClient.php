@@ -52,11 +52,6 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
 
     public function getNativeTerms(): array
     {
-        return $this->fetchTerms();
-    }
-
-    private function fetchTerms(): array
-    {
         if ($this->terms !== null) {
             return $this->terms;
         }
@@ -81,7 +76,7 @@ final class JsonTaxonomyApiClient implements TaxonomyApiClient
     private function getTermsByDomainAndScope(CategoryDomain $domain, string $scope): Categories
     {
         $termsByDomainAndScope  = [];
-        foreach ($this->fetchTerms() as $term) {
+        foreach ($this->getNativeTerms() as $term) {
             if ($term['domain'] === $domain->toString() && in_array($scope, $term['scope'])) {
                 $termsByDomainAndScope[] = new Category(new CategoryID($term['id']), new CategoryLabel($term['name']['nl']), $domain);
             }
