@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\OvernightNotAllowed;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
@@ -46,13 +44,9 @@ final class UpdateCalendarRequestHandler implements RequestHandlerInterface
         /** @var Calendar $calendar */
         $calendar = $parser->parse($request)->getParsedBody();
 
-        try {
-            $this->commandBus->dispatch(
-                new UpdateCalendar($offerId, $calendar)
-            );
-        } catch (OvernightNotAllowed $exception) {
-            throw ApiProblem::bodyInvalidDataWithDetail($exception->getMessage());
-        }
+        $this->commandBus->dispatch(
+            new UpdateCalendar($offerId, $calendar)
+        );
 
         return new NoContentResponse();
     }
