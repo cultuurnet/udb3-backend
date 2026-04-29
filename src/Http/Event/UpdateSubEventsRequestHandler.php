@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
-use CultuurNet\UDB3\Event\ChildcareTimeInvalid;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
-use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -18,7 +15,6 @@ use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\SubEventUpdatesDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdates;
-use InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -49,16 +45,7 @@ class UpdateSubEventsRequestHandler implements RequestHandlerInterface
         /** @var SubEventUpdates $updates */
         $updates = $this->updateSubEventsParser->parse($request)->getParsedBody();
 
-        try {
-            $this->commandBus->dispatch(new UpdateSubEvents($eventId, ...$updates));
-        } catch (ChildcareTimeInvalid $exception) {
-            // Map domain exception to HTTP error format
-            $field = str_contains($exception->getReason(), 'start') ? 'start' : 'end';
-            $pointer = '/' . $exception->getSubEventIndex() . '/childcare/' . $field;
-            throw ApiProblem::bodyInvalidData(new SchemaError($pointer, $exception->getMessage()));
-        } catch (InvalidArgumentException $exception) {
-            throw ApiProblem::bodyInvalidDataWithDetail($exception->getMessage());
-        }
+        $this->commandBus->dispatch(new UpdateSubEvents($eventId, ...$updates));
 
         return new NoContentResponse();
     }
