@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Holidays\HolidaysService;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\QueryParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Json;
 use DateTimeImmutable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -59,6 +60,6 @@ final class GetHolidaysRequestHandler implements RequestHandlerInterface
             throw ApiProblem::dateRangeExceedsLimit();
         }
 
-        return new JsonResponse($this->holidaysService->getHolidays($startDate, $endDate));
+        return new JsonResponse(Json::encodeWithUnicode($this->holidaysService->getHolidays($startDate, $endDate)));
     }
 }
