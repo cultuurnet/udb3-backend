@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\Event;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\ChildcareTimeInvalid;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
-use CultuurNet\UDB3\Event\OvernightNotAllowed;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
@@ -57,8 +56,6 @@ class UpdateSubEventsRequestHandler implements RequestHandlerInterface
             $field = str_contains($exception->getReason(), 'start') ? 'start' : 'end';
             $pointer = '/' . $exception->getSubEventIndex() . '/childcare/' . $field;
             throw ApiProblem::bodyInvalidData(new SchemaError($pointer, $exception->getMessage()));
-        } catch (OvernightNotAllowed $exception) {
-            throw ApiProblem::bodyInvalidDataWithDetail($exception->getMessage());
         }
 
         return new NoContentResponse();

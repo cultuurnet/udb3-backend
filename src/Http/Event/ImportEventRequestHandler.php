@@ -24,7 +24,6 @@ use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
-use CultuurNet\UDB3\Event\OvernightNotAllowed;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -177,20 +176,16 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         $commands = [];
         if (!$eventExists) {
-            try {
-                $eventAggregate = EventAggregate::create(
-                    $eventId,
-                    $event->getMainLanguage(),
-                    $title,
-                    $type,
-                    $location,
-                    $calendar,
-                    $theme,
-                    $publishDate
-                );
-            } catch (OvernightNotAllowed $exception) {
-                throw ApiProblem::bodyInvalidDataWithDetail($exception->getMessage());
-            }
+            $eventAggregate = EventAggregate::create(
+                $eventId,
+                $event->getMainLanguage(),
+                $title,
+                $type,
+                $location,
+                $calendar,
+                $theme,
+                $publishDate
+            );
 
             if ($workflowStatus->sameAs(WorkflowStatus::READY_FOR_VALIDATION())) {
                 $eventAggregate->publish($publishDate);
@@ -313,8 +308,6 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             try {
                 $this->commandBus->dispatch($command);
             } catch (InvalidWorkflowStatusTransition $notAllowedToPublish) {
-            } catch (OvernightNotAllowed $exception) {
-                throw ApiProblem::bodyInvalidDataWithDetail($exception->getMessage());
             }
         }
 

@@ -50,6 +50,7 @@ Comments are acceptable when explaining **why** something is done (not **what**)
 
 - Descriptive name without `Exception` suffix
 - Name should describe what went wrong (e.g., `DocumentDoesNotExist`, `NewsArticleNotFound`)
+- If a domain exception maps to a specific HTTP error response, implement `ConvertsToApiProblem` on the exception and define `toApiProblem()` there. The `ApiProblemFactory` will convert it automatically, keeping request handlers free of domain-exception catch blocks. Only catch domain exceptions in a request handler when the conversion requires context the exception itself cannot hold (e.g. route parameters or a JSON pointer that depends on request structure).
 
 ## Dependency Injection
 
