@@ -356,6 +356,16 @@ final class ApiProblem extends Exception
         );
     }
 
+    public static function startDateCannotBeAfterEndDate(): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/start-date-cannot-be-after-end-date',
+            'Start date cannot be after end date',
+            StatusCodeInterface::STATUS_BAD_REQUEST,
+            'The start date cannot be after the end date.'
+        );
+    }
+
     public static function bodyMissing(): self
     {
         return self::create(

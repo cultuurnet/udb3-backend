@@ -131,6 +131,23 @@ final class GetHolidaysRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_when_start_date_is_after_end_date(): void
+    {
+        $this->holidaysService->expects($this->never())->method('getHolidays');
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('holidays?startDate=2026-06-01&endDate=2025-01-01')
+            ->build('GET');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::startDateCannotBeAfterEndDate(),
+            fn () => $this->handler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_on_invalid_end_date_format(): void
     {
         $this->holidaysService->expects($this->never())->method('getHolidays');

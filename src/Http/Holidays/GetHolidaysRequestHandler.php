@@ -60,6 +60,10 @@ final class GetHolidaysRequestHandler implements RequestHandlerInterface
             throw ApiProblem::dateRangeExceedsLimit();
         }
 
+        if ($startDate > $endDate) {
+            throw ApiProblem::startDateCannotBeAfterEndDate();
+        }
+
         return new JsonResponse(Json::encodeWithUnicode($this->holidaysService->getHolidays($startDate, $endDate)));
     }
 }
