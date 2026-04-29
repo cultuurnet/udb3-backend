@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Holidays;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Json;
 use DateTimeImmutable;
 use GuzzleHttp\Psr7\Request;
+use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
 
 final class OpenHolidaysApiService implements HolidaysService
@@ -42,7 +44,18 @@ final class OpenHolidaysApiService implements HolidaysService
         ]);
 
         $request = new Request('GET', self::BASE_URL . '/' . $endpoint . '?' . $query);
-        $response = $this->client->sendRequest($request);
+
+        try {
+            $response = $this->client->sendRequest($request);
+        } catch (ClientExceptionInterface $e) {
+            throw ApiProblem::badGateway('Unable to reach the OpenHolidays API: ' . $e->getMessage());
+        }
+
+        if ($response->getStatusCode() !== 200) {
+            throw ApiProblem::badGateway(
+                'OpenHolidays API returned status ' . $response->getStatusCode() . ' for ' . $endpoint
+            );
+        }
 
         $holidays = Json::decodeAssociatively($response->getBody()->getContents());
 

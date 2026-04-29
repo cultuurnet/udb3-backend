@@ -24,7 +24,7 @@ final class HolidaysServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             HolidaysService::class,
-            fn () => new OpenHolidaysApiService(new Client())
+            fn () => new OpenHolidaysApiService(new Client(['timeout' => 5.0]))
         );
 
         $container->addShared(
