@@ -149,17 +149,19 @@ Feature: Test the Search API v3 boosting
   # Negative boosting uses the pattern: (term^0.1) OR (NOT term)
   # - Documents WITHOUT the term match the NOT branch and receive a baseline score of ~1.0.
   # - Documents WITH the term match the (term^0.1) branch and receive only a tiny score addition.
-  # - Because the ~1.0 baseline exceeds any realistic (term^0.1) contribution, non-matching
-  #   documents reliably outscore matching ones after the query is applied.
+  # - Because the ~1.0 baseline reliably exceeds any realistic (term^0.1) contribution,
+  #   non-matching documents outscore matching ones after the query is applied.
   #
-  # Document names are deliberately chosen so that termNieuwjaarEvent ranks higher naturally
-  # (higher TF for kerst due to repetition), but the score gap stays below ~1.0. This ensures
-  # the ~1.0 NOT-branch bonus is always enough to flip the order after negative boosting.
+  # Both document names are the same length ("kerst nieuwjaar" vs "kerst feest"), so they score
+  # identically on the base text query (same TF and fieldNorm for kerst). With tied scores,
+  # Elasticsearch falls back to insertion order: the nieuwjaar document is created first and
+  # therefore appears first naturally. After negative boosting the NOT-branch bonus (~1.0)
+  # always exceeds the (^0.1 × nieuwjaarTermScore) addition, flipping the order reliably.
 
   @testIsolation
   Scenario: I can negatively boost events
     Given I create a random labelname of 10 characters
-    When I create an event with name "kerst%{labelname} kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarEvent"
+    When I create an event with name "kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarEvent"
     And I create an event with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termKerstEvent"
     When I am using the Search API v3 base URL
     And I wait for 2 results at "/events" with parameters:
@@ -202,7 +204,7 @@ Feature: Test the Search API v3 boosting
   @testIsolation
   Scenario: I can negatively boost places
     Given I create a random labelname of 10 characters
-    When I create a place with name "kerst%{labelname} kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarPlace"
+    When I create a place with name "kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarPlace"
     And I publish the place at "/places/%{termNieuwjaarPlace}"
     When I create a place with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termKerstPlace"
     And I publish the place at "/places/%{termKerstPlace}"
@@ -247,7 +249,7 @@ Feature: Test the Search API v3 boosting
   @testIsolation
   Scenario: I can negatively boost offers
     Given I create a random labelname of 10 characters
-    When I create an event with name "kerst%{labelname} kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarOffer"
+    When I create an event with name "kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarOffer"
     When I create a place with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termKerstOffer"
     And I publish the place at "/places/%{termKerstOffer}"
     When I am using the Search API v3 base URL
