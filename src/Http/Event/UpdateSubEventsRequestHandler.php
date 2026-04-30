@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Event;
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\ConvertsToApiProblem;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
@@ -49,6 +50,8 @@ class UpdateSubEventsRequestHandler implements RequestHandlerInterface
 
         try {
             $this->commandBus->dispatch(new UpdateSubEvents($eventId, ...$updates));
+        } catch (ConvertsToApiProblem $exception) {
+            throw $exception;
         } catch (InvalidArgumentException $exception) {
             throw ApiProblem::bodyInvalidDataWithDetail($exception->getMessage());
         }
