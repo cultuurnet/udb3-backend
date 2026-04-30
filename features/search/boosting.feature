@@ -29,8 +29,9 @@ Feature: Test the Search API v3 boosting
     {"name": "kerst%{labelname} kerst%{labelname}"}
     """
     And I send a PUT request to "/events/%{termNaturalEvent}/name/nl"
-    And I wait 2 seconds
     When I am using the Search API v3 base URL
+    And I wait for 2 results at "/events" with parameters:
+      | text | kerst%{labelname} |
     And I send a GET request to "/events" with parameters:
       | text        | kerst%{labelname}                 |
       | sort[score] | desc                              |
@@ -83,8 +84,9 @@ Feature: Test the Search API v3 boosting
     """
     And I send a PUT request to "/places/%{termNaturalPlace}/name/nl"
     And I publish the place at "/places/%{termNaturalPlace}"
-    And I wait 2 seconds
     When I am using the Search API v3 base URL
+    And I wait for 2 results at "/places" with parameters:
+      | text | kerst%{labelname} |
     And I send a GET request to "/places" with parameters:
       | text        | kerst%{labelname}                 |
       | sort[score] | desc                              |
@@ -136,8 +138,9 @@ Feature: Test the Search API v3 boosting
     """
     And I send a PUT request to "/places/%{termNaturalOffer}/name/nl"
     And I publish the place at "/places/%{termNaturalOffer}"
-    And I wait 2 seconds
     When I am using the Search API v3 base URL
+    And I wait for 2 results at "/offers" with parameters:
+      | text | kerst%{labelname} |
     And I send a GET request to "/offers" with parameters:
       | text        | kerst%{labelname}                 |
       | sort[score] | desc                              |
