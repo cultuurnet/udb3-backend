@@ -17,18 +17,8 @@ Feature: Test the Search API v3 boosting
   @testIsolation
   Scenario: I can positively boost events
     Given I create a random labelname of 10 characters
-    When I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "termBoostedEvent"
-    And I set the JSON request payload to:
-    """
-    {"name": "kerst%{labelname} sneeuw%{labelname}"}
-    """
-    And I send a PUT request to "/events/%{termBoostedEvent}/name/nl"
-    When I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "termNaturalEvent"
-    And I set the JSON request payload to:
-    """
-    {"name": "kerst%{labelname} kerst%{labelname}"}
-    """
-    And I send a PUT request to "/events/%{termNaturalEvent}/name/nl"
+    When I create an event with name "kerst%{labelname} sneeuw%{labelname}" and save the "id" as "termBoostedEvent"
+    And I create an event with name "kerst%{labelname} kerst%{labelname}" and save the "id" as "termNaturalEvent"
     When I am using the Search API v3 base URL
     And I wait for 2 results at "/events" with parameters:
       | text | kerst%{labelname} |
@@ -70,19 +60,9 @@ Feature: Test the Search API v3 boosting
   @testIsolation
   Scenario: I can positively boost places
     Given I create a random labelname of 10 characters
-    When I create a minimal place and save the "id" as "termBoostedPlace"
-    And I set the JSON request payload to:
-    """
-    {"name": "kerst%{labelname} sneeuw%{labelname}"}
-    """
-    And I send a PUT request to "/places/%{termBoostedPlace}/name/nl"
+    When I create a place with name "kerst%{labelname} sneeuw%{labelname}" and save the "id" as "termBoostedPlace"
     And I publish the place at "/places/%{termBoostedPlace}"
-    When I create a minimal place and save the "id" as "termNaturalPlace"
-    And I set the JSON request payload to:
-    """
-    {"name": "kerst%{labelname} kerst%{labelname}"}
-    """
-    And I send a PUT request to "/places/%{termNaturalPlace}/name/nl"
+    When I create a place with name "kerst%{labelname} kerst%{labelname}" and save the "id" as "termNaturalPlace"
     And I publish the place at "/places/%{termNaturalPlace}"
     When I am using the Search API v3 base URL
     And I wait for 2 results at "/places" with parameters:
@@ -125,18 +105,8 @@ Feature: Test the Search API v3 boosting
   @testIsolation
   Scenario: I can positively boost offers
     Given I create a random labelname of 10 characters
-    When I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "termBoostedOffer"
-    And I set the JSON request payload to:
-    """
-    {"name": "kerst%{labelname} sneeuw%{labelname}"}
-    """
-    And I send a PUT request to "/events/%{termBoostedOffer}/name/nl"
-    When I create a minimal place and save the "id" as "termNaturalOffer"
-    And I set the JSON request payload to:
-    """
-    {"name": "kerst%{labelname} kerst%{labelname}"}
-    """
-    And I send a PUT request to "/places/%{termNaturalOffer}/name/nl"
+    When I create an event with name "kerst%{labelname} sneeuw%{labelname}" and save the "id" as "termBoostedOffer"
+    When I create a place with name "kerst%{labelname} kerst%{labelname}" and save the "id" as "termNaturalOffer"
     And I publish the place at "/places/%{termNaturalOffer}"
     When I am using the Search API v3 base URL
     And I wait for 2 results at "/offers" with parameters:
