@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
+use Broadway\CommandHandling\CommandBus;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Event\OvernightNotAllowed;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -2296,6 +2298,37 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_maps_overnight_not_allowed_to_400(): void
+    {
+        $commandBus = $this->createMock(CommandBus::class);
+        $commandBus->method('dispatch')->willThrowException(new OvernightNotAllowed());
+
+        $handler = new UpdateCalendarRequestHandler($commandBus);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidDataWithDetail(OvernightNotAllowed::MESSAGE),
+            fn () => $handler->handle(
+                (new Psr7RequestBuilder())
+                    ->withJsonBodyFromObject((object)[
+                        'calendarType' => 'single',
+                        'subEvent' => [
+                            (object)[
+                                'startDate' => '2026-07-01T09:00:00+02:00',
+                                'endDate' => '2026-07-05T17:00:00+02:00',
+                                'overnight' => true,
+                            ],
+                        ],
+                    ])
+                    ->withRouteParameter('offerType', 'events')
+                    ->withRouteParameter('offerId', self::EVENT_ID)
+                    ->build('PUT')
+            )
+        );
     }
 
     /**

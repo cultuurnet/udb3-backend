@@ -899,7 +899,7 @@ final class CalendarDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_set_overnight_when_key_is_absent(): void
+    public function it_defaults_overnight_to_false_when_key_is_absent(): void
     {
         $data = [
             'calendarType' => 'single',
@@ -948,7 +948,7 @@ final class CalendarDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_set_overnight_when_key_is_explicitly_false(): void
+    public function it_sets_overnight_to_false_when_key_is_explicitly_false(): void
     {
         $data = [
             'calendarType' => 'single',

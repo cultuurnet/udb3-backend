@@ -53,6 +53,56 @@ final class SubEventDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_defaults_overnight_to_false_when_absent(): void
+    {
+        $subEvent = $this->denormalizer->denormalize(
+            [
+                'startDate' => '2026-07-01T09:00:00+02:00',
+                'endDate' => '2026-07-05T17:00:00+02:00',
+            ],
+            SubEvent::class
+        );
+
+        $this->assertFalse($subEvent->isOvernight());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_overnight_true(): void
+    {
+        $subEvent = $this->denormalizer->denormalize(
+            [
+                'startDate' => '2026-07-01T09:00:00+02:00',
+                'endDate' => '2026-07-05T17:00:00+02:00',
+                'overnight' => true,
+            ],
+            SubEvent::class
+        );
+
+        $this->assertTrue($subEvent->isOvernight());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_overnight_false(): void
+    {
+        $subEvent = $this->denormalizer->denormalize(
+            [
+                'startDate' => '2026-07-01T09:00:00+02:00',
+                'endDate' => '2026-07-05T17:00:00+02:00',
+                'overnight' => false,
+            ],
+            SubEvent::class
+        );
+
+        $this->assertFalse($subEvent->isOvernight());
+    }
+
+    /**
+     * @test
+     */
     public function it_supports_denormalization_of_sub_event(): void
     {
         $this->assertTrue($this->denormalizer->supportsDenormalization([], SubEvent::class));
