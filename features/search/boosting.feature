@@ -145,3 +145,56 @@ Feature: Test the Search API v3 boosting
       }
     ]
     """
+
+  # Negative boosting uses the pattern: (term^0.1) OR (NOT term)
+  # - Documents WITHOUT the term match the NOT branch and receive a baseline score of ~1.0.
+  # - Documents WITH the term match the (term^0.1) branch and receive only a tiny score addition.
+  # - Because the ~1.0 baseline exceeds any realistic (term^0.1) contribution, non-matching
+  #   documents reliably outscore matching ones after the query is applied.
+  #
+  # Document names are deliberately chosen so that termNieuwjaarEvent ranks higher naturally
+  # (higher TF for kerst due to repetition), but the score gap stays below ~1.0. This ensures
+  # the ~1.0 NOT-branch bonus is always enough to flip the order after negative boosting.
+
+  @testIsolation
+  Scenario: I can negatively boost events
+    Given I create a random labelname of 10 characters
+    When I create an event with name "kerst%{labelname} kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarEvent"
+    And I create an event with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termKerstEvent"
+    When I am using the Search API v3 base URL
+    And I wait for 2 results at "/events" with parameters:
+      | text | kerst%{labelname} |
+    And I send a GET request to "/events" with parameters:
+      | text        | kerst%{labelname} |
+      | sort[score] | desc              |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termNieuwjaarEvent}",
+        "@type": "Event"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termKerstEvent}",
+        "@type": "Event"
+      }
+    ]
+    """
+    When I send a GET request to "/events" with parameters:
+      | text        | kerst%{labelname}                                          |
+      | q           | (nieuwjaar%{labelname}^0.1) OR (NOT nieuwjaar%{labelname}) |
+      | sort[score] | desc                                                       |
+    Then the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termKerstEvent}",
+        "@type": "Event"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termNieuwjaarEvent}",
+        "@type": "Event"
+      }
+    ]
+    """
