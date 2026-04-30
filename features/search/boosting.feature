@@ -198,3 +198,92 @@ Feature: Test the Search API v3 boosting
       }
     ]
     """
+
+  @testIsolation
+  Scenario: I can negatively boost places
+    Given I create a random labelname of 10 characters
+    When I create a place with name "kerst%{labelname} kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarPlace"
+    And I publish the place at "/places/%{termNieuwjaarPlace}"
+    When I create a place with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termKerstPlace"
+    And I publish the place at "/places/%{termKerstPlace}"
+    When I am using the Search API v3 base URL
+    And I wait for 2 results at "/places" with parameters:
+      | text | kerst%{labelname} |
+    And I send a GET request to "/places" with parameters:
+      | text        | kerst%{labelname} |
+      | sort[score] | desc              |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termNieuwjaarPlace}",
+        "@type": "Place"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termKerstPlace}",
+        "@type": "Place"
+      }
+    ]
+    """
+    When I send a GET request to "/places" with parameters:
+      | text        | kerst%{labelname}                                          |
+      | q           | (nieuwjaar%{labelname}^0.1) OR (NOT nieuwjaar%{labelname}) |
+      | sort[score] | desc                                                       |
+    Then the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termKerstPlace}",
+        "@type": "Place"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termNieuwjaarPlace}",
+        "@type": "Place"
+      }
+    ]
+    """
+
+  @testIsolation
+  Scenario: I can negatively boost offers
+    Given I create a random labelname of 10 characters
+    When I create an event with name "kerst%{labelname} kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarOffer"
+    When I create a place with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termKerstOffer"
+    And I publish the place at "/places/%{termKerstOffer}"
+    When I am using the Search API v3 base URL
+    And I wait for 2 results at "/offers" with parameters:
+      | text | kerst%{labelname} |
+    And I send a GET request to "/offers" with parameters:
+      | text        | kerst%{labelname} |
+      | sort[score] | desc              |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termNieuwjaarOffer}",
+        "@type": "Event"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termKerstOffer}",
+        "@type": "Place"
+      }
+    ]
+    """
+    When I send a GET request to "/offers" with parameters:
+      | text        | kerst%{labelname}                                          |
+      | q           | (nieuwjaar%{labelname}^0.1) OR (NOT nieuwjaar%{labelname}) |
+      | sort[score] | desc                                                       |
+    Then the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termKerstOffer}",
+        "@type": "Place"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termNieuwjaarOffer}",
+        "@type": "Event"
+      }
+    ]
+    """
