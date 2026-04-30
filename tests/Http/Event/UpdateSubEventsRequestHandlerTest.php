@@ -745,4 +745,29 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
             )
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_maps_invalid_argument_exception_to_400(): void
+    {
+        $message = '"From" date should not be later than the "to" date.';
+
+        $commandBus = $this->createMock(CommandBus::class);
+        $commandBus->method('dispatch')->willThrowException(new \InvalidArgumentException($message));
+
+        $handler = new UpdateSubEventsRequestHandler($commandBus);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidDataWithDetail($message),
+            fn () => $handler->handle(
+                (new Psr7RequestBuilder())
+                    ->withJsonBodyFromArray([
+                        (object)['id' => 0, 'endDate' => '2010-05-17T19:00:00+00:00'],
+                    ])
+                    ->withRouteParameter('eventId', self::EVENT_ID)
+                    ->build('PATCH')
+            )
+        );
+    }
 }
