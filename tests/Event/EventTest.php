@@ -2537,10 +2537,35 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_does_not_emit_calendar_updated_when_overnight_is_already_false_and_patched_to_false(): void
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getKampOrVakantieCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withOvernight(false)
+                )
+            )
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_sub_events(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_OR_VACATION_TERM_ID);
+        $this->expectException(OvernightNotAllowed::class);
+        $this->expectExceptionMessage(OvernightNotAllowed::MESSAGE);
 
         // Set a single-subEvent calendar first (event is created with PermanentCalendar by default)
         $dateRange = new DateRange(
@@ -2556,10 +2581,35 @@ class EventTest extends AggregateRootScenarioTestCase
      */
     public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_calendar(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_OR_VACATION_TERM_ID);
+        $this->expectException(OvernightNotAllowed::class);
+        $this->expectExceptionMessage(OvernightNotAllowed::MESSAGE);
 
         $this->event->updateCalendar(
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                        new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+                    )
+                )->withOvernight(true)
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_overnight_is_set_during_create_without_kamp_of_vakantie_term(): void
+    {
+        $this->expectException(OvernightNotAllowed::class);
+        $this->expectExceptionMessage(OvernightNotAllowed::MESSAGE);
+
+        Event::create(
+            self::EVENT_ID,
+            new Language('nl'),
+            new Title('Concert'),
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId(self::LOCATION_ID),
             new SingleSubEventCalendar(
                 SubEvent::createAvailable(
                     new DateRange(
