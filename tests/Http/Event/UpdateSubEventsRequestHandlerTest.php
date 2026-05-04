@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
+use CultuurNet\UDB3\Event\ChildcareTimeInvalid;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
 use CultuurNet\UDB3\Event\OvernightNotAllowed;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
@@ -742,6 +743,62 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     ])
                     ->withRouteParameter('eventId', self::EVENT_ID)
                     ->build('PUT')
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_lets_typed_domain_exceptions_self_convert_via_api_problem_factory(): void
+    {
+        // ChildcareTimeInvalid extends InvalidArgumentException; it must NOT be caught by the
+        // generic InvalidArgumentException catch below (which would flatten the structured
+        // SchemaError pointer into bodyInvalidDataWithDetail). Verified via assertSame on the
+        // SchemaError shape, not just status code.
+        $exception = ChildcareTimeInvalid::startTimeInvalid(0);
+
+        $commandBus = $this->createMock(CommandBus::class);
+        $commandBus->method('dispatch')->willThrowException($exception);
+
+        $handler = new UpdateSubEventsRequestHandler($commandBus);
+
+        try {
+            $handler->handle(
+                (new Psr7RequestBuilder())
+                    ->withJsonBodyFromArray([
+                        (object)['id' => 0, 'childcare' => (object)['start' => '16:00', 'end' => '23:00']],
+                    ])
+                    ->withRouteParameter('eventId', self::EVENT_ID)
+                    ->build('PATCH')
+            );
+            $this->fail('Expected exception was not thrown.');
+        } catch (\InvalidArgumentException $thrown) {
+            $this->assertSame($exception, $thrown);
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function it_maps_invalid_argument_exception_to_400(): void
+    {
+        $message = '"From" date should not be later than the "to" date.';
+
+        $commandBus = $this->createMock(CommandBus::class);
+        $commandBus->method('dispatch')->willThrowException(new \InvalidArgumentException($message));
+
+        $handler = new UpdateSubEventsRequestHandler($commandBus);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidDataWithDetail($message),
+            fn () => $handler->handle(
+                (new Psr7RequestBuilder())
+                    ->withJsonBodyFromArray([
+                        (object)['id' => 0, 'endDate' => '2010-05-17T19:00:00+00:00'],
+                    ])
+                    ->withRouteParameter('eventId', self::EVENT_ID)
+                    ->build('PATCH')
             )
         );
     }
