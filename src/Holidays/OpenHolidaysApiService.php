@@ -10,14 +10,17 @@ use DateTimeImmutable;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientExceptionInterface;
 use Psr\Http\Client\ClientInterface;
+use Psr\Log\LoggerInterface;
 
 final class OpenHolidaysApiService implements HolidaysService
 {
     private const BASE_URL = 'https://openholidaysapi.org';
     private const COUNTRY_ISO_CODE = 'BE';
 
-    public function __construct(private readonly ClientInterface $client)
-    {
+    public function __construct(
+        private readonly ClientInterface $client,
+        private readonly LoggerInterface $logger
+    ) {
     }
 
     public function getHolidays(DateTimeImmutable $startDate, DateTimeImmutable $endDate): array
@@ -48,13 +51,16 @@ final class OpenHolidaysApiService implements HolidaysService
         try {
             $response = $this->client->sendRequest($request);
         } catch (ClientExceptionInterface $e) {
-            throw ApiProblem::badGateway('Unable to reach the OpenHolidays API: ' . $e->getMessage());
+            $this->logger->error('Unable to reach the OpenHolidays API.', ['exception' => $e]);
+            throw ApiProblem::badGateway('Unable to reach the OpenHolidays API.');
         }
 
         if ($response->getStatusCode() !== 200) {
-            throw ApiProblem::badGateway(
-                'OpenHolidays API returned status ' . $response->getStatusCode() . ' for ' . $endpoint
-            );
+            $this->logger->error('OpenHolidays API returned a non-200 status.', [
+                'endpoint' => $endpoint,
+                'status_code' => $response->getStatusCode(),
+            ]);
+            throw ApiProblem::badGateway('OpenHolidays API returned a non-200 status.');
         }
 
         $holidays = Json::decodeAssociatively($response->getBody()->getContents());

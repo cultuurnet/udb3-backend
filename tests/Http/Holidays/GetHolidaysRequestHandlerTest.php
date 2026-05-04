@@ -161,4 +161,38 @@ final class GetHolidaysRequestHandlerTest extends TestCase
             fn () => $this->handler->handle($request)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_overflowing_start_date(): void
+    {
+        $this->holidaysService->expects($this->never())->method('getHolidays');
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('holidays?startDate=2025-13-01')
+            ->build('GET');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::queryParameterInvalidValue('startDate', '2025-13-01', ['YYYY-MM-DD']),
+            fn () => $this->handler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_overflowing_end_date(): void
+    {
+        $this->holidaysService->expects($this->never())->method('getHolidays');
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('holidays?endDate=2025-13-01')
+            ->build('GET');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::queryParameterInvalidValue('endDate', '2025-13-01', ['YYYY-MM-DD']),
+            fn () => $this->handler->handle($request)
+        );
+    }
 }

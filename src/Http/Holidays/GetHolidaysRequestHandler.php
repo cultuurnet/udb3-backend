@@ -37,7 +37,7 @@ final class GetHolidaysRequestHandler implements RequestHandlerInterface
 
         if ($startDateParam !== null) {
             $parsedStartDate = DateTimeImmutable::createFromFormat('Y-m-d', $startDateParam);
-            if ($parsedStartDate === false) {
+            if ($parsedStartDate === false || $parsedStartDate->format('Y-m-d') !== $startDateParam) {
                 throw ApiProblem::queryParameterInvalidValue('startDate', $startDateParam, ['YYYY-MM-DD']);
             }
             $startDate = $parsedStartDate->setTime(0, 0, 0);
@@ -47,7 +47,7 @@ final class GetHolidaysRequestHandler implements RequestHandlerInterface
 
         if ($endDateParam !== null) {
             $parsedEndDate = DateTimeImmutable::createFromFormat('Y-m-d', $endDateParam);
-            if ($parsedEndDate === false) {
+            if ($parsedEndDate === false || $parsedEndDate->format('Y-m-d') !== $endDateParam) {
                 throw ApiProblem::queryParameterInvalidValue('endDate', $endDateParam, ['YYYY-MM-DD']);
             }
             $endDate = $parsedEndDate->setTime(0, 0, 0);
