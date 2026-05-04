@@ -14,6 +14,7 @@ use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Client\ClientInterface;
+use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 final class JsonTaxonomyApiClientTest extends TestCase
@@ -37,29 +38,46 @@ final class JsonTaxonomyApiClientTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_when_api_returns_non_200_status(): void
+    public function it_throws_and_logs_when_api_returns_non_200_status(): void
     {
         $this->httpClient->expects($this->once())
                    ->method('sendRequest')
-                   ->willReturn(new Response(503));
+                   ->willReturn(new Response(503, [], 'upstream unavailable'));
+
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('error')
+            ->with(
+                'Taxonomy Api returned non-200 status code',
+                ['status_code' => 503, 'body' => 'upstream unavailable']
+            );
+
+        $client = new JsonTaxonomyApiClient($this->httpClient, 'https://taxonomy.example.com/terms', $logger);
 
         $this->expectException(TaxonomyApiProblem::class);
 
-        new JsonTaxonomyApiClient($this->httpClient, 'https://taxonomy.example.com/terms', new NullLogger());
+        $client->getNativeTerms();
     }
 
     /**
      * @test
      */
-    public function it_throws_when_api_returns_empty_body(): void
+    public function it_throws_and_logs_when_api_returns_empty_body(): void
     {
         $this->httpClient->expects($this->once())
                    ->method('sendRequest')
                    ->willReturn(new Response(200, [], ''));
 
+        $logger = $this->createMock(LoggerInterface::class);
+        $logger->expects($this->once())
+            ->method('error')
+            ->with('Taxonomy Api returned no terms');
+
+        $client = new JsonTaxonomyApiClient($this->httpClient, 'https://taxonomy.example.com/terms', $logger);
+
         $this->expectException(TaxonomyApiProblem::class);
 
-        new JsonTaxonomyApiClient($this->httpClient, 'https://taxonomy.example.com/terms', new NullLogger());
+        $client->getNativeTerms();
     }
 
     /**

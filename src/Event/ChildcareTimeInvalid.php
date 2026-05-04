@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\ConvertsToApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use InvalidArgumentException;
 
-class ChildcareTimeInvalid extends InvalidArgumentException
+class ChildcareTimeInvalid extends InvalidArgumentException implements ConvertsToApiProblem
 {
     private int $subEventIndex;
     private string $reason;
@@ -36,5 +39,12 @@ class ChildcareTimeInvalid extends InvalidArgumentException
     public function getReason(): string
     {
         return $this->reason;
+    }
+
+    public function toApiProblem(): ApiProblem
+    {
+        $field = str_contains($this->reason, 'start') ? 'start' : 'end';
+        $pointer = '/' . $this->subEventIndex . '/childcare/' . $field;
+        return ApiProblem::bodyInvalidData(new SchemaError($pointer, $this->getMessage()));
     }
 }
