@@ -33,17 +33,16 @@ final class OpenHolidaysApiService implements HolidaysService
 
         $schoolHolidays = [];
         foreach (self::SUBDIVISION_CODES as $subdivisionCode) {
-            $schoolHolidays = array_merge(
-                $schoolHolidays,
-                $this->fetchHolidays(HolidayType::SchoolHolidays, $validFrom, $validTo, $subdivisionCode)
-            );
+            foreach ($this->fetchHolidays(HolidayType::SchoolHolidays, $validFrom, $validTo, $subdivisionCode) as $holiday) {
+                $schoolHolidays[] = $holiday;
+            }
         }
 
-        $combined = array_merge($publicHolidays, $schoolHolidays);
+        $combinedHolidays = array_merge($publicHolidays, $schoolHolidays);
 
-        usort($combined, fn (array $a, array $b) => $a['startDate'] <=> $b['startDate']);
+        usort($combinedHolidays, fn (array $a, array $b) => $a['startDate'] <=> $b['startDate']);
 
-        return $combined;
+        return $combinedHolidays;
     }
 
     private function fetchHolidays(
@@ -87,7 +86,7 @@ final class OpenHolidaysApiService implements HolidaysService
                 throw new \UnexpectedValueException();
             }
         } catch (\Throwable $e) {
-            $this->logger->error('OpenHolidays API returned unexpected response body: '. $e->getMessage(),);
+            $this->logger->error('OpenHolidays API returned unexpected response body: ' . $e->getMessage());
             throw ApiProblem::badGateway('OpenHolidays API returned an unexpected response.');
         }
 
