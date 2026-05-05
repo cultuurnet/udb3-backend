@@ -78,7 +78,7 @@ final class CachedHolidaysServiceTest extends TestCase
         $this->cachedService->getHolidays($startDate1, $endDate1);
         $this->cachedService->getHolidays($startDate2, $endDate2);
 
-        $this->assertCount(2, array_unique($capturedKeys), 'Each date range must produce a unique cache key.');
+        $this->assertEquals(['2025-01-01_2025-06-30', '2025-07-01_2025-12-31'], $capturedKeys);
     }
 
     /**
@@ -132,6 +132,7 @@ final class CachedHolidaysServiceTest extends TestCase
             ->expects($this->never())
             ->method('getHolidays');
 
-        $this->cachedService->getHolidays($startDate, $endDate);
+        $result = $this->cachedService->getHolidays($startDate, $endDate);
+        $this->assertEquals($cachedResult, $result);
     }
 }
