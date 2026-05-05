@@ -43,7 +43,7 @@ final class PlaceServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'place_iri_generator',
             fn () => new CallableIriGenerator(
-                fn ($cdbid) => $container->get('config')['url'] . '/places/' . $cdbid
+                fn ($cdbid) => $container->get('config')['url'] . '/place/' . $cdbid
             )
         );
 

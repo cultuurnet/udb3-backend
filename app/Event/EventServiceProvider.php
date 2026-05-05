@@ -34,7 +34,7 @@ final class EventServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'event_iri_generator',
             fn () => new CallableIriGenerator(
-                fn ($cdbid) => $container->get('config')['url'] . '/events/' . $cdbid
+                fn ($cdbid) => $container->get('config')['url'] . '/event/' . $cdbid
             )
         );
 

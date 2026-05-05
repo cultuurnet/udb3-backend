@@ -74,7 +74,7 @@ Feature: Test the UDB3 events API
     And the JSON response at "name/nl" should be "Updated title"
     And the JSON response at "calendarType" should be "permanent"
     And the JSON response at "terms/0/id" should be "0.17.0.0.0"
-    And the JSON response at "location/@id" should be "%{baseUrl}/places/%{placeId}"
+    And the JSON response at "location/@id" should be "%{baseUrl}/place/%{placeId}"
 
   Scenario: update booking availability single calendar type
     Given I set the JSON request payload from "places/place.json"

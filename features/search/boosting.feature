@@ -48,11 +48,11 @@ Feature: Test the Search API v3 boosting
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/places/%{boostedPlace}",
+        "@id": "http://io.uitdatabank.local:80/place/%{boostedPlace}",
         "@type": "Place"
       },
       {
-        "@id": "http://io.uitdatabank.local:80/places/%{placeId}",
+        "@id": "http://io.uitdatabank.local:80/place/%{placeId}",
         "@type": "Place"
 
       }
@@ -66,11 +66,11 @@ Feature: Test the Search API v3 boosting
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/events/%{boostedEvent}",
+        "@id": "http://io.uitdatabank.local:80/event/%{boostedEvent}",
         "@type": "Event"
       },
       {
-        "@id": "http://io.uitdatabank.local:80/events/%{nonBoostedevent}",
+        "@id": "http://io.uitdatabank.local:80/event/%{nonBoostedevent}",
         "@type": "Event"
 
       }
@@ -108,12 +108,12 @@ Feature: Test the Search API v3 boosting
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/places/%{placeId}",
+        "@id": "http://io.uitdatabank.local:80/place/%{placeId}",
         "@type": "Place"
 
       },
       {
-        "@id": "http://io.uitdatabank.local:80/places/%{boostedPlace}",
+        "@id": "http://io.uitdatabank.local:80/place/%{boostedPlace}",
         "@type": "Place"
       }
     ]
@@ -126,12 +126,12 @@ Feature: Test the Search API v3 boosting
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/events/%{nonBoostedevent}",
+        "@id": "http://io.uitdatabank.local:80/event/%{nonBoostedevent}",
         "@type": "Event"
 
       },
       {
-        "@id": "http://io.uitdatabank.local:80/events/%{boostedEvent}",
+        "@id": "http://io.uitdatabank.local:80/event/%{boostedEvent}",
         "@type": "Event"
       }
     ]
