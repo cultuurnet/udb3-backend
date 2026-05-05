@@ -81,7 +81,15 @@ final class OpenHolidaysApiService implements HolidaysService
             throw ApiProblem::badGateway('OpenHolidays API returned a non-200 status.');
         }
 
-        $holidays = Json::decodeAssociatively($response->getBody()->getContents());
+        try {
+            $holidays = Json::decodeAssociatively($response->getBody()->getContents());
+            if (!is_array($holidays)) {
+                throw new \UnexpectedValueException();
+            }
+        } catch (\Throwable $e) {
+            $this->logger->error('OpenHolidays API returned unexpected response body: '. $e->getMessage(),);
+            throw ApiProblem::badGateway('OpenHolidays API returned an unexpected response.');
+        }
 
         return array_map(
             function (array $holiday) use ($type, $subdivisionCode): array {
