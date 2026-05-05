@@ -612,7 +612,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
                         ],
                     ])
             ->assertReturnedDocumentContains([
-                '@id' => 'https://io.uitdatabank.dev/events/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
                 'mainLanguage' => 'nl',
                 'name' => [
                     'nl' => 'Kopieertest',
@@ -634,7 +634,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
                 ],
             ])
             ->assertReturnedDocumentContains([
-                '@id' => 'https://io.uitdatabank.dev/events/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
                 'mainLanguage' => 'nl',
                 'name' => [
                     'fr' => 'Kopieertest',
@@ -656,7 +656,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
                 ],
             ])
             ->assertReturnedDocumentContains([
-                '@id' => 'https://io.uitdatabank.dev/events/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
+                '@id' => 'https://io.uitdatabank.dev/event/5ece8d77-48dd-402d-9c5e-e64936fb87f5',
                 'name' => [
                     'fr' => 'Test de copie',
                 ],
@@ -814,34 +814,34 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_fixes_singular_event_id_to_plural(): void
+    public function it_fixes_plural_event_id_to_singular(): void
     {
         $this
             ->given([
-                '@id' => 'https://io.uitdatabank.dev/event/' . self::DOCUMENT_ID,
+                '@id' => 'https://io.uitdatabank.dev/events/' . self::DOCUMENT_ID,
             ])
             ->assertReturnedDocumentContains([
-                '@id' => 'https://io.uitdatabank.dev/events/' . self::DOCUMENT_ID,
+                '@id' => 'https://io.uitdatabank.dev/event/' . self::DOCUMENT_ID,
             ]);
     }
 
     /**
      * @test
      */
-    public function it_fixes_singular_location_id_to_plural(): void
+    public function it_fixes_plural_location_id_to_singular(): void
     {
         $placeId = '1a2b3c4d-5e6f-7890-abcd-ef1234567890';
         $this
             ->given([
-                '@id' => 'https://io.uitdatabank.dev/events/' . self::DOCUMENT_ID,
+                '@id' => 'https://io.uitdatabank.dev/event/' . self::DOCUMENT_ID,
                 'location' => [
-                    '@id' => 'https://io.uitdatabank.dev/place/' . $placeId,
+                    '@id' => 'https://io.uitdatabank.dev/places/' . $placeId,
                     '@type' => 'Place',
                 ],
             ])
             ->assertReturnedDocumentContains([
                 'location' => [
-                    '@id' => 'https://io.uitdatabank.dev/places/' . $placeId,
+                    '@id' => 'https://io.uitdatabank.dev/place/' . $placeId,
                     '@type' => 'Place',
                     'status' => [
                         'type' => 'Available',
@@ -856,7 +856,7 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_fixes_singular_place_id_to_plural(): void
+    public function it_fixes_plural_place_id_to_singular(): void
     {
         $this->repository = new PropertyPolyfillOfferRepository(
             new InMemoryDocumentRepository(),
@@ -866,24 +866,24 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
 
         $this
             ->given([
-                '@id' => 'https://io.uitdatabank.dev/place/' . self::DOCUMENT_ID,
+                '@id' => 'https://io.uitdatabank.dev/places/' . self::DOCUMENT_ID,
             ])
             ->assertReturnedDocumentContains([
-                '@id' => 'https://io.uitdatabank.dev/places/' . self::DOCUMENT_ID,
+                '@id' => 'https://io.uitdatabank.dev/place/' . self::DOCUMENT_ID,
             ]);
     }
 
     /**
      * @test
      */
-    public function it_does_not_change_already_plural_id(): void
+    public function it_does_not_change_already_singular_id(): void
     {
         $this
             ->given([
-                '@id' => 'https://io.uitdatabank.dev/events/' . self::DOCUMENT_ID,
+                '@id' => 'https://io.uitdatabank.dev/event/' . self::DOCUMENT_ID,
             ])
             ->assertReturnedDocumentContains([
-                '@id' => 'https://io.uitdatabank.dev/events/' . self::DOCUMENT_ID,
+                '@id' => 'https://io.uitdatabank.dev/event/' . self::DOCUMENT_ID,
             ]);
     }
 
