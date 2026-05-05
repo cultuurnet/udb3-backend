@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Holidays\HolidaysService;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\QueryParameters;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Json;
 use DateTimeImmutable;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -36,7 +37,7 @@ final class GetHolidaysRequestHandler implements RequestHandlerInterface
 
         if ($startDateParam !== null) {
             $parsedStartDate = DateTimeImmutable::createFromFormat('Y-m-d', $startDateParam);
-            if ($parsedStartDate === false) {
+            if ($parsedStartDate === false || $parsedStartDate->format('Y-m-d') !== $startDateParam) {
                 throw ApiProblem::queryParameterInvalidValue('startDate', $startDateParam, ['YYYY-MM-DD']);
             }
             $startDate = $parsedStartDate->setTime(0, 0, 0);
@@ -46,7 +47,7 @@ final class GetHolidaysRequestHandler implements RequestHandlerInterface
 
         if ($endDateParam !== null) {
             $parsedEndDate = DateTimeImmutable::createFromFormat('Y-m-d', $endDateParam);
-            if ($parsedEndDate === false) {
+            if ($parsedEndDate === false || $parsedEndDate->format('Y-m-d') !== $endDateParam) {
                 throw ApiProblem::queryParameterInvalidValue('endDate', $endDateParam, ['YYYY-MM-DD']);
             }
             $endDate = $parsedEndDate->setTime(0, 0, 0);
@@ -59,6 +60,10 @@ final class GetHolidaysRequestHandler implements RequestHandlerInterface
             throw ApiProblem::dateRangeExceedsLimit();
         }
 
-        return new JsonResponse($this->holidaysService->getHolidays($startDate, $endDate));
+        if ($startDate > $endDate) {
+            throw ApiProblem::startDateCannotBeAfterEndDate();
+        }
+
+        return new JsonResponse(Json::encodeWithUnicode($this->holidaysService->getHolidays($startDate, $endDate)));
     }
 }

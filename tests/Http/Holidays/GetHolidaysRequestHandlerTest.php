@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Json;
 use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -42,7 +43,7 @@ final class GetHolidaysRequestHandlerTest extends TestCase
                 'startDate' => '2025-01-01',
                 'endDate' => '2025-01-01',
                 'type' => 'holidays',
-                'name' => [['language' => 'NL', 'text' => 'Nieuwjaarsdag']],
+                'name' => [['language' => 'NL', 'text' => 'Nieuwjaarsdag — Jour de l\'An']],
             ],
         ];
 
@@ -59,7 +60,7 @@ final class GetHolidaysRequestHandlerTest extends TestCase
 
         $response = $this->handler->handle($request);
 
-        $this->assertJsonResponse(new JsonResponse($expectedHolidays), $response);
+        $this->assertJsonResponse(new JsonResponse(Json::encodeWithUnicode($expectedHolidays)), $response);
     }
 
     /**
@@ -72,7 +73,7 @@ final class GetHolidaysRequestHandlerTest extends TestCase
                 'startDate' => '2025-03-01',
                 'endDate' => '2025-03-10',
                 'type' => 'schoolHolidays',
-                'name' => [['language' => 'NL', 'text' => 'Krokusvakantie']],
+                'name' => [['language' => 'NL', 'text' => 'Krokusvakantie — Vacances de Carnaval']],
             ],
         ];
 
@@ -91,7 +92,7 @@ final class GetHolidaysRequestHandlerTest extends TestCase
 
         $response = $this->handler->handle($request);
 
-        $this->assertJsonResponse(new JsonResponse($expectedHolidays), $response);
+        $this->assertJsonResponse(new JsonResponse(Json::encodeWithUnicode($expectedHolidays)), $response);
     }
 
     /**
@@ -131,6 +132,23 @@ final class GetHolidaysRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_when_start_date_is_after_end_date(): void
+    {
+        $this->holidaysService->expects($this->never())->method('getHolidays');
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('holidays?startDate=2026-06-01&endDate=2025-01-01')
+            ->build('GET');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::startDateCannotBeAfterEndDate(),
+            fn () => $this->handler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_on_invalid_end_date_format(): void
     {
         $this->holidaysService->expects($this->never())->method('getHolidays');
@@ -141,6 +159,40 @@ final class GetHolidaysRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::queryParameterInvalidValue('endDate', 'not-a-date', ['YYYY-MM-DD']),
+            fn () => $this->handler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_overflowing_start_date(): void
+    {
+        $this->holidaysService->expects($this->never())->method('getHolidays');
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('holidays?startDate=2025-13-01')
+            ->build('GET');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::queryParameterInvalidValue('startDate', '2025-13-01', ['YYYY-MM-DD']),
+            fn () => $this->handler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_on_overflowing_end_date(): void
+    {
+        $this->holidaysService->expects($this->never())->method('getHolidays');
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('holidays?endDate=2025-13-01')
+            ->build('GET');
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::queryParameterInvalidValue('endDate', '2025-13-01', ['YYYY-MM-DD']),
             fn () => $this->handler->handle($request)
         );
     }

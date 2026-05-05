@@ -26,6 +26,21 @@ final class Json
     }
 
     /**
+     * @param mixed $value
+     *   Data to encode as JSON, usually an array or stdClass object
+     *
+     * @return string
+     *   Encoded JSON with Unicode characters left unescaped (e.g. "é" instead of "\u00e9").
+     *
+     * @throws JsonException
+     *   If the JSON could not be encoded, for example because of too much nesting.
+     */
+    public static function encodeWithUnicode($value): string
+    {
+        return json_encode($value, JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE, self::DEPTH);
+    }
+
+    /**
      * @param string $data
      *   Encoded JSON data.
      *

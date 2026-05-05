@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Holidays;
 
 use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Http\Holidays\GetHolidaysRequestHandler;
 use GuzzleHttp\Client;
 
@@ -26,7 +28,10 @@ final class HolidaysServiceProvider extends AbstractServiceProvider
         $container->addShared(
             HolidaysService::class,
             fn () => new CachedHolidaysService(
-                new OpenHolidaysApiService(new Client()),
+                new OpenHolidaysApiService(
+                    new Client(['timeout' => 5.0]),
+                    LoggerFactory::create($container, LoggerName::forService('holidays', 'open_holidays_api'))
+                ),
                 CacheFactory::create(
                     $container->get('app_cache'),
                     'holidays',
