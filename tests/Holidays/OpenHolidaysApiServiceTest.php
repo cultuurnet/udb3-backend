@@ -38,6 +38,7 @@ final class OpenHolidaysApiServiceTest extends TestCase
      */
     public function it_returns_merged_holidays_sorted_by_start_date(): void
     {
+        // PublicHolidays response
         $publicHolidaysBody = json_encode([
             [
                 'startDate' => '2025-07-21',
@@ -51,7 +52,8 @@ final class OpenHolidaysApiServiceTest extends TestCase
             ],
         ], JSON_THROW_ON_ERROR);
 
-        $schoolHolidaysBody = json_encode([
+        // SchoolHolidays response for BE-VLG
+        $schoolHolidaysVlg = json_encode([
             [
                 'startDate' => '2025-04-07',
                 'endDate' => '2025-04-20',
@@ -59,9 +61,17 @@ final class OpenHolidaysApiServiceTest extends TestCase
             ],
         ], JSON_THROW_ON_ERROR);
 
+        // SchoolHolidays response for BE-WAL (empty)
+        $schoolHolidaysWal = json_encode([], JSON_THROW_ON_ERROR);
+
+        // SchoolHolidays response for BE-BRU (empty)
+        $schoolHolidaysBru = json_encode([], JSON_THROW_ON_ERROR);
+
         $this->mockHandler->append(
             new Response(200, [], $publicHolidaysBody),
-            new Response(200, [], $schoolHolidaysBody)
+            new Response(200, [], $schoolHolidaysVlg),
+            new Response(200, [], $schoolHolidaysWal),
+            new Response(200, [], $schoolHolidaysBru)
         );
 
         $result = $this->service->getHolidays(
@@ -73,12 +83,15 @@ final class OpenHolidaysApiServiceTest extends TestCase
 
         $this->assertSame('2025-01-01', $result[0]['startDate']);
         $this->assertSame('holidays', $result[0]['type']);
+        $this->assertArrayNotHasKey('subdivisionCode', $result[0]);
 
         $this->assertSame('2025-04-07', $result[1]['startDate']);
         $this->assertSame('schoolHolidays', $result[1]['type']);
+        $this->assertSame('BE-VLG', $result[1]['subdivisionCode']);
 
         $this->assertSame('2025-07-21', $result[2]['startDate']);
         $this->assertSame('holidays', $result[2]['type']);
+        $this->assertArrayNotHasKey('subdivisionCode', $result[2]);
     }
 
     /**

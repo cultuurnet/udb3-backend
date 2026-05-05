@@ -16,6 +16,7 @@ final class OpenHolidaysApiService implements HolidaysService
 {
     private const BASE_URL = 'https://openholidaysapi.org';
     private const COUNTRY_ISO_CODE = 'BE';
+    private const SUBDIVISION_CODES = ['BE-VLG', 'BE-WAL', 'BE-BRU'];
 
     public function __construct(
         private readonly ClientInterface $client,
@@ -28,8 +29,15 @@ final class OpenHolidaysApiService implements HolidaysService
         $validFrom = $startDate->format('Y-m-d');
         $validTo = $endDate->format('Y-m-d');
 
-        $publicHolidays = $this->fetchHolidays('PublicHolidays', 'holidays', $validFrom, $validTo);
-        $schoolHolidays = $this->fetchHolidays('SchoolHolidays', 'schoolHolidays', $validFrom, $validTo);
+        $publicHolidays = $this->fetchHolidays(HolidayType::PublicHolidays, $validFrom, $validTo);
+
+        $schoolHolidays = [];
+        foreach (self::SUBDIVISION_CODES as $subdivisionCode) {
+            $schoolHolidays = array_merge(
+                $schoolHolidays,
+                $this->fetchHolidays(HolidayType::SchoolHolidays, $validFrom, $validTo, $subdivisionCode)
+            );
+        }
 
         $combined = array_merge($publicHolidays, $schoolHolidays);
 
@@ -38,15 +46,25 @@ final class OpenHolidaysApiService implements HolidaysService
         return $combined;
     }
 
-    private function fetchHolidays(string $endpoint, string $type, string $validFrom, string $validTo): array
-    {
-        $query = http_build_query([
+    private function fetchHolidays(
+        HolidayType $type,
+        string $validFrom,
+        string $validTo,
+        ?string $subdivisionCode = null
+    ): array {
+        $params = [
             'countryIsoCode' => self::COUNTRY_ISO_CODE,
             'validFrom' => $validFrom,
             'validTo' => $validTo,
-        ]);
+        ];
 
-        $request = new Request('GET', self::BASE_URL . '/' . $endpoint . '?' . $query);
+        if ($subdivisionCode !== null) {
+            $params['subdivisionCode'] = $subdivisionCode;
+        }
+
+        $query = http_build_query($params);
+
+        $request = new Request('GET', self::BASE_URL . '/' . $type->value . '?' . $query);
 
         try {
             $response = $this->client->sendRequest($request);
@@ -57,7 +75,7 @@ final class OpenHolidaysApiService implements HolidaysService
 
         if ($response->getStatusCode() !== 200) {
             $this->logger->error('OpenHolidays API returned a non-200 status.', [
-                'endpoint' => $endpoint,
+                'endpoint' => $type->value,
                 'status_code' => $response->getStatusCode(),
             ]);
             throw ApiProblem::badGateway('OpenHolidays API returned a non-200 status.');
@@ -66,12 +84,20 @@ final class OpenHolidaysApiService implements HolidaysService
         $holidays = Json::decodeAssociatively($response->getBody()->getContents());
 
         return array_map(
-            fn (array $holiday) => [
-                'startDate' => $holiday['startDate'],
-                'endDate' => $holiday['endDate'],
-                'type' => $type,
-                'name' => $holiday['name'],
-            ],
+            function (array $holiday) use ($type, $subdivisionCode): array {
+                $item = [
+                    'startDate' => $holiday['startDate'],
+                    'endDate' => $holiday['endDate'],
+                    'type' => $type->outputType(),
+                    'name' => $holiday['name'],
+                ];
+
+                if ($subdivisionCode !== null) {
+                    $item['subdivisionCode'] = $subdivisionCode;
+                }
+
+                return $item;
+            },
             $holidays
         );
     }
