@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Json;
 use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -42,7 +43,7 @@ final class GetHolidaysRequestHandlerTest extends TestCase
                 'startDate' => '2025-01-01',
                 'endDate' => '2025-01-01',
                 'type' => 'holidays',
-                'name' => [['language' => 'NL', 'text' => 'Nieuwjaarsdag']],
+                'name' => [['language' => 'NL', 'text' => 'Nieuwjaarsdag — Jour de l\'An']],
             ],
         ];
 
@@ -59,7 +60,7 @@ final class GetHolidaysRequestHandlerTest extends TestCase
 
         $response = $this->handler->handle($request);
 
-        $this->assertJsonResponse(new JsonResponse($expectedHolidays), $response);
+        $this->assertJsonResponse(new JsonResponse(Json::encodeWithUnicode($expectedHolidays)), $response);
     }
 
     /**
@@ -72,7 +73,7 @@ final class GetHolidaysRequestHandlerTest extends TestCase
                 'startDate' => '2025-03-01',
                 'endDate' => '2025-03-10',
                 'type' => 'schoolHolidays',
-                'name' => [['language' => 'NL', 'text' => 'Krokusvakantie']],
+                'name' => [['language' => 'NL', 'text' => 'Krokusvakantie — Vacances de Carnaval']],
             ],
         ];
 
@@ -91,7 +92,7 @@ final class GetHolidaysRequestHandlerTest extends TestCase
 
         $response = $this->handler->handle($request);
 
-        $this->assertJsonResponse(new JsonResponse($expectedHolidays), $response);
+        $this->assertJsonResponse(new JsonResponse(Json::encodeWithUnicode($expectedHolidays)), $response);
     }
 
     /**
