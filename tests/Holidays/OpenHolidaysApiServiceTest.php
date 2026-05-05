@@ -144,6 +144,24 @@ final class OpenHolidaysApiServiceTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_bad_gateway_on_unexpected_response_body(): void
+    {
+        $this->mockHandler->append(
+            new Response(200, [], '{"error": "unexpected"}')
+        );
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::badGateway('OpenHolidays API returned an unexpected response.'),
+            fn () => $this->service->getHolidays(
+                new DateTimeImmutable('2025-01-01'),
+                new DateTimeImmutable('2025-12-31')
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_bad_gateway_on_non_200_school_holidays_response(): void
     {
         $this->mockHandler->append(

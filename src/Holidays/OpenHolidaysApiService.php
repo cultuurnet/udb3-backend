@@ -40,7 +40,7 @@ final class OpenHolidaysApiService implements HolidaysService
 
         $schoolHolidays = [];
         foreach ($this->fetchRaw(HolidayType::SchoolHolidays, $validFrom, $validTo) as $holiday) {
-            foreach ($holiday['groups'] as $group) {
+            foreach ($holiday['groups'] ?? [] as $group) {
                 $schoolHolidays[] = [
                     'startDate' => $holiday['startDate'],
                     'endDate' => $holiday['endDate'],
@@ -85,11 +85,11 @@ final class OpenHolidaysApiService implements HolidaysService
 
         try {
             $holidays = Json::decodeAssociatively($response->getBody()->getContents());
-            if (!is_array($holidays)) {
+            if (!is_array($holidays) || !array_is_list($holidays)) {
                 throw new \UnexpectedValueException();
             }
         } catch (\Throwable $e) {
-            $this->logger->error('OpenHolidays API returned unexpected response body: ' . $e->getMessage());
+            $this->logger->error('OpenHolidays API returned unexpected response body.', ['exception' => $e]);
             throw ApiProblem::badGateway('OpenHolidays API returned an unexpected response.');
         }
 
