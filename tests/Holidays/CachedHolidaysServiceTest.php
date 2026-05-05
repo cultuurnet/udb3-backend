@@ -60,10 +60,13 @@ final class CachedHolidaysServiceTest extends TestCase
         $startDate2 = new DateTimeImmutable('2025-07-01');
         $endDate2 = new DateTimeImmutable('2025-12-31');
 
+        $capturedKeys = [];
+
         $this->cache
             ->expects($this->exactly(2))
             ->method('get')
-            ->willReturnCallback(function (string $key, callable $callback) {
+            ->willReturnCallback(function (string $key, callable $callback) use (&$capturedKeys) {
+                $capturedKeys[] = $key;
                 return $callback(null);
             });
 
@@ -74,6 +77,8 @@ final class CachedHolidaysServiceTest extends TestCase
 
         $this->cachedService->getHolidays($startDate1, $endDate1);
         $this->cachedService->getHolidays($startDate2, $endDate2);
+
+        $this->assertCount(2, array_unique($capturedKeys), 'Each date range must produce a unique cache key.');
     }
 
     /**
@@ -108,5 +113,25 @@ final class CachedHolidaysServiceTest extends TestCase
         $result = $this->cachedService->getHolidays($startDate, $endDate);
 
         $this->assertEquals($expectedHolidays, $result);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_call_inner_service_on_cache_hit(): void
+    {
+        $startDate = new DateTimeImmutable('2025-01-01');
+        $endDate = new DateTimeImmutable('2025-12-31');
+        $cachedResult = [['startDate' => '2025-01-01', 'endDate' => '2025-01-01', 'type' => 'holidays', 'name' => []]];
+
+        $this->cache
+            ->method('get')
+            ->willReturn($cachedResult);
+
+        $this->innerService
+            ->expects($this->never())
+            ->method('getHolidays');
+
+        $this->cachedService->getHolidays($startDate, $endDate);
     }
 }
