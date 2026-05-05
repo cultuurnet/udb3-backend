@@ -38,7 +38,6 @@ final class OpenHolidaysApiServiceTest extends TestCase
      */
     public function it_returns_merged_holidays_sorted_by_start_date(): void
     {
-        // PublicHolidays response
         $publicHolidaysBody = json_encode([
             [
                 'startDate' => '2025-07-21',
@@ -52,46 +51,58 @@ final class OpenHolidaysApiServiceTest extends TestCase
             ],
         ], JSON_THROW_ON_ERROR);
 
-        // SchoolHolidays response for BE-VLG
-        $schoolHolidaysVlg = json_encode([
+        $schoolHolidaysBody = json_encode([
             [
                 'startDate' => '2025-04-07',
                 'endDate' => '2025-04-20',
                 'name' => [['language' => 'NL', 'text' => 'Paasvakantie']],
+                'groups' => [
+                    ['code' => 'BE-NL', 'shortName' => 'NL'],
+                ],
+            ],
+            [
+                'startDate' => '2025-04-07',
+                'endDate' => '2025-04-20',
+                'name' => [['language' => 'FR', 'text' => 'Vacances de Pâques']],
+                'groups' => [
+                    ['code' => 'BE-FR', 'shortName' => 'FR'],
+                    ['code' => 'BE-DE', 'shortName' => 'DE'],
+                ],
             ],
         ], JSON_THROW_ON_ERROR);
 
-        // SchoolHolidays response for BE-WAL (empty)
-        $schoolHolidaysWal = json_encode([], JSON_THROW_ON_ERROR);
-
-        // SchoolHolidays response for BE-BRU (empty)
-        $schoolHolidaysBru = json_encode([], JSON_THROW_ON_ERROR);
-
         $this->mockHandler->append(
             new Response(200, [], $publicHolidaysBody),
-            new Response(200, [], $schoolHolidaysVlg),
-            new Response(200, [], $schoolHolidaysWal),
-            new Response(200, [], $schoolHolidaysBru)
+            new Response(200, [], $schoolHolidaysBody)
         );
 
+        /** @var array<int, array<string, mixed>> $result */
         $result = $this->service->getHolidays(
             new DateTimeImmutable('2025-01-01'),
             new DateTimeImmutable('2025-12-31')
         );
 
-        $this->assertCount(3, $result);
+        $this->assertCount(5, $result);
 
         $this->assertSame('2025-01-01', $result[0]['startDate']);
         $this->assertSame('holidays', $result[0]['type']);
-        $this->assertArrayNotHasKey('subdivisionCode', $result[0]);
+        $this->assertArrayNotHasKey('region', $result[0]);
 
         $this->assertSame('2025-04-07', $result[1]['startDate']);
         $this->assertSame('schoolHolidays', $result[1]['type']);
-        $this->assertSame('BE-VLG', $result[1]['subdivisionCode']);
+        $this->assertSame('NL', $result[1]['region']);
 
-        $this->assertSame('2025-07-21', $result[2]['startDate']);
-        $this->assertSame('holidays', $result[2]['type']);
-        $this->assertArrayNotHasKey('subdivisionCode', $result[2]);
+        $this->assertSame('2025-04-07', $result[2]['startDate']);
+        $this->assertSame('schoolHolidays', $result[2]['type']);
+        $this->assertSame('FR', $result[2]['region']);
+
+        $this->assertSame('2025-04-07', $result[3]['startDate']);
+        $this->assertSame('schoolHolidays', $result[3]['type']);
+        $this->assertSame('DE', $result[3]['region']);
+
+        $this->assertSame('2025-07-21', $result[4]['startDate']);
+        $this->assertSame('holidays', $result[4]['type']);
+        $this->assertArrayNotHasKey('region', $result[4]);
     }
 
     /**

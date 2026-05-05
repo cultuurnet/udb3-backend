@@ -16,7 +16,6 @@ final class OpenHolidaysApiService implements HolidaysService
 {
     private const BASE_URL = 'https://openholidaysapi.org';
     private const COUNTRY_ISO_CODE = 'BE';
-    private const SUBDIVISION_CODES = ['BE-VLG', 'BE-WAL', 'BE-BRU'];
 
     public function __construct(
         private readonly ClientInterface $client,
@@ -29,39 +28,43 @@ final class OpenHolidaysApiService implements HolidaysService
         $validFrom = $startDate->format('Y-m-d');
         $validTo = $endDate->format('Y-m-d');
 
-        $publicHolidays = $this->fetchHolidays(HolidayType::PublicHolidays, $validFrom, $validTo);
+        $publicHolidays = array_map(
+            fn (array $holiday): array => [
+                'startDate' => $holiday['startDate'],
+                'endDate' => $holiday['endDate'],
+                'type' => HolidayType::PublicHolidays->outputType(),
+                'name' => $holiday['name'],
+            ],
+            $this->fetchRaw(HolidayType::PublicHolidays, $validFrom, $validTo)
+        );
 
         $schoolHolidays = [];
-        foreach (self::SUBDIVISION_CODES as $subdivisionCode) {
-            foreach ($this->fetchHolidays(HolidayType::SchoolHolidays, $validFrom, $validTo, $subdivisionCode) as $holiday) {
-                $schoolHolidays[] = $holiday;
+        foreach ($this->fetchRaw(HolidayType::SchoolHolidays, $validFrom, $validTo) as $holiday) {
+            foreach ($holiday['groups'] as $group) {
+                $schoolHolidays[] = [
+                    'startDate' => $holiday['startDate'],
+                    'endDate' => $holiday['endDate'],
+                    'type' => HolidayType::SchoolHolidays->outputType(),
+                    'name' => $holiday['name'],
+                    'region' => $group['shortName'],
+                ];
             }
         }
 
-        $combinedHolidays = array_merge($publicHolidays, $schoolHolidays);
+        $combined = array_merge($publicHolidays, $schoolHolidays);
 
-        usort($combinedHolidays, fn (array $a, array $b) => $a['startDate'] <=> $b['startDate']);
+        usort($combined, fn (array $a, array $b) => $a['startDate'] <=> $b['startDate']);
 
-        return $combinedHolidays;
+        return $combined;
     }
 
-    private function fetchHolidays(
-        HolidayType $type,
-        string $validFrom,
-        string $validTo,
-        ?string $subdivisionCode = null
-    ): array {
-        $params = [
+    private function fetchRaw(HolidayType $type, string $validFrom, string $validTo): array
+    {
+        $query = http_build_query([
             'countryIsoCode' => self::COUNTRY_ISO_CODE,
             'validFrom' => $validFrom,
             'validTo' => $validTo,
-        ];
-
-        if ($subdivisionCode !== null) {
-            $params['subdivisionCode'] = $subdivisionCode;
-        }
-
-        $query = http_build_query($params);
+        ]);
 
         $request = new Request('GET', self::BASE_URL . '/' . $type->value . '?' . $query);
 
@@ -90,22 +93,6 @@ final class OpenHolidaysApiService implements HolidaysService
             throw ApiProblem::badGateway('OpenHolidays API returned an unexpected response.');
         }
 
-        return array_map(
-            function (array $holiday) use ($type, $subdivisionCode): array {
-                $item = [
-                    'startDate' => $holiday['startDate'],
-                    'endDate' => $holiday['endDate'],
-                    'type' => $type->outputType(),
-                    'name' => $holiday['name'],
-                ];
-
-                if ($subdivisionCode !== null) {
-                    $item['subdivisionCode'] = $subdivisionCode;
-                }
-
-                return $item;
-            },
-            $holidays
-        );
+        return $holidays;
     }
 }
