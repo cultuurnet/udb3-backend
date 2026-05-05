@@ -86,22 +86,27 @@ final class OpenHolidaysApiServiceTest extends TestCase
 
         $this->assertSame('2025-01-01', $result[0]['startDate']);
         $this->assertSame('holidays', $result[0]['type']);
+        $this->assertSame(['nl' => 'Nieuwjaarsdag'], $result[0]['name']);
         $this->assertArrayNotHasKey('region', $result[0]);
 
         $this->assertSame('2025-04-07', $result[1]['startDate']);
         $this->assertSame('schoolHolidays', $result[1]['type']);
+        $this->assertSame(['nl' => 'Paasvakantie'], $result[1]['name']);
         $this->assertSame('NL', $result[1]['region']);
 
         $this->assertSame('2025-04-07', $result[2]['startDate']);
         $this->assertSame('schoolHolidays', $result[2]['type']);
+        $this->assertSame(['fr' => 'Vacances de Pâques'], $result[2]['name']);
         $this->assertSame('FR', $result[2]['region']);
 
         $this->assertSame('2025-04-07', $result[3]['startDate']);
         $this->assertSame('schoolHolidays', $result[3]['type']);
+        $this->assertSame(['fr' => 'Vacances de Pâques'], $result[3]['name']);
         $this->assertSame('DE', $result[3]['region']);
 
         $this->assertSame('2025-07-21', $result[4]['startDate']);
         $this->assertSame('holidays', $result[4]['type']);
+        $this->assertSame(['nl' => 'Nationale feestdag'], $result[4]['name']);
         $this->assertArrayNotHasKey('region', $result[4]);
     }
 
