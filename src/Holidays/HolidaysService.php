@@ -9,7 +9,7 @@ use DateTimeImmutable;
 interface HolidaysService
 {
     /**
-     * @return array<array{startDate: string, endDate: string, type: string, name: array<array{language: string, text: string}>}>
+     * @return array<array{startDate: string, endDate: string, type: string, name: array<array{language: string, text: string}>, region?: string}>
      */
     public function getHolidays(DateTimeImmutable $startDate, DateTimeImmutable $endDate): array;
 }
