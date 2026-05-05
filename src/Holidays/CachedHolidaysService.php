@@ -10,7 +10,7 @@ use Symfony\Contracts\Cache\CacheInterface;
 final class CachedHolidaysService implements HolidaysService
 {
     public function __construct(
-        private readonly HolidaysService $holidays,
+        private readonly HolidaysService $holidaysService,
         private readonly CacheInterface $cache
     ) {
     }
@@ -19,12 +19,12 @@ final class CachedHolidaysService implements HolidaysService
     {
         return $this->cache->get(
             $this->createCacheKey($startDate, $endDate),
-            fn () => $this->holidays->getHolidays($startDate, $endDate)
+            fn () => $this->holidaysService->getHolidays($startDate, $endDate)
         );
     }
 
     private function createCacheKey(DateTimeImmutable $startDate, DateTimeImmutable $endDate): string
     {
-        return 'holidays_' . $startDate->format('Y-m-d') . '_' . $endDate->format('Y-m-d');
+        return $startDate->format('Y-m-d') . '_' . $endDate->format('Y-m-d');
     }
 }

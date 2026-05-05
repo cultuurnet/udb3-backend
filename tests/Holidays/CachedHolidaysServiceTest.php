@@ -42,7 +42,7 @@ final class CachedHolidaysServiceTest extends TestCase
         $this->cache
             ->expects($this->once())
             ->method('get')
-            ->with('holidays_2025-01-01_2025-12-31', $this->anything())
+            ->with('2025-01-01_2025-12-31', $this->anything())
             ->willReturn($expectedHolidays);
 
         $result = $this->cachedService->getHolidays($startDate, $endDate);
