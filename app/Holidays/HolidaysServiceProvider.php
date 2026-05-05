@@ -13,6 +13,8 @@ use GuzzleHttp\Client;
 
 final class HolidaysServiceProvider extends AbstractServiceProvider
 {
+    private const ONE_MONTH_IN_SECONDS = 2592000;
+
     protected function getProvidedServiceNames(): array
     {
         return [
@@ -35,7 +37,7 @@ final class HolidaysServiceProvider extends AbstractServiceProvider
                 CacheFactory::create(
                     $container->get('app_cache'),
                     'holidays',
-                    2592000
+                    self::ONE_MONTH_IN_SECONDS
                 )
             )
         );
