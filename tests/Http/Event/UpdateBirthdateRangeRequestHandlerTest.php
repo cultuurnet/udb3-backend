@@ -42,10 +42,8 @@ final class UpdateBirthdateRangeRequestHandlerTest extends TestCase
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
             ->withJsonBodyFromArray([
-                'birthdateRange' => [
-                    'from' => '2014-01-01',
-                    'to' => '2020-12-31',
-                ],
+                'from' => '2014-01-01',
+                'to' => '2020-12-31',
             ])
             ->build('PUT');
 
@@ -95,7 +93,7 @@ final class UpdateBirthdateRangeRequestHandlerTest extends TestCase
             'missing birthdateRange' => [
                 '{}',
                 ApiProblem::bodyInvalidData(
-                    new SchemaError('/', 'The required properties (birthdateRange) are missing')
+                    new SchemaError('/', 'The required properties (from, to) are missing')
                 ),
             ],
         ];
@@ -109,10 +107,8 @@ final class UpdateBirthdateRangeRequestHandlerTest extends TestCase
         $request = $this->psr7RequestBuilder
             ->withRouteParameter('eventId', self::EVENT_ID)
             ->withJsonBodyFromArray([
-                'birthdateRange' => [
-                    'from' => '2020-12-31',
-                    'to' => '2014-01-01',
-                ],
+                'from' => '2020-12-31',
+                'to' => '2014-01-01',
             ])
             ->build('PUT');
 
