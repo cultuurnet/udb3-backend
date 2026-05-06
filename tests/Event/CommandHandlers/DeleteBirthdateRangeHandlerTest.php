@@ -8,6 +8,9 @@ use Broadway\CommandHandling\CommandHandler;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
+use Broadway\EventStore\InMemoryEventStore;
+use Broadway\EventStore\TraceableEventStore;
+use Broadway\Repository\AggregateNotFoundException;
 use CultuurNet\UDB3\Event\Commands\DeleteBirthdateRange;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -87,6 +90,22 @@ final class DeleteBirthdateRangeHandlerTest extends CommandHandlerScenarioTestCa
             ->when(new DeleteBirthdateRange($eventId))
             ->when(new DeleteBirthdateRange($eventId))
             ->then([new BirthdateRangeDeleted($eventId)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_the_event_does_not_exist(): void
+    {
+        $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
+
+        $eventStore = new TraceableEventStore(new InMemoryEventStore());
+        $eventBus = $this->createMock(EventBus::class);
+        $handler = new DeleteBirthdateRangeHandler(new EventRepository($eventStore, $eventBus));
+
+        $this->expectException(AggregateNotFoundException::class);
+
+        $handler->handle(new DeleteBirthdateRange($eventId));
     }
 
     private function getEventCreated(string $id): EventCreated
