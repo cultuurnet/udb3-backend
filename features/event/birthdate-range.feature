@@ -17,7 +17,7 @@ Feature: Test birthdateRange on events
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """
-        { "birthdateRange": { "from": "2014-01-01", "to": "2020-12-31" } }
+        { "from": "2014-01-01", "to": "2020-12-31" }
         """
     When I send a PUT request to "%{eventUrl}/birthdateRange"
     Then the response status should be "204"
@@ -29,12 +29,12 @@ Feature: Test birthdateRange on events
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """
-        { "birthdateRange": { "from": "2014-01-01", "to": "2020-12-31" } }
+        { "from": "2014-01-01", "to": "2020-12-31" }
         """
     And I send a PUT request to "%{eventUrl}/birthdateRange"
     And I set the JSON request payload to:
         """
-        { "birthdateRange": { "from": "2015-01-01", "to": "2021-12-31" } }
+        { "from": "2015-01-01", "to": "2021-12-31" }
         """
     When I send a PUT request to "%{eventUrl}/birthdateRange"
     Then the response status should be "204"
@@ -46,7 +46,7 @@ Feature: Test birthdateRange on events
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """
-        { "birthdateRange": { "from": "2014-01-01", "to": "2020-12-31" } }
+        { "from": "2014-01-01", "to": "2020-12-31" }
         """
     And I send a PUT request to "%{eventUrl}/birthdateRange"
     When I send a DELETE request to "%{eventUrl}/birthdateRange"
@@ -58,7 +58,7 @@ Feature: Test birthdateRange on events
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """
-        { "birthdateRange": { "from": "2020-12-31", "to": "2014-01-01" } }
+        { "from": "2020-12-31", "to": "2014-01-01" }
         """
     When I send a PUT request to "%{eventUrl}/birthdateRange"
     Then the response status should be "400"
