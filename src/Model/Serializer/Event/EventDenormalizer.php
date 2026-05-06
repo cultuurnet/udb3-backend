@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\BirthdateRangeDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\InvalidAgeRangeException;
@@ -37,6 +38,8 @@ class EventDenormalizer extends OfferDenormalizer
 
     private DenormalizerInterface $faqsDenormalizer;
 
+    private DenormalizerInterface $birthdateRangeDenormalizer;
+
     public function __construct(
         UuidParser $eventIDParser = null,
         DenormalizerInterface $titleDenormalizer = null,
@@ -52,7 +55,8 @@ class EventDenormalizer extends OfferDenormalizer
         DenormalizerInterface $contactPointDenormalizer = null,
         DenormalizerInterface $mediaObjectReferencesDenormalizer = null,
         DenormalizerInterface $videoDenormalizer = null,
-        DenormalizerInterface $faqsDenormalizer = null
+        DenormalizerInterface $faqsDenormalizer = null,
+        DenormalizerInterface $birthdateRangeDenormalizer = null
     ) {
         if (!$eventIDParser) {
             $eventIDParser = new EventIDParser();
@@ -64,6 +68,7 @@ class EventDenormalizer extends OfferDenormalizer
 
         $this->placeReferenceDenormalizer = $placeReferenceDenormalizer;
         $this->faqsDenormalizer = $faqsDenormalizer ?? new FaqsDenormalizer();
+        $this->birthdateRangeDenormalizer = $birthdateRangeDenormalizer ?? new BirthdateRangeDenormalizer();
 
         parent::__construct(
             $eventIDParser,
@@ -171,7 +176,10 @@ class EventDenormalizer extends OfferDenormalizer
     {
         if (isset($data['birthdateRange'])) {
             try {
-                $birthdateRange = BirthdateRange::fromArray($data['birthdateRange']);
+                $birthdateRange = $this->birthdateRangeDenormalizer->denormalize(
+                    $data['birthdateRange'],
+                    BirthdateRange::class
+                );
             } catch (InvalidAgeRangeException $exception) {
                 throw ApiProblem::bodyInvalidData(
                     new SchemaError('/birthdateRange', $exception->getMessage())
