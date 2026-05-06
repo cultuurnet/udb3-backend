@@ -158,7 +158,7 @@ Feature: Test the Search API v3 boosting
   # therefore appears first naturally. After negative boosting the NOT-branch bonus (~1.0)
   # always exceeds the (^0.1 × nieuwjaarTermScore) addition, flipping the order reliably.
 
-  @testIsolation
+  @testIsolation @negativeBoosting
   Scenario: I can negatively boost events
     Given I create a random labelname of 10 characters
     When I create an event with name "kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarEvent"
@@ -201,7 +201,7 @@ Feature: Test the Search API v3 boosting
     ]
     """
 
-  @testIsolation
+  @testIsolation @negativeBoosting
   Scenario: I can negatively boost places
     Given I create a random labelname of 10 characters
     When I create a place with name "kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarPlace"
@@ -246,7 +246,7 @@ Feature: Test the Search API v3 boosting
     ]
     """
 
-  @testIsolation
+  @testIsolation @negativeBoosting
   Scenario: I can negatively boost offers
     Given I create a random labelname of 10 characters
     When I create an event with name "kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarOffer"
@@ -290,7 +290,7 @@ Feature: Test the Search API v3 boosting
     ]
     """
 
-  @testIsolation
+  @testIsolation @negativeBoosting
   Scenario: I can negatively boost events by positively boosting other terms
     Given I create a random labelname of 10 characters
     When I create an event with name "kerst%{labelname} kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarEvent"
