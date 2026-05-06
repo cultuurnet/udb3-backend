@@ -27,22 +27,6 @@ final class BirthdateRange
         return $this->to;
     }
 
-    public static function fromArray(array $data): self
-    {
-        return new self(
-            new DateTimeImmutable($data['from']),
-            new DateTimeImmutable($data['to'])
-        );
-    }
-
-    public function toArray(): array
-    {
-        return [
-            'from' => $this->from->format('Y-m-d'),
-            'to' => $this->to->format('Y-m-d'),
-        ];
-    }
-
     public function sameAs(BirthdateRange $other): bool
     {
         return $this->from->format('Y-m-d') === $other->from->format('Y-m-d')
