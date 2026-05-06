@@ -112,7 +112,7 @@ Feature: Test birthdateRange on events
     ]
     """
 
-  Scenario: Reject birthdateRange where to is missing
+  Scenario: Reject birthdateRange where from is missing
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
         """
