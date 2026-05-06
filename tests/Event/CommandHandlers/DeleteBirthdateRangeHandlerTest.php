@@ -66,6 +66,29 @@ final class DeleteBirthdateRangeHandlerTest extends CommandHandlerScenarioTestCa
             ->then([]);
     }
 
+    /**
+     * @test
+     */
+    public function it_only_deletes_birthdate_range_once_when_multiple_deletes_are_sent(): void
+    {
+        $eventId = '40021958-0ad8-46bd-8528-3ac3686818a1';
+        $birthdateRange = new BirthdateRange(
+            new DateTimeImmutable('2014-01-01'),
+            new DateTimeImmutable('2020-12-31')
+        );
+
+        $this->scenario
+            ->withAggregateId($eventId)
+            ->given([
+                $this->getEventCreated($eventId),
+                new BirthdateRangeUpdated($eventId, $birthdateRange),
+            ])
+            ->when(new DeleteBirthdateRange($eventId))
+            ->when(new DeleteBirthdateRange($eventId))
+            ->when(new DeleteBirthdateRange($eventId))
+            ->then([new BirthdateRangeDeleted($eventId)]);
+    }
+
     private function getEventCreated(string $id): EventCreated
     {
         return new EventCreated(
