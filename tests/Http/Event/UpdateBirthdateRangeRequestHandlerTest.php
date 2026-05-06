@@ -90,10 +90,46 @@ final class UpdateBirthdateRangeRequestHandlerTest extends TestCase
                 '{{}',
                 ApiProblem::bodyInvalidSyntax('JSON'),
             ],
-            'missing birthdateRange' => [
+            'missing from and to' => [
                 '{}',
                 ApiProblem::bodyInvalidData(
                     new SchemaError('/', 'The required properties (from, to) are missing')
+                ),
+            ],
+            'missing from' => [
+                '{"to": "2020-12-31"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (from) are missing')
+                ),
+            ],
+            'missing to' => [
+                '{"from": "2014-01-01"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/', 'The required properties (to) are missing')
+                ),
+            ],
+            'invalid from format' => [
+                '{"from": "not-a-date", "to": "2020-12-31"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/from', 'The data must match the \'date\' format')
+                ),
+            ],
+            'invalid to format' => [
+                '{"from": "2014-01-01", "to": "not-a-date"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/to', 'The data must match the \'date\' format')
+                ),
+            ],
+            'invalid from type' => [
+                '{"from": 2014, "to": "2020-12-31"}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/from', 'The data (integer) must match the type: string')
+                ),
+            ],
+            'invalid to type' => [
+                '{"from": "2014-01-01", "to": 2020}',
+                ApiProblem::bodyInvalidData(
+                    new SchemaError('/to', 'The data (integer) must match the type: string')
                 ),
             ],
         ];
