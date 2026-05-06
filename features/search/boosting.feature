@@ -289,3 +289,46 @@ Feature: Test the Search API v3 boosting
       }
     ]
     """
+
+  @testIsolation
+  Scenario: I can negatively boost events by positively boosting other terms
+    Given I create a random labelname of 10 characters
+    When I create an event with name "kerst%{labelname} kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarEvent"
+    And I create an event with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termBoostedEvent"
+    When I am using the Search API v3 base URL
+    And I wait for 2 results at "/events" with parameters:
+      | text | kerst%{labelname} |
+    And I send a GET request to "/events" with parameters:
+      | text        | kerst%{labelname} |
+      | sort[score] | desc              |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termNieuwjaarEvent}",
+        "@type": "Event"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termBoostedEvent}",
+        "@type": "Event"
+      }
+    ]
+    """
+    When I send a GET request to "/events" with parameters:
+      | text        | kerst%{labelname}                                          |
+      | q           | (nieuwjaar%{labelname}) OR (NOT nieuwjaar%{labelname})^10 |
+      | sort[score] | desc                                                       |
+    Then the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termBoostedEvent}",
+        "@type": "Event"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termNieuwjaarEvent}",
+        "@type": "Event"
+      }
+    ]
+    """
