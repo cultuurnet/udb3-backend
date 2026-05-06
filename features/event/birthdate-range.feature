@@ -7,7 +7,7 @@ Feature: Test birthdateRange on events
     And I send and accept "application/json"
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
 
-  Scenario: New events do not have a birthdateRange
+  Scenario: By defaults events should not have a birthdateRange
     When I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     Then the response status should be "201"
     And I get the event at "%{eventUrl}"
