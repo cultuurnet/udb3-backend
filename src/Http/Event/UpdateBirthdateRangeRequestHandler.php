@@ -39,8 +39,8 @@ final class UpdateBirthdateRangeRequestHandler implements RequestHandlerInterfac
 
         try {
             $birthdateRange = BirthdateRange::fromArray([
-                'from' => $data->birthdateRange->from,
-                'to' => $data->birthdateRange->to,
+                'from' => $data->from,
+                'to' => $data->to,
             ]);
         } catch (InvalidAgeRangeException $exception) {
             throw ApiProblem::bodyInvalidData(
