@@ -6150,12 +6150,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "bd57d89d85aa4a19ddf60bd3dbad613950b3bb56"
+                "reference": "3c4b1ec0c463250972d04c85cb64e5c669d08a7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/bd57d89d85aa4a19ddf60bd3dbad613950b3bb56",
-                "reference": "bd57d89d85aa4a19ddf60bd3dbad613950b3bb56",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/3c4b1ec0c463250972d04c85cb64e5c669d08a7d",
+                "reference": "3c4b1ec0c463250972d04c85cb64e5c669d08a7d",
                 "shasum": ""
             },
             "type": "library",
@@ -6174,7 +6174,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7127-birthyear"
             },
-            "time": "2026-04-23T14:13:36+00:00"
+            "time": "2026-05-06T06:51:06+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -12842,6 +12842,6 @@
         "ext-tidy": "*",
         "ext-xmlreader": "*"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
 }
