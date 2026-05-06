@@ -66,8 +66,66 @@ Feature: Test birthdateRange on events
     """
     [
       {
-        "jsonPointer":"\/birthdateRange",
-        "error":"\"From\" birthdate should not be greater than the \"to\" birthdate."
+        "jsonPointer": "\/birthdateRange",
+        "error": "\"From\" birthdate should not be greater than the \"to\" birthdate."
+      }
+    ]
+    """
+
+  Scenario: Reject birthdateRange where the dates are not in correctly formatted strings
+    Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+        """
+        { "from": 1609372800, "to": "1 January 2024" }
+        """
+    When I send a PUT request to "%{eventUrl}/birthdateRange"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors" should be:
+    """
+    [
+      {
+        "jsonPointer": "\/from",
+        "error": "The data (integer) must match the type: string"
+      },
+      {
+        "jsonPointer": "\/to",
+        "error": "The data must match the 'date' format"
+      }
+    ]
+    """
+
+  Scenario: Reject birthdateRange where to is missing
+    Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+        """
+        { "from": "2020-12-31" }
+        """
+    When I send a PUT request to "%{eventUrl}/birthdateRange"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors" should be:
+    """
+    [
+      {
+        "jsonPointer": "\/",
+        "error": "The required properties (to) are missing"
+      }
+    ]
+    """
+
+  Scenario: Reject birthdateRange where to is missing
+    Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+        """
+        { "to": "2024-12-31" }
+        """
+    When I send a PUT request to "%{eventUrl}/birthdateRange"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors" should be:
+    """
+    [
+      {
+        "jsonPointer": "\/",
+        "error": "The required properties (from) are missing"
       }
     ]
     """
