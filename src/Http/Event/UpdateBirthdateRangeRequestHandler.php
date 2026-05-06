@@ -13,16 +13,23 @@ use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\BirthdateRangeDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\InvalidAgeRangeException;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class UpdateBirthdateRangeRequestHandler implements RequestHandlerInterface
 {
-    public function __construct(private readonly CommandBus $commandBus)
-    {
+    private DenormalizerInterface $birthdateRangeDenormalizer;
+
+    public function __construct(
+        private readonly CommandBus $commandBus,
+        DenormalizerInterface $birthdateRangeDenormalizer = null
+    ) {
+        $this->birthdateRangeDenormalizer = $birthdateRangeDenormalizer ?? new BirthdateRangeDenormalizer();
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -38,10 +45,10 @@ final class UpdateBirthdateRangeRequestHandler implements RequestHandlerInterfac
         $data = $parser->parse($request)->getParsedBody();
 
         try {
-            $birthdateRange = BirthdateRange::fromArray([
-                'from' => $data->from,
-                'to' => $data->to,
-            ]);
+            $birthdateRange = $this->birthdateRangeDenormalizer->denormalize(
+                ['from' => $data->from, 'to' => $data->to],
+                BirthdateRange::class
+            );
         } catch (InvalidAgeRangeException $exception) {
             throw ApiProblem::bodyInvalidData(
                 new SchemaError('/birthdateRange', $exception->getMessage())
