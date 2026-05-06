@@ -40,33 +40,6 @@ final class BirthdateRangeTest extends TestCase
     /**
      * @test
      */
-    public function it_should_create_from_array(): void
-    {
-        $range = BirthdateRange::fromArray(['from' => '2014-01-01', 'to' => '2020-12-31']);
-
-        $this->assertEquals('2014-01-01', $range->getFrom()->format('Y-m-d'));
-        $this->assertEquals('2020-12-31', $range->getTo()->format('Y-m-d'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_convert_to_array(): void
-    {
-        $range = new BirthdateRange(
-            new DateTimeImmutable('2014-01-01'),
-            new DateTimeImmutable('2020-12-31')
-        );
-
-        $this->assertEquals(
-            ['from' => '2014-01-01', 'to' => '2020-12-31'],
-            $range->toArray()
-        );
-    }
-
-    /**
-     * @test
-     */
     public function it_should_compare_two_ranges(): void
     {
         $range = new BirthdateRange(

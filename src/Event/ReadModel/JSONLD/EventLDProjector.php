@@ -71,6 +71,7 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Place\ImmutablePlace;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AudienceTypeNormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\BirthdateRangeNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\CalendarNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Faq\FaqsNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
@@ -608,8 +609,8 @@ final class EventLDProjector extends OfferLDProjector implements
         $document = $this->loadDocumentFromRepository($birthdateRangeUpdated);
         $jsonLD = $document->getBody();
 
-        $birthdateArray = $birthdateRangeUpdated->birthdateRange->toArray();
-        $jsonLD->birthdateRange = (object) $birthdateArray;
+        $jsonLD->birthdateRange = (object) (new BirthdateRangeNormalizer())
+            ->normalize($birthdateRangeUpdated->birthdateRange);
 
         return $document->withBody($jsonLD);
     }
