@@ -81,3 +81,62 @@ Feature: Test departure places in search results
     """
     %{eventId2}
     """
+
+  @testIsolation
+  Scenario: Events can be filtered by departure place using the departurePlaces url parameter
+    When I create a minimal place and save the "url" as "departurePlaceUrl1"
+    And I keep the value of the JSON response at "id" as "departurePlaceId1"
+    And I create a minimal place and save the "url" as "departurePlaceUrl2"
+    And I keep the value of the JSON response at "id" as "departurePlaceId2"
+    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId1"
+    And I publish the event at "/events/%{eventId1}"
+    And I set the JSON request payload to:
+    """
+    ["%{departurePlaceUrl1}"]
+    """
+    And I send a PUT request to "/events/%{eventId1}/departurePlaces/"
+    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId2"
+    And I publish the event at "/events/%{eventId2}"
+    And I set the JSON request payload to:
+    """
+    ["%{departurePlaceUrl2}"]
+    """
+    And I send a PUT request to "/events/%{eventId2}/departurePlaces/"
+    And I am using the Search API v3 base URL
+    And I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true                  |
+      | departurePlaces[]     | %{departurePlaceId1}  |
+    Then I wait for the JSON response at "totalItems" to be 1
+    And the JSON response at "member/0/@id" should include "%{eventId1}"
+
+  @testIsolation
+  Scenario: Multiple departure place url parameters use AND logic
+    When I create a minimal place and save the "url" as "departurePlaceUrl1"
+    And I keep the value of the JSON response at "id" as "departurePlaceId1"
+    And I create a minimal place and save the "url" as "departurePlaceUrl2"
+    And I keep the value of the JSON response at "id" as "departurePlaceId2"
+    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId1"
+    And I publish the event at "/events/%{eventId1}"
+    And I set the JSON request payload to:
+    """
+    ["%{departurePlaceUrl1}", "%{departurePlaceUrl2}"]
+    """
+    And I send a PUT request to "/events/%{eventId1}/departurePlaces/"
+    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId2"
+    And I publish the event at "/events/%{eventId2}"
+    And I set the JSON request payload to:
+    """
+    ["%{departurePlaceUrl1}"]
+    """
+    And I send a PUT request to "/events/%{eventId2}/departurePlaces/"
+    And I am using the Search API v3 base URL
+    And I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true                  |
+      | departurePlaces[]     | %{departurePlaceId1}  |
+    Then I wait for the JSON response at "totalItems" to be 2
+    And I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true                  |
+      | departurePlaces[]     | %{departurePlaceId1}  |
+      | departurePlaces[]     | %{departurePlaceId2}  |
+    Then I wait for the JSON response at "totalItems" to be 1
+    And the JSON response at "member/0/@id" should include "%{eventId1}"
