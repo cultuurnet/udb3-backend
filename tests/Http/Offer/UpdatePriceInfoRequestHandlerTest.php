@@ -79,7 +79,7 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
                     new Language('nl'),
                     new TariffName('Basistarief')
                 ),
-                new Money(1000, new Currency('EUR'))
+                new Money('1000', new Currency('EUR'))
             ),
             new Tariffs(
                 new Tariff(
@@ -87,14 +87,14 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
                         new Language('nl'),
                         new TariffName('Jongeren')
                     ),
-                    new Money(500, new Currency('EUR'))
+                    new Money('500', new Currency('EUR'))
                 ),
                 new Tariff(
                     new TranslatedTariffName(
                         new Language('nl'),
                         new TariffName('Senioren')
                     ),
-                    new Money(500, new Currency('EUR'))
+                    new Money('500', new Currency('EUR'))
                 )
             )
         );
@@ -147,7 +147,7 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
                     new Language('nl'),
                     new TariffName('Basistarief')
                 ),
-                new Money(230, new Currency('EUR'))
+                new Money('230', new Currency('EUR'))
             ),
             new Tariffs(
                 new Tariff(
@@ -155,7 +155,7 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
                         new Language('nl'),
                         new TariffName('Early birds')
                     ),
-                    new Money(230, new Currency('EUR'))
+                    new Money('230', new Currency('EUR'))
                 ),
             )
         );
@@ -218,7 +218,7 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
                     new Language('nl'),
                     new TariffName('Basistarief')
                 ),
-                new Money(25000, new Currency('EUR'))
+                new Money('25000', new Currency('EUR'))
             ))->withGroupPrice(true),
             new Tariffs(
                 new Tariff(
@@ -226,14 +226,14 @@ class UpdatePriceInfoRequestHandlerTest extends TestCase
                         new Language('nl'),
                         new TariffName('Individuen')
                     ),
-                    new Money(1500, new Currency('EUR'))
+                    new Money('1500', new Currency('EUR'))
                 ),
                 (new Tariff(
                     new TranslatedTariffName(
                         new Language('nl'),
                         new TariffName('Leraren')
                     ),
-                    new Money(10000, new Currency('EUR'))
+                    new Money('10000', new Currency('EUR'))
                 ))->withGroupPrice(true),
             )
         );

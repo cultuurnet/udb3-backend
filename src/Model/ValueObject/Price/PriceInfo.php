@@ -64,8 +64,8 @@ class PriceInfo
     {
         $serialized = [
             'base' => [
-                'price' => $this->basePrice->getPrice()->getAmount(),
-                'currency' => $this->basePrice->getPrice()->getCurrency()->getName(),
+                'price' => (int) $this->basePrice->getPrice()->getAmount(),
+                'currency' => $this->basePrice->getPrice()->getCurrency()->getCode(),
                 'groupPrice' => $this->basePrice->isGroupPrice(),
             ],
             'tariffs' => [],
@@ -73,8 +73,8 @@ class PriceInfo
         ];
 
         $normalize = fn (Tariff $tariff): array => [
-            'price' => $tariff->getPrice()->getAmount(),
-            'currency' => $tariff->getPrice()->getCurrency()->getName(),
+            'price' => (int) $tariff->getPrice()->getAmount(),
+            'currency' => $tariff->getPrice()->getCurrency()->getCode(),
             'name' => (new TranslatedTariffNameNormalizer())->normalize($tariff->getName()),
             'groupPrice' => $tariff->isGroupPrice(),
         ];

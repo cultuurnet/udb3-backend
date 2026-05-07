@@ -619,7 +619,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
 
         $expectedPriceInfo = new PriceInfo(
             Tariff::createBasePrice(
-                new Money(1500, new Currency('EUR'))
+                new Money('1500', new Currency('EUR'))
             ),
             new Tariffs(
                 new Tariff(
@@ -627,14 +627,14 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
                         new Language('nl'),
                         new TariffName('Senioren')
                     ),
-                    new Money(1000, new Currency('EUR'))
+                    new Money('1000', new Currency('EUR'))
                 ),
                 new Tariff(
                     new TranslatedTariffName(
                         new Language('nl'),
                         new TariffName('Studenten')
                     ),
-                    new Money(750, new Currency('EUR'))
+                    new Money('750', new Currency('EUR'))
                 )
             )
         );

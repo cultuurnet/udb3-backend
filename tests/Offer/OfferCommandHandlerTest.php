@@ -59,7 +59,7 @@ final class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
 
         $this->priceInfo = new PriceInfo(
             Tariff::createBasePrice(
-                new Money(1050, new Currency('EUR'))
+                new Money('1050', new Currency('EUR'))
             ),
             new Tariffs()
         );

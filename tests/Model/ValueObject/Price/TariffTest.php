@@ -21,7 +21,7 @@ class TariffTest extends TestCase
             new TariffName('Senioren')
         );
 
-        $price = new Money(1000, new Currency('EUR'));
+        $price = new Money('1000', new Currency('EUR'));
 
         $tariff = new Tariff($name, $price);
 
@@ -38,7 +38,7 @@ class TariffTest extends TestCase
             new Language('nl'),
             new TariffName('Senioren')
         );
-        $price = new Money(1000, new Currency('EUR'));
+        $price = new Money('1000', new Currency('EUR'));
         $tariff = new Tariff($name, $price);
 
         $updatedName = $name->withTranslation(
@@ -61,7 +61,7 @@ class TariffTest extends TestCase
             new Language('nl'),
             new TariffName('Senioren')
         );
-        $price = new Money(1000, new Currency('EUR'));
+        $price = new Money('1000', new Currency('EUR'));
         $tariff = new Tariff($name, $price);
 
         $updatedPrice = $price->multiply(2);
@@ -81,7 +81,7 @@ class TariffTest extends TestCase
             new Language('nl'),
             new TariffName('Leerlingen')
         );
-        $price = new Money(1000, new Currency('EUR'));
+        $price = new Money('1000', new Currency('EUR'));
         $tariff = new Tariff($name, $price);
 
         $updatedTariff = $tariff->withGroupPrice(true);

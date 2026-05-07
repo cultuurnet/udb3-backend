@@ -17,8 +17,8 @@ class MoneyNormalizer implements NormalizerInterface
         }
 
         return [
-            'amount' => $object->getAmount(),
-            'currency' => $object->getCurrency()->getName(),
+            'amount' => (int) $object->getAmount(),
+            'currency' => $object->getCurrency()->getCode(),
         ];
     }
 

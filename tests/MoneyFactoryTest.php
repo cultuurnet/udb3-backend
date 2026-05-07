@@ -49,19 +49,19 @@ final class MoneyFactoryTest extends TestCase
     {
         return [
             'euro in int' => [
-                'expectedMoney' => new Money(200, new Currency('EUR')),
+                'expectedMoney' => new Money('200', new Currency('EUR')),
                 'actualMoney' => MoneyFactory::create(2, new Currency('EUR')),
             ],
             'euro in float' => [
-                'expectedMoney' => new Money(230, new Currency('GBP')),
+                'expectedMoney' => new Money('230', new Currency('GBP')),
                 'actualMoney' => MoneyFactory::create(2.3, new Currency('GBP')),
             ],
             'euro in string' => [
-                'expectedMoney' => new Money(4500, new Currency('EUR')),
+                'expectedMoney' => new Money('4500', new Currency('EUR')),
                 'actualMoney' => MoneyFactory::create('45', new Currency('EUR')),
             ],
             'euro in string with decimals' => [
-                'expectedMoney' => new Money(3390, new Currency('EUR')),
+                'expectedMoney' => new Money('3390', new Currency('EUR')),
                 'actualMoney' => MoneyFactory::create('33.9', new Currency('EUR')),
             ],
         ];
@@ -71,15 +71,15 @@ final class MoneyFactoryTest extends TestCase
     {
         return [
             'cents in int' => [
-                'expectedMoney' => new Money(1999, new Currency('EUR')),
+                'expectedMoney' => new Money('1999', new Currency('EUR')),
                 'actualMoney' => MoneyFactory::createFromCents(1999, new Currency('EUR')),
             ],
             'cents in string' => [
-                'expectedMoney' => new Money(2999, new Currency('EUR')),
+                'expectedMoney' => new Money('2999', new Currency('EUR')),
                 'actualMoney' => MoneyFactory::createFromCents('2999', new Currency('EUR')),
             ],
             'cents in different currency' => [
-                'expectedMoney' => new Money(3999, new Currency('SEK')),
+                'expectedMoney' => new Money('3999', new Currency('SEK')),
                 'actualMoney' => MoneyFactory::createFromCents('3999', new Currency('SEK')),
             ],
         ];

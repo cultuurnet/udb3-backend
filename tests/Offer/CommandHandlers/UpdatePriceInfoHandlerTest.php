@@ -57,7 +57,7 @@ final class UpdatePriceInfoHandlerTest extends CommandHandlerScenarioTestCase
                         new Language('nl'),
                         new TariffName('Basisprijs')
                     ),
-                    new Money(1499, new Currency('EUR'))
+                    new Money('1499', new Currency('EUR'))
                 ),
                 new Tariffs()
             )

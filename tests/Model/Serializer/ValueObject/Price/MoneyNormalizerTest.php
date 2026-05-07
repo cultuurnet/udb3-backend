@@ -18,7 +18,7 @@ class MoneyNormalizerTest extends TestCase
     protected function setUp(): void
     {
         $this->normalizer = new MoneyNormalizer();
-        $this->money = new Money(100, new Currency('EUR'));
+        $this->money = new Money('100', new Currency('EUR'));
     }
 
     /**

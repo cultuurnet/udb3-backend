@@ -223,7 +223,7 @@ class PlaceTest extends AggregateRootScenarioTestCase
 
         $priceInfo = new PriceInfo(
             Tariff::createBasePrice(
-                new Money(1000, new Currency('EUR'))
+                new Money('1000', new Currency('EUR'))
             ),
             new Tariffs()
         );

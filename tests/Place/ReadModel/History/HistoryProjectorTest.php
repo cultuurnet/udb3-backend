@@ -834,7 +834,7 @@ class HistoryProjectorTest extends TestCase
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             new PriceInfo(
                 Tariff::createBasePrice(
-                    new Money(1000, new Currency('EUR'))
+                    new Money('1000', new Currency('EUR'))
                 ),
                 new Tariffs()
             )

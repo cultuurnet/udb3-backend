@@ -249,7 +249,7 @@ final class KinepolisServiceTest extends TestCase
                                     new Language('nl'),
                                     new TariffName('Basistarief')
                                 ),
-                                new Money(1100, new Currency('EUR'))
+                                new Money('1100', new Currency('EUR'))
                             ),
                             new Tariffs(
                                 new Tariff(
@@ -257,14 +257,14 @@ final class KinepolisServiceTest extends TestCase
                                         new Language('nl'),
                                         new TariffName('Kinepolis Student Card')
                                     ),
-                                    new Money(900, new Currency('EUR'))
+                                    new Money('900', new Currency('EUR'))
                                 ),
                                 new Tariff(
                                     new TranslatedTariffName(
                                         new Language('nl'),
                                         new TariffName('Kortingstarief')
                                     ),
-                                    new Money(1000, new Currency('EUR'))
+                                    new Money('1000', new Currency('EUR'))
                                 ),
                             )
                         ),
@@ -334,7 +334,7 @@ final class KinepolisServiceTest extends TestCase
                                 new Language('nl'),
                                 new TariffName('Basistarief')
                             ),
-                            new Money(1100, new Currency('EUR'))
+                            new Money('1100', new Currency('EUR'))
                         ),
                         new Tariffs(
                             new Tariff(
@@ -342,14 +342,14 @@ final class KinepolisServiceTest extends TestCase
                                     new Language('nl'),
                                     new TariffName('Kinepolis Student Card')
                                 ),
-                                new Money(900, new Currency('EUR'))
+                                new Money('900', new Currency('EUR'))
                             ),
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Kortingstarief')
                                 ),
-                                new Money(1000, new Currency('EUR'))
+                                new Money('1000', new Currency('EUR'))
                             ),
                         )
                     )
@@ -427,7 +427,7 @@ final class KinepolisServiceTest extends TestCase
                                     new Language('nl'),
                                     new TariffName('Basistarief')
                                 ),
-                                new Money(1100, new Currency('EUR'))
+                                new Money('1100', new Currency('EUR'))
                             ),
                             new Tariffs(
                                 new Tariff(
@@ -435,14 +435,14 @@ final class KinepolisServiceTest extends TestCase
                                         new Language('nl'),
                                         new TariffName('Kinepolis Student Card')
                                     ),
-                                    new Money(900, new Currency('EUR'))
+                                    new Money('900', new Currency('EUR'))
                                 ),
                                 new Tariff(
                                     new TranslatedTariffName(
                                         new Language('nl'),
                                         new TariffName('Kortingstarief')
                                     ),
-                                    new Money(1000, new Currency('EUR'))
+                                    new Money('1000', new Currency('EUR'))
                                 ),
                             )
                         ),
@@ -517,7 +517,7 @@ final class KinepolisServiceTest extends TestCase
                                 new Language('nl'),
                                 new TariffName('Basistarief')
                             ),
-                            new Money(1100, new Currency('EUR'))
+                            new Money('1100', new Currency('EUR'))
                         ),
                         new Tariffs(
                             new Tariff(
@@ -525,14 +525,14 @@ final class KinepolisServiceTest extends TestCase
                                     new Language('nl'),
                                     new TariffName('Kinepolis Student Card')
                                 ),
-                                new Money(900, new Currency('EUR'))
+                                new Money('900', new Currency('EUR'))
                             ),
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Kortingstarief')
                                 ),
-                                new Money(1000, new Currency('EUR'))
+                                new Money('1000', new Currency('EUR'))
                             ),
                         )
                     )
@@ -607,7 +607,7 @@ final class KinepolisServiceTest extends TestCase
                                     new Language('nl'),
                                     new TariffName('Basistarief')
                                 ),
-                                new Money(1200, new Currency('EUR'))
+                                new Money('1200', new Currency('EUR'))
                             ),
                             new Tariffs(
                                 new Tariff(
@@ -615,14 +615,14 @@ final class KinepolisServiceTest extends TestCase
                                         new Language('nl'),
                                         new TariffName('Kinepolis Student Card')
                                     ),
-                                    new Money(1000, new Currency('EUR'))
+                                    new Money('1000', new Currency('EUR'))
                                 ),
                                 new Tariff(
                                     new TranslatedTariffName(
                                         new Language('nl'),
                                         new TariffName('Kortingstarief')
                                     ),
-                                    new Money(1100, new Currency('EUR'))
+                                    new Money('1100', new Currency('EUR'))
                                 ),
                             )
                         ),
@@ -700,7 +700,7 @@ final class KinepolisServiceTest extends TestCase
                                 new Language('nl'),
                                 new TariffName('Basistarief')
                             ),
-                            new Money(1200, new Currency('EUR'))
+                            new Money('1200', new Currency('EUR'))
                         ),
                         new Tariffs(
                             new Tariff(
@@ -708,14 +708,14 @@ final class KinepolisServiceTest extends TestCase
                                     new Language('nl'),
                                     new TariffName('Kinepolis Student Card')
                                 ),
-                                new Money(1000, new Currency('EUR'))
+                                new Money('1000', new Currency('EUR'))
                             ),
                             new Tariff(
                                 new TranslatedTariffName(
                                     new Language('nl'),
                                     new TariffName('Kortingstarief')
                                 ),
-                                new Money(1100, new Currency('EUR'))
+                                new Money('1100', new Currency('EUR'))
                             ),
                         )
                     )

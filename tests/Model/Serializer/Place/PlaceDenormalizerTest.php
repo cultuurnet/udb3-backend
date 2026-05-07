@@ -870,7 +870,7 @@ class PlaceDenormalizerTest extends TestCase
                             new TariffName('Basistarief')
                         ))->withTranslation(new Language('en'), new TariffName('Base tariff')),
                         new Money(
-                            1500,
+                            '1500',
                             new Currency('EUR')
                         )
                     ),
@@ -881,7 +881,7 @@ class PlaceDenormalizerTest extends TestCase
                                 new TariffName('Senioren')
                             ))->withTranslation(new Language('en'), new TariffName('Seniors')),
                             new Money(
-                                1050,
+                                '1050',
                                 new Currency('EUR')
                             )
                         )

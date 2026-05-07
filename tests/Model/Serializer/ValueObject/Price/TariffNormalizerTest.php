@@ -28,7 +28,7 @@ class TariffNormalizerTest extends TestCase
                 new TariffName('Basistarief')
             ))->withTranslation(new Language('en'), new TariffName('Base tariff')),
             new Money(
-                100,
+                '100',
                 new Currency('EUR')
             )
         );

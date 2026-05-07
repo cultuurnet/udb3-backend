@@ -17,7 +17,7 @@ class PriceInfoTest extends TestCase
     public function it_should_combine_a_base_price_and_optional_extra_tariffs(): void
     {
         $basePrice = Tariff::createBasePrice(
-            new Money(1000, new Currency('EUR'))
+            new Money('1000', new Currency('EUR'))
         );
         $tariffs = new Tariffs();
         $priceInfo = new PriceInfo($basePrice, $tariffs);
@@ -32,13 +32,13 @@ class PriceInfoTest extends TestCase
     public function it_should_return_a_copy_with_an_updated_base_price(): void
     {
         $basePrice = Tariff::createBasePrice(
-            new Money(1000, new Currency('EUR'))
+            new Money('1000', new Currency('EUR'))
         );
         $tariffs = new Tariffs();
         $priceInfo = new PriceInfo($basePrice, $tariffs);
 
         $updatedBasePrice = Tariff::createBasePrice(
-            new Money(2000, new Currency('EUR'))
+            new Money('2000', new Currency('EUR'))
         );
         $updatedPriceInfo = $priceInfo->withBasePrice($updatedBasePrice);
 
@@ -53,7 +53,7 @@ class PriceInfoTest extends TestCase
     public function it_should_return_a_copy_with_updated_tariffs(): void
     {
         $basePrice = Tariff::createBasePrice(
-            new Money(1000, new Currency('EUR'))
+            new Money('1000', new Currency('EUR'))
         );
         $tariffs = new Tariffs();
         $priceInfo = new PriceInfo($basePrice, $tariffs);
@@ -64,7 +64,7 @@ class PriceInfoTest extends TestCase
                     new Language('nl'),
                     new TariffName('Senioren')
                 ),
-                new Money(500, new Currency('EUR'))
+                new Money('500', new Currency('EUR'))
             )
         );
         $updatedPriceInfo = $priceInfo->withTariffs($updatedTariffs);
@@ -104,7 +104,7 @@ class PriceInfoTest extends TestCase
             'originalPriceInfo' => [
                 new PriceInfo(
                     Tariff::createBasePrice(
-                        new Money(1000, new Currency('EUR'))
+                        new Money('1000', new Currency('EUR'))
                     ),
                     new Tariffs(
                         new Tariff(
@@ -112,7 +112,7 @@ class PriceInfoTest extends TestCase
                                 new Language('nl'),
                                 new TariffName('Senioren')
                             ),
-                            new Money(500, new Currency('EUR'))
+                            new Money('500', new Currency('EUR'))
                         )
                     )
                 ),
@@ -138,7 +138,7 @@ class PriceInfoTest extends TestCase
            'priceInfoWithGroupPrice' => [
                new PriceInfo(
                    (Tariff::createBasePrice(
-                       new Money(1000, new Currency('EUR'))
+                       new Money('1000', new Currency('EUR'))
                    ))->withGroupPrice(true),
                    new Tariffs(
                        new Tariff(
@@ -146,14 +146,14 @@ class PriceInfoTest extends TestCase
                                new Language('nl'),
                                new TariffName('Senioren')
                            ),
-                           new Money(500, new Currency('EUR'))
+                           new Money('500', new Currency('EUR'))
                        ),
                        (new Tariff(
                            new TranslatedTariffName(
                                new Language('nl'),
                                new TariffName('Jongeren')
                            ),
-                           new Money(750, new Currency('EUR'))
+                           new Money('750', new Currency('EUR'))
                        ))->withGroupPrice(true)
                    )
                ),
@@ -211,7 +211,7 @@ class PriceInfoTest extends TestCase
                 ],
                 new PriceInfo(
                     (Tariff::createBasePrice(
-                        new Money(1000, new Currency('EUR'))
+                        new Money('1000', new Currency('EUR'))
                     ))->withGroupPrice(false),
                     new Tariffs(
                         (new Tariff(
@@ -219,7 +219,7 @@ class PriceInfoTest extends TestCase
                                 new Language('nl'),
                                 new TariffName('Senioren')
                             ),
-                            new Money(500, new Currency('EUR'))
+                            new Money('500', new Currency('EUR'))
                         ))->withGroupPrice(false)
                     )
                 ),
@@ -253,7 +253,7 @@ class PriceInfoTest extends TestCase
                 ],
                 new PriceInfo(
                     (Tariff::createBasePrice(
-                        new Money(1000, new Currency('EUR'))
+                        new Money('1000', new Currency('EUR'))
                     ))->withGroupPrice(true),
                     new Tariffs(
                         (new Tariff(
@@ -261,14 +261,14 @@ class PriceInfoTest extends TestCase
                                 new Language('nl'),
                                 new TariffName('Senioren')
                             ),
-                            new Money(500, new Currency('EUR'))
+                            new Money('500', new Currency('EUR'))
                         ))->withGroupPrice(false),
                         (new Tariff(
                             new TranslatedTariffName(
                                 new Language('nl'),
                                 new TariffName('Jongeren')
                             ),
-                            new Money(750, new Currency('EUR'))
+                            new Money('750', new Currency('EUR'))
                         ))->withGroupPrice(true)
                     )
                 ),

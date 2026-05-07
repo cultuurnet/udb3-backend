@@ -47,7 +47,7 @@ final class ParsedPriceForATheater
                 new Language('nl'),
                 new TariffName('Basistarief')
             ),
-            new Money($basePrice, new Currency('EUR'))
+            new Money((string)$basePrice, new Currency('EUR'))
         );
     }
 
@@ -65,14 +65,14 @@ final class ParsedPriceForATheater
                     new Language('nl'),
                     new TariffName('Kinepolis Student Card')
                 ),
-                new Money($studentPrice, new Currency('EUR'))
+                new Money((string)$studentPrice, new Currency('EUR'))
             ),
             new Tariff(
                 new TranslatedTariffName(
                     new Language('nl'),
                     new TariffName('Kortingstarief')
                 ),
-                new Money($discountPrice, new Currency('EUR'))
+                new Money((string)$discountPrice, new Currency('EUR'))
             ),
         );
     }

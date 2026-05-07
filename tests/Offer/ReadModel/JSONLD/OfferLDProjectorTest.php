@@ -799,7 +799,7 @@ class OfferLDProjectorTest extends TestCase
 
         $priceInfo = new PriceInfo(
             Tariff::createBasePrice(
-                new Money(1050, new Currency('EUR'))
+                new Money('1050', new Currency('EUR'))
             ),
             new Tariffs(
                 new Tariff(
@@ -807,7 +807,7 @@ class OfferLDProjectorTest extends TestCase
                         new Language('nl'),
                         new TariffName('Tarief inwoners')
                     ),
-                    new Money(950, new Currency('EUR'))
+                    new Money('950', new Currency('EUR'))
                 )
             )
         );
@@ -818,7 +818,7 @@ class OfferLDProjectorTest extends TestCase
                         new Language('nl'),
                         new TariffName('UiTPAS tarief')
                     ),
-                    new Money(650, new Currency('EUR'))
+                    new Money('650', new Currency('EUR'))
                 )
             )
         );

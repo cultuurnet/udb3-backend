@@ -17,7 +17,7 @@ final class MoneyFactory
         Currency $currency
     ): Money {
         self::guard($price);
-        return new Money((int) round(($price*100)), $currency);
+        return new Money((string)((int) round(($price*100))), $currency);
     }
 
     /**
@@ -28,7 +28,7 @@ final class MoneyFactory
         Currency $currency
     ): Money {
         self::guard($price);
-        return new Money((int) $price, $currency);
+        return new Money((string)((int) $price), $currency);
     }
 
     /**

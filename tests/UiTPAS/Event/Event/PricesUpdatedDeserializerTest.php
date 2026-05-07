@@ -52,7 +52,7 @@ final class PricesUpdatedDeserializerTest extends TestCase
                             new TariffName('Tariff 1')
                         ),
                         new Money(
-                            199,
+                            '199',
                             new Currency('EUR')
                         )
                     ),
@@ -62,7 +62,7 @@ final class PricesUpdatedDeserializerTest extends TestCase
                             new TariffName('Tariff 2')
                         ),
                         new Money(
-                            299,
+                            '299',
                             new Currency('EUR')
                         )
                     )

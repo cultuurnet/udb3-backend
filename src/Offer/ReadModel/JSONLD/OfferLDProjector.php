@@ -679,7 +679,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             'category' => 'base',
             'name' => $this->basePriceTranslations,
             'price' => $basePrice->getPrice()->getAmount() / 100,
-            'priceCurrency' => $basePrice->getPrice()->getCurrency()->getName(),
+            'priceCurrency' => $basePrice->getPrice()->getCurrency()->getCode(),
         ];
 
         if ($basePrice->isGroupPrice()) {
@@ -695,7 +695,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 'category' => 'tariff',
                 'name' => $translatedTariffNameNormalizer->normalize($tariff->getName()),
                 'price' => $tariff->getPrice()->getAmount() / 100,
-                'priceCurrency' => $tariff->getPrice()->getCurrency()->getName(),
+                'priceCurrency' => $tariff->getPrice()->getCurrency()->getCode(),
             ];
 
             if ($tariff->isGroupPrice()) {
@@ -710,7 +710,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 'category' => 'uitpas',
                 'name' => $translatedTariffNameNormalizer->normalize($tariff->getName()),
                 'price' => $tariff->getPrice()->getAmount() / 100,
-                'priceCurrency' => $tariff->getPrice()->getCurrency()->getName(),
+                'priceCurrency' => $tariff->getPrice()->getCurrency()->getCode(),
             ];
         }
 

@@ -932,7 +932,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                                 new Language('de'),
                                 new TariffName('Basisrate')
                             ),
-                            new Money(1050, new Currency('EUR'))
+                            new Money('1050', new Currency('EUR'))
                         ),
                         new Tariffs()
                     )
