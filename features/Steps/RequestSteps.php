@@ -255,6 +255,29 @@ trait RequestSteps
         $this->waitForItemWithUrlToBeIndex($url);
     }
 
+    /**
+     * @Then I wait for the JSON response at :jsonPath to be :expectedValue
+     */
+    public function iWaitForTheJsonResponseAtToBe(string $jsonPath, string $expectedValue): void
+    {
+        $elapsedTime = 0;
+        do {
+            $response = $this->getHttpClient()->getWithParameters(
+                $this->requestState->getLastGetUrl(),
+                $this->requestState->getLastGetParams(),
+                $this->variableState
+            );
+            $this->responseState->setResponse($response);
+            $actual = $this->responseState->getValueOnPath($jsonPath);
+            if ((string) $actual !== $expectedValue) {
+                sleep(1);
+                $elapsedTime++;
+            }
+        } while ((string) $actual !== $expectedValue && $elapsedTime < 5);
+
+        assertEquals($expectedValue, (string) $this->responseState->getValueOnPath($jsonPath));
+    }
+
     private function waitForItemWithUrlToBeIndex(string $url): void
     {
         $url = $this->variableState->replaceVariables($url);
