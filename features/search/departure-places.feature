@@ -23,12 +23,11 @@ Feature: Test departure places in search results
     ]
     """
     And I send a PUT request to "/events/%{eventId}/departurePlaces/"
-    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     And I send a GET request to "/events" with parameters:
       | embed                 | true          |
       | disableDefaultFilters | true          |
-    Then the JSON response at "totalItems" should be 1
+    Then I wait for the JSON response at "totalItems" to be 1
     And I wait for the JSON response at "member/0/departurePlaces" to have 2 entries
     And the JSON response at "member/0/departurePlaces" should include "%{departurePlaceUrl1}"
     And the JSON response at "member/0/departurePlaces" should include "%{departurePlaceUrl2}"
