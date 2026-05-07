@@ -13,7 +13,6 @@ Feature: Test departure places in search results
     When I create a minimal place and save the "url" as "departurePlaceUrl1"
     And I create a minimal place and save the "url" as "departurePlaceUrl2"
     And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId"
-    And I send a GET request to "/events/%{eventId}"
     And I publish the event at "/events/%{eventId}"
     And I set the JSON request payload to:
     """
@@ -31,3 +30,54 @@ Feature: Test departure places in search results
     And I wait for the JSON response at "member/0/departurePlaces" to have 2 entries
     And the JSON response at "member/0/departurePlaces" should include "%{departurePlaceUrl1}"
     And the JSON response at "member/0/departurePlaces" should include "%{departurePlaceUrl2}"
+
+  @testIsolation
+  Scenario: Events can be searched by departure place UUID in q parameter
+    When I create a minimal place and save the "url" as "departurePlaceUrl1"
+    And I keep the value of the JSON response at "id" as "departurePlaceId1"
+    And I create a minimal place and save the "url" as "departurePlaceUrl2"
+    And I keep the value of the JSON response at "id" as "departurePlaceId2"
+    And I create a minimal place and save the "url" as "departurePlaceUrl3"
+    And I keep the value of the JSON response at "id" as "departurePlaceId3"
+    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId1"
+    And I publish the event at "/events/%{eventId1}"
+    And I set the JSON request payload to:
+    """
+    ["%{departurePlaceUrl1}", "%{departurePlaceUrl3}"]
+    """
+    And I send a PUT request to "/events/%{eventId1}/departurePlaces/"
+    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId2"
+    And I publish the event at "/events/%{eventId2}"
+    And I set the JSON request payload to:
+    """
+    ["%{departurePlaceUrl2}"]
+    """
+    And I send a PUT request to "/events/%{eventId2}/departurePlaces/"
+    And I am using the Search API v3 base URL
+    And I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true                                 |
+      | q                     | departurePlaces:%{departurePlaceId1} |
+    Then I wait for the JSON response at "totalItems" to be 1
+    And the JSON response at "member/0/@id" should include "%{eventId1}"
+    And I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true                                 |
+      | q                     | departurePlaces:%{departurePlaceId3} |
+    Then I wait for the JSON response at "totalItems" to be 1
+    And the JSON response at "member/0/@id" should include "%{eventId1}"
+    And I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true                                 |
+      | q                     | departurePlaces:%{departurePlaceId2} |
+    Then I wait for the JSON response at "totalItems" to be 1
+    And the JSON response at "member/0/@id" should include "%{eventId2}"
+    And I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true                                                                        |
+      | q                     | departurePlaces:%{departurePlaceId1} OR departurePlaces:%{departurePlaceId2} |
+    Then I wait for the JSON response at "totalItems" to be 2
+    And the JSON response should include:
+    """
+    %{eventId1}
+    """
+    And the JSON response should include:
+    """
+    %{eventId2}
+    """
