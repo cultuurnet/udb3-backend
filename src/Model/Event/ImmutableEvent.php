@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Model\Event;
 use CultuurNet\UDB3\Model\Offer\ImmutableOffer;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -31,6 +32,8 @@ class ImmutableEvent extends ImmutableOffer implements Event
     private Faqs $faqs;
 
     private Urls $departurePlaces;
+
+    private ?BirthdateRange $birthdateRange = null;
 
     public function __construct(
         Uuid $id,
@@ -126,6 +129,18 @@ class ImmutableEvent extends ImmutableOffer implements Event
     {
         $c = clone $this;
         $c->departurePlaces = $departurePlaces;
+        return $c;
+    }
+
+    public function getBirthdateRange(): ?BirthdateRange
+    {
+        return $this->birthdateRange;
+    }
+
+    public function withBirthdateRange(BirthdateRange $birthdateRange): ImmutableEvent
+    {
+        $c = clone $this;
+        $c->birthdateRange = $birthdateRange;
         return $c;
     }
 
