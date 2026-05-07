@@ -1095,3 +1095,30 @@ Feature: Test the UDB3 events API
        ]
      }
      """
+
+  Scenario: Create an event with a birthdate range
+    When I create a place from "places/place.json" and save the "url" as "placeUrl"
+    And I set the JSON request payload from "events/event-with-birthdate-range.json"
+    And I send a POST request to "/events/"
+    Then the response status should be "201"
+    And the response body should be valid JSON
+    And I keep the value of the JSON response at "eventId" as "eventId"
+    When I send a GET request to "/events/%{eventId}"
+    And the JSON response should have "birthdateRange"
+    And the JSON response at "birthdateRange/from" should be "2020-01-31"
+    And the JSON response at "birthdateRange/to" should be "2020-12-31"
+
+  Scenario: Try creating an event with an invalid birthdate range
+    When I create a place from "places/place.json" and save the "url" as "placeUrl"
+    And I set the JSON request payload from "events/event-with-invalid-birthdate-range.json"
+    And I send a POST request to "/events/"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors" should be:
+    """
+    [
+      {
+        "jsonPointer":"\/birthdateRange",
+        "error":"\"From\" birthdate should not be greater than the \"to\" birthdate."
+      }
+    ]
+    """
