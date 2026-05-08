@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Model\ValueObject\Price;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameNormalizer;
 use CultuurNet\UDB3\MoneyFactory;
-use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
 
 class PriceInfo
 {
