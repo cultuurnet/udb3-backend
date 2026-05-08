@@ -559,7 +559,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
         $monetaryAmountResource = $this->rdfResourceFactory->create($resource, self::TYPE_MONETARY_AMOUNT, (new MoneyNormalizer())->normalize($tariff->getPrice()));
         $monetaryAmountResource->set(
             self::PROPERTY_CURRENCY,
-            new Literal($tariff->getPrice()->getCurrency()->getName(), null)
+            new Literal($tariff->getPrice()->getCurrency()->getCode(), null)
         );
         $monetaryAmountResource->set(
             self::PROPERTY_VALUE,

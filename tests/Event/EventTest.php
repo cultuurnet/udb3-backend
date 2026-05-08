@@ -88,8 +88,8 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\SampleFiles;
-use Money\Currency;
-use Money\Money;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 use RuntimeException;
 
 class EventTest extends AggregateRootScenarioTestCase

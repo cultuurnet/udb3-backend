@@ -53,8 +53,8 @@ use CultuurNet\UDB3\Place\Events\PlaceUpdatedFromUDB2;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
 use CultuurNet\UDB3\SampleFiles;
-use Money\Currency;
-use Money\Money;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 
 class PlaceTest extends AggregateRootScenarioTestCase
 {

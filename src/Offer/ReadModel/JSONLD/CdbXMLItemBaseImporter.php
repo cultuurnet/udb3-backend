@@ -134,7 +134,7 @@ final class CdbXMLItemBaseImporter
                 'category' => 'base',
                 'name' => $this->basePriceTranslations,
                 'price' => $priceInfo->getBasePrice()->getPrice()->getAmount() / 100,
-                'priceCurrency' => $priceInfo->getBasePrice()->getPrice()->getCurrency()->getName(),
+                'priceCurrency' => $priceInfo->getBasePrice()->getPrice()->getCurrency()->getCode(),
             ],
         ];
 
@@ -143,7 +143,7 @@ final class CdbXMLItemBaseImporter
                 'category' => 'tariff',
                 'name' => (new TranslatedTariffNameNormalizer())->normalize($tariff->getName()),
                 'price' => $tariff->getPrice()->getAmount() / 100,
-                'priceCurrency' => $tariff->getPrice()->getCurrency()->getName(),
+                'priceCurrency' => $tariff->getPrice()->getCurrency()->getCode(),
             ];
         }
     }

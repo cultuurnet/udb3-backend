@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Price;
 
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use Money\Currency;
-use Money\Money;
 use PHPUnit\Framework\TestCase;
 
 class TariffTest extends TestCase
@@ -64,7 +62,7 @@ class TariffTest extends TestCase
         $price = new Money(1000, new Currency('EUR'));
         $tariff = new Tariff($name, $price);
 
-        $updatedPrice = $price->multiply(2);
+        $updatedPrice = new Money(2000, new Currency('EUR'));
         $updatedTariff = $tariff->withPrice($updatedPrice);
 
         $this->assertNotEquals($tariff, $updatedTariff);
