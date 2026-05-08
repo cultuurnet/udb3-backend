@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Http;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Cultuurkuur\GetEducationLevelsRequestHandler;
+use CultuurNet\UDB3\Cultuurkuur\GetRegionsRequestHandler;
 use CultuurNet\UDB3\Error\WebErrorHandler;
 use CultuurNet\UDB3\Http\Address\GetStreetRequestHandler;
 use CultuurNet\UDB3\Http\Auth\RequestAuthenticatorMiddleware;
@@ -15,15 +17,15 @@ use CultuurNet\UDB3\Http\Curators\GetNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Curators\GetNewsArticlesRequestHandler;
 use CultuurNet\UDB3\Http\Curators\UpdateNewsArticleRequestHandler;
 use CultuurNet\UDB3\Http\Event\CopyEventRequestHandler;
+use CultuurNet\UDB3\Http\Event\DeleteBirthdateRangeRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
-use CultuurNet\UDB3\Http\Event\DeleteBirthdateRangeRequestHandler;
-use CultuurNet\UDB3\Http\Event\UpdateDeparturePlacesRequestHandler;
-use CultuurNet\UDB3\Http\Event\UpdateBirthdateRangeRequestHandler;
-use CultuurNet\UDB3\Http\Event\UpdateFaqsRequestHandler;
 use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAttendanceModeRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAudienceRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateBirthdateRangeRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateDeparturePlacesRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateFaqsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler as UpdateEventMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateOnlineUrlRequestHandler;
@@ -32,6 +34,7 @@ use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
+use CultuurNet\UDB3\Http\Holidays\GetHolidaysRequestHandler;
 use CultuurNet\UDB3\Http\Jobs\GetJobStatusRequestHandler;
 use CultuurNet\UDB3\Http\Label\CreateLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\GetLabelRequestHandler;
@@ -61,6 +64,7 @@ use CultuurNet\UDB3\Http\Offer\GivenUserHasPermissionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\PatchOfferRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\RemoveLabelRequestHandler;
+use CultuurNet\UDB3\Http\Offer\ReplaceLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\SelectMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateAvailableFromRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateBookingAvailabilityRequestHandler;
@@ -71,7 +75,6 @@ use CultuurNet\UDB3\Http\Offer\UpdateContributorsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateDescriptionRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateFacilitiesRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateImageRequestHandler;
-use CultuurNet\UDB3\Http\Offer\ReplaceLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerFromJsonBodyRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdateOrganizerRequestHandler;
 use CultuurNet\UDB3\Http\Offer\UpdatePriceInfoRequestHandler;
@@ -155,8 +158,6 @@ use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByIdRequestHandler;
 use CultuurNet\UDB3\Mailinglist\SubscribeUserToMailinglistRequestHandler;
-use CultuurNet\UDB3\Cultuurkuur\GetEducationLevelsRequestHandler;
-use CultuurNet\UDB3\Cultuurkuur\GetRegionsRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
@@ -240,6 +241,8 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
                 $this->bindCultuurkuurEndpoints($router);
 
                 $this->bindAddresses($router);
+
+                $this->bindHolidays($router);
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 // This proxy does not support the POST requests feature of SAPI 3
@@ -641,5 +644,10 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->get('regions/', GetRegionsRequestHandler::class);
             $routeGroup->get('education-levels/', GetEducationLevelsRequestHandler::class);
         });
+    }
+
+    private function bindHolidays(Router $router): void
+    {
+        $router->get('/holidays/', GetHolidaysRequestHandler::class);
     }
 }

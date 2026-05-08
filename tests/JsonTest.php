@@ -143,4 +143,12 @@ class JsonTest extends TestCase
         $this->expectException(JsonException::class);
         Json::decodeAssociatively($invalidSyntax);
     }
+
+    /**
+     * @test
+     */
+    public function it_encodes_with_unicode_characters_unescaped(): void
+    {
+        $this->assertSame('["é"]', Json::encodeWithUnicode(['é']));
+    }
 }

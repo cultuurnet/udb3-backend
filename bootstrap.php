@@ -32,6 +32,7 @@ use CultuurNet\UDB3\EventBus\EventBusServiceProvider;
 use CultuurNet\UDB3\EventStore\EventStoreServiceProvider;
 use CultuurNet\UDB3\Export\ExportServiceProvider;
 use CultuurNet\UDB3\Geocoding\GeocodingServiceProvider;
+use CultuurNet\UDB3\Holidays\HolidaysServiceProvider;
 use CultuurNet\UDB3\Jobs\JobsServiceProvider;
 use CultuurNet\UDB3\Keycloak\KeycloakServiceProvider;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
@@ -229,9 +230,8 @@ $container->addServiceProvider(new MailinglistServiceProvider());
 $container->addServiceProvider(new CultuurkuurServiceProvider());
 $container->addServiceProvider(new MailerServiceProvider());
 $container->addServiceProvider(new VerenigingsloketServiceProvider());
-
-/** Addresses */
 $container->addServiceProvider(new AddressServiceProvider());
+$container->addServiceProvider(new HolidaysServiceProvider());
 
 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);

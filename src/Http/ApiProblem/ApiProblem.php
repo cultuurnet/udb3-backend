@@ -346,6 +346,26 @@ final class ApiProblem extends Exception
         return self::resourceNotFound('saved search', $id);
     }
 
+    public static function dateRangeExceedsLimit(): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/date-range-exceeds-limit',
+            'Date range exceeds limit',
+            StatusCodeInterface::STATUS_BAD_REQUEST,
+            'The end date exceeds the maximum allowed date of 5 years in the future.'
+        );
+    }
+
+    public static function startDateCannotBeAfterEndDate(): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/start-date-cannot-be-after-end-date',
+            'Start date cannot be after end date',
+            StatusCodeInterface::STATUS_BAD_REQUEST,
+            'The start date cannot be after the end date.'
+        );
+    }
+
     public static function bodyMissing(): self
     {
         return self::create(
