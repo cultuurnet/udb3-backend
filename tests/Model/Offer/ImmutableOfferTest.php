@@ -30,6 +30,8 @@ use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
@@ -50,8 +52,6 @@ use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
-use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
-use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 use PHPUnit\Framework\TestCase;
 
 class ImmutableOfferTest extends TestCase
@@ -330,7 +330,7 @@ class ImmutableOfferTest extends TestCase
 
     /**
      * @test
-         */
+     */
     public function it_should_return_a_copy_with_updated_price_info(): void
     {
         $priceInfo = new PriceInfo(
@@ -350,7 +350,7 @@ class ImmutableOfferTest extends TestCase
 
     /**
      * @test
-         */
+     */
     public function it_should_return_a_copy_without_price_info(): void
     {
         $priceInfo = new PriceInfo(
@@ -558,7 +558,7 @@ class ImmutableOfferTest extends TestCase
         $offer = $this->getOffer();
         $calendar = $offer->getCalendar();
 
-        if (! $calendar instanceof SingleSubEventCalendar) {
+        if (!$calendar instanceof SingleSubEventCalendar) {
             $this->addWarning(sprintf('Calender expected a %s, received %s', SingleSubEventCalendar::class, get_class($calendar)));
 
             return;
