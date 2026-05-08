@@ -5387,16 +5387,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.51",
+            "version": "3.0.52",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "d59c94077f9c9915abb51ddb52ce85188ece1748"
+                "reference": "2adaefc83df2ec548558307690f376dd7d4f4fce"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/d59c94077f9c9915abb51ddb52ce85188ece1748",
-                "reference": "d59c94077f9c9915abb51ddb52ce85188ece1748",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/2adaefc83df2ec548558307690f376dd7d4f4fce",
+                "reference": "2adaefc83df2ec548558307690f376dd7d4f4fce",
                 "shasum": ""
             },
             "require": {
@@ -5477,7 +5477,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.51"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.52"
             },
             "funding": [
                 {
@@ -5493,7 +5493,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-10T01:33:53+00:00"
+            "time": "2026-04-27T07:02:15+00:00"
         },
         {
             "name": "predis/predis",
@@ -6150,12 +6150,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "1f8dc0c69be0cfe9227b03d11d7a614f8a5983fa"
+                "reference": "3c4b1ec0c463250972d04c85cb64e5c669d08a7d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/1f8dc0c69be0cfe9227b03d11d7a614f8a5983fa",
-                "reference": "1f8dc0c69be0cfe9227b03d11d7a614f8a5983fa",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/3c4b1ec0c463250972d04c85cb64e5c669d08a7d",
+                "reference": "3c4b1ec0c463250972d04c85cb64e5c669d08a7d",
                 "shasum": ""
             },
             "default-branch": true,
@@ -6173,9 +6173,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7070/make-time-format-more-strict"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7127-birthyear"
             },
-            "time": "2026-04-21T09:47:10+00:00"
+            "time": "2026-05-06T06:51:06+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

@@ -33,7 +33,7 @@ final class OpenHolidaysApiService implements HolidaysService
                 'startDate' => $holiday['startDate'],
                 'endDate' => $holiday['endDate'],
                 'type' => HolidayType::PublicHolidays->outputType(),
-                'name' => $holiday['name'],
+                'name' => $this->mapName($holiday['name']),
             ],
             $this->fetchRaw(HolidayType::PublicHolidays, $validFrom, $validTo)
         );
@@ -45,7 +45,7 @@ final class OpenHolidaysApiService implements HolidaysService
                     'startDate' => $holiday['startDate'],
                     'endDate' => $holiday['endDate'],
                     'type' => HolidayType::SchoolHolidays->outputType(),
-                    'name' => $holiday['name'],
+                    'name' => $this->mapName($holiday['name']),
                     'region' => $group['shortName'],
                 ];
             }
@@ -56,6 +56,15 @@ final class OpenHolidaysApiService implements HolidaysService
         usort($combined, fn (array $a, array $b) => $a['startDate'] <=> $b['startDate']);
 
         return $combined;
+    }
+
+    private function mapName(array $names): array
+    {
+        $mapped = [];
+        foreach ($names as $entry) {
+            $mapped[strtolower($entry['language'])] = $entry['text'];
+        }
+        return $mapped;
     }
 
     private function fetchRaw(HolidayType $type, string $validFrom, string $validTo): array

@@ -16,6 +16,8 @@ use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeDeleted;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Event\Events\FaqsUpdated;
@@ -55,6 +57,7 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -2041,6 +2044,58 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $this->assertFalse(property_exists($body, 'departurePlaces'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_birthdate_range_updated(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $birthdateRange = new BirthdateRange(
+            new \DateTimeImmutable('2014-01-01'),
+            new \DateTimeImmutable('2020-12-31')
+        );
+
+        $body = $this->project(
+            new BirthdateRangeUpdated($eventId, $birthdateRange),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertEquals('2014-01-01', $body->birthdateRange->from);
+        $this->assertEquals('2020-12-31', $body->birthdateRange->to);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_birthdate_range_from_projection_when_deleted(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $birthdateRange = new BirthdateRange(
+            new \DateTimeImmutable('2014-01-01'),
+            new \DateTimeImmutable('2020-12-31')
+        );
+
+        $this->project(
+            new BirthdateRangeUpdated($eventId, $birthdateRange),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $body = $this->project(
+            new BirthdateRangeDeleted($eventId),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertFalse(property_exists($body, 'birthdateRange'));
     }
 
     /**

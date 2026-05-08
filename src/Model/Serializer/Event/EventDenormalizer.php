@@ -11,7 +11,10 @@ use CultuurNet\UDB3\Model\Place\PlaceIDParser;
 use CultuurNet\UDB3\Model\Place\PlaceReference;
 use CultuurNet\UDB3\Model\Serializer\Offer\OfferDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceReferenceDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\BirthdateRangeDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\InvalidAgeRangeException;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
 use CultuurNet\UDB3\Model\ValueObject\Faq\FaqsDenormalizer;
@@ -24,6 +27,8 @@ use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Web\UrlsDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -32,6 +37,8 @@ class EventDenormalizer extends OfferDenormalizer
     private DenormalizerInterface $placeReferenceDenormalizer;
 
     private DenormalizerInterface $faqsDenormalizer;
+
+    private DenormalizerInterface $birthdateRangeDenormalizer;
 
     public function __construct(
         UuidParser $eventIDParser = null,
@@ -48,7 +55,8 @@ class EventDenormalizer extends OfferDenormalizer
         DenormalizerInterface $contactPointDenormalizer = null,
         DenormalizerInterface $mediaObjectReferencesDenormalizer = null,
         DenormalizerInterface $videoDenormalizer = null,
-        DenormalizerInterface $faqsDenormalizer = null
+        DenormalizerInterface $faqsDenormalizer = null,
+        DenormalizerInterface $birthdateRangeDenormalizer = null
     ) {
         if (!$eventIDParser) {
             $eventIDParser = new EventIDParser();
@@ -60,6 +68,7 @@ class EventDenormalizer extends OfferDenormalizer
 
         $this->placeReferenceDenormalizer = $placeReferenceDenormalizer;
         $this->faqsDenormalizer = $faqsDenormalizer ?? new FaqsDenormalizer();
+        $this->birthdateRangeDenormalizer = $birthdateRangeDenormalizer ?? new BirthdateRangeDenormalizer();
 
         parent::__construct(
             $eventIDParser,
@@ -121,6 +130,7 @@ class EventDenormalizer extends OfferDenormalizer
         $offer = $this->denormalizeOnlineUrl($data, $offer);
         $offer = $this->denormalizeFaq($data, $offer);
         $offer = $this->denormalizeDeparturePlaces($data, $offer);
+        $offer = $this->denormalizeBirthdateRange($data, $offer);
         return $this->denormalizeAudienceType($data, $offer);
     }
 
@@ -157,6 +167,25 @@ class EventDenormalizer extends OfferDenormalizer
         if (isset($data['departurePlaces'])) {
             $departurePlaces = (new UrlsDenormalizer())->denormalize($data['departurePlaces'], Urls::class);
             $event = $event->withDeparturePlaces($departurePlaces);
+        }
+
+        return $event;
+    }
+
+    private function denormalizeBirthdateRange(array $data, ImmutableEvent $event): ImmutableEvent
+    {
+        if (isset($data['birthdateRange'])) {
+            try {
+                $birthdateRange = $this->birthdateRangeDenormalizer->denormalize(
+                    $data['birthdateRange'],
+                    BirthdateRange::class
+                );
+            } catch (InvalidAgeRangeException $exception) {
+                throw ApiProblem::bodyInvalidData(
+                    new SchemaError('/birthdateRange', $exception->getMessage())
+                );
+            }
+            $event = $event->withBirthdateRange($birthdateRange);
         }
 
         return $event;
