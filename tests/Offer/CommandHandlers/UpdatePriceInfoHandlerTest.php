@@ -27,8 +27,8 @@ use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Commands\UpdatePriceInfo;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Place\PlaceRepository;
-use Money\Currency;
-use Money\Money;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 
 final class UpdatePriceInfoHandlerTest extends CommandHandlerScenarioTestCase
 {

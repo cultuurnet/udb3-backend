@@ -88,8 +88,8 @@ use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\SampleFiles;
 use DateTimeImmutable;
 use DateTimeInterface;
-use Money\Currency;
-use Money\Money;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 use PHPUnit\Framework\TestCase;
 
 class HistoryProjectorTest extends TestCase

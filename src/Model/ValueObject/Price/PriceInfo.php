@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Price;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameNormalizer;
 use CultuurNet\UDB3\MoneyFactory;
-use Money\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
 
 class PriceInfo
 {
@@ -65,7 +65,7 @@ class PriceInfo
         $serialized = [
             'base' => [
                 'price' => $this->basePrice->getPrice()->getAmount(),
-                'currency' => $this->basePrice->getPrice()->getCurrency()->getName(),
+                'currency' => $this->basePrice->getPrice()->getCurrency()->getCode(),
                 'groupPrice' => $this->basePrice->isGroupPrice(),
             ],
             'tariffs' => [],
@@ -74,7 +74,7 @@ class PriceInfo
 
         $normalize = fn (Tariff $tariff): array => [
             'price' => $tariff->getPrice()->getAmount(),
-            'currency' => $tariff->getPrice()->getCurrency()->getName(),
+            'currency' => $tariff->getPrice()->getCurrency()->getCode(),
             'name' => (new TranslatedTariffNameNormalizer())->normalize($tariff->getName()),
             'groupPrice' => $tariff->isGroupPrice(),
         ];

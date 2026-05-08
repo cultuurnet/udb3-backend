@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Price;
 
 use DateTimeImmutable;
 use InvalidArgumentException;
-use Money\Currency;
-use Money\Money;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 use PHPUnit\Framework\TestCase;
 
 class MoneyNormalizerTest extends TestCase

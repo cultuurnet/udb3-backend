@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Price;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\MoneyFactory;
-use Money\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class TariffDenormalizer implements DenormalizerInterface

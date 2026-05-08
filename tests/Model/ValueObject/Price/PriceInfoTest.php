@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Price;
 
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use Money\Currency;
-use Money\Money;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 use PHPUnit\Framework\TestCase;
 
 class PriceInfoTest extends TestCase

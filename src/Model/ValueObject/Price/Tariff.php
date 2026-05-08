@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Price;
 
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
-use Money\Money;
+use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 
 class Tariff
 {
