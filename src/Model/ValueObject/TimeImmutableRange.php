@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use DateTimeImmutable;
+use DateTimeZone;
 use InvalidArgumentException;
 
 final class TimeImmutableRange
@@ -70,7 +71,8 @@ final class TimeImmutableRange
 
     private function dateTimeToMinutes(DateTimeImmutable $dateTime): int
     {
-        $local = $dateTime->setTimezone(new \DateTimeZone('Europe/Brussels'));
+        // Childcare applies exclusively to Flanders; HH:mm times are always entered in Brussels local time.
+        $local = $dateTime->setTimezone(new DateTimeZone('Europe/Brussels'));
         return (int) $local->format('H') * 60 + (int) $local->format('i');
     }
 }
