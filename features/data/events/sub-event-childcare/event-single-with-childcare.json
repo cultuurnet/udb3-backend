@@ -4,12 +4,12 @@
   "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
   "location": {"@id": "%{placeUrl}"},
   "calendarType": "single",
-  "startDate": "2021-05-17T16:00:00+00:00",
-  "endDate": "2021-05-17T22:00:00+00:00",
+  "startDate": "2021-05-17T16:00:00+02:00",
+  "endDate": "2021-05-17T22:00:00+02:00",
   "subEvent": [
     {
-      "startDate": "2021-05-17T16:00:00+00:00",
-      "endDate": "2021-05-17T22:00:00+00:00",
+      "startDate": "2021-05-17T16:00:00+02:00",
+      "endDate": "2021-05-17T22:00:00+02:00",
       "childcare": {
         "start": "%{childcareStart}",
         "end": "%{childcareEnd}"

@@ -70,6 +70,7 @@ final class TimeImmutableRange
 
     private function dateTimeToMinutes(DateTimeImmutable $dateTime): int
     {
-        return (int) $dateTime->format('H') * 60 + (int) $dateTime->format('i');
+        $local = $dateTime->setTimezone(new \DateTimeZone('Europe/Brussels'));
+        return (int) $local->format('H') * 60 + (int) $local->format('i');
     }
 }

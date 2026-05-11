@@ -971,7 +971,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                             SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
-                                    new DateTimeImmutable('2020-01-03 13:00:00')
+                                    new DateTimeImmutable('2020-01-03 13:00:00+01:00')
                                 )
                             )
                         )
@@ -994,7 +994,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                             (SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
-                                    new DateTimeImmutable('2020-01-03 13:00:00')
+                                    new DateTimeImmutable('2020-01-03 13:00:00+01:00')
                                 )
                             ))->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('9:00'), Time::fromString('14:00'))),
                         )
@@ -1019,7 +1019,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                             (SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
-                                    new DateTimeImmutable('2020-01-03 13:00:00')
+                                    new DateTimeImmutable('2020-01-03 13:00:00+01:00')
                                 )
                             ))->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('9:00'), Time::fromString('14:00')))
                         )
@@ -1042,7 +1042,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                             (SubEvent::createAvailable(
                                 new DateRange(
                                     new DateTimeImmutable('2020-01-03 10:00:00'),
-                                    new DateTimeImmutable('2020-01-03 13:00:00')
+                                    new DateTimeImmutable('2020-01-03 13:00:00+01:00')
                                 )
                             ))->withChildcareTimeRange(new TimeImmutableRange(null, null)),
                         )
@@ -1074,7 +1074,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     (SubEvent::createAvailable(
                         new DateRange(
                             new DateTimeImmutable('2020-01-03 10:00:00'),
-                            new DateTimeImmutable('2020-01-03 13:00:00')
+                            new DateTimeImmutable('2020-01-03 13:00:00+01:00')
                         )
                     ))->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('9:00'), Time::fromString('14:00')))
                 )
@@ -1102,8 +1102,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             new SingleSubEventCalendar(
                 SubEvent::createAvailable(
                     new DateRange(
-                        new DateTimeImmutable('2020-01-01 10:00:00'),
-                        new DateTimeImmutable('2020-01-01 12:00:00')
+                        new DateTimeImmutable('2020-01-01 10:00:00+01:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00+01:00')
                     )
                 )
             )
@@ -1210,7 +1210,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
         $this->scenario
             ->withAggregateId('1')
             ->given([$eventCreated])
-            ->when(new UpdateSubEvents('1', (new SubEventUpdate(0))->withEndDate(new DateTimeImmutable('2020-01-01 23:30:00'))))
+            ->when(new UpdateSubEvents('1', (new SubEventUpdate(0))->withEndDate(new DateTimeImmutable('2020-01-01 23:00:00+01:00'))))
             ->then([]);
     }
 }

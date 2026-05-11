@@ -234,6 +234,36 @@ Feature: Test SubEvent childcare times
     And the JSON response at "subEvent/0/childcare/end" should be "23:00"
     And the JSON response should not have "subEvent/0/childcare/start"
 
+  Scenario: Create an event where childcare times are valid in CET but startDate and endDate are sent as UTC
+    When I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {"nl": "Event met kinderopvang (UTC datums)"},
+      "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
+      "location": {"@id": "%{placeUrl}"},
+      "calendarType": "single",
+      "startDate": "2021-05-17T16:00:00+00:00",
+      "endDate": "2021-05-17T20:00:00+00:00",
+      "subEvent": [
+        {
+          "startDate": "2021-05-17T16:00:00+00:00",
+          "endDate": "2021-05-17T20:00:00+00:00",
+          "childcare": {
+            "start": "17:00",
+            "end": "23:00"
+          }
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "url" as "eventUrl"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "subEvent/0/childcare/start" should be "17:00"
+    And the JSON response at "subEvent/0/childcare/end" should be "23:00"
+
   Scenario: Cannot create an event when childcare.start equals the startDate time
     Given I set the variable "childcareStart" to "16:00"
     And I set the variable "childcareEnd" to "23:00"
@@ -282,7 +312,7 @@ Feature: Test SubEvent childcare times
     [
       {
         "id": 0,
-        "startDate": "2021-05-17T14:00:00+00:00",
+        "startDate": "2021-05-17T14:00:00+02:00",
         "childcare": {
           "start": "15:00",
           "end": "23:00"
@@ -307,7 +337,7 @@ Feature: Test SubEvent childcare times
     [
       {
         "id": 0,
-        "endDate": "2021-05-17T23:30:00+00:00",
+        "endDate": "2021-05-17T23:30:00+02:00",
         "childcare": {
           "start": "15:00",
           "end": "23:00"
@@ -329,8 +359,8 @@ Feature: Test SubEvent childcare times
       "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
       "location": {"@id": "%{placeUrl}"},
       "calendarType": "single",
-      "startDate": "2021-05-17T16:00:00+00:00",
-      "endDate": "2021-05-17T22:00:00+00:00"
+      "startDate": "2021-05-17T14:00:00+02:00",
+      "endDate": "2021-05-17T22:00:00+02:00"
     }
     """
     And I send a POST request to "/events/"
@@ -365,7 +395,7 @@ Feature: Test SubEvent childcare times
     [
       {
         "id": 0,
-        "startDate": "2021-05-17T14:00:00+00:00"
+        "startDate": "2021-05-17T15:00:00+02:00"
       }
     ]
     """
@@ -386,7 +416,7 @@ Feature: Test SubEvent childcare times
     [
       {
         "id": 0,
-        "endDate": "2021-05-17T23:30:00+00:00"
+        "endDate": "2021-05-17T23:00:00+02:00"
       }
     ]
     """
