@@ -1001,6 +1001,40 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                     )
                 ),
             ],
+            'Update childcare times that are valid in CET against UTC-stored sub-event dates' => [
+                // Stored dates are UTC. 14:00 UTC = 15:00 CET; 20:00 UTC = 21:00 CET.
+                // childcare.start 14:30 is before 15:00 CET (valid) but after 14:00 UTC (was a false error).
+                new EventCreated(
+                    '1',
+                    new Language('nl'),
+                    'Single Event',
+                    new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+                    new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+                    new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable('2020-01-03 14:00:00+00:00'),
+                                new DateTimeImmutable('2020-01-03 20:00:00+00:00')
+                            )
+                        )
+                    )
+                ),
+                new UpdateSubEvents(
+                    '1',
+                    (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('14:30'), Time::fromString('22:00')))
+                ),
+                new CalendarUpdated(
+                    '1',
+                    new SingleSubEventCalendar(
+                        (SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable('2020-01-03 14:00:00+00:00'),
+                                new DateTimeImmutable('2020-01-03 20:00:00+00:00')
+                            )
+                        ))->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('14:30'), Time::fromString('22:00')))
+                    )
+                ),
+            ],
             'Clear childcare times when explicitly set to empty' => [
                 new EventCreated(
                     '1',
