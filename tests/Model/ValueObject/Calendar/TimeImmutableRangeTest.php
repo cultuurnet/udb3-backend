@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+use DateTimeImmutable;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -217,5 +218,12 @@ final class TimeImmutableRangeTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
 
         Time::fromString('15:00:00');
+    }
+
+    /** @test */
+    public function start_is_before_time_of_compares_in_europe_brussels(): void
+    {
+        $range = new TimeImmutableRange(Time::fromString('17:00'));
+        $this->assertTrue($range->startIsBeforeTimeOf(new DateTimeImmutable('2021-05-17T16:00:00+00:00')));
     }
 }
