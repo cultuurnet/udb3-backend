@@ -255,6 +255,7 @@ trait RequestSteps
     public function iWaitForResultsAtWithParameters(int $count, string $url, TableNode $parameters): void
     {
         $params = $this->addScenarioLabelToSearchParameters($url, $parameters->getRows());
+        $params[] = ['disableDefaultFilters', 'true'];
 
         $elapsedTime = 0;
         do {
