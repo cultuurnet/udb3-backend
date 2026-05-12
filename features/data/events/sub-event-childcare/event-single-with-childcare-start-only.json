@@ -1,6 +1,6 @@
 {
   "mainLanguage": "nl",
-  "name": {"nl": "Event met kinderopvang"},
+  "name": {"nl": "Event met gedeeltelijke kinderopvang"},
   "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
   "location": {"@id": "%{placeUrl}"},
   "calendarType": "single",
@@ -10,10 +10,7 @@
     {
       "startDate": "%{startDate}",
       "endDate": "%{endDate}",
-      "childcare": {
-        "start": "%{childcareStart}",
-        "end": "%{childcareEnd}"
-      }
+      "childcare": {"start": "%{childcareStart}"}
     }
   ]
 }
