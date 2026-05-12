@@ -39,18 +39,20 @@ Feature: Test departure places in search results
     And I keep the value of the JSON response at "id" as "departurePlaceId2"
     And I create a minimal place and save the "url" as "departurePlaceUrl3"
     And I keep the value of the JSON response at "id" as "departurePlaceId3"
+    And I create a minimal place and save the "url" as "departurePlaceUrl4"
+    And I keep the value of the JSON response at "id" as "departurePlaceId4"
     And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId1"
     And I publish the event at "/events/%{eventId1}"
     And I set the JSON request payload to:
     """
-    ["%{departurePlaceUrl1}", "%{departurePlaceUrl3}"]
+    ["%{departurePlaceUrl1}", "%{departurePlaceUrl3}", "%{departurePlaceUrl4}"]
     """
     And I send a PUT request to "/events/%{eventId1}/departurePlaces/"
     And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId2"
     And I publish the event at "/events/%{eventId2}"
     And I set the JSON request payload to:
     """
-    ["%{departurePlaceUrl2}"]
+    ["%{departurePlaceUrl2}", "%{departurePlaceUrl4}"]
     """
     And I send a PUT request to "/events/%{eventId2}/departurePlaces/"
     And I am using the Search API v3 base URL
@@ -81,6 +83,11 @@ Feature: Test departure places in search results
     """
     %{eventId2}
     """
+    And I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true                                                                         |
+      | q                     | departurePlaces:%{departurePlaceId4} AND departurePlaces:%{departurePlaceId1} |
+    Then I wait for the JSON response at "totalItems" to be 1
+    And the JSON response at "member/0/@id" should include "%{eventId1}"
 
   @testIsolation
   Scenario: Events can be filtered by departure place using the departurePlaces url parameter
