@@ -1,6 +1,6 @@
 {
   "mainLanguage": "nl",
-  "name": {"nl": "Periodieke locatie met aangepaste openingsuren"},
+  "name": {"nl": "%{name}"},
   "terms": [{"id": "Yf4aZBfsUEu2NsQqsprngw"}],
   "address": {
     "nl": {

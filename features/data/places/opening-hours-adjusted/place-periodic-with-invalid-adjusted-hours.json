@@ -1,6 +1,6 @@
 {
   "mainLanguage": "nl",
-  "name": {"nl": "Ongeldige locatie"},
+  "name": {"nl": "%{name}"},
   "terms": [{"id": "Yf4aZBfsUEu2NsQqsprngw"}],
   "address": {
     "nl": {
