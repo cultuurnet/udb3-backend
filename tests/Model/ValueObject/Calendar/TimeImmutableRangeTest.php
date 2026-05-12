@@ -220,32 +220,40 @@ final class TimeImmutableRangeTest extends TestCase
         Time::fromString('15:00:00');
     }
 
-    /** @test */
-    public function start_is_before_time_of_compares_in_europe_brussels(): void
+    /**
+     * @test
+     */
+    public function it_returns_true_from_start_is_before_time_of_when_start_is_before_in_europe_brussels(): void
     {
         $range = new TimeImmutableRange(Time::fromString('17:00'));
         // 16:00 UTC == 18:00 CEST → 17:00 is before 18:00.
         $this->assertTrue($range->startIsBeforeTimeOf(new DateTimeImmutable('2021-05-17T16:00:00+00:00')));
     }
 
-    /** @test */
-    public function start_is_before_time_of_returns_false_when_start_is_not_before_in_europe_brussels(): void
+    /**
+     * @test
+     */
+    public function it_returns_false_from_start_is_before_time_of_when_start_is_not_before_in_europe_brussels(): void
     {
         $range = new TimeImmutableRange(Time::fromString('17:00'));
         // 15:00 UTC == 17:00 CEST → 17:00 is NOT before 17:00.
         $this->assertFalse($range->startIsBeforeTimeOf(new DateTimeImmutable('2021-05-17T15:00:00+00:00')));
     }
 
-    /** @test */
-    public function end_is_after_time_of_compares_in_europe_brussels(): void
+    /**
+     * @test
+     */
+    public function it_returns_true_from_end_is_after_time_of_when_end_is_after_in_europe_brussels(): void
     {
         $range = new TimeImmutableRange(null, Time::fromString('23:00'));
         // 20:00 UTC == 22:00 CEST → 23:00 is after 22:00.
         $this->assertTrue($range->endIsAfterTimeOf(new DateTimeImmutable('2021-05-17T20:00:00+00:00')));
     }
 
-    /** @test */
-    public function end_is_after_time_of_returns_false_when_end_is_not_after_in_europe_brussels(): void
+    /**
+     * @test
+     */
+    public function it_returns_false_from_end_is_after_time_of_when_end_is_not_after_in_europe_brussels(): void
     {
         $range = new TimeImmutableRange(null, Time::fromString('22:00'));
         // 21:00 UTC == 23:00 CEST → 22:00 is NOT after 23:00.
