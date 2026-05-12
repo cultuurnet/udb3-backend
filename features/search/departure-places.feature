@@ -9,7 +9,7 @@ Feature: Test departure places in search results
     And I create a minimal place and save the "url" as "placeUrl"
 
   @testIsolation
-  Scenario: Departure places are returned in search results
+  Scenario: Departure places are embedded in search results
     When I create a minimal place and save the "url" as "departurePlaceUrl1"
     And I create a minimal place and save the "url" as "departurePlaceUrl2"
     And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId"
