@@ -14,22 +14,22 @@ Feature: Test opening hours adjusted for places
     Then the response status should be "201"
     And I keep the value of the JSON response at "url" as "placeUrl"
     And I get the place at "%{placeUrl}"
-    Then the JSON response should have "openingHoursAdjustedDays"
-    And the JSON response at "openingHoursAdjustedDays/0/startDate" should be "2026-12-21"
-    And the JSON response at "openingHoursAdjustedDays/0/endDate" should be "2026-12-26"
-    And the JSON response at "openingHoursAdjustedDays/0/description/nl" should be "Kerstvakantie"
-    And the JSON response at "openingHoursAdjustedDays/0/description/fr" should be "fêtes de Noël"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/opens" should be "13:00"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/closes" should be "15:00"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/dayOfWeek/0" should be "friday"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/dayOfWeek/1" should be "saturday"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/dayOfWeek/2" should be "sunday"
-    And the JSON response at "openingHoursAdjustedDays/1/startDate" should be "2026-12-27"
-    And the JSON response at "openingHoursAdjustedDays/1/endDate" should be "2026-12-31"
-    And the JSON response at "openingHoursAdjustedDays/1/openingHours/0/opens" should be "14:00"
-    And the JSON response at "openingHoursAdjustedDays/1/openingHours/0/closes" should be "16:00"
-    And the JSON response at "openingHoursAdjustedDays/1/openingHours/0/dayOfWeek/0" should be "saturday"
-    And the JSON response at "openingHoursAdjustedDays/1/openingHours/0/dayOfWeek/1" should be "sunday"
+    Then the JSON response at "openingHoursAdjustedDays" should be:
+    """
+    [
+      {
+        "startDate": "2026-12-21",
+        "endDate": "2026-12-26",
+        "description": {"nl": "Kerstvakantie", "fr": "fêtes de Noël"},
+        "openingHours": [{"opens": "13:00", "closes": "15:00", "dayOfWeek": ["friday", "saturday", "sunday"]}]
+      },
+      {
+        "startDate": "2026-12-27",
+        "endDate": "2026-12-31",
+        "openingHours": [{"opens": "14:00", "closes": "16:00", "dayOfWeek": ["saturday", "sunday"]}]
+      }
+    ]
+    """
 
   Scenario: Create permanent place with opening hours adjusted
     Given I create a random name of 6 characters
@@ -77,15 +77,17 @@ Feature: Test opening hours adjusted for places
     Then the response status should be "201"
     And I keep the value of the JSON response at "url" as "placeUrl"
     And I get the place at "%{placeUrl}"
-    Then the JSON response should have "openingHoursAdjustedDays"
-    And the JSON response at "openingHoursAdjustedDays/0/startDate" should be "2026-12-21"
-    And the JSON response at "openingHoursAdjustedDays/0/endDate" should be "2026-12-26"
-    And the JSON response at "openingHoursAdjustedDays/0/description/nl" should be "Kerstvakantie"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/opens" should be "13:00"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/closes" should be "15:00"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/dayOfWeek/0" should be "friday"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/dayOfWeek/1" should be "saturday"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/dayOfWeek/2" should be "sunday"
+    Then the JSON response at "openingHoursAdjustedDays" should be:
+    """
+    [
+      {
+        "startDate": "2026-12-21",
+        "endDate": "2026-12-26",
+        "description": {"nl": "Kerstvakantie"},
+        "openingHours": [{"opens": "13:00", "closes": "15:00", "dayOfWeek": ["friday", "saturday", "sunday"]}]
+      }
+    ]
+    """
 
   Scenario: Update place calendar to add opening hours adjusted
     Given I create a random name of 6 characters
@@ -124,14 +126,16 @@ Feature: Test opening hours adjusted for places
     And I send a PUT request to "%{placeUrl}/calendar"
     Then the response status should be "204"
     And I get the place at "%{placeUrl}"
-    Then the JSON response should have "openingHoursAdjustedDays"
-    And the JSON response at "openingHoursAdjustedDays/0/startDate" should be "2026-12-21"
-    And the JSON response at "openingHoursAdjustedDays/0/endDate" should be "2026-12-26"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/opens" should be "13:00"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/closes" should be "15:00"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/dayOfWeek/0" should be "friday"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/dayOfWeek/1" should be "saturday"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/dayOfWeek/2" should be "sunday"
+    Then the JSON response at "openingHoursAdjustedDays" should be:
+    """
+    [
+      {
+        "startDate": "2026-12-21",
+        "endDate": "2026-12-26",
+        "openingHours": [{"opens": "13:00", "closes": "15:00", "dayOfWeek": ["friday", "saturday", "sunday"]}]
+      }
+    ]
+    """
 
   Scenario: Update place calendar to replace existing opening hours adjusted
     Given I create a random name of 6 characters
@@ -171,13 +175,17 @@ Feature: Test opening hours adjusted for places
     And I send a PUT request to "%{placeUrl}/calendar"
     Then the response status should be "204"
     And I get the place at "%{placeUrl}"
-    Then the JSON response should have "openingHoursAdjustedDays"
-    And the JSON response at "openingHoursAdjustedDays/0/startDate" should be "2026-12-27"
-    And the JSON response at "openingHoursAdjustedDays/0/endDate" should be "2026-12-31"
-    And the JSON response at "openingHoursAdjustedDays/0/description/nl" should be "Nieuwjaar"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/opens" should be "10:00"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/closes" should be "12:00"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/dayOfWeek/0" should be "sunday"
+    Then the JSON response at "openingHoursAdjustedDays" should be:
+    """
+    [
+      {
+        "startDate": "2026-12-27",
+        "endDate": "2026-12-31",
+        "description": {"nl": "Nieuwjaar"},
+        "openingHours": [{"opens": "10:00", "closes": "12:00", "dayOfWeek": ["sunday"]}]
+      }
+    ]
+    """
 
   Scenario: Clear opening hours adjusted by updating calendar without the field
     Given I create a random name of 6 characters
