@@ -6090,12 +6090,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "3c4b1ec0c463250972d04c85cb64e5c669d08a7d"
+                "reference": "4df3bd56d2ef1f97f535becc9bd8c8fb8af1844d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/3c4b1ec0c463250972d04c85cb64e5c669d08a7d",
-                "reference": "3c4b1ec0c463250972d04c85cb64e5c669d08a7d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/4df3bd56d2ef1f97f535becc9bd8c8fb8af1844d",
+                "reference": "4df3bd56d2ef1f97f535becc9bd8c8fb8af1844d",
                 "shasum": ""
             },
             "default-branch": true,
@@ -6113,9 +6113,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7127-birthyear"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
-            "time": "2026-05-06T06:51:06+00:00"
+            "time": "2026-05-07T13:48:14+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -12783,6 +12783,6 @@
         "ext-tidy": "*",
         "ext-xmlreader": "*"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
 }
