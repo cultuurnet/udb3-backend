@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
+use CultuurNet\UDB3\Event\Commands\DeleteBirthdateRange;
 use CultuurNet\UDB3\Event\Commands\UpdateDeparturePlaces;
 use CultuurNet\UDB3\Event\Commands\UpdateFaqs;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
@@ -106,8 +107,8 @@ use CultuurNet\UDB3\Offer\Commands\Video\ImportVideos;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use DateTimeImmutable;
-use Money\Currency;
-use Money\Money;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -293,6 +294,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -377,6 +379,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -498,6 +501,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -575,6 +579,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -856,6 +861,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 ),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1048,6 +1054,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1121,6 +1128,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1321,6 +1329,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1393,6 +1402,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1475,6 +1485,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1555,6 +1566,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1634,6 +1646,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1717,6 +1730,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1794,6 +1808,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1875,6 +1890,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -1950,6 +1966,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -2232,6 +2249,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -3045,6 +3063,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -4310,6 +4329,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteOffer($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
@@ -4647,6 +4667,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -5141,6 +5162,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()
@@ -5247,6 +5269,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
                 new UpdateDeparturePlaces($eventId, new Urls()),
+                new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
             ],
             $this->commandBus->getRecordedCommands()

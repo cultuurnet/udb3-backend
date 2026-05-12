@@ -26,8 +26,8 @@ use CultuurNet\UDB3\UiTPAS\Event\Organizer\OrganizerCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Event\Place\PlaceCardSystemsUpdated;
 use CultuurNet\UDB3\UiTPAS\Label\UiTPASLabelsRepository;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
-use Money\Currency;
-use Money\Money;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 

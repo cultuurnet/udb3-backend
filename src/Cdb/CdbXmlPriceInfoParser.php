@@ -13,7 +13,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Tariffs;
 use CultuurNet\UDB3\Model\ValueObject\Price\TranslatedTariffName;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\MoneyFactory;
-use Money\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
 
 final class CdbXmlPriceInfoParser
 {

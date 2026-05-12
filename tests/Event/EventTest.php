@@ -9,6 +9,8 @@ use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeDeleted;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
@@ -30,6 +32,7 @@ use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\OnlineUrlDeleted;
 use CultuurNet\UDB3\Event\Events\OnlineUrlUpdated;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
+use CultuurNet\UDB3\Event\Events\TypeUpdated;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Event\Events\TypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -39,18 +42,18 @@ use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
-use CultuurNet\UDB3\Event\Events\TypeUpdated;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -85,8 +88,8 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
 use CultuurNet\UDB3\SampleFiles;
-use Money\Currency;
-use Money\Money;
+use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
+use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 use RuntimeException;
 
 class EventTest extends AggregateRootScenarioTestCase
@@ -2733,6 +2736,98 @@ class EventTest extends AggregateRootScenarioTestCase
                     ))
                 ),
             ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_birthdate_range(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $birthdateRange = new BirthdateRange(
+            new \DateTimeImmutable('2014-01-01'),
+            new \DateTimeImmutable('2020-12-31')
+        );
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->updateBirthdateRange($birthdateRange))
+            ->then([new BirthdateRangeUpdated($eventId, $birthdateRange)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_an_existing_birthdate_range(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $original = new BirthdateRange(
+            new \DateTimeImmutable('2014-01-01'),
+            new \DateTimeImmutable('2020-12-31')
+        );
+        $updated = new BirthdateRange(
+            new \DateTimeImmutable('2015-01-01'),
+            new \DateTimeImmutable('2021-12-31')
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new BirthdateRangeUpdated($eventId, $original),
+            ])
+            ->when(fn (Event $event) => $event->updateBirthdateRange($updated))
+            ->then([new BirthdateRangeUpdated($eventId, $updated)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_birthdate_range_when_unchanged(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $birthdateRange = new BirthdateRange(
+            new \DateTimeImmutable('2014-01-01'),
+            new \DateTimeImmutable('2020-12-31')
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new BirthdateRangeUpdated($eventId, $birthdateRange),
+            ])
+            ->when(fn (Event $event) => $event->updateBirthdateRange($birthdateRange))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_delete_birthdate_range(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $birthdateRange = new BirthdateRange(
+            new \DateTimeImmutable('2014-01-01'),
+            new \DateTimeImmutable('2020-12-31')
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new BirthdateRangeUpdated($eventId, $birthdateRange),
+            ])
+            ->when(fn (Event $event) => $event->deleteBirthdateRange())
+            ->then([new BirthdateRangeDeleted($eventId)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_delete_birthdate_range_when_not_set(): void
+    {
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->deleteBirthdateRange())
+            ->then([]);
     }
 
     protected function getSample(string $file): string

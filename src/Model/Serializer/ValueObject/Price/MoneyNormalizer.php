@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Price;
 
 use InvalidArgumentException;
-use Money\Money;
+use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MoneyNormalizer implements NormalizerInterface
@@ -18,7 +18,7 @@ class MoneyNormalizer implements NormalizerInterface
 
         return [
             'amount' => $object->getAmount(),
-            'currency' => $object->getCurrency()->getName(),
+            'currency' => $object->getCurrency()->getCode(),
         ];
     }
 
