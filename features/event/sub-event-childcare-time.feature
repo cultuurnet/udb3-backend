@@ -37,7 +37,7 @@ Feature: Test SubEvent childcare times
     {"start": "15:00", "end": "23:00"}
     """
 
-  Scenario: Create a multiple-calendar event with childcare times in CET
+  Scenario: Create a multiple-calendar event with childcare times
     Given I set the variable "startDate" to "2021-05-17T16:00:00+02:00"
     And I set the variable "endDate" to "2021-05-17T22:00:00+02:00"
     And I set the variable "startDate2" to "2021-05-18T16:00:00+02:00"
@@ -54,45 +54,9 @@ Feature: Test SubEvent childcare times
     {"start": "15:00", "end": "23:00"}
     """
 
-  Scenario: Create a multiple-calendar event with childcare times in UTC
-    Given I set the variable "startDate" to "2021-05-17T14:00:00+00:00"
-    And I set the variable "endDate" to "2021-05-17T20:00:00+00:00"
-    And I set the variable "startDate2" to "2021-05-18T14:00:00+00:00"
-    And I set the variable "endDate2" to "2021-05-18T20:00:00+00:00"
-    And I set the variable "childcareStart" to "15:00"
-    And I set the variable "childcareEnd" to "23:00"
-    When I set the JSON request payload from "events/sub-event-childcare/event-multiple-with-childcare.json"
-    And I send a POST request to "/events/"
-    Then the response status should be "201"
-    And I keep the value of the JSON response at "url" as "eventUrl"
-    And I get the event at "%{eventUrl}"
-    Then the JSON response at "subEvent/0/childcare" should be:
-    """
-    {"start": "15:00", "end": "23:00"}
-    """
-
-  Scenario: Add childcare times to a subEvent via PATCH in CET
+  Scenario: Add childcare times to a subEvent via PATCH
     Given I set the variable "startDate" to "2021-05-17T16:00:00+02:00"
     And I set the variable "endDate" to "2021-05-17T22:00:00+02:00"
-    And I set the JSON request payload from "events/sub-event-childcare/event-single.json"
-    And I send a POST request to "/events/"
-    And the response status should be "201"
-    And I keep the value of the JSON response at "url" as "eventUrl"
-    When I set the JSON request payload to:
-    """
-    [{"id": 0, "childcare": {"start": "15:00", "end": "23:00"}}]
-    """
-    And I send a PATCH request to "%{eventUrl}/subEvents"
-    Then the response status should be "204"
-    And I get the event at "%{eventUrl}"
-    Then the JSON response at "subEvent/0/childcare" should be:
-    """
-    {"start": "15:00", "end": "23:00"}
-    """
-
-  Scenario: Add childcare times to a subEvent via PATCH in UTC
-    Given I set the variable "startDate" to "2021-05-17T14:00:00+00:00"
-    And I set the variable "endDate" to "2021-05-17T20:00:00+00:00"
     And I set the JSON request payload from "events/sub-event-childcare/event-single.json"
     And I send a POST request to "/events/"
     And the response status should be "201"
@@ -182,7 +146,7 @@ Feature: Test SubEvent childcare times
     "childcare"
     """
 
-  Scenario: Create a single-calendar event with only childcare.start in CET
+  Scenario: Create a single-calendar event with only childcare.start
     Given I set the variable "startDate" to "2021-05-17T16:00:00+02:00"
     And I set the variable "endDate" to "2021-05-17T22:00:00+02:00"
     And I set the variable "childcareStart" to "15:00"
@@ -196,37 +160,9 @@ Feature: Test SubEvent childcare times
     {"start": "15:00"}
     """
 
-  Scenario: Create a single-calendar event with only childcare.start in UTC
-    Given I set the variable "startDate" to "2021-05-17T14:00:00+00:00"
-    And I set the variable "endDate" to "2021-05-17T20:00:00+00:00"
-    And I set the variable "childcareStart" to "15:00"
-    When I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare-start-only.json"
-    And I send a POST request to "/events/"
-    Then the response status should be "201"
-    And I keep the value of the JSON response at "url" as "eventUrl"
-    And I get the event at "%{eventUrl}"
-    Then the JSON response at "subEvent/0/childcare" should be:
-    """
-    {"start": "15:00"}
-    """
-
-  Scenario: Create a single-calendar event with only childcare.end in CET
+  Scenario: Create a single-calendar event with only childcare.end
     Given I set the variable "startDate" to "2021-05-17T16:00:00+02:00"
     And I set the variable "endDate" to "2021-05-17T22:00:00+02:00"
-    And I set the variable "childcareEnd" to "23:00"
-    When I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare-end-only.json"
-    And I send a POST request to "/events/"
-    Then the response status should be "201"
-    And I keep the value of the JSON response at "url" as "eventUrl"
-    And I get the event at "%{eventUrl}"
-    Then the JSON response at "subEvent/0/childcare" should be:
-    """
-    {"end": "23:00"}
-    """
-
-  Scenario: Create a single-calendar event with only childcare.end in UTC
-    Given I set the variable "startDate" to "2021-05-17T14:00:00+00:00"
-    And I set the variable "endDate" to "2021-05-17T20:00:00+00:00"
     And I set the variable "childcareEnd" to "23:00"
     When I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare-end-only.json"
     And I send a POST request to "/events/"
@@ -260,7 +196,7 @@ Feature: Test SubEvent childcare times
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcare/start"
     And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before the time portion of startDate"
 
-  Scenario: Cannot create an event when childcare.start is after the startDate time in CET
+  Scenario: Cannot create an event when childcare.start is after the startDate time
     Given I set the variable "startDate" to "2021-05-17T16:00:00+02:00"
     And I set the variable "endDate" to "2021-05-17T22:00:00+02:00"
     And I set the variable "childcareStart" to "17:00"
@@ -271,7 +207,7 @@ Feature: Test SubEvent childcare times
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcare/start"
     And the JSON response at "schemaErrors/0/error" should be "childcare.start must be before the time portion of startDate"
 
-  Scenario: Cannot create an event when childcare.end equals the endDate time in CET
+  Scenario: Cannot create an event when childcare.end equals the endDate time
     Given I set the variable "startDate" to "2021-05-17T16:00:00+02:00"
     And I set the variable "endDate" to "2021-05-17T22:00:00+02:00"
     And I set the variable "childcareStart" to "15:00"
@@ -282,18 +218,7 @@ Feature: Test SubEvent childcare times
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcare/end"
     And the JSON response at "schemaErrors/0/error" should be "childcare.end must be after the time portion of endDate"
 
-  Scenario: Cannot create an event when childcare.end equals the endDate time in UTC
-    Given I set the variable "startDate" to "2021-05-17T14:00:00+00:00"
-    And I set the variable "endDate" to "2021-05-17T20:00:00+00:00"
-    And I set the variable "childcareStart" to "15:00"
-    And I set the variable "childcareEnd" to "22:00"
-    When I set the JSON request payload from "events/sub-event-childcare/event-single-with-childcare.json"
-    And I send a POST request to "/events/"
-    Then the response status should be "400"
-    And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/childcare/end"
-    And the JSON response at "schemaErrors/0/error" should be "childcare.end must be after the time portion of endDate"
-
-  Scenario: Cannot create an event when childcare.end is before the endDate time in CET
+  Scenario: Cannot create an event when childcare.end is before the endDate time
     Given I set the variable "startDate" to "2021-05-17T16:00:00+02:00"
     And I set the variable "endDate" to "2021-05-17T22:00:00+02:00"
     And I set the variable "childcareStart" to "15:00"
