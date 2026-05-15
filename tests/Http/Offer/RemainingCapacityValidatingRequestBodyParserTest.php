@@ -118,7 +118,7 @@ final class RemainingCapacityValidatingRequestBodyParserTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/bookingAvailability/remainingCapacity',
-                    'remainingCapacity can only be set on a subEvent, not on the top-level bookingAvailability.'
+                    'remainingCapacity can only be set on a sub-event entry, not on the top-level bookingAvailability. Set it under /subEvent/{index}/bookingAvailability instead.'
                 )
             ),
             fn () => $this->parser->parse($request)
@@ -145,7 +145,7 @@ final class RemainingCapacityValidatingRequestBodyParserTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/bookingAvailability/remainingCapacity',
-                    'remainingCapacity can only be set on a subEvent, not on the top-level bookingAvailability.'
+                    'remainingCapacity can only be set on a sub-event entry, not on the top-level bookingAvailability. Set it under /subEvent/{index}/bookingAvailability instead.'
                 )
             ),
             fn () => $this->parser->parse($request)
