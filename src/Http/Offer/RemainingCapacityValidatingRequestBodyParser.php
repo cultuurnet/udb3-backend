@@ -23,7 +23,7 @@ final class RemainingCapacityValidatingRequestBodyParser implements RequestBodyP
             throw ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/bookingAvailability/remainingCapacity',
-                    'remainingCapacity can only be set on a sub-event entry, not on the top-level bookingAvailability. Set it under /subEvent/{index}/bookingAvailability instead.'
+                    'remainingCapacity is not valid on the top-level bookingAvailability.'
                 )
             );
         }
