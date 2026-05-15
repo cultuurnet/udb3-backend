@@ -1,6 +1,11 @@
 @sapi3
 Feature: Test the Search API v3 boosting
 
+  # Search terms are suffixed with a random string to ensure they are unique per test run.
+  # Without this, documents from previous runs accumulate on the same ES shard and inflate
+  # the docFreq for those terms, which lowers IDF and can cause the TF-based score ordering
+  # to break unpredictably.
+
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
@@ -8,130 +13,321 @@ Feature: Test the Search API v3 boosting
     And I send and accept "application/json"
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
-    And I create a minimal place and save the "id" as "boostedPlace"
-    And I publish the place at "/places/%{boostedPlace}"
-    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "boostedEvent"
-    And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "nonBoostedevent"
-    And I create a random labelname of 10 characters
-    And I send a PUT request to "/events/%{boostedEvent}/labels/%{labelname}"
-    And I send a PUT request to "/places/%{boostedPlace}/labels/%{labelname}"
-    And I wait 2 seconds
 
-  Scenario: I can positively boost search results
+  @testIsolation
+  Scenario: I can positively boost events
+    Given I create a random labelname of 10 characters
+    When I create an event with name "kerst%{labelname} sneeuw%{labelname}" and save the "id" as "termBoostedEvent"
+    And I create an event with name "kerst%{labelname} kerst%{labelname}" and save the "id" as "termNaturalEvent"
     When I am using the Search API v3 base URL
-    And I send a GET request to "/offers" with parameters:
-      | q           | id:(%{placeId} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^10) OR (NOT labels:%{labelname})) |
-      | sort[score] | desc                                                                                                                                    |
-      | limit       | 2                                                                                                                                       |
-    Then the JSON response at "totalItems" should be 4
-    And the JSON response should include:
-    """
-    %{boostedEvent}
-    """
-    And the JSON response should include:
-    """
-    %{boostedPlace}
-    """
-    And the JSON response should not include:
-    """
-    %{nonBoostedevent}
-    """
-    And the JSON response should not include:
-    """
-    %{placeId}
-    """
-    When I send a GET request to "/places" with parameters:
-      | q           | id:(%{placeId} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^10) OR (NOT labels:%{labelname})) |
-      | sort[score] | desc                                                                                                                                    |
+    And I wait for 2 results at "/events" with parameters:
+      | text | kerst%{labelname} |
+    And I send a GET request to "/events" with parameters:
+      | text        | kerst%{labelname}                 |
+      | sort[score] | desc                              |
     Then the JSON response at "totalItems" should be 2
     And the JSON response at "member" should be:
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/places/%{boostedPlace}",
-        "@type": "Place"
+        "@id": "http://io.uitdatabank.local:80/events/%{termNaturalEvent}",
+        "@type": "Event"
       },
       {
-        "@id": "http://io.uitdatabank.local:80/places/%{placeId}",
-        "@type": "Place"
-
+        "@id": "http://io.uitdatabank.local:80/events/%{termBoostedEvent}",
+        "@type": "Event"
       }
     ]
     """
     When I send a GET request to "/events" with parameters:
-      | q           | id:(%{placeId} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^10) OR (NOT labels:%{labelname})) |
-      | sort[score] | desc                                                                                                                                    |
-    Then the JSON response at "totalItems" should be 2
-    And the JSON response at "member" should be:
+      | text        | kerst%{labelname}                              |
+      | q           | (sneeuw%{labelname}^10) OR (NOT sneeuw%{labelname}) |
+      | sort[score] | desc                                           |
+    Then the JSON response at "member" should be:
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/events/%{boostedEvent}",
+        "@id": "http://io.uitdatabank.local:80/events/%{termBoostedEvent}",
         "@type": "Event"
       },
       {
-        "@id": "http://io.uitdatabank.local:80/events/%{nonBoostedevent}",
+        "@id": "http://io.uitdatabank.local:80/events/%{termNaturalEvent}",
         "@type": "Event"
-
       }
     ]
     """
 
-  Scenario: I can negatively boost search results
+  @testIsolation
+  Scenario: I can positively boost places
+    Given I create a random labelname of 10 characters
+    When I create a place with name "kerst%{labelname} sneeuw%{labelname}" and save the "id" as "termBoostedPlace"
+    And I publish the place at "/places/%{termBoostedPlace}"
+    When I create a place with name "kerst%{labelname} kerst%{labelname}" and save the "id" as "termNaturalPlace"
+    And I publish the place at "/places/%{termNaturalPlace}"
     When I am using the Search API v3 base URL
-    And I send a GET request to "/offers" with parameters:
-      | q           | id:(%{placeId} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
-      | sort[score] | desc                                                                                                                                     |
-      | limit       | 2                                                                                                                                        |
-    Then the JSON response at "totalItems" should be 4
-    And the JSON response should include:
-    """
-    %{nonBoostedevent}
-    """
-    And the JSON response should include:
-    """
-    %{placeId}
-    """
-    And the JSON response should not include:
-    """
-    %{boostedEvent}
-    """
-    And the JSON response should not include:
-    """
-    %{boostedPlace}
-    """
-    When I send a GET request to "/places" with parameters:
-      | q           | id:(%{placeId} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
-      | sort[score] | desc                                                                                                                                     |
+    And I wait for 2 results at "/places" with parameters:
+      | text | kerst%{labelname} |
+    And I send a GET request to "/places" with parameters:
+      | text        | kerst%{labelname}                 |
+      | sort[score] | desc                              |
     Then the JSON response at "totalItems" should be 2
     And the JSON response at "member" should be:
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/places/%{placeId}",
+        "@id": "http://io.uitdatabank.local:80/places/%{termNaturalPlace}",
         "@type": "Place"
-
       },
       {
-        "@id": "http://io.uitdatabank.local:80/places/%{boostedPlace}",
+        "@id": "http://io.uitdatabank.local:80/places/%{termBoostedPlace}",
         "@type": "Place"
+      }
+    ]
+    """
+    When I send a GET request to "/places" with parameters:
+      | text        | kerst%{labelname}                                   |
+      | q           | (sneeuw%{labelname}^10) OR (NOT sneeuw%{labelname}) |
+      | sort[score] | desc                                                |
+    Then the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termBoostedPlace}",
+        "@type": "Place"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termNaturalPlace}",
+        "@type": "Place"
+      }
+    ]
+    """
+
+  @testIsolation
+  Scenario: I can positively boost offers
+    Given I create a random labelname of 10 characters
+    When I create an event with name "kerst%{labelname} sneeuw%{labelname}" and save the "id" as "termBoostedOffer"
+    When I create a place with name "kerst%{labelname} kerst%{labelname}" and save the "id" as "termNaturalOffer"
+    And I publish the place at "/places/%{termNaturalOffer}"
+    When I am using the Search API v3 base URL
+    And I wait for 2 results at "/offers" with parameters:
+      | text | kerst%{labelname} |
+    And I send a GET request to "/offers" with parameters:
+      | text        | kerst%{labelname}                 |
+      | sort[score] | desc                              |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termNaturalOffer}",
+        "@type": "Place"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termBoostedOffer}",
+        "@type": "Event"
+      }
+    ]
+    """
+    When I send a GET request to "/offers" with parameters:
+      | text        | kerst%{labelname}                                   |
+      | q           | (sneeuw%{labelname}^10) OR (NOT sneeuw%{labelname}) |
+      | sort[score] | desc                                                |
+    Then the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termBoostedOffer}",
+        "@type": "Event"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termNaturalOffer}",
+        "@type": "Place"
+      }
+    ]
+    """
+
+  # Negative boosting uses the pattern: (term^0.1) OR (NOT term)
+  # - Documents WITHOUT the term match the NOT branch and receive a baseline score of ~1.0.
+  # - Documents WITH the term match the (term^0.1) branch and receive only a tiny score addition.
+  # - Because the ~1.0 baseline reliably exceeds any realistic (term^0.1) contribution,
+  #   non-matching documents outscore matching ones after the query is applied.
+  #
+  # Both document names are the same length ("kerst nieuwjaar" vs "kerst feest"), so they score
+  # identically on the base text query (same TF and fieldNorm for kerst). With tied scores,
+  # Elasticsearch falls back to insertion order: the nieuwjaar document is created first and
+  # therefore appears first naturally. After negative boosting the NOT-branch bonus (~1.0)
+  # always exceeds the (^0.1 × nieuwjaarTermScore) addition, flipping the order reliably.
+
+  @testIsolation @negativeBoosting
+  Scenario: I can negatively boost events
+    Given I create a random labelname of 10 characters
+    When I create an event with name "kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarEvent"
+    And I create an event with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termKerstEvent"
+    When I am using the Search API v3 base URL
+    And I wait for 2 results at "/events" with parameters:
+      | text | kerst%{labelname} |
+    And I send a GET request to "/events" with parameters:
+      | text        | kerst%{labelname} |
+      | sort[score] | desc              |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termNieuwjaarEvent}",
+        "@type": "Event"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termKerstEvent}",
+        "@type": "Event"
       }
     ]
     """
     When I send a GET request to "/events" with parameters:
-      | q           | id:(%{placeId} OR %{boostedPlace} OR %{boostedEvent} OR %{nonBoostedevent}) AND ((labels:%{labelname}^0.1) OR (NOT labels:%{labelname})) |
-      | sort[score] | desc                                                                                                                                     |
+      | text        | kerst%{labelname}                                          |
+      | q           | (nieuwjaar%{labelname}^0.1) OR (NOT nieuwjaar%{labelname}) |
+      | sort[score] | desc                                                       |
+    Then the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termKerstEvent}",
+        "@type": "Event"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termNieuwjaarEvent}",
+        "@type": "Event"
+      }
+    ]
+    """
+
+  @testIsolation @negativeBoosting
+  Scenario: I can negatively boost places
+    Given I create a random labelname of 10 characters
+    When I create a place with name "kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarPlace"
+    And I publish the place at "/places/%{termNieuwjaarPlace}"
+    When I create a place with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termKerstPlace"
+    And I publish the place at "/places/%{termKerstPlace}"
+    When I am using the Search API v3 base URL
+    And I wait for 2 results at "/places" with parameters:
+      | text | kerst%{labelname} |
+    And I send a GET request to "/places" with parameters:
+      | text        | kerst%{labelname} |
+      | sort[score] | desc              |
     Then the JSON response at "totalItems" should be 2
     And the JSON response at "member" should be:
     """
     [
       {
-        "@id": "http://io.uitdatabank.local:80/events/%{nonBoostedevent}",
-        "@type": "Event"
-
+        "@id": "http://io.uitdatabank.local:80/places/%{termNieuwjaarPlace}",
+        "@type": "Place"
       },
       {
-        "@id": "http://io.uitdatabank.local:80/events/%{boostedEvent}",
+        "@id": "http://io.uitdatabank.local:80/places/%{termKerstPlace}",
+        "@type": "Place"
+      }
+    ]
+    """
+    When I send a GET request to "/places" with parameters:
+      | text        | kerst%{labelname}                                          |
+      | q           | (nieuwjaar%{labelname}^0.1) OR (NOT nieuwjaar%{labelname}) |
+      | sort[score] | desc                                                       |
+    Then the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termKerstPlace}",
+        "@type": "Place"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termNieuwjaarPlace}",
+        "@type": "Place"
+      }
+    ]
+    """
+
+  @testIsolation @negativeBoosting
+  Scenario: I can negatively boost offers
+    Given I create a random labelname of 10 characters
+    When I create an event with name "kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarOffer"
+    When I create a place with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termKerstOffer"
+    And I publish the place at "/places/%{termKerstOffer}"
+    When I am using the Search API v3 base URL
+    And I wait for 2 results at "/offers" with parameters:
+      | text | kerst%{labelname} |
+    And I send a GET request to "/offers" with parameters:
+      | text        | kerst%{labelname} |
+      | sort[score] | desc              |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termNieuwjaarOffer}",
+        "@type": "Event"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termKerstOffer}",
+        "@type": "Place"
+      }
+    ]
+    """
+    When I send a GET request to "/offers" with parameters:
+      | text        | kerst%{labelname}                                          |
+      | q           | (nieuwjaar%{labelname}^0.1) OR (NOT nieuwjaar%{labelname}) |
+      | sort[score] | desc                                                       |
+    Then the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/places/%{termKerstOffer}",
+        "@type": "Place"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termNieuwjaarOffer}",
+        "@type": "Event"
+      }
+    ]
+    """
+
+  @testIsolation @negativeBoosting
+  Scenario: I can negatively boost events by positively boosting other terms
+    Given I create a random labelname of 10 characters
+    When I create an event with name "kerst%{labelname} kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarEvent"
+    And I create an event with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termBoostedEvent"
+    When I am using the Search API v3 base URL
+    And I wait for 2 results at "/events" with parameters:
+      | text | kerst%{labelname} |
+    And I send a GET request to "/events" with parameters:
+      | text        | kerst%{labelname} |
+      | sort[score] | desc              |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termNieuwjaarEvent}",
+        "@type": "Event"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termBoostedEvent}",
+        "@type": "Event"
+      }
+    ]
+    """
+    When I send a GET request to "/events" with parameters:
+      | text        | kerst%{labelname}                                          |
+      | q           | (nieuwjaar%{labelname}) OR (NOT nieuwjaar%{labelname})^10 |
+      | sort[score] | desc                                                       |
+    Then the JSON response at "member" should be:
+    """
+    [
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termBoostedEvent}",
+        "@type": "Event"
+      },
+      {
+        "@id": "http://io.uitdatabank.local:80/events/%{termNieuwjaarEvent}",
         "@type": "Event"
       }
     ]

@@ -248,4 +248,23 @@ trait RequestSteps
             }
         } while ($this->responseState->getTotalItems() != 1 && $elapsedTime < 5);
     }
+
+    /**
+     * @Given I wait for :count result(s) at :url with parameters:
+     */
+    public function iWaitForResultsAtWithParameters(int $count, string $url, TableNode $parameters): void
+    {
+        $params = $this->addScenarioLabelToSearchParameters($url, $parameters->getRows());
+        $params[] = ['disableDefaultFilters', 'true'];
+
+        $elapsedTime = 0;
+        do {
+            $response = $this->getHttpClient()->getWithParameters($url, $params, $this->variableState);
+            $this->responseState->setResponse($response);
+            if ($this->responseState->getTotalItems() !== $count) {
+                sleep(1);
+                $elapsedTime++;
+            }
+        } while ($this->responseState->getTotalItems() !== $count && $elapsedTime < 10);
+    }
 }
