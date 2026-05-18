@@ -71,7 +71,7 @@ final class TimeImmutableRange
 
     private function dateTimeToMinutes(DateTimeImmutable $dateTime): int
     {
-        // Childcare applies exclusively to Flanders; HH:mm times are always entered in Brussels local time.
+        // We always handle HH:mm time information as Brussels local time. To compare it to a datetime, the datetime should also be converted to Europe/Brussels
         $local = $dateTime->setTimezone(new DateTimeZone('Europe/Brussels'));
         return (int) $local->format('H') * 60 + (int) $local->format('i');
     }
