@@ -64,8 +64,8 @@ final class ChildcareTimeValidatorTest extends TestCase
         string $childcareStart
     ): void {
         $errors = $this->validator->validate((object) [
-            'startDate' => '2021-05-17T16:00:00+00:00',
-            'endDate' => '2021-05-17T22:00:00+00:00',
+            'startDate' => '2021-05-17T16:00:00+02:00',
+            'endDate' => '2021-05-17T22:00:00+02:00',
             'childcare' => (object)['start' => $childcareStart, 'end' => '23:00'],
         ]);
 
@@ -90,8 +90,8 @@ final class ChildcareTimeValidatorTest extends TestCase
         string $childcareEnd
     ): void {
         $errors = $this->validator->validate((object) [
-            'startDate' => '2021-05-17T16:00:00+00:00',
-            'endDate' => '2021-05-17T22:00:00+00:00',
+            'startDate' => '2021-05-17T16:00:00+02:00',
+            'endDate' => '2021-05-17T22:00:00+02:00',
             'childcare' => (object)['start' => '15:00', 'end' => $childcareEnd],
         ]);
 
@@ -114,12 +114,29 @@ final class ChildcareTimeValidatorTest extends TestCase
     public function it_returns_both_errors_when_both_childcare_times_are_invalid(): void
     {
         $errors = $this->validator->validate((object) [
-            'startDate' => '2021-05-17T16:00:00+00:00',
-            'endDate' => '2021-05-17T22:00:00+00:00',
+            'startDate' => '2021-05-17T16:00:00+02:00',
+            'endDate' => '2021-05-17T22:00:00+02:00',
             'childcare' => (object)['start' => '17:00', 'end' => '21:00'],
         ]);
 
         $this->assertCount(2, $errors);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_no_errors_when_childcare_times_are_valid_in_cet_but_dates_are_sent_as_utc(): void
+    {
+        // startDate 16:00 UTC = 18:00 CEST; endDate 20:00 UTC = 22:00 CEST.
+        // childcare.start 17:00 and childcare.end 23:00 are valid in CEST but were previously
+        // rejected because the comparison happened against raw UTC hours.
+        $errors = $this->validator->validate((object) [
+            'startDate' => '2021-05-17T16:00:00+00:00',
+            'endDate' => '2021-05-17T20:00:00+00:00',
+            'childcare' => (object)['start' => '17:00', 'end' => '23:00'],
+        ]);
+
+        $this->assertEmpty($errors);
     }
 
     /**
@@ -155,8 +172,8 @@ final class ChildcareTimeValidatorTest extends TestCase
     {
         $errors = $this->validator->validate(
             (object) [
-                'startDate' => '2021-05-17T16:00:00+00:00',
-                'endDate' => '2021-05-17T22:00:00+00:00',
+                'startDate' => '2021-05-17T16:00:00+02:00',
+                'endDate' => '2021-05-17T22:00:00+02:00',
                 'childcare' => (object)['start' => '17:00', 'end' => '23:00'],
             ],
             '/subEvent/0'
