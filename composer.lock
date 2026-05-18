@@ -496,12 +496,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/php-resque.git",
-                "reference": "0424ea2521c3519a0739e48ee9701c6f6b1760ed"
+                "reference": "5f267a8c7b840997782756aff40f7341b66613b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/php-resque/zipball/0424ea2521c3519a0739e48ee9701c6f6b1760ed",
-                "reference": "0424ea2521c3519a0739e48ee9701c6f6b1760ed",
+                "url": "https://api.github.com/repos/cultuurnet/php-resque/zipball/5f267a8c7b840997782756aff40f7341b66613b6",
+                "reference": "5f267a8c7b840997782756aff40f7341b66613b6",
                 "shasum": ""
             },
             "require": {
@@ -544,10 +544,10 @@
                 "resque"
             ],
             "support": {
-                "source": "https://github.com/cultuurnet/php-resque/tree/compat-1-2"
+                "source": "https://github.com/cultuurnet/php-resque/tree/compat-1-2",
+                "issues": "https://github.com/cultuurnet/php-resque/issues"
             },
-            "abandoned": true,
-            "time": "2018-06-22T06:42:08+00:00"
+            "time": "2026-05-18T09:46:00+00:00"
         },
         {
             "name": "clue/stream-filter",
