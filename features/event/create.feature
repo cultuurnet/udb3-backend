@@ -1098,7 +1098,7 @@ Feature: Test the UDB3 events API
 
   Scenario: Create an event with a birthdate range
     When I create a place from "places/place.json" and save the "url" as "placeUrl"
-    And I set the JSON request payload from "events/event-with-birthdate-range.json"
+    And I set the JSON request payload from "events/event-with-birthdate-range-in-2020.json"
     And I send a POST request to "/events/"
     Then the response status should be "201"
     And the response body should be valid JSON
