@@ -215,8 +215,9 @@ Feature: Test the Search API v3 advanced queries on offers
   Scenario: Search for birthdate ranges using an advanced query
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/event-with-birthdate-range-in-2020.json" and save the "id" as "eventId2020"
+    And I wait for the event with url "/events/%{eventId2020}" to be indexed
     And I create an event from "events/event-with-birthdate-range-in-2022.json" and save the "id" as "eventId2022"
-    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I wait for the event with url "/events/%{eventId2022}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:(%{eventId2020} OR %{eventId2022}) AND birthdateRange:2019-01-01..2019-12-31 |
