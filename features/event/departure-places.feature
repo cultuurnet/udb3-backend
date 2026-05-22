@@ -11,7 +11,8 @@ Feature: Test event departure places
     And I create a minimal place and save the "url" as "departurePlaceUrl2"
 
   Scenario: Set departure places on a childrenOnly event
-    When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
+    And I create a place from "places/place.json" and save the "url" as "placeId"
+    And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
     And I set the JSON request payload to:
     """
     [
@@ -26,7 +27,8 @@ Feature: Test event departure places
     And the JSON response at "departurePlaces/1" should be "%{departurePlaceUrl2}"
 
   Scenario: Set departure places with legacy singular place URL
-    When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
+    And I create a place from "places/place.json" and save the "url" as "placeId"
+    And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
     And I set the JSON request payload to:
     """
     [
@@ -39,7 +41,8 @@ Feature: Test event departure places
     And the JSON response at "departurePlaces/0" should be "%{baseUrl}/place/%{departurePlaceId}"
 
   Scenario: Remove departure places with empty array
-    When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
+    And I create a place from "places/place.json" and save the "url" as "placeId"
+    And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
     And I set the JSON request payload to:
     """
     [
@@ -69,7 +72,8 @@ Feature: Test event departure places
     Then the response status should be "400"
 
   Scenario: Reject departure places with non-existing place
-    When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
+    And I create a place from "places/place.json" and save the "url" as "placeId"
+    And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
     And I set the JSON request payload to:
     """
     [
@@ -81,7 +85,8 @@ Feature: Test event departure places
     Then the response status should be "400"
 
   Scenario: Reject departure places exceeding the limit via PUT departurePlaces
-    When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
+    And I create a place from "places/place.json" and save the "url" as "placeId"
+    And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
     And I set the JSON request payload to:
     """
     [
@@ -119,7 +124,8 @@ Feature: Test event departure places
     And the JSON response at "schemaErrors/0/error" should be "Array should have at most 20 items, 21 found"
 
   Scenario: Changing audienceType away from childrenOnly keeps departure places
-    When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
+    And I create a place from "places/place.json" and save the "url" as "placeId"
+    And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
     And I set the JSON request payload to:
     """
     [
