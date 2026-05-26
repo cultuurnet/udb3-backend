@@ -22,6 +22,8 @@ final class LegacyPathRewriter
         '/priceInfo/' => 'price-info',
         '/subEvents/' => 'sub-events',
         '/typicalAgeRange/' => 'typical-age-range',
+        '/departurePlaces/' => 'departure-places',
+        'birthdateRange' => 'birthdate-range',
 
         // Convert old "calsum" path to "calendar-summary"
         '/\/calsum/' => '/calendar-summary',
