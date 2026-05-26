@@ -524,9 +524,9 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->put('{eventId}/audience/', UpdateAudienceRequestHandler::class);
             $routeGroup->post('{eventId}/copies/', CopyEventRequestHandler::class);
             $routeGroup->put('{eventId}/faqs/', UpdateFaqsRequestHandler::class);
-            $routeGroup->put('{eventId}/departurePlaces/', UpdateDeparturePlacesRequestHandler::class);
-            $routeGroup->put('{eventId}/birthdateRange/', UpdateBirthdateRangeRequestHandler::class);
-            $routeGroup->delete('{eventId}/birthdateRange/', DeleteBirthdateRangeRequestHandler::class);
+            $routeGroup->put('{eventId}/departure-places/', UpdateDeparturePlacesRequestHandler::class);
+            $routeGroup->put('{eventId}/birthdate-range/', UpdateBirthdateRangeRequestHandler::class);
+            $routeGroup->delete('{eventId}/birthdate-range/', DeleteBirthdateRangeRequestHandler::class);
 
             /**
              * Legacy routes that we need to keep for backward compatibility.
