@@ -118,7 +118,7 @@ final class RemainingCapacityValidatingRequestBodyParserTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/bookingAvailability/remainingCapacity',
-                    'remainingCapacity is not valid on the top-level bookingAvailability.'
+                    'remainingCapacity is not supported on the top-level bookingAvailability..'
                 )
             ),
             fn () => $this->parser->parse($request)
@@ -145,7 +145,7 @@ final class RemainingCapacityValidatingRequestBodyParserTest extends TestCase
             ApiProblem::bodyInvalidData(
                 new SchemaError(
                     '/bookingAvailability/remainingCapacity',
-                    'remainingCapacity is not valid on the top-level bookingAvailability.'
+                    'remainingCapacity is not supported on the top-level bookingAvailability..'
                 )
             ),
             fn () => $this->parser->parse($request)

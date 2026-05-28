@@ -4186,7 +4186,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/bookingAvailability/remainingCapacity',
-                'remainingCapacity is not valid on the top-level bookingAvailability.'
+                'remainingCapacity is not supported on the top-level bookingAvailability..'
             ),
         ];
 
