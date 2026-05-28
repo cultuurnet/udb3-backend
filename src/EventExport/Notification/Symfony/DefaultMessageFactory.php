@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\EventExport\Notification\Swift;
+namespace CultuurNet\UDB3\EventExport\Notification\Symfony;
 
 use CultuurNet\UDB3\EventExport\EventExportResult;
 use CultuurNet\UDB3\EventExport\Notification\BodyFactoryInterface;
 use CultuurNet\UDB3\EventExport\Notification\SubjectFactoryInterface;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 class DefaultMessageFactory implements MessageFactoryInterface
 {
@@ -35,27 +37,16 @@ class DefaultMessageFactory implements MessageFactoryInterface
         $this->subjectFactory = $subjectFactory;
     }
 
-    public function createMessageFor(EmailAddress $address, EventExportResult $eventExportResult): \Swift_Message
+    public function createMessageFor(EmailAddress $address, EventExportResult $eventExportResult): Email
     {
-        $message = new \Swift_Message($this->subjectFactory->getSubjectFor($eventExportResult));
-        $message->setBody(
-            $this->htmlBodyFactory->getBodyFor(
-                $eventExportResult
-            ),
-            'text/html'
-        );
-        $message->addPart(
-            $this->plainTextBodyFactory->getBodyFor(
-                $eventExportResult
-            ),
-            'text/plain'
-        );
+        $sender = new Address($this->senderAddress, $this->senderName);
 
-        $message->addTo($address->toString());
-
-        $message->setSender($this->senderAddress, $this->senderName);
-        $message->setFrom($this->senderAddress, $this->senderName);
-
-        return $message;
+        return (new Email())
+            ->from($sender)
+            ->sender($sender)
+            ->to($address->toString())
+            ->subject($this->subjectFactory->getSubjectFor($eventExportResult))
+            ->text($this->plainTextBodyFactory->getBodyFor($eventExportResult))
+            ->html($this->htmlBodyFactory->getBodyFor($eventExportResult));
     }
 }
