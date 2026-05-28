@@ -19,7 +19,7 @@
   cpr:naam "%{name}"@nl ;
   foaf:homepage "https://www.%{name}.be" ;
   locn:address <http://data.uitdatabank.local:80/organizers/%{organizerId}#address-8b181138> ;
-  locn:geometry <http://data.uitdatabank.local:80/organizers/%{organizerId}#geometry-dbec4cfd> .
+  locn:geometry <http://data.uitdatabank.local:80/organizers/%{organizerId}#geometry-d23b87da> .
 
 <http://data.uitdatabank.local:80/organizers/%{organizerId}#identifier-%{identifier}>
   a adms:Identifier ;
@@ -40,6 +40,6 @@
   locn:postCode "1080" ;
   locn:locatorDesignator "41" .
 
-<http://data.uitdatabank.local:80/organizers/%{organizerId}#geometry-dbec4cfd>
+<http://data.uitdatabank.local:80/organizers/%{organizerId}#geometry-d23b87da>
   a locn:Geometry ;
-  geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>4.3380041, 50.8509352</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral .
+  geosparql:asGML "<gml:Point srsName='http://www.opengis.net/def/crs/OGC/1.3/CRS84'><gml:coordinates>4.3379987, 50.8509332</gml:coordinates></gml:Point>"^^geosparql:gmlLiteral .

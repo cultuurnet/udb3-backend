@@ -19,7 +19,7 @@ Feature: Test event departure places
       "%{departurePlaceUrl2}"
     ]
     """
-    And I send a PUT request to "%{eventUrl}/departurePlaces/"
+    And I send a PUT request to "%{eventUrl}/departure-places/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
     And the JSON response at "departurePlaces/0" should be "%{departurePlaceUrl1}"
@@ -33,7 +33,7 @@ Feature: Test event departure places
       "%{baseUrl}/place/%{departurePlaceId}"
     ]
     """
-    And I send a PUT request to "%{eventUrl}/departurePlaces/"
+    And I send a PUT request to "%{eventUrl}/departure-places/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
     And the JSON response at "departurePlaces/0" should be "%{baseUrl}/place/%{departurePlaceId}"
@@ -46,13 +46,13 @@ Feature: Test event departure places
       "%{departurePlaceUrl1}"
     ]
     """
-    And I send a PUT request to "%{eventUrl}/departurePlaces/"
+    And I send a PUT request to "%{eventUrl}/departure-places/"
     Then the response status should be "204"
     And I set the JSON request payload to:
     """
     []
     """
-    And I send a PUT request to "%{eventUrl}/departurePlaces/"
+    And I send a PUT request to "%{eventUrl}/departure-places/"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
     Then the JSON response should not have "departurePlaces"
@@ -65,7 +65,7 @@ Feature: Test event departure places
       "%{departurePlaceUrl1}"
     ]
     """
-    And I send a PUT request to "%{eventUrl}/departurePlaces/"
+    And I send a PUT request to "%{eventUrl}/departure-places/"
     Then the response status should be "400"
 
   Scenario: Reject departure places with non-existing place
@@ -77,7 +77,7 @@ Feature: Test event departure places
       "%{baseUrl}/places/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"
     ]
     """
-    And I send a PUT request to "%{eventUrl}/departurePlaces/"
+    And I send a PUT request to "%{eventUrl}/departure-places/"
     Then the response status should be "400"
 
   Scenario: Reject departure places exceeding the limit via PUT departurePlaces
@@ -108,7 +108,7 @@ Feature: Test event departure places
       "%{baseUrl}/places/00000000-0000-0000-0000-000000000021"
     ]
     """
-    And I send a PUT request to "%{eventUrl}/departurePlaces/"
+    And I send a PUT request to "%{eventUrl}/departure-places/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/error" should be "Array should have at most 20 items, 21 found"
 
@@ -126,7 +126,7 @@ Feature: Test event departure places
       "%{departurePlaceUrl1}"
     ]
     """
-    And I send a PUT request to "%{eventUrl}/departurePlaces/"
+    And I send a PUT request to "%{eventUrl}/departure-places/"
     Then the response status should be "204"
     And I set the JSON request payload to:
     """

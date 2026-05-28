@@ -19,7 +19,7 @@ Feature: Test birthdateRange on events
         """
         { "from": "2014-01-01", "to": "2020-12-31" }
         """
-    When I send a PUT request to "%{eventUrl}/birthdateRange"
+    When I send a PUT request to "%{eventUrl}/birthdate-range"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
     And the JSON response at "birthdateRange/from" should be "2014-01-01"
@@ -31,12 +31,12 @@ Feature: Test birthdateRange on events
         """
         { "from": "2014-01-01", "to": "2020-12-31" }
         """
-    And I send a PUT request to "%{eventUrl}/birthdateRange"
+    And I send a PUT request to "%{eventUrl}/birthdate-range"
     And I set the JSON request payload to:
         """
         { "from": "2015-01-01", "to": "2021-12-31" }
         """
-    When I send a PUT request to "%{eventUrl}/birthdateRange"
+    When I send a PUT request to "%{eventUrl}/birthdate-range"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
     And the JSON response at "birthdateRange/from" should be "2015-01-01"
@@ -48,8 +48,8 @@ Feature: Test birthdateRange on events
         """
         { "from": "2014-01-01", "to": "2020-12-31" }
         """
-    And I send a PUT request to "%{eventUrl}/birthdateRange"
-    When I send a DELETE request to "%{eventUrl}/birthdateRange"
+    And I send a PUT request to "%{eventUrl}/birthdate-range"
+    When I send a DELETE request to "%{eventUrl}/birthdate-range"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
     And the JSON response should not have "birthdateRange"
@@ -60,7 +60,7 @@ Feature: Test birthdateRange on events
         """
         { "from": "2020-12-31", "to": "2014-01-01" }
         """
-    When I send a PUT request to "%{eventUrl}/birthdateRange"
+    When I send a PUT request to "%{eventUrl}/birthdate-range"
     Then the response status should be "400"
     And the JSON response at "schemaErrors" should be:
     """
@@ -78,7 +78,7 @@ Feature: Test birthdateRange on events
         """
         { "from": 1609372800, "to": "1 January 2024" }
         """
-    When I send a PUT request to "%{eventUrl}/birthdateRange"
+    When I send a PUT request to "%{eventUrl}/birthdate-range"
     Then the response status should be "400"
     And the JSON response at "schemaErrors" should be:
     """
@@ -100,7 +100,7 @@ Feature: Test birthdateRange on events
         """
         { "from": "2020-12-31" }
         """
-    When I send a PUT request to "%{eventUrl}/birthdateRange"
+    When I send a PUT request to "%{eventUrl}/birthdate-range"
     Then the response status should be "400"
     And the JSON response at "schemaErrors" should be:
     """
@@ -118,7 +118,7 @@ Feature: Test birthdateRange on events
         """
         { "to": "2024-12-31" }
         """
-    When I send a PUT request to "%{eventUrl}/birthdateRange"
+    When I send a PUT request to "%{eventUrl}/birthdate-range"
     Then the response status should be "400"
     And the JSON response at "schemaErrors" should be:
     """

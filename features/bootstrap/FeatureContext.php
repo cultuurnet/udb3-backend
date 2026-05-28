@@ -105,6 +105,18 @@ final class FeatureContext implements Context
     }
 
     /**
+     * @BeforeScenario @negativeBoosting
+     */
+    public function skipNegativeBoostingIfConfigured(BeforeScenarioScope $scope): void
+    {
+        if ($this->config['skip_negative_boosting'] ?? false) {
+            throw new \Behat\Behat\Tester\Exception\PendingException(
+                'Negative boosting is not supported on this Elasticsearch version'
+            );
+        }
+    }
+
+    /**
      * @AfterScenario @testIsolation
      */
     public function afterScenarioTestIsolation(AfterScenarioScope $scope): void

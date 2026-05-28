@@ -36,6 +36,22 @@ trait EventSteps
     }
 
     /**
+     * @Given I create an event with name :name and save the :jsonPath as :variableName
+     */
+    public function iCreateAnEventWithNameAndSaveTheAs(string $name, string $jsonPath, string $variableName): void
+    {
+        $json = $this->fixtures->loadJson('/events/event-with-workflow-status-ready-for-validation.json', $this->variableState);
+        $data = Json::decodeAssociatively($json);
+        $data['name']['nl'] = $this->variableState->replaceVariables($name);
+        $this->createEvent(
+            '/events',
+            Json::encode($data),
+            $jsonPath,
+            $variableName
+        );
+    }
+
+    /**
      * @When I update the event at :url from :fileName
      */
     public function iUpdateTheEventAtFrom(string $url, string $fileName): void

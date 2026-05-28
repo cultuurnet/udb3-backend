@@ -1,11 +1,9 @@
 {
   "mainLanguage": "nl",
-  "name": {"nl": "Event met kinderopvang"},
+  "name": {"nl": "Multiple event met kinderopvang"},
   "terms": [{"id": "0.50.4.0.0", "label": "Concert", "domain": "eventtype"}],
   "location": {"@id": "%{placeUrl}"},
-  "calendarType": "single",
-  "startDate": "%{startDate}",
-  "endDate": "%{endDate}",
+  "calendarType": "multiple",
   "subEvent": [
     {
       "startDate": "%{startDate}",
@@ -14,6 +12,10 @@
         "start": "%{childcareStart}",
         "end": "%{childcareEnd}"
       }
+    },
+    {
+      "startDate": "%{startDate2}",
+      "endDate": "%{endDate2}"
     }
   ]
 }

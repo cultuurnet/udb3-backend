@@ -18,6 +18,9 @@ final class RequestState
     private string $json = '';
     private array $form = [];
 
+    private string $lastGetUrl = '';
+    private array $lastGetParams = [];
+
     public function getBaseUrl(): string
     {
         return $this->baseUrl;
@@ -115,5 +118,25 @@ final class RequestState
     public function setForm(array $form): void
     {
         $this->form = $form;
+    }
+
+    public function getLastGetUrl(): string
+    {
+        return $this->lastGetUrl;
+    }
+
+    public function setLastGetUrl(string $url): void
+    {
+        $this->lastGetUrl = $url;
+    }
+
+    public function getLastGetParams(): array
+    {
+        return $this->lastGetParams;
+    }
+
+    public function setLastGetParams(array $params): void
+    {
+        $this->lastGetParams = $params;
     }
 }

@@ -605,8 +605,8 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 'data' => [
                     (object)[
                         'id' => 0,
-                        'startDate' => '2020-01-01T10:00:00+00:00',
-                        'endDate' => '2020-01-01T12:00:00+00:00',
+                        'startDate' => '2020-01-01T10:00:00+01:00',
+                        'endDate' => '2020-01-01T12:00:00+01:00',
                         'childcare' => (object)['start' => '10:00', 'end' => '23:00'],
                     ],
                 ],
