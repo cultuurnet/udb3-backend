@@ -123,6 +123,14 @@ class LegacyPathRewriterTest extends TestCase
                 'original' => '/events/8a5fcfae-e698-437a-87a5-32cd4ac61076/typicalAgeRange',
                 'rewrite' => '/events/8a5fcfae-e698-437a-87a5-32cd4ac61076/typical-age-range/',
             ],
+            'event_update_departure_places_camel_case_to_kebab_case_and_trailing_slash' => [
+                'original' => '/events/8a5fcfae-e698-437a-87a5-32cd4ac61076/departurePlaces',
+                'rewrite' => '/events/8a5fcfae-e698-437a-87a5-32cd4ac61076/departure-places/',
+            ],
+            'event_update_birthdate_range_camel_case_to_kebab_case_and_trailing_slash' => [
+                'original' => '/events/8a5fcfae-e698-437a-87a5-32cd4ac61076/birthdateRange',
+                'rewrite' => '/events/8a5fcfae-e698-437a-87a5-32cd4ac61076/birthdate-range/',
+            ],
             'event_uitpas_card_systems_camel_case_to_kebab_case_and_trailing_slash' => [
                 'original' => '/uitpas/events/08a70475-4ffe-44b9-b0b9-256c82e7d747/cardSystems',
                 'rewrite' => '/uitpas/events/08a70475-4ffe-44b9-b0b9-256c82e7d747/card-systems/',
