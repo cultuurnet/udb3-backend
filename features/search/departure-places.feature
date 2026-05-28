@@ -3,8 +3,7 @@ Feature: Test departure places in search results
 
   Background:
     Given I am using the UDB3 base URL
-    And I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider user "centraal_beheerder"
+    And I am authorized with an OAuth client access token for "boa_client"
     And I send and accept "application/json"
     And I create a minimal place and save the "url" as "placeUrl"
 
@@ -21,8 +20,9 @@ Feature: Test departure places in search results
       "%{departurePlaceUrl2}"
     ]
     """
-    And I send a PUT request to "/events/%{eventId}/departurePlaces/"
+    And I send a PUT request to "/events/%{eventId}/departure-places/"
     And I am using the Search API v3 base URL
+    And I am using a x-client-id header for client "boa_client"
     And I send a GET request to "/events" with parameters:
       | embed                 | true          |
       | disableDefaultFilters | true          |
@@ -47,15 +47,16 @@ Feature: Test departure places in search results
     """
     ["%{departurePlaceUrl1}", "%{departurePlaceUrl3}", "%{departurePlaceUrl4}"]
     """
-    And I send a PUT request to "/events/%{eventId1}/departurePlaces/"
+    And I send a PUT request to "/events/%{eventId1}/departure-places/"
     And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId2"
     And I publish the event at "/events/%{eventId2}"
     And I set the JSON request payload to:
     """
     ["%{departurePlaceUrl2}", "%{departurePlaceUrl4}"]
     """
-    And I send a PUT request to "/events/%{eventId2}/departurePlaces/"
+    And I send a PUT request to "/events/%{eventId2}/departure-places/"
     And I am using the Search API v3 base URL
+    And I am using a x-client-id header for client "boa_client"
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                                 |
       | q                     | departurePlaces:%{departurePlaceId1} |
@@ -101,15 +102,16 @@ Feature: Test departure places in search results
     """
     ["%{departurePlaceUrl1}"]
     """
-    And I send a PUT request to "/events/%{eventId1}/departurePlaces/"
+    And I send a PUT request to "/events/%{eventId1}/departure-places/"
     And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId2"
     And I publish the event at "/events/%{eventId2}"
     And I set the JSON request payload to:
     """
     ["%{departurePlaceUrl2}"]
     """
-    And I send a PUT request to "/events/%{eventId2}/departurePlaces/"
+    And I send a PUT request to "/events/%{eventId2}/departure-places/"
     And I am using the Search API v3 base URL
+    And I am using a x-client-id header for client "boa_client"
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                  |
       | departurePlaces[]     | %{departurePlaceId1}  |
@@ -128,15 +130,16 @@ Feature: Test departure places in search results
     """
     ["%{departurePlaceUrl1}", "%{departurePlaceUrl2}"]
     """
-    And I send a PUT request to "/events/%{eventId1}/departurePlaces/"
+    And I send a PUT request to "/events/%{eventId1}/departure-places/"
     And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId2"
     And I publish the event at "/events/%{eventId2}"
     And I set the JSON request payload to:
     """
     ["%{departurePlaceUrl1}"]
     """
-    And I send a PUT request to "/events/%{eventId2}/departurePlaces/"
+    And I send a PUT request to "/events/%{eventId2}/departure-places/"
     And I am using the Search API v3 base URL
+    And I am using a x-client-id header for client "boa_client"
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                  |
       | departurePlaces[]     | %{departurePlaceId1}  |
