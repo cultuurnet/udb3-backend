@@ -54,16 +54,16 @@ feature-tag:
 	docker compose exec php composer feature -- --tags $(tag)
 
 feature-ci:
-	docker compose exec php composer feature -- --tags "~@init&&~@external" -f pretty -o std -f junit -o output/junit
+	docker compose exec php composer feature -- --tags "~@init&&~@external&&~@wip" -f pretty -o std -f junit -o output/junit
 
 feature:
-	docker compose exec php composer feature -- --tags "~@init&&~@external"
+	docker compose exec php composer feature -- --tags "~@init&&~@external&&~@wip"
 
 feature-filter:
 	docker compose exec php composer feature -- $(path)
 
 feature-random:
-	docker compose exec php composer feature -- --order=random --tags "~@init&&~@external"
+	docker compose exec php composer feature -- --order=random --tags "~@init&&~@external&&~@wip"
 
 rector:
 	docker compose exec php composer rector

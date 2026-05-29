@@ -86,8 +86,8 @@ Feature: Test the Search API v3 boa feature
     %{otherChildrenOnlyEventId}
     """
 
-  # Todo: this test cannot work till PK-476 is done, so in the meantime it is marked as external
-  @external
+  # Todo: this test cannot work till PK-476 is done, so in the meantime it is marked as wip
+  @wip
   Scenario: When I have the boa scope I can search for all children only events
     When I am authorized with an OAuth client access token for "boa_client"
     And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "myChildrenOnlyEventId"
