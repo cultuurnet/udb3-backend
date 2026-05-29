@@ -49,7 +49,7 @@ The most important guideline when reviewing API-related changes (controllers, re
 Treat the following as breaking changes and flag them:
 - Renaming or removing an API endpoint, or changing its HTTP method
 - Renaming, removing or restructuring a field in a request or response body
-- Changing te type of a field's value
+- Changing the type of a field's value
 - Changing values that integrators match on, such as:
     - UUID-based identifiers (e.g. `id`, `cdbid`, `organizerId`, `placeId`, `labelId`, `mediaObjectId`, `productionId`, `ownershipId`, `userId`).
     - Enum values (e.g. `workflowStatus`, `audienceType`, `calendarType`, `attendanceMode`, `bookingAvailability`, `status`, `eventStatus`, `availabilityType`, `role`, `permission`).
