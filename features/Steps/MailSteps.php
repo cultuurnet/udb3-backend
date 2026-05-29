@@ -27,8 +27,8 @@ trait MailSteps
         assertEquals($to, $mailobject->getTo()->getByIndex(0)->toString());
         assertEquals($subject, $mailobject->getSubject());
         assertStringMatchesFormat(
-            $this->fixtures->loadMail($messageType, $this->variableState),
-            $mailobject->getContent()
+            rtrim($this->fixtures->loadMail($messageType, $this->variableState)),
+            rtrim(str_replace("\r\n", "\n", $mailobject->getContent()))
         );
     }
 

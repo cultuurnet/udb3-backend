@@ -2,20 +2,21 @@
 
 declare(strict_types=1);
 
-namespace CultuurNet\UDB3\EventExport\Notification\Swift;
+namespace CultuurNet\UDB3\EventExport\Notification\Symfony;
 
 use CultuurNet\UDB3\EventExport\EventExportResult;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use Symfony\Component\Mailer\MailerInterface;
 
 class NotificationMailer implements NotificationMailerInterface
 {
-    private \Swift_Mailer $mailer;
+    private MailerInterface $mailer;
 
     private MessageFactoryInterface $messageFactory;
 
     public function __construct(
-        \Swift_Mailer $mailer,
+        MailerInterface $mailer,
         MessageFactoryInterface $mailFactory
     ) {
         $this->mailer = $mailer;
@@ -28,8 +29,6 @@ class NotificationMailer implements NotificationMailerInterface
     ): void {
         $message = $this->messageFactory->createMessageFor($address, $eventExportResult);
 
-        $sent = $this->mailer->send($message);
-
-        print 'sent ' . $sent . ' e-mails' . PHP_EOL;
+        $this->mailer->send($message);
     }
 }
