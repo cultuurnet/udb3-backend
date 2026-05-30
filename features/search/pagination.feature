@@ -96,3 +96,16 @@ Feature: Test the Search API v3 pagination and sorting
     When I send a GET request to "/offers" with parameters:
       | sort[score] | desc |
     Then the response status should be "200"
+
+  # https://jira.publiq.be/browse/III-7057
+  Scenario: Sort by recommendationScore without recommendationFor returns error
+    When I send a GET request to "/offers" with parameters:
+      | sort[recommendationScore] | desc |
+    Then the response status should be "404"
+
+  # https://jira.publiq.be/browse/III-7057
+  Scenario: Sort by recommendationScore with recommendationFor returns results
+    When I send a GET request to "/offers" with parameters:
+      | sort[recommendationScore] | desc                                 |
+      | recommendationFor         | fe14f27d-01ea-4646-b53d-6de6fd6890fe |
+    Then the response status should be "200"
