@@ -12,9 +12,12 @@ Feature: Test creating places
     When I publish the place at "/places/%{originalPlaceId}"
     And I wait for the place with url "/places/%{originalPlaceId}" to be indexed
     And I reject the place at "/places/%{originalPlaceId}" with reason "Rejected"
-    And I send a GET request to "/places" with parameters:
-      | q | id:%{originalPlaceId} |
-    And I wait for the JSON response at "totalItems" to be "0"
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/places" with parameters:
+      | workflowStatus | REJECTED              |
+      | q              | id:%{originalPlaceId} |
+    And I wait for the JSON response at "totalItems" to be "1"
+    And I am using the UDB3 base URL
     And I create a minimal place then I should get a "201" response code
 
   Scenario: Be prevented from creating a new place if we already have one on that address
