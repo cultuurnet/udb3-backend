@@ -146,7 +146,6 @@ Feature: Test the Search API v3 advanced queries on offers
 
   Scenario: Search for multiple terms using an advanced query
     When I create a minimal place and save the "id" as "placeId"
-    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
@@ -545,7 +544,6 @@ Feature: Test the Search API v3 advanced queries on offers
 
   Scenario: Search for booking availability using an advanced query
     When I create a minimal place and save the "id" as "placeId"
-    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-unavailable-sub-events.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I publish the event at "/events/%{eventId}"
@@ -997,7 +995,6 @@ Feature: Test the Search API v3 advanced queries on offers
 
   Scenario: Search for workflow status using an advanced query
     When I create a minimal place and save the "id" as "placeId"
-    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
@@ -1014,7 +1011,6 @@ Feature: Test the Search API v3 advanced queries on offers
 
   Scenario: Search for duplicate status using an advanced query
     When I create a minimal place and save the "id" as "placeId"
-    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
@@ -1033,7 +1029,6 @@ Feature: Test the Search API v3 advanced queries on offers
 
   Scenario: Search for creator using an advanced query
     When I create a minimal place and save the "id" as "placeId"
-    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
@@ -1050,7 +1045,6 @@ Feature: Test the Search API v3 advanced queries on offers
 
   Scenario: Search for videos count using an advanced query
     When I create a minimal place and save the "id" as "placeId"
-    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-videos.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
     And I am using the Search API v3 base URL
@@ -1067,7 +1061,6 @@ Feature: Test the Search API v3 advanced queries on offers
 
   Scenario: Search for media objects count using an advanced query
     When I create a minimal place and save the "id" as "placeId"
-    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I set the form data properties to:
       | description     | logo |
