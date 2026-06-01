@@ -276,15 +276,12 @@ Feature: Test the Search API v3 advanced queries on organizers
       | language        | nl   |
     And I upload "file" from path "images/udb.jpg" to "/images/"
     And I keep the value of the JSON response at "imageId" as "imageId1"
-    And I keep the value of the JSON response at "@id" as "imageUrl1"
     And I set the form data properties to:
       | description     | logo2 |
       | copyrightHolder | me2   |
       | language        | nl    |
     And I upload "file" from path "images/udb.jpg" to "/images/"
     And I keep the value of the JSON response at "imageId" as "imageId2"
-    And I keep the value of the JSON response at "@id" as "imageUrl2"
-    Given I create a minimal organizer and save the "id" as "organizerId"
     And I create an organizer from "organizers/organizer-with-images.json" and save the "id" as "organizerId"
     And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I am using the Search API v3 base URL
