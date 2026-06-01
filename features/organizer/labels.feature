@@ -315,7 +315,7 @@ Feature: Test organizer labels property
     """
 
   @bugfix # https://jira.uitdatabank.be/browse/III-4652
-  Scenario: Create organizer with wrong invisible label
+  Scenario: Create organizer with new visible label
     Given I create an organizer from "organizers/labels/organizer-with-new-visible-label.json" and save the "url" as "organizerUrl"
     When I get the organizer at "%{organizerUrl}"
     And the JSON response at "labels" should be:
@@ -371,7 +371,7 @@ Feature: Test organizer labels property
     """
     And I send a PUT request to "%{organizerUrl}/labels/"
     Then the response status should be "204"
-    And I get the event at "%{organizerUrl}"
+    And I get the organizer at "%{organizerUrl}"
     And the JSON response at "labels" should be:
     """
     ["public-visible"]
@@ -396,7 +396,7 @@ Feature: Test organizer labels property
     """
     And I send a PUT request to "%{organizerUrl}/labels/"
     Then the response status should be "204"
-    And I get the event at "%{organizerUrl}"
+    And I get the organizer at "%{organizerUrl}"
     And the JSON response at "labels" should be:
     """
     ["public-visible", "private-visible"]
@@ -429,7 +429,7 @@ Feature: Test organizer labels property
     """
     And I send a PUT request to "%{organizerUrl}/labels/"
     Then the response status should be "204"
-    And I get the event at "%{organizerUrl}"
+    And I get the organizer at "%{organizerUrl}"
     And the JSON response at "labels" should be:
     """
     ["%{label3}", "public-visible"]
@@ -460,7 +460,7 @@ Feature: Test organizer labels property
     """
     And I send a PUT request to "%{organizerUrl}/labels/"
     Then the response status should be "204"
-    And I get the event at "%{organizerUrl}"
+    And I get the organizer at "%{organizerUrl}"
     And the JSON response at "labels" should be:
     """
     ["private-visible", "%{label1}", "public-visible"]
@@ -488,6 +488,6 @@ Feature: Test organizer labels property
     """
     And I send a PUT request to "%{organizerUrl}/labels/"
     Then the response status should be "204"
-    And I get the event at "%{organizerUrl}"
+    And I get the organizer at "%{organizerUrl}"
     And the JSON response should not have "labels"
     And the JSON response should not have "hiddenLabels"

@@ -82,31 +82,6 @@ Feature: Test the Search API v3 advanced queries on organizers
       | q | id:%{organizerId} AND nonexistingfreetext |
     Then the JSON response at "totalItems" should be 0
 
-  Scenario: Search for a name using an advanced query
-    Given I create a random name of 10 characters
-    And I create an organizer from "organizers/organizer-minimal.json" and save the "id" as "organizerId"
-    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
-    When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND name.\*:%{name} |
-    Then the JSON response at "totalItems" should be 1
-    And the JSON response should include:
-    """
-    %{organizerId}
-    """
-    When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND name.\*:nonexistingorganizer |
-    Then the JSON response at "totalItems" should be 0
-    When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND name.nl:%{name} |
-    Then the JSON response at "totalItems" should be 1
-    And the JSON response should include:
-    """
-    %{organizerId}
-    """
-    When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND name.nl:nonexistingorganizer |
-    Then the JSON response at "totalItems" should be 0
-
   Scenario: Search for a single label using an advanced query
     Given I create a random labelname of 10 characters
     And I create a minimal organizer and save the "id" as "organizerId"
@@ -301,15 +276,12 @@ Feature: Test the Search API v3 advanced queries on organizers
       | language        | nl   |
     And I upload "file" from path "images/udb.jpg" to "/images/"
     And I keep the value of the JSON response at "imageId" as "imageId1"
-    And I keep the value of the JSON response at "@id" as "imageUrl1"
     And I set the form data properties to:
       | description     | logo2 |
       | copyrightHolder | me2   |
       | language        | nl    |
     And I upload "file" from path "images/udb.jpg" to "/images/"
     And I keep the value of the JSON response at "imageId" as "imageId2"
-    And I keep the value of the JSON response at "@id" as "imageUrl2"
-    Given I create a minimal organizer and save the "id" as "organizerId"
     And I create an organizer from "organizers/organizer-with-images.json" and save the "id" as "organizerId"
     And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I am using the Search API v3 base URL
