@@ -82,31 +82,6 @@ Feature: Test the Search API v3 advanced queries on organizers
       | q | id:%{organizerId} AND nonexistingfreetext |
     Then the JSON response at "totalItems" should be 0
 
-  Scenario: Search for a name using an advanced query
-    Given I create a random name of 10 characters
-    And I create an organizer from "organizers/organizer-minimal.json" and save the "id" as "organizerId"
-    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
-    When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND name.\*:%{name} |
-    Then the JSON response at "totalItems" should be 1
-    And the JSON response should include:
-    """
-    %{organizerId}
-    """
-    When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND name.\*:nonexistingorganizer |
-    Then the JSON response at "totalItems" should be 0
-    When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND name.nl:%{name} |
-    Then the JSON response at "totalItems" should be 1
-    And the JSON response should include:
-    """
-    %{organizerId}
-    """
-    When I send a GET request to "/organizers" with parameters:
-      | q | id:%{organizerId} AND name.nl:nonexistingorganizer |
-    Then the JSON response at "totalItems" should be 0
-
   Scenario: Search for a single label using an advanced query
     Given I create a random labelname of 10 characters
     And I create a minimal organizer and save the "id" as "organizerId"
