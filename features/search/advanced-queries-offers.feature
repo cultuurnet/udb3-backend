@@ -496,7 +496,6 @@ Feature: Test the Search API v3 advanced queries on offers
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
-    And I create a random name of 10 characters
     And I set the JSON request payload to:
     """
     {
