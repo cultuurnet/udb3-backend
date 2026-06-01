@@ -41,10 +41,9 @@ Feature: Test the Search API v3 advanced queries on organizers
     { "description": "%{description}" }
     """
     And I send a PUT request to "/organizers/%{organizerId}/description/nl"
-    And I wait 2 seconds
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND description.\*:%{description} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{organizerId}
@@ -72,10 +71,9 @@ Feature: Test the Search API v3 advanced queries on organizers
     { "description": "%{freeText}" }
     """
     And I send a PUT request to "/organizers/%{organizerId}/description/nl"
-    And I wait 2 seconds
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND %{freeText} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{organizerId}
@@ -113,11 +111,10 @@ Feature: Test the Search API v3 advanced queries on organizers
     Given I create a random labelname of 10 characters
     And I create a minimal organizer and save the "id" as "organizerId"
     And I send a PUT request to "/organizers/%{organizerId}/labels/%{labelname}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND labels:%{labelname} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{organizerId}
@@ -131,11 +128,10 @@ Feature: Test the Search API v3 advanced queries on organizers
     And I create a minimal organizer and save the "id" as "organizerId"
     And I send a PUT request to "/organizers/%{organizerId}/labels/%{labelname}"
     And I send a PUT request to "/organizers/%{organizerId}/labels/foobar"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND labels:(%{labelname} AND foobar) |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{organizerId}
@@ -271,11 +267,10 @@ Feature: Test the Search API v3 advanced queries on organizers
     ]
     """
     And I send a PUT request to "/organizers/%{organizerId}/contributors"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND contributors:%{contributorEmail} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{organizerId}
