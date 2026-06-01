@@ -16,6 +16,10 @@ Feature: Test the Search API v3 url parameters on offers
     And I create a random labelname of 10 characters
     And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
     And I send a PUT request to "/events/%{eventId}/labels/%{labelname}"
+    And I create a random string of 10 characters and keep it as "locationLabel"
+    And I send a PUT request to "/places/%{placeId}/labels/%{locationLabel}"
+    And I create a random string of 10 characters and keep it as "organizerLabel"
+    And I send a PUT request to "/organizers/%{organizerId}/labels/%{organizerLabel}"
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | labels | %{labelname} |
@@ -42,23 +46,15 @@ Feature: Test the Search API v3 url parameters on offers
     """
     %{eventId}
     """
-    When I am using the UDB3 base URL
-    And I create a random labelname of 10 characters
-    And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
-    And I am using the Search API v3 base URL
-    And I send a GET request to "/events" with parameters:
-      | locationLabels | %{labelname} |
+    When I send a GET request to "/events" with parameters:
+      | locationLabels | %{locationLabel} |
     And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
     """
-    When I am using the UDB3 base URL
-    And I create a random labelname of 10 characters
-    And I send a PUT request to "/organizers/%{organizerId}/labels/%{labelname}"
-    And I am using the Search API v3 base URL
-    And I send a GET request to "/events" with parameters:
-      | organizerLabels | %{labelname} |
+    When I send a GET request to "/events" with parameters:
+      | organizerLabels | %{organizerLabel} |
     And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
