@@ -31,7 +31,7 @@ Feature: Test the Search API v3 boa feature
     %{otherChildrenOnlyEventId}
     """
     And I send a GET request to "/events" with parameters:
-      | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId}) |
+      | q | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId}) |
     And I wait for the JSON response at "totalItems" to be "0"
     And the JSON response should not include:
     """
