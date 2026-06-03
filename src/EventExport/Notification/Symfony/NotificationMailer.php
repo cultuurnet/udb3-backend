@@ -5,30 +5,43 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Notification\Symfony;
 
 use CultuurNet\UDB3\EventExport\EventExportResult;
+use CultuurNet\UDB3\EventExport\Notification\BodyFactoryInterface;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
+use CultuurNet\UDB3\EventExport\Notification\SubjectFactoryInterface;
+use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use Symfony\Component\Mailer\MailerInterface;
 
 class NotificationMailer implements NotificationMailerInterface
 {
-    private MailerInterface $mailer;
+    private Mailer $mailer;
 
-    private MessageFactoryInterface $messageFactory;
+    private BodyFactoryInterface $plainTextBodyFactory;
+
+    private BodyFactoryInterface $htmlBodyFactory;
+
+    private SubjectFactoryInterface $subjectFactory;
 
     public function __construct(
-        MailerInterface $mailer,
-        MessageFactoryInterface $mailFactory
+        Mailer $mailer,
+        BodyFactoryInterface $plainTextBodyFactory,
+        BodyFactoryInterface $htmlBodyFactory,
+        SubjectFactoryInterface $subjectFactory
     ) {
         $this->mailer = $mailer;
-        $this->messageFactory = $mailFactory;
+        $this->plainTextBodyFactory = $plainTextBodyFactory;
+        $this->htmlBodyFactory = $htmlBodyFactory;
+        $this->subjectFactory = $subjectFactory;
     }
 
     public function sendNotificationMail(
         EmailAddress $address,
         EventExportResult $eventExportResult
     ): void {
-        $message = $this->messageFactory->createMessageFor($address, $eventExportResult);
-
-        $this->mailer->send($message);
+        $this->mailer->send(
+            $address,
+            $this->subjectFactory->getSubjectFor($eventExportResult),
+            $this->htmlBodyFactory->getBodyFor($eventExportResult),
+            $this->plainTextBodyFactory->getBodyFor($eventExportResult)
+        );
     }
 }
