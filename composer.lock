@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "219a22f7f36c6ca118ff6ebbfda618c3",
+    "content-hash": "83fc8f02b6286e2c13e59d02066eb1fe",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6086,19 +6086,18 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-main",
+            "version": "dev-III-7134/add-capacity-to-places",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "4df3bd56d2ef1f97f535becc9bd8c8fb8af1844d"
+                "reference": "240f76b741df18035bd6456d7a19cd8ec9ea39ee"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/4df3bd56d2ef1f97f535becc9bd8c8fb8af1844d",
-                "reference": "4df3bd56d2ef1f97f535becc9bd8c8fb8af1844d",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/240f76b741df18035bd6456d7a19cd8ec9ea39ee",
+                "reference": "240f76b741df18035bd6456d7a19cd8ec9ea39ee",
                 "shasum": ""
             },
-            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6113,9 +6112,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7134/add-capacity-to-places"
             },
-            "time": "2026-05-07T13:48:14+00:00"
+            "time": "2026-06-03T13:55:51+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -12740,6 +12739,6 @@
         "ext-tidy": "*",
         "ext-xmlreader": "*"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
 }
