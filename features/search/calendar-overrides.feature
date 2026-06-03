@@ -102,11 +102,12 @@ Feature: Test that closed days are excluded from calendar search results
     And the JSON response at "totalItems" should be 1
 
   Scenario: Periodic place closed day is excluded from search results
+    And I create a random name of 10 characters
     When I set the JSON request payload to:
     """
     {
       "mainLanguage": "nl",
-      "name": {"nl": "Periodieke locatie met gesloten dag"},
+      "name": {"nl": "%{name}"},
       "terms": [{"id": "Yf4aZBfsUEu2NsQqsprngw"}],
       "address": {"nl": {"addressCountry": "BE", "addressLocality": "Leuven", "postalCode": "3000", "streetAddress": "Bondgenotenlaan 1"}},
       "calendarType": "periodic",
@@ -149,11 +150,12 @@ Feature: Test that closed days are excluded from calendar search results
     And the JSON response at "totalItems" should be 1
 
   Scenario: Permanent place closed day is excluded from search results
+    And I create a random name of 10 characters
     When I set the JSON request payload to:
     """
     {
       "mainLanguage": "nl",
-      "name": {"nl": "Permanente locatie met gesloten dag"},
+      "name": {"nl": "%{name}"},
       "terms": [{"id": "Yf4aZBfsUEu2NsQqsprngw"}],
       "address": {"nl": {"addressCountry": "BE", "addressLocality": "Leuven", "postalCode": "3000", "streetAddress": "Bondgenotenlaan 1"}},
       "calendarType": "permanent",
@@ -241,11 +243,12 @@ Feature: Test that closed days are excluded from calendar search results
     And the JSON response at "totalItems" should be 1
 
   Scenario: Periodic place multi-day closed range is excluded from search results
+    And I create a random name of 10 characters
     When I set the JSON request payload to:
     """
     {
       "mainLanguage": "nl",
-      "name": {"nl": "Periodieke locatie met gesloten periode"},
+      "name": {"nl": "%{name}"},
       "terms": [{"id": "Yf4aZBfsUEu2NsQqsprngw"}],
       "address": {"nl": {"addressCountry": "BE", "addressLocality": "Leuven", "postalCode": "3000", "streetAddress": "Bondgenotenlaan 1"}},
       "calendarType": "periodic",
