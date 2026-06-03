@@ -778,6 +778,25 @@ final class CalendarDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_defaults_to_available_booking_availability_for_a_periodic_calendar_without_explicit_value(): void
+    {
+        $data = [
+            'calendarType' => 'periodic',
+            'startDate' => '2024-01-01T00:00:00+00:00',
+            'endDate' => '2024-12-31T23:59:59+00:00',
+            'openingHours' => [],
+        ];
+
+        /** @var PeriodicCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PeriodicCalendar::class, $result);
+        $this->assertEquals(BookingAvailability::Available(), $result->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
     public function it_denormalizes_a_periodic_calendar_with_closed_days(): void
     {
         $data = [
