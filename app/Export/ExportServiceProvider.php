@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Export;
 
-use CultuurNet\UDB3\EventExport\Notification\Symfony\DefaultMessageFactory;
-use CultuurNet\UDB3\EventExport\Notification\DefaultPlainTextBodyFactory;
-use CultuurNet\UDB3\EventExport\Notification\DefaultHTMLBodyFactory;
-use CultuurNet\UDB3\EventExport\Notification\LiteralSubjectFactory;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -18,17 +14,19 @@ use CultuurNet\UDB3\EventExport\EventExportService;
 use CultuurNet\UDB3\EventExport\Format\HTML\Twig\GoogleMapUrlGenerator;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\CultureFeedEventInfoService;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Promotion\EventOrganizerPromotionQueryFactory;
+use CultuurNet\UDB3\EventExport\Notification\DefaultHTMLBodyFactory;
+use CultuurNet\UDB3\EventExport\Notification\DefaultPlainTextBodyFactory;
+use CultuurNet\UDB3\EventExport\Notification\LiteralSubjectFactory;
 use CultuurNet\UDB3\EventExport\Notification\Symfony\NotificationMailer;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use Psr\Log\LoggerAwareInterface;
-use Symfony\Component\Mailer\Mailer as SymfonyMailer;
-use Symfony\Component\Mailer\Transport;
 use Twig_Environment;
 use Twig_Extensions_Extension_Text;
 
@@ -43,7 +41,6 @@ final class ExportServiceProvider extends AbstractServiceProvider
             ExportEventsAsJsonLdRequestHandler::class,
             ExportEventsAsOoXmlRequestHandler::class,
             ExportEventsAsPdfRequestHandler::class,
-            'event_export_notification_mail_factory',
         ];
     }
 
@@ -90,8 +87,12 @@ final class ExportServiceProvider extends AbstractServiceProvider
                         }
                     ),
                     new NotificationMailer(
-                        new SymfonyMailer(Transport::fromDsn($container->get('config')['mail']['smtp'])),
-                        $container->get('event_export_notification_mail_factory'),
+                        $container->get(Mailer::class),
+                        new DefaultPlainTextBodyFactory(),
+                        new DefaultHTMLBodyFactory(),
+                        new LiteralSubjectFactory(
+                            $container->get('config')['export']['mail']['subject']
+                        ),
                     ),
                     new ResultsGenerator(
                         $searchService,
@@ -149,19 +150,6 @@ final class ExportServiceProvider extends AbstractServiceProvider
             function () use ($container): ExportEventsAsPdfRequestHandler {
                 return new ExportEventsAsPdfRequestHandler($container->get('event_export_command_bus'));
             }
-        );
-
-        $container->addShared(
-            'event_export_notification_mail_factory',
-            fn () => new DefaultMessageFactory(
-                new DefaultPlainTextBodyFactory(),
-                new DefaultHTMLBodyFactory(),
-                new LiteralSubjectFactory(
-                    $container->get('config')['export']['mail']['subject']
-                ),
-                $container->get('config')['mail']['sender']['address'],
-                $container->get('config')['mail']['sender']['name']
-            )
         );
     }
 }
