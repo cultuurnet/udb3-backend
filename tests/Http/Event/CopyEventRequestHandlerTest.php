@@ -509,6 +509,7 @@ class CopyEventRequestHandlerTest extends TestCase
                             )
                         )
                     )
+                    ->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ],
             'periodic_with_openingHours' => [
@@ -590,6 +591,7 @@ class CopyEventRequestHandlerTest extends TestCase
                                 )
                             )
                         )
+                        ->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ],
             'permanent_with_openingHours' => [

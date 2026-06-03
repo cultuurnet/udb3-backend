@@ -147,6 +147,10 @@ final class CalendarDenormalizer implements DenormalizerInterface
             $calendar = $calendar->withStatus($topLevelStatus);
         }
 
+        if ($calendar instanceof PermanentCalendar || $calendar instanceof PeriodicCalendar) {
+            $calendar = $calendar->withBookingAvailability($topLevelBookingAvailability);
+        }
+
         return $calendar;
     }
 
