@@ -29,6 +29,6 @@ final class Fixtures
     public function loadMail(string $mailType, VariableState $variableState): string
     {
         $mail = file_get_contents(__DIR__ . '/../data/mails/' . $mailType . '.txt');
-        return $variableState->replaceVariables($mail);
+        return rtrim($variableState->replaceVariables($mail));
     }
 }
