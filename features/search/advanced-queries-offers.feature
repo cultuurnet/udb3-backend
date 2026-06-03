@@ -14,11 +14,10 @@ Feature: Test the Search API v3 advanced queries on offers
     And I create a random labelname of 10 characters
     And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
     And I send a PUT request to "/events/%{eventId}/labels/%{labelname}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | labels:%{labelname} |
-    Then the JSON response at "totalItems" should be 2
+    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -44,11 +43,10 @@ Feature: Test the Search API v3 advanced queries on offers
     When I am using the UDB3 base URL
     And I create a random labelname of 10 characters
     And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | location.labels:%{labelname} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -112,11 +110,10 @@ Feature: Test the Search API v3 advanced queries on offers
     And I send a PUT request to "/events/%{eventId}/labels/%{labelname}"
     And I send a PUT request to "/places/%{placeId}/labels/foobar"
     And I send a PUT request to "/events/%{eventId}/labels/foobar"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | labels:(%{labelname} AND foobar) |
-    Then the JSON response at "totalItems" should be 2
+    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -511,11 +508,10 @@ Feature: Test the Search API v3 advanced queries on offers
     """
     And I send a PUT request to "/places/%{placeId}/status"
     And I send a PUT request to "/events/%{eventId}/status"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND status:TemporarilyUnavailable |
-    Then the JSON response at "totalItems" should be 2
+    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -554,13 +550,12 @@ Feature: Test the Search API v3 advanced queries on offers
     And I create an event from "events/event-with-unavailable-sub-events.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | availableTo   | *                                                                 |
       | availableFrom | *                                                                 |
       | q             | id:(%{placeId} OR %{eventId}) AND bookingAvailability:Unavailable |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -753,13 +748,12 @@ Feature: Test the Search API v3 advanced queries on offers
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/event-with-single-calendar.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | availableTo   | *                                                                |
       | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[2021-01-01T00:00:00%2B01:00 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -824,11 +818,10 @@ Feature: Test the Search API v3 advanced queries on offers
     """
     And I send a PUT request to "/places/%{placeId}/description/nl"
     And I send a PUT request to "/events/%{eventId}/description/nl"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND "%{name}" |
-    Then the JSON response at "totalItems" should be 2
+    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -892,11 +885,10 @@ Feature: Test the Search API v3 advanced queries on offers
     And I keep the value of the JSON response at "id" as "organizerId"
     And I create an event from "events/event-minimal-permanent-with-organizer.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND organizer.id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -911,11 +903,10 @@ Feature: Test the Search API v3 advanced queries on offers
     And I keep the value of the JSON response at "id" as "organizerId"
     And I create an event from "events/event-minimal-permanent-with-organizer.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND organizer.name.nl:%{name} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -931,11 +922,10 @@ Feature: Test the Search API v3 advanced queries on offers
     And I send a PUT request to "%{organizerUrl}/labels/%{labelname}"
     And I create an event from "events/event-minimal-permanent-with-organizer.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND organizer.labels:%{labelname} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -975,7 +965,7 @@ Feature: Test the Search API v3 advanced queries on offers
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/audience-type/event-audience-type-members.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | audienceType | *                                      |
@@ -994,11 +984,10 @@ Feature: Test the Search API v3 advanced queries on offers
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/attendance-mode/event-with-attendance-mode-offline.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND attendanceMode:offline |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -1065,11 +1054,10 @@ Feature: Test the Search API v3 advanced queries on offers
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-videos.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND videosCount:[1 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -1093,11 +1081,10 @@ Feature: Test the Search API v3 advanced queries on offers
     { "mediaObjectId": "%{imageId}" }
     """
     And I send a POST request to "/events/%{eventId}/images"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND mediaObjectsCount:[1 TO *] |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}

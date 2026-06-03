@@ -55,7 +55,7 @@ Feature: Test the Search API v3 default filters on offers
     Given I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/audience-type/event-audience-type-members.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} |
@@ -126,11 +126,10 @@ Feature: Test the Search API v3 default filters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I reject the event at "/events/%{eventId}" with reason "Reject event"
     And I reject the place at "/places/%{placeId}" with reason "Rejected"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{eventId} OR %{placeId}) |
-    Then the JSON response at "totalItems" should be 0
+    And I wait for the JSON response at "totalItems" to be "0"
     When I send a GET request to "/offers" with parameters:
       | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
@@ -173,11 +172,10 @@ Feature: Test the Search API v3 default filters on offers
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I delete the event at "/events/%{eventId}"
     And I delete the place at "/places/%{placeId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{eventId} OR %{placeId}) |
-    Then the JSON response at "totalItems" should be 0
+    And I wait for the JSON response at "totalItems" to be "0"
     When I send a GET request to "/offers" with parameters:
       | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
@@ -218,20 +216,19 @@ Feature: Test the Search API v3 default filters on offers
     And I create an event from "events/event-with-single-calendar.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
-    When I send a GET request to "/events" with parameters:
-      | q | id:%{eventId} |
-    Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | availableFrom | *             |
       | availableTo   | *             |
       | q             | id:%{eventId} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
     """
+    When I send a GET request to "/events" with parameters:
+      | q | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 0
 
   Scenario: By default events with available from in the future should not be shown
     Given I create a minimal place and save the "id" as "placeId"
