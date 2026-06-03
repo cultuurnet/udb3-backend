@@ -10,7 +10,7 @@ Feature: Test places typicalAgeRange property
   Scenario: Places have a default typicalAgeRange of all ages
     When I create a place from "places/place.json" and save the "url" as "placeUrl"
     Then the response status should be "201"
-    And I get the event at "%{placeUrl}"
+    And I get the place at "%{placeUrl}"
     And the JSON response at "typicalAgeRange" should be "-"
 
   Scenario: Update place typical age range
