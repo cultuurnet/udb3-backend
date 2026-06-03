@@ -229,12 +229,11 @@ Feature: Test the Search API v3 url parameters on organizers
     Given I create a random labelname of 10 characters
     And I create a minimal organizer and save the "id" as "organizerId"
     And I send a PUT request to "/organizers/%{organizerId}/labels/%{labelname}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | labels | %{labelname}      |
       | q      | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{organizerId}
@@ -249,13 +248,12 @@ Feature: Test the Search API v3 url parameters on organizers
     And I create a minimal organizer and save the "id" as "organizerId"
     And I send a PUT request to "/organizers/%{organizerId}/labels/%{labelname}"
     And I send a PUT request to "/organizers/%{organizerId}/labels/foobar"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | labels[] | %{labelname}      |
       | labels[] | foobar            |
       | q        | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{organizerId}
@@ -284,12 +282,11 @@ Feature: Test the Search API v3 url parameters on organizers
     Then the JSON response at "totalItems" should be 0
     When I am using the UDB3 base URL
     And I delete the organizer at "/organizers/%{organizerId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | workflowStatus | DELETED           |
       | q              | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{organizerId}

@@ -16,11 +16,14 @@ Feature: Test the Search API v3 url parameters on offers
     And I create a random labelname of 10 characters
     And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
     And I send a PUT request to "/events/%{eventId}/labels/%{labelname}"
-    And I wait 2 seconds
+    And I create a random string of 10 characters and keep it as "locationLabel"
+    And I send a PUT request to "/places/%{placeId}/labels/%{locationLabel}"
+    And I create a random string of 10 characters and keep it as "organizerLabel"
+    And I send a PUT request to "/organizers/%{organizerId}/labels/%{organizerLabel}"
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | labels | %{labelname} |
-    Then the JSON response at "totalItems" should be 2
+    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -43,26 +46,16 @@ Feature: Test the Search API v3 url parameters on offers
     """
     %{eventId}
     """
-    When I am using the UDB3 base URL
-    And I create a random labelname of 10 characters
-    And I send a PUT request to "/places/%{placeId}/labels/%{labelname}"
-    And I wait 2 seconds
-    And I am using the Search API v3 base URL
-    And I send a GET request to "/events" with parameters:
-      | locationLabels | %{labelname} |
-    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | locationLabels | %{locationLabel} |
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
     """
-    When I am using the UDB3 base URL
-    And I create a random labelname of 10 characters
-    And I send a PUT request to "/organizers/%{organizerId}/labels/%{labelname}"
-    And I wait 2 seconds
-    And I am using the Search API v3 base URL
-    And I send a GET request to "/events" with parameters:
-      | organizerLabels | %{labelname} |
-    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | organizerLabels | %{organizerLabel} |
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -74,11 +67,10 @@ Feature: Test the Search API v3 url parameters on offers
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I create a minimal organizer and save the "id" as "organizerId"
     And I send a PUT request to "/events/%{eventId}/organizer/%{organizerId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | locationId | %{placeId} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -92,8 +84,7 @@ Feature: Test the Search API v3 url parameters on offers
     """
 
   Scenario: Search for a multiple labels using the common filter
-    When I create a random labelname of 10 characters
-    And I create a minimal place and save the "id" as "placeId"
+    When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I create a random labelname of 10 characters
@@ -101,12 +92,11 @@ Feature: Test the Search API v3 url parameters on offers
     And I send a PUT request to "/events/%{eventId}/labels/%{labelname}"
     And I send a PUT request to "/places/%{placeId}/labels/foobar"
     And I send a PUT request to "/events/%{eventId}/labels/foobar"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | labels[] | %{labelname} |
       | labels[] | foobar       |
-    Then the JSON response at "totalItems" should be 2
+    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -721,7 +711,6 @@ Feature: Test the Search API v3 url parameters on offers
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
-    And I create a random name of 10 characters
     And I set the JSON request payload to:
     """
     {
@@ -733,12 +722,11 @@ Feature: Test the Search API v3 url parameters on offers
     """
     And I send a PUT request to "/places/%{placeId}/status"
     And I send a PUT request to "/events/%{eventId}/status"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | status | TemporarilyUnavailable        |
       | q      | id:(%{placeId} OR %{eventId}) |
-    Then the JSON response at "totalItems" should be 2
+    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -778,18 +766,16 @@ Feature: Test the Search API v3 url parameters on offers
 
   Scenario: Search for booking availability using the common filters
     When I create a minimal place and save the "id" as "placeId"
-    And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-unavailable-sub-events.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | bookingAvailability | Unavailable                   |
       | availableTo         | *                             |
       | availableFrom       | *                             |
       | q                   | id:(%{placeId} OR %{eventId}) |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -1013,14 +999,13 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/event-with-single-calendar.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | dateFrom      | 2021-01-01T00:00:00%2B01:00 |
       | availableTo   | *                           |
       | availableFrom | *                           |
       | q             | id:(%{eventId})             |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -1092,12 +1077,11 @@ Feature: Test the Search API v3 url parameters on offers
     """
     And I send a PUT request to "/places/%{placeId}/description/nl"
     And I send a PUT request to "/events/%{eventId}/description/nl"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | text | %{name}                       |
       | q    | id:(%{placeId} OR %{eventId}) |
-    Then the JSON response at "totalItems" should be 2
+    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -1214,13 +1198,14 @@ Feature: Test the Search API v3 url parameters on offers
   Scenario: Search for offers using the creator filter
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | creator | edcee0f7-5906-4e92-8551-a7f5d37ba453 |
       | q       | id:(%{placeId} OR %{eventId})        |
-    Then the JSON response at "totalItems" should be 2
+    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -1262,7 +1247,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/audience-type/event-audience-type-members.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I wait 2 seconds
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | audienceType | members       |
@@ -1285,12 +1270,11 @@ Feature: Test the Search API v3 url parameters on offers
     And I publish the event at "/events/%{offLineEventId}"
     And I publish the event at "/events/%{mixedEventId}"
     And I publish the event at "/events/%{onlineEventId}"
-    And I wait 2 seconds
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | attendanceMode | offline                                                       |
       | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{offLineEventId}
