@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
@@ -23,6 +24,8 @@ final class GetJobStatusRequestHandlerTest extends TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->jobsStatusFactory = $this->createMock(JobsStatusFactory::class);
 
         $this->getJobStatusRequestHandler = new GetJobStatusRequestHandler($this->jobsStatusFactory);
@@ -45,6 +48,22 @@ final class GetJobStatusRequestHandlerTest extends TestCase
         $expectedResponse = new JsonResponse($jobStatus->toString());
 
         $this->assertJsonResponse($expectedResponse, $response);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_complete_for_nil_uuid(): void
+    {
+        $this->jobsStatusFactory->expects(self::never())->method('createFromJobId');
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('jobId', Uuid::NIL)
+            ->build('GET');
+
+        $response = $this->getJobStatusRequestHandler->handle($request);
+
+        $this->assertJsonResponse(new JsonResponse(JobStatus::complete()->toString()), $response);
     }
 
     /**

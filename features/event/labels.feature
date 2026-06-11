@@ -16,8 +16,6 @@ Feature: Test labelling events
     When I send a POST request to "/imports/events/"
     Then the response status should be "200"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -40,8 +38,6 @@ Feature: Test labelling events
     When I send a POST request to "/imports/events/"
     Then the response status should be "200"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -66,8 +62,6 @@ Feature: Test labelling events
     When I send a POST request to "/imports/events/"
     Then the response status should be "200"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -90,8 +84,6 @@ Feature: Test labelling events
     When I send a POST request to "/imports/events/"
     Then the response status should be "200"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -102,8 +94,6 @@ Feature: Test labelling events
     When I send a PUT request to "/imports/events/%{eventId}"
     Then the response status should be "200"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -126,8 +116,6 @@ Feature: Test labelling events
     When I send a POST request to "/imports/events/"
     Then the response status should be "200"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -144,8 +132,6 @@ Feature: Test labelling events
     When I send a PUT request to "/imports/events/%{eventId}"
     Then the response status should be "200"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -164,8 +150,6 @@ Feature: Test labelling events
     When I send a POST request to "/imports/events/"
     Then the response status should be "200"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a PUT request to "/events/%{eventId}/labels/udb3label"
     Then the response status should be "204"
@@ -187,8 +171,6 @@ Feature: Test labelling events
     When I send a PUT request to "/imports/events/%{eventId}"
     Then the response status should be "200"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -211,8 +193,6 @@ Feature: Test labelling events
     When I send a POST request to "/imports/events/"
     Then the response status should be "200"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
     And I wait for the event with url "/events/%{eventId}" to be indexed
 
     When I send a PUT request to "/events/%{eventId}/labels/public-visible"
@@ -239,8 +219,6 @@ Feature: Test labelling events
     When I send a PUT request to "/imports/events/%{eventId}"
     Then the response status should be "200"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -264,8 +242,6 @@ Feature: Test labelling events
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -286,8 +262,6 @@ Feature: Test labelling events
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -309,8 +283,6 @@ Feature: Test labelling events
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -332,8 +304,6 @@ Feature: Test labelling events
     When I send a POST request to "/events/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"

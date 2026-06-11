@@ -4102,6 +4102,100 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_accepts_remainingCapacity_inside_subEvent_bookingAvailability(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $given = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'single',
+            'startDate' => '2026-05-17T22:00:00+00:00',
+            'endDate' => '2026-05-17T22:00:00+00:00',
+            'subEvent' => [
+                [
+                    'id' => 0,
+                    'startDate' => '2026-05-17T22:00:00+00:00',
+                    'endDate' => '2026-05-17T22:00:00+00:00',
+                    'status' => [
+                        'type' => 'Available',
+                    ],
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                        'remainingCapacity' => 5,
+                    ],
+                ],
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray($given)
+            ->build('POST');
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
+        $response = $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_if_bookingAvailability_has_top_level_remainingCapacity(): void
+    {
+        $event = [
+            'mainLanguage' => 'nl',
+            'name' => [
+                'nl' => 'Pannenkoeken voor het goede doel',
+            ],
+            'terms' => [
+                [
+                    'id' => '1.50.0.0.0',
+                ],
+            ],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+            ],
+            'calendarType' => 'permanent',
+            'bookingAvailability' => [
+                'type' => 'Available',
+                'remainingCapacity' => 10,
+            ],
+        ];
+
+        $expectedErrors = [
+            new SchemaError(
+                '/bookingAvailability/remainingCapacity',
+                'remainingCapacity is not supported on the top-level bookingAvailability..'
+            ),
+        ];
+
+        $this->assertValidationErrors($event, $expectedErrors);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_if_organizer_id_is_invalid(): void
     {
         $event = [

@@ -17,8 +17,6 @@ Feature: Auto approving events
     Then the response status should be "201"
     And the response body should be valid JSON
     And I keep the value of the JSON response at "eventId" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -36,8 +34,6 @@ Feature: Auto approving events
     Then the response status should be "201"
     And the response body should be valid JSON
     And I keep the value of the JSON response at "eventId" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"
@@ -54,8 +50,6 @@ Feature: Auto approving events
     When I send a POST request to "/imports/events/"
     Then the response status should be "200"
     And I keep the value of the JSON response at "id" as "eventId"
-    And I keep the value of the JSON response at "commandId" as "commandId"
-    And I wait for the command with id "%{commandId}" to complete
 
     When I send a GET request to "events/%{eventId}"
     Then the response status should be "200"

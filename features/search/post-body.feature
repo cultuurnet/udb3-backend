@@ -8,6 +8,7 @@ Feature: Test the Search API v3 via POST requests
     And I send and accept "application/json"
     And I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I send "text/plain"

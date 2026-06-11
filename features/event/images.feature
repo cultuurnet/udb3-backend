@@ -153,7 +153,6 @@ Feature: Test event images property
     """
 
   Scenario: Create a new event with two valid and two non-existing images
-    Given I create a random name of 10 characters
     When I set the JSON request payload from "events/event-with-non-existing-images.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"
@@ -173,7 +172,6 @@ Feature: Test event images property
     """
 
   Scenario: Create a new event with two valid and two invalid images
-    Given I create a random name of 10 characters
     When I set the JSON request payload from "events/event-with-invalid-images.json"
     And I send a POST request to "/events/"
     Then the response status should be "400"

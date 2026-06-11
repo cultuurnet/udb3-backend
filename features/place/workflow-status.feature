@@ -14,7 +14,7 @@ Feature: Test place workflowStatus property
 
   Scenario: Publish place with specific availableFrom
     When I publish the place at "%{placeUrl}" with availableFrom "2222-10-23T12:32:15+01:00"
-    And I get the event at "%{placeUrl}"
+    And I get the place at "%{placeUrl}"
     Then the JSON response at "workflowStatus" should be "READY_FOR_VALIDATION"
     And the JSON response at "availableFrom" should be "2222-10-23T12:32:15+01:00"
 

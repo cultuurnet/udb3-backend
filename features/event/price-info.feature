@@ -42,7 +42,7 @@ Feature: Test event priceInfo property
     """
     And I send a PUT request to "%{eventUrl}/priceInfo"
     Then the response status should be "204"
-    When I get the place at "%{eventUrl}"
+    When I get the event at "%{eventUrl}"
     Then the JSON response at "priceInfo" should be:
     """
     [
@@ -100,7 +100,7 @@ Feature: Test event priceInfo property
     """
     And I send a PUT request to "%{eventUrl}/price-info"
     Then the response status should be "204"
-    When I get the place at "%{eventUrl}"
+    When I get the event at "%{eventUrl}"
     Then the JSON response at "priceInfo" should be:
     """
     [
