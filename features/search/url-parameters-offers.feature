@@ -791,13 +791,12 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
-    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I publish the event at "/events/%{eventId}"
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | calendarType | permanent                     |
       | q            | id:(%{placeId} OR %{eventId}) |
-    Then the JSON response at "totalItems" should be 2
+    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -1247,12 +1246,11 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/audience-type/event-audience-type-members.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | audienceType | members       |
       | q            | id:%{eventId} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -1286,7 +1284,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/events" with parameters:
       | attendanceMode | mixed                                                         |
       | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{mixedEventId}
@@ -1298,7 +1296,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/events" with parameters:
       | attendanceMode | online                                                        |
       | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
-    Then the JSON response at "totalItems" should be 1
+    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{onlineEventId}
