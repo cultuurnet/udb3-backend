@@ -231,7 +231,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
                     'copyrightHolder' => 'Creative Commons',
                     'inLanguage' => 'nl',
                 ],
-                ApiProblem::bodyInvalidData(new SchemaError('/contentUrl', 'The string should match pattern: ^http[s]?:\/\/')),
+                ApiProblem::bodyInvalidData(new SchemaError('/contentUrl', 'The string should match pattern: ^http[s]?:\/\/\w')),
             ],
             'missing description' => [
                 [
