@@ -178,4 +178,12 @@ Feature: Test place bookingAvailability property
     """
     When I send a PUT request to "%{placeUrl}/calendar"
     Then the response status should be "400"
-    And the JSON response at "type" should be "https://api.publiq.be/probs/body/invalid-data"
+    And the JSON response at "schemaErrors" should be:
+    """
+    [
+      {
+        "jsonPointer":"\/bookingAvailability\/capacity",
+        "error":"Number must be greater than or equal to 0"
+      }
+    ]
+    """
