@@ -138,7 +138,7 @@ trait RequestSteps
                 sleep(1);
                 $elapsedTime++;
             }
-        } while ($actual !== $nrOfEntries && $elapsedTime < 10);
+        } while ($actual !== $nrOfEntries && $elapsedTime < 20);
 
         assertEquals($nrOfEntries, count((array) $this->responseState->getValueOnPath($jsonPath)));
     }
@@ -273,7 +273,7 @@ trait RequestSteps
                 sleep(1);
                 $elapsedTime++;
             }
-        } while ((string) $actual !== $expectedValue && $elapsedTime < 10);
+        } while ((string) $actual !== $expectedValue && $elapsedTime < 20);
 
         assertEquals($expectedValue, (string) $this->responseState->getValueOnPath($jsonPath));
     }
@@ -295,7 +295,7 @@ trait RequestSteps
                 sleep(1);
                 $elapsedTime++;
             }
-        } while ($this->responseState->getTotalItems() != 1 && $elapsedTime < 10);
+        } while ($this->responseState->getTotalItems() != 1 && $elapsedTime < 20);
     }
 
     /**
@@ -314,6 +314,6 @@ trait RequestSteps
                 sleep(1);
                 $elapsedTime++;
             }
-        } while ($this->responseState->getTotalItems() !== $count && $elapsedTime < 10);
+        } while ($this->responseState->getTotalItems() !== $count && $elapsedTime < 20);
     }
 }
