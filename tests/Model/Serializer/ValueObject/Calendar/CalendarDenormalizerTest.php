@@ -797,7 +797,7 @@ final class CalendarDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_honors_explicit_unavailable_booking_availability_on_a_permanent_calendar(): void
+    public function it_honors_explicit_unavailable_booking_availability_on_a_permanent_calendar_for_an_event(): void
     {
         $data = [
             'calendarType' => 'permanent',
@@ -815,7 +815,7 @@ final class CalendarDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_honors_explicit_unavailable_booking_availability_on_a_periodic_calendar(): void
+    public function it_honors_explicit_unavailable_booking_availability_on_a_periodic_calendar_for_an_event(): void
     {
         $data = [
             'calendarType' => 'periodic',
