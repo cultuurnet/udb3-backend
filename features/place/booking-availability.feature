@@ -46,14 +46,7 @@ Feature: Test place bookingAvailability property
       "bookingAvailability": {
         "type": "Available",
         "capacity": 150
-      },
-      "openingHours": [
-        {
-          "dayOfWeek": ["monday", "tuesday"],
-          "opens": "09:00",
-          "closes": "17:00"
-        }
-      ]
+      }
     }
     """
     When I send a PUT request to "%{placeUrl}/calendar"
@@ -76,6 +69,27 @@ Feature: Test place bookingAvailability property
       "endDate": "2026-12-31T23:59:59+00:00",
       "bookingAvailability": {
         "type": "Available",
+        "capacity": 150
+      },
+      "openingHours": [
+        {
+          "dayOfWeek": ["monday", "tuesday"],
+          "opens": "09:00",
+          "closes": "17:00"
+        }
+      ]
+    }
+    """
+    And I send a PUT request to "%{placeUrl}/calendar"
+    Then the response status should be "204"
+    When I set the JSON request payload to:
+    """
+    {
+      "calendarType": "periodic",
+      "startDate": "2026-01-01T00:00:00+00:00",
+      "endDate": "2026-12-31T23:59:59+00:00",
+      "bookingAvailability": {
+        "type": "Available",
         "capacity": 75
       },
       "openingHours": [
@@ -87,7 +101,7 @@ Feature: Test place bookingAvailability property
       ]
     }
     """
-    When I send a PUT request to "%{placeUrl}/calendar"
+    And I send a PUT request to "%{placeUrl}/calendar"
     Then the response status should be "204"
     And I get the place at "%{placeUrl}"
     And the JSON response at "bookingAvailability" should be:
