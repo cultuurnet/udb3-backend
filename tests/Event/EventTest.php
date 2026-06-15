@@ -2476,6 +2476,111 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_preserves_sub_event_booking_info_when_updating_calendar_without_booking_info(): void
+    {
+        $bookingInfo = new BookingInfo(
+            new WebsiteLink(
+                new Url('https://www.domain.be/reservations/eventname'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('Reserveer plaatsen')
+                )
+            )
+        );
+
+        $oldDateRange1 = new DateRange(
+            new \DateTimeImmutable('2021-05-17T08:00:00+00:00'),
+            new \DateTimeImmutable('2021-05-17T22:00:00+00:00')
+        );
+        $oldDateRange2 = new DateRange(
+            new \DateTimeImmutable('2021-05-18T08:00:00+00:00'),
+            new \DateTimeImmutable('2021-05-18T22:00:00+00:00')
+        );
+        $oldCalendar = new MultipleSubEventsCalendar(
+            new SubEvents(
+                SubEvent::createAvailable($oldDateRange1)->withBookingInfo($bookingInfo),
+                SubEvent::createAvailable($oldDateRange2)->withBookingInfo($bookingInfo)
+            )
+        );
+
+        $newDateRange1 = new DateRange(
+            new \DateTimeImmutable('2021-05-20T08:00:00+00:00'),
+            new \DateTimeImmutable('2021-05-20T22:00:00+00:00')
+        );
+        $newDateRange2 = new DateRange(
+            new \DateTimeImmutable('2021-05-21T08:00:00+00:00'),
+            new \DateTimeImmutable('2021-05-21T22:00:00+00:00')
+        );
+        $incomingCalendar = new MultipleSubEventsCalendar(
+            new SubEvents(
+                SubEvent::createAvailable($newDateRange1),
+                SubEvent::createAvailable($newDateRange2)
+            )
+        );
+
+        $expectedCalendar = new MultipleSubEventsCalendar(
+            new SubEvents(
+                SubEvent::createAvailable($newDateRange1)->withBookingInfo($bookingInfo),
+                SubEvent::createAvailable($newDateRange2)->withBookingInfo($bookingInfo)
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, $oldCalendar),
+            ])
+            ->when(fn (Event $event) => $event->updateCalendar($incomingCalendar))
+            ->then([new CalendarUpdated(self::EVENT_ID, $expectedCalendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_overrides_sub_event_booking_info_when_calendar_update_provides_one(): void
+    {
+        $oldBookingInfo = new BookingInfo(
+            new WebsiteLink(
+                new Url('https://www.domain.be/reservations/original'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('Origineel')
+                )
+            )
+        );
+        $newBookingInfo = new BookingInfo(
+            new WebsiteLink(
+                new Url('https://www.domain.be/reservations/replaced'),
+                new TranslatedWebsiteLabel(
+                    new Language('nl'),
+                    new WebsiteLabel('Vervangen')
+                )
+            )
+        );
+
+        $dateRange = new DateRange(
+            new \DateTimeImmutable('2021-05-20T08:00:00+00:00'),
+            new \DateTimeImmutable('2021-05-20T22:00:00+00:00')
+        );
+        $oldCalendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable($dateRange)->withBookingInfo($oldBookingInfo)
+        );
+        $newCalendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable($dateRange)->withBookingInfo($newBookingInfo)
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, $oldCalendar),
+            ])
+            ->when(fn (Event $event) => $event->updateCalendar($newCalendar))
+            ->then([new CalendarUpdated(self::EVENT_ID, $newCalendar)]);
+    }
+
+    /**
+     * @test
+     */
     public function it_preserves_overnight_on_unrelated_sub_event_updates(): void
     {
         $unavailable = new \CultuurNet\UDB3\Model\ValueObject\Calendar\Status(

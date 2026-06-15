@@ -445,9 +445,48 @@ final class Event extends Offer
     {
         if ($calendar instanceof CalendarWithSubEvents) {
             $this->assertOvernightAllowed($calendar->getSubEvents()->toArray());
+            $calendar = $this->preserveSubEventBookingInfo($calendar);
         }
 
         parent::updateCalendar($calendar);
+    }
+
+    private function preserveSubEventBookingInfo(Calendar $calendar): Calendar
+    {
+        if (!$calendar instanceof CalendarWithSubEvents || !$this->calendar instanceof CalendarWithSubEvents) {
+            return $calendar;
+        }
+
+        $existingSubEvents = $this->calendar->getSubEvents()->toArray();
+        $newSubEvents = $calendar->getSubEvents()->toArray();
+
+        $changed = false;
+        foreach ($newSubEvents as $index => $newSubEvent) {
+            if (!$newSubEvent->getBookingInfo()->isEmpty()) {
+                continue;
+            }
+            if (!isset($existingSubEvents[$index])) {
+                continue;
+            }
+            $existingBookingInfo = $existingSubEvents[$index]->getBookingInfo();
+            if ($existingBookingInfo->isEmpty()) {
+                continue;
+            }
+            $newSubEvents[$index] = $newSubEvent->withBookingInfo($existingBookingInfo);
+            $changed = true;
+        }
+
+        if (!$changed) {
+            return $calendar;
+        }
+
+        $rebuilt = $calendar->getType()->sameAs(CalendarType::single())
+            ? new SingleSubEventCalendar($newSubEvents[0])
+            : new MultipleSubEventsCalendar(new SubEvents(...$newSubEvents));
+
+        return $rebuilt
+            ->withBookingAvailability($calendar->getBookingAvailability())
+            ->withStatus($calendar->getStatus());
     }
 
     public function updateType(Category $category): void

@@ -187,6 +187,109 @@ Feature: Test SubEvent bookingInfo
     }
     """
 
+  Scenario: bookingInfo on subEvents is preserved when updating the calendar with new dates
+    Given I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {
+        "nl": "Multiple calendar event"
+      },
+      "terms": [
+        {
+          "id": "0.50.4.0.0",
+          "label": "Concert",
+          "domain": "eventtype"
+        }
+      ],
+      "location": {
+        "@id": "%{placeUrl}"
+      },
+      "calendarType": "multiple",
+      "subEvent": [
+        {
+          "startDate": "2021-05-17T08:00:00+00:00",
+          "endDate": "2021-05-17T22:00:00+00:00"
+        },
+        {
+          "startDate": "2021-05-18T08:00:00+00:00",
+          "endDate": "2021-05-18T22:00:00+00:00"
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/"
+    And the response status should be "201"
+    And I keep the value of the JSON response at "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "bookingInfo": {
+          "url": "https://www.domain.be/reservations/subEvent-0",
+          "urlLabel": {"nl": "Reserveer subEvent 0"},
+          "email": "subevent0@example.com",
+          "phone": "0111111111"
+        }
+      },
+      {
+        "id": 1,
+        "bookingInfo": {
+          "url": "https://www.domain.be/reservations/subEvent-1",
+          "urlLabel": {"nl": "Reserveer subEvent 1"},
+          "email": "subevent1@example.com",
+          "phone": "0222222222"
+        }
+      }
+    ]
+    """
+    And I send a PATCH request to "%{eventUrl}/subEvents"
+    Then the response status should be "204"
+    When I set the JSON request payload to:
+    """
+    {
+      "calendarType": "multiple",
+      "subEvent": [
+        {
+          "startDate": "2021-05-20T08:00:00+00:00",
+          "endDate": "2021-05-20T22:00:00+00:00"
+        },
+        {
+          "startDate": "2021-05-21T08:00:00+00:00",
+          "endDate": "2021-05-21T22:00:00+00:00"
+        }
+      ]
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/calendar"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "subEvent/0/startDate" should be "2021-05-20T08:00:00+00:00"
+    And the JSON response at "subEvent/0/bookingInfo" should be:
+    """
+    {
+      "email": "subevent0@example.com",
+      "phone": "0111111111",
+      "url": "https://www.domain.be/reservations/subEvent-0",
+      "urlLabel": {
+        "nl": "Reserveer subEvent 0"
+      }
+    }
+    """
+    And the JSON response at "subEvent/1/startDate" should be "2021-05-21T08:00:00+00:00"
+    And the JSON response at "subEvent/1/bookingInfo" should be:
+    """
+    {
+      "email": "subevent1@example.com",
+      "phone": "0222222222",
+      "url": "https://www.domain.be/reservations/subEvent-1",
+      "urlLabel": {
+        "nl": "Reserveer subEvent 1"
+      }
+    }
+    """
+
   Scenario: Clear bookingInfo on a subEvent
     Given I create an event from "events/event-with-single-calendar.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
