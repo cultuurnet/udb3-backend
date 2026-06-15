@@ -405,7 +405,7 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                                 new StatusReason('Covid')
                             )
                         )
-                    )
+                    )->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ],
             'periodic_with_openingHours' => [
@@ -490,6 +490,7 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                                 )
                             )
                         )
+                        ->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ],
             'permanent_with_openingHours' => [
@@ -1997,7 +1998,7 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                                 new StatusReason('Covid')
                             )
                         )
-                    )
+                    )->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ],
             'periodic_with_openingHours' => [
@@ -2082,6 +2083,7 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                                 )
                             )
                         )
+                        ->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ],
             'permanent_with_openingHours' => [

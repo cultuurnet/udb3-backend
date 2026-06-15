@@ -711,6 +711,130 @@ final class CalendarDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_denormalizes_a_permanent_calendar_with_top_level_capacity(): void
+    {
+        $data = [
+            'calendarType' => 'permanent',
+            'openingHours' => [],
+            'bookingAvailability' => [
+                'type' => 'Available',
+                'capacity' => 200,
+            ],
+        ];
+
+        /** @var PermanentCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PermanentCalendar::class, $result);
+        $this->assertEquals(
+            BookingAvailability::Available()->withCapacity(200),
+            $result->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_periodic_calendar_with_top_level_capacity(): void
+    {
+        $data = [
+            'calendarType' => 'periodic',
+            'startDate' => '2024-01-01T00:00:00+00:00',
+            'endDate' => '2024-12-31T23:59:59+00:00',
+            'openingHours' => [],
+            'bookingAvailability' => [
+                'type' => 'Available',
+                'capacity' => 150,
+            ],
+        ];
+
+        /** @var PeriodicCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PeriodicCalendar::class, $result);
+        $this->assertEquals(
+            BookingAvailability::Available()->withCapacity(150),
+            $result->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_defaults_to_available_booking_availability_for_a_permanent_calendar_without_explicit_value(): void
+    {
+        $data = [
+            'calendarType' => 'permanent',
+            'openingHours' => [],
+        ];
+
+        /** @var PermanentCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PermanentCalendar::class, $result);
+        $this->assertEquals(BookingAvailability::Available(), $result->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
+    public function it_defaults_to_available_booking_availability_for_a_periodic_calendar_without_explicit_value(): void
+    {
+        $data = [
+            'calendarType' => 'periodic',
+            'startDate' => '2024-01-01T00:00:00+00:00',
+            'endDate' => '2024-12-31T23:59:59+00:00',
+            'openingHours' => [],
+        ];
+
+        /** @var PeriodicCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PeriodicCalendar::class, $result);
+        $this->assertEquals(BookingAvailability::Available(), $result->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
+    public function it_honors_explicit_unavailable_booking_availability_on_a_permanent_calendar(): void
+    {
+        $data = [
+            'calendarType' => 'permanent',
+            'openingHours' => [],
+            'bookingAvailability' => ['type' => 'Unavailable'],
+        ];
+
+        /** @var PermanentCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PermanentCalendar::class, $result);
+        $this->assertEquals(BookingAvailability::Unavailable(), $result->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
+    public function it_honors_explicit_unavailable_booking_availability_on_a_periodic_calendar(): void
+    {
+        $data = [
+            'calendarType' => 'periodic',
+            'startDate' => '2024-01-01T00:00:00+00:00',
+            'endDate' => '2024-12-31T23:59:59+00:00',
+            'openingHours' => [],
+            'bookingAvailability' => ['type' => 'Unavailable'],
+        ];
+
+        /** @var PeriodicCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PeriodicCalendar::class, $result);
+        $this->assertEquals(BookingAvailability::Unavailable(), $result->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
     public function it_denormalizes_a_periodic_calendar_with_closed_days(): void
     {
         $data = [
