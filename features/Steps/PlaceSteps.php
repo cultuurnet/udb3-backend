@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use Behat\Gherkin\Node\PyStringNode;
 use CultuurNet\UDB3\Json;
 
 trait PlaceSteps
@@ -37,6 +38,21 @@ trait PlaceSteps
             $variableName,
             201
         );
+    }
+
+    /**
+     * @Given I create a minimal place with overrides and save the :jsonPath as :variableName
+     */
+    public function iCreateAMinimalPlaceWithOverridesAndSaveAs(string $jsonPath, string $variableName, PyStringNode $overridesJson): void
+    {
+        $this->variableState->setRandomVariable('name', 20);
+        $base = Json::decodeAssociatively(
+            $this->fixtures->loadJson('places/place-with-required-fields.json', $this->variableState)
+        );
+        $overrides = Json::decodeAssociatively(
+            $this->variableState->replaceVariables($overridesJson->getRaw())
+        );
+        $this->createPlace('/places', Json::encode(array_merge($base, $overrides)), $jsonPath, $variableName, 201);
     }
 
     /**
