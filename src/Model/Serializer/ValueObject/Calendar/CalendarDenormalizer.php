@@ -143,7 +143,13 @@ final class CalendarDenormalizer implements DenormalizerInterface
             $calendar = $calendar->withStatus($topLevelStatus);
         }
 
-        $calendar = $calendar->withBookingAvailability($topLevelBookingAvailability);
+        if (in_array($data['calendarType'], ['single', 'multiple'], true)) {
+            $calendar = $calendar->withBookingAvailability($topLevelBookingAvailability);
+        } elseif ($topLevelBookingAvailability->getCapacity() !== null) {
+            $calendar = $calendar->withBookingAvailability(
+                BookingAvailability::Available()->withCapacity($topLevelBookingAvailability->getCapacity())
+            );
+        }
 
         return $calendar;
     }

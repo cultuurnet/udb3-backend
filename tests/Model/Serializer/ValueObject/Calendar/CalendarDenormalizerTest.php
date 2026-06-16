@@ -797,7 +797,7 @@ final class CalendarDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_honors_explicit_unavailable_booking_availability_on_a_permanent_calendar_for_an_event(): void
+    public function it_ignores_explicit_unavailable_booking_availability_on_a_permanent_calendar(): void
     {
         $data = [
             'calendarType' => 'permanent',
@@ -809,13 +809,13 @@ final class CalendarDenormalizerTest extends TestCase
         $result = $this->denormalizer->denormalize($data, Calendar::class);
 
         $this->assertInstanceOf(PermanentCalendar::class, $result);
-        $this->assertEquals(BookingAvailability::Unavailable(), $result->getBookingAvailability());
+        $this->assertEquals(BookingAvailability::Available(), $result->getBookingAvailability());
     }
 
     /**
      * @test
      */
-    public function it_honors_explicit_unavailable_booking_availability_on_a_periodic_calendar_for_an_event(): void
+    public function it_ignores_explicit_unavailable_booking_availability_on_a_periodic_calendar(): void
     {
         $data = [
             'calendarType' => 'periodic',
@@ -829,7 +829,7 @@ final class CalendarDenormalizerTest extends TestCase
         $result = $this->denormalizer->denormalize($data, Calendar::class);
 
         $this->assertInstanceOf(PeriodicCalendar::class, $result);
-        $this->assertEquals(BookingAvailability::Unavailable(), $result->getBookingAvailability());
+        $this->assertEquals(BookingAvailability::Available(), $result->getBookingAvailability());
     }
 
     /**

@@ -378,7 +378,7 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                     )
                 ),
             ],
-            'periodic_with_status_and_bookingAvailability' => [
+            'periodic_with_status_and_ignored_bookingAvailability' => [
                 'data' => (object)[
                     'calendarType' => 'periodic',
                     'startDate' => '2021-01-01T14:00:30+01:00',
@@ -405,7 +405,7 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                                 new StatusReason('Covid')
                             )
                         )
-                    )->withBookingAvailability(BookingAvailability::Unavailable())
+                    )
                 ),
             ],
             'periodic_with_openingHours' => [
@@ -469,7 +469,7 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                     new PermanentCalendar(new OpeningHours())
                 ),
             ],
-            'permanent_with_status_and_bookingAvailability' => [
+            'permanent_with_status_and_ignored_bookingAvailability' => [
                 'data' => (object)[
                     'calendarType' => 'permanent',
                     'status' => (object)[
@@ -490,7 +490,6 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                                 )
                             )
                         )
-                        ->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ],
             'permanent_with_openingHours' => [
@@ -1971,7 +1970,7 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                     )
                 ),
             ],
-            'periodic_with_status_and_bookingAvailability' => [
+            'periodic_with_status_and_ignored_bookingAvailability' => [
                 'data' => (object)[
                     'calendarType' => 'periodic',
                     'startDate' => '2021-01-01T14:00:30+01:00',
@@ -1998,7 +1997,7 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                                 new StatusReason('Covid')
                             )
                         )
-                    )->withBookingAvailability(BookingAvailability::Unavailable())
+                    )
                 ),
             ],
             'periodic_with_openingHours' => [
@@ -2062,7 +2061,7 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                     new PermanentCalendar(new OpeningHours())
                 ),
             ],
-            'permanent_with_status_and_bookingAvailability' => [
+            'permanent_with_status_and_ignored_bookingAvailability' => [
                 'data' => (object)[
                     'calendarType' => 'permanent',
                     'status' => (object)[
@@ -2083,7 +2082,6 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                                 )
                             )
                         )
-                        ->withBookingAvailability(BookingAvailability::Unavailable())
                 ),
             ],
             'permanent_with_openingHours' => [
