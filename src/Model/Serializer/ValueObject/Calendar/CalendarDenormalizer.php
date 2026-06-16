@@ -96,7 +96,8 @@ final class CalendarDenormalizer implements DenormalizerInterface
                         $e->getMessage()
                     ));
                 }
-                $calendar = new SingleSubEventCalendar($subEvent);
+                $calendar = (new SingleSubEventCalendar($subEvent))
+                    ->withBookingAvailability($topLevelBookingAvailability);
                 break;
 
             case 'multiple':
@@ -120,7 +121,8 @@ final class CalendarDenormalizer implements DenormalizerInterface
                     throw ApiProblem::bodyInvalidData(...$schemaErrors);
                 }
                 $subEvents = new SubEvents(...$denormalizedSubEvents);
-                $calendar = new MultipleSubEventsCalendar($subEvents);
+                $calendar = (new MultipleSubEventsCalendar($subEvents))
+                    ->withBookingAvailability($topLevelBookingAvailability);
                 break;
 
             case 'periodic':
@@ -128,6 +130,11 @@ final class CalendarDenormalizer implements DenormalizerInterface
                     $data,
                     new PeriodicCalendar($this->denormalizeDateRange($data), $openingHours)
                 );
+                if ($topLevelBookingAvailability->getCapacity() !== null) {
+                    $calendar = $calendar->withBookingAvailability(
+                        BookingAvailability::Available()->withCapacity($topLevelBookingAvailability->getCapacity())
+                    );
+                }
                 break;
 
             case 'permanent':
@@ -136,19 +143,16 @@ final class CalendarDenormalizer implements DenormalizerInterface
                     $data,
                     new PermanentCalendar($openingHours)
                 );
+                if ($topLevelBookingAvailability->getCapacity() !== null) {
+                    $calendar = $calendar->withBookingAvailability(
+                        BookingAvailability::Available()->withCapacity($topLevelBookingAvailability->getCapacity())
+                    );
+                }
                 break;
         }
 
         if ($topLevelStatus !== null) {
             $calendar = $calendar->withStatus($topLevelStatus);
-        }
-
-        if (in_array($data['calendarType'], ['single', 'multiple'], true)) {
-            $calendar = $calendar->withBookingAvailability($topLevelBookingAvailability);
-        } elseif ($topLevelBookingAvailability->getCapacity() !== null) {
-            $calendar = $calendar->withBookingAvailability(
-                BookingAvailability::Available()->withCapacity($topLevelBookingAvailability->getCapacity())
-            );
         }
 
         return $calendar;
