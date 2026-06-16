@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User;
 
+use CultuurNet\UDB3\Cache\CacheFactory;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
@@ -15,7 +16,6 @@ use CultuurNet\UDB3\Security\UserEmailAddressRepository;
 use CultuurNet\UDB3\UiTID\CdbXmlCreatedByToUserIdResolver;
 use CultuurNet\UDB3\User\Keycloak\CachedUserIdentityResolver;
 use CultuurNet\UDB3\User\Keycloak\KeycloakManagementTokenGenerator;
-use CultuurNet\UDB3\User\ManagementToken\CacheRepository;
 use CultuurNet\UDB3\User\ManagementToken\ManagementTokenProvider;
 use GuzzleHttp\Client;
 use League\Container\DefinitionContainerInterface;
@@ -90,9 +90,7 @@ final class UserServiceProvider extends AbstractServiceProvider
                 $container->get('config')['keycloak']['client_id'],
                 $container->get('config')['keycloak']['client_secret']
             ),
-            new CacheRepository(
-                $container->get('cache')('keycloak-management-token')
-            )
+            CacheFactory::create($container->get('app_cache'), 'keycloak-management', 0)
         );
     }
 
