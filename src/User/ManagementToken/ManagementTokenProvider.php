@@ -4,36 +4,38 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\User\ManagementToken;
 
-use DateTime;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class ManagementTokenProvider
 {
+    private const CACHE_KEY = 'token';
+
     private ManagementTokenGenerator $tokenGenerator;
 
-    private TokenRepository $tokenRepository;
+    private CacheInterface $cache;
 
     public function __construct(
         ManagementTokenGenerator $tokenGenerator,
-        TokenRepository $tokenRepository
+        CacheInterface $cache
     ) {
         $this->tokenGenerator = $tokenGenerator;
-        $this->tokenRepository = $tokenRepository;
+        $this->cache = $cache;
     }
 
     public function token(): string
     {
-        $token = $this->tokenRepository->token();
+        return (string) $this->cache->get(
+            self::CACHE_KEY,
+            function (ItemInterface $item): string {
+                $token = $this->tokenGenerator->newToken();
 
-        if ($token === null || $this->expiresWithin($token, '+5 minutes')) {
-            $token = $this->tokenGenerator->newToken();
-            $this->tokenRepository->store($token);
-        }
+                // Expire from the cache ~5 minutes before the token itself expires, so we never hand
+                // out a token that is about to expire.
+                $item->expiresAfter(max($token->getExpiresIn() - 300, 0));
 
-        return $token->getToken();
-    }
-
-    private function expiresWithin(ManagementToken $token, string $offset): bool
-    {
-        return (new DateTime())->modify($offset) > $token->getExpiresAt();
+                return $token->getToken();
+            }
+        );
     }
 }
