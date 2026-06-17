@@ -53,7 +53,7 @@
             <p class="activity__type">{{ event.type }}</p>
             <p class="activity__title">{{ number }}. {{ event.title }}</p>
             <div class="activity__description">
-                <p>{{ event.description|truncate(75) }}</p>
+                <p>{{ event.description|length > 75 ? event.description|slice(0, 75) ~ '...' : event.description }}</p>
             </div>
             <div class="activity__info">
                 <table class="activity__info__table">
