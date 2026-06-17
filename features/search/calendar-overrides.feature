@@ -32,7 +32,9 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I wait for 1 result at "/events" with parameters:
+      | dateFrom | 2026-07-07T09:00:00+02:00 |
+      | dateTo   | 2026-07-07T17:00:00+02:00 |
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-06T09:00:00+02:00 |
       | dateTo                | 2026-07-06T17:00:00+02:00 |
@@ -69,7 +71,9 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I wait for 1 result at "/events" with parameters:
+      | dateFrom | 2026-07-07T09:00:00+02:00 |
+      | dateTo   | 2026-07-07T17:00:00+02:00 |
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-06T09:00:00+02:00 |
       | dateTo                | 2026-07-06T17:00:00+02:00 |
@@ -106,7 +110,10 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for 1 result at "/places" with parameters:
+      | dateFrom | 2026-07-07T09:00:00+02:00 |
+      | dateTo   | 2026-07-07T17:00:00+02:00 |
+      | q        | %{placeUrl}               |
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-06T09:00:00+02:00 |
       | dateTo                | 2026-07-06T17:00:00+02:00 |
@@ -143,7 +150,10 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for 1 result at "/places" with parameters:
+      | dateFrom | 2026-07-07T09:00:00+02:00 |
+      | dateTo   | 2026-07-07T17:00:00+02:00 |
+      | q        | %{placeUrl}               |
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-06T09:00:00+02:00 |
       | dateTo                | 2026-07-06T17:00:00+02:00 |
@@ -184,7 +194,9 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I wait for 1 result at "/events" with parameters:
+      | dateFrom | 2026-07-13T09:00:00+02:00 |
+      | dateTo   | 2026-07-13T17:00:00+02:00 |
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-08T09:00:00+02:00 |
       | dateTo                | 2026-07-08T17:00:00+02:00 |
@@ -221,7 +233,10 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for 1 result at "/places" with parameters:
+      | dateFrom | 2026-07-13T09:00:00+02:00 |
+      | dateTo   | 2026-07-13T17:00:00+02:00 |
+      | q        | %{placeUrl}               |
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-08T09:00:00+02:00 |
       | dateTo                | 2026-07-08T17:00:00+02:00 |
@@ -269,7 +284,9 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I wait for 1 result at "/events" with parameters:
+      | dateFrom | 2026-07-08T10:00:00+02:00 |
+      | dateTo   | 2026-07-08T13:00:00+02:00 |
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-08T10:00:00+02:00 |
       | dateTo                | 2026-07-08T13:00:00+02:00 |
@@ -315,7 +332,9 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I wait for 1 result at "/events" with parameters:
+      | dateFrom | 2026-07-11T10:00:00+02:00 |
+      | dateTo   | 2026-07-11T14:00:00+02:00 |
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-11T10:00:00+02:00 |
       | dateTo                | 2026-07-11T14:00:00+02:00 |
@@ -367,7 +386,9 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I wait for 1 result at "/events" with parameters:
+      | dateFrom | 2026-07-07T09:00:00+02:00 |
+      | dateTo   | 2026-07-07T17:00:00+02:00 |
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-06T10:00:00+02:00 |
       | dateTo                | 2026-07-06T13:00:00+02:00 |
@@ -405,7 +426,10 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for 1 result at "/places" with parameters:
+      | dateFrom | 2026-07-08T10:00:00+02:00 |
+      | dateTo   | 2026-07-08T13:00:00+02:00 |
+      | q        | %{placeUrl}               |
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-08T10:00:00+02:00 |
       | dateTo                | 2026-07-08T13:00:00+02:00 |
@@ -444,7 +468,9 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I wait for 1 result at "/events" with parameters:
+      | dateFrom | 2026-07-13T09:00:00+02:00 |
+      | dateTo   | 2026-07-13T17:00:00+02:00 |
     # Wednesday July 8 → totalItems 0 (within closed range)
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-08T09:00:00+02:00 |
@@ -481,7 +507,10 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for 1 result at "/places" with parameters:
+      | dateFrom | 2026-07-13T09:00:00+02:00 |
+      | dateTo   | 2026-07-13T17:00:00+02:00 |
+      | q        | %{placeUrl}               |
     # Wednesday July 8 → totalItems 0 (within closed range)
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-08T09:00:00+02:00 |
@@ -529,7 +558,9 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I wait for 1 result at "/events" with parameters:
+      | dateFrom | 2026-07-08T10:00:00+02:00 |
+      | dateTo   | 2026-07-08T13:00:00+02:00 |
     # Wednesday July 8 10:00-13:00 → totalItems 1 (within adjusted hours)
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-08T10:00:00+02:00 |
@@ -575,7 +606,9 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I wait for 1 result at "/events" with parameters:
+      | dateFrom | 2026-07-11T10:00:00+02:00 |
+      | dateTo   | 2026-07-11T14:00:00+02:00 |
     # Saturday July 11 10:00-14:00 → totalItems 1 (exceptionally open)
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-11T10:00:00+02:00 |
@@ -619,7 +652,10 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for 1 result at "/places" with parameters:
+      | dateFrom | 2026-07-08T10:00:00+02:00 |
+      | dateTo   | 2026-07-08T13:00:00+02:00 |
+      | q        | %{placeUrl}               |
     # Wednesday July 8 10:00-13:00 → totalItems 1 (within adjusted hours)
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-08T10:00:00+02:00 |
@@ -667,7 +703,10 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for 1 result at "/places" with parameters:
+      | dateFrom | 2026-07-11T10:00:00+02:00 |
+      | dateTo   | 2026-07-11T14:00:00+02:00 |
+      | q        | %{placeUrl}               |
     # Saturday July 11 10:00-14:00 → totalItems 1 (exceptionally open)
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-11T10:00:00+02:00 |
@@ -721,7 +760,9 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I wait for 1 result at "/events" with parameters:
+      | dateFrom | 2026-07-07T09:00:00+02:00 |
+      | dateTo   | 2026-07-07T17:00:00+02:00 |
     # Monday July 6 10:00-13:00 → totalItems 0 (closed day takes precedence)
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-06T10:00:00+02:00 |
@@ -766,7 +807,10 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for 1 result at "/places" with parameters:
+      | dateFrom | 2026-07-07T09:00:00+02:00 |
+      | dateTo   | 2026-07-07T17:00:00+02:00 |
+      | q        | %{placeUrl}               |
     # Monday July 6 10:00-13:00 → totalItems 0 (closed day takes precedence)
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-06T10:00:00+02:00 |
@@ -810,7 +854,10 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for 1 result at "/places" with parameters:
+      | dateFrom | 2026-07-07T09:00:00+02:00 |
+      | dateTo   | 2026-07-07T17:00:00+02:00 |
+      | q        | %{placeUrl}               |
     # Monday July 6 10:00-13:00 → totalItems 0 (closed day takes precedence)
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-06T10:00:00+02:00 |
