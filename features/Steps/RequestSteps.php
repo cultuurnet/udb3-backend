@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Steps;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use CultuurNet\UDB3\State\VariableState;
-use function PHPUnit\Framework\assertEquals;
 
 trait RequestSteps
 {
@@ -118,29 +117,6 @@ trait RequestSteps
         $this->requestState->setLastGetParams($params);
         $response = $this->getHttpClient()->getWithParameters($url, $params, $this->variableState);
         $this->responseState->setResponse($response);
-    }
-
-    /**
-     * @Then I wait for the JSON response at :jsonPath to have :nrOfEntries entries
-     */
-    public function iWaitForTheJsonResponseAtToHaveEntries(string $jsonPath, int $nrOfEntries): void
-    {
-        $elapsedTime = 0;
-        do {
-            $response = $this->getHttpClient()->getWithParameters(
-                $this->requestState->getLastGetUrl(),
-                $this->requestState->getLastGetParams(),
-                $this->variableState
-            );
-            $this->responseState->setResponse($response);
-            $actual = count((array) $this->responseState->getValueOnPath($jsonPath));
-            if ($actual !== $nrOfEntries) {
-                sleep(1);
-                $elapsedTime++;
-            }
-        } while ($actual !== $nrOfEntries && $elapsedTime < 10);
-
-        assertEquals($nrOfEntries, count((array) $this->responseState->getValueOnPath($jsonPath)));
     }
 
     private function addScenarioLabelToSearchParameters(string $url, array $parameters): array
