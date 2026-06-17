@@ -43,12 +43,6 @@ Feature: Test that closed days are excluded from calendar search results
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
-    When I send a GET request to "/events" with parameters:
-      | dateFrom              | 2026-07-07T09:00:00+02:00 |
-      | dateTo                | 2026-07-07T17:00:00+02:00 |
-      | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
 
   @testIsolation
   Scenario: Permanent event closed day is excluded from search results
@@ -84,12 +78,6 @@ Feature: Test that closed days are excluded from calendar search results
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
-    When I send a GET request to "/events" with parameters:
-      | dateFrom              | 2026-07-07T09:00:00+02:00 |
-      | dateTo                | 2026-07-07T17:00:00+02:00 |
-      | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
 
   @testIsolation
   Scenario: Periodic place closed day is excluded from search results
@@ -127,13 +115,6 @@ Feature: Test that closed days are excluded from calendar search results
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
-    When I send a GET request to "/places" with parameters:
-      | dateFrom              | 2026-07-07T09:00:00+02:00 |
-      | dateTo                | 2026-07-07T17:00:00+02:00 |
-      | q                     | %{placeUrl}              |
-      | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
 
   @testIsolation
   Scenario: Permanent place closed day is excluded from search results
@@ -169,13 +150,6 @@ Feature: Test that closed days are excluded from calendar search results
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
-    When I send a GET request to "/places" with parameters:
-      | dateFrom              | 2026-07-07T09:00:00+02:00 |
-      | dateTo                | 2026-07-07T17:00:00+02:00 |
-      | q                     | %{placeUrl}              |
-      | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
 
   @testIsolation
   Scenario: Periodic event multi-day closed range is excluded from search results
@@ -213,12 +187,6 @@ Feature: Test that closed days are excluded from calendar search results
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
-    When I send a GET request to "/events" with parameters:
-      | dateFrom              | 2026-07-13T09:00:00+02:00 |
-      | dateTo                | 2026-07-13T17:00:00+02:00 |
-      | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
 
   @testIsolation
   Scenario: Periodic place multi-day closed range is excluded from search results
@@ -256,13 +224,6 @@ Feature: Test that closed days are excluded from calendar search results
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
-    When I send a GET request to "/places" with parameters:
-      | dateFrom              | 2026-07-13T09:00:00+02:00 |
-      | dateTo                | 2026-07-13T17:00:00+02:00 |
-      | q                     | %{placeUrl}              |
-      | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
 
   @testIsolation
   Scenario: Periodic event adjusted day is searchable within adjusted hours
@@ -301,12 +262,6 @@ Feature: Test that closed days are excluded from calendar search results
       | dateTo                | 2026-07-08T13:00:00+02:00 |
       | disableDefaultFilters | true                      |
     And I wait until the response contains 1 result
-    When I send a GET request to "/events" with parameters:
-      | dateFrom              | 2026-07-08T10:00:00+02:00 |
-      | dateTo                | 2026-07-08T13:00:00+02:00 |
-      | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-08T14:00:00+02:00 |
       | dateTo                | 2026-07-08T17:00:00+02:00 |
@@ -351,12 +306,6 @@ Feature: Test that closed days are excluded from calendar search results
       | dateTo                | 2026-07-11T14:00:00+02:00 |
       | disableDefaultFilters | true                      |
     And I wait until the response contains 1 result
-    When I send a GET request to "/events" with parameters:
-      | dateFrom              | 2026-07-11T10:00:00+02:00 |
-      | dateTo                | 2026-07-11T14:00:00+02:00 |
-      | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-18T10:00:00+02:00 |
       | dateTo                | 2026-07-18T14:00:00+02:00 |
@@ -451,13 +400,6 @@ Feature: Test that closed days are excluded from calendar search results
       | disableDefaultFilters | true                      |
     And I wait until the response contains 1 result
     When I send a GET request to "/places" with parameters:
-      | dateFrom              | 2026-07-08T10:00:00+02:00 |
-      | dateTo                | 2026-07-08T13:00:00+02:00 |
-      | q                     | %{placeUrl}              |
-      | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
-    When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-08T14:00:00+02:00 |
       | dateTo                | 2026-07-08T17:00:00+02:00 |
       | q                     | %{placeUrl}              |
@@ -488,6 +430,7 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
+    # Monday July 13 → totalItems 1 (after closed range)
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-13T09:00:00+02:00 |
       | dateTo                | 2026-07-13T17:00:00+02:00 |
@@ -500,13 +443,6 @@ Feature: Test that closed days are excluded from calendar search results
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
-    # Monday July 13 → totalItems 1 (after closed range)
-    When I send a GET request to "/events" with parameters:
-      | dateFrom              | 2026-07-13T09:00:00+02:00 |
-      | dateTo                | 2026-07-13T17:00:00+02:00 |
-      | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
 
   @testIsolation
   Scenario: Permanent place multi-day closed range is excluded from search results
@@ -529,6 +465,7 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
+    # Monday July 13 → totalItems 1 (after closed range)
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-13T09:00:00+02:00 |
       | dateTo                | 2026-07-13T17:00:00+02:00 |
@@ -543,14 +480,6 @@ Feature: Test that closed days are excluded from calendar search results
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
-    # Monday July 13 → totalItems 1 (after closed range)
-    When I send a GET request to "/places" with parameters:
-      | dateFrom              | 2026-07-13T09:00:00+02:00 |
-      | dateTo                | 2026-07-13T17:00:00+02:00 |
-      | q                     | %{placeUrl}              |
-      | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
 
   @testIsolation
   Scenario: Permanent event adjusted day is searchable within adjusted hours
@@ -582,18 +511,12 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    When I send a GET request to "/events" with parameters:
-      | dateFrom              | 2026-07-08T10:00:00+02:00 |
-      | dateTo                | 2026-07-08T13:00:00+02:00 |
-      | disableDefaultFilters | true                      |
-    And I wait until the response contains 1 result
     # Wednesday July 8 10:00-13:00 → totalItems 1 (within adjusted hours)
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-08T10:00:00+02:00 |
       | dateTo                | 2026-07-08T13:00:00+02:00 |
       | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
+    And I wait until the response contains 1 result
     # Wednesday July 8 14:00-17:00 → totalItems 0 (outside adjusted hours)
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-08T14:00:00+02:00 |
@@ -632,18 +555,12 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    When I send a GET request to "/events" with parameters:
-      | dateFrom              | 2026-07-11T10:00:00+02:00 |
-      | dateTo                | 2026-07-11T14:00:00+02:00 |
-      | disableDefaultFilters | true                      |
-    And I wait until the response contains 1 result
     # Saturday July 11 10:00-14:00 → totalItems 1 (exceptionally open)
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-11T10:00:00+02:00 |
       | dateTo                | 2026-07-11T14:00:00+02:00 |
       | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
+    And I wait until the response contains 1 result
     # Saturday July 18 10:00-14:00 → totalItems 0 (regular Saturday, not adjusted)
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-07-18T10:00:00+02:00 |
@@ -680,20 +597,13 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    When I send a GET request to "/places" with parameters:
-      | dateFrom              | 2026-07-08T10:00:00+02:00 |
-      | dateTo                | 2026-07-08T13:00:00+02:00 |
-      | q                     | %{placeUrl}              |
-      | disableDefaultFilters | true                      |
-    And I wait until the response contains 1 result
     # Wednesday July 8 10:00-13:00 → totalItems 1 (within adjusted hours)
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-08T10:00:00+02:00 |
       | dateTo                | 2026-07-08T13:00:00+02:00 |
       | q                     | %{placeUrl}              |
       | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
+    And I wait until the response contains 1 result
     # Wednesday July 8 14:00-17:00 → totalItems 0 (outside adjusted hours)
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-08T14:00:00+02:00 |
@@ -733,20 +643,13 @@ Feature: Test that closed days are excluded from calendar search results
       ]
     }
     """
-    When I send a GET request to "/places" with parameters:
-      | dateFrom              | 2026-07-11T10:00:00+02:00 |
-      | dateTo                | 2026-07-11T14:00:00+02:00 |
-      | q                     | %{placeUrl}              |
-      | disableDefaultFilters | true                      |
-    And I wait until the response contains 1 result
     # Saturday July 11 10:00-14:00 → totalItems 1 (exceptionally open)
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-11T10:00:00+02:00 |
       | dateTo                | 2026-07-11T14:00:00+02:00 |
       | q                     | %{placeUrl}              |
       | disableDefaultFilters | true                      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
+    And I wait until the response contains 1 result
     # Saturday July 18 10:00-14:00 → totalItems 0 (regular Saturday, not adjusted)
     When I send a GET request to "/places" with parameters:
       | dateFrom              | 2026-07-18T10:00:00+02:00 |
