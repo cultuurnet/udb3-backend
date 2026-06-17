@@ -26,10 +26,10 @@ final class RestUiTPASClient implements UiTPASClient
     public function getEventCardSystems(string $eventId): array
     {
         $cardSystems = [];
-        foreach ($this->getEventCardSystemsData($eventId) as $cardSystem) {
+        foreach ($this->getEventCardSystemsData($eventId) as $cardSystemData) {
             $cardSystems[] = new CardSystem(
-                new Id((string) $cardSystem['id']),
-                $cardSystem['name']
+                new Id((string) $cardSystemData['id']),
+                $cardSystemData['name']
             );
         }
 
