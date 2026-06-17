@@ -195,4 +195,58 @@ final class RestUiTPASClientTest extends TestCase
         $this->expectException(\RuntimeException::class);
         $client->addCardSystemToEvent('event-id-1', 1);
     }
+
+    /**
+     * @test
+     */
+    public function it_disables_an_existing_card_system_and_puts_back_the_full_list(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(
+            new Response(200, [], Json::encode([
+                ['id' => 1, 'name' => 'UiTPAS Dender', 'enabled' => true],
+                ['id' => 8, 'name' => 'UiTPAS Gent', 'enabled' => true],
+            ])),
+            new Response(204, [], '')
+        );
+
+        $client->deleteCardSystemFromEvent('event-id-1', 1);
+
+        $request = $this->mockHandler->getLastRequest();
+        $this->assertEquals('PUT', $request->getMethod());
+        $this->assertEquals(
+            'https://uitpas-test.publiq.be/events/event-id-1/card-systems',
+            (string) $request->getUri()
+        );
+        $this->assertEquals(
+            [
+                ['id' => 1, 'name' => 'UiTPAS Dender', 'enabled' => false],
+                ['id' => 8, 'name' => 'UiTPAS Gent', 'enabled' => true],
+            ],
+            Json::decodeAssociatively((string) $request->getBody())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_puts_back_the_unchanged_list_when_deleting_a_card_system_that_is_not_present(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(
+            new Response(200, [], Json::encode([
+                ['id' => 8, 'name' => 'UiTPAS Gent', 'enabled' => true],
+            ])),
+            new Response(204, [], '')
+        );
+
+        $client->deleteCardSystemFromEvent('event-id-1', 1);
+
+        $this->assertEquals(
+            [
+                ['id' => 8, 'name' => 'UiTPAS Gent', 'enabled' => true],
+            ],
+            Json::decodeAssociatively((string) $this->mockHandler->getLastRequest()->getBody())
+        );
+    }
 }
