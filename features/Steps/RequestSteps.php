@@ -278,6 +278,26 @@ trait RequestSteps
         assertEquals($expectedValue, (string) $this->responseState->getValueOnPath($jsonPath));
     }
 
+    /**
+     * @Then I wait until the response contains :count result(s)
+     */
+    public function iWaitUntilTheResponseContains(int $count): void
+    {
+        $elapsedTime = 0;
+        do {
+            $response = $this->getHttpClient()->getWithParameters(
+                $this->requestState->getLastGetUrl(),
+                $this->requestState->getLastGetParams(),
+                $this->variableState
+            );
+            $this->responseState->setResponse($response);
+            if ($this->responseState->getTotalItems() !== $count) {
+                sleep(1);
+                $elapsedTime++;
+            }
+        } while ($this->responseState->getTotalItems() !== $count && $elapsedTime < 10);
+    }
+
     private function waitForItemWithUrlToBeIndex(string $url): void
     {
         $url = $this->variableState->replaceVariables($url);
