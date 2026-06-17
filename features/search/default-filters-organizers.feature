@@ -14,7 +14,7 @@ Feature: Test the Search API v3 default filters on organizers
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} |
-    And I wait for the JSON response at "totalItems" to be "0"
+    And I wait until the response contains 0 results
     When I send a GET request to "/organizers" with parameters:
       | workflowStatus | *                 |
       | q              | id:%{organizerId} |

@@ -21,7 +21,7 @@ Feature: Test the Search API v3 boa feature
     When I send a GET request to "/events" with parameters:
       | audienceType | childrenOnly                                                 |
       | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId}) |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{myChildrenOnlyEventId}
@@ -32,7 +32,7 @@ Feature: Test the Search API v3 boa feature
     """
     And I send a GET request to "/events" with parameters:
       | q | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId}) |
-    And I wait for the JSON response at "totalItems" to be "0"
+    And I wait until the response contains 0 results
     And the JSON response should not include:
     """
     %{myChildrenOnlyEventId}
@@ -62,7 +62,7 @@ Feature: Test the Search API v3 boa feature
     When I send a GET request to "/events" with parameters:
       | audienceType | *                                                                                                                              |
       | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId} OR %{membersEventId} OR %{educationEventId} OR %{everyoneEventId}) |
-    And I wait for the JSON response at "totalItems" to be "4"
+    And I wait until the response contains 4 results
     And the JSON response should include:
     """
     %{myChildrenOnlyEventId}
@@ -95,7 +95,7 @@ Feature: Test the Search API v3 boa feature
     When I send a GET request to "/events" with parameters:
       | audienceType | childrenOnly                                                 |
       | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId}) |
-    And I wait for the JSON response at "totalItems" to be "2"
+    And I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{myChildrenOnlyEventId}

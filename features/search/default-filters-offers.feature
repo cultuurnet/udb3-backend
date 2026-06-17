@@ -59,7 +59,7 @@ Feature: Test the Search API v3 default filters on offers
     When I send a GET request to "/events" with parameters:
       | audienceType | *             |
       | q            | id:%{eventId} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -128,7 +128,7 @@ Feature: Test the Search API v3 default filters on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{eventId} OR %{placeId}) |
-    And I wait for the JSON response at "totalItems" to be "0"
+    And I wait until the response contains 0 results
     When I send a GET request to "/offers" with parameters:
       | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
@@ -174,7 +174,7 @@ Feature: Test the Search API v3 default filters on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{eventId} OR %{placeId}) |
-    And I wait for the JSON response at "totalItems" to be "0"
+    And I wait until the response contains 0 results
     When I send a GET request to "/offers" with parameters:
       | workflowStatus | *                             |
       | q              | id:(%{eventId} OR %{placeId}) |
@@ -220,7 +220,7 @@ Feature: Test the Search API v3 default filters on offers
       | availableFrom | *             |
       | availableTo   | *             |
       | q             | id:%{eventId} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}

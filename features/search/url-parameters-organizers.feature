@@ -233,7 +233,7 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | labels | %{labelname}      |
       | q      | id:%{organizerId} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
@@ -253,7 +253,7 @@ Feature: Test the Search API v3 url parameters on organizers
       | labels[] | %{labelname}      |
       | labels[] | foobar            |
       | q        | id:%{organizerId} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
@@ -286,7 +286,7 @@ Feature: Test the Search API v3 url parameters on organizers
     When I send a GET request to "/organizers" with parameters:
       | workflowStatus | DELETED           |
       | q              | id:%{organizerId} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}

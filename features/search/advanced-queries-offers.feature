@@ -17,7 +17,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | labels:%{labelname} |
-    And I wait for the JSON response at "totalItems" to be "2"
+    And I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{placeId}
@@ -46,7 +46,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | location.labels:%{labelname} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -113,7 +113,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | labels:(%{labelname} AND foobar) |
-    And I wait for the JSON response at "totalItems" to be "2"
+    And I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{placeId}
@@ -509,7 +509,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND status:TemporarilyUnavailable |
-    And I wait for the JSON response at "totalItems" to be "2"
+    And I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{placeId}
@@ -552,7 +552,7 @@ Feature: Test the Search API v3 advanced queries on offers
       | availableTo   | *                                                                 |
       | availableFrom | *                                                                 |
       | q             | id:(%{placeId} OR %{eventId}) AND bookingAvailability:Unavailable |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -571,7 +571,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND calendarType:permanent |
-    And I wait for the JSON response at "totalItems" to be "2"
+    And I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{placeId}
@@ -749,7 +749,7 @@ Feature: Test the Search API v3 advanced queries on offers
       | availableTo   | *                                                                |
       | availableFrom | *                                                                |
       | q             | id:(%{eventId}) AND dateRange:[2021-01-01T00:00:00%2B01:00 TO *] |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -817,7 +817,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | q | id:(%{placeId} OR %{eventId}) AND "%{name}" |
-    And I wait for the JSON response at "totalItems" to be "2"
+    And I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{placeId}
@@ -884,7 +884,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND organizer.id:%{organizerId} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -902,7 +902,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND organizer.name.nl:%{name} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -921,7 +921,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND organizer.labels:%{labelname} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -965,7 +965,7 @@ Feature: Test the Search API v3 advanced queries on offers
     When I send a GET request to "/events" with parameters:
       | audienceType | *                                      |
       | q            | id:%{eventId} AND audienceType:members |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -982,7 +982,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND attendanceMode:offline |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -1048,7 +1048,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND videosCount:[1 TO *] |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -1074,7 +1074,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND mediaObjectsCount:[1 TO *] |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}

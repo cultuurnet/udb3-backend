@@ -26,7 +26,7 @@ Feature: Test departure places in search results
     And I send a GET request to "/events" with parameters:
       | embed                 | true          |
       | disableDefaultFilters | true          |
-    Then I wait for the JSON response at "totalItems" to be 1
+    Then I wait until the response contains 1 result
     And I wait for the JSON response at "member/0/departurePlaces" to have 2 entries
     And the JSON response at "member/0/departurePlaces" should include "%{departurePlaceUrl1}"
     And the JSON response at "member/0/departurePlaces" should include "%{departurePlaceUrl2}"
@@ -60,22 +60,22 @@ Feature: Test departure places in search results
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                                 |
       | q                     | departurePlaces:%{departurePlaceId1} |
-    Then I wait for the JSON response at "totalItems" to be 1
+    Then I wait until the response contains 1 result
     And the JSON response at "member/0/@id" should include "%{eventId1}"
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                                 |
       | q                     | departurePlaces:%{departurePlaceId3} |
-    Then I wait for the JSON response at "totalItems" to be 1
+    Then I wait until the response contains 1 result
     And the JSON response at "member/0/@id" should include "%{eventId1}"
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                                 |
       | q                     | departurePlaces:%{departurePlaceId2} |
-    Then I wait for the JSON response at "totalItems" to be 1
+    Then I wait until the response contains 1 result
     And the JSON response at "member/0/@id" should include "%{eventId2}"
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                                                                        |
       | q                     | departurePlaces:%{departurePlaceId1} OR departurePlaces:%{departurePlaceId2} |
-    Then I wait for the JSON response at "totalItems" to be 2
+    Then I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{eventId1}
@@ -87,7 +87,7 @@ Feature: Test departure places in search results
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                                                                         |
       | q                     | departurePlaces:%{departurePlaceId4} AND departurePlaces:%{departurePlaceId1} |
-    Then I wait for the JSON response at "totalItems" to be 1
+    Then I wait until the response contains 1 result
     And the JSON response at "member/0/@id" should include "%{eventId1}"
 
   @testIsolation
@@ -115,7 +115,7 @@ Feature: Test departure places in search results
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                  |
       | departurePlaces[]     | %{departurePlaceId1}  |
-    Then I wait for the JSON response at "totalItems" to be 1
+    Then I wait until the response contains 1 result
     And the JSON response at "member/0/@id" should include "%{eventId1}"
 
   @testIsolation
@@ -143,10 +143,10 @@ Feature: Test departure places in search results
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                  |
       | departurePlaces[]     | %{departurePlaceId1}  |
-    Then I wait for the JSON response at "totalItems" to be 2
+    Then I wait until the response contains 2 results
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                  |
       | departurePlaces[]     | %{departurePlaceId1}  |
       | departurePlaces[]     | %{departurePlaceId2}  |
-    Then I wait for the JSON response at "totalItems" to be 1
+    Then I wait until the response contains 1 result
     And the JSON response at "member/0/@id" should include "%{eventId1}"

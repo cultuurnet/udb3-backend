@@ -23,7 +23,7 @@ Feature: Test the Search API v3 url parameters on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | labels | %{labelname} |
-    And I wait for the JSON response at "totalItems" to be "2"
+    And I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{placeId}
@@ -48,14 +48,14 @@ Feature: Test the Search API v3 url parameters on offers
     """
     When I send a GET request to "/events" with parameters:
       | locationLabels | %{locationLabel} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
     """
     When I send a GET request to "/events" with parameters:
       | organizerLabels | %{organizerLabel} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -70,7 +70,7 @@ Feature: Test the Search API v3 url parameters on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | locationId | %{placeId} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -96,7 +96,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/offers" with parameters:
       | labels[] | %{labelname} |
       | labels[] | foobar       |
-    And I wait for the JSON response at "totalItems" to be "2"
+    And I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{placeId}
@@ -726,7 +726,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/offers" with parameters:
       | status | TemporarilyUnavailable        |
       | q      | id:(%{placeId} OR %{eventId}) |
-    And I wait for the JSON response at "totalItems" to be "2"
+    And I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{placeId}
@@ -775,7 +775,7 @@ Feature: Test the Search API v3 url parameters on offers
       | availableTo         | *                             |
       | availableFrom       | *                             |
       | q                   | id:(%{placeId} OR %{eventId}) |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -796,7 +796,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/offers" with parameters:
       | calendarType | permanent                     |
       | q            | id:(%{placeId} OR %{eventId}) |
-    And I wait for the JSON response at "totalItems" to be "2"
+    And I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{placeId}
@@ -1004,7 +1004,7 @@ Feature: Test the Search API v3 url parameters on offers
       | availableTo   | *                           |
       | availableFrom | *                           |
       | q             | id:(%{eventId})             |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -1080,7 +1080,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/offers" with parameters:
       | text | %{name}                       |
       | q    | id:(%{placeId} OR %{eventId}) |
-    And I wait for the JSON response at "totalItems" to be "2"
+    And I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{placeId}
@@ -1204,7 +1204,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/offers" with parameters:
       | creator | edcee0f7-5906-4e92-8551-a7f5d37ba453 |
       | q       | id:(%{placeId} OR %{eventId})        |
-    And I wait for the JSON response at "totalItems" to be "2"
+    And I wait until the response contains 2 results
     And the JSON response should include:
     """
     %{placeId}
@@ -1250,7 +1250,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/events" with parameters:
       | audienceType | members       |
       | q            | id:%{eventId} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -1272,7 +1272,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/events" with parameters:
       | attendanceMode | offline                                                       |
       | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{offLineEventId}
@@ -1284,7 +1284,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/events" with parameters:
       | attendanceMode | mixed                                                         |
       | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{mixedEventId}
@@ -1296,7 +1296,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/events" with parameters:
       | attendanceMode | online                                                        |
       | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{onlineEventId}

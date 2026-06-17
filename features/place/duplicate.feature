@@ -16,7 +16,7 @@ Feature: Test creating places
     When I send a GET request to "/places" with parameters:
       | workflowStatus | REJECTED              |
       | q              | id:%{originalPlaceId} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And I am using the UDB3 base URL
     And I create a minimal place then I should get a "201" response code
 

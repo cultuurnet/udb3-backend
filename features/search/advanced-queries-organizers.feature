@@ -43,7 +43,7 @@ Feature: Test the Search API v3 advanced queries on organizers
     And I send a PUT request to "/organizers/%{organizerId}/description/nl"
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND description.\*:%{description} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
@@ -73,7 +73,7 @@ Feature: Test the Search API v3 advanced queries on organizers
     And I send a PUT request to "/organizers/%{organizerId}/description/nl"
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND %{freeText} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
@@ -89,7 +89,7 @@ Feature: Test the Search API v3 advanced queries on organizers
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND labels:%{labelname} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
@@ -106,7 +106,7 @@ Feature: Test the Search API v3 advanced queries on organizers
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND labels:(%{labelname} AND foobar) |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
@@ -245,7 +245,7 @@ Feature: Test the Search API v3 advanced queries on organizers
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND contributors:%{contributorEmail} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
