@@ -28,7 +28,6 @@ use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use Psr\Log\LoggerAwareInterface;
 use Twig_Environment;
-use Twig_Extensions_Extension_Text;
 
 final class ExportServiceProvider extends AbstractServiceProvider
 {
@@ -58,7 +57,6 @@ final class ExportServiceProvider extends AbstractServiceProvider
                 $twig = new Twig_Environment($loader);
 
                 $twig->addExtension(new GoogleMapUrlGenerator($container->get('config')['google_maps_api_key']));
-                $twig->addExtension(new Twig_Extensions_Extension_Text());
 
                 return $twig;
             }
