@@ -86,6 +86,7 @@ final class UserServiceProvider extends AbstractServiceProvider
             new KeycloakManagementTokenGenerator(
                 new Client(),
                 $container->get('config')['keycloak']['domain'],
+                $container->get('config')['keycloak']['master_realm'],
                 $container->get('config')['keycloak']['client_id'],
                 $container->get('config')['keycloak']['client_secret']
             ),
