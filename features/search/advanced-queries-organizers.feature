@@ -41,9 +41,9 @@ Feature: Test the Search API v3 advanced queries on organizers
     { "description": "%{description}" }
     """
     And I send a PUT request to "/organizers/%{organizerId}/description/nl"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND description.\*:%{description} |
-    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
@@ -71,9 +71,9 @@ Feature: Test the Search API v3 advanced queries on organizers
     { "description": "%{freeText}" }
     """
     And I send a PUT request to "/organizers/%{organizerId}/description/nl"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND %{freeText} |
-    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
@@ -86,10 +86,10 @@ Feature: Test the Search API v3 advanced queries on organizers
     Given I create a random labelname of 10 characters
     And I create a minimal organizer and save the "id" as "organizerId"
     And I send a PUT request to "/organizers/%{organizerId}/labels/%{labelname}"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND labels:%{labelname} |
-    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
@@ -103,10 +103,10 @@ Feature: Test the Search API v3 advanced queries on organizers
     And I create a minimal organizer and save the "id" as "organizerId"
     And I send a PUT request to "/organizers/%{organizerId}/labels/%{labelname}"
     And I send a PUT request to "/organizers/%{organizerId}/labels/foobar"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND labels:(%{labelname} AND foobar) |
-    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
@@ -242,10 +242,10 @@ Feature: Test the Search API v3 advanced queries on organizers
     ]
     """
     And I send a PUT request to "/organizers/%{organizerId}/contributors"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} AND contributors:%{contributorEmail} |
-    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
