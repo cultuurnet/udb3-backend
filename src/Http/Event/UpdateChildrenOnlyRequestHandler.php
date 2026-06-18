@@ -30,6 +30,7 @@ final class UpdateChildrenOnlyRequestHandler implements RequestHandlerInterface
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT_CHILDREN_ONLY_PUT),
         );
 
+        /** @var object $body */
         $body = $parser->parse($request)->getParsedBody();
 
         $this->commandBus->dispatch(
