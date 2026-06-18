@@ -70,21 +70,11 @@ final class UpdateDeparturePlacesRequestHandler implements RequestHandlerInterfa
         $errors = [];
 
         foreach ($departurePlaces->toArray() as $index => $url) {
-            error_log('[departure-places-debug] incoming url: ' . $url->toString());
-
-            try {
-                $placeId = $this->iriOfferIdentifierFactory->fromIri($url)->getId();
-                error_log('[departure-places-debug] extracted placeId: ' . $placeId);
-            } catch (\Throwable $e) {
-                error_log('[departure-places-debug] fromIri threw ' . get_class($e) . ': ' . $e->getMessage());
-                throw $e;
-            }
+            $placeId = $this->iriOfferIdentifierFactory->fromIri($url)->getId();
 
             try {
                 $this->placeDocumentRepository->fetch($placeId);
-                error_log('[departure-places-debug] place document found for id: ' . $placeId);
             } catch (DocumentDoesNotExist $e) {
-                error_log('[departure-places-debug] place document NOT found for id: ' . $placeId);
                 $errors[] = new SchemaError(
                     '/' . $index,
                     'The place with url "' . $url->toString() . '" was not found.'
