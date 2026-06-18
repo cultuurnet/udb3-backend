@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\User\Keycloak;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\User\ManagementToken\ManagementToken;
 use CultuurNet\UDB3\User\ManagementToken\ManagementTokenGenerator;
-use DateTimeImmutable;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 
@@ -54,7 +53,6 @@ final class KeycloakManagementTokenGenerator implements ManagementTokenGenerator
 
         return new ManagementToken(
             $json['access_token'],
-            new DateTimeImmutable(),
             $json['expires_in']
         );
     }
