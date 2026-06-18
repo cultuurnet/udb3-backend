@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Http\Event\DeleteOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeleteThemeRequestHandler;
 use CultuurNet\UDB3\Http\Event\DeparturePlacesLimitLogger;
 use CultuurNet\UDB3\Http\Event\DeleteBirthdateRangeRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateChildrenOnlyRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateDeparturePlacesRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateFaqsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateBirthdateRangeRequestHandler;
@@ -52,6 +53,7 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             UpdateAudienceRequestHandler::class,
             UpdateFaqsRequestHandler::class,
             UpdateDeparturePlacesRequestHandler::class,
+            UpdateChildrenOnlyRequestHandler::class,
             UpdateBirthdateRangeRequestHandler::class,
             DeleteBirthdateRangeRequestHandler::class,
             CopyEventRequestHandler::class,
@@ -167,6 +169,13 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
                 $container->get('place_jsonld_repository'),
                 $container->get('iri_offer_identifier_factory'),
                 new DeparturePlacesLimitLogger(LoggerFactory::create($container, LoggerName::forWeb())),
+            )
+        );
+
+        $container->addShared(
+            UpdateChildrenOnlyRequestHandler::class,
+            fn () => new UpdateChildrenOnlyRequestHandler(
+                $container->get('event_command_bus')
             )
         );
 
