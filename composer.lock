@@ -5329,16 +5329,16 @@
         },
         {
             "name": "phpseclib/phpseclib",
-            "version": "3.0.52",
+            "version": "3.0.55",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpseclib/phpseclib.git",
-                "reference": "2adaefc83df2ec548558307690f376dd7d4f4fce"
+                "reference": "db9744e6d47e742b1f974e965ad49bdd041105af"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/2adaefc83df2ec548558307690f376dd7d4f4fce",
-                "reference": "2adaefc83df2ec548558307690f376dd7d4f4fce",
+                "url": "https://api.github.com/repos/phpseclib/phpseclib/zipball/db9744e6d47e742b1f974e965ad49bdd041105af",
+                "reference": "db9744e6d47e742b1f974e965ad49bdd041105af",
                 "shasum": ""
             },
             "require": {
@@ -5419,7 +5419,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpseclib/phpseclib/issues",
-                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.52"
+                "source": "https://github.com/phpseclib/phpseclib/tree/3.0.55"
             },
             "funding": [
                 {
@@ -5435,7 +5435,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-04-27T07:02:15+00:00"
+            "time": "2026-06-14T23:24:10+00:00"
         },
         {
             "name": "predis/predis",
@@ -6092,12 +6092,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "94d6786596b8c4fc049b0ba0d4fb1b8fbc13041e"
+                "reference": "65b5a1100723071a96f967f254a4b48f8151538f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/94d6786596b8c4fc049b0ba0d4fb1b8fbc13041e",
-                "reference": "94d6786596b8c4fc049b0ba0d4fb1b8fbc13041e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/65b5a1100723071a96f967f254a4b48f8151538f",
+                "reference": "65b5a1100723071a96f967f254a4b48f8151538f",
                 "shasum": ""
             },
             "default-branch": true,
@@ -6117,7 +6117,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
-            "time": "2026-06-11T13:09:50+00:00"
+            "time": "2026-06-18T11:21:56+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
