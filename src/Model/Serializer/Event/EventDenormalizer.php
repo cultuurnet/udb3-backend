@@ -130,8 +130,25 @@ class EventDenormalizer extends OfferDenormalizer
         $offer = $this->denormalizeOnlineUrl($data, $offer);
         $offer = $this->denormalizeFaq($data, $offer);
         $offer = $this->denormalizeDeparturePlaces($data, $offer);
+        $offer = $this->denormalizeChildrenOnly($data, $offer);
         $offer = $this->denormalizeBirthdateRange($data, $offer);
         return $this->denormalizeAudienceType($data, $offer);
+    }
+
+    private function denormalizeChildrenOnly(array $data, ImmutableEvent $event): ImmutableEvent
+    {
+        if (isset($data['childrenOnly'])) {
+            return $event->withChildrenOnly((bool) $data['childrenOnly']);
+        }
+
+        // Backwards compatibility: childrenOnly used to live on the audienceType
+        // enum. Treat the legacy enum value as the new boolean being true so
+        // existing import payloads keep working. Removed together with the enum value.
+        if (($data['audience']['audienceType'] ?? null) === 'childrenOnly') {
+            return $event->withChildrenOnly(true);
+        }
+
+        return $event;
     }
 
     private function denormalizeAttendanceMode(array $data, ImmutableEvent $event): ImmutableEvent
