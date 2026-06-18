@@ -38,6 +38,7 @@ use CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateChildrenOnlyHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateDeparturePlacesHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateChildrenOnlyHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateBirthdateRangeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\DeleteBirthdateRangeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateFaqsHandler;
