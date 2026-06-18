@@ -270,5 +270,4 @@ trait RequestSteps
             }
         } while ($this->responseState->getTotalItems() != 1 && $elapsedTime < 10);
     }
-
 }
