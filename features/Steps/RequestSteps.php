@@ -260,17 +260,26 @@ trait RequestSteps
         $id = $pathSegments[$segmentCount - 1];
         $item = $pathSegments[$segmentCount - 2];
 
+        $udb3Response = $this->getHttpClient()->get('/' . $item . '/' . $id);
+        $this->responseState->setResponse($udb3Response);
+        $expectedPlayhead = $this->responseState->getValueOnPath('playhead');
+
         $scenarioLabel = VariableState::getScenarioLabel();
         $labelParam = $scenarioLabel !== null ? '&q=labels:' . $scenarioLabel : '';
 
         $elapsedTime = 0;
         do {
-            $response = $this->getHttpClient()->get('/' . $item . '/?disableDefaultFilters=true&id=' . $id . $labelParam);
+            $response = $this->getHttpClient()->get('/' . $item . '/?disableDefaultFilters=true&embed=true&id=' . $id . $labelParam);
             $this->responseState->setResponse($response);
-            if ($this->responseState->getTotalItems() != 1) {
+
+            $memberPlayhead = $this->responseState->getValueOnPath('member/0/playhead');
+            $isCaughtUp = $this->responseState->getTotalItems() === 1
+                && ($expectedPlayhead === null || ($memberPlayhead !== null && $memberPlayhead >= $expectedPlayhead));
+
+            if (!$isCaughtUp) {
                 sleep(1);
                 $elapsedTime++;
             }
-        } while ($this->responseState->getTotalItems() != 1 && $elapsedTime < 10);
+        } while (!$isCaughtUp && $elapsedTime < 10);
     }
 }
