@@ -260,9 +260,12 @@ trait RequestSteps
         $id = $pathSegments[$segmentCount - 1];
         $item = $pathSegments[$segmentCount - 2];
 
+        $scenarioLabel = VariableState::getScenarioLabel();
+        $labelParam = $scenarioLabel !== null ? '&q=labels:' . $scenarioLabel : '';
+
         $elapsedTime = 0;
         do {
-            $response = $this->getHttpClient()->get('/' . $item . '/?disableDefaultFilters=true&id=' . $id);
+            $response = $this->getHttpClient()->get('/' . $item . '/?disableDefaultFilters=true&id=' . $id . $labelParam);
             $this->responseState->setResponse($response);
             if ($this->responseState->getTotalItems() != 1) {
                 sleep(1);
