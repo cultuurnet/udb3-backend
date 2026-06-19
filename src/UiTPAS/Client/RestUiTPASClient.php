@@ -38,8 +38,7 @@ final class RestUiTPASClient implements UiTPASClient
 
     public function addCardSystemToEvent(string $eventId, int $cardSystemId, ?int $distributionKeyId = null): void
     {
-        // UiTPAS can only replace the whole list at once, not add one item. So we fetch the current
-        // list, switch on the card system we want (and its distribution key) and send the list back.
+        // UiTPAS only supports replacing the whole list, so fetch it, switch our card system on and put it back.
         $cardSystems = $this->getEventCardSystemsData($eventId);
 
         $found = false;
@@ -62,6 +61,20 @@ final class RestUiTPASClient implements UiTPASClient
                 $newCardSystem['manualDistributionKeys'] = [['id' => $distributionKeyId, 'enabled' => true]];
             }
             $cardSystems[] = $newCardSystem;
+        }
+
+        $this->putEventCardSystems($eventId, $cardSystems);
+    }
+
+    public function deleteCardSystemFromEvent(string $eventId, int $cardSystemId): void
+    {
+        // Same as adding, but switch our card system off.
+        $cardSystems = $this->getEventCardSystemsData($eventId);
+
+        foreach ($cardSystems as $index => $cardSystem) {
+            if ((int) $cardSystem['id'] === $cardSystemId) {
+                $cardSystems[$index]['enabled'] = false;
+            }
         }
 
         $this->putEventCardSystems($eventId, $cardSystems);
@@ -91,11 +104,6 @@ final class RestUiTPASClient implements UiTPASClient
     }
 
     /**
-     * Gets the event's card systems as plain arrays.
-     *
-     * A 404 means UiTPAS doesn't know this event, so we return an empty list. Any other error throws,
-     * so we never accidentally save an empty list back over the real one.
-     *
      * @return array<int, array<string, mixed>>
      */
     private function getEventCardSystemsData(string $eventId): array
@@ -104,10 +112,12 @@ final class RestUiTPASClient implements UiTPASClient
             $this->authenticatedRequest('GET', 'events/' . $eventId . '/card-systems')
         );
 
+        // UiTPAS doesn't know this event, so there are no card systems.
         if ($response->getStatusCode() === 404) {
             return [];
         }
 
+        // Throw on other errors so we never overwrite the real list with an empty one.
         if ($response->getStatusCode() !== 200) {
             $body = $response->getBody()->getContents();
             $this->logger->error('UiTPAS REST API returned non-200 status code for event card systems', [

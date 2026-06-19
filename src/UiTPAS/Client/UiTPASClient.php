@@ -14,4 +14,6 @@ interface UiTPASClient
     public function getEventCardSystems(string $eventId): array;
 
     public function addCardSystemToEvent(string $eventId, int $cardSystemId, ?int $distributionKeyId = null): void;
+
+    public function deleteCardSystemFromEvent(string $eventId, int $cardSystemId): void;
 }
