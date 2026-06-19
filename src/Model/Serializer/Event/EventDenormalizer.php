@@ -130,8 +130,18 @@ class EventDenormalizer extends OfferDenormalizer
         $offer = $this->denormalizeOnlineUrl($data, $offer);
         $offer = $this->denormalizeFaq($data, $offer);
         $offer = $this->denormalizeDeparturePlaces($data, $offer);
+        $offer = $this->denormalizeChildrenOnly($data, $offer);
         $offer = $this->denormalizeBirthdateRange($data, $offer);
         return $this->denormalizeAudienceType($data, $offer);
+    }
+
+    private function denormalizeChildrenOnly(array $data, ImmutableEvent $event): ImmutableEvent
+    {
+        if (isset($data['childrenOnly'])) {
+            return $event->withChildrenOnly((bool) $data['childrenOnly']);
+        }
+
+        return $event;
     }
 
     private function denormalizeAttendanceMode(array $data, ImmutableEvent $event): ImmutableEvent

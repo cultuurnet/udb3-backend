@@ -11,7 +11,7 @@ Feature: Test departure places in search results
   Scenario: Departure places are embedded in search results
     When I create a minimal place and save the "url" as "departurePlaceUrl1"
     And I create a minimal place and save the "url" as "departurePlaceUrl2"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId"
+    And I create an event from "events/event-children-only.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
     And I set the JSON request payload to:
     """
@@ -41,14 +41,14 @@ Feature: Test departure places in search results
     And I keep the value of the JSON response at "id" as "departurePlaceId3"
     And I create a minimal place and save the "url" as "departurePlaceUrl4"
     And I keep the value of the JSON response at "id" as "departurePlaceId4"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId1"
+    And I create an event from "events/event-children-only.json" and save the "id" as "eventId1"
     And I publish the event at "/events/%{eventId1}"
     And I set the JSON request payload to:
     """
     ["%{departurePlaceUrl1}", "%{departurePlaceUrl3}", "%{departurePlaceUrl4}"]
     """
     And I send a PUT request to "/events/%{eventId1}/departure-places/"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId2"
+    And I create an event from "events/event-children-only.json" and save the "id" as "eventId2"
     And I publish the event at "/events/%{eventId2}"
     And I set the JSON request payload to:
     """
@@ -96,14 +96,14 @@ Feature: Test departure places in search results
     And I keep the value of the JSON response at "id" as "departurePlaceId1"
     And I create a minimal place and save the "url" as "departurePlaceUrl2"
     And I keep the value of the JSON response at "id" as "departurePlaceId2"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId1"
+    And I create an event from "events/event-children-only.json" and save the "id" as "eventId1"
     And I publish the event at "/events/%{eventId1}"
     And I set the JSON request payload to:
     """
     ["%{departurePlaceUrl1}"]
     """
     And I send a PUT request to "/events/%{eventId1}/departure-places/"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId2"
+    And I create an event from "events/event-children-only.json" and save the "id" as "eventId2"
     And I publish the event at "/events/%{eventId2}"
     And I set the JSON request payload to:
     """
@@ -124,14 +124,14 @@ Feature: Test departure places in search results
     And I keep the value of the JSON response at "id" as "departurePlaceId1"
     And I create a minimal place and save the "url" as "departurePlaceUrl2"
     And I keep the value of the JSON response at "id" as "departurePlaceId2"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId1"
+    And I create an event from "events/event-children-only.json" and save the "id" as "eventId1"
     And I publish the event at "/events/%{eventId1}"
     And I set the JSON request payload to:
     """
     ["%{departurePlaceUrl1}", "%{departurePlaceUrl2}"]
     """
     And I send a PUT request to "/events/%{eventId1}/departure-places/"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "eventId2"
+    And I create an event from "events/event-children-only.json" and save the "id" as "eventId2"
     And I publish the event at "/events/%{eventId2}"
     And I set the JSON request payload to:
     """

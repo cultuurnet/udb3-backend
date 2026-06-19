@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Event\Events\BirthdateRangeDeleted;
 use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
+use CultuurNet\UDB3\Event\Events\ChildrenOnlyUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionDeleted;
@@ -599,6 +600,20 @@ final class EventLDProjector extends OfferLDProjector implements
             unset($jsonLD->departurePlaces);
         } else {
             $jsonLD->departurePlaces = $departurePlacesUpdated->departurePlaces->toStringArray();
+        }
+
+        return $document->withBody($jsonLD);
+    }
+
+    protected function applyChildrenOnlyUpdated(ChildrenOnlyUpdated $childrenOnlyUpdated): JsonDocument
+    {
+        $document = $this->loadDocumentFromRepository($childrenOnlyUpdated);
+        $jsonLD = $document->getBody();
+
+        if ($childrenOnlyUpdated->childrenOnly) {
+            $jsonLD->childrenOnly = true;
+        } else {
+            unset($jsonLD->childrenOnly);
         }
 
         return $document->withBody($jsonLD);
