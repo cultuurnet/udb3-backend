@@ -97,6 +97,23 @@ final class RestUiTPASClient implements UiTPASClient
         $this->putEventCardSystems($eventId, $cardSystems);
     }
 
+    public function eventHasTicketSales(string $eventId): bool
+    {
+        // limit=0 returns no items, just the total count.
+        $response = $this->client->sendRequest(
+            $this->authenticatedRequest('GET', 'ticket-sales?eventId=' . rawurlencode($eventId) . '&limit=0')
+        );
+
+        if ($response->getStatusCode() !== 200) {
+            throw new RuntimeException(
+                'UiTPAS REST API returned status code ' . $response->getStatusCode()
+                . ' for ticket sales: ' . $response->getBody()->getContents()
+            );
+        }
+
+        return (Json::decodeAssociatively($response->getBody()->getContents())['totalItems'] ?? 0) > 0;
+    }
+
     /**
      * @return array<int, array<string, mixed>>
      */
