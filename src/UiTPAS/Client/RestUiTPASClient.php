@@ -26,10 +26,10 @@ final class RestUiTPASClient implements UiTPASClient
     public function getEventCardSystems(string $eventId): array
     {
         $cardSystems = [];
-        foreach ($this->getEventCardSystemsData($eventId) as $cardSystem) {
+        foreach ($this->getEventCardSystemsData($eventId) as $cardSystemData) {
             $cardSystems[] = new CardSystem(
-                new Id((string) $cardSystem['id']),
-                $cardSystem['name']
+                new Id((string) $cardSystemData['id']),
+                $cardSystemData['name']
             );
         }
 
@@ -80,27 +80,21 @@ final class RestUiTPASClient implements UiTPASClient
         $this->putEventCardSystems($eventId, $cardSystems);
     }
 
-    /**
-     * @param array<string, mixed> $cardSystem
-     * @return array<string, mixed>
-     */
-    private function enableDistributionKey(array $cardSystem, int $distributionKeyId): array
+    public function setCardSystemsForEvent(string $eventId, array $cardSystemIds): void
     {
-        $cardSystem['manualDistributionKeys'] ??= [];
+        // Enable exactly the given card systems and disable the rest.
+        $cardSystems = $this->getEventCardSystemsData($eventId);
 
-        $found = false;
-        foreach ($cardSystem['manualDistributionKeys'] as $index => $distributionKey) {
-            if ((int) $distributionKey['id'] === $distributionKeyId) {
-                $cardSystem['manualDistributionKeys'][$index]['enabled'] = true;
-                $found = true;
-            }
+        foreach ($cardSystems as $index => $cardSystem) {
+            $cardSystems[$index]['enabled'] = in_array((int) $cardSystem['id'], $cardSystemIds, true);
         }
 
-        if (!$found) {
-            $cardSystem['manualDistributionKeys'][] = ['id' => $distributionKeyId, 'enabled' => true];
+        $existingIds = array_map(static fn (array $cardSystem): int => (int) $cardSystem['id'], $cardSystems);
+        foreach (array_diff($cardSystemIds, $existingIds) as $cardSystemId) {
+            $cardSystems[] = ['id' => $cardSystemId, 'enabled' => true];
         }
 
-        return $cardSystem;
+        $this->putEventCardSystems($eventId, $cardSystems);
     }
 
     /**
@@ -167,5 +161,28 @@ final class RestUiTPASClient implements UiTPASClient
         }
 
         return new Request($method, $this->apiEndpoint . $path, $headers, $body);
+    }
+
+    /**
+     * @param array<string, mixed> $cardSystem
+     * @return array<string, mixed>
+     */
+    private function enableDistributionKey(array $cardSystem, int $distributionKeyId): array
+    {
+        $cardSystem['manualDistributionKeys'] ??= [];
+
+        $found = false;
+        foreach ($cardSystem['manualDistributionKeys'] as $index => $distributionKey) {
+            if ((int) $distributionKey['id'] === $distributionKeyId) {
+                $cardSystem['manualDistributionKeys'][$index]['enabled'] = true;
+                $found = true;
+            }
+        }
+
+        if (!$found) {
+            $cardSystem['manualDistributionKeys'][] = ['id' => $distributionKeyId, 'enabled' => true];
+        }
+
+        return $cardSystem;
     }
 }

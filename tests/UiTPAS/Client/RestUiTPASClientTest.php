@@ -249,4 +249,53 @@ final class RestUiTPASClientTest extends TestCase
             Json::decodeAssociatively((string) $this->mockHandler->getLastRequest()->getBody())
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_enables_the_given_card_systems_and_disables_the_rest(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(
+            new Response(200, [], Json::encode([
+                ['id' => 1, 'name' => 'UiTPAS Dender', 'enabled' => true],
+                ['id' => 8, 'name' => 'UiTPAS Gent', 'enabled' => false],
+            ])),
+            new Response(204, [], '')
+        );
+
+        $client->setCardSystemsForEvent('event-id-1', [8]);
+
+        $this->assertEquals(
+            [
+                ['id' => 1, 'name' => 'UiTPAS Dender', 'enabled' => false],
+                ['id' => 8, 'name' => 'UiTPAS Gent', 'enabled' => true],
+            ],
+            Json::decodeAssociatively((string) $this->mockHandler->getLastRequest()->getBody())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_appends_card_systems_that_are_not_yet_in_the_list_when_setting(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(
+            new Response(200, [], Json::encode([
+                ['id' => 1, 'name' => 'UiTPAS Dender', 'enabled' => true],
+            ])),
+            new Response(204, [], '')
+        );
+
+        $client->setCardSystemsForEvent('event-id-1', [5]);
+
+        $this->assertEquals(
+            [
+                ['id' => 1, 'name' => 'UiTPAS Dender', 'enabled' => false],
+                ['id' => 5, 'enabled' => true],
+            ],
+            Json::decodeAssociatively((string) $this->mockHandler->getLastRequest()->getBody())
+        );
+    }
 }
