@@ -15,7 +15,5 @@
   },
   "calendarType": "permanent",
   "typicalAgeRange": "7-11",
-  "audience": {
-    "audienceType": "childrenOnly"
-  }
+  "childrenOnly": true
 }
