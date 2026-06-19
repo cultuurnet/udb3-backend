@@ -56,6 +56,7 @@ Feature: Test the Search API v3 url parameters on offers
     """
     When I send a GET request to "/events" with parameters:
       | organizerLabels | %{organizerLabel} |
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -79,7 +80,7 @@ Feature: Test the Search API v3 url parameters on offers
     """
     When I send a GET request to "/events" with parameters:
       | organizerId | %{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}

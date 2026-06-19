@@ -951,7 +951,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} AND organizer.labels:%{labelname} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}

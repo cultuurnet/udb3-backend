@@ -24,6 +24,7 @@ Feature: Test the Search API v3 contributors
       | embed                 | true |
       | disableDefaultFilters | true |
       | q                     | contributors:%{organizerContributorEmail} |
+    And I wait until the response contains 1 result
     And the JSON response at "member/0/@id" should be "%{organizerUrl}"
     But the JSON response should not have "member/0/contributors"
 

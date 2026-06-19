@@ -18,7 +18,7 @@ Feature: Test the Search API v3 default filters on organizers
     When I send a GET request to "/organizers" with parameters:
       | workflowStatus | *                 |
       | q              | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{organizerId}
