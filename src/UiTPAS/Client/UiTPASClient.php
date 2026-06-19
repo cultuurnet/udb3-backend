@@ -21,4 +21,6 @@ interface UiTPASClient
      * @param int[] $cardSystemIds
      */
     public function setCardSystemsForEvent(string $eventId, array $cardSystemIds): void;
+
+    public function eventHasTicketSales(string $eventId): bool;
 }
