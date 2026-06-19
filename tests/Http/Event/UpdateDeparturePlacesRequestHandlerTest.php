@@ -180,7 +180,7 @@ final class UpdateDeparturePlacesRequestHandlerTest extends TestCase
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::inCompatibleAudienceType(
-                'Departure places can only be set on events with audienceType "childrenOnly". Event: ' . self::EVENT_ID
+                'Departure places can only be set on events where "childrenOnly" is true. Event: ' . self::EVENT_ID
             ),
             fn () => $handler->handle($request)
         );
