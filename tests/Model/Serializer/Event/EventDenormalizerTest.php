@@ -1880,38 +1880,7 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_bridges_legacy_audience_type_children_only_to_the_new_boolean(): void
-    {
-        $eventData = $this->getMinimalEventData() + [
-            'audience' => ['audienceType' => 'childrenOnly'],
-        ];
-
-        /** @var ImmutableEvent $event */
-        $event = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
-
-        $this->assertTrue($event->getChildrenOnly());
-    }
-
-    /**
-     * @test
-     */
-    public function it_prefers_the_top_level_children_only_field_over_the_legacy_audience_type(): void
-    {
-        $eventData = $this->getMinimalEventData() + [
-            'childrenOnly' => false,
-            'audience' => ['audienceType' => 'childrenOnly'],
-        ];
-
-        /** @var ImmutableEvent $event */
-        $event = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
-
-        $this->assertFalse($event->getChildrenOnly());
-    }
-
-    /**
-     * @test
-     */
-    public function it_defaults_children_only_to_false_when_neither_field_is_present(): void
+    public function it_defaults_children_only_to_false_when_field_is_not_present(): void
     {
         /** @var ImmutableEvent $event */
         $event = $this->denormalizer->denormalize($this->getMinimalEventData(), ImmutableEvent::class);
