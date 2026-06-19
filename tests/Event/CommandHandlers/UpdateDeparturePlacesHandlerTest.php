@@ -10,12 +10,11 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Event\Commands\UpdateDeparturePlaces;
 use CultuurNet\UDB3\Event\EventRepository;
-use CultuurNet\UDB3\Event\Events\AudienceUpdated;
+use CultuurNet\UDB3\Event\Events\ChildrenOnlyUpdated;
 use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\IncompatibleAudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
-use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -49,7 +48,7 @@ final class UpdateDeparturePlacesHandlerTest extends CommandHandlerScenarioTestC
             ->withAggregateId(self::EVENT_ID)
             ->given([
                 $this->getEventCreated(),
-                new AudienceUpdated(self::EVENT_ID, AudienceType::childrenOnly()),
+                new ChildrenOnlyUpdated(self::EVENT_ID, true),
             ])
             ->when(new UpdateDeparturePlaces(self::EVENT_ID, $departurePlaces))
             ->then([new DeparturePlacesUpdated(self::EVENT_ID, $departurePlaces)]);
@@ -72,7 +71,7 @@ final class UpdateDeparturePlacesHandlerTest extends CommandHandlerScenarioTestC
             ->withAggregateId(self::EVENT_ID)
             ->given([
                 $this->getEventCreated(),
-                new AudienceUpdated(self::EVENT_ID, AudienceType::childrenOnly()),
+                new ChildrenOnlyUpdated(self::EVENT_ID, true),
                 new DeparturePlacesUpdated(self::EVENT_ID, $initial),
             ])
             ->when(new UpdateDeparturePlaces(self::EVENT_ID, $updated))
@@ -92,7 +91,7 @@ final class UpdateDeparturePlacesHandlerTest extends CommandHandlerScenarioTestC
             ->withAggregateId(self::EVENT_ID)
             ->given([
                 $this->getEventCreated(),
-                new AudienceUpdated(self::EVENT_ID, AudienceType::childrenOnly()),
+                new ChildrenOnlyUpdated(self::EVENT_ID, true),
                 new DeparturePlacesUpdated(self::EVENT_ID, $departurePlaces),
             ])
             ->when(new UpdateDeparturePlaces(self::EVENT_ID, $departurePlaces))
@@ -112,7 +111,7 @@ final class UpdateDeparturePlacesHandlerTest extends CommandHandlerScenarioTestC
             ->withAggregateId(self::EVENT_ID)
             ->given([
                 $this->getEventCreated(),
-                new AudienceUpdated(self::EVENT_ID, AudienceType::childrenOnly()),
+                new ChildrenOnlyUpdated(self::EVENT_ID, true),
                 new DeparturePlacesUpdated(self::EVENT_ID, $departurePlaces),
             ])
             ->when(new UpdateDeparturePlaces(self::EVENT_ID, new Urls()))
@@ -122,7 +121,7 @@ final class UpdateDeparturePlacesHandlerTest extends CommandHandlerScenarioTestC
     /**
      * @test
      */
-    public function it_throws_when_audience_type_is_not_children_only(): void
+    public function it_throws_when_children_only_is_not_true(): void
     {
         $departurePlaces = new Urls(
             new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
@@ -130,7 +129,7 @@ final class UpdateDeparturePlacesHandlerTest extends CommandHandlerScenarioTestC
 
         $this->expectException(IncompatibleAudienceType::class);
         $this->expectExceptionMessage(
-            'Departure places can only be set on events with audienceType "childrenOnly". Event: ' . self::EVENT_ID
+            'Departure places can only be set on events where "childrenOnly" is true. Event: ' . self::EVENT_ID
         );
 
         $this->scenario

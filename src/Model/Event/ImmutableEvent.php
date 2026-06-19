@@ -33,6 +33,8 @@ class ImmutableEvent extends ImmutableOffer implements Event
 
     private Urls $departurePlaces;
 
+    private bool $childrenOnly = false;
+
     private ?BirthdateRange $birthdateRange = null;
 
     public function __construct(
@@ -129,6 +131,18 @@ class ImmutableEvent extends ImmutableOffer implements Event
     {
         $c = clone $this;
         $c->departurePlaces = $departurePlaces;
+        return $c;
+    }
+
+    public function getChildrenOnly(): bool
+    {
+        return $this->childrenOnly;
+    }
+
+    public function withChildrenOnly(bool $childrenOnly): ImmutableEvent
+    {
+        $c = clone $this;
+        $c->childrenOnly = $childrenOnly;
         return $c;
     }
 

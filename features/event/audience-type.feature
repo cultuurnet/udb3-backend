@@ -17,34 +17,3 @@ Feature: Test event audienceType property
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
     And the JSON response at "audience/audienceType" should be "education"
-
-  Scenario: Create an event with audience type childrenOnly
-    When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
-    And I get the event at "%{eventUrl}"
-    Then the JSON response at "audience/audienceType" should be "childrenOnly"
-
-  Scenario: Update an event to audienceType childrenOnly
-    When I create a minimal permanent event and save the "url" as "eventUrl"
-    And I set the JSON request payload to:
-    """
-    {
-      "audienceType": "childrenOnly"
-    }
-    """
-    And I send a PUT request to "%{eventUrl}/audience"
-    Then the response status should be "204"
-    And I get the event at "%{eventUrl}"
-    And the JSON response at "audience/audienceType" should be "childrenOnly"
-
-  Scenario: Remove audienceType childrenOnly from an event
-    When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
-    And I set the JSON request payload to:
-    """
-    {
-      "audienceType": "everyone"
-    }
-    """
-    And I send a PUT request to "%{eventUrl}/audience"
-    Then the response status should be "204"
-    And I get the event at "%{eventUrl}"
-    And the JSON response at "audience/audienceType" should be "everyone"

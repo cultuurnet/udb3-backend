@@ -75,6 +75,7 @@ use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Term\TermServiceProvider;
 use CultuurNet\UDB3\UDB2\UDB2EventServicesProvider;
+use CultuurNet\UDB3\UiTPAS\UiTPASClientServiceProvider;
 use CultuurNet\UDB3\UiTPAS\UiTPASIncomingEventServicesProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceEventServiceProvider;
 use CultuurNet\UDB3\UiTPASService\UiTPASServiceLabelsServiceProvider;
@@ -174,6 +175,7 @@ $container->addServiceProvider(new LabelServiceProvider());
 $container->addServiceProvider(new BulkLabelOfferServiceProvider());
 
 /** Uitpas */
+$container->addServiceProvider(new UiTPASClientServiceProvider());
 $container->addServiceProvider(new UiTPASServiceLabelsServiceProvider());
 $container->addServiceProvider(new UiTPASServiceEventServiceProvider());
 $container->addServiceProvider(new UiTPASServiceOrganizerServiceProvider());

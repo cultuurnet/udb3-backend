@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
+use CultuurNet\UDB3\Event\Events\ChildrenOnlyUpdated;
 use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\BirthdateRangeDeleted;
 use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
@@ -2044,6 +2045,32 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $this->assertFalse(property_exists($body, 'departurePlaces'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_and_removes_children_only(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $body = $this->project(
+            new ChildrenOnlyUpdated($eventId, true),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertTrue($body->childrenOnly);
+
+        $body = $this->project(
+            new ChildrenOnlyUpdated($eventId, false),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertFalse(property_exists($body, 'childrenOnly'));
     }
 
     /**
