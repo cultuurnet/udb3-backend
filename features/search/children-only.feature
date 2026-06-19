@@ -58,7 +58,7 @@ Feature: Test the Search API v3 boa feature
     And I am not authorized
     And I am not using an UiTID v1 API key
     And I am authorized with an OAuth client access token for "test_client"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "myChildrenOnlyEventId"
+    And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "test_client"
