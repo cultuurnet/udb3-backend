@@ -38,7 +38,7 @@ final class AudienceUpdated extends AbstractEvent
     {
         try {
             $audienceType = (new AudienceTypeDenormalizer())->denormalize($data['audience'], AudienceType::class);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             // Legacy events may contain audience types that are no longer supported
             // (e.g. "childrenOnly", now expressed as a separate boolean). Fall back to
             // everyone so replay does not crash on historical data.
