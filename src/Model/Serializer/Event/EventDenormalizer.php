@@ -141,13 +141,6 @@ class EventDenormalizer extends OfferDenormalizer
             return $event->withChildrenOnly((bool) $data['childrenOnly']);
         }
 
-        // Backwards compatibility: childrenOnly used to live on the audienceType
-        // enum. Treat the legacy enum value as the new boolean being true so
-        // existing import payloads keep working. Removed together with the enum value.
-        if (($data['audience']['audienceType'] ?? null) === 'childrenOnly') {
-            return $event->withChildrenOnly(true);
-        }
-
         return $event;
     }
 

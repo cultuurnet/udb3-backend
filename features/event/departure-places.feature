@@ -118,7 +118,7 @@ Feature: Test event departure places
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/error" should be "Array should have at most 20 items, 21 found"
 
-  Scenario: Changing audienceType away from childrenOnly keeps departure places
+  Scenario: Updating the audienceType on a childrenOnly event keeps the departure places
     When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
     """
