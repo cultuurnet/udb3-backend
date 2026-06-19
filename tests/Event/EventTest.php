@@ -2704,6 +2704,34 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_allows_update_calendar_on_legacy_event_without_type_id(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $subEventCalendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                    new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+                )
+            )
+        );
+
+        $this->scenario
+            ->given([
+                new EventImportedFromUDB2(
+                    $eventId,
+                    $this->getSample('event_without_price.cdbxml.xml'),
+                    self::NS_CDBXML_3_2
+                ),
+                new CalendarUpdated($eventId, $subEventCalendar),
+            ])
+            ->when(fn (Event $event) => $event->updateCalendar($subEventCalendar))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
     public function it_resets_overnight_on_all_sub_events_when_type_changes_away_from_kamp_of_vakantie(): void
     {
         $subEventWithOvernight = SubEvent::createAvailable(
