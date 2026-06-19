@@ -5981,7 +5981,7 @@ final class ImportEventRequestHandlerTest extends TestCase
             ),
             new SchemaError(
                 '/mediaObject/0/thumbnailUrl',
-                'The string should match pattern: ^http[s]?:\/\/'
+                'The string should match pattern: ^http[s]?:\/\/\w'
             ),
         ];
 
@@ -6386,7 +6386,7 @@ final class ImportEventRequestHandlerTest extends TestCase
         $expectedErrors = [
             new SchemaError(
                 '/image',
-                'The string should match pattern: ^http[s]?:\/\/'
+                'The string should match pattern: ^http[s]?:\/\/\w'
             ),
         ];
 

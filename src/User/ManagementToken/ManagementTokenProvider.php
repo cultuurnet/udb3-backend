@@ -10,6 +10,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 class ManagementTokenProvider
 {
     private const CACHE_KEY = 'token';
+    private const CACHE_TTL = 300;
 
     private ManagementTokenGenerator $tokenGenerator;
 
@@ -32,7 +33,7 @@ class ManagementTokenProvider
 
                 // Expire from the cache ~5 minutes before the token itself expires, so we never hand
                 // out a token that is about to expire.
-                $item->expiresAfter(max($token->getExpiresIn() - 300, 0));
+                $item->expiresAfter(max($token->getExpiresIn() - self::CACHE_TTL, 0));
 
                 return $token->getToken();
             }
