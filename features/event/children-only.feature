@@ -35,6 +35,8 @@ Feature: Test event childrenOnly property
     """
     And I send a PUT request to "%{eventUrl}/children-only"
     Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "childrenOnly" should be true
     And I set the JSON request payload to:
     """
     {
