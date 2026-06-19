@@ -19,7 +19,7 @@ final class IncompatibleAudienceType extends Exception
     public static function forDeparturePlaces(string $eventId): self
     {
         return new self(
-            'Departure places can only be set on events with audienceType "childrenOnly". Event: ' . $eventId
+            'Departure places can only be set on events where "childrenOnly" is true. Event: ' . $eventId
         );
     }
 }

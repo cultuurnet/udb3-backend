@@ -7,14 +7,14 @@ Feature: Test the Search API v3 boa feature
     And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
     When I create a minimal place and save the "url" as "placeUrl"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "otherChildrenOnlyEventId"
+    And I create an event from "events/children-only.json" and save the "id" as "otherChildrenOnlyEventId"
     And I publish the event at "/events/%{otherChildrenOnlyEventId}"
     And I am not authorized
     And I am not using an UiTID v1 API key
 
   Scenario: When I do not have the boa scope I can only find children only events created by myself
     When I am authorized with an OAuth client access token for "test_client"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "myChildrenOnlyEventId"
+    And I create an event from "events/children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
     And I wait for the place with url "%{placeUrl}" to be indexed
     And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
@@ -94,7 +94,7 @@ Feature: Test the Search API v3 boa feature
   @external
   Scenario: When I have the boa scope I can search for all children only events
     When I am authorized with an OAuth client access token for "boa_client"
-    And I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "id" as "myChildrenOnlyEventId"
+    And I create an event from "events/children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
     And I wait for the place with url "%{placeUrl}" to be indexed
     And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed

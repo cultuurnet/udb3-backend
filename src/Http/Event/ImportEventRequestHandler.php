@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
+use CultuurNet\UDB3\Event\Commands\UpdateChildrenOnly;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateDeparturePlaces;
@@ -281,6 +282,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         $commands[] = new ImportVideos($eventId, $event->getVideos());
         $commands[] = new UpdateFaqs($eventId, $event->getFaq());
+        $commands[] = new UpdateChildrenOnly($eventId, $event->getChildrenOnly());
         $commands[] = new UpdateDeparturePlaces($eventId, $event->getDeparturePlaces());
 
         if ($event->getBirthdateRange() !== null) {

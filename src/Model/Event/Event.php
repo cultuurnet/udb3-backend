@@ -27,5 +27,7 @@ interface Event extends Offer
 
     public function getDeparturePlaces(): Urls;
 
+    public function getChildrenOnly(): bool;
+
     public function getBirthdateRange(): ?BirthdateRange;
 }

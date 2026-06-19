@@ -19,7 +19,7 @@ Feature: Test event audienceType property
     And the JSON response at "audience/audienceType" should be "education"
 
   Scenario: Create an event with audience type childrenOnly
-    When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
+    When I create an event from "events/event-children-only.json" and save the "url" as "eventUrl"
     And I get the event at "%{eventUrl}"
     Then the JSON response at "audience/audienceType" should be "childrenOnly"
 
@@ -37,7 +37,7 @@ Feature: Test event audienceType property
     And the JSON response at "audience/audienceType" should be "childrenOnly"
 
   Scenario: Remove audienceType childrenOnly from an event
-    When I create an event from "events/audience-type/event-audience-type-children-only.json" and save the "url" as "eventUrl"
+    When I create an event from "events/event-children-only.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
     """
     {

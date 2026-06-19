@@ -14,6 +14,7 @@
     "@id": "%{placeUrl}"
   },
   "calendarType": "permanent",
+  "childrenOnly": true,
   "audience": {
     "audienceType": "childrenOnly"
   },
