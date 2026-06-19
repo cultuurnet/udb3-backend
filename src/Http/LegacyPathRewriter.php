@@ -23,7 +23,6 @@ final class LegacyPathRewriter
         '/subEvents/' => 'sub-events',
         '/typicalAgeRange/' => 'typical-age-range',
         '/departurePlaces/' => 'departure-places',
-        '/childrenOnly/' => 'children-only',
         '/birthdateRange/' => 'birthdate-range',
 
         // Convert old "calsum" path to "calendar-summary"
