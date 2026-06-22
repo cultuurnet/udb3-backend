@@ -12,7 +12,6 @@ Feature: Test the Search API v3 boa feature
     And I am not authorized
     And I am not using an UiTID v1 API key
 
-  @external
   Scenario: When I do not have the boa scope I can only find children only events created by myself
     When I am authorized with an OAuth client access token for "test_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
@@ -44,7 +43,7 @@ Feature: Test the Search API v3 boa feature
     %{otherChildrenOnlyEventId}
     """
 
-  @external
+
   Scenario: disabling audience types should return events for everyone, members & my own childrenOnlyEvents
     When I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider user "centraal_beheerder"
@@ -87,8 +86,6 @@ Feature: Test the Search API v3 boa feature
     %{otherChildrenOnlyEventId}
     """
 
-  # Todo: this test cannot work till PK-476 is done, so in the meantime it is marked as external
-  @external
   Scenario: When I have the boa scope I can search for all children only events
     When I am authorized with an OAuth client access token for "boa_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
