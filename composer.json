@@ -87,6 +87,9 @@
     "publiq/php-cs-fixer-config": "^2.0",
     "rector/rector": "^0.14.5"
   },
+  "conflict": {
+    "mtdowling/jmespath.php": "<2.9.1"
+  },
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
