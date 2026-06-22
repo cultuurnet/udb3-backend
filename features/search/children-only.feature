@@ -19,7 +19,6 @@ Feature: Test the Search API v3 boa feature
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "test_client"
     When I send a GET request to "/events" with parameters:
-      | audienceType | childrenOnly                                                 |
       | childrenOnly | true                                                         |
       | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId}) |
     And I wait for the JSON response at "totalItems" to be "1"
@@ -93,7 +92,7 @@ Feature: Test the Search API v3 boa feature
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "boa_client"
     When I send a GET request to "/events" with parameters:
-      | audienceType | childrenOnly                                                 |
+      | childrenOnly | true                                                 |
       | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId}) |
     And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
