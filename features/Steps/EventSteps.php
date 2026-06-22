@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use Behat\Gherkin\Node\PyStringNode;
 use CultuurNet\UDB3\Json;
 
 trait EventSteps
@@ -49,6 +50,20 @@ trait EventSteps
             $jsonPath,
             $variableName
         );
+    }
+
+    /**
+     * @Given I create a minimal event with overrides and save the :jsonPath as :variableName
+     */
+    public function iCreateAMinimalEventWithOverridesAndSaveAs(string $jsonPath, string $variableName, PyStringNode $overridesJson): void
+    {
+        $base = Json::decodeAssociatively(
+            $this->fixtures->loadJson('/events/event-minimal-permanent.json', $this->variableState)
+        );
+        $overrides = Json::decodeAssociatively(
+            $this->variableState->replaceVariables($overridesJson->getRaw())
+        );
+        $this->createEvent('/events', Json::encode(array_merge($base, $overrides)), $jsonPath, $variableName);
     }
 
     /**

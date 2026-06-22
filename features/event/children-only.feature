@@ -48,6 +48,19 @@ Feature: Test event childrenOnly property
     And I get the event at "%{eventUrl}"
     Then the JSON response should not have "childrenOnly"
 
+  Scenario: Reject a non-boolean value for childrenOnly
+    When I create a minimal permanent event and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    {
+      "childrenOnly": "smurf"
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/children-only"
+    Then the response status should be "400"
+    And the JSON response at "schemaErrors/0/jsonPointer" should be "/childrenOnly"
+    And the JSON response at "schemaErrors/0/error" should be "The data (string) must match the type: boolean"
+
   Scenario: Enabling childrenOnly unlocks departure places
     Given I create a minimal place and save the "url" as "departurePlaceUrl"
     When I create a minimal permanent event and save the "url" as "eventUrl"
