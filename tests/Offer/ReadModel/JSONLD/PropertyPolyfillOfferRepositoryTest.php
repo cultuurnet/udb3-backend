@@ -137,6 +137,209 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_propagates_sub_event_booking_info_to_top_level_for_a_single_sub_event(): void
+    {
+        $bookingInfo = [
+            'phone' => '044/1234567',
+            'email' => 'test@example.com',
+            'url' => 'https://www.publiq.be',
+        ];
+
+        $this
+            ->given([
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'bookingInfo' => $bookingInfo,
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'bookingInfo' => $bookingInfo,
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_propagates_sub_event_booking_info_to_top_level_when_all_sub_events_have_the_same(): void
+    {
+        $bookingInfo = [
+            'phone' => '044/1234567',
+        ];
+
+        $this
+            ->given([
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'bookingInfo' => $bookingInfo,
+                    ],
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-02T16:00:00+01:00',
+                        'endDate' => '2020-01-02T20:00:00+01:00',
+                        'bookingInfo' => $bookingInfo,
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'bookingInfo' => $bookingInfo,
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_propagates_sub_event_booking_info_when_only_some_sub_events_have_the_same(): void
+    {
+        $bookingInfo = [
+            'phone' => '044/1234567',
+        ];
+
+        $this
+            ->given([
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'bookingInfo' => $bookingInfo,
+                    ],
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-02T16:00:00+01:00',
+                        'endDate' => '2020-01-02T20:00:00+01:00',
+                    ],
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-03T16:00:00+01:00',
+                        'endDate' => '2020-01-03T20:00:00+01:00',
+                        'bookingInfo' => $bookingInfo,
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'bookingInfo' => $bookingInfo,
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_overwrite_an_existing_top_level_booking_info(): void
+    {
+        $topLevelBookingInfo = [
+            'phone' => '011/1111111',
+        ];
+
+        $this
+            ->given([
+                'bookingInfo' => $topLevelBookingInfo,
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'bookingInfo' => [
+                            'phone' => '022/2222222',
+                        ],
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'bookingInfo' => $topLevelBookingInfo,
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_propagate_when_the_single_sub_event_has_no_booking_info(): void
+    {
+        $this
+            ->given([
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentDoesNotContainKey('bookingInfo');
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_propagate_when_sub_events_have_different_booking_info(): void
+    {
+        $this
+            ->given([
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'bookingInfo' => [
+                            'phone' => '011/1111111',
+                        ],
+                    ],
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-02T16:00:00+01:00',
+                        'endDate' => '2020-01-02T20:00:00+01:00',
+                        'bookingInfo' => [
+                            'phone' => '022/2222222',
+                        ],
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentDoesNotContainKey('bookingInfo');
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_propagate_when_only_some_sub_events_are_filled_in_but_different(): void
+    {
+        $this
+            ->given([
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'bookingInfo' => [
+                            'phone' => '011/1111111',
+                        ],
+                    ],
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-02T16:00:00+01:00',
+                        'endDate' => '2020-01-02T20:00:00+01:00',
+                    ],
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-03T16:00:00+01:00',
+                        'endDate' => '2020-01-03T20:00:00+01:00',
+                        'bookingInfo' => [
+                            'phone' => '022/2222222',
+                        ],
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentDoesNotContainKey('bookingInfo');
+    }
+
+    /**
+     * @test
      * @dataProvider statusProvider
      */
     public function it_should_not_change_status_if_already_set_with_correct_format(array $status): void

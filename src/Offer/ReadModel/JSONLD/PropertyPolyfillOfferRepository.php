@@ -54,6 +54,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                 $json = $this->polyfillStatus($json);
                 $json = $this->polyfillBookingAvailability($json);
                 $json = $this->polyfillSubEventProperties($json);
+                $json = $this->polyfillTopLevelBookingInfoFromSubEvents($json);
                 $json = $this->polyfillEmbeddedPlaceStatus($json);
                 $json = $this->polyfillEmbeddedPlaceBookingAvailability($json);
                 $json = $this->polyfillTypicalAgeRange($json);
@@ -156,6 +157,43 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
             $json['subEvent'],
             range(0, count($json['subEvent']) - 1)
         );
+
+        return $json;
+    }
+
+    /**
+     * Some offers received a bookingInfo on their sub events without a matching top level bookingInfo.
+     * When there is no top level bookingInfo and every sub event that has a bookingInfo carries the exact same one,
+     * we propagate it to the top level so consumers that only read the top level bookingInfo still get the data.
+     */
+    private function polyfillTopLevelBookingInfoFromSubEvents(array $json): array
+    {
+        if (!empty($json['bookingInfo']) && is_array($json['bookingInfo'])) {
+            return $json;
+        }
+
+        if (empty($json['subEvent']) || !is_array($json['subEvent'])) {
+            return $json;
+        }
+
+        $subEventBookingInfos = [];
+        foreach ($json['subEvent'] as $subEvent) {
+            if (is_array($subEvent) && !empty($subEvent['bookingInfo']) && is_array($subEvent['bookingInfo'])) {
+                $subEventBookingInfos[] = $subEvent['bookingInfo'];
+            }
+        }
+
+        if ($subEventBookingInfos === []) {
+            return $json;
+        }
+
+        foreach ($subEventBookingInfos as $subEventBookingInfo) {
+            if ($subEventBookingInfo != $subEventBookingInfos[0]) {
+                return $json;
+            }
+        }
+
+        $json['bookingInfo'] = $subEventBookingInfos[0];
 
         return $json;
     }
