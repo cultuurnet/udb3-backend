@@ -504,6 +504,134 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_copies_sub_event_booking_info_to_top_level_for_single_calendar_when_top_level_is_missing(): void
+    {
+        $bookingInfo = [
+            'phone' => '044/1234567',
+            'email' => 'test@example.com',
+            'url' => 'https://www.publiq.be',
+            'urlLabel' => [
+                'nl' => 'Reserveer hier',
+            ],
+        ];
+
+        $this
+            ->given([
+                'calendarType' => 'single',
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'bookingInfo' => $bookingInfo,
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'bookingInfo' => $bookingInfo,
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_copies_sub_event_booking_info_to_top_level_for_single_calendar_when_top_level_is_empty(): void
+    {
+        $bookingInfo = [
+            'phone' => '044/1234567',
+        ];
+
+        $this
+            ->given([
+                'calendarType' => 'single',
+                'bookingInfo' => [],
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'bookingInfo' => $bookingInfo,
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'bookingInfo' => $bookingInfo,
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_overwrite_existing_top_level_booking_info(): void
+    {
+        $topLevelBookingInfo = [
+            'phone' => '011/1111111',
+        ];
+
+        $this
+            ->given([
+                'calendarType' => 'single',
+                'bookingInfo' => $topLevelBookingInfo,
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'bookingInfo' => [
+                            'phone' => '022/2222222',
+                        ],
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'bookingInfo' => $topLevelBookingInfo,
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_copy_sub_event_booking_info_for_non_single_calendar_types(): void
+    {
+        $this
+            ->given([
+                'calendarType' => 'multiple',
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'bookingInfo' => [
+                            'phone' => '044/1234567',
+                        ],
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentDoesNotContainKey('bookingInfo');
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_add_top_level_booking_info_when_sub_event_has_none(): void
+    {
+        $this
+            ->given([
+                'calendarType' => 'single',
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentDoesNotContainKey('bookingInfo');
+    }
+
+    /**
+     * @test
+     */
     public function it_should_fix_status_of_embedded_location_if_already_set_with_wrong_format(): void
     {
         $this

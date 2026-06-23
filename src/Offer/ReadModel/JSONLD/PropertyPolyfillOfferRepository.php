@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\BookingAvailabilityNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Offer\OfferType;
@@ -54,6 +55,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                 $json = $this->polyfillStatus($json);
                 $json = $this->polyfillBookingAvailability($json);
                 $json = $this->polyfillSubEventProperties($json);
+                $json = $this->polyfillTopLevelBookingInfoFromSubEvent($json);
                 $json = $this->polyfillEmbeddedPlaceStatus($json);
                 $json = $this->polyfillEmbeddedPlaceBookingAvailability($json);
                 $json = $this->polyfillTypicalAgeRange($json);
@@ -156,6 +158,28 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
             $json['subEvent'],
             range(0, count($json['subEvent']) - 1)
         );
+
+        return $json;
+    }
+
+    private function polyfillTopLevelBookingInfoFromSubEvent(array $json): array
+    {
+        // Nothing to do when a non-empty top level bookingInfo is already present.
+        if (!empty($json['bookingInfo']) && is_array($json['bookingInfo'])) {
+            return $json;
+        }
+
+        // For now only fix single calendar types
+        if (($json['calendarType'] ?? null) !== CalendarType::single()->toString()) {
+            return $json;
+        }
+
+        $subEventBookingInfo = $json['subEvent'][0]['bookingInfo'] ?? null;
+        if (empty($subEventBookingInfo) || !is_array($subEventBookingInfo)) {
+            return $json;
+        }
+
+        $json['bookingInfo'] = $subEventBookingInfo;
 
         return $json;
     }
