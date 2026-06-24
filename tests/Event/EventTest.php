@@ -669,6 +669,82 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_cascades_booking_info_to_the_sub_event_for_single_events(): void
+    {
+        $bookingInfo = new BookingInfo(null, new TelephoneNumber('02 123 45 67'));
+
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateBookingInfo($bookingInfo)
+            )
+            ->then([
+                new BookingInfoUpdated(self::EVENT_ID, $bookingInfo),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($subEvent->withBookingInfo($bookingInfo))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_cascade_booking_info_when_the_sub_event_already_matches(): void
+    {
+        $bookingInfo = new BookingInfo(null, new TelephoneNumber('02 123 45 67'));
+
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withBookingInfo($bookingInfo);
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+                new BookingInfoUpdated(self::EVENT_ID, $bookingInfo),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateBookingInfo($bookingInfo)
+            )
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_cascade_booking_info_for_non_single_events(): void
+    {
+        $bookingInfo = new BookingInfo(null, new TelephoneNumber('02 123 45 67'));
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateBookingInfo($bookingInfo)
+            )
+            ->then([
+                new BookingInfoUpdated(self::EVENT_ID, $bookingInfo),
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_keeps_existing_uitpas_prices_on_price_info_update(): void
     {
         $this->scenario

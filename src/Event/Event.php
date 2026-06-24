@@ -447,6 +447,26 @@ final class Event extends Offer
         }
     }
 
+    public function updateBookingInfo(BookingInfo $bookingInfo): void
+    {
+        parent::updateBookingInfo($bookingInfo);
+
+        // For single events the top-level booking info is cascaded down to the single sub-event so both
+        // levels stay in sync.
+        if (!$this->calendar instanceof SingleSubEventCalendar) {
+            return;
+        }
+
+        if (!$this->calendar->getSubEvents()->getFirst()->getBookingInfo()->sameAs($bookingInfo)) {
+            $this->apply(
+                new CalendarUpdated(
+                    $this->eventId,
+                    $this->calendar->withBookingInfoOnSubEvents($bookingInfo)
+                )
+            );
+        }
+    }
+
     public function updateCalendar(Calendar $calendar): void
     {
         if ($calendar instanceof CalendarWithSubEvents) {
