@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Console\Command\ExcludeInvalidLabels;
 use CultuurNet\UDB3\Console\Command\ExcludeLabel;
 use CultuurNet\UDB3\Console\Command\ExecuteCommandFromCsv;
 use CultuurNet\UDB3\Console\Command\FetchMoviesFromKinepolisApi;
+use CultuurNet\UDB3\Console\Command\FixMultipleEventBookingInfo;
 use CultuurNet\UDB3\Console\Command\AddMatchingTrailer;
 use CultuurNet\UDB3\Console\Command\FindOutOfSyncProjections;
 use CultuurNet\UDB3\Console\Command\FireProjectedToJSONLDCommand;
@@ -130,6 +131,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.execute-command-from-csv',
         'console.movies:fetch',
         'console.movies:add-trailers',
+        'console.fix-multiple-event-bookinginfo',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -565,6 +567,18 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                         LoggerName::forService('add-matching-trailer', 'kinepolis')
                     ),
                     $container->get('config')['kinepolis']['trailers']['enabled'] ??  true,
+                )
+            )
+        );
+
+        $container->addShared(
+            'console.fix-multiple-event-bookinginfo',
+            fn () => new FixMultipleEventBookingInfo(
+                $container->get('event_command_bus'),
+                $container->get('event_jsonld_repository'),
+                LoggerFactory::create(
+                    $container,
+                    LoggerName::forService('fix-multiple-event-bookinginfo')
                 )
             )
         );
