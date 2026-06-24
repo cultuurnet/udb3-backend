@@ -216,7 +216,7 @@ final class FixMultipleEventBookingInfo extends AbstractCommand
     }
 
 
-    private function isEmptyValue($value): bool
+    private function isEmptyValue(mixed $value): bool
     {
         if (is_string($value)) {
             return trim($value) === '';
