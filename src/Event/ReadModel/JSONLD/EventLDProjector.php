@@ -87,6 +87,7 @@ use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
@@ -384,7 +385,68 @@ final class EventLDProjector extends OfferLDProjector implements
             $this->getEventType($offerLd)
         )->format(DateTimeInterface::ATOM);
 
+        $offerLd = $this->syncSingleEventBookingInfoFromSubEvent($offerLd);
+
         return $document->withBody($offerLd);
+    }
+
+    protected function applyBookingInfoUpdated(AbstractBookingInfoUpdated $bookingInfoUpdated): JsonDocument
+    {
+        $document = parent::applyBookingInfoUpdated($bookingInfoUpdated);
+
+        return $document->withBody($this->syncSingleEventBookingInfoFromTopLevel($document->getBody()));
+    }
+
+    /**
+     * For an event with calendarType single the top-level bookingInfo and the bookingInfo of its single
+     * subEvent are kept in sync in the projection. This mirrors the top-level value (just set through a
+     * BookingInfoUpdated) down onto the subEvent.
+     */
+    private function syncSingleEventBookingInfoFromTopLevel(\stdClass $offerLd): \stdClass
+    {
+        if (!$this->hasSingleSubEvent($offerLd)) {
+            return $offerLd;
+        }
+
+        if (isset($offerLd->bookingInfo)) {
+            $offerLd->subEvent[0]->bookingInfo = $offerLd->bookingInfo;
+        } else {
+            unset($offerLd->subEvent[0]->bookingInfo);
+        }
+
+        return $offerLd;
+    }
+
+    /**
+     * Counterpart of syncSingleEventBookingInfoFromTopLevel: after a calendar (subEvent) update the
+     * subEvent bookingInfo is the most recent value and is mirrored up to the top level. If the calendar
+     * update did not carry any subEvent bookingInfo, the existing top-level value is mirrored back down so
+     * both levels stay in sync.
+     */
+    private function syncSingleEventBookingInfoFromSubEvent(\stdClass $offerLd): \stdClass
+    {
+        if (!$this->hasSingleSubEvent($offerLd)) {
+            return $offerLd;
+        }
+
+        if (isset($offerLd->subEvent[0]->bookingInfo)) {
+            $offerLd->bookingInfo = $offerLd->subEvent[0]->bookingInfo;
+        } elseif (isset($offerLd->bookingInfo)) {
+            $offerLd->subEvent[0]->bookingInfo = $offerLd->bookingInfo;
+        } else {
+            unset($offerLd->bookingInfo);
+        }
+
+        return $offerLd;
+    }
+
+    private function hasSingleSubEvent(\stdClass $offerLd): bool
+    {
+        return ($offerLd->calendarType ?? null) === 'single'
+            && isset($offerLd->subEvent)
+            && is_array($offerLd->subEvent)
+            && count($offerLd->subEvent) === 1
+            && isset($offerLd->subEvent[0]);
     }
 
     protected function applyTypeUpdated(AbstractTypeUpdated $typeUpdated): JsonDocument

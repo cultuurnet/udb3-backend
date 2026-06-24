@@ -41,6 +41,7 @@ use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\EntityNotFoundException;
 use CultuurNet\UDB3\Event\CdbXMLEventFactory;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
+use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
@@ -74,8 +75,14 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
@@ -1307,6 +1314,132 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $body = $this->project($calendarUpdated, $eventId, null, $this->recordedOn->toBroadwayDateTime());
 
         $this->assertEquals($expectedJsonLD, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_syncs_sub_event_booking_info_up_to_the_top_level_for_single_events(): void
+    {
+        $eventId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
+
+        $this->documentRepository->save(
+            new JsonDocument(
+                $eventId,
+                Json::encode([
+                    '@id' => $eventId,
+                    '@type' => 'event',
+                    'terms' => [
+                        (object) ['id' => '0.50.4.0.0', 'label' => 'Concert', 'domain' => 'eventtype'],
+                    ],
+                ])
+            )
+        );
+
+        $bookingInfo = new BookingInfo(null, new TelephoneNumber('016 10 20 30'));
+
+        $calendarUpdated = new CalendarUpdated(
+            $eventId,
+            new SingleSubEventCalendar(
+                new SubEvent(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2021-05-17T08:00:00+00:00'),
+                        DateTimeFactory::fromAtom('2021-05-18T22:00:00+00:00')
+                    ),
+                    new Status(StatusType::Available()),
+                    new BookingAvailability(BookingAvailabilityType::Available()),
+                    $bookingInfo
+                )
+            )
+        );
+
+        $body = $this->project($calendarUpdated, $eventId);
+
+        $expected = Json::decode(Json::encode((new BookingInfoNormalizer())->normalize($bookingInfo)));
+        $this->assertEquals($expected, $body->subEvent[0]->bookingInfo);
+        $this->assertEquals($expected, $body->bookingInfo);
+    }
+
+    /**
+     * @test
+     */
+    public function it_syncs_top_level_booking_info_down_to_the_sub_event_for_single_events(): void
+    {
+        $eventId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
+
+        $this->documentRepository->save(
+            new JsonDocument(
+                $eventId,
+                Json::encode([
+                    '@id' => $eventId,
+                    '@type' => 'event',
+                    'calendarType' => 'single',
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-18T22:00:00+00:00',
+                    'subEvent' => [
+                        [
+                            'id' => 0,
+                            '@type' => 'Event',
+                            'startDate' => '2021-05-17T08:00:00+00:00',
+                            'endDate' => '2021-05-18T22:00:00+00:00',
+                            'status' => ['type' => 'Available'],
+                            'bookingAvailability' => ['type' => 'Available'],
+                        ],
+                    ],
+                ])
+            )
+        );
+
+        $bookingInfo = new BookingInfo(null, new TelephoneNumber('016 10 20 30'));
+
+        $body = $this->project(new BookingInfoUpdated($eventId, $bookingInfo), $eventId);
+
+        $expected = Json::decode(Json::encode((new BookingInfoNormalizer())->normalize($bookingInfo)));
+        $this->assertEquals($expected, $body->bookingInfo);
+        $this->assertEquals($expected, $body->subEvent[0]->bookingInfo);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_single_event_booking_info_when_a_calendar_update_carries_no_sub_event_booking_info(): void
+    {
+        $eventId = '0f4ea9ad-3681-4f3b-adc2-4b8b00dd845a';
+
+        $bookingInfo = new BookingInfo(null, new TelephoneNumber('016 10 20 30'));
+        $normalized = (new BookingInfoNormalizer())->normalize($bookingInfo);
+
+        $this->documentRepository->save(
+            new JsonDocument(
+                $eventId,
+                Json::encode([
+                    '@id' => $eventId,
+                    '@type' => 'event',
+                    'bookingInfo' => $normalized,
+                    'terms' => [
+                        (object) ['id' => '0.50.4.0.0', 'label' => 'Concert', 'domain' => 'eventtype'],
+                    ],
+                ])
+            )
+        );
+
+        $calendarUpdated = new CalendarUpdated(
+            $eventId,
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        DateTimeFactory::fromAtom('2021-05-17T08:00:00+00:00'),
+                        DateTimeFactory::fromAtom('2021-05-18T22:00:00+00:00')
+                    )
+                )
+            )
+        );
+
+        $body = $this->project($calendarUpdated, $eventId);
+
+        $expected = Json::decode(Json::encode($normalized));
+        $this->assertEquals($expected, $body->bookingInfo);
+        $this->assertEquals($expected, $body->subEvent[0]->bookingInfo);
     }
 
     /**
