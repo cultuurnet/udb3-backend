@@ -399,18 +399,12 @@ final class Event extends Offer
 
         $subEvents = $this->calendar->getSubEvents()->toArray();
 
-        $bookingInfoToPropagate = null;
-
         foreach ($subEventUpdates as $subEventUpdate) {
             $index = $subEventUpdate->getSubEventId();
 
             if (!isset($subEvents[$index])) {
                 // If the sub event to update doesn't exist, it's most likely a concurrency issue.
                 continue;
-            }
-
-            if ($subEventUpdate->getBookingInfo() !== null) {
-                $bookingInfoToPropagate = $subEventUpdate->getBookingInfo();
             }
 
             $subEvent = $subEvents[$index];
@@ -445,34 +439,6 @@ final class Event extends Offer
         $this->assertOvernightAllowed($subEvents);
 
         $updatedCalendar = $this->rebuildCalendarFromSubEvents($subEvents);
-
-        if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
-            $this->apply(
-                new CalendarUpdated($this->eventId, $updatedCalendar)
-            );
-        }
-
-        // For single events an explicit booking info update on the sub-event is propagated up to the
-        // top level so both levels stay in sync. Gating on an explicit booking info update (instead of the
-        // resulting sub-event value) prevents e.g. a status-only update from overwriting the top level.
-        // Delegating to updateBookingInfo() keeps the guard in one place; its cascade back down is a no-op
-        // since the CalendarUpdated above has already applied the value onto the sub-event.
-        if ($updatedCalendar instanceof SingleSubEventCalendar && $bookingInfoToPropagate !== null) {
-            $this->updateBookingInfo($bookingInfoToPropagate);
-        }
-    }
-
-    public function updateBookingInfo(BookingInfo $bookingInfo): void
-    {
-        parent::updateBookingInfo($bookingInfo);
-
-        // For single events the top-level booking info is cascaded down to the single sub-event so both
-        // levels stay in sync.
-        if (!$this->calendar instanceof SingleSubEventCalendar) {
-            return;
-        }
-
-        $updatedCalendar = $this->calendar->withBookingInfoOnSubEvents($bookingInfo);
 
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(
