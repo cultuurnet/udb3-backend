@@ -215,9 +215,7 @@ final class FixMultipleEventBookingInfo extends AbstractCommand
         return $bookingInfo;
     }
 
-    /**
-     * @param mixed $value
-     */
+
     private function isEmptyValue($value): bool
     {
         if (is_string($value)) {
