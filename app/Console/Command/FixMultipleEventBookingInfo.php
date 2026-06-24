@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Console\Command;
 
-use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\User\ManagementToken\ManagementTokenGenerator;
-use GuzzleHttp\Psr7\Request;
-use Psr\Http\Client\ClientInterface;
+use Broadway\CommandHandling\CommandBus;
+use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,32 +24,37 @@ use Throwable;
  * Copies the booking-info URL of the sub-events up to the top level for events that have an empty top-level URL but
  * identical sub-event URLs.
  *
- * For every id in the given file the command does a GET on the Entry API. An event is only updated when:
+ * For every id in the given file the command reads the event from the JSON-LD read model. An event is only updated when:
  *  - the top-level bookingInfo URL is empty (null/absent), AND
  *  - every sub-event has a non-empty bookingInfo URL, AND
  *  - all those sub-event URLs are equal.
  *
- * When updating, the existing top-level phone and email are preserved so they can never be overwritten by accident.
- * Rejected ids are always written to the log file together with the reason they were skipped.
+ * Promotion happens on URL match alone. The URL group is then filled in from the first sub-event: the url plus its
+ * urlLabel (the call-to-action text) and availabilityStarts/availabilityEnds (when the booking link is shown/clickable),
+ * because those all control how and when the url is rendered on UiV, widgets and other output channels.
+ *
+ * A value that is already set at the top level is never overwritten: only empty top-level fields are filled from the
+ * sub-event. In practice the url is always filled (it is empty by definition), while phone, email and any already-set
+ * urlLabel or availability dates are left untouched.
+ *
+ * Updates are dispatched as an UpdateBookingInfo command on the command bus (the CLI runs as the system user, see
+ * bin/udb3.php). Rejected ids are always logged together with the reason they were skipped.
  */
-final class FixMultipleEventBookingInfo extends Command
+final class FixMultipleEventBookingInfo extends AbstractCommand
 {
-    private ClientInterface $httpClient;
-    private ManagementTokenGenerator $tokenGenerator;
-    private string $baseUrl;
+    private DocumentRepository $eventDocumentRepository;
     private LoggerInterface $logger;
+    private BookingInfoDenormalizer $bookingInfoDenormalizer;
 
     public function __construct(
-        ClientInterface $httpClient,
-        ManagementTokenGenerator $tokenGenerator,
-        string $baseUrl,
+        CommandBus $commandBus,
+        DocumentRepository $eventDocumentRepository,
         LoggerInterface $logger
     ) {
-        parent::__construct();
-        $this->httpClient = $httpClient;
-        $this->tokenGenerator = $tokenGenerator;
-        $this->baseUrl = rtrim($baseUrl, '/');
+        parent::__construct($commandBus);
+        $this->eventDocumentRepository = $eventDocumentRepository;
         $this->logger = $logger;
+        $this->bookingInfoDenormalizer = new BookingInfoDenormalizer();
     }
 
     protected function configure(): void
@@ -58,7 +63,7 @@ final class FixMultipleEventBookingInfo extends Command
             ->setName('fix-multiple-event-bookinginfo')
             ->setDescription(
                 'Copies the sub-event bookingInfo URL to the top level for events with an empty top-level URL and ' .
-                'identical sub-event URLs (Entry API).'
+                'identical sub-event URLs.'
             )
             ->addArgument(
                 'file',
@@ -70,7 +75,7 @@ final class FixMultipleEventBookingInfo extends Command
                 'dry-run',
                 null,
                 InputOption::VALUE_NONE,
-                'Do not perform any PUT. Only log the ids that would have been changed.'
+                'Do not dispatch any command. Only log the ids that would have been changed.'
             );
     }
 
@@ -84,9 +89,7 @@ final class FixMultipleEventBookingInfo extends Command
             return self::FAILURE;
         }
 
-        $token = $this->tokenGenerator->newToken()->getToken();
-
-        $output->writeln(($dryRun ? '<comment>[DRY-RUN] </comment>' : '') . 'Processing ' . count($ids) . ' events against ' . $this->baseUrl);
+        $output->writeln(($dryRun ? '<comment>[DRY-RUN] </comment>' : '') . 'Processing ' . count($ids) . ' events');
 
         $updated = 0;
         $rejected = 0;
@@ -97,7 +100,7 @@ final class FixMultipleEventBookingInfo extends Command
 
         foreach ($ids as $id) {
             try {
-                $event = $this->getEvent($token, $id);
+                $event = $this->eventDocumentRepository->fetch($id)->getAssocBody();
 
                 $reason = $this->reasonToReject($event);
                 if ($reason !== null) {
@@ -106,16 +109,16 @@ final class FixMultipleEventBookingInfo extends Command
                     continue;
                 }
 
-                $body = $this->buildBookingInfo($event);
+                $bookingInfoData = $this->buildBookingInfoData($event);
 
                 if ($dryRun) {
-                    $this->logger->info('WOULD UPDATE {id} with url {url}', ['id' => $id, 'url' => $body['url']]);
+                    $this->logger->info('WOULD UPDATE {id} with url {url}', ['id' => $id, 'url' => $bookingInfoData['url']]);
                     $updated++;
                     continue;
                 }
 
-                $this->updateBookingInfo($token, $id, $body);
-                $this->logger->info('UPDATED {id} with url {url}', ['id' => $id, 'url' => $body['url']]);
+                $this->commandBus->dispatch(new UpdateBookingInfo($id, $this->toBookingInfo($bookingInfoData)));
+                $this->logger->info('UPDATED {id} with url {url}', ['id' => $id, 'url' => $bookingInfoData['url']]);
                 $updated++;
             } catch (Throwable $e) {
                 $this->logger->error('FAILED {id}: {error}', ['id' => $id, 'error' => $e->getMessage()]);
@@ -157,28 +160,8 @@ final class FixMultipleEventBookingInfo extends Command
     }
 
     /**
-     * @return array<string, mixed>
+     * @param array<string, mixed> $event
      */
-    private function getEvent(string $token, string $id): array
-    {
-        $request = new Request(
-            'GET',
-            $this->baseUrl . '/events/' . $id,
-            [
-                'Authorization' => 'Bearer ' . $token,
-                'Accept' => 'application/json',
-            ]
-        );
-
-        $response = $this->httpClient->sendRequest($request);
-        $status = $response->getStatusCode();
-        if ($status !== 200) {
-            throw new RuntimeException('GET returned HTTP ' . $status);
-        }
-
-        return Json::decodeAssociatively($response->getBody()->getContents());
-    }
-
     private function reasonToReject(array $event): ?string
     {
         $topUrl = $event['bookingInfo']['url'] ?? null;
@@ -204,6 +187,7 @@ final class FixMultipleEventBookingInfo extends Command
             return 'sub-events have different URLs (' . implode(', ', array_unique($urls)) . ')';
         }
 
+        // A URL can only be set together with a urlLabel (see the bookingInfo JSON schema), so we need one to copy.
         if (!isset($event['subEvent'][0]['bookingInfo']['urlLabel'])) {
             return 'sub-event URL has no urlLabel to copy';
         }
@@ -211,44 +195,64 @@ final class FixMultipleEventBookingInfo extends Command
         return null;
     }
 
-    private function buildBookingInfo(array $event): array
+    /**
+     * @param array<string, mixed> $event
+     * @return array<string, mixed>
+     */
+    private function buildBookingInfoData(array $event): array
     {
         $bookingInfo = $event['bookingInfo'] ?? [];
         if (!is_array($bookingInfo)) {
             $bookingInfo = [];
         }
 
-        $subBookingInfo = $event['subEvent'][0]['bookingInfo'];
-
-        // Never carry over a stale/empty url; rebuild it explicitly from the sub-event.
-        unset($bookingInfo['url'], $bookingInfo['urlLabel']);
-
-        $bookingInfo['url'] = $subBookingInfo['url'];
-        $bookingInfo['urlLabel'] = $subBookingInfo['urlLabel'];
+        foreach ($this->bookingUrlGroup($event['subEvent'][0]['bookingInfo']) as $key => $value) {
+            if ($this->isEmptyValue($bookingInfo[$key] ?? null)) {
+                $bookingInfo[$key] = $value;
+            }
+        }
 
         return $bookingInfo;
     }
 
     /**
-     * @param array<string, mixed> $bookingInfo
+     * @param mixed $value
      */
-    private function updateBookingInfo(string $token, string $id, array $bookingInfo): void
+    private function isEmptyValue($value): bool
     {
-        $request = new Request(
-            'PUT',
-            $this->baseUrl . '/events/' . $id . '/booking-info/',
-            [
-                'Authorization' => 'Bearer ' . $token,
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ],
-            Json::encode($bookingInfo)
-        );
-
-        $response = $this->httpClient->sendRequest($request);
-        $status = $response->getStatusCode();
-        if ($status < 200 || $status >= 300) {
-            throw new RuntimeException('PUT returned HTTP ' . $status . ': ' . $response->getBody()->getContents());
+        if (is_string($value)) {
+            return trim($value) === '';
         }
+
+        if (is_array($value)) {
+            return $value === [];
+        }
+
+        return $value === null;
+    }
+
+    /**
+     * @param array<string, mixed> $bookingInfo
+     * @return array<string, mixed>
+     */
+    private function bookingUrlGroup(array $bookingInfo): array
+    {
+        return array_filter(
+            [
+                'url' => $bookingInfo['url'] ?? null,
+                'urlLabel' => $bookingInfo['urlLabel'] ?? null,
+                'availabilityStarts' => $bookingInfo['availabilityStarts'] ?? null,
+                'availabilityEnds' => $bookingInfo['availabilityEnds'] ?? null,
+            ],
+            static fn ($value) => $value !== null
+        );
+    }
+
+    /**
+     * @param array<string, mixed> $bookingInfoData
+     */
+    private function toBookingInfo(array $bookingInfoData): BookingInfo
+    {
+        return $this->bookingInfoDenormalizer->denormalize($bookingInfoData, BookingInfo::class);
     }
 }

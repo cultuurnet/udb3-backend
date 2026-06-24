@@ -77,7 +77,6 @@ use CultuurNet\UDB3\Search\OrganizersSapi3SearchService;
 use CultuurNet\UDB3\Search\PlacesSapi3SearchService;
 use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\User\Keycloak\CachedUserIdentityResolver;
-use CultuurNet\UDB3\User\Keycloak\KeycloakManagementTokenGenerator;
 use Google_Client;
 use Google_Service_YouTube;
 use Http\Adapter\Guzzle7\Client;
@@ -574,25 +573,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'console.fix-multiple-event-bookinginfo',
-            function () use ($container) {
-                $config = $container->get('config');
-
-                return new FixMultipleEventBookingInfo(
-                    new Client(),
-                    new KeycloakManagementTokenGenerator(
-                        new Client(),
-                        $config['keycloak']['domain'],
-                        $config['keycloak']['realm'],
-                        $config['keycloak']['client_id'],
-                        $config['keycloak']['client_secret']
-                    ),
-                    $config['url'],
-                    LoggerFactory::create(
-                        $container,
-                        LoggerName::forService('fix-multiple-event-bookinginfo')
-                    )
-                );
-            }
+            fn () => new FixMultipleEventBookingInfo(
+                $container->get('event_command_bus'),
+                $container->get('event_jsonld_repository'),
+                LoggerFactory::create(
+                    $container,
+                    LoggerName::forService('fix-multiple-event-bookinginfo')
+                )
+            )
         );
     }
 }
