@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+
 class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEvents
 {
     private SubEvent $subEvent;
@@ -53,6 +55,13 @@ class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEv
             $updated = $updated->withCapacity($this->subEvent->getBookingAvailability()->getCapacity());
         }
         $clone->subEvent = $this->subEvent->withBookingAvailability($updated);
+        return $clone;
+    }
+
+    public function withBookingInfoOnSubEvents(BookingInfo $bookingInfo): self
+    {
+        $clone = clone $this;
+        $clone->subEvent = $this->subEvent->withBookingInfo($bookingInfo);
         return $clone;
     }
 

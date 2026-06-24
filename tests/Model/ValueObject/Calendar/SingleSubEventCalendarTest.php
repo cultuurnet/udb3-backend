@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use PHPUnit\Framework\TestCase;
 
 class SingleSubEventCalendarTest extends TestCase
@@ -173,6 +174,37 @@ class SingleSubEventCalendarTest extends TestCase
         $this->assertEquals(
             (new BookingAvailability(BookingAvailabilityType::Available()))->withCapacity(100)->withRemainingCapacity(42),
             $calendar->getSubEvents()->getFirst()->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_setting_explicit_booking_info_on_sub_events(): void
+    {
+        $bookingInfo = new BookingInfo(null, new TelephoneNumber('016 10 20 30'));
+
+        $calendar = $this->singleSubEventCalendar->withBookingInfoOnSubEvents($bookingInfo);
+
+        $this->assertEquals(
+            $bookingInfo,
+            $calendar->getSubEvents()->getFirst()->getBookingInfo()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_change_the_top_level_when_setting_booking_info_on_sub_events(): void
+    {
+        $bookingInfo = new BookingInfo(null, new TelephoneNumber('016 10 20 30'));
+
+        $calendar = $this->singleSubEventCalendar->withBookingInfoOnSubEvents($bookingInfo);
+
+        $this->assertEquals(new Status(StatusType::Available()), $calendar->getStatus());
+        $this->assertEquals(
+            new BookingAvailability(BookingAvailabilityType::Available()),
+            $calendar->getBookingAvailability()
         );
     }
 
