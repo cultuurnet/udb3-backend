@@ -52,6 +52,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
@@ -2866,6 +2868,117 @@ class EventTest extends AggregateRootScenarioTestCase
                     new MultipleSubEventsCalendar(new SubEvents(
                         $subEvent1->withOvernight(false),
                         $subEvent2->withOvernight(false)
+                    ))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_propagates_sub_event_booking_info_to_the_top_level_for_single_events(): void
+    {
+        $bookingInfo = new BookingInfo(null, new TelephoneNumber('02 123 45 67'));
+
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withBookingInfo($bookingInfo)
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($subEvent->withBookingInfo($bookingInfo))
+                ),
+                new BookingInfoUpdated(self::EVENT_ID, $bookingInfo),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_touch_top_level_booking_info_on_a_status_only_sub_event_update(): void
+    {
+        $topLevelBookingInfo = new BookingInfo(null, new TelephoneNumber('02 123 45 67'));
+        $unavailable = new Status(StatusType::Unavailable());
+
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+                new BookingInfoUpdated(self::EVENT_ID, $topLevelBookingInfo),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withStatus($unavailable)
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($subEvent->withStatus($unavailable))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_propagate_sub_event_booking_info_for_multiple_sub_events(): void
+    {
+        $bookingInfo = new BookingInfo(null, new TelephoneNumber('02 123 45 67'));
+
+        $subEvent1 = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+        $subEvent2 = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-08-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-08-05T17:00:00+02:00')
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents($subEvent1, $subEvent2))
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withBookingInfo($bookingInfo)
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $subEvent1->withBookingInfo($bookingInfo),
+                        $subEvent2
                     ))
                 ),
             ]);

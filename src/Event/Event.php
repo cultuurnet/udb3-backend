@@ -399,12 +399,18 @@ final class Event extends Offer
 
         $subEvents = $this->calendar->getSubEvents()->toArray();
 
+        $bookingInfoToPropagate = null;
+
         foreach ($subEventUpdates as $subEventUpdate) {
             $index = $subEventUpdate->getSubEventId();
 
             if (!isset($subEvents[$index])) {
                 // If the sub event to update doesn't exist, it's most likely a concurrency issue.
                 continue;
+            }
+
+            if ($subEventUpdate->getBookingInfo() !== null) {
+                $bookingInfoToPropagate = $subEventUpdate->getBookingInfo();
             }
 
             $subEvent = $subEvents[$index];
@@ -444,6 +450,15 @@ final class Event extends Offer
             $this->apply(
                 new CalendarUpdated($this->eventId, $updatedCalendar)
             );
+        }
+
+        // For single events an explicit booking info update on the sub-event is propagated up to the
+        // top level so both levels stay in sync. Gating on an explicit booking info update (instead of the
+        // resulting sub-event value) prevents e.g. a status-only update from overwriting the top level.
+        if ($updatedCalendar instanceof SingleSubEventCalendar && $bookingInfoToPropagate !== null) {
+            if (is_null($this->bookingInfo) || !$this->bookingInfo->sameAs($bookingInfoToPropagate)) {
+                $this->apply($this->createBookingInfoUpdatedEvent($bookingInfoToPropagate));
+            }
         }
     }
 
