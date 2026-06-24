@@ -216,17 +216,17 @@ Feature: Test the Search API v3 advanced queries on offers
     And I wait for the event with url "/events/%{eventId2022}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{eventId2020} OR %{eventId2022}) AND birthdateRange:2019-01-01 TO 2019-12-31 |
+      | q | id:(%{eventId2020} OR %{eventId2022}) AND birthdateRange:[2019-01-01 TO 2019-12-31] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{eventId2020} OR %{eventId2022}) AND birthdateRange:2020-01-01 TO 2020-12-31 |
+      | q | id:(%{eventId2020} OR %{eventId2022}) AND birthdateRange:[2020-01-01 TO 2020-12-31] |
     Then the JSON response at "totalItems" should be 1
     And the JSON response should include:
     """
     %{eventId2020}
     """
     When I send a GET request to "/events" with parameters:
-      | q | id:(%{eventId2020} OR %{eventId2022}) AND birthdateRange:(2020-01-01 TO 2020-12-31 OR 2022-06-30 TO 2022-12-31) |
+      | q | id:(%{eventId2020} OR %{eventId2022}) AND birthdateRange:([2020-01-01 TO 2020-12-31] OR [2022-06-30 TO 2022-12-31]) |
     Then the JSON response at "totalItems" should be 2
     And the JSON response should include:
     """
