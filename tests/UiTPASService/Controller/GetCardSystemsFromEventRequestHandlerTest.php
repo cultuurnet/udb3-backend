@@ -4,91 +4,128 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPASService\Controller;
 
-use CultureFeed_Uitpas;
-use CultureFeed_Uitpas_CardSystem;
-use CultureFeed_Uitpas_DistributionKey;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
-use CultuurNet\UDB3\UiTPASService\Controller\Response\CardSystemsJsonResponse;
+use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
+use CultuurNet\UDB3\UiTPAS\CardSystem\DistributionKey;
+use CultuurNet\UDB3\UiTPAS\Client\UiTPASClient;
+use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
 {
-    use AssertJsonResponseTrait;
+    private UiTPASClient&MockObject $uitpasClient;
 
-    private \CultureFeed_Uitpas&MockObject $uitpas;
-
-    private GetCardSystemsFromEventRequestHandler $getCardSystemFromEventRequestHandler;
+    private GetCardSystemsFromEventRequestHandler $handler;
 
     protected function setUp(): void
     {
-        $this->uitpas = $this->createMock(CultureFeed_Uitpas::class);
+        $this->uitpasClient = $this->createMock(UiTPASClient::class);
 
-        $this->getCardSystemFromEventRequestHandler = new GetCardSystemsFromEventRequestHandler($this->uitpas);
+        $this->handler = new GetCardSystemsFromEventRequestHandler($this->uitpasClient);
     }
 
     /**
      * @test
      */
-    public function it_can_get_card_systems_of_an_event(): void
+    public function it_returns_the_card_systems_of_an_event_in_the_same_shape_as_the_legacy_endpoint(): void
     {
         $eventId = 'db93a8d0-331a-4575-a23d-2c78d4ceb925';
 
-        $cardSystem1 = new CultureFeed_Uitpas_CardSystem();
-        $cardSystem1->id = 1;
-        $cardSystem1->name = 'Card system 1';
-
-        $distributionKey1 = new CultureFeed_Uitpas_DistributionKey();
-        $distributionKey1->id = 1;
-        $distributionKey1->name = 'Distribution key 1';
-
-        $distributionKey2 = new CultureFeed_Uitpas_DistributionKey();
-        $distributionKey2->id = 2;
-        $distributionKey2->name = 'Distribution key 2';
-
-        $cardSystem1->distributionKeys = [
-            $distributionKey1,
-            $distributionKey2,
-        ];
-
-        $cardSystem2 = new CultureFeed_Uitpas_CardSystem();
-        $cardSystem2->id = 2;
-        $cardSystem2->name = 'Card system 2';
-
-        $distributionKey3 = new CultureFeed_Uitpas_DistributionKey();
-        $distributionKey3->id = 3;
-        $distributionKey3->name = 'Distribution key 3';
-
-        $distributionKey4 = new CultureFeed_Uitpas_DistributionKey();
-        $distributionKey4->id = 4;
-        $distributionKey4->name = 'Distribution key 4';
-
-        $cardSystem2->distributionKeys = [
-            $distributionKey3,
-            $distributionKey4,
-        ];
-
-        $cardSystems = [
-            $cardSystem1,
-            $cardSystem2,
-        ];
-
-        $resultSet = new \CultureFeed_ResultSet();
-        $resultSet->objects = $cardSystems;
-        $resultSet->total = 2;
-
-        $this->uitpas->expects($this->once())
-            ->method('getCardSystemsForEvent')
+        $this->uitpasClient->expects($this->once())
+            ->method('getEventCardSystems')
             ->with($eventId)
-            ->willReturn($resultSet);
+            ->willReturn([
+                (new CardSystem(new Id('1'), 'Card system 1'))->withDistributionKeys([
+                    new DistributionKey(new Id('1'), 'Distribution key 1'),
+                    new DistributionKey(new Id('2'), 'Distribution key 2'),
+                ]),
+                new CardSystem(new Id('2'), 'Card system 2'),
+            ]);
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', $eventId)
             ->build('GET');
 
-        $response = $this->getCardSystemFromEventRequestHandler->handle($request);
+        $response = $this->handler->handle($request);
 
-        $this->assertJsonResponse(new CardSystemsJsonResponse($cardSystems), $response);
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals(
+            [
+                '1' => [
+                    'id' => 1,
+                    'name' => 'Card system 1',
+                    'distributionKeys' => [
+                        '1' => ['id' => 1, 'name' => 'Distribution key 1'],
+                        '2' => ['id' => 2, 'name' => 'Distribution key 2'],
+                    ],
+                ],
+                '2' => [
+                    'id' => 2,
+                    'name' => 'Card system 2',
+                    'distributionKeys' => [],
+                ],
+            ],
+            Json::decodeAssociatively((string) $response->getBody())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_a_card_system_id_is_not_numeric(): void
+    {
+        $this->uitpasClient->expects($this->once())
+            ->method('getEventCardSystems')
+            ->willReturn([
+                new CardSystem(new Id('not-a-number'), 'Card system 1'),
+            ]);
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', 'db93a8d0-331a-4575-a23d-2c78d4ceb925')
+            ->build('GET');
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->handler->handle($request);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_a_distribution_key_id_is_not_numeric(): void
+    {
+        $this->uitpasClient->expects($this->once())
+            ->method('getEventCardSystems')
+            ->willReturn([
+                (new CardSystem(new Id('1'), 'Card system 1'))->withDistributionKeys([
+                    new DistributionKey(new Id('not-a-number'), 'Distribution key 1'),
+                ]),
+            ]);
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', 'db93a8d0-331a-4575-a23d-2c78d4ceb925')
+            ->build('GET');
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->handler->handle($request);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_an_empty_json_object_when_the_event_has_no_card_systems(): void
+    {
+        $this->uitpasClient->expects($this->once())
+            ->method('getEventCardSystems')
+            ->willReturn([]);
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', 'db93a8d0-331a-4575-a23d-2c78d4ceb925')
+            ->build('GET');
+
+        $response = $this->handler->handle($request);
+
+        $this->assertEquals('[]', (string) $response->getBody());
     }
 }

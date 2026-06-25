@@ -47,6 +47,7 @@ final class RestUiTPASClientTest extends TestCase
         $this->assertCount(2, $cardSystems);
         $this->assertEquals('1', $cardSystems[0]->getId()->toNative());
         $this->assertEquals('UiTPAS Dender', $cardSystems[0]->getName());
+        $this->assertEquals([], $cardSystems[0]->getDistributionKeys());
         $this->assertEquals('8', $cardSystems[1]->getId()->toNative());
 
         $request = $this->mockHandler->getLastRequest();
@@ -55,6 +56,80 @@ final class RestUiTPASClientTest extends TestCase
             (string) $request->getUri()
         );
         $this->assertEquals('Bearer token-abc', $request->getHeaderLine('Authorization'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_maps_manual_distribution_keys_including_keys_without_a_name(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(
+            new Response(200, [], Json::encode([
+                [
+                    'id' => 1,
+                    'name' => 'UiTPAS Dender',
+                    'enabled' => true,
+                    'manualDistributionKeys' => [
+                        ['id' => 123, 'name' => '3 euro per dag', 'enabled' => true],
+                        ['id' => 456, 'enabled' => true],
+                    ],
+                ],
+            ]))
+        );
+
+        $distributionKeys = $client->getEventCardSystems('event-id-1')[0]->getDistributionKeys();
+
+        $this->assertCount(2, $distributionKeys);
+        $this->assertEquals('123', $distributionKeys[0]->getId()->toNative());
+        $this->assertEquals('3 euro per dag', $distributionKeys[0]->getName());
+        $this->assertEquals('456', $distributionKeys[1]->getId()->toNative());
+        $this->assertNull($distributionKeys[1]->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function it_filters_out_disabled_card_systems(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(
+            new Response(200, [], Json::encode([
+                ['id' => 1, 'name' => 'UiTPAS Dender', 'enabled' => true],
+                ['id' => 8, 'name' => 'UiTPAS Gent', 'enabled' => false],
+            ]))
+        );
+
+        $cardSystems = $client->getEventCardSystems('event-id-1');
+
+        $this->assertCount(1, $cardSystems);
+        $this->assertEquals('1', $cardSystems[0]->getId()->toNative());
+    }
+
+    /**
+     * @test
+     */
+    public function it_filters_out_disabled_distribution_keys(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(
+            new Response(200, [], Json::encode([
+                [
+                    'id' => 1,
+                    'name' => 'UiTPAS Dender',
+                    'enabled' => true,
+                    'manualDistributionKeys' => [
+                        ['id' => 123, 'name' => '3 euro per dag', 'enabled' => true],
+                        ['id' => 456, 'name' => '5 euro per dag', 'enabled' => false],
+                    ],
+                ],
+            ]))
+        );
+
+        $distributionKeys = $client->getEventCardSystems('event-id-1')[0]->getDistributionKeys();
+
+        $this->assertCount(1, $distributionKeys);
+        $this->assertEquals('123', $distributionKeys[0]->getId()->toNative());
     }
 
     /**
