@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use Slim\Psr7\Interfaces\HeadersInterface;
+use UnexpectedValueException;
 
 class CardSystemsJsonResponse extends JsonResponse
 {
@@ -41,11 +42,11 @@ class CardSystemsJsonResponse extends JsonResponse
     ): JsonResponse {
         $data = [];
         foreach ($cardSystems as $cardSystem) {
-            $id = (int) $cardSystem->getId()->toNative();
+            $id = self::toIntId($cardSystem->getId()->toNative());
 
             $distributionKeys = [];
             foreach ($cardSystem->getDistributionKeys() as $distributionKey) {
-                $distributionKeyId = (int) $distributionKey->getId()->toNative();
+                $distributionKeyId = self::toIntId($distributionKey->getId()->toNative());
                 $distributionKeys[$distributionKeyId] = [
                     'id' => $distributionKeyId,
                     'name' => $distributionKey->getName(),
@@ -60,6 +61,21 @@ class CardSystemsJsonResponse extends JsonResponse
         }
 
         return new JsonResponse(Json::encode($data), $status, $headers);
+    }
+
+    /**
+     * UiTPAS ids are integers per the API spec, but the Id value object holds them as strings.
+     * Casting a non-numeric string with (int) would silently collapse to 0 and make all card
+     * systems (or keys) overwrite each other, so fail loudly if the type ever changes instead.
+     */
+    private static function toIntId(string $id): int
+    {
+        $intId = filter_var($id, FILTER_VALIDATE_INT);
+        if ($intId === false) {
+            throw new UnexpectedValueException(sprintf('Expected a numeric UiTPAS id but got "%s".', $id));
+        }
+
+        return $intId;
     }
 
     private function convertCardSystemToArray(CultureFeed_Uitpas_CardSystem $cardSystem): array

@@ -74,6 +74,46 @@ final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_throws_when_a_card_system_id_is_not_numeric(): void
+    {
+        $this->uitpasClient->expects($this->once())
+            ->method('getEventCardSystems')
+            ->willReturn([
+                new CardSystem(new Id('not-a-number'), 'Card system 1'),
+            ]);
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', 'db93a8d0-331a-4575-a23d-2c78d4ceb925')
+            ->build('GET');
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->handler->handle($request);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_a_distribution_key_id_is_not_numeric(): void
+    {
+        $this->uitpasClient->expects($this->once())
+            ->method('getEventCardSystems')
+            ->willReturn([
+                (new CardSystem(new Id('1'), 'Card system 1'))->withDistributionKeys([
+                    new DistributionKey(new Id('not-a-number'), 'Distribution key 1'),
+                ]),
+            ]);
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', 'db93a8d0-331a-4575-a23d-2c78d4ceb925')
+            ->build('GET');
+
+        $this->expectException(\UnexpectedValueException::class);
+        $this->handler->handle($request);
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_an_empty_json_object_when_the_event_has_no_card_systems(): void
     {
         $this->uitpasClient->expects($this->once())
