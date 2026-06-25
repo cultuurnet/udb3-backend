@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAttendanceModeRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAudienceRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateBirthdateRangeRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateChildrenOnlyRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateDeparturePlacesRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateFaqsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
@@ -525,6 +526,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->post('{eventId}/copies/', CopyEventRequestHandler::class);
             $routeGroup->put('{eventId}/faqs/', UpdateFaqsRequestHandler::class);
             $routeGroup->put('{eventId}/departure-places/', UpdateDeparturePlacesRequestHandler::class);
+            $routeGroup->put('{eventId}/children-only/', UpdateChildrenOnlyRequestHandler::class);
             $routeGroup->put('{eventId}/birthdate-range/', UpdateBirthdateRangeRequestHandler::class);
             $routeGroup->delete('{eventId}/birthdate-range/', DeleteBirthdateRangeRequestHandler::class);
 
