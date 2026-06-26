@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\UiTPAS\Client;
 
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
+use CultuurNet\UDB3\UiTPAS\CardSystem\DistributionKey;
 use CultuurNet\UDB3\UiTPAS\ValueObject\Id;
 use CultuurNet\UDB3\User\ManagementToken\ManagementTokenProvider;
 use GuzzleHttp\Psr7\Request;
@@ -27,13 +28,44 @@ final class RestUiTPASClient implements UiTPASClient
     {
         $cardSystems = [];
         foreach ($this->getEventCardSystemsData($eventId) as $cardSystemData) {
-            $cardSystems[] = new CardSystem(
+            // The REST API returns the full master list (enabled and disabled), but consumers
+            // should only see the card systems that are active for the event, matching the
+            // legacy XML endpoint. The full list is kept in getEventCardSystemsData() for writes.
+            if (($cardSystemData['enabled'] ?? false) !== true) {
+                continue;
+            }
+
+            $cardSystems[] = (new CardSystem(
                 new Id((string) $cardSystemData['id']),
                 $cardSystemData['name']
+            ))->withDistributionKeys(
+                $this->mapDistributionKeys($cardSystemData['manualDistributionKeys'] ?? [])
             );
         }
 
         return $cardSystems;
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $distributionKeysData
+     * @return DistributionKey[]
+     */
+    private function mapDistributionKeys(array $distributionKeysData): array
+    {
+        $distributionKeys = [];
+        foreach ($distributionKeysData as $distributionKeyData) {
+            // Same as card systems: only expose the distribution keys that are enabled for the event.
+            if (($distributionKeyData['enabled'] ?? false) !== true) {
+                continue;
+            }
+
+            $distributionKeys[] = new DistributionKey(
+                new Id((string) $distributionKeyData['id']),
+                $distributionKeyData['name'] ?? null
+            );
+        }
+
+        return $distributionKeys;
     }
 
     public function addCardSystemToEvent(string $eventId, int $cardSystemId, ?int $distributionKeyId = null): void
