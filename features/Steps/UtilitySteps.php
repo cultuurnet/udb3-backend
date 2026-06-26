@@ -74,13 +74,6 @@ trait UtilitySteps
         $this->variableState->setRandomEmail($variableName);
     }
 
-    /**
-     * @Given I wait :seconds seconds
-     */
-    public function iWaitSeconds(int $seconds): void
-    {
-        sleep($seconds);
-    }
 
     /**
      * @Given I store the count of the :type files in the :folderName folder
