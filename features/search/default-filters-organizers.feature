@@ -14,7 +14,8 @@ Feature: Test the Search API v3 default filters on organizers
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | q | id:%{organizerId} |
-    Then the JSON response at "totalItems" should be 0
+    # We have to wait until 0 results are returned because it needs time to index the deletion as well.
+    And I wait until the response contains 0 result
     When I send a GET request to "/organizers" with parameters:
       | workflowStatus | *                 |
       | q              | id:%{organizerId} |
