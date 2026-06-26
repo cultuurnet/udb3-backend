@@ -29,6 +29,7 @@ Acceptance tests for the SAPI3 (Search API 3) integration.
 UDB3 indexes entities into Elasticsearch asynchronously. To prevent intermittent failures, every SAPI3 assertion block must be preceded by an indexing wait for **every entity that was created or modified since the previous assertion block**.
 
 ### The stable pattern
+For tests involving events and places, the following pattern can be used:
 
 ```gherkin
 # Setup — all creates and updates first
@@ -43,6 +44,26 @@ And I am using the Search API v3 base URL
 When I send a GET request to "/events" with parameters:
   | q | id:%{eventId} |
 Then the JSON response at "totalItems" should be 1    # direct assertion — no polling step
+```
+
+Note: For organizers, the playhead method doesn't work as the playhead is not exposed for organizers. If multiple separate requests are done on an organizer, we need to wait on the search results rather the organizer being indexed.
+The following pattern should be used:
+
+```gherkin
+Given I create an organizer from "organizers/organizer-minimal.json" and save the "id" as "organizerId"
+And I delete the organizer at "/organizers/%{organizerId}"
+# Won't guarantee all changes have been indexed, but it will at least guarantee the document is indexed once    
+And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
+And I am using the Search API v3 base URL
+When I send a GET request to "/organizers" with parameters:
+| workflowStatus | *                 |
+| q              | id:%{organizerId} |
+# Wait until all changes are indexed and we get the expected amount of results    
+And I wait until the response contains 1 result
+And the JSON response should include:
+"""
+    %{organizerId}
+"""
 ```
 
 ### Multiple modification rounds
