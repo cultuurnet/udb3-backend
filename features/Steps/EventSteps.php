@@ -234,7 +234,7 @@ trait EventSteps
         $minAge = $maxAge - 1;
         $this->variableState->setVariable(
             $typicalAgeRange,
-           $minAge . '-' . $maxAge
+            $minAge . '-' . $maxAge
         );
     }
 
