@@ -246,6 +246,31 @@ Feature: Test the Search API v3 advanced queries on offers
     %{eventId2022}
     """
 
+  @wip
+  @testIsolation
+  Scenario: Search for overlapping birthdate ranges & typical age ranges using an advanced query
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/event-with-birthdate-range-in-2020.json" and save the "id" as "eventId2020"
+    And I wait for the event with url "/events/%{eventId2020}" to be indexed
+    And I get the typical age range for one born in 2020 and keep it as "variableTypicalAgeRange"
+    And I create an event from "events/event-with-variable-typical-age-range.json" and save the "id" as "eventIdWithAgeRange"
+    And I wait for the event with url "/events/%{eventIdWithAgeRange}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | birthdateRange:[2019-01-01 TO 2019-12-31] |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | q | birthdateRange:[2020-01-01 TO 2020-12-31] |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{eventId2020}
+    """
+    And the JSON response should include:
+    """
+    %{eventIdWithAgeRange}
+    """
+
   Scenario: Search for country using an advanced query
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
