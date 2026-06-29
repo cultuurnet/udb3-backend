@@ -268,6 +268,7 @@ Feature: Test the Search API v3 url parameters on offers
     """
 
   @wip
+  @testIsolation
   Scenario: Search for birthdate ranges using the common filter
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/event-with-birthdate-range-in-2020.json" and save the "id" as "eventId2020"
@@ -278,12 +279,10 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/events" with parameters:
       | birthdateRangeFrom | 2019-01-01                            |
       | birthdateRangeTo   | 2019-12-31                            |
-      | q                  | id:(%{eventId2020} OR %{eventId2022}) |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | birthdateRangeFrom | 2020-01-01                            |
       | birthdateRangeTo   | 2020-12-31                            |
-      | q                  | id:(%{eventId2020} OR %{eventId2022}) |
     Then the JSON response at "totalItems" should be 1
     And the JSON response should include:
     """
