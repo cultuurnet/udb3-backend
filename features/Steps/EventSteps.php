@@ -236,7 +236,6 @@ trait EventSteps
             $typicalAgeRange,
             (string) $minAge . '-' . (string) $maxAge
         );
-
     }
 
     private function createEvent(string $endpoint, string $json, string $jsonPath, string $variableName): void
