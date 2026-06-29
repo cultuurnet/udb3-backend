@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Steps;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use CultuurNet\UDB3\State\VariableState;
-use function PHPUnit\Framework\assertEquals;
 
 trait RequestSteps
 {
@@ -118,29 +117,6 @@ trait RequestSteps
         $this->requestState->setLastGetParams($params);
         $response = $this->getHttpClient()->getWithParameters($url, $params, $this->variableState);
         $this->responseState->setResponse($response);
-    }
-
-    /**
-     * @Then I wait for the JSON response at :jsonPath to have :nrOfEntries entries
-     */
-    public function iWaitForTheJsonResponseAtToHaveEntries(string $jsonPath, int $nrOfEntries): void
-    {
-        $elapsedTime = 0;
-        do {
-            $response = $this->getHttpClient()->getWithParameters(
-                $this->requestState->getLastGetUrl(),
-                $this->requestState->getLastGetParams(),
-                $this->variableState
-            );
-            $this->responseState->setResponse($response);
-            $actual = count((array) $this->responseState->getValueOnPath($jsonPath));
-            if ($actual !== $nrOfEntries) {
-                sleep(1);
-                $elapsedTime++;
-            }
-        } while ($actual !== $nrOfEntries && $elapsedTime < 10);
-
-        assertEquals($nrOfEntries, count((array) $this->responseState->getValueOnPath($jsonPath)));
     }
 
     private function addScenarioLabelToSearchParameters(string $url, array $parameters): array
@@ -256,9 +232,9 @@ trait RequestSteps
     }
 
     /**
-     * @Then I wait for the JSON response at :jsonPath to be :expectedValue
+     * @Then I wait until the response contains :count result(s)
      */
-    public function iWaitForTheJsonResponseAtToBe(string $jsonPath, string $expectedValue): void
+    public function iWaitUntilTheResponseContains(int $count): void
     {
         $elapsedTime = 0;
         do {
@@ -268,14 +244,11 @@ trait RequestSteps
                 $this->variableState
             );
             $this->responseState->setResponse($response);
-            $actual = $this->responseState->getValueOnPath($jsonPath);
-            if ((string) $actual !== $expectedValue) {
+            if ($this->responseState->getTotalItems() !== $count) {
                 sleep(1);
                 $elapsedTime++;
             }
-        } while ((string) $actual !== $expectedValue && $elapsedTime < 10);
-
-        assertEquals($expectedValue, (string) $this->responseState->getValueOnPath($jsonPath));
+        } while ($this->responseState->getTotalItems() !== $count && $elapsedTime < 10);
     }
 
     private function waitForItemWithUrlToBeIndex(string $url): void
@@ -287,33 +260,26 @@ trait RequestSteps
         $id = $pathSegments[$segmentCount - 1];
         $item = $pathSegments[$segmentCount - 2];
 
-        $elapsedTime = 0;
-        do {
-            $response = $this->getHttpClient()->get('/' . $item . '/?disableDefaultFilters=true&id=' . $id);
-            $this->responseState->setResponse($response);
-            if ($this->responseState->getTotalItems() != 1) {
-                sleep(1);
-                $elapsedTime++;
-            }
-        } while ($this->responseState->getTotalItems() != 1 && $elapsedTime < 10);
-    }
+        $udb3Response = $this->getHttpClient()->get('/' . $item . '/' . $id);
+        $this->responseState->setResponse($udb3Response);
+        $expectedPlayhead = $this->responseState->getValueOnPath('playhead');
 
-    /**
-     * @Given I wait for :count result(s) at :url with parameters:
-     */
-    public function iWaitForResultsAtWithParameters(int $count, string $url, TableNode $parameters): void
-    {
-        $params = $this->addScenarioLabelToSearchParameters($url, $parameters->getRows());
-        $params[] = ['disableDefaultFilters', 'true'];
+        $scenarioLabel = VariableState::getScenarioLabel();
+        $labelParam = $scenarioLabel !== null ? '&q=labels:' . $scenarioLabel : '';
 
         $elapsedTime = 0;
         do {
-            $response = $this->getHttpClient()->getWithParameters($url, $params, $this->variableState);
+            $response = $this->getHttpClient()->get('/' . $item . '/?disableDefaultFilters=true&embed=true&id=' . $id . $labelParam);
             $this->responseState->setResponse($response);
-            if ($this->responseState->getTotalItems() !== $count) {
+
+            $memberPlayhead = $this->responseState->getValueOnPath('member/0/playhead');
+            $isCaughtUp = $this->responseState->getTotalItems() === 1
+                && ($expectedPlayhead === null || ($memberPlayhead !== null && $memberPlayhead >= $expectedPlayhead));
+
+            if (!$isCaughtUp) {
                 sleep(1);
                 $elapsedTime++;
             }
-        } while ($this->responseState->getTotalItems() !== $count && $elapsedTime < 10);
+        } while (!$isCaughtUp && $elapsedTime < 10);
     }
 }
