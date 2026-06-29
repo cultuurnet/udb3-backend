@@ -224,6 +224,21 @@ trait EventSteps
         $this->theResponseStatusShouldBe(204);
     }
 
+    /**
+     * @When I get the typical age range for one born in :birthYear and keep it as :typicalAgeRange
+     */
+    public function iGetTheTypicalAgeRangeForOneBornIn(int $birthYear, string $typicalAgeRange): void
+    {
+        $currentYear = (int) date('Y');
+        $maxAge = $currentYear - $birthYear;
+        $minAge = $maxAge - 1;
+        $this->variableState->setVariable(
+            $typicalAgeRange,
+            (string) $minAge . '-' . (string) $maxAge
+        );
+
+    }
+
     private function createEvent(string $endpoint, string $json, string $jsonPath, string $variableName): void
     {
         $response = $this->getHttpClient()->postJSON(
