@@ -257,7 +257,7 @@ Feature: Test the Search API v3 advanced queries on offers
     And I wait for the event with url "/events/%{eventIdWithAgeRange}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | q | birthdateRange:[2019-01-01 TO 2019-12-31] |
+      | q | birthdateRange:[2018-01-01 TO 2018-12-31] |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | q | birthdateRange:[2020-01-01 TO 2020-12-31] |
