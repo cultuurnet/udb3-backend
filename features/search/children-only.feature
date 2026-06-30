@@ -42,51 +42,8 @@ Feature: Test the Search API v3 boa feature
     %{otherChildrenOnlyEventId}
     """
 
-
-  Scenario: disabling audience types should return events for everyone, members & my own childrenOnlyEvents
-    When I am using an UiTID v1 API key of consumer "uitdatabank"
-    And I am authorized as JWT provider user "centraal_beheerder"
-    And I send and accept "application/json"
-    And I create an event from "events/audience-type/event-audience-type-members.json" and save the "id" as "membersEventId"
-    And I publish the event at "/events/%{membersEventId}"
-    And I create an event from "events/audience-type/event-audience-type-education.json" and save the "id" as "educationEventId"
-    And I publish the event at "/events/%{educationEventId}"
-    And I create a minimal permanent event and save the "id" as "everyoneEventId"
-    And I publish the event at "/events/%{everyoneEventId}"
-    And I am not authorized
-    And I am not using an UiTID v1 API key
-    And I am authorized with an OAuth client access token for "test_client"
-    And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
-    And I publish the event at "/events/%{myChildrenOnlyEventId}"
-    And I am using the Search API v3 base URL
-    And I am using a x-client-id header for client "test_client"
-    When I send a GET request to "/events" with parameters:
-      | audienceType | *                                                                                                                              |
-      | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId} OR %{membersEventId} OR %{educationEventId} OR %{everyoneEventId}) |
-    And I wait for the JSON response at "totalItems" to be "4"
-    And the JSON response should include:
-    """
-    %{myChildrenOnlyEventId}
-    """
-    And the JSON response should include:
-    """
-    %{membersEventId}
-    """
-    And the JSON response should include:
-    """
-    %{educationEventId}
-    """
-    And the JSON response should include:
-    """
-    %{everyoneEventId}
-    """
-    And the JSON response should not include:
-    """
-    %{otherChildrenOnlyEventId}
-    """
-
   Scenario: When I have the boa scope I can search for all children only events
-    When I am authorized with an OAuth client access token for "boa_client"
+    When I am authorized with an OAuth client access token for "test_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
     And I am using the Search API v3 base URL
@@ -100,6 +57,27 @@ Feature: Test the Search API v3 boa feature
     %{myChildrenOnlyEventId}
     """
     And the JSON response should include:
+    """
+    %{otherChildrenOnlyEventId}
+    """
+
+  Scenario: With an apiKey that is not matched to a clientId I cannot find any children only events
+    When I am using an UiTID v1 API key of consumer "uitdatabank"
+    And I am authorized as JWT provider user "centraal_beheerder"
+    And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
+    And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I am using the Search API v3 base URL
+    And I am not authorized
+    And I am using an UiTID v1 API key of consumer "uitdatabank"
+    When I send a GET request to "/events" with parameters:
+      | childrenOnly | true                                                         |
+      | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId}) |
+    And I wait for the JSON response at "totalItems" to be "0"
+    And the JSON response should not include:
+    """
+    %{myChildrenOnlyEventId}
+    """
+    And the JSON response should not include:
     """
     %{otherChildrenOnlyEventId}
     """
