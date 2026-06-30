@@ -628,7 +628,6 @@ class TabularDataEventFormatter
                         'everyone' => 'Voor iedereen',
                         'members' => 'Enkel voor leden',
                         'education' => 'Specifiek voor scholen',
-                        'childrenOnly' => 'Specifiek voor kinderen alleen',
                     ];
 
                     $toegang = $toegangTypes['everyone'];
