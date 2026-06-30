@@ -19,10 +19,11 @@ Feature: Test the Search API v3 boosting
     Given I create a random labelname of 10 characters
     When I create an event with name "kerst%{labelname} sneeuw%{labelname}" and save the "id" as "termBoostedEvent"
     And I create an event with name "kerst%{labelname} kerst%{labelname}" and save the "id" as "termNaturalEvent"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the event with url "/events/%{termBoostedEvent}" to be indexed
+    And I wait for the event with url "/events/%{termNaturalEvent}" to be indexed
     When I am using the Search API v3 base URL
-    And I wait for 2 results at "/events" with parameters:
-      | text | kerst%{labelname} |
-    And I send a GET request to "/events" with parameters:
+    When I send a GET request to "/events" with parameters:
       | text        | kerst%{labelname}                 |
       | sort[score] | desc                              |
     Then the JSON response at "totalItems" should be 2
@@ -64,10 +65,11 @@ Feature: Test the Search API v3 boosting
     And I publish the place at "/places/%{termBoostedPlace}"
     When I create a place with name "kerst%{labelname} kerst%{labelname}" and save the "id" as "termNaturalPlace"
     And I publish the place at "/places/%{termNaturalPlace}"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the place with url "/places/%{termBoostedPlace}" to be indexed
+    And I wait for the place with url "/places/%{termNaturalPlace}" to be indexed
     When I am using the Search API v3 base URL
-    And I wait for 2 results at "/places" with parameters:
-      | text | kerst%{labelname} |
-    And I send a GET request to "/places" with parameters:
+    When I send a GET request to "/places" with parameters:
       | text        | kerst%{labelname}                 |
       | sort[score] | desc                              |
     Then the JSON response at "totalItems" should be 2
@@ -108,10 +110,11 @@ Feature: Test the Search API v3 boosting
     When I create an event with name "kerst%{labelname} sneeuw%{labelname}" and save the "id" as "termBoostedOffer"
     When I create a place with name "kerst%{labelname} kerst%{labelname}" and save the "id" as "termNaturalOffer"
     And I publish the place at "/places/%{termNaturalOffer}"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the place with url "/places/%{termNaturalOffer}" to be indexed
+    And I wait for the event with url "/events/%{termBoostedOffer}" to be indexed
     When I am using the Search API v3 base URL
-    And I wait for 2 results at "/offers" with parameters:
-      | text | kerst%{labelname} |
-    And I send a GET request to "/offers" with parameters:
+    When I send a GET request to "/offers" with parameters:
       | text        | kerst%{labelname}                 |
       | sort[score] | desc                              |
     Then the JSON response at "totalItems" should be 2
@@ -163,10 +166,11 @@ Feature: Test the Search API v3 boosting
     Given I create a random labelname of 10 characters
     When I create an event with name "kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarEvent"
     And I create an event with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termKerstEvent"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the event with url "/events/%{termKerstEvent}" to be indexed
+    And I wait for the event with url "/events/%{termNieuwjaarEvent}" to be indexed
     When I am using the Search API v3 base URL
-    And I wait for 2 results at "/events" with parameters:
-      | text | kerst%{labelname} |
-    And I send a GET request to "/events" with parameters:
+    When I send a GET request to "/events" with parameters:
       | text        | kerst%{labelname} |
       | sort[score] | desc              |
     Then the JSON response at "totalItems" should be 2
@@ -208,10 +212,11 @@ Feature: Test the Search API v3 boosting
     And I publish the place at "/places/%{termNieuwjaarPlace}"
     When I create a place with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termKerstPlace"
     And I publish the place at "/places/%{termKerstPlace}"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the place with url "/places/%{termKerstPlace}" to be indexed
+    And I wait for the place with url "/places/%{termNieuwjaarPlace}" to be indexed
     When I am using the Search API v3 base URL
-    And I wait for 2 results at "/places" with parameters:
-      | text | kerst%{labelname} |
-    And I send a GET request to "/places" with parameters:
+    When I send a GET request to "/places" with parameters:
       | text        | kerst%{labelname} |
       | sort[score] | desc              |
     Then the JSON response at "totalItems" should be 2
@@ -252,10 +257,11 @@ Feature: Test the Search API v3 boosting
     When I create an event with name "kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarOffer"
     When I create a place with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termKerstOffer"
     And I publish the place at "/places/%{termKerstOffer}"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the place with url "/places/%{termKerstOffer}" to be indexed
+    And I wait for the event with url "/events/%{termNieuwjaarOffer}" to be indexed
     When I am using the Search API v3 base URL
-    And I wait for 2 results at "/offers" with parameters:
-      | text | kerst%{labelname} |
-    And I send a GET request to "/offers" with parameters:
+    When I send a GET request to "/offers" with parameters:
       | text        | kerst%{labelname} |
       | sort[score] | desc              |
     Then the JSON response at "totalItems" should be 2
@@ -295,10 +301,11 @@ Feature: Test the Search API v3 boosting
     Given I create a random labelname of 10 characters
     When I create an event with name "kerst%{labelname} kerst%{labelname} nieuwjaar%{labelname}" and save the "id" as "termNieuwjaarEvent"
     And I create an event with name "kerst%{labelname} feest%{labelname}" and save the "id" as "termBoostedEvent"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the event with url "/events/%{termBoostedEvent}" to be indexed
+    And I wait for the event with url "/events/%{termNieuwjaarEvent}" to be indexed
     When I am using the Search API v3 base URL
-    And I wait for 2 results at "/events" with parameters:
-      | text | kerst%{labelname} |
-    And I send a GET request to "/events" with parameters:
+    When I send a GET request to "/events" with parameters:
       | text        | kerst%{labelname} |
       | sort[score] | desc              |
     Then the JSON response at "totalItems" should be 2

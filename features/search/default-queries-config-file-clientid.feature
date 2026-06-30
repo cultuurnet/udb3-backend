@@ -22,6 +22,7 @@ Feature: Test the Search API v3 default queries from the config file when using 
   Scenario: Search for an event that will be filtered out by the default query
     Given I create a place from "places/hemmekes.json" and save the "url" as "placeUrl"
     And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
+    And I wait for the place with url "%{placeUrl}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am not authorized
@@ -49,6 +50,7 @@ Feature: Test the Search API v3 default queries from the config file when using 
   Scenario: Search for an event within by the default query
     Given I create a place from "places/citadel.json" and save the "url" as "placeUrl"
     And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
+    And I wait for the place with url "%{placeUrl}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am not authorized

@@ -17,13 +17,15 @@ Feature: Test the Search API v3 boa feature
     When I am authorized with an OAuth client access token for "test_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
+    And I wait for the event with url "/events/%{otherChildrenOnlyEventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "test_client"
     When I send a GET request to "/events" with parameters:
       | audienceType | childrenOnly                                                 |
       | childrenOnly | true                                                         |
       | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId}) |
-    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{myChildrenOnlyEventId}
@@ -34,7 +36,6 @@ Feature: Test the Search API v3 boa feature
     """
     And I send a GET request to "/events" with parameters:
       | q | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId}) |
-    And I wait for the JSON response at "totalItems" to be "0"
     And the JSON response should not include:
     """
     %{myChildrenOnlyEventId}
@@ -60,12 +61,17 @@ Feature: Test the Search API v3 boa feature
     And I am authorized with an OAuth client access token for "test_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for the event with url "/events/%{educationEventId}" to be indexed
+    And I wait for the event with url "/events/%{everyoneEventId}" to be indexed
+    And I wait for the event with url "/events/%{membersEventId}" to be indexed
+    And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
+    And I wait for the event with url "/events/%{otherChildrenOnlyEventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "test_client"
     When I send a GET request to "/events" with parameters:
       | audienceType | *                                                                                                                              |
       | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId} OR %{membersEventId} OR %{educationEventId} OR %{everyoneEventId}) |
-    And I wait for the JSON response at "totalItems" to be "4"
     And the JSON response should include:
     """
     %{myChildrenOnlyEventId}
@@ -93,12 +99,14 @@ Feature: Test the Search API v3 boa feature
     When I am authorized with an OAuth client access token for "boa_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
+    And I wait for the event with url "/events/%{otherChildrenOnlyEventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "boa_client"
     When I send a GET request to "/events" with parameters:
       | audienceType | childrenOnly                                                 |
       | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId}) |
-    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{myChildrenOnlyEventId}
