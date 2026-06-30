@@ -61,7 +61,7 @@ Feature: Test the Search API v3 boa feature
     %{otherChildrenOnlyEventId}
     """
 
-  Scenario: With an apiKey that is not matched to a clientId I cannot find any children only events
+  Scenario: With an UiTID v1 API that is not matched to a clientId I cannot find any children only events
     When I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider user "centraal_beheerder"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
