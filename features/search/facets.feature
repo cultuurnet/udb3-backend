@@ -8,6 +8,7 @@ Feature: Test the Search API v3 facets
     And I create a place from "places/place.json" and save the "placeId" as "placeId"
     And I keep the value of the JSON response at "url" as "placeUrl"
     And I create an event from "/events/event-with-eventtype-lessenreeks.json" and save the "id" as "eventId"
+    And I wait for the place with url "%{placeUrl}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am not authorized
