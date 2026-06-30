@@ -1,22 +1,6 @@
 @sapi3
 Feature: Test the Search API v3 boa feature
 
-  # Visibility matrix for childrenOnly events. Each scenario covers two rows at
-  # once: the "mine" event and the "not mine" event are queried together.
-  #
-  # | Scenario              | boa | param | covers "mine" row | covers "not mine" row |
-  # |-----------------------|-----|-------|-------------------|-----------------------|
-  # | Without boa, no param | no  | —     | mine -> YES       | not mine -> NO        |
-  # | Without boa, true     | no  | true  | mine -> YES       | not mine -> NO        |
-  # | Without boa, false    | no  | false | mine -> NO        | not mine -> NO        |
-  # | With boa, no param    | yes | —     | mine -> YES       | not mine -> YES       |
-  # | With boa, true        | yes | true  | mine -> YES       | not mine -> YES       |
-  # | With boa, false       | yes | false | mine -> NO        | not mine -> NO        |
-  #
-  # A normal (non childrenOnly) event is added as a control. It is always visible
-  # for a normal query and for childrenOnly=false, but it is filtered out by
-  # childrenOnly=true.
-
   Background:
     Given I am using the UDB3 base URL
     And I am using an UiTID v1 API key of consumer "uitdatabank"
