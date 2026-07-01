@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AudienceTypeDenormaliz
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Audience\AudienceTypeNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Offer\Events\AbstractEvent;
+use InvalidArgumentException;
 
 final class AudienceUpdated extends AbstractEvent
 {
@@ -35,9 +36,15 @@ final class AudienceUpdated extends AbstractEvent
 
     public static function deserialize(array $data): AudienceUpdated
     {
-        return new self(
-            $data['item_id'],
-            (new AudienceTypeDenormalizer())->denormalize($data['audience'], AudienceType::class)
-        );
+        try {
+            $audienceType = (new AudienceTypeDenormalizer())->denormalize($data['audience'], AudienceType::class);
+        } catch (InvalidArgumentException) {
+            // Legacy events may contain audience types that are no longer supported
+            // (e.g. "childrenOnly", now expressed as a separate boolean). Fall back to
+            // everyone so replay does not crash on historical data.
+            $audienceType = AudienceType::everyone();
+        }
+
+        return new self($data['item_id'], $audienceType);
     }
 }
