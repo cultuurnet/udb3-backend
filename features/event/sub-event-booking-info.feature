@@ -187,6 +187,113 @@ Feature: Test SubEvent bookingInfo
     }
     """
 
+  Scenario: Setting bookingInfo on a single event cascades down to its subEvent
+    Given I create an event from "events/event-with-single-calendar.json" and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    {
+      "url": "https://www.domain.be/reservations/eventname",
+      "urlLabel": {
+        "nl": "Reserveer plaatsen",
+        "fr": "Réservez des places",
+        "en": "Reserve places",
+        "de": "Platzieren Sie eine Reservierung"
+      },
+      "email": "user@example.com",
+      "phone": "0123456789",
+      "availabilityStarts": "2025-05-01T00:00:00+00:00",
+      "availabilityEnds": "2025-07-01T00:00:00+00:00"
+    }
+    """
+    When I send a PUT request to "%{eventUrl}/booking-info"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "bookingInfo" should be:
+    """
+    {
+      "availabilityEnds": "2025-07-01T00:00:00+00:00",
+      "availabilityStarts": "2025-05-01T00:00:00+00:00",
+      "email": "user@example.com",
+      "phone": "0123456789",
+      "url": "https://www.domain.be/reservations/eventname",
+      "urlLabel": {
+        "de": "Platzieren Sie eine Reservierung",
+        "en": "Reserve places",
+        "fr": "Réservez des places",
+        "nl": "Reserveer plaatsen"
+      }
+    }
+    """
+    And the JSON response at "subEvent/0/bookingInfo" should be:
+    """
+    {
+      "availabilityEnds": "2025-07-01T00:00:00+00:00",
+      "availabilityStarts": "2025-05-01T00:00:00+00:00",
+      "email": "user@example.com",
+      "phone": "0123456789",
+      "url": "https://www.domain.be/reservations/eventname",
+      "urlLabel": {
+        "de": "Platzieren Sie eine Reservierung",
+        "en": "Reserve places",
+        "fr": "Réservez des places",
+        "nl": "Reserveer plaatsen"
+      }
+    }
+    """
+
+  Scenario: Setting bookingInfo on the subEvent of a single event propagates up to the top level
+    Given I create an event from "events/event-with-single-calendar.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "bookingInfo": {
+          "url": "https://www.domain.be/reservations/eventname",
+          "urlLabel": {
+            "nl": "Reserveer plaatsen",
+            "fr": "Réservez des places",
+            "en": "Reserve places",
+            "de": "Platzieren Sie eine Reservierung"
+          },
+          "email": "user@example.com",
+          "phone": "0123456789"
+        }
+      }
+    ]
+    """
+    And I send a PATCH request to "%{eventUrl}/subEvents"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "subEvent/0/bookingInfo" should be:
+    """
+    {
+      "email": "user@example.com",
+      "phone": "0123456789",
+      "url": "https://www.domain.be/reservations/eventname",
+      "urlLabel": {
+        "de": "Platzieren Sie eine Reservierung",
+        "en": "Reserve places",
+        "fr": "Réservez des places",
+        "nl": "Reserveer plaatsen"
+      }
+    }
+    """
+    And the JSON response at "bookingInfo" should be:
+    """
+    {
+      "email": "user@example.com",
+      "phone": "0123456789",
+      "url": "https://www.domain.be/reservations/eventname",
+      "urlLabel": {
+        "de": "Platzieren Sie eine Reservierung",
+        "en": "Reserve places",
+        "fr": "Réservez des places",
+        "nl": "Reserveer plaatsen"
+      }
+    }
+    """
+
   Scenario: Clear bookingInfo on a subEvent
     Given I create an event from "events/event-with-single-calendar.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:
