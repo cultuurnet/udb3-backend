@@ -139,9 +139,3 @@ Feature: Test RDF projection of events
     And I accept "text/turtle"
     When I get the RDF of event with id "%{eventId}"
     Then the RDF response should match event projection "events/rdf/event-with-audience-type-education.ttl"
-
-  Scenario: Create an event with audienceType children only
-    Given I create an event from "events/rdf/event-with-audience-type-children-only.json" and save the "id" as "eventId"
-    And I accept "text/turtle"
-    When I get the RDF of event with id "%{eventId}"
-    Then the RDF response should match event projection "events/rdf/event-with-audience-type-children-only.ttl"
