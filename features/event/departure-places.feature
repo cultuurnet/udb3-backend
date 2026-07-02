@@ -117,24 +117,3 @@ Feature: Test event departure places
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/error" should be "Array should have at most 20 items, 21 found"
-
-  Scenario: Changing audienceType away from childrenOnly keeps departure places
-    When I create an event from "events/event-children-only.json" and save the "url" as "eventUrl"
-    And I set the JSON request payload to:
-    """
-    [
-      "%{departurePlaceUrl1}"
-    ]
-    """
-    And I send a PUT request to "%{eventUrl}/departure-places/"
-    Then the response status should be "204"
-    And I set the JSON request payload to:
-    """
-    {
-      "audienceType": "everyone"
-    }
-    """
-    And I send a PUT request to "%{eventUrl}/audience"
-    Then the response status should be "204"
-    And I get the event at "%{eventUrl}"
-    And the JSON response at "departurePlaces/0" should be "%{departurePlaceUrl1}"

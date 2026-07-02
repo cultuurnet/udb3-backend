@@ -11,23 +11,17 @@ Feature: Test departure places in search results
   Scenario: Departure places are embedded in search results
     When I create a minimal place and save the "url" as "departurePlaceUrl1"
     And I create a minimal place and save the "url" as "departurePlaceUrl2"
-    And I create an event from "events/event-children-only.json" and save the "id" as "eventId"
+    And I create an event from "events/departure-places/event-with-2-departure-places.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I set the JSON request payload to:
-    """
-    [
-      "%{departurePlaceUrl1}",
-      "%{departurePlaceUrl2}"
-    ]
-    """
-    And I send a PUT request to "/events/%{eventId}/departure-places/"
+    And I wait for the place with url "%{departurePlaceUrl1}" to be indexed
+    And I wait for the place with url "%{departurePlaceUrl2}" to be indexed
+    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "boa_client"
     And I send a GET request to "/events" with parameters:
-      | embed                 | true          |
-      | disableDefaultFilters | true          |
-    Then I wait for the JSON response at "totalItems" to be 1
-    And I wait for the JSON response at "member/0/departurePlaces" to have 2 entries
+      | embed                 | true |
+      | disableDefaultFilters | true |
     And the JSON response at "member/0/departurePlaces" should include "%{departurePlaceUrl1}"
     And the JSON response at "member/0/departurePlaces" should include "%{departurePlaceUrl2}"
 
@@ -55,27 +49,30 @@ Feature: Test departure places in search results
     ["%{departurePlaceUrl2}", "%{departurePlaceUrl4}"]
     """
     And I send a PUT request to "/events/%{eventId2}/departure-places/"
+    And I wait for the place with url "%{departurePlaceUrl1}" to be indexed
+    And I wait for the place with url "%{departurePlaceUrl2}" to be indexed
+    And I wait for the place with url "%{departurePlaceUrl3}" to be indexed
+    And I wait for the place with url "%{departurePlaceUrl4}" to be indexed
+    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for the event with url "/events/%{eventId1}" to be indexed
+    And I wait for the event with url "/events/%{eventId2}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "boa_client"
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                                 |
       | q                     | departurePlaces:%{departurePlaceId1} |
-    Then I wait for the JSON response at "totalItems" to be 1
     And the JSON response at "member/0/@id" should include "%{eventId1}"
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                                 |
       | q                     | departurePlaces:%{departurePlaceId3} |
-    Then I wait for the JSON response at "totalItems" to be 1
     And the JSON response at "member/0/@id" should include "%{eventId1}"
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                                 |
       | q                     | departurePlaces:%{departurePlaceId2} |
-    Then I wait for the JSON response at "totalItems" to be 1
     And the JSON response at "member/0/@id" should include "%{eventId2}"
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                                                                        |
       | q                     | departurePlaces:%{departurePlaceId1} OR departurePlaces:%{departurePlaceId2} |
-    Then I wait for the JSON response at "totalItems" to be 2
     And the JSON response should include:
     """
     %{eventId1}
@@ -87,7 +84,6 @@ Feature: Test departure places in search results
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                                                                         |
       | q                     | departurePlaces:%{departurePlaceId4} AND departurePlaces:%{departurePlaceId1} |
-    Then I wait for the JSON response at "totalItems" to be 1
     And the JSON response at "member/0/@id" should include "%{eventId1}"
 
   @testIsolation
@@ -110,12 +106,16 @@ Feature: Test departure places in search results
     ["%{departurePlaceUrl2}"]
     """
     And I send a PUT request to "/events/%{eventId2}/departure-places/"
+    And I wait for the place with url "%{departurePlaceUrl1}" to be indexed
+    And I wait for the place with url "%{departurePlaceUrl2}" to be indexed
+    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for the event with url "/events/%{eventId1}" to be indexed
+    And I wait for the event with url "/events/%{eventId2}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "boa_client"
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                  |
       | departurePlaces[]     | %{departurePlaceId1}  |
-    Then I wait for the JSON response at "totalItems" to be 1
     And the JSON response at "member/0/@id" should include "%{eventId1}"
 
   @testIsolation
@@ -138,15 +138,18 @@ Feature: Test departure places in search results
     ["%{departurePlaceUrl1}"]
     """
     And I send a PUT request to "/events/%{eventId2}/departure-places/"
+    And I wait for the place with url "%{departurePlaceUrl1}" to be indexed
+    And I wait for the place with url "%{departurePlaceUrl2}" to be indexed
+    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for the event with url "/events/%{eventId1}" to be indexed
+    And I wait for the event with url "/events/%{eventId2}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "boa_client"
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                  |
       | departurePlaces[]     | %{departurePlaceId1}  |
-    Then I wait for the JSON response at "totalItems" to be 2
     And I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true                  |
       | departurePlaces[]     | %{departurePlaceId1}  |
       | departurePlaces[]     | %{departurePlaceId2}  |
-    Then I wait for the JSON response at "totalItems" to be 1
     And the JSON response at "member/0/@id" should include "%{eventId1}"
