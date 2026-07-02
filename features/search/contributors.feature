@@ -20,9 +20,9 @@ Feature: Test the Search API v3 contributors
     And I wait for the organizer with url "%{organizerUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
-      | limit                 | 1 |
-      | embed                 | true |
-      | disableDefaultFilters | true |
+      | limit                 | 1                                         |
+      | embed                 | true                                      |
+      | disableDefaultFilters | true                                      |
       | q                     | contributors:%{organizerContributorEmail} |
     And I wait until the response contains 1 result
     And the JSON response at "member/0/@id" should be "%{organizerUrl}"
@@ -41,10 +41,11 @@ Feature: Test the Search API v3 contributors
     And I wait for the place with url "%{placeUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/places" with parameters:
-      | limit                 | 1 |
-      | embed                 | true |
-      | disableDefaultFilters | true |
+      | limit                 | 1                                     |
+      | embed                 | true                                  |
+      | disableDefaultFilters | true                                  |
       | q                     | contributors:%{placeContributorEmail} |
+    And I wait until the response contains 1 result
     And the JSON response at "member/0/@id" should be "%{placeUrl}"
     But the JSON response should not have "member/0/contributors"
 
@@ -63,9 +64,10 @@ Feature: Test the Search API v3 contributors
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | limit                 | 1 |
-      | embed                 | true |
-      | disableDefaultFilters | true |
+      | limit                 | 1                                     |
+      | embed                 | true                                  |
+      | disableDefaultFilters | true                                  |
       | q                     | contributors:%{eventContributorEmail} |
+    And I wait until the response contains 1 result
     And the JSON response at "member/0/@id" should be "%{eventUrl}"
     But the JSON response should not have "member/0/contributors"
