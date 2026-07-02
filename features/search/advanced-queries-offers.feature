@@ -248,7 +248,7 @@ Feature: Test the Search API v3 advanced queries on offers
 
   @wip
   @testIsolation
-  Scenario: Search by birthdate range also matches events with the equivalent typical age range
+  Scenario: Search by birthdate range using an advanced query also matches events with the equivalent typical age range
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/event-with-birthdate-range-in-2020.json" and save the "id" as "eventId2020"
     And I wait for the event with url "/events/%{eventId2020}" to be indexed
