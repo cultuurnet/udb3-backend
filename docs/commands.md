@@ -34,9 +34,14 @@ make test-group group=integration            # Tests in specific group
 ## Acceptance Testing (Behat)
 
 ```bash
-make feature                                           # All feature tests
+make feature                                           # All feature tests (default suite)
+make feature-ci                                        # Default suite, CI output (junit)
+make feature-ci-es8                                    # Default suite, es8 profile (excludes @negativeBoosting)
+make feature-sapi3                                     # SAPI3 search integration tests only
+make feature-sapi3-es8                                 # SAPI3 tests, es8 profile (excludes @negativeBoosting)
 make feature-tag tag=@events                           # Feature tests by tag
-make feature-tag tag=@sapi3                            # SAPI3 search integration tests
 make feature-filter path=features/search/auth.feature  # All scenarios in a file
 make feature-filter path=features/search/auth.feature:25  # Single scenario by line number
 ```
+
+Suites and tag filters are defined in `behat.php`, not in the Makefile — see the `default` and `es8` profiles there for the exact tag expressions.
