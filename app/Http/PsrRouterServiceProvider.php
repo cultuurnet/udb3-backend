@@ -168,7 +168,7 @@ use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASLabelsRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyAddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyDeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyGetCardSystemsFromEventRequestHandler;
-use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\LegacySetCardSystemsOnEventRequestHandler;
 use League\Route\RouteGroup;
 use League\Route\Router;
 use Psr\Container\ContainerInterface;
@@ -619,7 +619,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
                     : LegacyGetCardSystemsFromEventRequestHandler::class
             );
 
-            $routeGroup->put('{eventId}/card-systems/', SetCardSystemsOnEventRequestHandler::class);
+            $routeGroup->put('{eventId}/card-systems/', LegacySetCardSystemsOnEventRequestHandler::class);
 
             $routeGroup->put(
                 '{eventId}/card-systems/{cardSystemId}/',

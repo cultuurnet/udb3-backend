@@ -11,19 +11,19 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class SetCardSystemsOnEventRequestHandlerTest extends TestCase
+final class LegacySetCardSystemsOnEventRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
     private \CultureFeed_Uitpas&MockObject $uitpas;
 
-    private SetCardSystemsOnEventRequestHandler $setCardSystemsOnEventRequestHandler;
+    private LegacySetCardSystemsOnEventRequestHandler $setCardSystemsOnEventRequestHandler;
 
     protected function setUp(): void
     {
         $this->uitpas = $this->createMock(CultureFeed_Uitpas::class);
 
-        $this->setCardSystemsOnEventRequestHandler = new SetCardSystemsOnEventRequestHandler($this->uitpas);
+        $this->setCardSystemsOnEventRequestHandler = new LegacySetCardSystemsOnEventRequestHandler($this->uitpas);
     }
 
     /**

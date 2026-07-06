@@ -13,7 +13,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Response;
 
-final class SetCardSystemsOnEventRequestHandler implements RequestHandlerInterface
+final class LegacySetCardSystemsOnEventRequestHandler implements RequestHandlerInterface
 {
     private CultureFeed_Uitpas $uitpas;
 
