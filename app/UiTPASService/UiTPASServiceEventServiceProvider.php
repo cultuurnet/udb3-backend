@@ -10,6 +10,7 @@ use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPAS\Client\UiTPASClient;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyAddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyDeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyGetCardSystemsFromEventRequestHandler;
@@ -22,6 +23,7 @@ final class UiTPASServiceEventServiceProvider extends AbstractServiceProvider
     protected function getProvidedServiceNames(): array
     {
         return [
+            GetUiTPASDetailRequestHandler::class,
             LegacyGetUiTPASDetailRequestHandler::class,
             GetCardSystemsFromEventRequestHandler::class,
             LegacyGetCardSystemsFromEventRequestHandler::class,
@@ -37,6 +39,21 @@ final class UiTPASServiceEventServiceProvider extends AbstractServiceProvider
     public function register(): void
     {
         $container = $this->getContainer();
+
+        $container->addShared(
+            GetUiTPASDetailRequestHandler::class,
+            function () use ($container) {
+                return new GetUiTPASDetailRequestHandler(
+                    $container->get(UiTPASClient::class),
+                    new CallableIriGenerator(
+                        fn (string $eventId) => $container->get('config')['url'] . '/uitpas/events' . $eventId
+                    ),
+                    new CallableIriGenerator(
+                        fn (string $eventId) => $container->get('config')['url'] . '/uitpas/events' . $eventId . '/card-systems'
+                    )
+                );
+            }
+        );
 
         $container->addShared(
             LegacyGetUiTPASDetailRequestHandler::class,
