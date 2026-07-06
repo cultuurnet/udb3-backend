@@ -12,19 +12,19 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class GetUiTPASDetailRequestHandlerTest extends TestCase
+final class LegacyGetUiTPASDetailRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
 
     private \CultureFeed_Uitpas&MockObject $uitpas;
 
-    private GetUiTPASDetailRequestHandler $getUiTPASDetailController;
+    private LegacyGetUiTPASDetailRequestHandler $getUiTPASDetailController;
 
     public function setUp(): void
     {
         $this->uitpas = $this->createMock(CultureFeed_Uitpas::class);
 
-        $this->getUiTPASDetailController = new GetUiTPASDetailRequestHandler(
+        $this->getUiTPASDetailController = new LegacyGetUiTPASDetailRequestHandler(
             $this->uitpas,
             new CallableIriGenerator(
                 fn (string $eventId) => 'http://uitpas.mock/uitpas/events/' . $eventId

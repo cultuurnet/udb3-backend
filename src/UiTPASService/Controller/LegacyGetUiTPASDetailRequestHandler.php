@@ -12,7 +12,7 @@ use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
-final class GetUiTPASDetailRequestHandler implements RequestHandlerInterface
+final class LegacyGetUiTPASDetailRequestHandler implements RequestHandlerInterface
 {
     private CultureFeed_Uitpas $uitpas;
 

@@ -163,11 +163,11 @@ use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromOrganizerRequestHandler;
-use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASLabelsRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyAddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyDeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyGetCardSystemsFromEventRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\LegacyGetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacySetCardSystemsOnEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
 use League\Route\RouteGroup;
@@ -611,7 +611,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
     private function bindUiTPASEvents(Router $router, bool $useRestApi): void
     {
         $router->group('uitpas/events', function (RouteGroup $routeGroup) use ($useRestApi): void {
-            $routeGroup->get('{eventId}/', GetUiTPASDetailRequestHandler::class);
+            $routeGroup->get('{eventId}/', LegacyGetUiTPASDetailRequestHandler::class);
 
             $routeGroup->get(
                 '{eventId}/card-systems/',
