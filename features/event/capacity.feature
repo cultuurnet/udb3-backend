@@ -313,3 +313,81 @@ Feature: Test capacity and remainingCapacity on sub-events
       "type": "Unavailable"
     }
     """
+
+  Scenario: Reject capacity on an event with a permanent calendar
+    When I set the JSON request payload to:
+    """
+    {
+      "calendarType": "permanent",
+      "bookingAvailability": {
+        "type": "Available",
+        "capacity": 100
+      }
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/calendar"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "schemaErrors": [
+        {
+          "error": "capacity is not supported on events with a permanent or periodic calendar.",
+          "jsonPointer": "/bookingAvailability/capacity"
+        }
+      ],
+      "status": 400,
+      "title": "Invalid body data",
+      "type": "https://api.publiq.be/probs/body/invalid-data"
+    }
+    """
+
+  Scenario: Reject capacity on an event with a periodic calendar
+    When I set the JSON request payload to:
+    """
+    {
+      "calendarType": "periodic",
+      "startDate": "2026-01-01T00:00:00+00:00",
+      "endDate": "2026-12-31T23:59:59+00:00",
+      "bookingAvailability": {
+        "type": "Available",
+        "capacity": 100
+      }
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/calendar"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "schemaErrors": [
+        {
+          "error": "capacity is not supported on events with a permanent or periodic calendar.",
+          "jsonPointer": "/bookingAvailability/capacity"
+        }
+      ],
+      "status": 400,
+      "title": "Invalid body data",
+      "type": "https://api.publiq.be/probs/body/invalid-data"
+    }
+    """
+
+  Scenario: Allow a permanent calendar without capacity on an event
+    When I set the JSON request payload to:
+    """
+    {
+      "calendarType": "permanent",
+      "bookingAvailability": {
+        "type": "Available"
+      }
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/calendar"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "bookingAvailability" should be:
+    """
+    {
+      "type": "Available"
+    }
+    """
