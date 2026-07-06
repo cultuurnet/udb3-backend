@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Format\HTML\templates;
 
 use PHPUnit\Framework\TestCase;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
-use Twig_Environment;
-use Twig_Loader_Filesystem;
 
 final class MapActivitiesTemplateTest extends TestCase
 {
     private const TEMPLATE = 'export.map.activities.html.twig';
 
-    private Twig_Environment $twig;
+    private Environment $twig;
 
     protected function setUp(): void
     {
-        $this->twig = new Twig_Environment(
-            new Twig_Loader_Filesystem(__DIR__ . '/../../../../../src/EventExport/Format/HTML/templates')
+        $this->twig = new Environment(
+            new FilesystemLoader(__DIR__ . '/../../../../../src/EventExport/Format/HTML/templates')
         );
 
         $this->twig->addFunction(

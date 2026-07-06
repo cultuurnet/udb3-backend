@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 final class HTMLFileWriterTest extends TestCase
 {
@@ -49,8 +51,8 @@ final class HTMLFileWriterTest extends TestCase
     ): void {
         $events = [];
 
-        $twig = new \Twig_Environment(
-            new \Twig_Loader_Filesystem(__DIR__ . '/templates')
+        $twig = new Environment(
+            new FilesystemLoader(__DIR__ . '/templates')
         );
 
         $fileWriter = new HTMLFileWriter(

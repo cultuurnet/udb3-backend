@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Format\HTML\WebArchive;
 
 use CultuurNet\UDB3\EventExport\Format\HTML\HTMLFileWriter;
-use Twig_Environment;
+use Twig\Environment;
 
 abstract class WebArchiveFileFormat
 {
@@ -19,7 +19,7 @@ abstract class WebArchiveFileFormat
         ?string $subtitle = null,
         ?string $footer = null,
         ?string $publisher = null,
-        ?Twig_Environment $twig = null
+        ?Environment $twig = null
     ) {
         $variables = [
             'brand' => $brand,
