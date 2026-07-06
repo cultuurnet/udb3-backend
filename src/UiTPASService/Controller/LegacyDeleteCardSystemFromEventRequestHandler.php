@@ -11,7 +11,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Response;
 
-final class DeleteCardSystemFromEventRequestHandler implements RequestHandlerInterface
+final class LegacyDeleteCardSystemFromEventRequestHandler implements RequestHandlerInterface
 {
     private CultureFeed_Uitpas $uitpas;
 

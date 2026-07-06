@@ -9,17 +9,17 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class DeleteCardSystemFromEventRequestHandlerTest extends TestCase
+final class LegacyDeleteCardSystemFromEventRequestHandlerTest extends TestCase
 {
     private \CultureFeed_Uitpas&MockObject $uitpas;
 
-    private DeleteCardSystemFromEventRequestHandler $deleteCardSystemFromEventRequestHandler;
+    private LegacyDeleteCardSystemFromEventRequestHandler $deleteCardSystemFromEventRequestHandler;
 
     protected function setUp(): void
     {
         $this->uitpas = $this->createMock(CultureFeed_Uitpas::class);
 
-        $this->deleteCardSystemFromEventRequestHandler = new DeleteCardSystemFromEventRequestHandler($this->uitpas);
+        $this->deleteCardSystemFromEventRequestHandler = new LegacyDeleteCardSystemFromEventRequestHandler($this->uitpas);
     }
 
     /**
