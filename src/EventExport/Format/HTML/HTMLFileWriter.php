@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Format\HTML;
 
 use CultuurNet\UDB3\EventExport\FileWriterInterface;
-use Twig_Environment;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class HTMLFileWriter implements FileWriterInterface
 {
@@ -13,12 +14,12 @@ class HTMLFileWriter implements FileWriterInterface
 
     protected array $variables;
 
-    protected ?Twig_Environment $twig = null;
+    protected ?Environment $twig = null;
 
     public function __construct(
         string $template,
         array $variables,
-        ?Twig_Environment $twig = null
+        ?Environment $twig = null
     ) {
         $this->template = $template;
         $this->variables = $variables;
@@ -27,19 +28,19 @@ class HTMLFileWriter implements FileWriterInterface
     }
 
     protected function initializeTwig(
-        Twig_Environment $twig = null
+        Environment $twig = null
     ): void {
         if (!$twig) {
-            $loader = new \Twig_Loader_Filesystem(
+            $loader = new FilesystemLoader(
                 __DIR__ . '/templates'
             );
-            $twig = new Twig_Environment($loader);
+            $twig = new Environment($loader);
         }
 
         $this->setTwig($twig);
     }
 
-    protected function setTwig(Twig_Environment $twig): void
+    protected function setTwig(Environment $twig): void
     {
         $this->twig = $twig;
     }

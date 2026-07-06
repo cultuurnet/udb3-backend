@@ -9,7 +9,7 @@ use CultuurNet\UDB3\EventExport\FileFormatInterface;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\Format\HTML\WebArchive\WebArchiveFileFormat;
 use CultuurNet\UDB3\EventExport\Format\HTML\WebArchive\WebArchiveTemplate;
-use Twig_Environment;
+use Twig\Environment;
 
 class PDFWebArchiveFileFormat extends WebArchiveFileFormat implements FileFormatInterface
 {
@@ -30,7 +30,7 @@ class PDFWebArchiveFileFormat extends WebArchiveFileFormat implements FileFormat
         ?string $publisher = null,
         ?EventInfoServiceInterface $uitpas = null,
         ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
-        ?Twig_Environment $twig = null
+        ?Environment $twig = null
     ) {
         parent::__construct($template, $brand, $logo, $title, $subTitle, $footer, $publisher, $twig);
         $this->princeXMLBinaryPath = $princeXMLBinaryPath;
