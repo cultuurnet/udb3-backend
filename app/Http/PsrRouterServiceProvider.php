@@ -160,6 +160,7 @@ use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByIdRequestHandler;
 use CultuurNet\UDB3\Mailinglist\SubscribeUserToMailinglistRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromOrganizerRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
@@ -634,7 +635,12 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
                     : LegacyAddCardSystemToEventRequestHandler::class
             );
 
-            $routeGroup->delete('{eventId}/card-systems/{cardSystemId}/', LegacyDeleteCardSystemFromEventRequestHandler::class);
+            $routeGroup->delete(
+                '{eventId}/card-systems/{cardSystemId}/',
+                $useRestApi
+                    ? DeleteCardSystemFromEventRequestHandler::class
+                    : LegacyDeleteCardSystemFromEventRequestHandler::class
+            );
         });
     }
 
