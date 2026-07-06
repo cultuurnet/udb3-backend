@@ -14,6 +14,7 @@ use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyAddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyDeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyGetCardSystemsFromEventRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\LegacyGetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacySetCardSystemsOnEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
 
@@ -23,6 +24,7 @@ final class UiTPASServiceEventServiceProvider extends AbstractServiceProvider
     {
         return [
             GetUiTPASDetailRequestHandler::class,
+            LegacyGetUiTPASDetailRequestHandler::class,
             GetCardSystemsFromEventRequestHandler::class,
             LegacyGetCardSystemsFromEventRequestHandler::class,
             SetCardSystemsOnEventRequestHandler::class,
@@ -42,6 +44,21 @@ final class UiTPASServiceEventServiceProvider extends AbstractServiceProvider
             GetUiTPASDetailRequestHandler::class,
             function () use ($container) {
                 return new GetUiTPASDetailRequestHandler(
+                    $container->get(UiTPASClient::class),
+                    new CallableIriGenerator(
+                        fn (string $eventId) => $container->get('config')['url'] . '/uitpas/events' . $eventId
+                    ),
+                    new CallableIriGenerator(
+                        fn (string $eventId) => $container->get('config')['url'] . '/uitpas/events' . $eventId . '/card-systems'
+                    )
+                );
+            }
+        );
+
+        $container->addShared(
+            LegacyGetUiTPASDetailRequestHandler::class,
+            function () use ($container) {
+                return new LegacyGetUiTPASDetailRequestHandler(
                     $container->get('uitpas'),
                     new CallableIriGenerator(
                         fn (string $eventId) => $container->get('config')['url'] . '/uitpas/events' . $eventId
