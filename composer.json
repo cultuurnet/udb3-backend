@@ -69,15 +69,14 @@
     "symfony/cache": "^5.4",
     "symfony/console": "^5.4",
     "symfony/mailer": "^5.4",
-    "symfony/process": "4.4.30",
+    "symfony/process": "^6.4",
     "symfony/serializer": "^v3.1.10",
-    "twig/twig": "~1.0",
+    "twig/twig": "~3.27",
     "webmozart/assert": "^1.2",
     "willdurand/geocoder": "^4.5",
     "willdurand/negotiation": "^3.0"
   },
   "require-dev": {
-    "alchemy/zippy": "~0.2",
     "behat/behat": "^3.24.1",
     "icanhazstring/composer-unused": "^0.7",
     "laminas/laminas-diactoros": "^2.17",
@@ -86,6 +85,9 @@
     "phpunit/phpunit": "^9.5",
     "publiq/php-cs-fixer-config": "^2.0",
     "rector/rector": "^0.14.5"
+  },
+  "conflict": {
+    "mtdowling/jmespath.php": "<2.9.1"
   },
   "prefer-stable": true,
   "autoload": {

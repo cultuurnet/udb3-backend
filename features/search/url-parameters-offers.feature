@@ -20,10 +20,12 @@ Feature: Test the Search API v3 url parameters on offers
     And I send a PUT request to "/places/%{placeId}/labels/%{locationLabel}"
     And I create a random string of 10 characters and keep it as "organizerLabel"
     And I send a PUT request to "/organizers/%{organizerId}/labels/%{organizerLabel}"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | labels | %{labelname} |
-    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -48,14 +50,13 @@ Feature: Test the Search API v3 url parameters on offers
     """
     When I send a GET request to "/events" with parameters:
       | locationLabels | %{locationLabel} |
-    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
     """
     When I send a GET request to "/events" with parameters:
       | organizerLabels | %{organizerLabel} |
-    And I wait for the JSON response at "totalItems" to be "1"
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -67,17 +68,19 @@ Feature: Test the Search API v3 url parameters on offers
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I create a minimal organizer and save the "id" as "organizerId"
     And I send a PUT request to "/events/%{eventId}/organizer/%{organizerId}"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | locationId | %{placeId} |
-    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
     """
     When I send a GET request to "/events" with parameters:
       | organizerId | %{organizerId} |
-    Then the JSON response at "totalItems" should be 1
+    And I wait until the response contains 1 result
     And the JSON response should include:
     """
     %{eventId}
@@ -92,11 +95,12 @@ Feature: Test the Search API v3 url parameters on offers
     And I send a PUT request to "/events/%{eventId}/labels/%{labelname}"
     And I send a PUT request to "/places/%{placeId}/labels/foobar"
     And I send a PUT request to "/events/%{eventId}/labels/foobar"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | labels[] | %{labelname} |
       | labels[] | foobar       |
-    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -134,6 +138,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/places" with parameters:
@@ -189,6 +194,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
@@ -213,6 +219,7 @@ Feature: Test the Search API v3 url parameters on offers
   Scenario: Search for ages using the common filter
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/event-with-age-range-6-to-12.json" and save the "id" as "eventId"
+    And I wait for the place with url "%{placeUrl}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
@@ -260,10 +267,60 @@ Feature: Test the Search API v3 url parameters on offers
     %{eventId}
     """
 
+  @wip
+  @testIsolation
+  Scenario: Search for birthdate ranges using the common filter
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/event-with-birthdate-range-in-2020.json" and save the "id" as "eventId2020"
+    And I wait for the event with url "/events/%{eventId2020}" to be indexed
+    And I create an event from "events/event-with-birthdate-range-in-2022.json" and save the "id" as "eventId2022"
+    And I wait for the event with url "/events/%{eventId2022}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | birthdateRangeFrom | 2018-01-01 |
+      | birthdateRangeTo   | 2018-12-31 |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | birthdateRangeFrom | 2020-01-01 |
+      | birthdateRangeTo   | 2020-12-31 |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{eventId2020}
+    """
+
+  @wip
+  @testIsolation
+  Scenario: Search by birthdate range using an url parameter also matches events with the equivalent typical age range
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/event-with-birthdate-range-in-2020.json" and save the "id" as "eventId2020"
+    And I wait for the event with url "/events/%{eventId2020}" to be indexed
+    And I get the typical age range for one born in 2020 and keep it as "variableTypicalAgeRange"
+    And I create an event from "events/event-with-variable-typical-age-range.json" and save the "id" as "eventIdWithAgeRange"
+    And I wait for the event with url "/events/%{eventIdWithAgeRange}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | birthdateRangeFrom | 2018-01-01 |
+      | birthdateRangeTo   | 2018-12-31 |
+    Then the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | birthdateRangeFrom | 2020-01-01 |
+      | birthdateRangeTo   | 2020-12-31 |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{eventId2020}
+    """
+    And the JSON response should include:
+    """
+    %{eventIdWithAgeRange}
+    """
+
   Scenario: Search for country using the common filters
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
@@ -311,6 +368,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
@@ -362,6 +420,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
@@ -415,6 +474,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
@@ -473,6 +533,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
@@ -521,6 +582,7 @@ Feature: Test the Search API v3 url parameters on offers
     And I create a place from "places/place-in-german-and-french.json" and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-in-german-and-french.json" and save the "id" as "eventId"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
@@ -710,7 +772,6 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
-    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I set the JSON request payload to:
     """
     {
@@ -722,11 +783,12 @@ Feature: Test the Search API v3 url parameters on offers
     """
     And I send a PUT request to "/places/%{placeId}/status"
     And I send a PUT request to "/events/%{eventId}/status"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | status | TemporarilyUnavailable        |
       | q      | id:(%{placeId} OR %{eventId}) |
-    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -767,15 +829,15 @@ Feature: Test the Search API v3 url parameters on offers
   Scenario: Search for booking availability using the common filters
     When I create a minimal place and save the "id" as "placeId"
     And I create an event from "events/event-with-unavailable-sub-events.json" and save the "id" as "eventId"
-    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I publish the event at "/events/%{eventId}"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | bookingAvailability | Unavailable                   |
       | availableTo         | *                             |
       | availableFrom       | *                             |
       | q                   | id:(%{placeId} OR %{eventId}) |
-    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -792,11 +854,12 @@ Feature: Test the Search API v3 url parameters on offers
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | calendarType | permanent                     |
       | q            | id:(%{placeId} OR %{eventId}) |
-    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -998,13 +1061,14 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/event-with-single-calendar.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
+    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | dateFrom      | 2021-01-01T00:00:00%2B01:00 |
       | availableTo   | *                           |
       | availableFrom | *                           |
       | q             | id:(%{eventId})             |
-    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -1068,7 +1132,6 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
-    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I create a random name of 10 characters
     And I set the JSON request payload to:
     """
@@ -1076,11 +1139,12 @@ Feature: Test the Search API v3 url parameters on offers
     """
     And I send a PUT request to "/places/%{placeId}/description/nl"
     And I send a PUT request to "/events/%{eventId}/description/nl"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | text | %{name}                       |
       | q    | id:(%{placeId} OR %{eventId}) |
-    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -1110,6 +1174,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
@@ -1151,6 +1216,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
@@ -1197,14 +1263,13 @@ Feature: Test the Search API v3 url parameters on offers
   Scenario: Search for offers using the creator filter
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
-    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:
       | creator | edcee0f7-5906-4e92-8551-a7f5d37ba453 |
       | q       | id:(%{placeId} OR %{eventId})        |
-    And I wait for the JSON response at "totalItems" to be "2"
     And the JSON response should include:
     """
     %{placeId}
@@ -1246,11 +1311,12 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/audience-type/event-audience-type-members.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
+    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | audienceType | members       |
       | q            | id:%{eventId} |
-    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{eventId}
@@ -1268,11 +1334,14 @@ Feature: Test the Search API v3 url parameters on offers
     And I publish the event at "/events/%{offLineEventId}"
     And I publish the event at "/events/%{mixedEventId}"
     And I publish the event at "/events/%{onlineEventId}"
+    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for the event with url "/events/%{mixedEventId}" to be indexed
+    And I wait for the event with url "/events/%{offLineEventId}" to be indexed
+    And I wait for the event with url "/events/%{onlineEventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
       | attendanceMode | offline                                                       |
       | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
-    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{offLineEventId}
@@ -1284,7 +1353,6 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/events" with parameters:
       | attendanceMode | mixed                                                         |
       | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
-    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{mixedEventId}
@@ -1296,7 +1364,6 @@ Feature: Test the Search API v3 url parameters on offers
     When I send a GET request to "/events" with parameters:
       | attendanceMode | online                                                        |
       | q              | id:(%{offLineEventId} OR %{mixedEventId} OR %{onlineEventId}) |
-    And I wait for the JSON response at "totalItems" to be "1"
     And the JSON response should include:
     """
     %{onlineEventId}
@@ -1310,6 +1377,7 @@ Feature: Test the Search API v3 url parameters on offers
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
     And I create an event from "events/event-with-workflow-status-ready-for-validation.json" and save the "id" as "eventId"
+    And I wait for the place with url "/places/%{placeId}" to be indexed
     And I wait for the event with url "/events/%{eventId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/offers" with parameters:

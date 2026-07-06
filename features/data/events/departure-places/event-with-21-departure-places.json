@@ -14,9 +14,7 @@
     "@id": "%{placeUrl}"
   },
   "calendarType": "permanent",
-  "audience": {
-    "audienceType": "childrenOnly"
-  },
+  "childrenOnly": true,
   "departurePlaces": [
     "%{baseUrl}/place/00000000-0000-0000-0000-000000000001",
     "%{baseUrl}/place/00000000-0000-0000-0000-000000000002",

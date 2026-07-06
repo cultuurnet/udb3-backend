@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\User\Keycloak;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\User\ManagementToken\ManagementToken;
 use CultuurNet\UDB3\User\ManagementToken\ManagementTokenGenerator;
-use DateTimeImmutable;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 
@@ -15,13 +14,20 @@ final class KeycloakManagementTokenGenerator implements ManagementTokenGenerator
 {
     private ClientInterface $client;
     private string $domain;
+    private string $realm;
     private string $clientId;
     private string $clientSecret;
 
-    public function __construct(ClientInterface $client, string $domain, string $clientId, string $clientSecret)
-    {
+    public function __construct(
+        ClientInterface $client,
+        string $domain,
+        string $realm,
+        string $clientId,
+        string $clientSecret
+    ) {
         $this->client = $client;
         $this->domain = $domain;
+        $this->realm = $realm;
         $this->clientId = $clientId;
         $this->clientSecret = $clientSecret;
     }
@@ -30,7 +36,7 @@ final class KeycloakManagementTokenGenerator implements ManagementTokenGenerator
     {
         $request = new Request(
             'POST',
-            $this->domain . '/realms/master/protocol/openid-connect/token',
+            $this->domain . '/realms/' . $this->realm . '/protocol/openid-connect/token',
             [
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
@@ -47,7 +53,6 @@ final class KeycloakManagementTokenGenerator implements ManagementTokenGenerator
 
         return new ManagementToken(
             $json['access_token'],
-            new DateTimeImmutable(),
             $json['expires_in']
         );
     }

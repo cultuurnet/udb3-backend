@@ -1,7 +1,7 @@
 {
   "mainLanguage": "nl",
   "name": {
-    "nl": "Permanent event"
+    "nl": "Event with departure places"
   },
   "terms": [
     {
@@ -15,7 +15,9 @@
   },
   "calendarType": "permanent",
   "typicalAgeRange": "7-11",
-  "audience": {
-    "audienceType": "childrenOnly"
-  }
+  "childrenOnly": true,
+  "departurePlaces": [
+    "%{departurePlaceUrl1}",
+    "%{departurePlaceUrl2}"
+  ]
 }

@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
+use CultuurNet\UDB3\Event\Events\ChildrenOnlyUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
@@ -126,6 +127,8 @@ final class Event extends Offer
     private Faqs $faqs;
 
     private Urls $departurePlaces;
+
+    private bool $childrenOnly = false;
 
     private ?BirthdateRange $birthdateRange = null;
 
@@ -240,6 +243,7 @@ final class Event extends Offer
         $this->workflowStatus = WorkflowStatus::DRAFT();
         $this->faqs = new Faqs();
         $this->departurePlaces = new Urls();
+        $this->childrenOnly = false;
     }
 
     protected function applyEventCopied(EventCopied $eventCopied): void
@@ -250,6 +254,7 @@ final class Event extends Offer
         $this->labels = new LabelsArray();
         $this->faqs = new Faqs();
         $this->departurePlaces = new Urls();
+        $this->childrenOnly = false;
     }
 
     protected function applyEventImportedFromUDB2(EventImportedFromUDB2 $eventImported): void
@@ -259,6 +264,7 @@ final class Event extends Offer
         $this->mainLanguage = new Language('nl');
         $this->faqs = new Faqs();
         $this->departurePlaces = new Urls();
+        $this->childrenOnly = false;
         $this->setUDB2Data($eventImported);
     }
 
@@ -628,9 +634,7 @@ final class Event extends Offer
             return;
         }
 
-        if (!$departurePlaces->isEmpty() &&
-            ($this->audienceType === null || !$this->audienceType->sameAs(AudienceType::childrenOnly()))
-        ) {
+        if (!$departurePlaces->isEmpty() && !$this->childrenOnly) {
             throw IncompatibleAudienceType::forDeparturePlaces($this->eventId);
         }
 
@@ -640,6 +644,20 @@ final class Event extends Offer
     protected function applyDeparturePlacesUpdated(DeparturePlacesUpdated $departurePlacesUpdated): void
     {
         $this->departurePlaces = $departurePlacesUpdated->departurePlaces;
+    }
+
+    public function updateChildrenOnly(bool $childrenOnly): void
+    {
+        if ($this->childrenOnly === $childrenOnly) {
+            return;
+        }
+
+        $this->apply(new ChildrenOnlyUpdated($this->eventId, $childrenOnly));
+    }
+
+    protected function applyChildrenOnlyUpdated(ChildrenOnlyUpdated $childrenOnlyUpdated): void
+    {
+        $this->childrenOnly = $childrenOnlyUpdated->childrenOnly;
     }
 
     public function updateBirthdateRange(BirthdateRange $birthdateRange): void

@@ -18,7 +18,6 @@ final class AudienceTypeTest extends TestCase
                 AudienceType::everyone()->toString(),
                 AudienceType::members()->toString(),
                 AudienceType::education()->toString(),
-                AudienceType::childrenOnly()->toString(),
             ],
             AudienceType::getAllowedValues()
         );

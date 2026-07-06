@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Http\Event\ImportEventRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAttendanceModeRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateAudienceRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateBirthdateRangeRequestHandler;
+use CultuurNet\UDB3\Http\Event\UpdateChildrenOnlyRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateDeparturePlacesRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateFaqsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateLocationRequestHandler;
@@ -164,6 +165,7 @@ use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandl
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromOrganizerRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASLabelsRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\LegacyGetCardSystemsFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
 use League\Route\RouteGroup;
 use League\Route\Router;
@@ -230,7 +232,10 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
                 $this->bindSavedSearches($router);
 
-                $this->bindUiTPASEvents($router);
+                $this->bindUiTPASEvents(
+                    $router,
+                    $container->get('config')['uitpas']['rest_api']['enabled'] ?? false
+                );
 
                 $this->bindUiTPASLabels($router);
 
@@ -525,6 +530,7 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
             $routeGroup->post('{eventId}/copies/', CopyEventRequestHandler::class);
             $routeGroup->put('{eventId}/faqs/', UpdateFaqsRequestHandler::class);
             $routeGroup->put('{eventId}/departure-places/', UpdateDeparturePlacesRequestHandler::class);
+            $routeGroup->put('{eventId}/children-only/', UpdateChildrenOnlyRequestHandler::class);
             $routeGroup->put('{eventId}/birthdate-range/', UpdateBirthdateRangeRequestHandler::class);
             $routeGroup->delete('{eventId}/birthdate-range/', DeleteBirthdateRangeRequestHandler::class);
 
@@ -599,12 +605,17 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
         });
     }
 
-    private function bindUiTPASEvents(Router $router): void
+    private function bindUiTPASEvents(Router $router, bool $useRestApi): void
     {
-        $router->group('uitpas/events', function (RouteGroup $routeGroup): void {
+        $router->group('uitpas/events', function (RouteGroup $routeGroup) use ($useRestApi): void {
             $routeGroup->get('{eventId}/', GetUiTPASDetailRequestHandler::class);
 
-            $routeGroup->get('{eventId}/card-systems/', GetCardSystemsFromEventRequestHandler::class);
+            $routeGroup->get(
+                '{eventId}/card-systems/',
+                $useRestApi
+                    ? GetCardSystemsFromEventRequestHandler::class
+                    : LegacyGetCardSystemsFromEventRequestHandler::class
+            );
 
             $routeGroup->put('{eventId}/card-systems/', SetCardSystemsOnEventRequestHandler::class);
 
