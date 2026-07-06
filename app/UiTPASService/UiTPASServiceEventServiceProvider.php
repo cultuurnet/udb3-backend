@@ -14,6 +14,7 @@ use CultuurNet\UDB3\UiTPASService\Controller\GetUiTPASDetailRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyAddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyDeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\LegacyGetCardSystemsFromEventRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\LegacySetCardSystemsOnEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\SetCardSystemsOnEventRequestHandler;
 
 final class UiTPASServiceEventServiceProvider extends AbstractServiceProvider
@@ -25,6 +26,7 @@ final class UiTPASServiceEventServiceProvider extends AbstractServiceProvider
             GetCardSystemsFromEventRequestHandler::class,
             LegacyGetCardSystemsFromEventRequestHandler::class,
             SetCardSystemsOnEventRequestHandler::class,
+            LegacySetCardSystemsOnEventRequestHandler::class,
             AddCardSystemToEventRequestHandler::class,
             LegacyAddCardSystemToEventRequestHandler::class,
             DeleteCardSystemFromEventRequestHandler::class,
@@ -68,7 +70,14 @@ final class UiTPASServiceEventServiceProvider extends AbstractServiceProvider
         $container->addShared(
             SetCardSystemsOnEventRequestHandler::class,
             function () use ($container) {
-                return new SetCardSystemsOnEventRequestHandler($container->get('uitpas'));
+                return new SetCardSystemsOnEventRequestHandler($container->get(UiTPASClient::class));
+            }
+        );
+
+        $container->addShared(
+            LegacySetCardSystemsOnEventRequestHandler::class,
+            function () use ($container) {
+                return new LegacySetCardSystemsOnEventRequestHandler($container->get('uitpas'));
             }
         );
 
