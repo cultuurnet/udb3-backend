@@ -159,6 +159,7 @@ use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByIdRequestHandler;
 use CultuurNet\UDB3\Mailinglist\SubscribeUserToMailinglistRequestHandler;
+use CultuurNet\UDB3\UiTPASService\Controller\AddCardSystemToEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\DeleteCardSystemFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromEventRequestHandler;
 use CultuurNet\UDB3\UiTPASService\Controller\GetCardSystemsFromOrganizerRequestHandler;
@@ -619,11 +620,18 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
             $routeGroup->put('{eventId}/card-systems/', SetCardSystemsOnEventRequestHandler::class);
 
-            $routeGroup->put('{eventId}/card-systems/{cardSystemId}/', LegacyAddCardSystemToEventRequestHandler::class);
+            $routeGroup->put(
+                '{eventId}/card-systems/{cardSystemId}/',
+                $useRestApi
+                    ? AddCardSystemToEventRequestHandler::class
+                    : LegacyAddCardSystemToEventRequestHandler::class
+            );
 
             $routeGroup->put(
                 '{eventId}/card-systems/{cardSystemId}/distribution-key/{distributionKeyId}/',
-                LegacyAddCardSystemToEventRequestHandler::class
+                $useRestApi
+                    ? AddCardSystemToEventRequestHandler::class
+                    : LegacyAddCardSystemToEventRequestHandler::class
             );
 
             $routeGroup->delete('{eventId}/card-systems/{cardSystemId}/', DeleteCardSystemFromEventRequestHandler::class);
