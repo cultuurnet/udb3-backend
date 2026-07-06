@@ -9,17 +9,17 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class AddCardSystemToEventRequestHandlerTest extends TestCase
+final class LegacyAddCardSystemToEventRequestHandlerTest extends TestCase
 {
     private \CultureFeed_Uitpas&MockObject $uitpas;
 
-    private AddCardSystemToEventRequestHandler $addCardSystemToEventRequestHandlerTest;
+    private LegacyAddCardSystemToEventRequestHandler $addCardSystemToEventRequestHandlerTest;
 
     protected function setUp(): void
     {
         $this->uitpas = $this->createMock(CultureFeed_Uitpas::class);
 
-        $this->addCardSystemToEventRequestHandlerTest = new AddCardSystemToEventRequestHandler($this->uitpas);
+        $this->addCardSystemToEventRequestHandlerTest = new LegacyAddCardSystemToEventRequestHandler($this->uitpas);
     }
 
     /**
