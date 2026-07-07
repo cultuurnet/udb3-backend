@@ -16,7 +16,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * multiple calendars. Places may have a capacity on their permanent/periodic calendars, so this parser
  * must only be wired into event request handlers, never into the shared place handling.
  */
-final class EventCalendarCapacityValidatingRequestBodyParser implements RequestBodyParser
+final class CapacityValidatingRequestBodyParser implements RequestBodyParser
 {
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
