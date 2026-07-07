@@ -7,9 +7,7 @@ Feature: Test the hasChildcare offer search filter
     And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
     And I create a minimal place and save the "url" as "placeUrl"
-    And I wait for the place with url "%{placeUrl}" to be indexed
 
-  @testIsolation
   Scenario: Single event with sub-event childcare is matched by hasChildcare=true
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
@@ -41,7 +39,6 @@ Feature: Test the hasChildcare offer search filter
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
 
-  @testIsolation
   Scenario: Multiple event with childcare on one sub-event is matched by hasChildcare=true
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
@@ -77,7 +74,6 @@ Feature: Test the hasChildcare offer search filter
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
 
-  @testIsolation
   Scenario: Periodic event with childcare on an opening hour is matched by hasChildcare=true
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
@@ -110,7 +106,7 @@ Feature: Test the hasChildcare offer search filter
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
 
-  @testIsolation
+
   Scenario: Permanent event with childcare on an opening hour is matched by hasChildcare=true
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
@@ -141,7 +137,6 @@ Feature: Test the hasChildcare offer search filter
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
 
-  @testIsolation
   Scenario: Event without childcare is matched by hasChildcare=false
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
@@ -171,8 +166,13 @@ Feature: Test the hasChildcare offer search filter
       | disableDefaultFilters | true        |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
+    # Omitting hasChildcare applies no childcare filtering, so the event is still returned.
+    When I send a GET request to "/events" with parameters:
+      | q                     | %{eventUrl} |
+      | disableDefaultFilters | true        |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
 
-  @testIsolation
   Scenario: Childcare hours do not extend the event date range
     # The activity runs 10:00-18:00 but childcare is configured for the wider 08:00-19:00 window.
     When I create a minimal event with overrides and save the "url" as "eventUrl"
@@ -209,7 +209,6 @@ Feature: Test the hasChildcare offer search filter
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
 
-  @testIsolation
   Scenario: hasChildcare=true combines with a matching date filter
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
@@ -245,9 +244,9 @@ Feature: Test the hasChildcare offer search filter
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
 
-  @testIsolation
   Scenario: Places are never matched by hasChildcare=true
-    And I am using the Search API v3 base URL
+    Given I wait for the place with url "%{placeUrl}" to be indexed
+    When I am using the Search API v3 base URL
     # Without the filter the place is found, proving it is indexed and searchable.
     When I send a GET request to "/places" with parameters:
       | q                     | %{placeUrl} |
