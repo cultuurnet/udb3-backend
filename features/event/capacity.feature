@@ -391,3 +391,24 @@ Feature: Test capacity and remainingCapacity on sub-events
       "type": "Available"
     }
     """
+
+  Scenario: Reject capacity on a permanent event via the booking-availability endpoint
+    Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "permanentEventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "type": "Available",
+      "capacity": 100
+    }
+    """
+    And I send a PUT request to "%{permanentEventUrl}/booking-availability"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/uitdatabank/calendar-type-not-supported",
+      "title": "Calendar type not supported",
+      "status": 400,
+      "detail": "Updating booking availability on calendar type: \"PERMANENT\" is not supported. Only single and multiple calendar types can be updated."
+    }
+    """
