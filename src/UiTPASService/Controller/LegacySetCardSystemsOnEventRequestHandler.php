@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPASService\Controller;
 
+use CultureFeed_Uitpas;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\UiTPAS\Client\UiTPASClient;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Slim\Psr7\Response;
 
-final class SetCardSystemsOnEventRequestHandler implements RequestHandlerInterface
+final class LegacySetCardSystemsOnEventRequestHandler implements RequestHandlerInterface
 {
-    private UiTPASClient $uitpasClient;
+    private CultureFeed_Uitpas $uitpas;
 
-    public function __construct(UiTPASClient $uitpasClient)
+    public function __construct(CultureFeed_Uitpas $uitpas)
     {
-        $this->uitpasClient = $uitpasClient;
+        $this->uitpas = $uitpas;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -31,9 +31,9 @@ final class SetCardSystemsOnEventRequestHandler implements RequestHandlerInterfa
             throw ApiProblem::bodyInvalidDataWithDetail('Payload should be an array of card system ids');
         }
 
-        $this->uitpasClient->setCardSystemsForEvent(
+        $this->uitpas->setCardSystemsForEvent(
             (new RouteParameters($request))->getEventId(),
-            array_map('intval', $cardSystemIds)
+            $cardSystemIds
         );
 
         return new Response(200);
