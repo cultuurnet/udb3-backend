@@ -164,6 +164,44 @@ Feature: Test capacity and remainingCapacity on sub-events
     }
     """
 
+  Scenario: Set capacity via PUT booking-availability on a multiple calendar event
+    Given I set the JSON request payload from "places/place.json"
+    And I send a POST request to "/places/"
+    And I keep the value of the JSON response at "placeId" as "placeId"
+    And I set the JSON request payload from "events/event-with-multiple-calendar.json"
+    When I send a POST request to "/events/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "url" as "multipleEventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "type": "Available",
+      "capacity": 100
+    }
+    """
+    And I send a PUT request to "%{multipleEventUrl}/booking-availability"
+    Then the response status should be "204"
+    And I get the event at "%{multipleEventUrl}"
+    And the JSON response at "bookingAvailability" should be:
+    """
+    {
+      "type": "Available",
+      "capacity": 100
+    }
+    """
+    And the JSON response at "subEvent/0/bookingAvailability" should be:
+    """
+    {
+      "type": "Available"
+    }
+    """
+    And the JSON response at "subEvent/1/bookingAvailability" should be:
+    """
+    {
+      "type": "Available"
+    }
+    """
+
   Scenario: PUT booking-availability does not overwrite capacity on sub-events
     Given I set the JSON request payload to:
     """

@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPASService\Controller;
 
+use CultureFeed_Uitpas;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\AssertJsonResponseTrait;
 use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
-use CultuurNet\UDB3\UiTPAS\Client\UiTPASClient;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class GetUiTPASDetailRequestHandlerTest extends TestCase
+final class LegacyGetUiTPASDetailRequestHandlerTest extends TestCase
 {
     use AssertJsonResponseTrait;
 
-    private UiTPASClient&MockObject $uitpasClient;
+    private \CultureFeed_Uitpas&MockObject $uitpas;
 
-    private GetUiTPASDetailRequestHandler $handler;
+    private LegacyGetUiTPASDetailRequestHandler $getUiTPASDetailController;
 
     public function setUp(): void
     {
-        $this->uitpasClient = $this->createMock(UiTPASClient::class);
+        $this->uitpas = $this->createMock(CultureFeed_Uitpas::class);
 
-        $this->handler = new GetUiTPASDetailRequestHandler(
-            $this->uitpasClient,
+        $this->getUiTPASDetailController = new LegacyGetUiTPASDetailRequestHandler(
+            $this->uitpas,
             new CallableIriGenerator(
                 fn (string $eventId) => 'http://uitpas.mock/uitpas/events/' . $eventId
             ),
@@ -49,7 +49,7 @@ final class GetUiTPASDetailRequestHandlerTest extends TestCase
             'hasTicketSales' => $hasTicketSales,
         ];
 
-        $this->uitpasClient->expects($this->once())
+        $this->uitpas->expects($this->once())
             ->method('eventHasTicketSales')
             ->with($eventId)
             ->willReturn($hasTicketSales);
@@ -58,7 +58,7 @@ final class GetUiTPASDetailRequestHandlerTest extends TestCase
             ->withRouteParameter('eventId', $eventId)
             ->build('GET');
 
-        $response = $this->handler->handle($request);
+        $response = $this->getUiTPASDetailController->handle($request);
 
         $this->assertJsonResponse(
             new JsonResponse($expected),
