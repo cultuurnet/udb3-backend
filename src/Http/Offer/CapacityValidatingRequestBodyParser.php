@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -27,7 +28,7 @@ final class CapacityValidatingRequestBodyParser implements RequestBodyParser
         }
 
         $calendarType = $data->calendarType ?? null;
-        if ($calendarType !== 'permanent' && $calendarType !== 'periodic') {
+        if ($calendarType !== CalendarType::permanent() && $calendarType !== CalendarType::periodic()) {
             return $request;
         }
 
