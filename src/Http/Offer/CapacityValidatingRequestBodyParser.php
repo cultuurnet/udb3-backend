@@ -28,7 +28,8 @@ final class CapacityValidatingRequestBodyParser implements RequestBodyParser
         }
 
         $calendarType = $data->calendarType ?? null;
-        if ($calendarType !== CalendarType::permanent() && $calendarType !== CalendarType::periodic()) {
+        if ($calendarType !== CalendarType::permanent()->toString()
+            && $calendarType !== CalendarType::periodic()->toString()) {
             return $request;
         }
 
