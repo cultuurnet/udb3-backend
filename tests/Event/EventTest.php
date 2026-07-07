@@ -13,6 +13,7 @@ use CultuurNet\UDB3\Event\Events\BirthdateRangeDeleted;
 use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
+use CultuurNet\UDB3\Event\Events\ChildrenOnlyUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
@@ -2313,7 +2314,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new ChildrenOnlyUpdated($eventId, true),
             ])
             ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
             ->then([new DeparturePlacesUpdated($eventId, $departurePlaces)]);
@@ -2333,7 +2334,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new ChildrenOnlyUpdated($eventId, true),
                 new DeparturePlacesUpdated($eventId, $departurePlaces),
             ])
             ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
@@ -2354,7 +2355,7 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new ChildrenOnlyUpdated($eventId, true),
                 new DeparturePlacesUpdated($eventId, $departurePlaces),
             ])
             ->when(fn (Event $event) => $event->updateDeparturePlaces(new Urls()))
@@ -2374,7 +2375,7 @@ class EventTest extends AggregateRootScenarioTestCase
 
         $this->expectException(IncompatibleAudienceType::class);
         $this->expectExceptionMessage(
-            'Departure places can only be set on events with audienceType "childrenOnly". Event: ' . $eventId
+            'Departure places can only be set on events where "childrenOnly" is true. Event: ' . $eventId
         );
 
         $this->scenario
@@ -2397,9 +2398,9 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new ChildrenOnlyUpdated($eventId, true),
                 new DeparturePlacesUpdated($eventId, $departurePlaces),
-                new AudienceUpdated($eventId, AudienceType::everyone()),
+                new ChildrenOnlyUpdated($eventId, false),
             ])
             ->when(fn (Event $event) => $event->updateDeparturePlaces(new Urls()))
             ->then([new DeparturePlacesUpdated($eventId, new Urls())]);
@@ -2408,7 +2409,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_keeps_departure_places_when_changing_audience_type_away_from_children_only(): void
+    public function it_keeps_departure_places_when_disabling_children_only(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
 
@@ -2419,11 +2420,11 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getCreationEvent(),
-                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new ChildrenOnlyUpdated($eventId, true),
                 new DeparturePlacesUpdated($eventId, $departurePlaces),
             ])
-            ->when(fn (Event $event) => $event->updateAudience(AudienceType::everyone()))
-            ->then([new AudienceUpdated($eventId, AudienceType::everyone())]);
+            ->when(fn (Event $event) => $event->updateChildrenOnly(false))
+            ->then([new ChildrenOnlyUpdated($eventId, false)]);
     }
 
     /**
@@ -2444,10 +2445,66 @@ class EventTest extends AggregateRootScenarioTestCase
                     $this->getSample('event_without_price.cdbxml.xml'),
                     self::NS_CDBXML_3_2
                 ),
-                new AudienceUpdated($eventId, AudienceType::childrenOnly()),
+                new ChildrenOnlyUpdated($eventId, true),
             ])
             ->when(fn (Event $event) => $event->updateDeparturePlaces($departurePlaces))
             ->then([new DeparturePlacesUpdated($eventId, $departurePlaces)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_children_only_to_true(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->updateChildrenOnly(true))
+            ->then([new ChildrenOnlyUpdated($eventId, true)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_disables_children_only_again(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new ChildrenOnlyUpdated($eventId, true),
+            ])
+            ->when(fn (Event $event) => $event->updateChildrenOnly(false))
+            ->then([new ChildrenOnlyUpdated($eventId, false)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_re_emit_children_only_when_value_unchanged(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new ChildrenOnlyUpdated($eventId, true),
+            ])
+            ->when(fn (Event $event) => $event->updateChildrenOnly(true))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_emit_children_only_when_setting_false_on_new_event(): void
+    {
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->updateChildrenOnly(false))
+            ->then([]);
     }
 
     private function getKampOrVakantieCreationEvent(): EventCreated
@@ -2642,6 +2699,34 @@ class EventTest extends AggregateRootScenarioTestCase
             ->given([$this->getKampOrVakantieCreationEvent()])
             ->when(fn (Event $event) => $event->updateCalendar($calendar))
             ->then([new CalendarUpdated(self::EVENT_ID, $calendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_update_calendar_on_legacy_event_without_type_id(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $subEventCalendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                    new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+                )
+            )
+        );
+
+        $this->scenario
+            ->given([
+                new EventImportedFromUDB2(
+                    $eventId,
+                    $this->getSample('event_without_price.cdbxml.xml'),
+                    self::NS_CDBXML_3_2
+                ),
+                new CalendarUpdated($eventId, $subEventCalendar),
+            ])
+            ->when(fn (Event $event) => $event->updateCalendar($subEventCalendar))
+            ->then([]);
     }
 
     /**

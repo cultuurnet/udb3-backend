@@ -11,10 +11,9 @@
     }
   ],
   "location": {
-    "@id": "%{baseUrl}/places/%{placeId}"
+    "@id": "%{placeUrl}"
   },
   "calendarType": "permanent",
-  "audience": {
-    "audienceType": "childrenOnly"
-  }
+  "workflowStatus": "READY_FOR_VALIDATION",
+  "typicalAgeRange": "%{variableTypicalAgeRange}"
 }

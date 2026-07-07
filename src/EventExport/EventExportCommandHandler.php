@@ -15,7 +15,7 @@ use CultuurNet\UDB3\EventExport\Format\JSONLD\JSONLDFileFormat;
 use CultuurNet\UDB3\EventExport\Format\TabularData\OOXML\OOXMLFileFormat;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
-use Twig_Environment;
+use Twig\Environment;
 
 final class EventExportCommandHandler extends SimpleCommandHandler implements LoggerAwareInterface
 {
@@ -29,14 +29,14 @@ final class EventExportCommandHandler extends SimpleCommandHandler implements Lo
 
     protected CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
-    private ?Twig_Environment $twig;
+    private ?Environment $twig;
 
     public function __construct(
         EventExportServiceInterface $eventExportService,
         string $princeXMLBinaryPath,
         CalendarSummaryRepositoryInterface $calendarSummaryRepository,
         EventInfoServiceInterface $uitpas = null,
-        Twig_Environment $twig = null
+        Environment $twig = null
     ) {
         $this->eventExportService = $eventExportService;
         $this->princeXMLBinaryPath = $princeXMLBinaryPath;

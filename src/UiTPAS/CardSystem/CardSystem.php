@@ -12,6 +12,10 @@ final class CardSystem
 
     private string $name;
 
+    /**
+     * @var DistributionKey[]
+     */
+    private array $distributionKeys = [];
 
     public function __construct(
         Id $id,
@@ -19,6 +23,16 @@ final class CardSystem
     ) {
         $this->id = $id;
         $this->name = $name;
+    }
+
+    /**
+     * @param DistributionKey[] $distributionKeys
+     */
+    public function withDistributionKeys(array $distributionKeys): self
+    {
+        $clone = clone $this;
+        $clone->distributionKeys = $distributionKeys;
+        return $clone;
     }
 
     public function getId(): Id
@@ -29,5 +43,13 @@ final class CardSystem
     public function getName(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return DistributionKey[]
+     */
+    public function getDistributionKeys(): array
+    {
+        return $this->distributionKeys;
     }
 }

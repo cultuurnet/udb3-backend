@@ -1863,4 +1863,44 @@ class EventDenormalizerTest extends TestCase
             $this->denormalizer->supportsDenormalization([], ImmutableEvent::class)
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_children_only_from_top_level_boolean(): void
+    {
+        $eventData = $this->getMinimalEventData() + ['childrenOnly' => true];
+
+        /** @var ImmutableEvent $event */
+        $event = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
+
+        $this->assertTrue($event->getChildrenOnly());
+    }
+
+    /**
+     * @test
+     */
+    public function it_defaults_children_only_to_false_when_field_is_not_present(): void
+    {
+        /** @var ImmutableEvent $event */
+        $event = $this->denormalizer->denormalize($this->getMinimalEventData(), ImmutableEvent::class);
+
+        $this->assertFalse($event->getChildrenOnly());
+    }
+
+    private function getMinimalEventData(): array
+    {
+        return [
+            '@id' => 'https://io.uitdatabank.be/event/9f34efc7-a528-4ea8-a53e-a183f21abbab',
+            '@type' => 'Event',
+            '@context' => '/contexts/event',
+            'mainLanguage' => 'nl',
+            'name' => ['nl' => 'Titel voorbeeld'],
+            'location' => [
+                '@id' => 'https://io.uitdatabank.be/place/dbe91250-4e4b-495c-b692-3da9563b0d52',
+            ],
+            'calendarType' => 'permanent',
+            'terms' => [['id' => '0.50.1.0.1']],
+        ];
+    }
 }

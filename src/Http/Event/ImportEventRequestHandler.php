@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Event\Commands\Moderation\Publish;
 use CultuurNet\UDB3\Event\Commands\UpdateAttendanceMode;
 use CultuurNet\UDB3\Event\Commands\UpdateAudience;
 use CultuurNet\UDB3\Event\Commands\UpdateBookingInfo;
+use CultuurNet\UDB3\Event\Commands\UpdateChildrenOnly;
 use CultuurNet\UDB3\Event\Commands\UpdateContactPoint;
 use CultuurNet\UDB3\Event\Commands\UpdateDescription;
 use CultuurNet\UDB3\Event\Commands\UpdateDeparturePlaces;
@@ -30,6 +31,7 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\GuardOrganizer;
+use CultuurNet\UDB3\Http\Offer\EventCalendarCapacityValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
@@ -130,6 +132,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
                 new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
                 new AttendanceModeValidatingRequestBodyParser(),
                 new AgeRangeValidatingRequestBodyParser(),
+                new EventCalendarCapacityValidatingRequestBodyParser(),
                 new OfferValidatingRequestBodyParser(OfferType::event()),
                 new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class)
             )->parse($request)->getParsedBody();
@@ -281,6 +284,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         $commands[] = new ImportVideos($eventId, $event->getVideos());
         $commands[] = new UpdateFaqs($eventId, $event->getFaq());
+        $commands[] = new UpdateChildrenOnly($eventId, $event->getChildrenOnly());
         $commands[] = new UpdateDeparturePlaces($eventId, $event->getDeparturePlaces());
 
         if ($event->getBirthdateRange() !== null) {

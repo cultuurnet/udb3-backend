@@ -197,7 +197,11 @@ trait ResponseSteps
      */
     public function theResponseStatusShouldBe(int $statusCode): void
     {
-        assertEquals($statusCode, $this->responseState->getStatusCode());
+        assertEquals(
+            $statusCode,
+            $this->responseState->getStatusCode(),
+            $this->responseState->getContent()
+        );
     }
 
     /**
