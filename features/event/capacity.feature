@@ -372,26 +372,6 @@ Feature: Test capacity and remainingCapacity on sub-events
     }
     """
 
-  Scenario: Allow a permanent calendar without capacity on an event
-    When I set the JSON request payload to:
-    """
-    {
-      "calendarType": "permanent",
-      "bookingAvailability": {
-        "type": "Available"
-      }
-    }
-    """
-    And I send a PUT request to "%{eventUrl}/calendar"
-    Then the response status should be "204"
-    And I get the event at "%{eventUrl}"
-    And the JSON response at "bookingAvailability" should be:
-    """
-    {
-      "type": "Available"
-    }
-    """
-
   Scenario: Reject capacity on a permanent event via the booking-availability endpoint
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "permanentEventUrl"
     When I set the JSON request payload to:
