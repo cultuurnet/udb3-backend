@@ -145,3 +145,51 @@ Feature: Test the hasOvernight search filter on offers
       | disableDefaultFilters | true        |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
+
+  @testIsolation
+  Scenario: A periodic event with opening hours matches hasOvernight=false
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "periodic",
+      "startDate": "2026-08-01T00:00:00+02:00",
+      "endDate": "2026-12-31T23:59:59+02:00",
+      "openingHours": [
+        {
+          "opens": "09:00",
+          "closes": "17:00",
+          "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q                     | %{eventUrl} |
+      | hasOvernight          | false       |
+      | disableDefaultFilters | true        |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q                     | %{eventUrl} |
+      | hasOvernight          | true        |
+      | disableDefaultFilters | true        |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+
+  @testIsolation
+  Scenario: Places are never returned by hasOvernight=true
+    Given I am using the Search API v3 base URL
+    When I send a GET request to "/places" with parameters:
+      | q                     | %{placeUrl} |
+      | hasOvernight          | true        |
+      | disableDefaultFilters | true        |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    When I send a GET request to "/places" with parameters:
+      | q                     | %{placeUrl} |
+      | hasOvernight          | false       |
+      | disableDefaultFilters | true        |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
