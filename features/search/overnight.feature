@@ -193,3 +193,78 @@ Feature: Test the hasOvernight search filter on offers
       | disableDefaultFilters | true        |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
+
+  @testIsolation
+  Scenario: Overnight does not widen the date range of an event
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
+      "calendarType": "single",
+      "startDate": "2026-08-01T09:00:00+02:00",
+      "endDate": "2026-08-05T17:00:00+02:00",
+      "subEvent": [
+        {
+          "startDate": "2026-08-01T09:00:00+02:00",
+          "endDate": "2026-08-05T17:00:00+02:00",
+          "overnight": true
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    # A date window covering the sub-event's own start/end still returns the event
+    When I send a GET request to "/events" with parameters:
+      | q                     | %{eventUrl}               |
+      | dateFrom              | 2026-08-01T00:00:00+02:00 |
+      | dateTo                | 2026-08-06T00:00:00+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # A date window entirely after the sub-event's endDate returns nothing:
+    # overnight has not extended the matched range beyond the actual endDate
+    When I send a GET request to "/events" with parameters:
+      | q                     | %{eventUrl}               |
+      | dateFrom              | 2026-08-06T00:00:00+02:00 |
+      | dateTo                | 2026-08-07T00:00:00+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+
+  @testIsolation
+  Scenario: hasOvernight=true combines with a matching date window
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
+      "calendarType": "single",
+      "startDate": "2026-08-01T09:00:00+02:00",
+      "endDate": "2026-08-05T17:00:00+02:00",
+      "subEvent": [
+        {
+          "startDate": "2026-08-01T09:00:00+02:00",
+          "endDate": "2026-08-05T17:00:00+02:00",
+          "overnight": true
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q                     | %{eventUrl}               |
+      | hasOvernight          | true                      |
+      | dateFrom              | 2026-08-01T00:00:00+02:00 |
+      | dateTo                | 2026-08-06T00:00:00+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | q                     | %{eventUrl}               |
+      | hasOvernight          | false                     |
+      | dateFrom              | 2026-08-01T00:00:00+02:00 |
+      | dateTo                | 2026-08-06T00:00:00+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
