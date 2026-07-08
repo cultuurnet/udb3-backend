@@ -16,12 +16,12 @@ Feature: Test the hasOvernight search filter on offers
     {
       "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
       "calendarType": "single",
-      "startDate": "2026-08-01T09:00:00+02:00",
-      "endDate": "2026-08-05T17:00:00+02:00",
+      "startDate": "2126-08-01T09:00:00+02:00",
+      "endDate": "2126-08-05T17:00:00+02:00",
       "subEvent": [
         {
-          "startDate": "2026-08-01T09:00:00+02:00",
-          "endDate": "2026-08-05T17:00:00+02:00",
+          "startDate": "2126-08-01T09:00:00+02:00",
+          "endDate": "2126-08-05T17:00:00+02:00",
           "overnight": true
         }
       ]
@@ -51,13 +51,13 @@ Feature: Test the hasOvernight search filter on offers
       "calendarType": "multiple",
       "subEvent": [
         {
-          "startDate": "2026-08-01T09:00:00+02:00",
-          "endDate": "2026-08-05T17:00:00+02:00",
+          "startDate": "2126-08-01T09:00:00+02:00",
+          "endDate": "2126-08-05T17:00:00+02:00",
           "overnight": true
         },
         {
-          "startDate": "2026-08-10T09:00:00+02:00",
-          "endDate": "2026-08-14T17:00:00+02:00"
+          "startDate": "2126-08-10T09:00:00+02:00",
+          "endDate": "2126-08-14T17:00:00+02:00"
         }
       ]
     }
@@ -86,13 +86,13 @@ Feature: Test the hasOvernight search filter on offers
       "calendarType": "multiple",
       "subEvent": [
         {
-          "startDate": "2026-08-01T09:00:00+02:00",
-          "endDate": "2026-08-05T17:00:00+02:00",
+          "startDate": "2126-08-01T09:00:00+02:00",
+          "endDate": "2126-08-05T17:00:00+02:00",
           "overnight": true
         },
         {
-          "startDate": "2026-08-10T09:00:00+02:00",
-          "endDate": "2026-08-14T17:00:00+02:00",
+          "startDate": "2126-08-10T09:00:00+02:00",
+          "endDate": "2126-08-14T17:00:00+02:00",
           "overnight": true
         }
       ]
@@ -120,12 +120,12 @@ Feature: Test the hasOvernight search filter on offers
     {
       "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
       "calendarType": "single",
-      "startDate": "2026-08-01T09:00:00+02:00",
-      "endDate": "2026-08-05T17:00:00+02:00",
+      "startDate": "2126-08-01T09:00:00+02:00",
+      "endDate": "2126-08-05T17:00:00+02:00",
       "subEvent": [
         {
-          "startDate": "2026-08-01T09:00:00+02:00",
-          "endDate": "2026-08-05T17:00:00+02:00",
+          "startDate": "2126-08-01T09:00:00+02:00",
+          "endDate": "2126-08-05T17:00:00+02:00",
           "overnight": false
         }
       ]
@@ -152,8 +152,8 @@ Feature: Test the hasOvernight search filter on offers
     """
     {
       "calendarType": "periodic",
-      "startDate": "2026-08-01T00:00:00+02:00",
-      "endDate": "2026-12-31T23:59:59+02:00",
+      "startDate": "2126-08-01T00:00:00+02:00",
+      "endDate": "2126-12-31T23:59:59+02:00",
       "openingHours": [
         {
           "opens": "09:00",
@@ -201,12 +201,12 @@ Feature: Test the hasOvernight search filter on offers
     {
       "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
       "calendarType": "single",
-      "startDate": "2026-08-01T09:00:00+02:00",
-      "endDate": "2026-08-05T17:00:00+02:00",
+      "startDate": "2126-08-01T09:00:00+02:00",
+      "endDate": "2126-08-05T17:00:00+02:00",
       "subEvent": [
         {
-          "startDate": "2026-08-01T09:00:00+02:00",
-          "endDate": "2026-08-05T17:00:00+02:00",
+          "startDate": "2126-08-01T09:00:00+02:00",
+          "endDate": "2126-08-05T17:00:00+02:00",
           "overnight": true
         }
       ]
@@ -217,8 +217,8 @@ Feature: Test the hasOvernight search filter on offers
     # A date window covering the sub-event's own start/end still returns the event
     When I send a GET request to "/events" with parameters:
       | q                     | %{eventUrl}               |
-      | dateFrom              | 2026-08-01T00:00:00+02:00 |
-      | dateTo                | 2026-08-06T00:00:00+02:00 |
+      | dateFrom              | 2126-08-01T00:00:00+02:00 |
+      | dateTo                | 2126-08-06T00:00:00+02:00 |
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
@@ -226,8 +226,8 @@ Feature: Test the hasOvernight search filter on offers
     # overnight has not extended the matched range beyond the actual endDate
     When I send a GET request to "/events" with parameters:
       | q                     | %{eventUrl}               |
-      | dateFrom              | 2026-08-06T00:00:00+02:00 |
-      | dateTo                | 2026-08-07T00:00:00+02:00 |
+      | dateFrom              | 2126-08-06T00:00:00+02:00 |
+      | dateTo                | 2126-08-07T00:00:00+02:00 |
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
@@ -239,12 +239,12 @@ Feature: Test the hasOvernight search filter on offers
     {
       "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
       "calendarType": "single",
-      "startDate": "2026-08-01T09:00:00+02:00",
-      "endDate": "2026-08-05T17:00:00+02:00",
+      "startDate": "2126-08-01T09:00:00+02:00",
+      "endDate": "2126-08-05T17:00:00+02:00",
       "subEvent": [
         {
-          "startDate": "2026-08-01T09:00:00+02:00",
-          "endDate": "2026-08-05T17:00:00+02:00",
+          "startDate": "2126-08-01T09:00:00+02:00",
+          "endDate": "2126-08-05T17:00:00+02:00",
           "overnight": true
         }
       ]
@@ -255,16 +255,16 @@ Feature: Test the hasOvernight search filter on offers
     When I send a GET request to "/events" with parameters:
       | q                     | %{eventUrl}               |
       | hasOvernight          | true                      |
-      | dateFrom              | 2026-08-01T00:00:00+02:00 |
-      | dateTo                | 2026-08-06T00:00:00+02:00 |
+      | dateFrom              | 2126-08-01T00:00:00+02:00 |
+      | dateTo                | 2126-08-06T00:00:00+02:00 |
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
       | q                     | %{eventUrl}               |
       | hasOvernight          | false                     |
-      | dateFrom              | 2026-08-01T00:00:00+02:00 |
-      | dateTo                | 2026-08-06T00:00:00+02:00 |
+      | dateFrom              | 2126-08-01T00:00:00+02:00 |
+      | dateTo                | 2126-08-06T00:00:00+02:00 |
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
