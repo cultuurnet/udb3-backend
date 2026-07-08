@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPASService\Controller;
 
+use CultureFeed_Uitpas;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\UiTPAS\Client\UiTPASClient;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class AddCardSystemToEventRequestHandlerTest extends TestCase
+final class LegacyAddCardSystemToEventRequestHandlerTest extends TestCase
 {
-    private UiTPASClient&MockObject $uitpasClient;
+    private \CultureFeed_Uitpas&MockObject $uitpas;
 
-    private AddCardSystemToEventRequestHandler $handler;
+    private LegacyAddCardSystemToEventRequestHandler $addCardSystemToEventRequestHandlerTest;
 
     protected function setUp(): void
     {
-        $this->uitpasClient = $this->createMock(UiTPASClient::class);
+        $this->uitpas = $this->createMock(CultureFeed_Uitpas::class);
 
-        $this->handler = new AddCardSystemToEventRequestHandler($this->uitpasClient);
+        $this->addCardSystemToEventRequestHandlerTest = new LegacyAddCardSystemToEventRequestHandler($this->uitpas);
     }
 
     /**
@@ -30,16 +30,17 @@ final class AddCardSystemToEventRequestHandlerTest extends TestCase
         $eventId = '52943e99-51c8-4ba9-95ef-ec7d93f16ed9';
         $cardSystemId = '15';
 
-        $this->uitpasClient->expects($this->once())
+        $this->uitpas->expects($this->once())
             ->method('addCardSystemToEvent')
-            ->with($eventId, 15, null);
+            ->with($eventId, $cardSystemId)
+            ->willReturn(null);
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', $eventId)
             ->withRouteParameter('cardSystemId', $cardSystemId)
-            ->build('PUT');
+            ->build('GET');
 
-        $response = $this->handler->handle($request);
+        $response = $this->addCardSystemToEventRequestHandlerTest->handle($request);
 
         $this->assertEquals(200, $response->getStatusCode());
     }
@@ -51,19 +52,15 @@ final class AddCardSystemToEventRequestHandlerTest extends TestCase
     {
         $eventId = '52943e99-51c8-4ba9-95ef-ec7d93f16ed9';
         $cardSystemId = '27';
-        $distributionKeyId = '1';
-
-        $this->uitpasClient->expects($this->once())
-            ->method('addCardSystemToEvent')
-            ->with($eventId, 27, 1);
+        $distributionKey = '1';
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', $eventId)
             ->withRouteParameter('cardSystemId', $cardSystemId)
-            ->withRouteParameter('distributionKeyId', $distributionKeyId)
-            ->build('PUT');
+            ->withRouteParameter('distributionKey', $distributionKey)
+            ->build('GET');
 
-        $response = $this->handler->handle($request);
+        $response = $this->addCardSystemToEventRequestHandlerTest->handle($request);
 
         $this->assertEquals(200, $response->getStatusCode());
     }
