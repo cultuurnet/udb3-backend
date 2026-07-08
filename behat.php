@@ -22,6 +22,12 @@ return (new Config())
                     ->withContexts('FeatureContext')
                     ->withFilter(new TagFilter('@sapi3 && ~@wip'))
             )
+            ->withSuite(
+                (new Suite('init'))
+                    ->withPaths('%paths.base%/features')
+                    ->withContexts('FeatureContext')
+                    ->withFilter(new TagFilter('@init'))
+            )
     )
     ->withProfile(
         (new Profile('es8'))
@@ -32,5 +38,9 @@ return (new Config())
             ->withSuite(
                 (new Suite('sapi3'))
                     ->withFilter(new TagFilter('@sapi3 && ~@wip && ~@negativeBoosting'))
+            )
+            ->withSuite(
+                (new Suite('init'))
+                    ->withFilter(new TagFilter('@init'))
             )
     );
