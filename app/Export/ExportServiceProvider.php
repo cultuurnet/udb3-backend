@@ -27,7 +27,8 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
 use Psr\Log\LoggerAwareInterface;
-use Twig_Environment;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 final class ExportServiceProvider extends AbstractServiceProvider
 {
@@ -49,12 +50,12 @@ final class ExportServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             'event_export_twig_environment',
-            function () use ($container): Twig_Environment {
-                $loader = new \Twig_Loader_Filesystem(
+            function () use ($container): Environment {
+                $loader = new FilesystemLoader(
                     __DIR__ . '/../../src/EventExport/Format/HTML/templates'
                 );
 
-                $twig = new Twig_Environment($loader);
+                $twig = new Environment($loader);
 
                 $twig->addExtension(new GoogleMapUrlGenerator($container->get('config')['google_maps_api_key']));
 

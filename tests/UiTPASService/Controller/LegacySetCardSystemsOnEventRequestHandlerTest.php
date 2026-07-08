@@ -4,46 +4,47 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPASService\Controller;
 
+use CultureFeed_Uitpas;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\UiTPAS\Client\UiTPASClient;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-final class SetCardSystemsOnEventRequestHandlerTest extends TestCase
+final class LegacySetCardSystemsOnEventRequestHandlerTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    private UiTPASClient&MockObject $uitpasClient;
+    private \CultureFeed_Uitpas&MockObject $uitpas;
 
-    private SetCardSystemsOnEventRequestHandler $handler;
+    private LegacySetCardSystemsOnEventRequestHandler $setCardSystemsOnEventRequestHandler;
 
     protected function setUp(): void
     {
-        $this->uitpasClient = $this->createMock(UiTPASClient::class);
+        $this->uitpas = $this->createMock(CultureFeed_Uitpas::class);
 
-        $this->handler = new SetCardSystemsOnEventRequestHandler($this->uitpasClient);
+        $this->setCardSystemsOnEventRequestHandler = new LegacySetCardSystemsOnEventRequestHandler($this->uitpas);
     }
 
     /**
      * @test
      */
-    public function it_converts_the_card_system_ids_to_integers_before_passing_them_to_the_client(): void
+    public function it_can_set_a_list_of_card_systems_to_an_event(): void
     {
         $eventId = '52943e99-51c8-4ba9-95ef-ec7d93f16ed9';
+        $cardSystemIds = ['3', '15'];
 
-        // identicalTo uses strict comparison, so this fails if the ids stay strings.
-        $this->uitpasClient->expects($this->once())
+        $this->uitpas->expects($this->once())
             ->method('setCardSystemsForEvent')
-            ->with($eventId, $this->identicalTo([3, 15]));
+            ->with($eventId, $cardSystemIds)
+            ->willReturn(null);
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', $eventId)
-            ->withJsonBodyFromArray(['3', '15'])
-            ->build('PUT');
+            ->withJsonBodyFromArray($cardSystemIds)
+            ->build('GET');
 
-        $response = $this->handler->handle($request);
+        $response = $this->setCardSystemsOnEventRequestHandler->handle($request);
 
         $this->assertEquals(200, $response->getStatusCode());
     }
@@ -54,17 +55,19 @@ final class SetCardSystemsOnEventRequestHandlerTest extends TestCase
     public function it_allows_an_empty_list_of_card_system_ids(): void
     {
         $eventId = '52943e99-51c8-4ba9-95ef-ec7d93f16ed9';
-
-        $this->uitpasClient->expects($this->once())
-            ->method('setCardSystemsForEvent')
-            ->with($eventId, []);
+        $cardSystemIds = [];
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', $eventId)
-            ->withJsonBodyFromArray([])
-            ->build('PUT');
+            ->withJsonBodyFromArray($cardSystemIds)
+            ->build('GET');
 
-        $response = $this->handler->handle($request);
+        $this->uitpas->expects($this->once())
+            ->method('setCardSystemsForEvent')
+            ->with($eventId, $cardSystemIds)
+            ->willReturn(null);
+
+        $response = $this->setCardSystemsOnEventRequestHandler->handle($request);
 
         $this->assertEquals(200, $response->getStatusCode());
     }
@@ -76,16 +79,16 @@ final class SetCardSystemsOnEventRequestHandlerTest extends TestCase
     {
         $eventId = '52943e99-51c8-4ba9-95ef-ec7d93f16ed9';
 
-        $this->uitpasClient->expects($this->never())
+        $this->uitpas->expects($this->never())
             ->method('setCardSystemsForEvent');
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('eventId', $eventId)
-            ->build('PUT');
+            ->build('GET');
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::bodyInvalidDataWithDetail('Payload should be an array of card system ids'),
-            fn () => $this->handler->handle($request),
+            fn () => $this->setCardSystemsOnEventRequestHandler->handle($request),
         );
     }
 }
