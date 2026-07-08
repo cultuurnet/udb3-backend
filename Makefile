@@ -48,7 +48,7 @@ test-group:
 	docker compose exec php composer test -- --group=$(group)
 
 feature-init:
-	docker compose exec php composer feature -- --tags @init
+	docker compose exec php composer feature -- --suite=init
 
 feature-tag:
 	docker compose exec php composer feature -- --tags $(tag)
