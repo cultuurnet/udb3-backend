@@ -33,14 +33,23 @@ final class UpdateCalendarRequestHandler implements RequestHandlerInterface
         $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
 
-        $jsonSchema = $offerType->sameAs(OfferType::event()) ? JsonSchemaLocator::EVENT_CALENDAR_PUT : JsonSchemaLocator::PLACE_CALENDAR_PUT;
+        $isEvent = $offerType->sameAs(OfferType::event());
+        $jsonSchema = $isEvent ? JsonSchemaLocator::EVENT_CALENDAR_PUT : JsonSchemaLocator::PLACE_CALENDAR_PUT;
 
-        $parser = RequestBodyParserFactory::createBaseParser(
+        $parsers = [
             new LegacyUpdateCalendarRequestBodyParser(),
             new UpdateCalendarValidatingRequestBodyParser($jsonSchema),
             new RemainingCapacityValidatingRequestBodyParser(),
-            new DenormalizingRequestBodyParser(new CalendarDenormalizer(), Calendar::class)
-        );
+        ];
+
+        // Places may carry a capacity on their permanent/periodic calendar, events may not.
+        if ($isEvent) {
+            $parsers[] = new CapacityValidatingRequestBodyParser();
+        }
+
+        $parsers[] = new DenormalizingRequestBodyParser(new CalendarDenormalizer(), Calendar::class);
+
+        $parser = RequestBodyParserFactory::createBaseParser(...$parsers);
 
         /** @var Calendar $calendar */
         $calendar = $parser->parse($request)->getParsedBody();
