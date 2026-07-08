@@ -164,6 +164,44 @@ Feature: Test capacity and remainingCapacity on sub-events
     }
     """
 
+  Scenario: Set capacity via PUT booking-availability on a multiple calendar event
+    Given I set the JSON request payload from "places/place.json"
+    And I send a POST request to "/places/"
+    And I keep the value of the JSON response at "placeId" as "placeId"
+    And I set the JSON request payload from "events/event-with-multiple-calendar.json"
+    When I send a POST request to "/events/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "url" as "multipleEventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "type": "Available",
+      "capacity": 100
+    }
+    """
+    And I send a PUT request to "%{multipleEventUrl}/booking-availability"
+    Then the response status should be "204"
+    And I get the event at "%{multipleEventUrl}"
+    And the JSON response at "bookingAvailability" should be:
+    """
+    {
+      "type": "Available",
+      "capacity": 100
+    }
+    """
+    And the JSON response at "subEvent/0/bookingAvailability" should be:
+    """
+    {
+      "type": "Available"
+    }
+    """
+    And the JSON response at "subEvent/1/bookingAvailability" should be:
+    """
+    {
+      "type": "Available"
+    }
+    """
+
   Scenario: PUT booking-availability does not overwrite capacity on sub-events
     Given I set the JSON request payload to:
     """
@@ -311,5 +349,84 @@ Feature: Test capacity and remainingCapacity on sub-events
     """
     {
       "type": "Unavailable"
+    }
+    """
+
+  Scenario: Reject capacity on an event with a permanent calendar
+    When I set the JSON request payload to:
+    """
+    {
+      "calendarType": "permanent",
+      "bookingAvailability": {
+        "type": "Available",
+        "capacity": 100
+      }
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/calendar"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "schemaErrors": [
+        {
+          "error": "capacity is not supported on events with a permanent or periodic calendar.",
+          "jsonPointer": "/bookingAvailability/capacity"
+        }
+      ],
+      "status": 400,
+      "title": "Invalid body data",
+      "type": "https://api.publiq.be/probs/body/invalid-data"
+    }
+    """
+
+  Scenario: Reject capacity on an event with a periodic calendar
+    When I set the JSON request payload to:
+    """
+    {
+      "calendarType": "periodic",
+      "startDate": "2026-01-01T00:00:00+00:00",
+      "endDate": "2026-12-31T23:59:59+00:00",
+      "bookingAvailability": {
+        "type": "Available",
+        "capacity": 100
+      }
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/calendar"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "schemaErrors": [
+        {
+          "error": "capacity is not supported on events with a permanent or periodic calendar.",
+          "jsonPointer": "/bookingAvailability/capacity"
+        }
+      ],
+      "status": 400,
+      "title": "Invalid body data",
+      "type": "https://api.publiq.be/probs/body/invalid-data"
+    }
+    """
+
+  Scenario: Reject capacity on a permanent event via the booking-availability endpoint
+    Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "permanentEventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "type": "Available",
+      "capacity": 100
+    }
+    """
+    And I send a PUT request to "%{permanentEventUrl}/booking-availability"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/uitdatabank/calendar-type-not-supported",
+      "title": "Calendar type not supported",
+      "status": 400,
+      "detail": "Updating booking availability on calendar type: \"PERMANENT\" is not supported. Only single and multiple calendar types can be updated."
     }
     """
