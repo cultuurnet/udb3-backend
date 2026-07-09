@@ -215,7 +215,6 @@ Feature: Test the Search API v3 advanced queries on offers
     %{eventId}
     """
 
-  @wip
   @testIsolation
   Scenario: Search for birthdate ranges using an advanced query
     When I create a minimal place and save the "url" as "placeUrl"
@@ -246,7 +245,6 @@ Feature: Test the Search API v3 advanced queries on offers
     %{eventId2022}
     """
 
-  @wip
   @testIsolation
   Scenario: Search by birthdate range using an advanced query also matches events with the equivalent typical age range
     When I create a minimal place and save the "url" as "placeUrl"
