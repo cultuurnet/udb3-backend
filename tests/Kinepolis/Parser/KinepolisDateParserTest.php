@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use PHPUnit\Framework\TestCase;
 
 final class KinepolisDateParserTest extends TestCase
@@ -51,7 +50,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -60,7 +58,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -69,7 +66,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -78,7 +74,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                         ],
                     ],
@@ -91,7 +86,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -100,7 +94,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -109,7 +102,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -118,7 +110,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -127,7 +118,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                         ],
                     ],
@@ -146,7 +136,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -155,7 +144,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -164,7 +152,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -173,7 +160,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                         ],
                     ],
@@ -186,7 +172,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -195,7 +180,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -204,7 +188,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -213,7 +196,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -222,7 +204,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                         ],
                     ],
@@ -241,7 +222,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -250,7 +230,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -259,7 +238,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                         ],
                         '3D' => [
@@ -270,7 +248,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                         ],
                     ],
@@ -283,7 +260,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -292,7 +268,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -301,7 +276,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -310,7 +284,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                         ],
                         '3D' => [
@@ -321,7 +294,6 @@ final class KinepolisDateParserTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                         ],
                     ],
