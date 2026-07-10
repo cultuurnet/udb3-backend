@@ -45,6 +45,27 @@ final class CompletenessFromWeights implements Completeness
                 continue;
             }
 
+            // Capacity should always be taken into account for places,
+            // but for events, only if the event is childrenOnly.
+            if ($this->itemType === ItemType::event() &&
+                $weight->getName() === 'capacity' &&
+                $this->isChildrenOnlyEvent($body) &&
+                isset($body['bookingAvailability'])
+                && isset($body['bookingAvailability']['capacity'])
+            ) {
+                $completeness += $weight->getValue();
+                continue;
+            }
+
+            if ($weight->getName() === 'remainingCapacity' &&
+                $this->isChildrenOnlyEvent($body) &&
+                isset($body['bookingAvailability'])
+                && isset($body['bookingAvailability']['remainingCapacity'])
+            ) {
+                $completeness += $weight->getValue();
+                continue;
+            }
+
             if (!isset($body[$weight->getName()])) {
                 continue;
             }
@@ -65,7 +86,7 @@ final class CompletenessFromWeights implements Completeness
             $completeness += $weight->getValue();
         }
 
-        return (int) ($completeness / $this->totalWeightScore() * 100);
+        return (int) ($completeness / $this->totalWeightScore($body) * 100);
     }
 
     private function isContactPointEmpty(array $contactPoint): bool
@@ -73,18 +94,27 @@ final class CompletenessFromWeights implements Completeness
         return empty($contactPoint['phone']) && empty($contactPoint['email']) && empty($contactPoint['url']);
     }
 
-    private function totalWeightScore(): int
+    private function isChildrenOnlyEvent(array $body): bool
     {
-        $totalWeight = array_sum(array_map(
-            static fn (Weight $weight): int => $weight->getValue(),
-            $this->weights->toArray()
-        ));
-        if ($totalWeight === 0) {
-            print($totalWeight);
+        return (isset($body['childrenOnly']) && $body['childrenOnly'] === true)
+            && (isset($body['calendarType']) && in_array($body['calendarType'], ['single', 'multiple']));
+    }
+
+    private function totalWeightScore(array $body): int
+    {
+        $totalWeightScore = 0;
+        /** @var Weight $weight */
+        foreach ($this->weights as $weight) {
+            if ($this->itemType === ItemType::event() && in_array($weight->getName(), ['capacity', 'remainingCapacity'])) {
+                if ($this->isChildrenOnlyEvent($body)) {
+                    $totalWeightScore += $weight->getValue();
+                }
+                continue;
+            }
+
+            $totalWeightScore += $weight->getValue();
         }
-        return array_sum(array_map(
-            static fn (Weight $weight): int => $weight->getValue(),
-            $this->weights->toArray()
-        ));
+
+        return $totalWeightScore;
     }
 }
