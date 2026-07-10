@@ -61,7 +61,8 @@ final class CompletenessFromWeights implements Completeness
             }
 
             if ($weight->getName() === 'remainingCapacity' &&
-                isset($body['bookingAvailability']['remainingCapacity']) && $isChildrenOnly
+                $isChildrenOnly &&
+                isset($body['bookingAvailability']['remainingCapacity'])
             ) {
                 $completeness += $weight->getValue();
                 continue;
