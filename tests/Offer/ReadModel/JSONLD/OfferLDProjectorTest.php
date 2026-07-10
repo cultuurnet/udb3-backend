@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Completeness\CompletenessConfig;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
-use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
@@ -135,21 +135,7 @@ class OfferLDProjectorTest extends TestCase
                 ]
             ),
             new CompletenessFromWeights(
-                Weights::fromConfig([
-                    'type' => 12,
-                    'theme' => 5,
-                    'calendarType' => 12,
-                    'location' => 12,
-                    'name' => 12,
-                    'typicalAgeRange' => 12,
-                    'mediaObject' => 8,
-                    'description' => 9,
-                    'priceInfo' => 7,
-                    'contactPoint' => 3,
-                    'bookingInfo' => 3,
-                    'organizer' => 3,
-                    'videos' => 2,
-                ])
+                CompletenessConfig::for('event')
             )
         );
 
@@ -207,7 +193,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(Weights::fromConfig([]))
+            new CompletenessFromWeights(CompletenessConfig::for('event'))
         );
 
         $documentRepository->expects($this->exactly(4))
@@ -256,7 +242,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(Weights::fromConfig([]))
+            new CompletenessFromWeights(CompletenessConfig::for('event'))
         );
 
         $documentRepository->expects($this->once())
@@ -305,7 +291,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(Weights::fromConfig([]))
+            new CompletenessFromWeights(CompletenessConfig::for('event'))
         );
 
         $documentRepository->expects($this->exactly(2))

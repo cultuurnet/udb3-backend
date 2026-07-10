@@ -13,8 +13,8 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Completeness\CompletenessConfig;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
-use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
@@ -104,14 +104,7 @@ final class OrganizerLDProjectorTest extends TestCase
                 new CultureFeedAddressFactory()
             ),
             new CompletenessFromWeights(
-                Weights::fromConfig([
-                    'name' => 20,
-                    'url' => 20,
-                    'contactPoint' => 20,
-                    'description' => 15,
-                    'images' => 15,
-                    'address' => 10,
-                ])
+                CompletenessConfig::for('organizer')
             ),
         );
 
