@@ -53,7 +53,7 @@ final class CompletenessFromWeights implements Completeness
                 isset($body['bookingAvailability']['capacity']) &&
                 (
                     $this->itemType->sameAs(ItemType::place()) ||
-                    ($this->itemType->sameAs(ItemType::event()) && $this->isChildrenOnlyEvent($body))
+                    ($this->itemType->sameAs(ItemType::event()) && $isChildrenOnly)
                 )
             ) {
                 $completeness += $weight->getValue();
@@ -61,9 +61,7 @@ final class CompletenessFromWeights implements Completeness
             }
 
             if ($weight->getName() === 'remainingCapacity' &&
-                $this->isChildrenOnlyEvent($body) &&
-                isset($body['bookingAvailability'])
-                && isset($body['bookingAvailability']['remainingCapacity'])
+                isset($body['bookingAvailability']['remainingCapacity']) && $isChildrenOnly
             ) {
                 $completeness += $weight->getValue();
                 continue;
