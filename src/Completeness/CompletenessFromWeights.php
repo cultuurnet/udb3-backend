@@ -88,7 +88,7 @@ final class CompletenessFromWeights implements Completeness
             $completeness += $weight->getValue();
         }
 
-        return (int) ($completeness / $this->totalWeightScore($isChildrenOnly) * 100);
+        return (int) ($completeness / $this->getTotalWeightScore($isChildrenOnly) * 100);
     }
 
     private function isContactPointEmpty(array $contactPoint): bool
@@ -102,7 +102,7 @@ final class CompletenessFromWeights implements Completeness
             && (isset($body['calendarType']) && in_array($body['calendarType'], ['single', 'multiple']));
     }
 
-    private function totalWeightScore(bool $isChildrenOnly): int
+    private function getTotalWeightScore(bool $isChildrenOnly): int
     {
         $totalWeightScore = 0;
         /** @var Weight $weight */
