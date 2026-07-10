@@ -11,7 +11,7 @@ use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
-use CultuurNet\UDB3\Completeness\CompletenessConfig;
+use CultuurNet\UDB3\Completeness\CompletenessTestConfig;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
@@ -266,7 +266,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 ]
             ),
             new CompletenessFromWeights(
-                CompletenessConfig::for('event')
+                CompletenessTestConfig::forEvents()
             ),
             $this->placeTypeResolver
         );

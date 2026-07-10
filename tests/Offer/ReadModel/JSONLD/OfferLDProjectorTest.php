@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
-use CultuurNet\UDB3\Completeness\CompletenessConfig;
+use CultuurNet\UDB3\Completeness\CompletenessTestConfig;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
 use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
@@ -135,7 +135,7 @@ class OfferLDProjectorTest extends TestCase
                 ]
             ),
             new CompletenessFromWeights(
-                CompletenessConfig::for('event')
+                CompletenessTestConfig::forEvents()
             )
         );
 
@@ -193,7 +193,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(CompletenessConfig::for('event'))
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents())
         );
 
         $documentRepository->expects($this->exactly(4))
@@ -242,7 +242,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(CompletenessConfig::for('event'))
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents())
         );
 
         $documentRepository->expects($this->once())
@@ -291,7 +291,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(CompletenessConfig::for('event'))
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents())
         );
 
         $documentRepository->expects($this->exactly(2))
