@@ -17,6 +17,8 @@ final class CompletenessFromWeights implements Completeness
     {
         $body = $jsonDocument->getAssocBody();
 
+        $isChildrenOnly = $this->isChildrenOnlyEvent($body);
+
         $completeness = 0;
         /** @var Weight $weight */
         foreach ($this->weights as $weight) {
@@ -47,11 +49,12 @@ final class CompletenessFromWeights implements Completeness
 
             // Capacity should always be taken into account for places,
             // but for events, only if the event is childrenOnly.
-            if ($this->itemType->sameAs(ItemType::event()) &&
-                $weight->getName() === 'capacity' &&
-                $this->isChildrenOnlyEvent($body) &&
-                isset($body['bookingAvailability'])
-                && isset($body['bookingAvailability']['capacity'])
+            if ($weight->getName() === 'capacity' &&
+                isset($body['bookingAvailability']['capacity']) &&
+                (
+                    $this->itemType->sameAs(ItemType::place()) ||
+                    ($this->itemType->sameAs(ItemType::event()) && $this->isChildrenOnlyEvent($body))
+                )
             ) {
                 $completeness += $weight->getValue();
                 continue;
@@ -86,7 +89,7 @@ final class CompletenessFromWeights implements Completeness
             $completeness += $weight->getValue();
         }
 
-        return (int) ($completeness / $this->totalWeightScore($body) * 100);
+        return (int) ($completeness / $this->totalWeightScore($isChildrenOnly) * 100);
     }
 
     private function isContactPointEmpty(array $contactPoint): bool
@@ -100,13 +103,13 @@ final class CompletenessFromWeights implements Completeness
             && (isset($body['calendarType']) && in_array($body['calendarType'], ['single', 'multiple']));
     }
 
-    private function totalWeightScore(array $body): int
+    private function totalWeightScore(bool $isChildrenOnly): int
     {
         $totalWeightScore = 0;
         /** @var Weight $weight */
         foreach ($this->weights as $weight) {
             if ($this->itemType->sameAs(ItemType::event()) && in_array($weight->getName(), ['capacity', 'remainingCapacity'])) {
-                if ($this->isChildrenOnlyEvent($body)) {
+                if ($isChildrenOnly) {
                     $totalWeightScore += $weight->getValue();
                 }
                 continue;
