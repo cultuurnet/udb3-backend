@@ -106,7 +106,7 @@ final class OrganizerLDProjectorTest extends TestCase
             ),
             new CompletenessFromWeights(
                 CompletenessTestConfig::forOrganizers(),
-                ItemType::place()
+                ItemType::organizer()
             ),
         );
 
