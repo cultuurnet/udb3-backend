@@ -22,6 +22,7 @@ use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
@@ -266,7 +267,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 ]
             ),
             new CompletenessFromWeights(
-                CompletenessTestConfig::forEvents()
+                CompletenessTestConfig::forEvents(),
+                ItemType::event()
             ),
             $this->placeTypeResolver
         );

@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Model\Serializer\Place\NilLocationNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
@@ -84,7 +85,8 @@ final class PlaceJSONLDServiceProvider extends AbstractServiceProvider
                     $container->get('config')['base_price_translations'],
                     new VideoNormalizer($container->get('config')['media']['video_default_copyright']),
                     new CompletenessFromWeights(
-                        Weights::fromConfig($container->get('config')['completeness']['place'])
+                        Weights::fromConfig($container->get('config')['completeness']['place']),
+                        ItemType::place()
                     )
                 );
 

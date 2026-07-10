@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\CdbXMLImporter;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\EventFactory;
 use CultuurNet\UDB3\Organizer\ReadModel\JSONLD\PropertyPolyfillRepository;
@@ -58,7 +59,8 @@ final class OrganizerJSONLDServiceProvider extends AbstractServiceProvider
                         new CultureFeedAddressFactory()
                     ),
                     new CompletenessFromWeights(
-                        Weights::fromConfig($container->get('config')['completeness']['organizer'])
+                        Weights::fromConfig($container->get('config')['completeness']['organizer']),
+                        ItemType::organizer()
                     )
                 );
             }

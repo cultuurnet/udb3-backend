@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -135,7 +136,8 @@ class OfferLDProjectorTest extends TestCase
                 ]
             ),
             new CompletenessFromWeights(
-                CompletenessTestConfig::forEvents()
+                CompletenessTestConfig::forEvents(),
+                ItemType::event()
             )
         );
 
@@ -193,7 +195,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(CompletenessTestConfig::forEvents())
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents(), ItemType::event())
         );
 
         $documentRepository->expects($this->exactly(4))
@@ -242,7 +244,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(CompletenessTestConfig::forEvents())
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents(), ItemType::event())
         );
 
         $documentRepository->expects($this->once())
@@ -291,7 +293,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(CompletenessTestConfig::forEvents())
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents(), ItemType::event())
         );
 
         $documentRepository->expects($this->exactly(2))

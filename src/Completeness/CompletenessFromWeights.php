@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Completeness;
 
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
 final class CompletenessFromWeights implements Completeness
 {
-    private Weights $weights;
-
-    public function __construct(Weights $weights)
+    public function __construct(private readonly Weights $weights, private readonly ItemType $itemType)
     {
-        $this->weights = $weights;
     }
 
     public function calculateForDocument(JsonDocument $jsonDocument): int
