@@ -40,6 +40,13 @@ final class CompletenessFromWeights implements Completeness
                 continue;
             }
 
+            if ($weight->getName() === 'typicalAgeRange' &&
+                (isset($body['typicalAgeRange']) || isset($body['birthdateRange']))
+            ) {
+                $completeness += $weight->getValue();
+                continue;
+            }
+
             if (!isset($body[$weight->getName()])) {
                 continue;
             }
