@@ -2840,7 +2840,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 60;
+        $jsonLD->completeness = 62;
 
         $this->mockPlaceService();
 
