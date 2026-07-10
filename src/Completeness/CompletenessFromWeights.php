@@ -67,11 +67,26 @@ final class CompletenessFromWeights implements Completeness
             $completeness += $weight->getValue();
         }
 
-        return $completeness;
+        return (int) ($completeness / $this->totalWeightScore() * 100);
     }
 
     private function isContactPointEmpty(array $contactPoint): bool
     {
         return empty($contactPoint['phone']) && empty($contactPoint['email']) && empty($contactPoint['url']);
+    }
+
+    private function totalWeightScore(): int
+    {
+        $totalWeight = array_sum(array_map(
+            static fn (Weight $weight): int => $weight->getValue(),
+            $this->weights->toArray()
+        ));
+        if ($totalWeight === 0) {
+            print($totalWeight);
+        }
+        return array_sum(array_map(
+            static fn (Weight $weight): int => $weight->getValue(),
+            $this->weights->toArray()
+        ));
     }
 }
