@@ -47,7 +47,7 @@ final class CompletenessFromWeights implements Completeness
 
             // Capacity should always be taken into account for places,
             // but for events, only if the event is childrenOnly.
-            if ($this->itemType === ItemType::event() &&
+            if ($this->itemType->sameAs(ItemType::event()) &&
                 $weight->getName() === 'capacity' &&
                 $this->isChildrenOnlyEvent($body) &&
                 isset($body['bookingAvailability'])
@@ -105,7 +105,7 @@ final class CompletenessFromWeights implements Completeness
         $totalWeightScore = 0;
         /** @var Weight $weight */
         foreach ($this->weights as $weight) {
-            if ($this->itemType === ItemType::event() && in_array($weight->getName(), ['capacity', 'remainingCapacity'])) {
+            if ($this->itemType->sameAs(ItemType::event()) && in_array($weight->getName(), ['capacity', 'remainingCapacity'])) {
                 if ($this->isChildrenOnlyEvent($body)) {
                     $totalWeightScore += $weight->getValue();
                 }
