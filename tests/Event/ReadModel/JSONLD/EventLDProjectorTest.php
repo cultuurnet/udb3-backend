@@ -301,7 +301,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 60;
+        $jsonLD->completeness = 62;
 
         $this->mockPlaceService();
 
@@ -363,7 +363,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->created = $recordedOn;
         $jsonLD->modified = $recordedOn;
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 60;
+        $jsonLD->completeness = 62;
 
         $body = $this->project(
             $eventCopied,
@@ -407,7 +407,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 65;
+        $jsonLD->completeness = 67;
 
         $this->mockPlaceService();
 
@@ -458,7 +458,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->creator = $expectedCreator;
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 65;
+        $jsonLD->completeness = 67;
 
         $this->mockPlaceService();
 
@@ -589,7 +589,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = '20a72430-7e3e-4b75-ab59-043156b3169c';
-        $expectedJsonLD->completeness = 60;
+        $expectedJsonLD->completeness = 62;
 
         $this->assertEquals($expectedJsonLD, $body);
     }
@@ -724,7 +724,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = $userId;
-        $expectedJsonLD->completeness = 60;
+        $expectedJsonLD->completeness = 62;
 
         $this->assertEquals($expectedJsonLD, $body);
     }
@@ -863,7 +863,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 65;
+        $jsonLD->completeness = 67;
 
         $this->mockPlaceService();
 
@@ -1344,7 +1344,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 53;
+        $expectedJsonLD->completeness = 55;
 
         $body = $this->project($givenMajorInfoUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
 
@@ -1489,7 +1489,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 ],
             ],
             'modified' => $this->recordedOn->toString(),
-            'completeness' => 24,
+            'completeness' => 25,
         ];
         $expectedBody->playhead = 1;
 
@@ -2524,7 +2524,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 65;
+        $jsonLD->completeness = 67;
 
         $this->mockPlaceService();
 
@@ -2591,7 +2591,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 60;
+        $jsonLD->completeness = 62;
 
         $this->mockPlaceService();
 
@@ -2658,7 +2658,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 60;
+        $jsonLD->completeness = 62;
 
         $this->mockPlaceService();
 
@@ -2728,7 +2728,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 60;
+        $jsonLD->completeness = 62;
 
         $this->mockPlaceService();
 
