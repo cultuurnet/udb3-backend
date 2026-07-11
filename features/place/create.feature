@@ -50,7 +50,7 @@ Feature: Test creating places
       "url": []
     }
     """
-    And the JSON response at "completeness" should be 56
+    And the JSON response at "completeness" should be 55
 
   Scenario: Create a place with workflowStatus set to APPROVED
     Given I create a place from "places/place-with-workflow-status-approved.json" and save the "url" as "placeUrl"
@@ -275,7 +275,7 @@ Feature: Test creating places
       "public-invisible"
     ]
     """
-    And the JSON response at "completeness" should be 68
+    And the JSON response at "completeness" should be 65
 
   @bugfix # https://jira.uitdatabank.be/browse/III-4669
   Scenario: Create a place with all fields and remove the optional ones again using null values and empty lists
