@@ -98,8 +98,9 @@ final class CompletenessFromWeights implements Completeness
 
     private function isChildrenOnlyEvent(array $body): bool
     {
-        return (isset($body['childrenOnly']) && $body['childrenOnly'] === true)
-            && (isset($body['calendarType']) && in_array($body['calendarType'], ['single', 'multiple']));
+        return $this->itemType->sameAs(ItemType::event()) &&
+            (isset($body['childrenOnly']) && $body['childrenOnly'] === true) &&
+            (isset($body['calendarType']) && in_array($body['calendarType'], ['single', 'multiple']));
     }
 
     private function getTotalWeightScore(bool $isChildrenOnly): int
