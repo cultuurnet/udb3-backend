@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use PHPUnit\Framework\TestCase;
 
 class DateRangesTest extends TestCase
@@ -57,7 +56,6 @@ class DateRangesTest extends TestCase
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available()),
-                new BookingInfo(),
             );
         };
 

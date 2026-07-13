@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
@@ -23,7 +22,6 @@ final class SubEventTest extends TestCase
             ),
             new Status(StatusType::Available()),
             new BookingAvailability(BookingAvailabilityType::Available()),
-            new BookingInfo()
         );
     }
 

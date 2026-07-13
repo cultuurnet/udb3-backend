@@ -29,7 +29,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Address;
 use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
@@ -168,7 +167,6 @@ trait EventFromUDB2
                 new BookingAvailability(
                     BookingAvailabilityType::Available()
                 ),
-                new BookingInfo(),
             );
         }
 
