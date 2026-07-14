@@ -11,7 +11,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 
 final class KinepolisDateParser implements DateParser
 {
@@ -56,7 +55,6 @@ final class KinepolisDateParser implements DateParser
                 new DateRange($from, $to),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available()),
-                new BookingInfo(),
             );
         }
     }

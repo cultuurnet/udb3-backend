@@ -407,7 +407,6 @@ class EventDenormalizerTest extends TestCase
                         StatusType::Available()
                     ),
                     new BookingAvailability(BookingAvailabilityType::Available()),
-                    new BookingInfo(),
                 ),
             ),
             PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
@@ -485,7 +484,6 @@ class EventDenormalizerTest extends TestCase
                             ->withTranslation(new Language('fr'), new StatusReason('Franse reden'))
                     ),
                     new BookingAvailability(BookingAvailabilityType::Available()),
-                    new BookingInfo(),
                 )
             ),
             PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
@@ -544,7 +542,6 @@ class EventDenormalizerTest extends TestCase
                         StatusType::Available()
                     ),
                     new BookingAvailability(BookingAvailabilityType::Available()),
-                    new BookingInfo(),
                 )
             ),
             PlaceReference::createWithPlaceId(new Uuid('dbe91250-4e4b-495c-b692-3da9563b0d52')),
@@ -621,7 +618,6 @@ class EventDenormalizerTest extends TestCase
                             StatusType::Available()
                         ),
                         new BookingAvailability(BookingAvailabilityType::Available()),
-                        new BookingInfo(),
                     ),
                     new SubEvent(
                         new DateRange(
@@ -632,7 +628,6 @@ class EventDenormalizerTest extends TestCase
                             StatusType::Available()
                         ),
                         new BookingAvailability(BookingAvailabilityType::Available()),
-                        new BookingInfo(),
                     ),
                     new SubEvent(
                         new DateRange(
@@ -643,7 +638,6 @@ class EventDenormalizerTest extends TestCase
                             StatusType::Available()
                         ),
                         new BookingAvailability(BookingAvailabilityType::Available()),
-                        new BookingInfo(),
                     )
                 )
             ),
@@ -750,7 +744,6 @@ class EventDenormalizerTest extends TestCase
                                 ->withTranslation(new Language('fr'), new StatusReason('Franse reden'))
                         ),
                         new BookingAvailability(BookingAvailabilityType::Available()),
-                        new BookingInfo(),
                     ),
                     new SubEvent(
                         new DateRange(
@@ -761,7 +754,6 @@ class EventDenormalizerTest extends TestCase
                             StatusType::Available()
                         ),
                         new BookingAvailability(BookingAvailabilityType::Available()),
-                        new BookingInfo(),
                     ),
                     new SubEvent(
                         new DateRange(
@@ -772,7 +764,6 @@ class EventDenormalizerTest extends TestCase
                             StatusType::TemporarilyUnavailable()
                         ),
                         new BookingAvailability(BookingAvailabilityType::Available()),
-                        new BookingInfo(),
                     ),
                     new SubEvent(
                         new DateRange(
@@ -791,7 +782,6 @@ class EventDenormalizerTest extends TestCase
                                 )
                         ),
                         new BookingAvailability(BookingAvailabilityType::Available()),
-                        new BookingInfo(),
                     )
                 )
             ),
@@ -868,7 +858,6 @@ class EventDenormalizerTest extends TestCase
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Unavailable()),
-                        new BookingInfo(),
                     ),
                     new SubEvent(
                         new DateRange(
@@ -877,7 +866,6 @@ class EventDenormalizerTest extends TestCase
                         ),
                         new Status(StatusType::Available()),
                         new BookingAvailability(BookingAvailabilityType::Unavailable()),
-                        new BookingInfo(),
                     )
                 )
             ),
@@ -948,7 +936,6 @@ class EventDenormalizerTest extends TestCase
                         ))->withTranslation(new Language('fr'), new StatusReason('Frans'))
                     ),
                     new BookingAvailability(BookingAvailabilityType::Available()),
-                    new BookingInfo(),
                 )
             ))->withStatus(
                 new Status(
@@ -1033,7 +1020,6 @@ class EventDenormalizerTest extends TestCase
                         ))->withTranslation(new Language('fr'), new StatusReason('Frans'))
                     ),
                     new BookingAvailability(BookingAvailabilityType::Available()),
-                    new BookingInfo(),
                 )
             ))->withStatus(
                 new Status(
@@ -1132,7 +1118,6 @@ class EventDenormalizerTest extends TestCase
                                 ->withTranslation(new Language('fr'), new StatusReason('Franse reden'))
                         ),
                         new BookingAvailability(BookingAvailabilityType::Available()),
-                        new BookingInfo(),
                     ),
                     new SubEvent(
                         new DateRange(
@@ -1147,7 +1132,6 @@ class EventDenormalizerTest extends TestCase
                             ))->withTranslation(new Language('fr'), new StatusReason('Frans'))
                         ),
                         new BookingAvailability(BookingAvailabilityType::Available()),
-                        new BookingInfo(),
                     )
                 )
             ))->withStatus(

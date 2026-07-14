@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use PHPUnit\Framework\TestCase;
 
 class MultipleSubEventsCalendarTest extends TestCase
@@ -24,7 +23,6 @@ class MultipleSubEventsCalendarTest extends TestCase
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available()),
-                new BookingInfo(),
             ),
             new SubEvent(
                 new DateRange(
@@ -33,7 +31,6 @@ class MultipleSubEventsCalendarTest extends TestCase
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available()),
-                new BookingInfo(),
             )
         );
 
@@ -52,7 +49,6 @@ class MultipleSubEventsCalendarTest extends TestCase
                 new DateRange($startDate, $endDate),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available()),
-                new BookingInfo(),
             )
         );
 
@@ -180,7 +176,6 @@ class MultipleSubEventsCalendarTest extends TestCase
             $dateRange,
             new Status(StatusType::Available()),
             (new BookingAvailability(BookingAvailabilityType::Available()))->withRemainingCapacity(42),
-            new BookingInfo(),
         );
         $subEventWithoutCapacity = new SubEvent(
             new DateRange(
@@ -189,7 +184,6 @@ class MultipleSubEventsCalendarTest extends TestCase
             ),
             new Status(StatusType::Available()),
             new BookingAvailability(BookingAvailabilityType::Available()),
-            new BookingInfo(),
         );
 
         $calendar = (new MultipleSubEventsCalendar(new SubEvents($subEventWithRemainingCapacity, $subEventWithoutCapacity)))
@@ -218,7 +212,6 @@ class MultipleSubEventsCalendarTest extends TestCase
             ),
             new Status(StatusType::Available()),
             (new BookingAvailability(BookingAvailabilityType::Available()))->withCapacity(100),
-            new BookingInfo(),
         );
         $subEventWithoutCapacity = new SubEvent(
             new DateRange(
@@ -227,7 +220,6 @@ class MultipleSubEventsCalendarTest extends TestCase
             ),
             new Status(StatusType::Available()),
             new BookingAvailability(BookingAvailabilityType::Available()),
-            new BookingInfo(),
         );
 
         $calendar = (new MultipleSubEventsCalendar(new SubEvents($subEventWithCapacity, $subEventWithoutCapacity)))
@@ -256,7 +248,6 @@ class MultipleSubEventsCalendarTest extends TestCase
             ),
             new Status(StatusType::Available()),
             (new BookingAvailability(BookingAvailabilityType::Available()))->withCapacity(100)->withRemainingCapacity(42),
-            new BookingInfo(),
         );
         $subEventWithoutCapacity = new SubEvent(
             new DateRange(
@@ -265,7 +256,6 @@ class MultipleSubEventsCalendarTest extends TestCase
             ),
             new Status(StatusType::Available()),
             new BookingAvailability(BookingAvailabilityType::Available()),
-            new BookingInfo(),
         );
 
         $calendar = (new MultipleSubEventsCalendar(new SubEvents($subEventWithBoth, $subEventWithoutCapacity)))

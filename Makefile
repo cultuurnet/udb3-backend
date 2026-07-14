@@ -48,22 +48,31 @@ test-group:
 	docker compose exec php composer test -- --group=$(group)
 
 feature-init:
-	docker compose exec php composer feature -- --tags @init
+	docker compose exec php composer feature -- --suite=init
 
 feature-tag:
 	docker compose exec php composer feature -- --tags $(tag)
 
 feature-ci:
-	docker compose exec php composer feature -- --tags "~@init&&~@external&&~@wip" -f pretty -o std -f junit -o output/junit
+	docker compose exec php composer feature -- --suite=default -f pretty -o std -f junit -o output/junit
+
+feature-ci-es8:
+	docker compose exec php composer feature -- --profile=es8 --suite=default -f pretty -o std -f junit -o output/junit
 
 feature:
-	docker compose exec php composer feature -- --tags "~@init&&~@external&&~@wip"
+	docker compose exec php composer feature -- --suite=default
+
+feature-sapi3:
+	docker compose exec php composer feature -- --suite=sapi3
+
+feature-sapi3-es8:
+	docker compose exec php composer feature -- --profile=es8 --suite=sapi3
 
 feature-filter:
 	docker compose exec php composer feature -- $(path)
 
 feature-random:
-	docker compose exec php composer feature -- --order=random --tags "~@init&&~@external&&~@wip"
+	docker compose exec php composer feature -- --order=random --suite=default
 
 rector:
 	docker compose exec php composer rector

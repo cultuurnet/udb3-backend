@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Http\Event;
 
 use Broadway\CommandHandling\CommandBus;
 use CultuurNet\UDB3\Event\Commands\CopyEvent;
+use CultuurNet\UDB3\Http\Offer\CapacityValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\LegacyUpdateCalendarRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\UpdateCalendarValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
@@ -46,6 +47,7 @@ final class CopyEventRequestHandler implements RequestHandlerInterface
         $parser = RequestBodyParserFactory::createBaseParser(
             new LegacyUpdateCalendarRequestBodyParser(),
             new UpdateCalendarValidatingRequestBodyParser(JsonSchemaLocator::EVENT_CALENDAR_PUT),
+            new CapacityValidatingRequestBodyParser(),
             new DenormalizingRequestBodyParser(new CalendarDenormalizer(), Calendar::class)
         );
 

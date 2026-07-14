@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7b1052e82771b10ce20388ccb7f43c4a",
+    "content-hash": "6b1f05b82c0ec29cbedf7803d7d79c9c",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6090,19 +6090,18 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-main",
+            "version": "dev-III-7324/bookinginfo-removal-subevent-json-schema",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "65b5a1100723071a96f967f254a4b48f8151538f"
+                "reference": "87dd1de2a599ad1aa40d7e45456e6ae067d3c48a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/65b5a1100723071a96f967f254a4b48f8151538f",
-                "reference": "65b5a1100723071a96f967f254a4b48f8151538f",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/87dd1de2a599ad1aa40d7e45456e6ae067d3c48a",
+                "reference": "87dd1de2a599ad1aa40d7e45456e6ae067d3c48a",
                 "shasum": ""
             },
-            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6117,9 +6116,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7324/bookinginfo-removal-subevent-json-schema"
             },
-            "time": "2026-06-18T11:21:56+00:00"
+            "time": "2026-07-09T09:20:05+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

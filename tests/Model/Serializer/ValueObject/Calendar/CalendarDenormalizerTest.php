@@ -18,9 +18,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
-use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
-use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -31,133 +28,6 @@ final class CalendarDenormalizerTest extends TestCase
     protected function setUp(): void
     {
         $this->denormalizer = new CalendarDenormalizer();
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_a_single_calendar_with_booking_info_on_the_sub_event(): void
-    {
-        $data = [
-            'calendarType' => 'single',
-            'startDate' => '2021-05-17T08:00:00+00:00',
-            'endDate' => '2021-05-17T22:00:00+00:00',
-            'subEvent' => [
-                [
-                    'startDate' => '2021-05-17T08:00:00+00:00',
-                    'endDate' => '2021-05-17T22:00:00+00:00',
-                    'bookingInfo' => [
-                        'phone' => '0123456789',
-                        'email' => 'user@example.com',
-                    ],
-                ],
-            ],
-        ];
-
-        $expected = new SingleSubEventCalendar(
-            new SubEvent(
-                new DateRange(
-                    new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
-                    new DateTimeImmutable('2021-05-17T22:00:00+00:00')
-                ),
-                new Status(StatusType::Available()),
-                BookingAvailability::Available(),
-                (new BookingInfo())
-                    ->withTelephoneNumber(new TelephoneNumber('0123456789'))
-                    ->withEmailAddress(new EmailAddress('user@example.com'))
-            )
-        );
-
-        $this->assertEquals(
-            $expected,
-            $this->denormalizer->denormalize($data, Calendar::class)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_falls_back_to_top_level_booking_info_when_sub_event_has_none(): void
-    {
-        $data = [
-            'calendarType' => 'single',
-            'startDate' => '2021-05-17T08:00:00+00:00',
-            'endDate' => '2021-05-17T22:00:00+00:00',
-            'bookingInfo' => [
-                'phone' => '0123456789',
-                'email' => 'user@example.com',
-            ],
-            'subEvent' => [
-                [
-                    'startDate' => '2021-05-17T08:00:00+00:00',
-                    'endDate' => '2021-05-17T22:00:00+00:00',
-                ],
-            ],
-        ];
-
-        $expected = new SingleSubEventCalendar(
-            new SubEvent(
-                new DateRange(
-                    new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
-                    new DateTimeImmutable('2021-05-17T22:00:00+00:00')
-                ),
-                new Status(StatusType::Available()),
-                BookingAvailability::Available(),
-                (new BookingInfo())
-                    ->withTelephoneNumber(new TelephoneNumber('0123456789'))
-                    ->withEmailAddress(new EmailAddress('user@example.com'))
-            )
-        );
-
-        $this->assertEquals(
-            $expected,
-            $this->denormalizer->denormalize($data, Calendar::class)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_gives_sub_event_booking_info_priority_over_top_level_booking_info(): void
-    {
-        $data = [
-            'calendarType' => 'single',
-            'startDate' => '2021-05-17T08:00:00+00:00',
-            'endDate' => '2021-05-17T22:00:00+00:00',
-            'bookingInfo' => [
-                'phone' => '0000000000',
-                'email' => 'toplevel@example.com',
-            ],
-            'subEvent' => [
-                [
-                    'startDate' => '2021-05-17T08:00:00+00:00',
-                    'endDate' => '2021-05-17T22:00:00+00:00',
-                    'bookingInfo' => [
-                        'phone' => '0123456789',
-                        'email' => 'subevent@example.com',
-                    ],
-                ],
-            ],
-        ];
-
-        $expected = new SingleSubEventCalendar(
-            new SubEvent(
-                new DateRange(
-                    new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
-                    new DateTimeImmutable('2021-05-17T22:00:00+00:00')
-                ),
-                new Status(StatusType::Available()),
-                BookingAvailability::Available(),
-                (new BookingInfo())
-                    ->withTelephoneNumber(new TelephoneNumber('0123456789'))
-                    ->withEmailAddress(new EmailAddress('subevent@example.com'))
-            )
-        );
-
-        $this->assertEquals(
-            $expected,
-            $this->denormalizer->denormalize($data, Calendar::class)
-        );
     }
 
     /**
@@ -184,184 +54,7 @@ final class CalendarDenormalizerTest extends TestCase
                     new DateTimeImmutable('2021-05-17T22:00:00+00:00')
                 ),
                 new Status(StatusType::Available()),
-                BookingAvailability::Available(),
-                new BookingInfo()
-            )
-        );
-
-        $this->assertEquals(
-            $expected,
-            $this->denormalizer->denormalize($data, Calendar::class)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_falls_back_to_top_level_booking_info_for_multiple_calendar_sub_events_without_booking_info(): void
-    {
-        $data = [
-            'calendarType' => 'multiple',
-            'startDate' => '2021-05-17T08:00:00+00:00',
-            'endDate' => '2021-05-18T22:00:00+00:00',
-            'bookingInfo' => [
-                'phone' => '0123456789',
-                'email' => 'user@example.com',
-            ],
-            'subEvent' => [
-                [
-                    'startDate' => '2021-05-17T08:00:00+00:00',
-                    'endDate' => '2021-05-17T22:00:00+00:00',
-                ],
-                [
-                    'startDate' => '2021-05-18T08:00:00+00:00',
-                    'endDate' => '2021-05-18T22:00:00+00:00',
-                ],
-            ],
-        ];
-
-        $topLevelBookingInfo = (new BookingInfo())
-            ->withTelephoneNumber(new TelephoneNumber('0123456789'))
-            ->withEmailAddress(new EmailAddress('user@example.com'));
-
-        $expected = new MultipleSubEventsCalendar(
-            new SubEvents(
-                new SubEvent(
-                    new DateRange(
-                        new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
-                        new DateTimeImmutable('2021-05-17T22:00:00+00:00')
-                    ),
-                    new Status(StatusType::Available()),
-                    BookingAvailability::Available(),
-                    $topLevelBookingInfo
-                ),
-                new SubEvent(
-                    new DateRange(
-                        new DateTimeImmutable('2021-05-18T08:00:00+00:00'),
-                        new DateTimeImmutable('2021-05-18T22:00:00+00:00')
-                    ),
-                    new Status(StatusType::Available()),
-                    BookingAvailability::Available(),
-                    $topLevelBookingInfo
-                )
-            )
-        );
-
-        $this->assertEquals(
-            $expected,
-            $this->denormalizer->denormalize($data, Calendar::class)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_a_multiple_calendar_with_booking_info_on_one_sub_event(): void
-    {
-        $data = [
-            'calendarType' => 'multiple',
-            'startDate' => '2021-05-17T08:00:00+00:00',
-            'endDate' => '2021-05-18T22:00:00+00:00',
-            'subEvent' => [
-                [
-                    'startDate' => '2021-05-17T08:00:00+00:00',
-                    'endDate' => '2021-05-17T22:00:00+00:00',
-                    'bookingInfo' => [
-                        'phone' => '0123456789',
-                        'email' => 'user@example.com',
-                    ],
-                ],
-                [
-                    'startDate' => '2021-05-18T08:00:00+00:00',
-                    'endDate' => '2021-05-18T22:00:00+00:00',
-                ],
-            ],
-        ];
-
-        $expected = new MultipleSubEventsCalendar(
-            new SubEvents(
-                new SubEvent(
-                    new DateRange(
-                        new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
-                        new DateTimeImmutable('2021-05-17T22:00:00+00:00')
-                    ),
-                    new Status(StatusType::Available()),
-                    BookingAvailability::Available(),
-                    (new BookingInfo())
-                        ->withTelephoneNumber(new TelephoneNumber('0123456789'))
-                        ->withEmailAddress(new EmailAddress('user@example.com'))
-                ),
-                new SubEvent(
-                    new DateRange(
-                        new DateTimeImmutable('2021-05-18T08:00:00+00:00'),
-                        new DateTimeImmutable('2021-05-18T22:00:00+00:00')
-                    ),
-                    new Status(StatusType::Available()),
-                    BookingAvailability::Available(),
-                    new BookingInfo()
-                )
-            )
-        );
-
-        $this->assertEquals(
-            $expected,
-            $this->denormalizer->denormalize($data, Calendar::class)
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_a_multiple_calendar_with_booking_info_on_all_sub_events(): void
-    {
-        $data = [
-            'calendarType' => 'multiple',
-            'startDate' => '2021-05-17T08:00:00+00:00',
-            'endDate' => '2021-05-18T22:00:00+00:00',
-            'subEvent' => [
-                [
-                    'startDate' => '2021-05-17T08:00:00+00:00',
-                    'endDate' => '2021-05-17T22:00:00+00:00',
-                    'bookingInfo' => [
-                        'phone' => '0123456789',
-                        'email' => 'day1@example.com',
-                    ],
-                ],
-                [
-                    'startDate' => '2021-05-18T08:00:00+00:00',
-                    'endDate' => '2021-05-18T22:00:00+00:00',
-                    'bookingInfo' => [
-                        'phone' => '0987654321',
-                        'email' => 'day2@example.com',
-                    ],
-                ],
-            ],
-        ];
-
-        $expected = new MultipleSubEventsCalendar(
-            new SubEvents(
-                new SubEvent(
-                    new DateRange(
-                        new DateTimeImmutable('2021-05-17T08:00:00+00:00'),
-                        new DateTimeImmutable('2021-05-17T22:00:00+00:00')
-                    ),
-                    new Status(StatusType::Available()),
-                    BookingAvailability::Available(),
-                    (new BookingInfo())
-                        ->withTelephoneNumber(new TelephoneNumber('0123456789'))
-                        ->withEmailAddress(new EmailAddress('day1@example.com'))
-                ),
-                new SubEvent(
-                    new DateRange(
-                        new DateTimeImmutable('2021-05-18T08:00:00+00:00'),
-                        new DateTimeImmutable('2021-05-18T22:00:00+00:00')
-                    ),
-                    new Status(StatusType::Available()),
-                    BookingAvailability::Available(),
-                    (new BookingInfo())
-                        ->withTelephoneNumber(new TelephoneNumber('0987654321'))
-                        ->withEmailAddress(new EmailAddress('day2@example.com'))
-                )
+                BookingAvailability::Available()
             )
         );
 
@@ -403,8 +96,7 @@ final class CalendarDenormalizerTest extends TestCase
                     new DateTimeImmutable('2021-05-17T22:00:00+00:00')
                 ),
                 new Status(StatusType::Available()),
-                $topLevelBookingAvailability,
-                new BookingInfo()
+                $topLevelBookingAvailability
             )
         ))->withBookingAvailability($topLevelBookingAvailability);
 
@@ -447,8 +139,7 @@ final class CalendarDenormalizerTest extends TestCase
                     new DateTimeImmutable('2021-05-17T22:00:00+00:00')
                 ),
                 new Status(StatusType::Available()),
-                $topLevelBookingAvailability,
-                new BookingInfo()
+                $topLevelBookingAvailability
             )
         ))->withBookingAvailability($topLevelBookingAvailability);
 
@@ -500,8 +191,7 @@ final class CalendarDenormalizerTest extends TestCase
                     new DateTimeImmutable('2021-05-17T22:00:00+00:00')
                 ),
                 new Status(StatusType::Available()),
-                $subEventBookingAvailability,
-                new BookingInfo()
+                $subEventBookingAvailability
             )
         ))->withBookingAvailability($topLevelBookingAvailability);
 
@@ -549,8 +239,7 @@ final class CalendarDenormalizerTest extends TestCase
                         new DateTimeImmutable('2021-05-17T22:00:00+00:00')
                     ),
                     new Status(StatusType::Available()),
-                    $bookingAvailability,
-                    new BookingInfo()
+                    $bookingAvailability
                 ),
                 new SubEvent(
                     new DateRange(
@@ -558,8 +247,7 @@ final class CalendarDenormalizerTest extends TestCase
                         new DateTimeImmutable('2021-05-18T22:00:00+00:00')
                     ),
                     new Status(StatusType::Available()),
-                    $bookingAvailability,
-                    new BookingInfo()
+                    $bookingAvailability
                 )
             )
         ))->withBookingAvailability($bookingAvailability);
@@ -620,8 +308,7 @@ final class CalendarDenormalizerTest extends TestCase
                     new Status(StatusType::Available()),
                     BookingAvailability::Available()
                         ->withCapacity(100)
-                        ->withRemainingCapacity(42),
-                    new BookingInfo()
+                        ->withRemainingCapacity(42)
                 ),
                 new SubEvent(
                     new DateRange(
@@ -631,8 +318,7 @@ final class CalendarDenormalizerTest extends TestCase
                     new Status(StatusType::Available()),
                     BookingAvailability::Available()
                         ->withCapacity(200)
-                        ->withRemainingCapacity(150),
-                    new BookingInfo()
+                        ->withRemainingCapacity(150)
                 )
             )
         ))->withBookingAvailability($topLevelBookingAvailability);
@@ -687,8 +373,7 @@ final class CalendarDenormalizerTest extends TestCase
                     new Status(StatusType::Available()),
                     BookingAvailability::Available()
                         ->withCapacity(500)
-                        ->withRemainingCapacity(42),
-                    new BookingInfo()
+                        ->withRemainingCapacity(42)
                 ),
                 new SubEvent(
                     new DateRange(
@@ -696,8 +381,7 @@ final class CalendarDenormalizerTest extends TestCase
                         new DateTimeImmutable('2021-05-18T22:00:00+00:00')
                     ),
                     new Status(StatusType::Available()),
-                    $topLevelBookingAvailability,
-                    new BookingInfo()
+                    $topLevelBookingAvailability
                 )
             )
         ))->withBookingAvailability($topLevelBookingAvailability);
@@ -706,6 +390,130 @@ final class CalendarDenormalizerTest extends TestCase
             $expected,
             $this->denormalizer->denormalize($data, Calendar::class)
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_permanent_calendar_with_top_level_capacity(): void
+    {
+        $data = [
+            'calendarType' => 'permanent',
+            'openingHours' => [],
+            'bookingAvailability' => [
+                'type' => 'Available',
+                'capacity' => 200,
+            ],
+        ];
+
+        /** @var PermanentCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PermanentCalendar::class, $result);
+        $this->assertEquals(
+            BookingAvailability::Available()->withCapacity(200),
+            $result->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_periodic_calendar_with_top_level_capacity(): void
+    {
+        $data = [
+            'calendarType' => 'periodic',
+            'startDate' => '2024-01-01T00:00:00+00:00',
+            'endDate' => '2024-12-31T23:59:59+00:00',
+            'openingHours' => [],
+            'bookingAvailability' => [
+                'type' => 'Available',
+                'capacity' => 150,
+            ],
+        ];
+
+        /** @var PeriodicCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PeriodicCalendar::class, $result);
+        $this->assertEquals(
+            BookingAvailability::Available()->withCapacity(150),
+            $result->getBookingAvailability()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_defaults_to_available_booking_availability_for_a_permanent_calendar_without_explicit_value(): void
+    {
+        $data = [
+            'calendarType' => 'permanent',
+            'openingHours' => [],
+        ];
+
+        /** @var PermanentCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PermanentCalendar::class, $result);
+        $this->assertEquals(BookingAvailability::Available(), $result->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
+    public function it_defaults_to_available_booking_availability_for_a_periodic_calendar_without_explicit_value(): void
+    {
+        $data = [
+            'calendarType' => 'periodic',
+            'startDate' => '2024-01-01T00:00:00+00:00',
+            'endDate' => '2024-12-31T23:59:59+00:00',
+            'openingHours' => [],
+        ];
+
+        /** @var PeriodicCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PeriodicCalendar::class, $result);
+        $this->assertEquals(BookingAvailability::Available(), $result->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_explicit_unavailable_booking_availability_on_a_permanent_calendar(): void
+    {
+        $data = [
+            'calendarType' => 'permanent',
+            'openingHours' => [],
+            'bookingAvailability' => ['type' => 'Unavailable'],
+        ];
+
+        /** @var PermanentCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PermanentCalendar::class, $result);
+        $this->assertEquals(BookingAvailability::Available(), $result->getBookingAvailability());
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_explicit_unavailable_booking_availability_on_a_periodic_calendar(): void
+    {
+        $data = [
+            'calendarType' => 'periodic',
+            'startDate' => '2024-01-01T00:00:00+00:00',
+            'endDate' => '2024-12-31T23:59:59+00:00',
+            'openingHours' => [],
+            'bookingAvailability' => ['type' => 'Unavailable'],
+        ];
+
+        /** @var PeriodicCalendar $result */
+        $result = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertInstanceOf(PeriodicCalendar::class, $result);
+        $this->assertEquals(BookingAvailability::Available(), $result->getBookingAvailability());
     }
 
     /**

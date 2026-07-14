@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use PHPUnit\Framework\TestCase;
 
 class SingleSubEventCalendarTest extends TestCase
@@ -22,7 +21,6 @@ class SingleSubEventCalendarTest extends TestCase
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available()),
-                new BookingInfo(),
             )
         );
     }
@@ -116,7 +114,6 @@ class SingleSubEventCalendarTest extends TestCase
             ),
             new Status(StatusType::Available()),
             (new BookingAvailability(BookingAvailabilityType::Available()))->withRemainingCapacity(42),
-            new BookingInfo(),
         );
 
         $calendar = (new SingleSubEventCalendar($subEventWithRemainingCapacity))
@@ -140,7 +137,6 @@ class SingleSubEventCalendarTest extends TestCase
             ),
             new Status(StatusType::Available()),
             (new BookingAvailability(BookingAvailabilityType::Available()))->withCapacity(100),
-            new BookingInfo(),
         );
 
         $calendar = (new SingleSubEventCalendar($subEventWithCapacity))
@@ -164,7 +160,6 @@ class SingleSubEventCalendarTest extends TestCase
             ),
             new Status(StatusType::Available()),
             (new BookingAvailability(BookingAvailabilityType::Available()))->withCapacity(100)->withRemainingCapacity(42),
-            new BookingInfo(),
         );
 
         $calendar = (new SingleSubEventCalendar($subEventWithBoth))
@@ -204,7 +199,6 @@ class SingleSubEventCalendarTest extends TestCase
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available()),
-                new BookingInfo(),
             )
         );
 

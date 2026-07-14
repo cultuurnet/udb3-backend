@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 
 final class SubEvent
@@ -15,8 +14,6 @@ final class SubEvent
 
     private BookingAvailability $bookingAvailability;
 
-    private BookingInfo $bookingInfo;
-
     private ?TimeImmutableRange $childcareTimeRange = null;
 
     private bool $overnight = false;
@@ -24,13 +21,11 @@ final class SubEvent
     public function __construct(
         DateRange $dateRange,
         Status $status,
-        BookingAvailability $bookingAvailability,
-        BookingInfo $bookingInfo
+        BookingAvailability $bookingAvailability
     ) {
         $this->dateRange = $dateRange;
         $this->status = $status;
         $this->bookingAvailability = $bookingAvailability;
-        $this->bookingInfo = $bookingInfo;
     }
 
     public static function createAvailable(DateRange $dateRange): self
@@ -38,8 +33,7 @@ final class SubEvent
         return new self(
             $dateRange,
             new Status(StatusType::Available()),
-            new BookingAvailability(BookingAvailabilityType::Available()),
-            new BookingInfo()
+            new BookingAvailability(BookingAvailabilityType::Available())
         );
     }
 
@@ -54,13 +48,6 @@ final class SubEvent
     {
         $clone = clone $this;
         $clone->bookingAvailability = $bookingAvailability;
-        return $clone;
-    }
-
-    public function withBookingInfo(BookingInfo $bookingInfo): self
-    {
-        $clone = clone $this;
-        $clone->bookingInfo = $bookingInfo;
         return $clone;
     }
 
@@ -91,11 +78,6 @@ final class SubEvent
     public function getBookingAvailability(): BookingAvailability
     {
         return $this->bookingAvailability;
-    }
-
-    public function getBookingInfo(): BookingInfo
-    {
-        return $this->bookingInfo;
     }
 
     public function getChildcareTimeRange(): ?TimeImmutableRange
