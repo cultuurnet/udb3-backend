@@ -695,7 +695,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
-            'completeness' => 8,
+            'completeness' => 9,
         ];
 
         $body = $this->project($imageAdded, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -747,7 +747,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
-            'completeness' => 8,
+            'completeness' => 9,
         ];
 
         $body = $this->project($imageUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
