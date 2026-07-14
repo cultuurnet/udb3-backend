@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
@@ -18,13 +16,11 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
 {
     private StatusDenormalizer $statusDenormalizer;
     private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
-    private BookingInfoDenormalizer $bookingInfoDenormalizer;
 
     public function __construct()
     {
         $this->statusDenormalizer = new StatusDenormalizer();
         $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
-        $this->bookingInfoDenormalizer = new BookingInfoDenormalizer();
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -56,12 +52,6 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
                 )
             );
         }
-        if (isset($data['bookingInfo'])) {
-            $subEventUpdate = $subEventUpdate->withBookingInfo(
-                $this->bookingInfoDenormalizer->denormalize($data['bookingInfo'], BookingInfo::class)
-            );
-        }
-
         if (isset($data['childcare'])) {
             $subEventUpdate = $subEventUpdate->withChildcareTimeRange(
                 $this->denormalizeChildcare($data['childcare'])

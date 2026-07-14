@@ -621,7 +621,6 @@ class ImmutableOfferTest extends TestCase
                 ),
                 new Status(StatusType::Available()),
                 new BookingAvailability(BookingAvailabilityType::Available()),
-                new BookingInfo(),
             )
         );
     }
