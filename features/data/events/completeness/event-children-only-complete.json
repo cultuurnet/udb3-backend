@@ -1,0 +1,120 @@
+{
+  "@context": "/contexts/event",
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Volledig evenement",
+    "en": "Complete event"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    },
+    {
+      "id": "1.8.3.1.0",
+      "label": "Pop en rock",
+      "domain": "theme"
+    }
+  ],
+  "location": {
+    "@id": "%{baseUrl}/places/%{placeId}"
+  },
+  "calendarType": "single",
+  "startDate": "2021-05-17T08:00:00+00:00",
+  "endDate": "2021-05-18T22:00:00+00:00",
+  "bookingAvailability": {
+    "type": "Available",
+    "capacity": 300
+  },
+  "subEvent": [
+    {
+      "id": 0,
+      "startDate": "2021-05-17T08:00:00+00:00",
+      "endDate": "2021-05-18T22:00:00+00:00",
+      "status": {
+        "type": "Available"
+      },
+      "bookingAvailability": {
+        "type": "Available",
+        "capacity": 300,
+        "remainingCapacity": 150
+      }
+    }
+  ],
+  "typicalAgeRange": "6-12",
+  "description": {
+    "nl": "Dit is een uitgebreide Nederlandstalige beschrijving van het evenement die met opzet langer is dan tweehonderd tekens, zodat het beschrijvingsveld meetelt voor de volledigheidsscore van dit evenement in UiTdatabank. Iedereen is van harte welkom.",
+    "en": "English description"
+  },
+  "priceInfo": [
+    {
+      "category": "base",
+      "price": 10.5,
+      "priceCurrency": "EUR",
+      "name": {
+        "nl": "Basistarief",
+        "fr": "Tarif de base",
+        "en": "Base tariff",
+        "de": "Basisrate"
+      }
+    }
+  ],
+  "contactPoint": {
+    "phone": [
+      "0123456789"
+    ],
+    "email": [
+      "info@example.com"
+    ],
+    "url": [
+      "https://www.example.com"
+    ]
+  },
+  "bookingInfo": {
+    "phone": "0123456789",
+    "email": "info@example.com",
+    "url": "https://www.example.com",
+    "urlLabel": {
+      "nl": "Nederlandse beschrijving",
+      "en": "English description"
+    },
+    "availabilityStarts": "2021-05-17T22:00:00+00:00",
+    "availabilityEnds": "2021-05-17T22:00:00+00:00"
+  },
+  "faqs": [
+    {
+      "nl": {
+        "question": "Hoe geraak ik er?",
+        "answer": "Met de bus."
+      },
+      "en": {
+        "question": "How do I get there?",
+        "answer": "By bus."
+      }
+    }
+  ],
+  "mediaObject": [
+    {
+      "@id": "%{baseUrl}/images/%{imageId}",
+      "contentUrl": "https://images.uitdatabank.dev/%{imageId}.png",
+      "thumbnailUrl": "https://images.uitdatabank.dev/%{imageId}.png",
+      "copyrightHolder": "publiq vzw",
+      "description": "A nice logo",
+      "inLanguage": "en"
+    }
+  ],
+  "videos": [
+    {
+      "id": "b504cf44-9ab8-4641-9934-38d1cc67242c",
+      "url": "https://www.youtube.com/watch?v=cEItmb_a20D",
+      "embedUrl": "https://www.youtube.com/embed/cEItmb_a20D",
+      "language": "nl",
+      "copyrightHolder": "publiq"
+    }
+  ],
+  "organizer": {
+    "@id": "%{baseUrl}/organizers/%{organizerId}"
+  },
+  "childrenOnly": true
+}

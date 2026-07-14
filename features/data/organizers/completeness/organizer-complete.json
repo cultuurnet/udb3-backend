@@ -1,0 +1,34 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "%{name}"
+  },
+  "url": "https://www.%{name}.be",
+  "address": {
+    "nl": {
+      "streetAddress": "Henegouwenkaai 41-43",
+      "postalCode": "1080",
+      "addressLocality": "Brussel",
+      "addressCountry": "BE"
+    }
+  },
+  "contactPoint": {
+    "phone": [
+      "016 10 20 30"
+    ],
+    "email": [
+      "info@example.com"
+    ],
+    "url": [
+      "https://www.example.com"
+    ]
+  },
+  "description": {
+    "nl": "Dit is een uitgebreide Nederlandstalige beschrijving van de organisatie die met opzet langer is dan tweehonderd tekens, zodat het beschrijvingsveld meetelt voor de volledigheidsscore van deze organisatie in UiTdatabank. Iedereen is van harte welkom."
+  },
+  "images": [
+    {
+      "@id": "%{baseUrl}/images/%{imageId}"
+    }
+  ]
+}
