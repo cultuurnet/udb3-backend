@@ -14,7 +14,7 @@ Feature: Test completeness score for places
     And I keep the value of the JSON response at "imageId" as "imageId"
     And I create an organizer from "organizers/organizer.json" and save the "organizerId" as "organizerId"
 
-  Scenario: A place with all fields filled in scores a completeness of 98
+  Scenario: A place with all fields filled in scores a completeness of 100
     When I create a place from "places/completeness/place-complete.json" and save the "url" as "placeUrl"
     And I get the place at "%{placeUrl}"
     Then the JSON response should not have "faqs"
