@@ -236,6 +236,56 @@ Feature: Test the hasChildcare offer search filter
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
+  Scenario: hasChildcare=true with a date range only matches sub-events that both fall in the window and have childcare
+    # Sub-event 1 (2026-09-07) has childcare; sub-event 2 (2026-09-14) does not.
+    # This guards against a top-level boolean check that would return the event for any date
+    # window just because the offer has childcare somewhere, even on a different sub-event.
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "multiple",
+      "startDate": "2026-09-07T10:00:00+02:00",
+      "endDate": "2026-09-14T18:00:00+02:00",
+      "subEvent": [
+        {
+          "startDate": "2026-09-07T10:00:00+02:00",
+          "endDate": "2026-09-07T18:00:00+02:00",
+          "childcare": {"start": "08:00", "end": "19:00"}
+        },
+        {
+          "startDate": "2026-09-14T10:00:00+02:00",
+          "endDate": "2026-09-14T18:00:00+02:00"
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    # Top-level check: the offer has childcare (sub-event 1), so it matches.
+    When I send a GET request to "/events" with parameters:
+      | hasChildcare          | true |
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # Date window covering sub-event 1 (which has childcare): matches.
+    When I send a GET request to "/events" with parameters:
+      | hasChildcare          | true                      |
+      | dateFrom              | 2026-09-07T10:00:00+02:00 |
+      | dateTo                | 2026-09-07T18:00:00+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # Date window covering sub-event 2 (which has NO childcare): must not match,
+    # even though the offer has childcare on a different sub-event.
+    When I send a GET request to "/events" with parameters:
+      | hasChildcare          | true                      |
+      | dateFrom              | 2026-09-14T10:00:00+02:00 |
+      | dateTo                | 2026-09-14T18:00:00+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+
+  @testIsolation
   Scenario: Places are never matched by hasChildcare=true
     Given I wait for the place with url "%{placeUrl}" to be indexed
     When I am using the Search API v3 base URL
