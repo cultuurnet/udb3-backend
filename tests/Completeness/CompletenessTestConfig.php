@@ -38,7 +38,6 @@ final class CompletenessTestConfig
             'typicalAgeRange' => 12,
             'mediaObject' => 8,
             'description' => 9,
-            'faqs' => 2,
             'priceInfo' => 7,
             'contactPoint' => 2,
             'bookingInfo' => 2,
