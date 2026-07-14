@@ -62,7 +62,7 @@ final class CompletenessFromWeights implements Completeness
 
             if ($weight->getName() === 'remainingCapacity' &&
                 $isChildrenOnly &&
-                isset($body['bookingAvailability']['remainingCapacity'])
+                $this->hasRemainingCapacity($body)
             ) {
                 $completeness += $weight->getValue();
                 continue;
@@ -89,6 +89,17 @@ final class CompletenessFromWeights implements Completeness
         }
 
         return (int) ($completeness / $this->getTotalWeightScore($isChildrenOnly) * 100);
+    }
+
+    private function hasRemainingCapacity(array $body): bool
+    {
+        foreach ($body['subEvent'] ?? [] as $subEvent) {
+            if (isset($subEvent['bookingAvailability']['remainingCapacity'])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function isContactPointEmpty(array $contactPoint): bool

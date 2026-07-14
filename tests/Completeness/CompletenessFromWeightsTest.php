@@ -42,7 +42,15 @@ final class CompletenessFromWeightsTest extends TestCase
         $body['bookingAvailability'] = [
             'type' => 'Available',
             'capacity' => 100,
-            'remainingCapacity' => 40,
+        ];
+        $body['subEvent'] = [
+            [
+                'bookingAvailability' => [
+                    'type' => 'Available',
+                    'capacity' => 100,
+                    'remainingCapacity' => 40,
+                ],
+            ],
         ];
 
         $this->assertSame(100, $this->calculate($this->eventCompleteness, $body));
