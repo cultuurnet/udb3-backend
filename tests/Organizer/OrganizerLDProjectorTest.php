@@ -13,8 +13,8 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Actor\ActorEvent;
 use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactory;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Completeness\CompletenessTestConfig;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
-use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
@@ -26,6 +26,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
@@ -104,14 +105,8 @@ final class OrganizerLDProjectorTest extends TestCase
                 new CultureFeedAddressFactory()
             ),
             new CompletenessFromWeights(
-                Weights::fromConfig([
-                    'name' => 20,
-                    'url' => 20,
-                    'contactPoint' => 20,
-                    'description' => 15,
-                    'images' => 15,
-                    'address' => 10,
-                ])
+                CompletenessTestConfig::forOrganizers(),
+                ItemType::organizer()
             ),
         );
 

@@ -58,7 +58,7 @@ Feature: Test the UDB3 events API
           "@type": "Event"
         }
         """
-    And the JSON response at "completeness" should be 65
+    And the JSON response at "completeness" should be 67
 
   Scenario: Create an event with capacity and remainingCapacity on multiple subEvents
     Given I set the JSON request payload from "places/place.json"
@@ -227,7 +227,7 @@ Feature: Test the UDB3 events API
     # Note that description and priceInfo cannot be removed via complete overwrite once set currently
     And the JSON response should have "description"
     And the JSON response should have "priceInfo"
-    And the JSON response at "completeness" should be 72
+    And the JSON response at "completeness" should be 73
 
   Scenario: Create an event with a workflow status ready for validation
     Given I set the JSON request payload from "places/place.json"
@@ -299,7 +299,7 @@ Feature: Test the UDB3 events API
       "url": []
     }
     """
-    And the JSON response at "completeness" should be 68
+    And the JSON response at "completeness" should be 69
 
   @bugfix # https://jira.uitdatabank.be/browse/III-4672
   Scenario: Create an event with single calendar type but missing subEvent
@@ -334,7 +334,7 @@ Feature: Test the UDB3 events API
       "@type": "Event"
     }
     """
-    And the JSON response at "completeness" should be 65
+    And the JSON response at "completeness" should be 67
 
   Scenario: Create an event with multiple calendar but only one sub event that gets converted to single calendar
     Given I set the JSON request payload from "places/place.json"
@@ -524,7 +524,7 @@ Feature: Test the UDB3 events API
           }
         """
     And the JSON response at "videos" should have 1 entry
-    And the JSON response at "completeness" should be 67
+    And the JSON response at "completeness" should be 68
 
   Scenario: Create an event with organizer through legacy imports path
     Given I set the JSON request payload from "places/place.json"

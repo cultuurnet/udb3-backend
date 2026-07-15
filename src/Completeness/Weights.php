@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Completeness;
 
+use CultuurNet\UDB3\Model\ValueObject\Collection\Behaviour\IsNotEmpty;
 use CultuurNet\UDB3\Model\ValueObject\Collection\Collection;
 
 final class Weights extends Collection
 {
+    use IsNotEmpty;
+
     public function __construct(Weight ...$weights)
     {
+        $this->guardNotEmpty($weights);
         parent::__construct(...$weights);
     }
 

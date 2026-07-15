@@ -7,8 +7,8 @@ namespace CultuurNet\UDB3\Offer\ReadModel\JSONLD;
 use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
+use CultuurNet\UDB3\Completeness\CompletenessTestConfig;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
-use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\Event\Events\Concluded;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -135,21 +136,8 @@ class OfferLDProjectorTest extends TestCase
                 ]
             ),
             new CompletenessFromWeights(
-                Weights::fromConfig([
-                    'type' => 12,
-                    'theme' => 5,
-                    'calendarType' => 12,
-                    'location' => 12,
-                    'name' => 12,
-                    'typicalAgeRange' => 12,
-                    'mediaObject' => 8,
-                    'description' => 9,
-                    'priceInfo' => 7,
-                    'contactPoint' => 3,
-                    'bookingInfo' => 3,
-                    'organizer' => 3,
-                    'videos' => 2,
-                ])
+                CompletenessTestConfig::forEvents(),
+                ItemType::event()
             )
         );
 
@@ -207,7 +195,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(Weights::fromConfig([]))
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents(), ItemType::event())
         );
 
         $documentRepository->expects($this->exactly(4))
@@ -256,7 +244,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(Weights::fromConfig([]))
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents(), ItemType::event())
         );
 
         $documentRepository->expects($this->once())
@@ -305,7 +293,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(Weights::fromConfig([]))
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents(), ItemType::event())
         );
 
         $documentRepository->expects($this->exactly(2))
@@ -861,7 +849,7 @@ class OfferLDProjectorTest extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
-            'completeness' => 7,
+            'completeness' => 6,
         ];
 
         $this->documentRepository->save($initialDocument);
@@ -978,7 +966,7 @@ class OfferLDProjectorTest extends TestCase
             ],
             'modified' => '2018-01-01T08:30:00+01:00',
             'playhead' => 1,
-            'completeness' => 8,
+            'completeness' => 7,
         ];
 
         $expectedWithoutFirstImage = (object) [
@@ -996,9 +984,8 @@ class OfferLDProjectorTest extends TestCase
             ],
             'modified' => '2018-01-01T08:30:00+01:00',
             'playhead' => 1,
-            'completeness' => 8,
+            'completeness' => 7,
         ];
-
 
         return [
             'document with 2 images, last image gets removed' => [
@@ -1554,7 +1541,7 @@ class OfferLDProjectorTest extends TestCase
                     ],
                 ],
                 'playhead' => 1,
-                'completeness' => 14,
+                'completeness' => 13,
             ],
             $eventBody
         );
@@ -1622,7 +1609,7 @@ class OfferLDProjectorTest extends TestCase
                     ],
                 ],
                 'playhead' => 1,
-                'completeness' => 14,
+                'completeness' => 13,
             ],
             $eventBody
         );
@@ -1671,7 +1658,7 @@ class OfferLDProjectorTest extends TestCase
                     ],
                 ],
                 'playhead' => 1,
-                'completeness' => 14,
+                'completeness' => 13,
             ],
             $eventBody
         );
@@ -1740,7 +1727,7 @@ class OfferLDProjectorTest extends TestCase
                     ],
                 ],
                 'playhead' => 1,
-                'completeness' => 14,
+                'completeness' => 13,
             ],
             $eventBody
         );
@@ -1871,7 +1858,7 @@ class OfferLDProjectorTest extends TestCase
                     ],
                 ],
                 'playhead' => 1,
-                'completeness' => 14,
+                'completeness' => 13,
             ],
             $eventBody
         );
@@ -1912,7 +1899,7 @@ class OfferLDProjectorTest extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
-            'completeness' => 3,
+            'completeness' => 2,
         ];
 
         $this->assertEquals($expectedBody, $body);
@@ -1951,7 +1938,7 @@ class OfferLDProjectorTest extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
-            'completeness' => 3,
+            'completeness' => 2,
         ];
 
         $body = $this->project($organizerUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
@@ -2506,7 +2493,7 @@ class OfferLDProjectorTest extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
-            'completeness' => 15,
+            'completeness' => 14,
         ];
 
         $event = new BookingInfoUpdated($id, new BookingInfo(

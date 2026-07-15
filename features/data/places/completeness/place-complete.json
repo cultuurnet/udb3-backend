@@ -1,0 +1,109 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "%{name}"
+  },
+  "terms": [
+    {
+      "id": "Yf4aZBfsUEu2NsQqsprngw"
+    }
+  ],
+  "address": {
+    "nl": {
+      "addressCountry": "BE",
+      "addressLocality": "Scherpenheuvel-Zichem",
+      "postalCode": "3271",
+      "streetAddress": "Hoornblaas 107"
+    }
+  },
+  "calendarType": "permanent",
+  "openingHours": [
+    {
+      "dayOfWeek": [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday"
+      ],
+      "opens": "17:00",
+      "closes": "23:59"
+    }
+  ],
+  "typicalAgeRange": "6-12",
+  "bookingAvailability": {
+    "type": "Available",
+    "capacity": 200
+  },
+  "description": {
+    "nl": "Dit is een uitgebreide Nederlandstalige beschrijving van de plaats die met opzet langer is dan tweehonderd tekens, zodat het beschrijvingsveld meetelt voor de volledigheidsscore van deze plaats in UiTdatabank. Iedereen is van harte welkom."
+  },
+  "priceInfo": [
+    {
+      "category": "base",
+      "price": 10.5,
+      "priceCurrency": "EUR",
+      "name": {
+        "nl": "Basistarief",
+        "fr": "Tarif de base",
+        "en": "Base tariff",
+        "de": "Basisrate"
+      }
+    }
+  ],
+  "contactPoint": {
+    "phone": [
+      "016 10 20 30"
+    ],
+    "email": [
+      "info@example.com"
+    ],
+    "url": [
+      "https://www.example.com"
+    ]
+  },
+  "bookingInfo": {
+    "phone": "016 10 20 30",
+    "email": "info@example.com",
+    "url": "https://www.example.com",
+    "urlLabel": {
+      "nl": "Bestel hier je tickets"
+    },
+    "availabilityStarts": "2020-05-17T22:00:00+00:00",
+    "availabilityEnds": "2028-05-17T22:00:00+00:00"
+  },
+  "faqs": [
+    {
+      "nl": {
+        "question": "Hoe geraak ik er?",
+        "answer": "Met de bus."
+      },
+      "en": {
+        "question": "How do I get there?",
+        "answer": "By bus."
+      }
+    }
+  ],
+  "mediaObject": [
+    {
+      "@id": "%{baseUrl}/images/%{imageId}",
+      "contentUrl": "https://images.uitdatabank.dev/%{imageId}.png",
+      "thumbnailUrl": "https://images.uitdatabank.dev/%{imageId}.png",
+      "copyrightHolder": "publiq vzw",
+      "description": "A nice logo",
+      "inLanguage": "en"
+    }
+  ],
+  "videos": [
+    {
+      "id": "b504cf44-9ab8-4641-9934-38d1cc67242c",
+      "url": "https://www.youtube.com/watch?v=cEItmb_a20D",
+      "embedUrl": "https://www.youtube.com/embed/cEItmb_a20D",
+      "language": "nl",
+      "copyrightHolder": "publiq"
+    }
+  ],
+  "organizer": {
+    "@id": "%{baseUrl}/organizers/%{organizerId}"
+  }
+}

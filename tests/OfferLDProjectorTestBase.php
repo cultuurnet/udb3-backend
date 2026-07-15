@@ -8,9 +8,6 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
-use CultuurNet\UDB3\Media\Image;
-use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
-use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
@@ -18,8 +15,6 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint as Udb3ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
-use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -65,7 +60,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(DateTime::now());
     }
 
-    private function getEventClass(string $className): string
+    protected function getEventClass(string $className): string
     {
         return $this->eventNamespace . '\\Events\\' . $className;
     }
@@ -150,7 +145,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             'modified' => $this->recordedOn->toString(),
             'languages' => ['nl'],
             'playhead' => 3,
-            'completeness' => 3,
+            'completeness' => 2,
         ];
 
         $body = $this->project($bookingInfoUpdated, $id, null, $this->recordedOn->toBroadwayDateTime(), 3);
@@ -185,7 +180,7 @@ abstract class OfferLDProjectorTestBase extends TestCase
             ],
             'modified' => $this->recordedOn->toString(),
             'playhead' => 1,
-            'completeness' => 3,
+            'completeness' => 2,
         ];
 
         $this->assertEquals(
@@ -232,102 +227,6 @@ abstract class OfferLDProjectorTestBase extends TestCase
         ];
 
         $body = $this->project($descriptionUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
-
-        $this->assertEquals($expectedBody, $body);
-    }
-
-    /**
-     * @test
-     */
-    public function it_projects_the_adding_of_an_image(): void
-    {
-        $id = 'foo';
-        $imageId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
-        $description = new MediaDescription('Some description.');
-        $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
-        $type = new MIMEType('image/png');
-        $location = new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
-        $language = new Language('en');
-
-        $image = new Image($imageId, $type, $description, $copyrightHolder, $location, $language);
-        $eventClass = $this->getEventClass('ImageAdded');
-        $imageAdded = new $eventClass($id, $image);
-
-        $initialDocument = new JsonDocument($id);
-        $this->documentRepository->save($initialDocument);
-
-        $expectedBody = (object)[
-            'image' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-            'mediaObject' => [
-                (object)[
-                    '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
-                    '@type' => 'schema:ImageObject',
-                    'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
-                    'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                    'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                    'description' => $description->toString(),
-                    'copyrightHolder' => $copyrightHolder->toString(),
-                    'inLanguage' => 'en',
-                ],
-            ],
-            'modified' => $this->recordedOn->toString(),
-            'playhead' => 1,
-            'completeness' => 8,
-        ];
-
-        $body = $this->project($imageAdded, $id, null, $this->recordedOn->toBroadwayDateTime());
-
-        $this->assertEquals($expectedBody, $body);
-    }
-
-    /**
-     * @test
-     */
-    public function it_projects_the_editing_of_an_image(): void
-    {
-        $id = 'foo';
-        $imageId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
-        $description = 'Some description.';
-        $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
-        $eventClass = $this->getEventClass('ImageUpdated');
-        $imageUpdated = new $eventClass($id, $imageId->toString(), $description, $copyrightHolder->toString());
-
-        $initialDocument = new JsonDocument(
-            $id,
-            Json::encode([
-                'mediaObject' => [
-                    [
-                        '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
-                        '@type' => 'schema:ImageObject',
-                        'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                        'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                        'description' => 'olddescription',
-                        'copyrightHolder' => 'oldcopyrightHolder',
-                        'inLanguage' => 'en',
-                    ],
-                ],
-            ])
-        );
-        $this->documentRepository->save($initialDocument);
-
-        $expectedBody = (object)[
-            'mediaObject' => [
-                (object)[
-                    '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
-                    '@type' => 'schema:ImageObject',
-                    'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                    'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
-                    'description' => (string) $description,
-                    'copyrightHolder' => $copyrightHolder->toString(),
-                    'inLanguage' => 'en',
-                ],
-            ],
-            'modified' => $this->recordedOn->toString(),
-            'playhead' => 1,
-            'completeness' => 8,
-        ];
-
-        $body = $this->project($imageUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
 
         $this->assertEquals($expectedBody, $body);
     }

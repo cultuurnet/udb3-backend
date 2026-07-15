@@ -11,14 +11,19 @@ use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Completeness\CompletenessTestConfig;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
-use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\ChildrenOnlyUpdated;
 use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\BirthdateRangeDeleted;
 use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
+use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
+use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Event\Events\FaqsUpdated;
@@ -262,21 +267,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 ]
             ),
             new CompletenessFromWeights(
-                Weights::fromConfig([
-                    'type' => 12,
-                    'theme' => 5,
-                    'calendarType' => 12,
-                    'location' => 12,
-                    'name' => 12,
-                    'typicalAgeRange' => 12,
-                    'mediaObject' => 8,
-                    'description' => 9,
-                    'priceInfo' => 7,
-                    'contactPoint' => 3,
-                    'bookingInfo' => 3,
-                    'organizer' => 3,
-                    'videos' => 2,
-                ])
+                CompletenessTestConfig::forEvents(),
+                ItemType::event()
             ),
             $this->placeTypeResolver
         );
@@ -309,7 +301,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 60;
+        $jsonLD->completeness = 62;
 
         $this->mockPlaceService();
 
@@ -371,7 +363,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->created = $recordedOn;
         $jsonLD->modified = $recordedOn;
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 60;
+        $jsonLD->completeness = 62;
 
         $body = $this->project(
             $eventCopied,
@@ -415,7 +407,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 65;
+        $jsonLD->completeness = 67;
 
         $this->mockPlaceService();
 
@@ -466,7 +458,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->creator = $expectedCreator;
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 65;
+        $jsonLD->completeness = 67;
 
         $this->mockPlaceService();
 
@@ -597,9 +589,105 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = '20a72430-7e3e-4b75-ab59-043156b3169c';
-        $expectedJsonLD->completeness = 60;
+        $expectedJsonLD->completeness = 62;
 
         $this->assertEquals($expectedJsonLD, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_the_adding_of_an_image(): void
+    {
+        $id = 'foo';
+        $imageId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $description = new MediaDescription('Some description.');
+        $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
+        $type = new MIMEType('image/png');
+        $location = new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
+        $language = new Language('en');
+
+        $image = new Image($imageId, $type, $description, $copyrightHolder, $location, $language);
+        $eventClass = $this->getEventClass('ImageAdded');
+        $imageAdded = new $eventClass($id, $image);
+
+        $initialDocument = new JsonDocument($id);
+        $this->documentRepository->save($initialDocument);
+
+        $expectedBody = (object)[
+            'image' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+            'mediaObject' => [
+                (object)[
+                    '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                    '@type' => 'schema:ImageObject',
+                    'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
+                    'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                    'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                    'description' => $description->toString(),
+                    'copyrightHolder' => $copyrightHolder->toString(),
+                    'inLanguage' => 'en',
+                ],
+            ],
+            'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
+            'completeness' => 7,
+        ];
+
+        $body = $this->project($imageAdded, $id, null, $this->recordedOn->toBroadwayDateTime());
+
+        $this->assertEquals($expectedBody, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_the_editing_of_an_image(): void
+    {
+        $id = 'foo';
+        $imageId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $description = 'Some description.';
+        $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
+        $eventClass = $this->getEventClass('ImageUpdated');
+        $imageUpdated = new $eventClass($id, $imageId->toString(), $description, $copyrightHolder->toString());
+
+        $initialDocument = new JsonDocument(
+            $id,
+            Json::encode([
+                'mediaObject' => [
+                    [
+                        '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                        'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                        'description' => 'olddescription',
+                        'copyrightHolder' => 'oldcopyrightHolder',
+                        'inLanguage' => 'en',
+                    ],
+                ],
+            ])
+        );
+        $this->documentRepository->save($initialDocument);
+
+        $expectedBody = (object)[
+            'mediaObject' => [
+                (object)[
+                    '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                    '@type' => 'schema:ImageObject',
+                    'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                    'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                    'description' => (string) $description,
+                    'copyrightHolder' => $copyrightHolder->toString(),
+                    'inLanguage' => 'en',
+                ],
+            ],
+            'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
+            'completeness' => 7,
+        ];
+
+        $body = $this->project($imageUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
+
+        $this->assertEquals($expectedBody, $body);
     }
 
     /**
@@ -636,7 +724,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->created = $recordedOn;
         $expectedJsonLD->modified = $recordedOn;
         $expectedJsonLD->creator = $userId;
-        $expectedJsonLD->completeness = 60;
+        $expectedJsonLD->completeness = 62;
 
         $this->assertEquals($expectedJsonLD, $body);
     }
@@ -775,7 +863,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 65;
+        $jsonLD->completeness = 67;
 
         $this->mockPlaceService();
 
@@ -1256,7 +1344,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 53;
+        $expectedJsonLD->completeness = 55;
 
         $body = $this->project($givenMajorInfoUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
 
@@ -1401,7 +1489,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 ],
             ],
             'modified' => $this->recordedOn->toString(),
-            'completeness' => 24,
+            'completeness' => 25,
         ];
         $expectedBody->playhead = 1;
 
@@ -2436,7 +2524,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 65;
+        $jsonLD->completeness = 67;
 
         $this->mockPlaceService();
 
@@ -2503,7 +2591,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 60;
+        $jsonLD->completeness = 62;
 
         $this->mockPlaceService();
 
@@ -2570,7 +2658,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 60;
+        $jsonLD->completeness = 62;
 
         $this->mockPlaceService();
 
@@ -2640,7 +2728,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 60;
+        $jsonLD->completeness = 62;
 
         $this->mockPlaceService();
 
@@ -2752,7 +2840,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ];
         $jsonLD->typicalAgeRange = '-';
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 60;
+        $jsonLD->completeness = 62;
 
         $this->mockPlaceService();
 
