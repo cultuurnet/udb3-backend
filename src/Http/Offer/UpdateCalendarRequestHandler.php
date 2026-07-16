@@ -44,7 +44,7 @@ final class UpdateCalendarRequestHandler implements RequestHandlerInterface
 
         // Places may carry a capacity on their permanent/periodic calendar, events may not.
         if ($isEvent) {
-            $parsers[] = new EventCalendarCapacityValidatingRequestBodyParser();
+            $parsers[] = new CapacityValidatingRequestBodyParser();
         }
 
         $parsers[] = new DenormalizingRequestBodyParser(new CalendarDenormalizer(), Calendar::class);

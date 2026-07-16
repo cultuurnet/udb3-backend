@@ -82,6 +82,25 @@ Data files live in subdirectories that mirror the feature being tested (e.g. `fe
 
 When a payload is unique to one scenario and its specific content is what is under test (e.g. two adjusted-day entries with bilingual descriptions), keep it inline.
 
+### Use `@testIsolation` in search scenarios
+
+Tag every search scenario with `@testIsolation`. This generates a unique UUID label before the scenario, attaches it to every event/place created during the scenario, and automatically injects `labels:<uuid>` into the `q` parameter of every search request. The label acts as a scenario-scoped filter, so results are isolated without an explicit `q | %{eventUrl}` parameter in each table row.
+
+```gherkin
+@testIsolation
+Scenario: Event with childcare is matched by hasChildcare=true
+  When I create a minimal event with overrides and save the "url" as "eventUrl"
+  ...
+  And I wait for the event with url "%{eventUrl}" to be indexed
+  And I am using the Search API v3 base URL
+  When I send a GET request to "/events" with parameters:
+    | hasChildcare          | true |
+    | disableDefaultFilters | true |
+  Then the JSON response at "totalItems" should be 1
+```
+
+Without `@testIsolation`, scenarios must use `q | %{eventUrl}` to avoid interference from other indexed documents. With the tag, that row is redundant and should be omitted.
+
 ### No waiting for command completion
 
 All API requests are processed synchronously (except exports). Some older tests still contain `wait for the command` steps; new tests should not include these.

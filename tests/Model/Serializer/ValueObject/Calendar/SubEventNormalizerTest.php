@@ -11,9 +11,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
-use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use DateTimeImmutable;
 use DateTimeZone;
 use PHPUnit\Framework\TestCase;
@@ -47,46 +45,6 @@ final class SubEventNormalizerTest extends TestCase
         $this->assertArrayHasKey('bookingAvailability', $normalized);
         $this->assertSame($startDate->format(\DateTimeInterface::ATOM), $normalized['startDate']);
         $this->assertSame($endDate->format(\DateTimeInterface::ATOM), $normalized['endDate']);
-    }
-
-    /**
-     * @test
-     */
-    public function it_omits_booking_info_when_empty(): void
-    {
-        $timezone = new DateTimeZone('Europe/Brussels');
-        $startDate = new DateTimeImmutable('2025-03-15 10:00:00', $timezone);
-        $endDate = new DateTimeImmutable('2025-03-15 20:00:00', $timezone);
-
-        $subEvent = SubEvent::createAvailable(new DateRange($startDate, $endDate))
-            ->withBookingInfo(new BookingInfo());
-
-        $normalized = $this->normalizer->normalize($subEvent);
-
-        $this->assertArrayNotHasKey('bookingInfo', $normalized);
-    }
-
-    /**
-     * @test
-     */
-    public function it_includes_booking_info_when_present(): void
-    {
-        $timezone = new DateTimeZone('Europe/Brussels');
-        $startDate = new DateTimeImmutable('2025-03-15 10:00:00', $timezone);
-        $endDate = new DateTimeImmutable('2025-03-15 20:00:00', $timezone);
-
-        $bookingInfo = (new BookingInfo())
-            ->withEmailAddress(new EmailAddress('contact@example.com'));
-
-        $subEvent = SubEvent::createAvailable(new DateRange($startDate, $endDate))
-            ->withBookingInfo($bookingInfo);
-
-        $normalized = $this->normalizer->normalize($subEvent);
-
-        $this->assertArrayHasKey('bookingInfo', $normalized);
-        $this->assertIsArray($normalized['bookingInfo']);
-        $this->assertArrayHasKey('email', $normalized['bookingInfo']);
-        $this->assertSame('contact@example.com', $normalized['bookingInfo']['email']);
     }
 
     /**

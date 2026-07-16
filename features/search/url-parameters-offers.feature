@@ -267,7 +267,6 @@ Feature: Test the Search API v3 url parameters on offers
     %{eventId}
     """
 
-  @wip
   @testIsolation
   Scenario: Search for birthdate ranges using the common filter
     When I create a minimal place and save the "url" as "placeUrl"
@@ -289,7 +288,6 @@ Feature: Test the Search API v3 url parameters on offers
     %{eventId2020}
     """
 
-  @wip
   @testIsolation
   Scenario: Search by birthdate range using an url parameter also matches events with the equivalent typical age range
     When I create a minimal place and save the "url" as "placeUrl"

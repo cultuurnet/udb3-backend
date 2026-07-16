@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours\AdjustedDaysDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours\ClosedDaysDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar\OpeningHours\OpeningHourDenormalizer;
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedDays;
@@ -29,7 +28,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -38,7 +36,6 @@ final class CalendarDenormalizer implements DenormalizerInterface
 {
     private StatusDenormalizer $statusDenormalizer;
     private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
-    private BookingInfoDenormalizer $bookingInfoDenormalizer;
     private ClosedDaysDenormalizer $closedDaysDenormalizer;
     private AdjustedDaysDenormalizer $adjustedDaysDenormalizer;
 
@@ -46,7 +43,6 @@ final class CalendarDenormalizer implements DenormalizerInterface
     {
         $this->statusDenormalizer = new StatusDenormalizer();
         $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
-        $this->bookingInfoDenormalizer = new BookingInfoDenormalizer();
         $this->closedDaysDenormalizer = new ClosedDaysDenormalizer();
         $this->adjustedDaysDenormalizer = new AdjustedDaysDenormalizer();
     }
@@ -73,11 +69,6 @@ final class CalendarDenormalizer implements DenormalizerInterface
         $bookingAvailabilityData = $data['bookingAvailability'] ?? ['type' => 'Available'];
         $topLevelBookingAvailability = $this->bookingAvailabilityDenormalizer->denormalize($bookingAvailabilityData, BookingAvailability::class);
 
-        $topLevelBookingInfo = new BookingInfo();
-        if (isset($data['bookingInfo'])) {
-            $topLevelBookingInfo = $this->bookingInfoDenormalizer->denormalize($data['bookingInfo'], BookingInfo::class);
-        }
-
         if (($data['calendarType'] === 'single' || $data['calendarType'] === 'multiple') && isset($data['subEvent'])) {
             $data['calendarType'] = count($data['subEvent']) === 1 ? 'single' : 'multiple';
         }
@@ -86,9 +77,9 @@ final class CalendarDenormalizer implements DenormalizerInterface
             case 'single':
                 try {
                     if (isset($data['subEvent'][0])) {
-                        $subEvent = $this->denormalizeSubEvent($data['subEvent'][0], $topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo);
+                        $subEvent = $this->denormalizeSubEvent($data['subEvent'][0], $topLevelStatus, $topLevelBookingAvailability);
                     } else {
-                        $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo);
+                        $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus, $topLevelBookingAvailability);
                     }
                 } catch (RemainingCapacityExceedsCapacity $e) {
                     throw ApiProblem::bodyInvalidData(new SchemaError(
@@ -109,7 +100,7 @@ final class CalendarDenormalizer implements DenormalizerInterface
                 $schemaErrors = [];
                 foreach ($data['subEvent'] as $index => $subEventData) {
                     try {
-                        $denormalizedSubEvents[] = $this->denormalizeSubEvent($subEventData, $topLevelStatus, $topLevelBookingAvailability, $topLevelBookingInfo);
+                        $denormalizedSubEvents[] = $this->denormalizeSubEvent($subEventData, $topLevelStatus, $topLevelBookingAvailability);
                     } catch (RemainingCapacityExceedsCapacity $e) {
                         $schemaErrors[] = new SchemaError(
                             '/subEvent/' . $index . '/bookingAvailability/remainingCapacity',
@@ -184,8 +175,7 @@ final class CalendarDenormalizer implements DenormalizerInterface
     private function denormalizeSubEvent(
         array $subEventData,
         Status $topLevelStatus,
-        BookingAvailability $topLevelBookingAvailability,
-        BookingInfo $topLevelBookingInfo = new BookingInfo()
+        BookingAvailability $topLevelBookingAvailability
     ): SubEvent {
         if (!isset($subEventData['status']['type'])) {
             $subEventData['status']['type'] = $topLevelStatus->getType()->toString();
@@ -212,16 +202,10 @@ final class CalendarDenormalizer implements DenormalizerInterface
             BookingAvailability::class
         );
 
-        $bookingInfo = $topLevelBookingInfo;
-        if (isset($subEventData['bookingInfo'])) {
-            $bookingInfo = $this->bookingInfoDenormalizer->denormalize($subEventData['bookingInfo'], BookingInfo::class);
-        }
-
         $subEvent = new SubEvent(
             $this->denormalizeDateRange($subEventData),
             $status,
             $bookingAvailability,
-            $bookingInfo,
         );
 
         // Handle childcare: present key (even if empty) sets it, absent key preserves existing

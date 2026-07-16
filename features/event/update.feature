@@ -701,17 +701,6 @@ Feature: Test the UDB3 events API
         },
         "bookingAvailability": {
           "type": "Unavailable"
-        },
-        "bookingInfo": {
-          "phone": "string",
-          "email": "info@example.com",
-          "url": "https://www.example.com",
-          "urlLabel": {
-            "nl": "Nederlandse beschrijving",
-            "en": "English description"
-          },
-          "availabilityStarts": "2021-05-17T22:00:00+00:00",
-          "availabilityEnds": "2021-05-17T22:00:00+00:00"
         }
       },
       {
@@ -728,17 +717,6 @@ Feature: Test the UDB3 events API
         },
         "bookingAvailability": {
           "type": "Available"
-        },
-        "bookingInfo": {
-          "phone": "string",
-          "email": "info@example.com",
-          "url": "https://www.example.com",
-          "urlLabel": {
-            "nl": "Nederlandse beschrijving",
-            "en": "English description"
-          },
-          "availabilityStarts": "2021-05-17T22:00:00+00:00",
-          "availabilityEnds": "2021-05-17T22:00:00+00:00"
         }
       }
     ]

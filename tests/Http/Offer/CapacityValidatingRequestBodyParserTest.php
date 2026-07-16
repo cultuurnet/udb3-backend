@@ -10,17 +10,17 @@ use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use PHPUnit\Framework\TestCase;
 
-final class EventCalendarCapacityValidatingRequestBodyParserTest extends TestCase
+final class CapacityValidatingRequestBodyParserTest extends TestCase
 {
     use AssertApiProblemTrait;
 
-    private EventCalendarCapacityValidatingRequestBodyParser $parser;
+    private CapacityValidatingRequestBodyParser $parser;
 
     private Psr7RequestBuilder $requestBuilder;
 
     protected function setUp(): void
     {
-        $this->parser = new EventCalendarCapacityValidatingRequestBodyParser();
+        $this->parser = new CapacityValidatingRequestBodyParser();
         $this->requestBuilder = new Psr7RequestBuilder();
     }
 

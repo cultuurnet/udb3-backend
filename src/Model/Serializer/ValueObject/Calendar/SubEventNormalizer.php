@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use DateTimeInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,11 +21,6 @@ final class SubEventNormalizer implements NormalizerInterface
             'status' => (new StatusNormalizer())->normalize($subEvent->getStatus()),
             'bookingAvailability' => (new BookingAvailabilityNormalizer())->normalize($subEvent->getBookingAvailability()),
         ];
-
-        $bookingInfo = (new BookingInfoNormalizer())->normalize($subEvent->getBookingInfo());
-        if (!empty($bookingInfo)) {
-            $normalized['bookingInfo'] = $bookingInfo;
-        }
 
         $childcare = (new ChildcareTimeRangeNormalizer())->normalize($subEvent->getChildcareTimeRange());
         if ($childcare !== null) {

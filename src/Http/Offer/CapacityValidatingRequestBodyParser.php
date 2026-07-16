@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Http\Offer;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParser;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use Psr\Http\Message\ServerRequestInterface;
 
 /**
@@ -16,7 +17,7 @@ use Psr\Http\Message\ServerRequestInterface;
  * multiple calendars. Places may have a capacity on their permanent/periodic calendars, so this parser
  * must only be wired into event request handlers, never into the shared place handling.
  */
-final class EventCalendarCapacityValidatingRequestBodyParser implements RequestBodyParser
+final class CapacityValidatingRequestBodyParser implements RequestBodyParser
 {
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
@@ -27,7 +28,8 @@ final class EventCalendarCapacityValidatingRequestBodyParser implements RequestB
         }
 
         $calendarType = $data->calendarType ?? null;
-        if ($calendarType !== 'permanent' && $calendarType !== 'periodic') {
+        if ($calendarType !== CalendarType::permanent()->toString()
+            && $calendarType !== CalendarType::periodic()->toString()) {
             return $request;
         }
 

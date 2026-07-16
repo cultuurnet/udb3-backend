@@ -34,7 +34,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
-use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
@@ -230,7 +229,6 @@ final class KinepolisServiceTest extends TestCase
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available()),
-                                    new BookingInfo(),
                                 ),
                                 new SubEvent(
                                     new DateRange(
@@ -239,7 +237,6 @@ final class KinepolisServiceTest extends TestCase
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available()),
-                                    new BookingInfo(),
                                 ),
                             ),
                         ),
@@ -408,7 +405,6 @@ final class KinepolisServiceTest extends TestCase
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available()),
-                                    new BookingInfo(),
                                 ),
                                 new SubEvent(
                                     new DateRange(
@@ -417,7 +413,6 @@ final class KinepolisServiceTest extends TestCase
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available()),
-                                    new BookingInfo(),
                                 ),
                             ),
                         ),
@@ -588,7 +583,6 @@ final class KinepolisServiceTest extends TestCase
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available()),
-                                    new BookingInfo(),
                                 ),
                                 new SubEvent(
                                     new DateRange(
@@ -597,7 +591,6 @@ final class KinepolisServiceTest extends TestCase
                                     ),
                                     new Status(StatusType::Available()),
                                     new BookingAvailability(BookingAvailabilityType::Available()),
-                                    new BookingInfo(),
                                 ),
                             )
                         ),
@@ -673,7 +666,6 @@ final class KinepolisServiceTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                             new SubEvent(
                                 new DateRange(
@@ -682,7 +674,6 @@ final class KinepolisServiceTest extends TestCase
                                 ),
                                 new Status(StatusType::Available()),
                                 new BookingAvailability(BookingAvailabilityType::Available()),
-                                new BookingInfo(),
                             ),
                         )
                     )

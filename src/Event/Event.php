@@ -419,7 +419,6 @@ final class Event extends Offer
                 ),
                 $subEventStatus ?? $subEvent->getStatus(),
                 $subEventBookingAvailability ?? $subEvent->getBookingAvailability(),
-                $subEventUpdate->getBookingInfo() ?? $subEvent->getBookingInfo(),
             );
 
             // For PATCH requests: use updated childcare if explicitly provided, otherwise preserve existing.
