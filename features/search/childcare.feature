@@ -167,7 +167,7 @@ Feature: Test the hasChildcare offer search filter
     And the JSON response at "totalItems" should be 1
 
   @testIsolation
-  Scenario: Childcare hours do not extend the event date range
+  Scenario: Childcare hours do not influence dateFrom or dateTo filters
     # The activity runs 10:00-18:00 but childcare is configured for the wider 08:00-19:00 window.
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
