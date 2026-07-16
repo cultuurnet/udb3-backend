@@ -10,8 +10,8 @@ use CommerceGuys\Intl\Currency\CurrencyRepository;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\Cdb\CdbXmlPriceInfoParser;
 use CultuurNet\UDB3\Cdb\CdbXMLToJsonLDLabelImporter;
+use CultuurNet\UDB3\Completeness\CompletenessTestConfig;
 use CultuurNet\UDB3\Completeness\CompletenessFromWeights;
-use CultuurNet\UDB3\Completeness\Weights;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
@@ -21,6 +21,9 @@ use CultuurNet\UDB3\Cdb\PriceDescriptionParser;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
+use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
+use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
@@ -32,11 +35,15 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
+use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXmlContactInfoImporter;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\CdbXMLItemBaseImporter;
 use CultuurNet\UDB3\OfferLDProjectorTestBase;
@@ -122,20 +129,8 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                 ]
             ),
             new CompletenessFromWeights(
-                Weights::fromConfig([
-                    'type' => 17,
-                    'calendarType' => 12,
-                    'address' => 12,
-                    'name' => 12,
-                    'typicalAgeRange' => 12,
-                    'mediaObject' => 8,
-                    'description' => 9,
-                    'priceInfo' => 7,
-                    'contactPoint' => 3,
-                    'bookingInfo' => 3,
-                    'organizer' => 3,
-                    'videos' => 2,
-                ])
+                CompletenessTestConfig::forPlaces(),
+                ItemType::place()
             )
         );
 
@@ -662,6 +657,102 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
 
         $actualJsonLd = $this->project($placeUpdatedFromUdb2, '66f30742-dee9-4794-ac92-fa44634692b8');
         $this->assertEquals($expectedJsonLdAddress, $actualJsonLd->address);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_the_adding_of_an_image(): void
+    {
+        $id = 'foo';
+        $imageId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $description = new MediaDescription('Some description.');
+        $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
+        $type = new MIMEType('image/png');
+        $location = new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
+        $language = new Language('en');
+
+        $image = new Image($imageId, $type, $description, $copyrightHolder, $location, $language);
+        $eventClass = $this->getEventClass('ImageAdded');
+        $imageAdded = new $eventClass($id, $image);
+
+        $initialDocument = new JsonDocument($id);
+        $this->documentRepository->save($initialDocument);
+
+        $expectedBody = (object)[
+            'image' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+            'mediaObject' => [
+                (object)[
+                    '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                    '@type' => 'schema:ImageObject',
+                    'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
+                    'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                    'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                    'description' => $description->toString(),
+                    'copyrightHolder' => $copyrightHolder->toString(),
+                    'inLanguage' => 'en',
+                ],
+            ],
+            'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
+            'completeness' => 9,
+        ];
+
+        $body = $this->project($imageAdded, $id, null, $this->recordedOn->toBroadwayDateTime());
+
+        $this->assertEquals($expectedBody, $body);
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_the_editing_of_an_image(): void
+    {
+        $id = 'foo';
+        $imageId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $description = 'Some description.';
+        $copyrightHolder = new CopyrightHolder('Dirk Dirkington');
+        $eventClass = $this->getEventClass('ImageUpdated');
+        $imageUpdated = new $eventClass($id, $imageId->toString(), $description, $copyrightHolder->toString());
+
+        $initialDocument = new JsonDocument(
+            $id,
+            Json::encode([
+                'mediaObject' => [
+                    [
+                        '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                        'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                        'description' => 'olddescription',
+                        'copyrightHolder' => 'oldcopyrightHolder',
+                        'inLanguage' => 'en',
+                    ],
+                ],
+            ])
+        );
+        $this->documentRepository->save($initialDocument);
+
+        $expectedBody = (object)[
+            'mediaObject' => [
+                (object)[
+                    '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                    '@type' => 'schema:ImageObject',
+                    'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                    'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                    'description' => (string) $description,
+                    'copyrightHolder' => $copyrightHolder->toString(),
+                    'inLanguage' => 'en',
+                ],
+            ],
+            'modified' => $this->recordedOn->toString(),
+            'playhead' => 1,
+            'completeness' => 9,
+        ];
+
+        $body = $this->project($imageUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
+
+        $this->assertEquals($expectedBody, $body);
     }
 
     /**
