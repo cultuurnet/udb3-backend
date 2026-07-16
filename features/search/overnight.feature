@@ -11,22 +11,7 @@ Feature: Test the hasOvernight search filter on offers
 
   @testIsolation
   Scenario: A single event with an overnight sub-event matches hasOvernight=true
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
-      "calendarType": "single",
-      "startDate": "2126-08-01T09:00:00+02:00",
-      "endDate": "2126-08-05T17:00:00+02:00",
-      "subEvent": [
-        {
-          "startDate": "2126-08-01T09:00:00+02:00",
-          "endDate": "2126-08-05T17:00:00+02:00",
-          "overnight": true
-        }
-      ]
-    }
-    """
+    When I create an event from "events/overnight/event-single-with-overnight.json" and save the "url" as "eventUrl"
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
@@ -196,22 +181,7 @@ Feature: Test the hasOvernight search filter on offers
 
   @testIsolation
   Scenario: Overnight does not widen the date range of an event
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
-      "calendarType": "single",
-      "startDate": "2126-08-01T09:00:00+02:00",
-      "endDate": "2126-08-05T17:00:00+02:00",
-      "subEvent": [
-        {
-          "startDate": "2126-08-01T09:00:00+02:00",
-          "endDate": "2126-08-05T17:00:00+02:00",
-          "overnight": true
-        }
-      ]
-    }
-    """
+    When I create an event from "events/overnight/event-single-with-overnight.json" and save the "url" as "eventUrl"
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     # A date window covering the sub-event's own start/end still returns the event
@@ -234,22 +204,7 @@ Feature: Test the hasOvernight search filter on offers
 
   @testIsolation
   Scenario: hasOvernight=true combines with a matching date window
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
-      "calendarType": "single",
-      "startDate": "2126-08-01T09:00:00+02:00",
-      "endDate": "2126-08-05T17:00:00+02:00",
-      "subEvent": [
-        {
-          "startDate": "2126-08-01T09:00:00+02:00",
-          "endDate": "2126-08-05T17:00:00+02:00",
-          "overnight": true
-        }
-      ]
-    }
-    """
+    When I create an event from "events/overnight/event-single-with-overnight.json" and save the "url" as "eventUrl"
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
