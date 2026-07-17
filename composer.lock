@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6b1f05b82c0ec29cbedf7803d7d79c9c",
+    "content-hash": "7b1052e82771b10ce20388ccb7f43c4a",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6090,18 +6090,19 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-7324/bookinginfo-removal-subevent-json-schema",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "87dd1de2a599ad1aa40d7e45456e6ae067d3c48a"
+                "reference": "036639d4b4c04de09e2f21a3469ad463226c7730"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/87dd1de2a599ad1aa40d7e45456e6ae067d3c48a",
-                "reference": "87dd1de2a599ad1aa40d7e45456e6ae067d3c48a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/036639d4b4c04de09e2f21a3469ad463226c7730",
+                "reference": "036639d4b4c04de09e2f21a3469ad463226c7730",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6116,9 +6117,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7324/bookinginfo-removal-subevent-json-schema"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/main"
             },
-            "time": "2026-07-09T09:20:05+00:00"
+            "time": "2026-07-14T10:07:51+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
@@ -12619,6 +12620,6 @@
         "ext-tidy": "*",
         "ext-xmlreader": "*"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
 }
