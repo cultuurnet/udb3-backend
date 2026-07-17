@@ -287,6 +287,18 @@ Feature: Test the Search API v3 url parameters on offers
     """
     %{eventId2020}
     """
+    And the JSON response at "matchingBirthdateRanges" should be:
+    """
+    [
+      {
+         "from":"2020-01-01",
+         "to":"2020-12-31",
+         "matches":[
+            "http:\/\/io.uitdatabank.local:80\/events\/%{eventId2020}"
+         ]
+      }
+    ]
+    """
 
   @testIsolation
   Scenario: Search by birthdate range using an url parameter also matches events with the equivalent typical age range
