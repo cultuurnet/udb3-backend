@@ -37,7 +37,7 @@ Feature: Test creating places
     """
     And the JSON response at "workflowStatus" should be "DRAFT"
     And the JSON response at "calendarType" should be "permanent"
-    And the JSON response at "completeness" should be 54
+    And the JSON response at "completeness" should be 53
 
   Scenario: Create a place with contact point with missing fields
     Given I create a place from "places/place-with-contact-point-with-missing-fields.json" and save the "url" as "placeUrl"
@@ -50,7 +50,7 @@ Feature: Test creating places
       "url": []
     }
     """
-    And the JSON response at "completeness" should be 56
+    And the JSON response at "completeness" should be 55
 
   Scenario: Create a place with workflowStatus set to APPROVED
     Given I create a place from "places/place-with-workflow-status-approved.json" and save the "url" as "placeUrl"
@@ -98,7 +98,7 @@ Feature: Test creating places
     """
     And the JSON response at "workflowStatus" should be "READY_FOR_VALIDATION"
     And the JSON response at "calendarType" should be "permanent"
-    And the JSON response at "completeness" should be 54
+    And the JSON response at "completeness" should be 53
 
   Scenario: Create a place with only the required fields and workflowStatus approved via legacy imports path
     Given I import a new place from "places/place-with-workflow-status-approved.json" and save the "url" as "placeUrl"
