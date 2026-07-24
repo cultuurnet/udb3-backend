@@ -39,12 +39,33 @@ Feature: Test the Search API v3 url parameters on organizers
       | q    | id:%{organizerId} |
     Then the JSON response at "totalItems" should be 0
 
-  Scenario: Search for an organizer using the website filter
+  Scenario: Search for an organizer using the website filter using various casings & with/without scheme or www
     Given I create an organizer from "organizers/organizer-minimal.json" and save the "id" as "organizerId"
     And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | website | https://www.%{name}.be |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{organizerId}
+    """
+    When I send a GET request to "/organizers" with parameters:
+      | website | www.%{name}.be |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{organizerId}
+    """
+    When I send a GET request to "/organizers" with parameters:
+      | website | WWW.%{name}.BE |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{organizerId}
+    """
+    When I send a GET request to "/organizers" with parameters:
+      | website | %{name}.be |
     Then the JSON response at "totalItems" should be 1
     And the JSON response should include:
     """
