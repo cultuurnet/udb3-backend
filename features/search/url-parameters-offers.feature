@@ -270,9 +270,13 @@ Feature: Test the Search API v3 url parameters on offers
   @testIsolation
   Scenario: Search for birthdate ranges using the common filter
     When I create a minimal place and save the "url" as "placeUrl"
-    And I create an event from "events/event-with-birthdate-range-in-2020.json" and save the "id" as "eventId2020"
+    And I set the variable "birthdateRangeFrom" to "2020-01-31"
+    And I set the variable "birthdateRangeTo" to "2020-12-31"
+    And I create an event from "events/event-with-birthdate-range.json" and save the "id" as "eventId2020"
     And I wait for the event with url "/events/%{eventId2020}" to be indexed
-    And I create an event from "events/event-with-birthdate-range-in-2022.json" and save the "id" as "eventId2022"
+    And I set the variable "birthdateRangeFrom" to "2022-01-31"
+    And I set the variable "birthdateRangeTo" to "2022-12-31"
+    And I create an event from "events/event-with-birthdate-range.json" and save the "id" as "eventId2022"
     And I wait for the event with url "/events/%{eventId2022}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
@@ -295,6 +299,37 @@ Feature: Test the Search API v3 url parameters on offers
          "to":"2020-12-31",
          "matches":[
             "http:\/\/io.uitdatabank.local:80\/events\/%{eventId2020}"
+         ]
+      }
+    ]
+    """
+    When I send a GET request to "/events" with parameters:
+      | birthdateRangeFrom | 2020-01-01,2022-06-30 |
+      | birthdateRangeTo   | 2020-12-31,2022-12-31 |
+    Then the JSON response at "totalItems" should be 2
+    And the JSON response should include:
+    """
+    %{eventId2020}
+    """
+    And the JSON response should include:
+    """
+    %{eventId2022}
+    """
+    And the JSON response at "matchingBirthdateRanges" should be:
+    """
+    [
+      {
+         "from":"2020-01-01",
+         "to":"2020-12-31",
+         "matches":[
+            "http:\/\/io.uitdatabank.local:80\/events\/%{eventId2020}"
+         ]
+      },
+      {
+         "from":"2022-06-30",
+         "to":"2022-12-31",
+         "matches":[
+            "http:\/\/io.uitdatabank.local:80\/events\/%{eventId2022}"
          ]
       }
     ]
