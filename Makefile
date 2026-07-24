@@ -53,8 +53,7 @@ feature-init:
 feature-tag:
 	docker compose exec php composer feature -- --tags $(tag)
 
-feature-ci:
-	docker compose exec php composer feature -- --suite=default -f pretty -o std -f junit -o output/junit
+feature-ci: feature-ci-es8
 
 feature-ci-es8:
 	docker compose exec php composer feature -- --profile=es8 --suite=default -f pretty -o std -f junit -o output/junit
