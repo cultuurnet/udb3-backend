@@ -338,7 +338,9 @@ Feature: Test the Search API v3 url parameters on offers
   @testIsolation
   Scenario: Search by birthdate range using an url parameter also matches events with the equivalent typical age range
     When I create a minimal place and save the "url" as "placeUrl"
-    And I create an event from "events/event-with-birthdate-range-in-2020.json" and save the "id" as "eventId2020"
+    And I set the variable "birthdateRangeFrom" to "2020-01-31"
+    And I set the variable "birthdateRangeTo" to "2020-12-31"
+    And I create an event from "events/event-with-birthdate-range.json" and save the "id" as "eventId2020"
     And I wait for the event with url "/events/%{eventId2020}" to be indexed
     And I get the typical age range for one born in 2020 and keep it as "variableTypicalAgeRange"
     And I create an event from "events/event-with-variable-typical-age-range.json" and save the "id" as "eventIdWithAgeRange"
