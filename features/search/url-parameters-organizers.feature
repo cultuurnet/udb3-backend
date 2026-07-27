@@ -75,12 +75,67 @@ Feature: Test the Search API v3 url parameters on organizers
       | website | https://www.nonexistent-organizer.be |
     Then the JSON response at "totalItems" should be 0
 
-  Scenario: Search for an organizer using the domain filter
+  Scenario: Search for an organizer that was created with an uppercase website using the website and domain filters
+    Given I create a random name of 10 characters
+    And I set the JSON request payload to:
+    """
+    {
+      "mainLanguage": "nl",
+      "name": {
+        "nl": "%{name}"
+      },
+      "url": "https://WWW.%{name}.BE"
+    }
+    """
+    And I create an organizer and save the "id" as "organizerId"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/organizers" with parameters:
+      | website | %{name}.be |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{organizerId}
+    """
+    When I send a GET request to "/organizers" with parameters:
+      | domain | %{name}.be        |
+      | q      | id:%{organizerId} |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{organizerId}
+    """
+
+  Scenario: Search for an organizer using the domain filter using various casings & with/without www
     Given I create an organizer from "organizers/organizer-minimal.json" and save the "id" as "organizerId"
     And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/organizers" with parameters:
       | domain | %{name}.be        |
+      | q      | id:%{organizerId} |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{organizerId}
+    """
+    When I send a GET request to "/organizers" with parameters:
+      | domain | www.%{name}.be    |
+      | q      | id:%{organizerId} |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{organizerId}
+    """
+    When I send a GET request to "/organizers" with parameters:
+      | domain | WWW.%{name}.BE    |
+      | q      | id:%{organizerId} |
+    Then the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{organizerId}
+    """
+    When I send a GET request to "/organizers" with parameters:
+      | domain | %{name}.BE        |
       | q      | id:%{organizerId} |
     Then the JSON response at "totalItems" should be 1
     And the JSON response should include:
