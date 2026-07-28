@@ -119,3 +119,18 @@ Search tests can use scenario-based label isolation to prevent interference from
 - Search queries automatically filter by this label
 
 This ensures each scenario only sees its own data, regardless of what other tests create.
+
+```gherkin
+@testIsolation
+Scenario: Event with childcare is matched by hasChildcare=true
+  When I create a minimal event with overrides and save the "url" as "eventUrl"
+  ...
+  And I wait for the event with url "%{eventUrl}" to be indexed
+  And I am using the Search API v3 base URL
+  When I send a GET request to "/events" with parameters:
+    | hasChildcare          | true |
+    | disableDefaultFilters | true |
+  Then the JSON response at "totalItems" should be 1
+```
+
+Without `@testIsolation`, scenarios must use `q | %{eventUrl}` to avoid interference from other indexed documents. With the tag, that row is redundant and should be omitted.
