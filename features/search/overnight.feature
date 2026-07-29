@@ -207,3 +207,54 @@ Feature: Test the hasOvernight search filter on offers
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
+
+  @testIsolation
+  Scenario: hasOvernight=true does not match when the overnight sub-event falls outside the date window
+    # Day 1 and day 2 have no overnight; only day 3 (outside the queried window) is overnight.
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
+      "calendarType": "multiple",
+      "subEvent": [
+        {
+          "startDate": "2126-09-01T09:00:00+02:00",
+          "endDate": "2126-09-01T17:00:00+02:00"
+        },
+        {
+          "startDate": "2126-09-02T09:00:00+02:00",
+          "endDate": "2126-09-02T17:00:00+02:00"
+        },
+        {
+          "startDate": "2126-09-03T09:00:00+02:00",
+          "endDate": "2126-09-05T17:00:00+02:00",
+          "overnight": true
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    # Top-level check: the offer has an overnight sub-event (day 3), so it matches without a date filter.
+    When I send a GET request to "/events" with parameters:
+      | hasOvernight          | true |
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # Date window covering only day 1-2 (no overnight sub-event in range): must not match,
+    # even though the offer has overnight on a sub-event outside the window.
+    When I send a GET request to "/events" with parameters:
+      | hasOvernight          | true                      |
+      | dateFrom              | 2126-09-01T00:00:00+02:00 |
+      | dateTo                | 2126-09-02T23:59:59+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    # Date window covering day 3 (the overnight sub-event): matches.
+    When I send a GET request to "/events" with parameters:
+      | hasOvernight          | true                      |
+      | dateFrom              | 2126-09-03T00:00:00+02:00 |
+      | dateTo                | 2126-09-05T23:59:59+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
