@@ -15,13 +15,11 @@ Feature: Test the hasOvernight search filter on offers
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl} |
       | hasOvernight          | true        |
       | disableDefaultFilters | true        |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl} |
       | hasOvernight          | false       |
       | disableDefaultFilters | true        |
     Then the response status should be "200"
@@ -50,13 +48,11 @@ Feature: Test the hasOvernight search filter on offers
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl} |
       | hasOvernight          | true        |
       | disableDefaultFilters | true        |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl} |
       | hasOvernight          | false       |
       | disableDefaultFilters | true        |
     Then the response status should be "200"
@@ -86,13 +82,11 @@ Feature: Test the hasOvernight search filter on offers
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl} |
       | hasOvernight          | true        |
       | disableDefaultFilters | true        |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl} |
       | hasOvernight          | false       |
       | disableDefaultFilters | true        |
     Then the response status should be "200"
@@ -119,13 +113,11 @@ Feature: Test the hasOvernight search filter on offers
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl} |
       | hasOvernight          | false       |
       | disableDefaultFilters | true        |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl} |
       | hasOvernight          | true        |
       | disableDefaultFilters | true        |
     Then the response status should be "200"
@@ -151,13 +143,11 @@ Feature: Test the hasOvernight search filter on offers
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl} |
       | hasOvernight          | false       |
       | disableDefaultFilters | true        |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl} |
       | hasOvernight          | true        |
       | disableDefaultFilters | true        |
     Then the response status should be "200"
@@ -167,13 +157,11 @@ Feature: Test the hasOvernight search filter on offers
   Scenario: Places are never returned by hasOvernight=true
     Given I am using the Search API v3 base URL
     When I send a GET request to "/places" with parameters:
-      | q                     | %{placeUrl} |
       | hasOvernight          | true        |
       | disableDefaultFilters | true        |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
     When I send a GET request to "/places" with parameters:
-      | q                     | %{placeUrl} |
       | hasOvernight          | false       |
       | disableDefaultFilters | true        |
     Then the response status should be "200"
@@ -186,7 +174,6 @@ Feature: Test the hasOvernight search filter on offers
     And I am using the Search API v3 base URL
     # A date window covering the sub-event's own start/end still returns the event
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl}               |
       | dateFrom              | 2126-08-01T00:00:00+02:00 |
       | dateTo                | 2126-08-06T00:00:00+02:00 |
       | disableDefaultFilters | true                      |
@@ -195,7 +182,6 @@ Feature: Test the hasOvernight search filter on offers
     # A date window entirely after the sub-event's endDate returns nothing:
     # overnight has not extended the matched range beyond the actual endDate
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl}               |
       | dateFrom              | 2126-08-06T00:00:00+02:00 |
       | dateTo                | 2126-08-07T00:00:00+02:00 |
       | disableDefaultFilters | true                      |
@@ -208,7 +194,6 @@ Feature: Test the hasOvernight search filter on offers
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl}               |
       | hasOvernight          | true                      |
       | dateFrom              | 2126-08-01T00:00:00+02:00 |
       | dateTo                | 2126-08-06T00:00:00+02:00 |
@@ -216,7 +201,6 @@ Feature: Test the hasOvernight search filter on offers
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | q                     | %{eventUrl}               |
       | hasOvernight          | false                     |
       | dateFrom              | 2126-08-01T00:00:00+02:00 |
       | dateTo                | 2126-08-06T00:00:00+02:00 |
