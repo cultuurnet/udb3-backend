@@ -18,7 +18,7 @@ Feature: Test the Search API v3 boa feature
     And I am not using an UiTID v1 API key
 
   # boa scope: no, childrenOnly param: not given
-  # -> I only see my own children only event, not the one created by someone else
+  # -> I see neither my own children only event, not the one created by someone else
   #    The normal event always shows up.
   Scenario: Without boa scope and without childrenOnly parameter I only find my own children only events
     When I am authorized with an OAuth client access token for "test_client"
@@ -31,15 +31,15 @@ Feature: Test the Search API v3 boa feature
       | q | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId} OR %{basicEventId}) |
     And the JSON response should include:
     """
-    %{myChildrenOnlyEventId}
-    """
-    And the JSON response should include:
-    """
     %{basicEventId}
     """
     And the JSON response should not include:
     """
     %{otherChildrenOnlyEventId}
+    """
+    And the JSON response should not include:
+    """
+    %{myChildrenOnlyEventId}
     """
 
   # boa scope: no, childrenOnly param: true
@@ -95,7 +95,7 @@ Feature: Test the Search API v3 boa feature
     """
 
   # boa scope: yes, childrenOnly param: not given
-  # -> I see every children only event, mine and the one created by someone else
+  # -> I see no children only events, neither mine nor the one created by someone else
   #    The normal event always shows up.
   Scenario: With boa scope and without childrenOnly parameter I find all children only events
     When I am authorized with an OAuth client access token for "boa_client"
@@ -106,11 +106,11 @@ Feature: Test the Search API v3 boa feature
     And I am using a x-client-id header for client "boa_client"
     When I send a GET request to "/events" with parameters:
       | q | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId} OR %{basicEventId}) |
-    And the JSON response should include:
+    And the JSON response should not include:
     """
     %{myChildrenOnlyEventId}
     """
-    And the JSON response should include:
+    And the JSON response should not include:
     """
     %{otherChildrenOnlyEventId}
     """
