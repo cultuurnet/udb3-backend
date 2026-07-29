@@ -20,7 +20,7 @@ Feature: Test the Search API v3 boa feature
   # boa scope: no, childrenOnly param: not given
   # -> I see neither my own children only event, not the one created by someone else
   #    The normal event always shows up.
-  Scenario: Without boa scope and without childrenOnly parameter I only find my own children only events
+  Scenario: Without boa scope and without childrenOnly parameter I find no children only events
     When I am authorized with an OAuth client access token for "test_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
@@ -97,7 +97,7 @@ Feature: Test the Search API v3 boa feature
   # boa scope: yes, childrenOnly param: not given
   # -> I see no children only events, neither mine nor the one created by someone else
   #    The normal event always shows up.
-  Scenario: With boa scope and without childrenOnly parameter I find all children only events
+  Scenario: With boa scope and without childrenOnly parameter I find no children only events
     When I am authorized with an OAuth client access token for "boa_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
