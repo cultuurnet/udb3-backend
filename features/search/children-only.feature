@@ -94,6 +94,32 @@ Feature: Test the Search API v3 boa feature
     %{otherChildrenOnlyEventId}
     """
 
+  # boa scope: no, childrenOnly param: *
+  # -> I only see my own children only event, not the one created by someone else
+  #    The normal event also shows up.
+  Scenario: Without boa scope and with childrenOnly=* I find my own children only events and all regular events
+    When I am authorized with an OAuth client access token for "test_client"
+    And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
+    And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
+    And I am using the Search API v3 base URL
+    And I am using a x-client-id header for client "test_client"
+    When I send a GET request to "/events" with parameters:
+      | childrenOnly | *                                                                               |
+      | q            | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId} OR %{basicEventId}) |
+    And the JSON response should include:
+    """
+    %{basicEventId}
+    """
+    And the JSON response should include:
+    """
+    %{myChildrenOnlyEventId}
+    """
+    And the JSON response should not include:
+    """
+    %{otherChildrenOnlyEventId}
+    """
+
   # boa scope: yes, childrenOnly param: not given
   # -> I see no children only events, neither mine nor the one created by someone else
   #    The normal event always shows up.
@@ -169,6 +195,32 @@ Feature: Test the Search API v3 boa feature
     And the JSON response should not include:
     """
     %{otherChildrenOnlyEventId}
+    """
+
+  # boa scope: yes, childrenOnly param: *
+  # -> I see all children only events
+  #    The normal event also shows up.
+  Scenario: With boa scope and with childrenOnly=* I find all children only events and all regular events
+    When I am authorized with an OAuth client access token for "boa_client"
+    And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
+    And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
+    And I am using the Search API v3 base URL
+    And I am using a x-client-id header for client "boa_client"
+    When I send a GET request to "/events" with parameters:
+      | childrenOnly | *                                                                    |
+      | q | id:(%{otherChildrenOnlyEventId} OR %{myChildrenOnlyEventId} OR %{basicEventId}) |
+    And the JSON response should include:
+    """
+    %{myChildrenOnlyEventId}
+    """
+    And the JSON response should include:
+    """
+    %{otherChildrenOnlyEventId}
+    """
+    And the JSON response should include:
+    """
+    %{basicEventId}
     """
 
   Scenario: With an UiTID v1 API that is not matched to a clientId I cannot find any children only events
