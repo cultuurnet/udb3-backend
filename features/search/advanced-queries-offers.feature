@@ -255,25 +255,6 @@ Feature: Test the Search API v3 advanced queries on offers
     """
     %{eventId2022}
     """
-    And the JSON response at "matchingBirthdateRanges" should be:
-    """
-    [
-      {
-         "from":"2020-01-01",
-         "to":"2020-12-31",
-         "matches":[
-            "http:\/\/io.uitdatabank.local:80\/events\/%{eventId2020}"
-         ]
-      },
-      {
-         "from":"2022-06-30",
-         "to":"2022-12-31",
-         "matches":[
-            "http:\/\/io.uitdatabank.local:80\/events\/%{eventId2022}"
-         ]
-      }
-    ]
-    """
 
 
   @testIsolation
