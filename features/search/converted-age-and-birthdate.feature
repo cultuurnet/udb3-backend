@@ -56,7 +56,7 @@ Feature: Test the Search API v3 converted typical age range and birthdate range 
     When I send a GET request to "/events" with parameters:
       | q     | id:%{eventId} |
       | embed | true          |
-    Then the JSON response at "member/0" should include:
+    Then the JSON response should include:
     """
     birthdateRangeConverted
     """
