@@ -329,6 +329,25 @@ Feature: Test the Search API v3 url parameters on offers
     %{eventId2020}
     """
 
+  @testIsolation
+  Scenario: Search by a one-sided birthdate range using an url parameter
+    When I create a minimal place and save the "url" as "placeUrl"
+    And I create an event from "events/event-with-birthdate-range-in-2020.json" and save the "id" as "eventId2020"
+    And I wait for the event with url "/events/%{eventId2020}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | birthdateRangeFrom | 2019-01-01        |
+      | q                  | id:%{eventId2020} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | birthdateRangeTo | 2020-06-30        |
+      | q                | id:%{eventId2020} |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | birthdateRangeFrom | 2021-01-01        |
+      | q                  | id:%{eventId2020} |
+    Then the JSON response at "totalItems" should be 0
+
   Scenario: Search for country using the common filters
     When I create a minimal place and save the "id" as "placeId"
     And I publish the place at "/places/%{placeId}"
