@@ -1,0 +1,25 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Single event"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "location": {
+    "@id": "%{placeUrl}"
+  },
+  "calendarType": "single",
+  "startDate": "2017-04-22T10:00:00+00:00",
+  "endDate": "2017-04-22T18:00:00+00:00",
+  "workflowStatus": "READY_FOR_VALIDATION",
+  "typicalAgeRange": "9-11",
+  "birthdateRange": {
+    "from": "2010-01-01",
+    "to": "2010-12-31"
+  }
+}
