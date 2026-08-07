@@ -106,23 +106,20 @@ Feature: Test the Search API v3 converted typical age range and birthdate range 
     birthdateRangeConverted
     """
     When I send a GET request to "/events" with parameters:
-      | minAge        | 9             |
-      | maxAge        | 11            |
-      | availableFrom | *             |
-      | availableTo   | *             |
-      | q             | id:%{eventId} |
+      | minAge        | 9  |
+      | maxAge        | 11 |
+      | availableFrom | *  |
+      | availableTo   | *  |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | minAge        | 6             |
-      | maxAge        | 7             |
-      | availableFrom | *             |
-      | availableTo   | *             |
-      | q             | id:%{eventId} |
+      | minAge        | 6 |
+      | maxAge        | 7 |
+      | availableFrom | * |
+      | availableTo   | * |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
-      | birthdateRangeFrom | 2010-01-01    |
-      | birthdateRangeTo   | 2010-12-31    |
-      | availableFrom      | *             |
-      | availableTo        | *             |
-      | q                  | id:%{eventId} |
+      | birthdateRangeFrom | 2010-01-01 |
+      | birthdateRangeTo   | 2010-12-31 |
+      | availableFrom      | *          |
+      | availableTo        | *          |
     Then the JSON response at "totalItems" should be 1
