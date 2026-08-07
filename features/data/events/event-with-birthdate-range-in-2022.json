@@ -1,7 +1,7 @@
 {
   "mainLanguage": "nl",
   "name": {
-    "nl": "Permanent event"
+    "nl": "Single event"
   },
   "terms": [
     {
@@ -13,7 +13,9 @@
   "location": {
     "@id": "%{placeUrl}"
   },
-  "calendarType": "permanent",
+  "calendarType": "single",
+  "startDate": "2023-06-01T10:00:00+00:00",
+  "endDate": "2023-06-01T18:00:00+00:00",
   "workflowStatus": "READY_FOR_VALIDATION",
   "birthdateRange": {
     "from": "2022-01-31",
