@@ -45,6 +45,7 @@ Feature: Test the Search API v3 contributors
       | embed                 | true |
       | disableDefaultFilters | true |
       | q                     | contributors:%{placeContributorEmail} |
+    And I wait until the response contains 1 result
     And the JSON response at "member/0/@id" should be "%{placeUrl}"
     But the JSON response should not have "member/0/contributors"
 
@@ -67,5 +68,6 @@ Feature: Test the Search API v3 contributors
       | embed                 | true |
       | disableDefaultFilters | true |
       | q                     | contributors:%{eventContributorEmail} |
+    And I wait until the response contains 1 result
     And the JSON response at "member/0/@id" should be "%{eventUrl}"
     But the JSON response should not have "member/0/contributors"
