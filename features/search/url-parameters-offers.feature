@@ -348,16 +348,19 @@ Feature: Test the Search API v3 url parameters on offers
     And I wait for the event with url "/events/%{eventId2020}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | birthdateRangeFrom | 2019-01-01        |
-      | q                  | id:%{eventId2020} |
+      | birthdateRangeFrom | 2019-01-01 |
+      | availableFrom      | *          |
+      | availableTo        | *          |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | birthdateRangeTo | 2020-06-30        |
-      | q                | id:%{eventId2020} |
+      | birthdateRangeTo | 2020-06-30 |
+      | availableFrom    | *          |
+      | availableTo      | *          |
     Then the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | birthdateRangeFrom | 2021-01-01        |
-      | q                  | id:%{eventId2020} |
+      | birthdateRangeFrom | 2021-01-01 |
+      | availableFrom      | *          |
+      | availableTo        | *          |
     Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for country using the common filters

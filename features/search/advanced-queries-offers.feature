@@ -300,7 +300,9 @@ Feature: Test the Search API v3 advanced queries on offers
     And I wait for the event with url "/events/%{eventId2020}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | q | id:%{eventId2020} AND typicalAgeRange:[0 TO 200] |
+      | q             | typicalAgeRange:[0 TO 5] |
+      | availableFrom | *                        |
+      | availableTo   | *                        |
     Then the JSON response at "totalItems" should be 1
     And the JSON response should include:
     """
