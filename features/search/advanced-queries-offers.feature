@@ -308,6 +308,11 @@ Feature: Test the Search API v3 advanced queries on offers
     """
     %{eventId2020}
     """
+    When I send a GET request to "/events" with parameters:
+      | q             | typicalAgeRange:[2 TO 10] |
+      | availableFrom | *                         |
+      | availableTo   | *                         |
+    Then the JSON response at "totalItems" should be 0
 
   Scenario: Search for country using an advanced query
     When I create a minimal place and save the "id" as "placeId"
