@@ -626,6 +626,7 @@ final class EventLDProjector extends OfferLDProjector implements
 
         $jsonLD->birthdateRange = (object) (new BirthdateRangeNormalizer())
             ->normalize($birthdateRangeUpdated->birthdateRange);
+        unset($jsonLD->typicalAgeRange);
 
         return $document->withBody($jsonLD);
     }
@@ -636,6 +637,11 @@ final class EventLDProjector extends OfferLDProjector implements
         $jsonLD = $document->getBody();
 
         unset($jsonLD->birthdateRange);
+
+        // A typicalAgeRange that is still set is newer than the birthdate range, so it stays.
+        if (!isset($jsonLD->typicalAgeRange)) {
+            $jsonLD->typicalAgeRange = '-';
+        }
 
         return $document->withBody($jsonLD);
     }

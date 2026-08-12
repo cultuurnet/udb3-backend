@@ -2186,6 +2186,44 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
     /**
      * @test
+     * @dataProvider typicalAgeRangeBeforeBirthdateRangeDataProvider
+     */
+    public function it_removes_the_typical_age_range_when_a_birthdate_range_is_set(
+        string $typicalAgeRange
+    ): void {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $this->documentRepository->save(
+            new JsonDocument($eventId, Json::encode(['typicalAgeRange' => $typicalAgeRange]))
+        );
+
+        $body = $this->project(
+            new BirthdateRangeUpdated(
+                $eventId,
+                new BirthdateRange(
+                    new \DateTimeImmutable('2014-01-01'),
+                    new \DateTimeImmutable('2020-12-31')
+                )
+            ),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertFalse(property_exists($body, 'typicalAgeRange'));
+        $this->assertEquals('2014-01-01', $body->birthdateRange->from);
+    }
+
+    public function typicalAgeRangeBeforeBirthdateRangeDataProvider(): array
+    {
+        return [
+            'the default age range' => ['-'],
+            'a custom age range' => ['6-12'],
+        ];
+    }
+
+    /**
+     * @test
      */
     public function it_removes_birthdate_range_from_projection_when_deleted(): void
     {
@@ -2211,6 +2249,35 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $this->assertFalse(property_exists($body, 'birthdateRange'));
+        $this->assertEquals('-', $body->typicalAgeRange);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_a_custom_typical_age_range_when_the_birthdate_range_is_deleted(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $this->documentRepository->save(
+            new JsonDocument(
+                $eventId,
+                Json::encode([
+                    'typicalAgeRange' => '6-12',
+                    'birthdateRange' => ['from' => '2014-01-01', 'to' => '2020-12-31'],
+                ])
+            )
+        );
+
+        $body = $this->project(
+            new BirthdateRangeDeleted($eventId),
+            $eventId,
+            null,
+            $this->recordedOn->toBroadwayDateTime()
+        );
+
+        $this->assertFalse(property_exists($body, 'birthdateRange'));
+        $this->assertEquals('6-12', $body->typicalAgeRange);
     }
 
     /**
