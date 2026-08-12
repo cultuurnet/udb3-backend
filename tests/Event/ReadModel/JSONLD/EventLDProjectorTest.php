@@ -2186,7 +2186,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
     /**
      * @test
-     * @dataProvider typicalAgeRangeBeforeBirthdateRangeDataProvider
+     * @dataProvider existingAgeRangeProvider
      */
     public function it_removes_the_typical_age_range_when_a_birthdate_range_is_set(
         string $typicalAgeRange
@@ -2214,7 +2214,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $this->assertEquals('2014-01-01', $body->birthdateRange->from);
     }
 
-    public function typicalAgeRangeBeforeBirthdateRangeDataProvider(): array
+    public function existingAgeRangeProvider(): array
     {
         return [
             'the default age range' => ['-'],
