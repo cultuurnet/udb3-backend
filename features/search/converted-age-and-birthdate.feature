@@ -86,7 +86,7 @@ Feature: Test the Search API v3 converted typical age range and birthdate range 
     """
 
   @testIsolation
-  Scenario: An event entered with both a typical age range and a birthdate range keeps the entered age
+  Scenario: An event entered with both a typical age range and a birthdate range keeps only the birthdate range
     When I create a minimal place and save the "url" as "placeUrl"
     And I create an event from "events/event-with-age-and-birthdate-range-single.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
@@ -96,26 +96,23 @@ Feature: Test the Search API v3 converted typical age range and birthdate range 
       | embed         | true          |
       | availableFrom | *             |
       | availableTo   | *             |
-    Then the JSON response at "member/0/typicalAgeRange" should be "9-11"
-    And the JSON response should not include:
-    """
-    typicalAgeRangeConverted
-    """
+    Then the JSON response should not have "member/0/typicalAgeRange"
+    And the JSON response at "member/0/typicalAgeRangeConverted" should be "6-7"
     And the JSON response should not include:
     """
     birthdateRangeConverted
     """
     When I send a GET request to "/events" with parameters:
-      | minAge        | 9  |
-      | maxAge        | 11 |
-      | availableFrom | *  |
-      | availableTo   | *  |
-    Then the JSON response at "totalItems" should be 1
-    When I send a GET request to "/events" with parameters:
       | minAge        | 6 |
       | maxAge        | 7 |
       | availableFrom | * |
       | availableTo   | * |
+    Then the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | minAge        | 9  |
+      | maxAge        | 11 |
+      | availableFrom | *  |
+      | availableTo   | *  |
     Then the JSON response at "totalItems" should be 0
     When I send a GET request to "/events" with parameters:
       | birthdateRangeFrom | 2010-01-01 |
