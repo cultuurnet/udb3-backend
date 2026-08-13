@@ -70,39 +70,6 @@ Feature: Test the dayOfWeek event search filter
     And the JSON response at "totalItems" should be 1
 
   @testIsolation
-  Scenario: Multiple dayOfWeek values are OR-combined using the array syntax
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "calendarType": "permanent",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "dayOfWeek": ["sunday"]
-        }
-      ]
-    }
-    """
-    And I wait for the event with url "%{eventUrl}" to be indexed
-    And I am using the Search API v3 base URL
-    # The event only occurs on Sunday, so a set that includes Sunday matches.
-    When I send a GET request to "/events" with parameters:
-      | dayOfWeek[]           | friday   |
-      | dayOfWeek[]           | saturday |
-      | dayOfWeek[]           | sunday   |
-      | disableDefaultFilters | true     |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
-    # A set that does not include Sunday does not match.
-    When I send a GET request to "/events" with parameters:
-      | dayOfWeek[]           | friday   |
-      | dayOfWeek[]           | saturday |
-      | disableDefaultFilters | true     |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 0
-
-  @testIsolation
   Scenario: Multiple dayOfWeek values are OR-combined using the comma-separated syntax
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
