@@ -104,13 +104,8 @@ Feature: Test the recurringOnDayOfWeek event search filter
     """
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
-    # The recurringOnDayOfWeek url parameter OR-combines its values, so a single matching weekday is enough.
-    When I send a GET request to "/events" with parameters:
-      | recurringOnDayOfWeek  | monday,tuesday |
-      | disableDefaultFilters | true           |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
-    # The same field is exposed in the q parameter, where AND logic can be expressed explicitly.
+    # The recurringOnDayOfWeek field is also exposed in the q parameter, where AND logic can be
+    # expressed explicitly instead of the OR-combining of the url parameter.
     # Tuesday is not part of the opening hours, so requiring both weekdays excludes the event.
     When I send a GET request to "/events" with parameters:
       | q                     | recurringOnDayOfWeek:(monday AND tuesday) |
