@@ -356,3 +356,4 @@ Feature: Test the recurringOnDayOfWeek event search filter
       | recurringOnDayOfWeek  | someday |
       | disableDefaultFilters | true    |
     Then the response status should be "404"
+    And the JSON response at "detail" should include "someday"
