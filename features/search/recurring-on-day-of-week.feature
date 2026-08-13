@@ -356,6 +356,37 @@ Feature: Test the recurringOnDayOfWeek event search filter
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
+  Scenario: Multiple calendar event with fewer than four occurrences on a weekday is not matched by recurringOnDayOfWeek
+    # Only three sub-events, all on a Wednesday (2026-08-05, 2026-08-12 and 2026-08-19), so the
+    # weekday occurs fewer than the required minimum number of times (4).
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "multiple",
+      "startDate": "2026-08-05T10:00:00+02:00",
+      "endDate": "2026-08-19T18:00:00+02:00",
+      "subEvent": [
+        {"startDate": "2026-08-05T10:00:00+02:00", "endDate": "2026-08-05T18:00:00+02:00"},
+        {"startDate": "2026-08-12T10:00:00+02:00", "endDate": "2026-08-12T18:00:00+02:00"},
+        {"startDate": "2026-08-19T10:00:00+02:00", "endDate": "2026-08-19T18:00:00+02:00"}
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    # Without the recurringOnDayOfWeek filter the event is returned, so it is searchable.
+    When I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # With the recurringOnDayOfWeek filter it is not returned, because Wednesday occurs fewer than four times.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek  | wednesday |
+      | disableDefaultFilters | true      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+
+  @testIsolation
   Scenario: Single calendar event is out of scope and not matched by recurringOnDayOfWeek
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
