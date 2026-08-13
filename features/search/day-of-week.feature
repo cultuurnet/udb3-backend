@@ -161,32 +161,20 @@ Feature: Test the dayOfWeek event search filter
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
-  Scenario: Periodic event weekday is matched even when some of those weekdays are closed
-    # The event runs every Wednesday for several months, with two individual Wednesdays
-    # marked as closed. Closed days must be ignored, so dayOfWeek=wednesday still matches.
+  Scenario: Periodic event is matched when its weekday reaches the threshold exactly
+    # August 2026 contains exactly four Wednesdays (5, 12, 19 and 26), which is the minimum
+    # number of occurrences required, so wednesday is indexed and the event matches.
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
     {
       "calendarType": "periodic",
       "startDate": "2026-08-01T00:00:00+02:00",
-      "endDate": "2026-11-30T23:59:59+02:00",
+      "endDate": "2026-08-31T23:59:59+02:00",
       "openingHours": [
         {
           "opens": "09:00",
           "closes": "17:00",
           "dayOfWeek": ["wednesday"]
-        }
-      ],
-      "openingHoursClosedDays": [
-        {
-          "startDate": "2026-08-05",
-          "endDate": "2026-08-05",
-          "description": {"nl": "Gesloten"}
-        },
-        {
-          "startDate": "2026-08-12",
-          "endDate": "2026-08-12",
-          "description": {"nl": "Gesloten"}
         }
       ]
     }
@@ -198,6 +186,46 @@ Feature: Test the dayOfWeek event search filter
       | disableDefaultFilters | true      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
+
+  @testIsolation
+  Scenario: A closed day drops a weekday below the threshold so the event is no longer matched
+    # Same August 2026 window as the previous scenario, but the Wednesday of 5 August is closed.
+    # That leaves three days the event is effectively open on a Wednesday, which is below the
+    # required minimum of four, so wednesday is not indexed.
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "periodic",
+      "startDate": "2026-08-01T00:00:00+02:00",
+      "endDate": "2026-08-31T23:59:59+02:00",
+      "openingHours": [
+        {
+          "opens": "09:00",
+          "closes": "17:00",
+          "dayOfWeek": ["wednesday"]
+        }
+      ],
+      "openingHoursClosedDays": [
+        {
+          "startDate": "2026-08-05",
+          "endDate": "2026-08-05"
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    # Without the dayOfWeek filter the event is returned, so it is indexed and searchable.
+    When I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # With the dayOfWeek filter it is not returned, because the closed day brings Wednesday down to three.
+    When I send a GET request to "/events" with parameters:
+      | dayOfWeek             | wednesday |
+      | disableDefaultFilters | true      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
 
   @testIsolation
   Scenario: Periodic event with fewer than four occurrences on a weekday is not matched by dayOfWeek
