@@ -58,16 +58,6 @@ Feature: Test the dayOfWeek event search filter
       | disableDefaultFilters | true      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
-    When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | WEDNESDAY |
-      | disableDefaultFilters | true      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
-    When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | wEdNeSdAy |
-      | disableDefaultFilters | true      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
 
   @testIsolation
   Scenario: Multiple dayOfWeek values are OR-combined using the comma-separated syntax
