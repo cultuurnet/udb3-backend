@@ -222,6 +222,39 @@ Feature: Test the recurringOnDayOfWeek event search filter
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
+  Scenario: A closed day that keeps a weekday above the threshold does not affect matching
+    # August and September 2026 together contain nine Wednesdays, so closing the one of 5 August still
+    # leaves eight, which is above the required minimum of four. Wednesday stays indexed.
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "periodic",
+      "startDate": "2026-08-01T00:00:00+02:00",
+      "endDate": "2026-09-30T23:59:59+02:00",
+      "openingHours": [
+        {
+          "opens": "09:00",
+          "closes": "17:00",
+          "dayOfWeek": ["wednesday"]
+        }
+      ],
+      "openingHoursClosedDays": [
+        {
+          "startDate": "2026-08-05",
+          "endDate": "2026-08-05"
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek  | wednesday |
+      | disableDefaultFilters | true      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+
+  @testIsolation
   Scenario: Periodic event with fewer than four occurrences on a weekday is not matched by recurringOnDayOfWeek
     # The event runs on Wednesdays but only spans two weeks (2026-08-05 and 2026-08-12),
     # so the weekday occurs fewer than the required minimum number of times (4).
