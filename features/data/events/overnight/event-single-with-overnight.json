@@ -1,0 +1,16 @@
+{
+  "mainLanguage": "nl",
+  "name": {"nl": "Zomerkamp"},
+  "location": {"@id": "%{placeUrl}"},
+  "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
+  "calendarType": "single",
+  "startDate": "2126-08-01T09:00:00+02:00",
+  "endDate": "2126-08-05T17:00:00+02:00",
+  "subEvent": [
+    {
+      "startDate": "2126-08-01T09:00:00+02:00",
+      "endDate": "2126-08-05T17:00:00+02:00",
+      "overnight": true
+    }
+  ]
+}

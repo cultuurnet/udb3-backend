@@ -1,0 +1,42 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Periodic event"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "location": {
+    "@id": "%{placeUrl}"
+  },
+  "calendarType": "periodic",
+  "startDate": "2017-04-22T10:00:00+00:00",
+  "endDate": "2017-12-31T18:00:00+00:00",
+  "openingHours": [
+    {
+      "opens": "10:00",
+      "closes": "16:00",
+      "dayOfWeek": [
+        "monday",
+        "tuesday"
+      ]
+    },
+    {
+      "opens": "09:00",
+      "closes": "17:00",
+      "dayOfWeek": [
+        "saturday",
+        "sunday"
+      ]
+    }
+  ],
+  "workflowStatus": "READY_FOR_VALIDATION",
+  "birthdateRange": {
+    "from": "2010-01-01",
+    "to": "2010-12-31"
+  }
+}

@@ -225,12 +225,11 @@ trait EventSteps
     }
 
     /**
-     * @When I get the typical age range for one born in :birthYear and keep it as :typicalAgeRange
+     * @When I get the typical age range for someone born in :birthYear as of :referenceYear and keep it as :typicalAgeRange
      */
-    public function iGetTheTypicalAgeRangeForOneBornIn(int $birthYear, string $typicalAgeRange): void
+    public function iGetTheTypicalAgeRangeForOneBornInAsOf(int $birthYear, int $referenceYear, string $typicalAgeRange): void
     {
-        $currentYear = (int) date('Y');
-        $maxAge = $currentYear - $birthYear;
+        $maxAge = $referenceYear - $birthYear;
         $minAge = $maxAge - 1;
         $this->variableState->setVariable(
             $typicalAgeRange,
