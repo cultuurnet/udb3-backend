@@ -1,5 +1,5 @@
 @sapi3
-Feature: Test the dayOfWeek event search filter
+Feature: Test the recurringOnDayOfWeek event search filter
 
   Background:
     Given I am using the UDB3 base URL
@@ -26,18 +26,18 @@ Feature: Test the dayOfWeek event search filter
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | wednesday |
+      | recurringOnDayOfWeek  | wednesday |
       | disableDefaultFilters | true      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | tuesday |
+      | recurringOnDayOfWeek  | tuesday |
       | disableDefaultFilters | true    |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
-  Scenario: dayOfWeek matching is case-insensitive
+  Scenario: recurringOnDayOfWeek matching is case-insensitive
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
     {
@@ -54,13 +54,13 @@ Feature: Test the dayOfWeek event search filter
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | Wednesday |
+      | recurringOnDayOfWeek  | Wednesday |
       | disableDefaultFilters | true      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
 
   @testIsolation
-  Scenario: Multiple dayOfWeek values are OR-combined using the comma-separated syntax
+  Scenario: Multiple recurringOnDayOfWeek values are OR-combined using the comma-separated syntax
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
     {
@@ -77,18 +77,18 @@ Feature: Test the dayOfWeek event search filter
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | friday,saturday,sunday |
+      | recurringOnDayOfWeek  | friday,saturday,sunday |
       | disableDefaultFilters | true                   |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | monday,tuesday |
+      | recurringOnDayOfWeek  | monday,tuesday |
       | disableDefaultFilters | true           |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
-  Scenario: Multiple dayOfWeek values are AND-combined using the q parameter
+  Scenario: Multiple recurringOnDayOfWeek values are AND-combined using the q parameter
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
     {
@@ -104,23 +104,23 @@ Feature: Test the dayOfWeek event search filter
     """
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
-    # The dayOfWeek url parameter OR-combines its values, so a single matching weekday is enough.
+    # The recurringOnDayOfWeek url parameter OR-combines its values, so a single matching weekday is enough.
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | monday,tuesday |
+      | recurringOnDayOfWeek  | monday,tuesday |
       | disableDefaultFilters | true           |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     # The same field is exposed in the q parameter, where AND logic can be expressed explicitly.
     # Tuesday is not part of the opening hours, so requiring both weekdays excludes the event.
     When I send a GET request to "/events" with parameters:
-      | q                     | dayOfWeek:(monday AND tuesday) |
-      | disableDefaultFilters | true                           |
+      | q                     | recurringOnDayOfWeek:(monday AND tuesday) |
+      | disableDefaultFilters | true                                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
     # Both weekdays are part of the opening hours, so the AND query matches.
     When I send a GET request to "/events" with parameters:
-      | q                     | dayOfWeek:(monday AND wednesday) |
-      | disableDefaultFilters | true                             |
+      | q                     | recurringOnDayOfWeek:(monday AND wednesday) |
+      | disableDefaultFilters | true                                        |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
 
@@ -144,12 +144,12 @@ Feature: Test the dayOfWeek event search filter
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | thursday |
+      | recurringOnDayOfWeek  | thursday |
       | disableDefaultFilters | true     |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | friday |
+      | recurringOnDayOfWeek  | friday |
       | disableDefaultFilters | true   |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
@@ -176,7 +176,7 @@ Feature: Test the dayOfWeek event search filter
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | wednesday |
+      | recurringOnDayOfWeek  | wednesday |
       | disableDefaultFilters | true      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
@@ -209,20 +209,20 @@ Feature: Test the dayOfWeek event search filter
     """
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
-    # Without the dayOfWeek filter the event is returned, so it is indexed and searchable.
+    # Without the recurringOnDayOfWeek filter the event is returned, so it is indexed and searchable.
     When I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
-    # With the dayOfWeek filter it is not returned, because the closed day brings Wednesday down to three.
+    # With the recurringOnDayOfWeek filter it is not returned, because the closed day brings Wednesday down to three.
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | wednesday |
+      | recurringOnDayOfWeek  | wednesday |
       | disableDefaultFilters | true      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
-  Scenario: Periodic event with fewer than four occurrences on a weekday is not matched by dayOfWeek
+  Scenario: Periodic event with fewer than four occurrences on a weekday is not matched by recurringOnDayOfWeek
     # The event runs on Wednesdays but only spans two weeks (2026-08-05 and 2026-08-12),
     # so the weekday occurs fewer than the required minimum number of times (4).
     When I create a minimal event with overrides and save the "url" as "eventUrl"
@@ -242,14 +242,14 @@ Feature: Test the dayOfWeek event search filter
     """
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
-    # Without the dayOfWeek filter the event is returned, so it is searchable.
+    # Without the recurringOnDayOfWeek filter the event is returned, so it is searchable.
     When I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
-    # With the dayOfWeek filter it is not returned, because Wednesday occurs fewer than four times.
+    # With the recurringOnDayOfWeek filter it is not returned, because Wednesday occurs fewer than four times.
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | wednesday |
+      | recurringOnDayOfWeek  | wednesday |
       | disableDefaultFilters | true      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
@@ -274,12 +274,12 @@ Feature: Test the dayOfWeek event search filter
     And I am using the Search API v3 base URL
     # All four sub-events fall on a Wednesday.
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | wednesday |
+      | recurringOnDayOfWeek  | wednesday |
       | disableDefaultFilters | true      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | thursday |
+      | recurringOnDayOfWeek  | thursday |
       | disableDefaultFilters | true     |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
@@ -305,25 +305,25 @@ Feature: Test the dayOfWeek event search filter
     And I am using the Search API v3 base URL
     # Saturday sits in the middle of each Friday-to-Sunday range, so it must be part of the set.
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | saturday |
+      | recurringOnDayOfWeek  | saturday |
       | disableDefaultFilters | true     |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     # The union OR-combines with the other days in the range too.
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | friday,sunday |
+      | recurringOnDayOfWeek  | friday,sunday |
       | disableDefaultFilters | true          |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     # No sub-event ever touches a Monday.
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | monday |
+      | recurringOnDayOfWeek  | monday |
       | disableDefaultFilters | true   |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
-  Scenario: Single calendar event is out of scope and not matched by dayOfWeek
+  Scenario: Single calendar event is out of scope and not matched by recurringOnDayOfWeek
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
     {
@@ -337,14 +337,14 @@ Feature: Test the dayOfWeek event search filter
     """
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
-    # The single event takes place on a Wednesday and is searchable without the dayOfWeek filter.
+    # The single event takes place on a Wednesday and is searchable without the recurringOnDayOfWeek filter.
     When I send a GET request to "/events" with parameters:
       | disableDefaultFilters | true |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
-    # But single calendar events are never matched by the dayOfWeek filter.
+    # But single calendar events are never matched by the recurringOnDayOfWeek filter.
     When I send a GET request to "/events" with parameters:
-      | dayOfWeek             | wednesday |
+      | recurringOnDayOfWeek  | wednesday |
       | disableDefaultFilters | true      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
@@ -353,6 +353,6 @@ Feature: Test the dayOfWeek event search filter
   Scenario: An invalid weekday value is rejected with a validation error
     When I am using the Search API v3 base URL
     And I send a GET request to "/events" with parameters:
-      | dayOfWeek             | someday |
+      | recurringOnDayOfWeek  | someday |
       | disableDefaultFilters | true    |
     Then the response status should be "404"
