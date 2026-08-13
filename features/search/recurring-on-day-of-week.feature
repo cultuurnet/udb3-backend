@@ -6,10 +6,10 @@ Feature: Test the recurringOnDayOfWeek event search filter
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
-    And I create a minimal place and save the "url" as "placeUrl"
 
   @testIsolation
-  Scenario: Permanent event is matched by a weekday in its opening hours and not by another weekday
+  Scenario: Permanent event is matched on the weekdays of its opening hours
+    Given I create a minimal place and save the "url" as "placeUrl"
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
     {
@@ -30,80 +30,29 @@ Feature: Test the recurringOnDayOfWeek event search filter
       | disableDefaultFilters | true      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
-    When I send a GET request to "/events" with parameters:
-      | recurringOnDayOfWeek  | tuesday |
-      | disableDefaultFilters | true    |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 0
-
-  @testIsolation
-  Scenario: recurringOnDayOfWeek matching is case-insensitive
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "calendarType": "permanent",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "dayOfWeek": ["wednesday"]
-        }
-      ]
-    }
-    """
-    And I wait for the event with url "%{eventUrl}" to be indexed
-    And I am using the Search API v3 base URL
+    # Matching is case-insensitive, so the capitalised weekday returns the same result.
     When I send a GET request to "/events" with parameters:
       | recurringOnDayOfWeek  | Wednesday |
       | disableDefaultFilters | true      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
-
-  @testIsolation
-  Scenario: Multiple recurringOnDayOfWeek values are OR-combined using the comma-separated syntax
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "calendarType": "permanent",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "dayOfWeek": ["sunday"]
-        }
-      ]
-    }
-    """
-    And I wait for the event with url "%{eventUrl}" to be indexed
-    And I am using the Search API v3 base URL
+    # Tuesday is not part of the opening hours.
     When I send a GET request to "/events" with parameters:
-      | recurringOnDayOfWeek  | friday,saturday,sunday |
-      | disableDefaultFilters | true                   |
+      | recurringOnDayOfWeek  | tuesday |
+      | disableDefaultFilters | true    |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    # The comma-separated syntax OR-combines the weekdays, so friday alone is enough to match.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek  | saturday,friday |
+      | disableDefaultFilters | true            |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | recurringOnDayOfWeek  | monday,tuesday |
-      | disableDefaultFilters | true           |
+      | recurringOnDayOfWeek  | tuesday,thursday |
+      | disableDefaultFilters | true             |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
-
-  @testIsolation
-  Scenario: Multiple recurringOnDayOfWeek values are AND-combined using the q parameter
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "calendarType": "permanent",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "dayOfWeek": ["monday", "wednesday", "friday"]
-        }
-      ]
-    }
-    """
-    And I wait for the event with url "%{eventUrl}" to be indexed
-    And I am using the Search API v3 base URL
     # The recurringOnDayOfWeek field is also exposed in the q parameter, where AND logic can be
     # expressed explicitly instead of the OR-combining of the url parameter.
     # Tuesday is not part of the opening hours, so requiring both weekdays excludes the event.
@@ -120,84 +69,21 @@ Feature: Test the recurringOnDayOfWeek event search filter
     And the JSON response at "totalItems" should be 1
 
   @testIsolation
-  Scenario: Periodic event spanning several months is matched based on its opening hours weekday
+  Scenario: Periodic event is only matched on weekdays that reach the minimum number of occurrences
+    # The period from 1 to 26 August 2026 contains four Wednesdays (5, 12, 19 and 26), which is
+    # exactly the required minimum, and three Thursdays (6, 13 and 20), which is one short.
+    Given I create a minimal place and save the "url" as "placeUrl"
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
     {
       "calendarType": "periodic",
       "startDate": "2026-08-01T00:00:00+02:00",
-      "endDate": "2026-11-30T23:59:59+02:00",
+      "endDate": "2026-08-26T23:59:59+02:00",
       "openingHours": [
         {
           "opens": "09:00",
           "closes": "17:00",
-          "dayOfWeek": ["thursday"]
-        }
-      ]
-    }
-    """
-    And I wait for the event with url "%{eventUrl}" to be indexed
-    And I am using the Search API v3 base URL
-    When I send a GET request to "/events" with parameters:
-      | recurringOnDayOfWeek  | thursday |
-      | disableDefaultFilters | true     |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
-    When I send a GET request to "/events" with parameters:
-      | recurringOnDayOfWeek  | friday |
-      | disableDefaultFilters | true   |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 0
-
-  @testIsolation
-  Scenario: Periodic event is matched when its weekday reaches the threshold exactly
-    # August 2026 contains exactly four Wednesdays (5, 12, 19 and 26), which is the minimum
-    # number of occurrences required, so wednesday is indexed and the event matches.
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "calendarType": "periodic",
-      "startDate": "2026-08-01T00:00:00+02:00",
-      "endDate": "2026-08-31T23:59:59+02:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "dayOfWeek": ["wednesday"]
-        }
-      ]
-    }
-    """
-    And I wait for the event with url "%{eventUrl}" to be indexed
-    And I am using the Search API v3 base URL
-    When I send a GET request to "/events" with parameters:
-      | recurringOnDayOfWeek  | wednesday |
-      | disableDefaultFilters | true      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
-
-  @testIsolation
-  Scenario: A closed day drops a weekday below the threshold so the event is no longer matched
-    # Same August 2026 window as the previous scenario, but the Wednesday of 5 August is closed.
-    # That leaves three days the event is effectively open on a Wednesday, which is below the
-    # required minimum of four, so wednesday is not indexed.
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "calendarType": "periodic",
-      "startDate": "2026-08-01T00:00:00+02:00",
-      "endDate": "2026-08-31T23:59:59+02:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "dayOfWeek": ["wednesday"]
-        }
-      ],
-      "openingHoursClosedDays": [
-        {
-          "startDate": "2026-08-05",
-          "endDate": "2026-08-05"
+          "dayOfWeek": ["wednesday", "thursday"]
         }
       ]
     }
@@ -209,103 +95,13 @@ Feature: Test the recurringOnDayOfWeek event search filter
       | disableDefaultFilters | true |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
-    # With the recurringOnDayOfWeek filter it is not returned, because the closed day brings Wednesday down to three.
-    When I send a GET request to "/events" with parameters:
-      | recurringOnDayOfWeek  | wednesday |
-      | disableDefaultFilters | true      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 0
-
-  @testIsolation
-  Scenario: A closed day that keeps a weekday above the threshold does not affect matching
-    # August and September 2026 together contain nine Wednesdays, so closing the one of 5 August still
-    # leaves eight, which is above the required minimum of four. Wednesday stays indexed.
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "calendarType": "periodic",
-      "startDate": "2026-08-01T00:00:00+02:00",
-      "endDate": "2026-09-30T23:59:59+02:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "dayOfWeek": ["wednesday"]
-        }
-      ],
-      "openingHoursClosedDays": [
-        {
-          "startDate": "2026-08-05",
-          "endDate": "2026-08-05"
-        }
-      ]
-    }
-    """
-    And I wait for the event with url "%{eventUrl}" to be indexed
-    And I am using the Search API v3 base URL
+    # Wednesday reaches the threshold exactly, so it is indexed.
     When I send a GET request to "/events" with parameters:
       | recurringOnDayOfWeek  | wednesday |
       | disableDefaultFilters | true      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
-
-  @testIsolation
-  Scenario: Periodic event with fewer than four occurrences on a weekday is not matched by recurringOnDayOfWeek
-    # The event runs on Wednesdays but only spans two weeks (2026-08-05 and 2026-08-12),
-    # so the weekday occurs fewer than the required minimum number of times (4).
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "calendarType": "periodic",
-      "startDate": "2026-08-01T00:00:00+02:00",
-      "endDate": "2026-08-16T23:59:59+02:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "dayOfWeek": ["wednesday"]
-        }
-      ]
-    }
-    """
-    And I wait for the event with url "%{eventUrl}" to be indexed
-    And I am using the Search API v3 base URL
-    # Without the recurringOnDayOfWeek filter the event is returned, so it is searchable.
-    When I send a GET request to "/events" with parameters:
-      | disableDefaultFilters | true |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
-    # With the recurringOnDayOfWeek filter it is not returned, because Wednesday occurs fewer than four times.
-    When I send a GET request to "/events" with parameters:
-      | recurringOnDayOfWeek  | wednesday |
-      | disableDefaultFilters | true      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 0
-
-  @testIsolation
-  Scenario: Multiple calendar event maps single-day sub-events to their weekday
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "calendarType": "multiple",
-      "startDate": "2026-08-05T10:00:00+02:00",
-      "endDate": "2026-08-26T18:00:00+02:00",
-      "subEvent": [
-        {"startDate": "2026-08-05T10:00:00+02:00", "endDate": "2026-08-05T18:00:00+02:00"},
-        {"startDate": "2026-08-12T10:00:00+02:00", "endDate": "2026-08-12T18:00:00+02:00"},
-        {"startDate": "2026-08-19T10:00:00+02:00", "endDate": "2026-08-19T18:00:00+02:00"},
-        {"startDate": "2026-08-26T10:00:00+02:00", "endDate": "2026-08-26T18:00:00+02:00"}
-      ]
-    }
-    """
-    And I wait for the event with url "%{eventUrl}" to be indexed
-    And I am using the Search API v3 base URL
-    # All four sub-events fall on a Wednesday.
-    When I send a GET request to "/events" with parameters:
-      | recurringOnDayOfWeek  | wednesday |
-      | disableDefaultFilters | true      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
+    # Thursday stays one occurrence below the threshold, so it is not indexed.
     When I send a GET request to "/events" with parameters:
       | recurringOnDayOfWeek  | thursday |
       | disableDefaultFilters | true     |
@@ -313,15 +109,72 @@ Feature: Test the recurringOnDayOfWeek event search filter
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
-  Scenario: Multiple calendar event expands multi-day sub-events to every weekday in their range
-    # Each sub-event runs Friday to Sunday, so it covers Friday, Saturday and Sunday.
+  Scenario: Closed days are subtracted from the occurrences of a weekday
+    # The period from 1 August to 2 September 2026 contains five Wednesdays and five Saturdays.
+    # The closed period from 5 to 12 August removes the Wednesdays of 5 and 12 August, leaving three,
+    # which is below the required minimum of four. It also removes the Saturday of 8 August, leaving
+    # four, which still reaches the minimum.
+    Given I create a minimal place and save the "url" as "placeUrl"
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "periodic",
+      "startDate": "2026-08-01T00:00:00+02:00",
+      "endDate": "2026-09-02T23:59:59+02:00",
+      "openingHours": [
+        {
+          "opens": "09:00",
+          "closes": "17:00",
+          "dayOfWeek": ["wednesday", "saturday"]
+        }
+      ],
+      "openingHoursClosedDays": [
+        {
+          "startDate": "2026-08-05",
+          "endDate": "2026-08-12"
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    # Without the recurringOnDayOfWeek filter the event is returned, so it is indexed and searchable.
+    When I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # Saturday keeps four occurrences, so the closed days do not affect matching.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek  | saturday |
+      | disableDefaultFilters | true     |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # Wednesday drops to three occurrences, so it is no longer indexed.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek  | wednesday |
+      | disableDefaultFilters | true      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+
+  @testIsolation
+  Scenario: Multiple calendar event is matched on the weekdays covered by its sub-events
+    # Four single day sub-events on a Wednesday, four sub-events running from Friday to Sunday and
+    # three single day sub-events on a Thursday.
+    Given I create a minimal place and save the "url" as "placeUrl"
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
     {
       "calendarType": "multiple",
-      "startDate": "2026-09-04T10:00:00+02:00",
+      "startDate": "2026-08-05T10:00:00+02:00",
       "endDate": "2026-09-27T18:00:00+02:00",
       "subEvent": [
+        {"startDate": "2026-08-05T10:00:00+02:00", "endDate": "2026-08-05T18:00:00+02:00"},
+        {"startDate": "2026-08-12T10:00:00+02:00", "endDate": "2026-08-12T18:00:00+02:00"},
+        {"startDate": "2026-08-19T10:00:00+02:00", "endDate": "2026-08-19T18:00:00+02:00"},
+        {"startDate": "2026-08-26T10:00:00+02:00", "endDate": "2026-08-26T18:00:00+02:00"},
+        {"startDate": "2026-08-06T10:00:00+02:00", "endDate": "2026-08-06T18:00:00+02:00"},
+        {"startDate": "2026-08-13T10:00:00+02:00", "endDate": "2026-08-13T18:00:00+02:00"},
+        {"startDate": "2026-08-20T10:00:00+02:00", "endDate": "2026-08-20T18:00:00+02:00"},
         {"startDate": "2026-09-04T10:00:00+02:00", "endDate": "2026-09-06T18:00:00+02:00"},
         {"startDate": "2026-09-11T10:00:00+02:00", "endDate": "2026-09-13T18:00:00+02:00"},
         {"startDate": "2026-09-18T10:00:00+02:00", "endDate": "2026-09-20T18:00:00+02:00"},
@@ -331,18 +184,36 @@ Feature: Test the recurringOnDayOfWeek event search filter
     """
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
-    # Saturday sits in the middle of each Friday-to-Sunday range, so it must be part of the set.
+    # Without the recurringOnDayOfWeek filter the event is returned, so it is indexed and searchable.
+    When I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # The four single day sub-events map to the weekday they take place on.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek  | wednesday |
+      | disableDefaultFilters | true      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # Saturday sits in the middle of each Friday to Sunday range, so multi-day sub-events are
+    # expanded to every weekday in their range.
     When I send a GET request to "/events" with parameters:
       | recurringOnDayOfWeek  | saturday |
       | disableDefaultFilters | true     |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
-    # The union OR-combines with the other days in the range too.
+    # The edges of those ranges are part of the set too.
     When I send a GET request to "/events" with parameters:
       | recurringOnDayOfWeek  | friday,sunday |
       | disableDefaultFilters | true          |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
+    # Thursday is only covered three times, which is below the required minimum of four.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek  | thursday |
+      | disableDefaultFilters | true     |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
     # No sub-event ever touches a Monday.
     When I send a GET request to "/events" with parameters:
       | recurringOnDayOfWeek  | monday |
@@ -351,38 +222,8 @@ Feature: Test the recurringOnDayOfWeek event search filter
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
-  Scenario: Multiple calendar event with fewer than four occurrences on a weekday is not matched by recurringOnDayOfWeek
-    # Only three sub-events, all on a Wednesday (2026-08-05, 2026-08-12 and 2026-08-19), so the
-    # weekday occurs fewer than the required minimum number of times (4).
-    When I create a minimal event with overrides and save the "url" as "eventUrl"
-    """
-    {
-      "calendarType": "multiple",
-      "startDate": "2026-08-05T10:00:00+02:00",
-      "endDate": "2026-08-19T18:00:00+02:00",
-      "subEvent": [
-        {"startDate": "2026-08-05T10:00:00+02:00", "endDate": "2026-08-05T18:00:00+02:00"},
-        {"startDate": "2026-08-12T10:00:00+02:00", "endDate": "2026-08-12T18:00:00+02:00"},
-        {"startDate": "2026-08-19T10:00:00+02:00", "endDate": "2026-08-19T18:00:00+02:00"}
-      ]
-    }
-    """
-    And I wait for the event with url "%{eventUrl}" to be indexed
-    And I am using the Search API v3 base URL
-    # Without the recurringOnDayOfWeek filter the event is returned, so it is searchable.
-    When I send a GET request to "/events" with parameters:
-      | disableDefaultFilters | true |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
-    # With the recurringOnDayOfWeek filter it is not returned, because Wednesday occurs fewer than four times.
-    When I send a GET request to "/events" with parameters:
-      | recurringOnDayOfWeek  | wednesday |
-      | disableDefaultFilters | true      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 0
-
-  @testIsolation
   Scenario: Single calendar event is out of scope and not matched by recurringOnDayOfWeek
+    Given I create a minimal place and save the "url" as "placeUrl"
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
     {
