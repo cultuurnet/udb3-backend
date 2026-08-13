@@ -88,6 +88,43 @@ Feature: Test the dayOfWeek event search filter
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
+  Scenario: Multiple dayOfWeek values are AND-combined using the q parameter
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "permanent",
+      "openingHours": [
+        {
+          "opens": "09:00",
+          "closes": "17:00",
+          "dayOfWeek": ["monday", "wednesday", "friday"]
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    # The dayOfWeek url parameter OR-combines its values, so a single matching weekday is enough.
+    When I send a GET request to "/events" with parameters:
+      | dayOfWeek             | monday,tuesday |
+      | disableDefaultFilters | true           |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # The same field is exposed in the q parameter, where AND logic can be expressed explicitly.
+    # Tuesday is not part of the opening hours, so requiring both weekdays excludes the event.
+    When I send a GET request to "/events" with parameters:
+      | q                     | dayOfWeek:(monday AND tuesday) |
+      | disableDefaultFilters | true                           |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    # Both weekdays are part of the opening hours, so the AND query matches.
+    When I send a GET request to "/events" with parameters:
+      | q                     | dayOfWeek:(monday AND wednesday) |
+      | disableDefaultFilters | true                             |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+
+  @testIsolation
   Scenario: Periodic event spanning several months is matched based on its opening hours weekday
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
