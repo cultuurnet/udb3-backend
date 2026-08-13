@@ -2591,6 +2591,61 @@ final class ImportEventRequestHandlerTest extends TestCase
     }
 
     /**
+     * The event schema doubles as the GET representation, where a subEvent always carries a type
+     * derived from its remainingCapacity, so the two together cannot be rejected here. The sub
+     * events PATCH endpoint does reject them, see UpdateSubEventsRequestHandlerTest.
+     *
+     * @test
+     */
+    public function it_accepts_a_subEvent_with_both_a_type_and_a_remainingCapacity(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('save');
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => [
+                    'nl' => 'Pannenkoeken voor het goede doel',
+                ],
+                'terms' => [
+                    [
+                        'id' => '1.50.0.0.0',
+                    ],
+                ],
+                'location' => [
+                    '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
+                ],
+                'calendarType' => 'single',
+                'startDate' => '2018-02-28T13:44:09+01:00',
+                'endDate' => '2018-03-05T13:44:09+01:00',
+                'subEvent' => [
+                    [
+                        'startDate' => '2018-02-28T13:44:09+01:00',
+                        'endDate' => '2018-03-05T13:44:09+01:00',
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                            'remainingCapacity' => 42,
+                        ],
+                    ],
+                ],
+            ])
+            ->build('POST');
+
+        $this->assertEquals(201, $this->importEventRequestHandler->handle($request)->getStatusCode());
+    }
+
+    /**
      * @test
      */
     public function it_throws_if_calendarType_is_multiple_and_subEvent_is_missing(): void
