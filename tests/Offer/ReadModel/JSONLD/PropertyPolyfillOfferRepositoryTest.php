@@ -367,6 +367,57 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_does_not_polyfill_typicalAgeRange_when_a_birthdateRange_is_set(): void
+    {
+        $this
+            ->given([
+                'birthdateRange' => [
+                    'from' => '2010-01-01',
+                    'to' => '2010-12-31',
+                ],
+            ])
+            ->assertReturnedDocumentDoesNotContainKey('typicalAgeRange');
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_the_default_typicalAgeRange_when_a_birthdateRange_is_set(): void
+    {
+        $this
+            ->given([
+                'typicalAgeRange' => '-',
+                'birthdateRange' => [
+                    'from' => '2010-01-01',
+                    'to' => '2010-12-31',
+                ],
+            ])
+            ->assertReturnedDocumentDoesNotContainKey('typicalAgeRange');
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_a_custom_typicalAgeRange_when_a_birthdateRange_is_set(): void
+    {
+        $this
+            ->given([
+                'typicalAgeRange' => '6-12',
+                'birthdateRange' => [
+                    'from' => '2010-01-01',
+                    'to' => '2010-12-31',
+                ],
+            ])
+            ->assertReturnedDocumentContains(
+                [
+                    'typicalAgeRange' => '6-12',
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
     public function it_should_polyfill_a_default_booking_availability_if_not_set(): void
     {
         $this
