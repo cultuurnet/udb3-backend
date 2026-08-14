@@ -619,4 +619,14 @@ final class ApiProblem extends Exception
             StatusCodeInterface::STATUS_FORBIDDEN,
         );
     }
+
+    public static function cannotCombineTypicalAgeAndBirthdateRange(): self
+    {
+        return self::create(
+            'https://api.publiq.be/probs/uitdatabank/cannot-combine-typical-age-and-birthdate-range',
+            'Cannot combine typical age and birthdate range',
+            StatusCodeInterface::STATUS_BAD_REQUEST,
+            'An event cannot have both a typicalAgeRange and a birthdateRange.'
+        );
+    }
 }

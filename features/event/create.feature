@@ -1075,6 +1075,15 @@ Feature: Test the UDB3 events API
     And the JSON response at "birthdateRange/to" should be "2020-12-31"
     And the JSON response should not have "typicalAgeRange"
 
+  Scenario: Try creating an event with both a typical age range and a birthdate range
+    When I create a place from "places/place.json" and save the "url" as "placeUrl"
+    And I set the JSON request payload from "events/event-with-age-and-birthdate-range.json"
+    And I send a POST request to "/events/"
+    Then the response status should be "400"
+    And the JSON response at "type" should be "https://api.publiq.be/probs/uitdatabank/cannot-combine-typical-age-and-birthdate-range"
+    And the JSON response at "title" should be "Cannot combine typical age and birthdate range"
+    And the JSON response at "detail" should be "An event cannot have both a typicalAgeRange and a birthdateRange."
+
   Scenario: Try creating an event with an invalid birthdate range
     When I create a place from "places/place.json" and save the "url" as "placeUrl"
     And I set the JSON request payload from "events/event-with-invalid-birthdate-range.json"
