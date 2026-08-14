@@ -89,6 +89,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractTypeUpdated;
+use CultuurNet\UDB3\Offer\Events\AbstractTypicalAgeRangeUpdated;
 use CultuurNet\UDB3\Offer\IriOfferIdentifierFactoryInterface;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferLDProjector;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferUpdate;
@@ -642,6 +643,18 @@ final class EventLDProjector extends OfferLDProjector implements
         if (!isset($jsonLD->typicalAgeRange)) {
             $jsonLD->typicalAgeRange = '-';
         }
+
+        return $document->withBody($jsonLD);
+    }
+
+    protected function applyTypicalAgeRangeUpdated(
+        AbstractTypicalAgeRangeUpdated $typicalAgeRangeUpdated
+    ): JsonDocument {
+        $document = $this->loadDocumentFromRepository($typicalAgeRangeUpdated);
+        $jsonLD = $document->getBody();
+
+        $jsonLD->typicalAgeRange = $typicalAgeRangeUpdated->getTypicalAgeRange()->toString();
+        unset($jsonLD->birthdateRange);
 
         return $document->withBody($jsonLD);
     }
