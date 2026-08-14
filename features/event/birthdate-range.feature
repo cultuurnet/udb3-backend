@@ -54,6 +54,50 @@ Feature: Test birthdateRange on events
     And I get the event at "%{eventUrl}"
     And the JSON response should not have "birthdateRange"
 
+  Scenario: Setting a birthdateRange removes the default typicalAgeRange
+    Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "typicalAgeRange" should be "-"
+    And I set the JSON request payload to:
+        """
+        { "from": "2014-01-01", "to": "2020-12-31" }
+        """
+    When I send a PUT request to "%{eventUrl}/birthdate-range"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "birthdateRange/from" should be "2014-01-01"
+    And the JSON response should not have "typicalAgeRange"
+
+  Scenario: Deleting the birthdateRange restores the default typicalAgeRange
+    Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+        """
+        { "from": "2014-01-01", "to": "2020-12-31" }
+        """
+    And I send a PUT request to "%{eventUrl}/birthdate-range"
+    When I send a DELETE request to "%{eventUrl}/birthdate-range"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response should not have "birthdateRange"
+    And the JSON response at "typicalAgeRange" should be "-"
+
+  Scenario: A custom typicalAgeRange is kept next to a birthdateRange
+    Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+        """
+        { "typicalAgeRange": "6-12" }
+        """
+    And I send a PUT request to "%{eventUrl}/typicalAgeRange"
+    And I set the JSON request payload to:
+        """
+        { "from": "2014-01-01", "to": "2020-12-31" }
+        """
+    When I send a PUT request to "%{eventUrl}/birthdate-range"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "birthdateRange/from" should be "2014-01-01"
+    And the JSON response at "typicalAgeRange" should be "6-12"
+
   Scenario: Reject birthdateRange where from is greater than to
     Given I create an event from "events/event-minimal-permanent.json" and save the "url" as "eventUrl"
     And I set the JSON request payload to:

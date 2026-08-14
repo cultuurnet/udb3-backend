@@ -1073,6 +1073,7 @@ Feature: Test the UDB3 events API
     And the JSON response should have "birthdateRange"
     And the JSON response at "birthdateRange/from" should be "2020-01-31"
     And the JSON response at "birthdateRange/to" should be "2020-12-31"
+    And the JSON response should not have "typicalAgeRange"
 
   Scenario: Try creating an event with an invalid birthdate range
     When I create a place from "places/place.json" and save the "url" as "placeUrl"
