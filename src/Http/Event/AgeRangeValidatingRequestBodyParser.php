@@ -16,6 +16,11 @@ class AgeRangeValidatingRequestBodyParser implements RequestBodyParser
     public function parse(ServerRequestInterface $request): ServerRequestInterface
     {
         $data = $request->getParsedBody();
+
+        if (isset($data->typicalAgeRange, $data->birthdateRange)) {
+            throw ApiProblem::cannotCombineTypicalAgeAndBirthdateRange();
+        }
+
         if (!isset($data->typicalAgeRange) || !is_string($data->typicalAgeRange)) {
             return $request;
         }

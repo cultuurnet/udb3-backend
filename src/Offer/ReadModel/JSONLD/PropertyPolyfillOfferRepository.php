@@ -56,7 +56,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                 $json = $this->polyfillSubEventProperties($json);
                 $json = $this->polyfillEmbeddedPlaceStatus($json);
                 $json = $this->polyfillEmbeddedPlaceBookingAvailability($json);
-                $json = $this->polyfillTypicalAgeRange($json);
+                $json = $this->polyfillDefaultTypicalAgeRange($json);
 
                 if ($this->offerType->sameAs(OfferType::event())) {
                     $json = $this->polyfillAttendanceMode($json);
@@ -125,11 +125,20 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         return $json;
     }
 
-    private function polyfillTypicalAgeRange(array $json): array
+    private function polyfillDefaultTypicalAgeRange(array $json): array
     {
-        if (!isset($json['typicalAgeRange'])) {
-            $json['typicalAgeRange'] = '-';
+        // A custom typicalAgeRange is kept, because we cannot tell which of the two is more important.
+        if (isset($json['typicalAgeRange']) && $json['typicalAgeRange'] !== '-') {
+            return $json;
         }
+
+        if (isset($json['birthdateRange'])) {
+            unset($json['typicalAgeRange']);
+
+            return $json;
+        }
+
+        $json['typicalAgeRange'] = '-';
 
         return $json;
     }
