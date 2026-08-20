@@ -31,7 +31,6 @@ use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\GuardOrganizer;
-use CultuurNet\UDB3\Http\Offer\CapacityValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Offer\OfferValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\DenormalizingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\IdPropertyPolyfillRequestBodyParser;
@@ -132,7 +131,6 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
                 new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::EVENT),
                 new AttendanceModeValidatingRequestBodyParser(),
                 new AgeRangeValidatingRequestBodyParser(),
-                new CapacityValidatingRequestBodyParser(),
                 new OfferValidatingRequestBodyParser(OfferType::event()),
                 new DenormalizingRequestBodyParser($this->eventDenormalizer, Event::class)
             )->parse($request)->getParsedBody();
