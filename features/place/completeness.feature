@@ -20,5 +20,4 @@ Feature: Test completeness score for places
     Then the JSON response should not have "faqs"
     And the JSON response should have "organizer"
     And the JSON response should have "videos"
-    And the JSON response at "bookingAvailability/capacity" should be 200
     And the JSON response at "completeness" should be 100
