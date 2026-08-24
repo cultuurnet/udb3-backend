@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b31835a04449871496d532445c497a82",
+    "content-hash": "2ab3d224bc7523edf28be1b935a52eb6",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6090,16 +6090,16 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-7407-restore-boa-documentation",
+            "version": "dev-boa",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "086a0333a2878c73f17deba3ee57b471277df9e6"
+                "reference": "80aefd607c9ccdbd61902048e78550f27abf0e1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/086a0333a2878c73f17deba3ee57b471277df9e6",
-                "reference": "086a0333a2878c73f17deba3ee57b471277df9e6",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/80aefd607c9ccdbd61902048e78550f27abf0e1e",
+                "reference": "80aefd607c9ccdbd61902048e78550f27abf0e1e",
                 "shasum": ""
             },
             "type": "library",
@@ -6118,7 +6118,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7407-restore-boa-documentation"
             },
-            "time": "2026-08-24T12:43:52+00:00"
+            "time": "2026-08-24T14:27:46+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
