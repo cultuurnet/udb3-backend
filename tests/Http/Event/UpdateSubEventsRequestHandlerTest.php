@@ -507,7 +507,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/0/bookingAvailability', 'The data should match exactly one schema'),
+                    new SchemaError('/0/bookingAvailability', 'The required properties (type) are missing'),
                 ],
             ],
             'one_subEvent_with_childcare_start_invalid_format' => [
