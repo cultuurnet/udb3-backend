@@ -43,16 +43,7 @@ class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEv
     public function withBookingAvailabilityOnSubEvents(BookingAvailability $bookingAvailability): CalendarWithSubEvents
     {
         $clone = clone $this;
-
-        if ($this->subEvent->getBookingAvailability()->getRemainingCapacity() !== null) {
-            return $clone;
-        }
-
-        $updated = new BookingAvailability($bookingAvailability->getType());
-        if ($this->subEvent->getBookingAvailability()->getCapacity() !== null) {
-            $updated = $updated->withCapacity($this->subEvent->getBookingAvailability()->getCapacity());
-        }
-        $clone->subEvent = $this->subEvent->withBookingAvailability($updated);
+        $clone->subEvent = $this->subEvent->withBookingAvailability($bookingAvailability);
         return $clone;
     }
 
