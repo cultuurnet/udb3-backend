@@ -452,6 +452,90 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_should_remove_capacity_and_remaining_capacity_from_booking_availability(): void
+    {
+        $this
+            ->given([
+                'bookingAvailability' => [
+                    'type' => 'Unavailable',
+                    'capacity' => 100,
+                    'remainingCapacity' => 0,
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'bookingAvailability' => [
+                    'type' => 'Unavailable',
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_remove_capacity_and_remaining_capacity_from_subEvent_booking_availability(): void
+    {
+        $this
+            ->given([
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'status' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                            'capacity' => 100,
+                            'remainingCapacity' => 42,
+                        ],
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'subEvent' => [
+                    [
+                        'id' => 0,
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'status' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_remove_capacity_from_embedded_location_booking_availability(): void
+    {
+        $this
+            ->given([
+                'location' => [
+                    'status' => ['type' => 'Available'],
+                    'bookingAvailability' => [
+                        'type' => 'Available',
+                        'capacity' => 200,
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'location' => [
+                    'status' => ['type' => 'Available'],
+                    'bookingAvailability' => ['type' => 'Available'],
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_polyfill_a_default_status_and_booking_availability_on_subEvent_if_not_set(): void
     {
         $this

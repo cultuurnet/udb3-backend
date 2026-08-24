@@ -37,6 +37,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = parent::fetch($id, $includeMetadata);
         $document = $this->polyfillNewProperties($document);
         $document = $this->removeObsoleteProperties($document);
+        $document = $this->removeCapacityProperties($document);
         $document = $this->removeNullLabels($document);
         $document = $this->removeThemes($document);
         $document = $this->removeMainImageWhenMediaObjectIsEmpty($document);
@@ -225,6 +226,50 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         return $jsonDocument->applyAssoc(
             function (array $json) use ($obsoleteProperties) {
                 return array_diff_key($json, array_flip($obsoleteProperties));
+            }
+        );
+    }
+
+    /**
+     * The capacity and remainingCapacity properties are no longer projected, but existing projections
+     * can still contain them until they are replayed.
+     *
+     * @see https://jira.publiq.be/browse/III-7392
+     */
+    private function removeCapacityProperties(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                $removeCapacity = static function (array $bookingAvailability): array {
+                    unset($bookingAvailability['capacity'], $bookingAvailability['remainingCapacity']);
+                    return $bookingAvailability;
+                };
+
+                if (isset($json['bookingAvailability']) && is_array($json['bookingAvailability'])) {
+                    $json['bookingAvailability'] = $removeCapacity($json['bookingAvailability']);
+                }
+
+                if (isset($json['location']['bookingAvailability']) && is_array($json['location']['bookingAvailability'])) {
+                    $json['location']['bookingAvailability'] = $removeCapacity($json['location']['bookingAvailability']);
+                }
+
+                if (isset($json['subEvent']) && is_array($json['subEvent'])) {
+                    $json['subEvent'] = array_map(
+                        function ($subEvent) use ($removeCapacity) {
+                            if (!is_array($subEvent) ||
+                                !isset($subEvent['bookingAvailability']) ||
+                                !is_array($subEvent['bookingAvailability'])) {
+                                return $subEvent;
+                            }
+
+                            $subEvent['bookingAvailability'] = $removeCapacity($subEvent['bookingAvailability']);
+                            return $subEvent;
+                        },
+                        $json['subEvent']
+                    );
+                }
+
+                return $json;
             }
         );
     }
