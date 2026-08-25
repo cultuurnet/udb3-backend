@@ -497,7 +497,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     new SchemaError('/0/childcare/end', 'childcare.end must be after the time portion of endDate'),
                 ],
             ],
-            'one_subEvent_with_no_type_and_no_remaining_capacity' => [
+            'one_subEvent_with_bookingAvailability_without_type' => [
                 'data' => [
                     (object)[
                         'id' => 0,
