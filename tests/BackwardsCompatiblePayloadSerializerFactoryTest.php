@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated as EventDescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated as EventDescriptionUpdated;
+use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
@@ -198,6 +199,60 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $calendar = $calendarUpdated->getCalendar();
 
         $this->assertTrue($calendar->getSubEvents()->toArray()[0]->hasOvernightStay());
+    }
+
+    /**
+     * @test
+     */
+    public function it_renames_overnight_to_has_overnight_stay_on_event_copied(): void
+    {
+        $decoded = Json::decodeAssociatively(
+            Json::encode([
+                'class' => EventCopied::class,
+                'payload' => [
+                    'item_id' => '06d58935-73e8-4626-b138-4a17c6e87845',
+                    'original_event_id' => '1cd3d3d2-f3d4-4e1c-8d3f-6e3f5f4b2a1c',
+                    'calendar' => $this->createCalendarWithOvernightSubEvent('overnight'),
+                ],
+            ])
+        );
+
+        /** @var EventCopied $eventCopied */
+        $eventCopied = $this->serializer->deserialize($decoded);
+
+        /** @var CalendarWithSubEvents $calendar */
+        $calendar = $eventCopied->getCalendar();
+
+        $this->assertTrue($calendar->getSubEvents()->toArray()[0]->hasOvernightStay());
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_a_legacy_calendar_without_timestamps_alone(): void
+    {
+        $decoded = Json::decodeAssociatively(
+            Json::encode([
+                'class' => CalendarUpdated::class,
+                'payload' => [
+                    'item_id' => '06d58935-73e8-4626-b138-4a17c6e87845',
+                    'calendar' => [
+                        'type' => 'single',
+                        'startDate' => '2026-07-01T09:00:00+02:00',
+                        'endDate' => '2026-07-05T17:00:00+02:00',
+                    ],
+                ],
+            ])
+        );
+
+        /** @var CalendarUpdated $calendarUpdated */
+        $calendarUpdated = $this->serializer->deserialize($decoded);
+
+        /** @var CalendarWithSubEvents $calendar */
+        $calendar = $calendarUpdated->getCalendar();
+
+        // The sub event is rebuilt from the start and end date, so it never had an overnight stay.
+        $this->assertFalse($calendar->getSubEvents()->toArray()[0]->hasOvernightStay());
     }
 
     /**
