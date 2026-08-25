@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3;
 
 use Broadway\Serializer\Serializer;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
+use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated as EventDescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated as EventDescriptionUpdated;
@@ -22,6 +23,7 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\Entity;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Label\ValueObjects\Privacy;
 use CultuurNet\UDB3\Label\ValueObjects\Visibility;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
@@ -161,6 +163,86 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $majorInfoUpdated = $this->serializer->deserialize($decoded);
 
         $this->assertEquals(new LocationId('061C13AC-A15F-F419-D8993D68C9E94548'), $majorInfoUpdated->getLocation());
+    }
+
+    /**
+     * @test
+     */
+    public function it_renames_overnight_to_has_overnight_stay_on_calendar_updated(): void
+    {
+        $serialized = SampleFiles::read(__DIR__ . '/samples/serialized_event_calendar_updated_with_overnight.json');
+        $decoded = Json::decodeAssociatively($serialized);
+
+        /** @var CalendarUpdated $calendarUpdated */
+        $calendarUpdated = $this->serializer->deserialize($decoded);
+
+        /** @var CalendarWithSubEvents $calendar */
+        $calendar = $calendarUpdated->getCalendar();
+        $subEvents = $calendar->getSubEvents()->toArray();
+
+        $this->assertTrue($subEvents[0]->hasOvernightStay());
+        $this->assertFalse($subEvents[1]->hasOvernightStay());
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_has_overnight_stay_alone_on_calendar_updated(): void
+    {
+        $decoded = Json::decodeAssociatively($this->createCalendarUpdatedPayload('hasOvernightStay'));
+
+        /** @var CalendarUpdated $calendarUpdated */
+        $calendarUpdated = $this->serializer->deserialize($decoded);
+
+        /** @var CalendarWithSubEvents $calendar */
+        $calendar = $calendarUpdated->getCalendar();
+
+        $this->assertTrue($calendar->getSubEvents()->toArray()[0]->hasOvernightStay());
+    }
+
+    /**
+     * @test
+     */
+    public function it_renames_overnight_to_has_overnight_stay_on_event_created(): void
+    {
+        $decoded = Json::decodeAssociatively(
+            Json::encode([
+                'class' => EventCreated::class,
+                'payload' => [
+                    'event_id' => '06d58935-73e8-4626-b138-4a17c6e87845',
+                    'title' => 'Zomerkamp',
+                    'event_type' => [
+                        'id' => '0.57.0.0.0',
+                        'label' => 'Kamp of vakantie',
+                        'domain' => 'eventtype',
+                    ],
+                    'theme' => null,
+                    'location' => [
+                        'cdbid' => '54131948-ffb9-4973-b528-800590265be5',
+                        'name' => 'P-P-Partyzone',
+                        'address' => [
+                            'streetAddress' => 'Kerkstraat 69',
+                            'postalCode' => '3000',
+                            'addressLocality' => 'Leuven',
+                            'addressCountry' => 'BE',
+                        ],
+                    ],
+                    'calendar' => $this->createCalendarWithOvernightSubEvent('overnight'),
+                    'publication_date' => null,
+                ],
+            ])
+        );
+
+        /** @var EventCreated $eventCreated */
+        $eventCreated = $this->serializer->deserialize($decoded);
+
+        /** @var CalendarWithSubEvents $calendar */
+        $calendar = $eventCreated->getCalendar();
+
+        $this->assertTrue($calendar->getSubEvents()->toArray()[0]->hasOvernightStay());
+        // The manipulations that were already in place still run.
+        $this->assertTrue((new Language('nl'))->sameAs($eventCreated->getMainLanguage()));
+        $this->assertEquals(new LocationId('54131948-ffb9-4973-b528-800590265be5'), $eventCreated->getLocation());
     }
 
     /**
@@ -848,6 +930,35 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
                     PlaceDescriptionUpdated::class,
                     ' '
                 ),
+            ],
+        ];
+    }
+
+    private function createCalendarUpdatedPayload(string $overnightKey): string
+    {
+        return Json::encode([
+            'class' => CalendarUpdated::class,
+            'payload' => [
+                'item_id' => '06d58935-73e8-4626-b138-4a17c6e87845',
+                'calendar' => $this->createCalendarWithOvernightSubEvent($overnightKey),
+            ],
+        ]);
+    }
+
+    private function createCalendarWithOvernightSubEvent(string $overnightKey): array
+    {
+        return [
+            'type' => 'single',
+            'status' => ['type' => 'Available'],
+            'bookingAvailability' => ['type' => 'Available'],
+            'timestamps' => [
+                [
+                    'startDate' => '2026-07-01T09:00:00+02:00',
+                    'endDate' => '2026-07-05T17:00:00+02:00',
+                    'status' => ['type' => 'Available'],
+                    'bookingAvailability' => ['type' => 'Available'],
+                    $overnightKey => true,
+                ],
             ],
         ];
     }

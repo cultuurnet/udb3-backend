@@ -1,0 +1,38 @@
+{
+  "class": "CultuurNet\\UDB3\\Event\\Events\\CalendarUpdated",
+  "payload": {
+    "item_id": "06d58935-73e8-4626-b138-4a17c6e87845",
+    "calendar": {
+      "type": "multiple",
+      "status": {
+        "type": "Available"
+      },
+      "bookingAvailability": {
+        "type": "Available"
+      },
+      "timestamps": [
+        {
+          "startDate": "2026-07-01T09:00:00+02:00",
+          "endDate": "2026-07-05T17:00:00+02:00",
+          "status": {
+            "type": "Available"
+          },
+          "bookingAvailability": {
+            "type": "Available"
+          },
+          "overnight": true
+        },
+        {
+          "startDate": "2026-07-10T09:00:00+02:00",
+          "endDate": "2026-07-14T17:00:00+02:00",
+          "status": {
+            "type": "Available"
+          },
+          "bookingAvailability": {
+            "type": "Available"
+          }
+        }
+      ]
+    }
+  }
+}
