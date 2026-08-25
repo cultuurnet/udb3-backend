@@ -1,0 +1,172 @@
+pipeline {
+    options {
+        disableRestartFromStage()
+    }
+
+    agent none
+
+    environment {
+        PIPELINE_VERSION = util.pipelineVersion()
+        ECR_REGISTRY     = '757200591793.dkr.ecr.eu-west-1.amazonaws.com'
+        ECR_REPOSITORY   = 'uitdatabank/entry-api'
+        AWS_REGION       = 'eu-west-1'
+    }
+
+    stages {
+        stage('Pre build') {
+            steps {
+                setBuildDisplayName to: env.PIPELINE_VERSION
+                sendBuildNotification()
+            }
+        }
+
+        stage('Build & push image') {
+            agent { label 'docker && nodejs22 && php8.1' } // node & php version specified to ensure run in agent with increased volume size for docker build
+            environment {
+                GIT_SHORT_COMMIT = util.shortCommitRef()
+                IMAGE_TAG        = "${env.PIPELINE_VERSION}"
+                IMAGE_URI        = "${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:${env.IMAGE_TAG}"
+            }
+            steps {
+                script {
+                    env.GIT_SHORT_COMMIT_GLOBAL = util.shortCommitRef()
+                }
+
+                sh label: 'Build image', script: """
+                    docker build \\
+                        --tag ${env.IMAGE_URI} \\
+                        --tag ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest \\
+                        --label org.opencontainers.image.revision=${env.GIT_SHORT_COMMIT} \\
+                        --label org.opencontainers.image.version=${env.PIPELINE_VERSION} \\
+                        --label org.opencontainers.image.source=https://github.com/cultuurnet/udb3-backend \\
+                        .
+                """
+
+                sh label: 'Push image', script: """
+                    docker push ${env.IMAGE_URI}
+                    docker push ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest
+                """
+
+                echo "Pushed: ${env.IMAGE_URI}"
+            }
+            post {
+                cleanup {
+                    sh "docker rmi ${env.IMAGE_URI} || true"
+                    sh "docker rmi ${env.ECR_REGISTRY}/${env.ECR_REPOSITORY}:latest || true"
+                    cleanWs()
+                }
+            }
+        }
+
+        stage('Deploy to acceptance') {
+            agent any
+            options { skipDefaultCheckout() }
+            environment {
+                APPLICATION_ENVIRONMENT = 'acceptance'
+            }
+            steps {
+                promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'acceptance', region: env.AWS_REGION
+                // TODO: add real name once provisioned
+                triggerDeployment nodeName: 'uitdatabank-....-docker-acc01', timeout: 600
+            }
+            post {
+                always {
+                    sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${util.getJobDisplayName()} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
+                }
+            }
+        }
+
+        // TODO: uncomment. We're testing deployment to acc only for now
+        // stage('Deploy to testing') {
+        //     input { message "Deploy to Testing?" }
+        //     agent any
+        //     options { skipDefaultCheckout() }
+        //     environment {
+        //         APPLICATION_ENVIRONMENT = 'testing'
+        //     }
+        //     stages {
+        //         stage('Promote image') {
+        //             steps {
+        //                 promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'testing', region: env.AWS_REGION
+        //             }
+        //         }
+        //         stage('Deploy') {
+        //             parallel {
+        //                 stage('Deploy to first node') {
+        //                     steps {
+        //                         triggerDeployment nodeName: 'uitdatabank-web-docker-test01', timeout: 600
+        //                     }
+        //                 }
+        //                 stage('Deploy to second node') {
+        //                     steps {
+        //                         triggerDeployment nodeName: 'uitdatabank-web-docker-test02', timeout: 600
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     post {
+        //         always {
+        //             sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${util.getJobDisplayName()} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
+        //         }
+        //     }
+        // }
+
+        // stage('Deploy to production') {
+        //     input { message "Deploy to Production?" }
+        //     agent any
+        //     options { skipDefaultCheckout() }
+        //     environment {
+        //         APPLICATION_ENVIRONMENT = 'production'
+        //     }
+        //     stages {
+        //         stage('Promote image') {
+        //             steps {
+        //                 promoteDockerImage repository: env.ECR_REPOSITORY, sourceTag: env.PIPELINE_VERSION, targetTag: 'production', region: env.AWS_REGION
+        //             }
+        //         }
+        //         stage('Deploy') {
+        //             parallel {
+        //                 stage('Deploy to first node') {
+        //                     steps {
+        //                         triggerDeployment nodeName: 'uitdatabank-web-docker-prod01', timeout: 600
+        //                     }
+        //                 }
+        //                 stage('Deploy to second node') {
+        //                     steps {
+        //                         triggerDeployment nodeName: 'uitdatabank-web-docker-prod02', timeout: 600
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     post {
+        //         always {
+        //             sendBuildNotification to: '#upw-ops', message: "Pipeline <${env.RUN_DISPLAY_URL}|${util.getJobDisplayName()} [${currentBuild.displayName}]>: deployed to *${env.APPLICATION_ENVIRONMENT}*"
+        //         }
+        //         cleanup {
+        //             cleanWs()
+        //         }
+        //     }
+        // }
+
+        stage('Tag release') {
+            options { skipDefaultCheckout() }
+            agent any
+            steps {
+                tagRelease commitHash: env.GIT_SHORT_COMMIT_GLOBAL
+            }
+            post {
+                cleanup {
+                    cleanWs()
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            sendBuildNotification()
+        }
+    }
+}
