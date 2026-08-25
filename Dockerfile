@@ -7,6 +7,7 @@ ARG TARGETARCH
 
 # Combine system utilities, PHP extension dependencies, and PrinceXML requirements
 RUN apt-get update && apt-get install -y --no-install-recommends \
+        netcat-openbsd \
         libicu-dev \
         libtidy-dev \
         zlib1g-dev \

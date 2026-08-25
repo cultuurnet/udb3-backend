@@ -7,6 +7,7 @@ x-entry-api: &entry-api
     LOG_TO_STDOUT: "true"
   volumes:
     - /etc/uitdatabank-entry-api/config.php:/var/www/html/config.php:ro
+    - /etc/uitdatabank-entry-api/fpm-pool.conf:/usr/local/etc/php-fpm.d/zz-pool.conf:ro
     - /etc/uitdatabank-entry-api/config.allow_all.php:/var/www/html/config.allow_all.php:ro
     - /etc/uitdatabank-entry-api/config.client_permissions.php:/var/www/html/config.client_permissions.php:ro
     - /etc/uitdatabank-entry-api/config.kinepolis.php:/var/www/html/config.kinepolis.php:ro
@@ -34,6 +35,22 @@ services:
       timeout: 5s
       retries: 3
 
+  entry-nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    network_mode: "service:entry-api"
+    volumes:
+      - /etc/uitdatabank-entry-api/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      entry-api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "nc -z 127.0.0.1 8080 || exit 1"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
   bulk-label-offer-worker:
     <<: *resque-worker
     command: ["php", "vendor/chrisboulton/php-resque/bin/resque"]
@@ -44,7 +61,7 @@ services:
       REDIS_BACKEND: "127.0.0.1:6379"
       QUEUE: bulk_label_offer
 
-  event-export-worker:
+  event-export-worker-1:
     <<: *resque-worker
     command: ["php", "vendor/chrisboulton/php-resque/bin/resque"]
     environment:
