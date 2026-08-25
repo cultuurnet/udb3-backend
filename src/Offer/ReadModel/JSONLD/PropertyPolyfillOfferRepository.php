@@ -38,6 +38,7 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
         $document = $this->polyfillNewProperties($document);
         $document = $this->removeObsoleteProperties($document);
         $document = $this->removeCapacityProperties($document);
+        $document = $this->renameOvernightToHasOvernightStay($document);
         $document = $this->removeNullLabels($document);
         $document = $this->removeThemes($document);
         $document = $this->removeMainImageWhenMediaObjectIsEmpty($document);
@@ -268,6 +269,39 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
                         $json['subEvent']
                     );
                 }
+
+                return $json;
+            }
+        );
+    }
+
+    /**
+     * The subEvent property "overnight" was renamed to "hasOvernightStay", but existing projections
+     * can still contain the old name until they are replayed.
+     *
+     * @see https://jira.publiq.be/browse/III-7371
+     */
+    private function renameOvernightToHasOvernightStay(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                if (!isset($json['subEvent']) || !is_array($json['subEvent'])) {
+                    return $json;
+                }
+
+                $json['subEvent'] = array_map(
+                    function ($subEvent) {
+                        if (!is_array($subEvent) || !array_key_exists('overnight', $subEvent)) {
+                            return $subEvent;
+                        }
+
+                        $subEvent['hasOvernightStay'] = $subEvent['overnight'];
+                        unset($subEvent['overnight']);
+
+                        return $subEvent;
+                    },
+                    $json['subEvent']
+                );
 
                 return $json;
             }
