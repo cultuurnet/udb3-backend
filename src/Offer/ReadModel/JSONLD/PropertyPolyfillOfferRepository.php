@@ -241,38 +241,63 @@ final class PropertyPolyfillOfferRepository extends DocumentRepositoryDecorator
     {
         return $jsonDocument->applyAssoc(
             function (array $json) {
-                $removeCapacity = static function (array $bookingAvailability): array {
-                    unset($bookingAvailability['capacity'], $bookingAvailability['remainingCapacity']);
-                    return $bookingAvailability;
-                };
+                $json = $this->removeCapacityFromBookingAvailability($json);
+                $json = $this->removeCapacityFromEmbeddedPlace($json);
 
-                if (isset($json['bookingAvailability']) && is_array($json['bookingAvailability'])) {
-                    $json['bookingAvailability'] = $removeCapacity($json['bookingAvailability']);
-                }
-
-                if (isset($json['location']['bookingAvailability']) && is_array($json['location']['bookingAvailability'])) {
-                    $json['location']['bookingAvailability'] = $removeCapacity($json['location']['bookingAvailability']);
-                }
-
-                if (isset($json['subEvent']) && is_array($json['subEvent'])) {
-                    $json['subEvent'] = array_map(
-                        function ($subEvent) use ($removeCapacity) {
-                            if (!is_array($subEvent) ||
-                                !isset($subEvent['bookingAvailability']) ||
-                                !is_array($subEvent['bookingAvailability'])) {
-                                return $subEvent;
-                            }
-
-                            $subEvent['bookingAvailability'] = $removeCapacity($subEvent['bookingAvailability']);
-                            return $subEvent;
-                        },
-                        $json['subEvent']
-                    );
-                }
-
-                return $json;
+                return $this->removeCapacityFromSubEvents($json);
             }
         );
+    }
+
+    private function removeCapacityFromBookingAvailability(array $json): array
+    {
+        if (!isset($json['bookingAvailability']) || !is_array($json['bookingAvailability'])) {
+            return $json;
+        }
+
+        $json['bookingAvailability'] = $this->removeCapacity($json['bookingAvailability']);
+
+        return $json;
+    }
+
+    private function removeCapacityFromEmbeddedPlace(array $json): array
+    {
+        if (!isset($json['location']['bookingAvailability']) || !is_array($json['location']['bookingAvailability'])) {
+            return $json;
+        }
+
+        $json['location']['bookingAvailability'] = $this->removeCapacity($json['location']['bookingAvailability']);
+
+        return $json;
+    }
+
+    private function removeCapacityFromSubEvents(array $json): array
+    {
+        if (!isset($json['subEvent']) || !is_array($json['subEvent'])) {
+            return $json;
+        }
+
+        $json['subEvent'] = array_map(
+            function ($subEvent) {
+                if (!is_array($subEvent) || !isset($subEvent['bookingAvailability']) || !is_array($subEvent['bookingAvailability'])) {
+                    return $subEvent;
+                }
+
+                $subEvent['bookingAvailability'] = $this->removeCapacity($subEvent['bookingAvailability']);
+
+                return $subEvent;
+            },
+            $json['subEvent']
+        );
+
+        return $json;
+    }
+
+    private function removeCapacity(array $bookingAvailability): array
+    {
+        unset($bookingAvailability['capacity'], $bookingAvailability['remainingCapacity']);
+
+        return $bookingAvailability;
     }
 
     /**
