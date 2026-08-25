@@ -8,9 +8,9 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\ConvertsToApiProblem;
 use InvalidArgumentException;
 
-final class OvernightNotAllowed extends InvalidArgumentException implements ConvertsToApiProblem
+final class OvernightStayNotAllowed extends InvalidArgumentException implements ConvertsToApiProblem
 {
-    public const MESSAGE = 'overnight is only allowed when the event has term ' . EventTypeResolver::CAMP_OR_VACATION_TERM_ID;
+    public const MESSAGE = 'hasOvernightStay is only allowed when the event has term ' . EventTypeResolver::CAMP_OR_VACATION_TERM_ID;
 
     public function __construct()
     {
