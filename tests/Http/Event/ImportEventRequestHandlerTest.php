@@ -4180,41 +4180,6 @@ final class ImportEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_throws_if_bookingAvailability_has_top_level_remainingCapacity(): void
-    {
-        $event = [
-            'mainLanguage' => 'nl',
-            'name' => [
-                'nl' => 'Pannenkoeken voor het goede doel',
-            ],
-            'terms' => [
-                [
-                    'id' => '1.50.0.0.0',
-                ],
-            ],
-            'location' => [
-                '@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
-            ],
-            'calendarType' => 'permanent',
-            'bookingAvailability' => [
-                'type' => 'Available',
-                'remainingCapacity' => 10,
-            ],
-        ];
-
-        $expectedErrors = [
-            new SchemaError(
-                '/bookingAvailability/remainingCapacity',
-                'remainingCapacity is not supported on the top-level bookingAvailability..'
-            ),
-        ];
-
-        $this->assertValidationErrors($event, $expectedErrors);
-    }
-
-    /**
-     * @test
-     */
     public function it_throws_if_organizer_id_is_invalid(): void
     {
         $event = [

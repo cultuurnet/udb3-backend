@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Completeness;
 
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\TestCase;
 
@@ -17,61 +16,15 @@ final class CompletenessFromWeightsTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->eventCompleteness = new CompletenessFromWeights(
-            CompletenessTestConfig::forEvents(),
-            ItemType::event()
-        );
-        $this->placeCompleteness = new CompletenessFromWeights(
-            CompletenessTestConfig::forPlaces(),
-            ItemType::place()
-        );
-        $this->organizerCompleteness = new CompletenessFromWeights(
-            CompletenessTestConfig::forOrganizers(),
-            ItemType::organizer()
-        );
+        $this->eventCompleteness = new CompletenessFromWeights(CompletenessTestConfig::forEvents());
+        $this->placeCompleteness = new CompletenessFromWeights(CompletenessTestConfig::forPlaces());
+        $this->organizerCompleteness = new CompletenessFromWeights(CompletenessTestConfig::forOrganizers());
     }
 
     /**
      * @test
      */
-    public function it_gives_a_children_only_event_credit_for_capacity_and_remaining_capacity(): void
-    {
-        $body = $this->aCompleteEventBody() + [
-            'childrenOnly' => true,
-        ];
-        $body['bookingAvailability'] = [
-            'type' => 'Available',
-            'capacity' => 100,
-        ];
-        $body['subEvent'] = [
-            [
-                'bookingAvailability' => [
-                    'type' => 'Available',
-                    'capacity' => 100,
-                    'remainingCapacity' => 40,
-                ],
-            ],
-        ];
-
-        $this->assertSame(100, $this->calculate($this->eventCompleteness, $body));
-    }
-
-    /**
-     * @test
-     */
-    public function it_keeps_capacity_weights_in_the_total_for_a_children_only_event_without_capacity(): void
-    {
-        $body = $this->aCompleteEventBody() + [
-            'childrenOnly' => true,
-        ];
-
-        $this->assertSame(96, $this->calculate($this->eventCompleteness, $body));
-    }
-
-    /**
-     * @test
-     */
-    public function it_lets_a_non_children_only_event_reach_full_completeness_without_capacity(): void
+    public function it_calculates_full_completeness_for_an_event(): void
     {
         $this->assertSame(100, $this->calculate($this->eventCompleteness, $this->aCompleteEventBody()));
     }
@@ -79,57 +32,9 @@ final class CompletenessFromWeightsTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_expect_capacity_for_an_event_with_children_only_set_to_false(): void
+    public function it_calculates_full_completeness_for_a_place(): void
     {
-        $body = $this->aCompleteEventBody() + [
-            'childrenOnly' => false,
-        ];
-
-        $this->assertSame(100, $this->calculate($this->eventCompleteness, $body));
-    }
-
-    /**
-     * @test
-     * @dataProvider nonSubEventCalendarTypeDataProvider
-     */
-    public function it_does_not_expect_capacity_for_a_children_only_event_without_sub_events(string $calendarType): void
-    {
-        $body = $this->aCompleteEventBody() + [
-            'childrenOnly' => true,
-        ];
-        $body['calendarType'] = $calendarType;
-
-        $this->assertSame(100, $this->calculate($this->eventCompleteness, $body));
-    }
-
-    public function nonSubEventCalendarTypeDataProvider(): array
-    {
-        return [
-            'permanent' => ['permanent'],
-            'periodic' => ['periodic'],
-        ];
-    }
-
-    /**
-     * @test
-     */
-    public function it_gives_a_place_credit_for_capacity_inside_booking_availability(): void
-    {
-        $body = $this->aCompletePlaceBody();
-        $body['bookingAvailability'] = [
-            'type' => 'Available',
-            'capacity' => 100,
-        ];
-
-        $this->assertSame(100, $this->calculate($this->placeCompleteness, $body));
-    }
-
-    /**
-     * @test
-     */
-    public function it_always_expects_capacity_for_a_place(): void
-    {
-        $this->assertSame(98, $this->calculate($this->placeCompleteness, $this->aCompletePlaceBody()));
+        $this->assertSame(100, $this->calculate($this->placeCompleteness, $this->aCompletePlaceBody()));
     }
 
     /**

@@ -1846,22 +1846,6 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                     new SchemaError('/subEvent/0/overnight', 'The data (integer) must match the type: boolean'),
                 ],
             ],
-            'top_level_bookingAvailability_remainingCapacity' => [
-                'data' => (object)[
-                    'calendarType' => 'permanent',
-                    'openingHours' => [],
-                    'bookingAvailability' => (object)[
-                        'type' => 'Available',
-                        'remainingCapacity' => 10,
-                    ],
-                ],
-                'expectedSchemaErrors' => [
-                    new SchemaError(
-                        '/bookingAvailability/remainingCapacity',
-                        'remainingCapacity is not supported on the top-level bookingAvailability..'
-                    ),
-                ],
-            ],
         ];
     }
 
@@ -2242,22 +2226,6 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                 ],
                 'expectedSchemaErrors' => [
                     new SchemaError('/openingHours/0/closes', 'closes should not be before opens'),
-                ],
-            ],
-            'top_level_bookingAvailability_remainingCapacity' => [
-                'data' => (object)[
-                    'calendarType' => 'permanent',
-                    'openingHours' => [],
-                    'bookingAvailability' => (object)[
-                        'type' => 'Available',
-                        'remainingCapacity' => 10,
-                    ],
-                ],
-                'expectedSchemaErrors' => [
-                    new SchemaError(
-                        '/bookingAvailability/remainingCapacity',
-                        'remainingCapacity is not supported on the top-level bookingAvailability..'
-                    ),
                 ],
             ],
         ];

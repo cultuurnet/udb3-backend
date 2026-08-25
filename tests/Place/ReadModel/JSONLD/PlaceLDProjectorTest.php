@@ -35,7 +35,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
-use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -128,10 +127,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
                     'en' => 'Copyright handled by %s',
                 ]
             ),
-            new CompletenessFromWeights(
-                CompletenessTestConfig::forPlaces(),
-                ItemType::place()
-            )
+            new CompletenessFromWeights(CompletenessTestConfig::forPlaces())
         );
 
         $street = new Street('Kerkstraat 69');
@@ -193,7 +189,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 53;
+        $jsonLD->completeness = 54;
 
         $body = $this->project(
             $placeCreated,
@@ -260,7 +256,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $jsonLD->playhead = 1;
-        $jsonLD->completeness = 53;
+        $jsonLD->completeness = 54;
 
         $metadata = new Metadata(
             [
@@ -360,7 +356,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->completedLanguages = ['nl'];
         $expectedJsonLD->modified = $this->recordedOn->toString();
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 53;
+        $expectedJsonLD->completeness = 54;
 
         $addressUpdated = new AddressUpdated(
             '66f30742-dee9-4794-ac92-fa44634692b8',
@@ -445,7 +441,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD->completedLanguages = ['nl'];
         $expectedJsonLD->modified = $this->recordedOn->toString();
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 53;
+        $expectedJsonLD->completeness = 54;
 
         $addressTranslated = new AddressTranslated(
             '66f30742-dee9-4794-ac92-fa44634692b8',
@@ -833,7 +829,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
             'type' => 'Available',
         ];
         $expectedJsonLD->playhead = 1;
-        $expectedJsonLD->completeness = 53;
+        $expectedJsonLD->completeness = 54;
 
         $body = $this->project(
             $majorInfoUpdated,

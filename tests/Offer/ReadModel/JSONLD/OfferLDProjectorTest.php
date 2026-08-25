@@ -20,7 +20,6 @@ use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
-use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -135,10 +134,7 @@ class OfferLDProjectorTest extends TestCase
                     'en' => 'Copyright handled by %s',
                 ]
             ),
-            new CompletenessFromWeights(
-                CompletenessTestConfig::forEvents(),
-                ItemType::event()
-            )
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents())
         );
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(
@@ -195,7 +191,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(CompletenessTestConfig::forEvents(), ItemType::event())
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents())
         );
 
         $documentRepository->expects($this->exactly(4))
@@ -244,7 +240,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(CompletenessTestConfig::forEvents(), ItemType::event())
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents())
         );
 
         $documentRepository->expects($this->once())
@@ -293,7 +289,7 @@ class OfferLDProjectorTest extends TestCase
             new JsonDocumentNullEnricher(),
             [],
             new VideoNormalizer([]),
-            new CompletenessFromWeights(CompletenessTestConfig::forEvents(), ItemType::event())
+            new CompletenessFromWeights(CompletenessTestConfig::forEvents())
         );
 
         $documentRepository->expects($this->exactly(2))

@@ -30,7 +30,6 @@ use CultuurNet\UDB3\Event\Recommendations\DBALRecommendationsRepository;
 use CultuurNet\UDB3\Event\Recommendations\RecommendationForEnrichedOfferRepository;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
-use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\Popularity\PopularityEnrichedOfferRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
@@ -176,10 +175,7 @@ final class EventJSONLDServiceProvider extends AbstractServiceProvider
                     $container->get(EventTypeResolver::class),
                     $container->get('config')['base_price_translations'],
                     new VideoNormalizer($container->get('config')['media']['video_default_copyright']),
-                    new CompletenessFromWeights(
-                        Weights::fromConfig($container->get('config')['completeness']['event']),
-                        ItemType::event()
-                    ),
+                    new CompletenessFromWeights(Weights::fromConfig($container->get('config')['completeness']['event'])),
                     $container->get(PlaceTypeResolver::class)
                 );
 

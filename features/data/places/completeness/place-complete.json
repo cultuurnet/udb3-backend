@@ -32,8 +32,7 @@
   ],
   "typicalAgeRange": "6-12",
   "bookingAvailability": {
-    "type": "Available",
-    "capacity": 200
+    "type": "Available"
   },
   "description": {
     "nl": "Dit is een uitgebreide Nederlandstalige beschrijving van de plaats die met opzet langer is dan tweehonderd tekens, zodat het beschrijvingsveld meetelt voor de volledigheidsscore van deze plaats in UiTdatabank. Iedereen is van harte welkom."
