@@ -167,8 +167,9 @@ Feature: Test the hasChildcare offer search filter
     And the JSON response at "totalItems" should be 1
 
   @testIsolation
-  Scenario: Childcare hours do not influence dateFrom or dateTo filters
-    # The activity runs 10:00-18:00 but childcare is configured for the wider 08:00-19:00 window.
+  Scenario: Childcare hours extend the period a date filter matches
+    # The activity runs 10:00-18:00 with childcare for the wider 08:00-19:00 window, so the event
+    # is searchable for the whole of 08:00-19:00.
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
     {
@@ -193,10 +194,24 @@ Feature: Test the hasChildcare offer search filter
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
-    # A date filter covering only the childcare-only window (before the activity) returns nothing.
+    # A date filter covering only the childcare hours before the activity returns the event too.
     When I send a GET request to "/events" with parameters:
       | dateFrom              | 2026-08-17T08:00:00+02:00 |
       | dateTo                | 2026-08-17T09:59:00+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # And the same for the childcare hours after the activity.
+    When I send a GET request to "/events" with parameters:
+      | dateFrom              | 2026-08-17T18:01:00+02:00 |
+      | dateTo                | 2026-08-17T19:00:00+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # The period is extended to the childcare hours, not beyond them.
+    When I send a GET request to "/events" with parameters:
+      | dateFrom              | 2026-08-17T06:00:00+02:00 |
+      | dateTo                | 2026-08-17T07:59:00+02:00 |
       | disableDefaultFilters | true                      |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
