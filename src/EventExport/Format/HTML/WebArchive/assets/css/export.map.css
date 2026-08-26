@@ -82,9 +82,9 @@ html {
     padding-bottom: 6px;
 }
 
-.imageless.agedFrom.activity .activity__type,
-.imageless.agedFrom.activity .activity__title {
-    margin-right: 50px;
+.page:not(.page--vlieg) .imageless.vlieg.activity .activity__type,
+.page:not(.page--vlieg) .imageless.vlieg.activity .activity__title {
+    margin-right: 40px;
 }
 
 .activity__title {
@@ -127,28 +127,10 @@ html {
     text-align: center;
 }
 
-.activity__leeftijd {
-    background-color: #777;
-    width: 1cm;
-    height: 1cm;
-    font-size: 15px;
-    font-weight: bold;
-    color: #FFF;
-    position: absolute;
-    top: 0;
-    right: 0;
-    border-radius: 0.5cm;
-    line-height: 1cm;
-    text-align: center;
-    display: block;
-    margin: 0;
-}
-
-.page:not(.page--vlieg) .activity.vlieg .activity__leeftijd:before {
-    font-family: "FontAwesome";
+.page:not(.page--vlieg) .activity.vlieg:before {
     content: "";
     position: absolute;
-    left: -7.5px;
+    right: 15px;
     top: -15px;
     width: 30px;
     height: 30px;
