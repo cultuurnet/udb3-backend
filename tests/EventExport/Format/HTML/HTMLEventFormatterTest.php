@@ -691,7 +691,7 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_adds_the_starting_age_when_event_has_age_range(): void
+    public function it_adds_an_age_range_description_when_event_has_age_range(): void
     {
         $event = $this->getJSONEventFromFile(
             'event_with_all_icon_labels.json'
@@ -701,7 +701,24 @@ class HTMLEventFormatterTest extends TestCase
             'd1f0e71d-a9a8-4069-81fb-530134502c58',
             $event
         );
-        $this->assertEquals(5, $formattedEvent['ageFrom']);
+        $this->assertSame('Geschikt voor 5 jaar en ouder', $formattedEvent['ageRange']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_add_an_age_range_description_when_event_is_for_all_ages(): void
+    {
+        $event = Json::decode(
+            $this->getJSONEventFromFile('event_with_all_icon_labels.json')
+        );
+        $event->typicalAgeRange = '-';
+
+        $formattedEvent = $this->eventFormatter->formatEvent(
+            'd1f0e71d-a9a8-4069-81fb-530134502c58',
+            Json::encode($event)
+        );
+        $this->assertArrayNotHasKey('ageRange', $formattedEvent);
     }
 
     /**
