@@ -217,6 +217,186 @@ Feature: Test the hasChildcare offer search filter
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
+  Scenario: Childcare hours extend the period a local time filter matches
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "single",
+      "startDate": "2026-10-05T10:00:00+02:00",
+      "endDate": "2026-10-05T18:00:00+02:00",
+      "subEvent": [
+        {
+          "startDate": "2026-10-05T10:00:00+02:00",
+          "endDate": "2026-10-05T18:00:00+02:00",
+          "childcare": {"start": "08:00", "end": "19:00"}
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    # A local time window inside the childcare hours before the activity returns the event.
+    When I send a GET request to "/events" with parameters:
+      | localTimeFrom         | 0800 |
+      | localTimeTo           | 0959 |
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # And the same after the activity.
+    When I send a GET request to "/events" with parameters:
+      | localTimeFrom         | 1801 |
+      | localTimeTo           | 1900 |
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # Outside the childcare hours the event is not returned.
+    When I send a GET request to "/events" with parameters:
+      | localTimeFrom         | 0600 |
+      | localTimeTo           | 0759 |
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+
+  @testIsolation
+  Scenario: Childcare hours extend the sub-event a nested query matches
+    # hasChildcare combined with a local time filter queries the nested sub-event, so this covers
+    # the extended period on subEvent.localTimeRange rather than on the top-level field.
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "single",
+      "startDate": "2026-10-12T10:00:00+02:00",
+      "endDate": "2026-10-12T18:00:00+02:00",
+      "subEvent": [
+        {
+          "startDate": "2026-10-12T10:00:00+02:00",
+          "endDate": "2026-10-12T18:00:00+02:00",
+          "childcare": {"start": "08:00", "end": "19:00"}
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | hasChildcare          | true |
+      | localTimeFrom         | 0800 |
+      | localTimeTo           | 0959 |
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | hasChildcare          | false |
+      | localTimeFrom         | 0800  |
+      | localTimeTo           | 0959  |
+      | disableDefaultFilters | true  |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+
+  @testIsolation
+  Scenario: Childcare with only a start extends only the beginning of the period
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "single",
+      "startDate": "2026-10-19T10:00:00+02:00",
+      "endDate": "2026-10-19T18:00:00+02:00",
+      "subEvent": [
+        {
+          "startDate": "2026-10-19T10:00:00+02:00",
+          "endDate": "2026-10-19T18:00:00+02:00",
+          "childcare": {"start": "08:00"}
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | dateFrom              | 2026-10-19T08:00:00+02:00 |
+      | dateTo                | 2026-10-19T09:59:00+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # Without a childcare end the activity still ends at 18:00.
+    When I send a GET request to "/events" with parameters:
+      | dateFrom              | 2026-10-19T18:01:00+02:00 |
+      | dateTo                | 2026-10-19T19:00:00+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+
+  @testIsolation
+  Scenario: Childcare with only an end extends only the end of the period
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "single",
+      "startDate": "2026-10-26T10:00:00+01:00",
+      "endDate": "2026-10-26T18:00:00+01:00",
+      "subEvent": [
+        {
+          "startDate": "2026-10-26T10:00:00+01:00",
+          "endDate": "2026-10-26T18:00:00+01:00",
+          "childcare": {"end": "19:00"}
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | dateFrom              | 2026-10-26T18:01:00+01:00 |
+      | dateTo                | 2026-10-26T19:00:00+01:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # Without a childcare start the activity still begins at 10:00.
+    When I send a GET request to "/events" with parameters:
+      | dateFrom              | 2026-10-26T08:00:00+01:00 |
+      | dateTo                | 2026-10-26T09:59:00+01:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+
+  @testIsolation
+  Scenario: Childcare extends only the sub-event that has it
+    # Sub-event 1 (2026-11-02) has childcare; sub-event 2 (2026-11-09) does not.
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "multiple",
+      "startDate": "2026-11-02T10:00:00+01:00",
+      "endDate": "2026-11-09T18:00:00+01:00",
+      "subEvent": [
+        {
+          "startDate": "2026-11-02T10:00:00+01:00",
+          "endDate": "2026-11-02T18:00:00+01:00",
+          "childcare": {"start": "08:00", "end": "19:00"}
+        },
+        {
+          "startDate": "2026-11-09T10:00:00+01:00",
+          "endDate": "2026-11-09T18:00:00+01:00"
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | dateFrom              | 2026-11-02T08:00:00+01:00 |
+      | dateTo                | 2026-11-02T09:59:00+01:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | dateFrom              | 2026-11-09T08:00:00+01:00 |
+      | dateTo                | 2026-11-09T09:59:00+01:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+
+  @testIsolation
   Scenario: hasChildcare=true combines with a matching date filter
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
