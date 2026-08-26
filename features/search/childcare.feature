@@ -471,6 +471,43 @@ Feature: Test the hasChildcare offer search filter
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
+  Scenario: hasChildcare combines with a date filter on childcare from opening hours
+    # Combining hasChildcare with a date filter queries the nested sub-event, so this needs the
+    # childcare range of the opening hour to reach every sub-event it expands into.
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "periodic",
+      "startDate": "2026-11-16T00:00:00+01:00",
+      "endDate": "2026-11-20T23:59:59+01:00",
+      "openingHours": [
+        {
+          "opens": "09:00",
+          "closes": "17:00",
+          "childcare": {"start": "08:00", "end": "18:00"},
+          "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | hasChildcare          | true                      |
+      | dateFrom              | 2026-11-16T09:00:00+01:00 |
+      | dateTo                | 2026-11-16T17:00:00+01:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | hasChildcare          | false                     |
+      | dateFrom              | 2026-11-16T09:00:00+01:00 |
+      | dateTo                | 2026-11-16T17:00:00+01:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+
+  @testIsolation
   Scenario: hasChildcare=true combines with a matching date filter
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
