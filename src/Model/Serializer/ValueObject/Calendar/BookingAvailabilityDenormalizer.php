@@ -12,32 +12,13 @@ final class BookingAvailabilityDenormalizer implements DenormalizerInterface
 {
     public function denormalize($data, $class, $format = null, array $context = []): BookingAvailability
     {
-        $bookingAvailability = new BookingAvailability($this->getType($data));
-
-        if (isset($data['capacity'])) {
-            $bookingAvailability = $bookingAvailability->withCapacity($data['capacity']);
-        }
-
-        if (isset($data['remainingCapacity'])) {
-            $bookingAvailability = $bookingAvailability->withRemainingCapacity($data['remainingCapacity']);
-        }
-
-        return $bookingAvailability;
+        return new BookingAvailability(
+            new BookingAvailabilityType($data['type'])
+        );
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool
     {
         return $type === BookingAvailability::class;
-    }
-
-    private function getType(array $data): BookingAvailabilityType
-    {
-        if (isset($data['remainingCapacity'])) {
-            return $data['remainingCapacity'] > 0
-                ? BookingAvailabilityType::Available()
-                : BookingAvailabilityType::Unavailable();
-        }
-
-        return new BookingAvailabilityType($data['type'] ?? 'Available');
     }
 }

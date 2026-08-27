@@ -6,7 +6,6 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\RemainingCapacityExceedsCapacity;
 use PHPUnit\Framework\TestCase;
 
 final class BookingAvailabilityDenormalizerTest extends TestCase
@@ -29,8 +28,6 @@ final class BookingAvailabilityDenormalizerTest extends TestCase
         );
 
         $this->assertEquals(BookingAvailabilityType::Available(), $result->getType());
-        $this->assertNull($result->getCapacity());
-        $this->assertNull($result->getRemainingCapacity());
     }
 
     /**
@@ -44,81 +41,24 @@ final class BookingAvailabilityDenormalizerTest extends TestCase
         );
 
         $this->assertEquals(BookingAvailabilityType::Unavailable(), $result->getType());
-        $this->assertNull($result->getCapacity());
-        $this->assertNull($result->getRemainingCapacity());
     }
 
     /**
+     * The capacity and remainingCapacity properties were removed, so any value that is still sent
+     * has to be ignored instead of validated.
+     *
+     * @see https://jira.publiq.be/browse/III-7392
+     *
      * @test
      */
-    public function it_derives_available_type_from_positive_remainingCapacity(): void
+    public function it_ignores_capacity_and_remaining_capacity(): void
     {
         $result = $this->denormalizer->denormalize(
-            ['remainingCapacity' => 42],
+            ['type' => 'Available', 'capacity' => 10, 'remainingCapacity' => 0],
             BookingAvailability::class
         );
 
         $this->assertEquals(BookingAvailabilityType::Available(), $result->getType());
-        $this->assertNull($result->getCapacity());
-        $this->assertSame(42, $result->getRemainingCapacity());
-    }
-
-    /**
-     * @test
-     */
-    public function it_derives_unavailable_type_from_zero_remainingCapacity(): void
-    {
-        $result = $this->denormalizer->denormalize(
-            ['remainingCapacity' => 0],
-            BookingAvailability::class
-        );
-
-        $this->assertEquals(BookingAvailabilityType::Unavailable(), $result->getType());
-        $this->assertNull($result->getCapacity());
-        $this->assertSame(0, $result->getRemainingCapacity());
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_capacity_and_remainingCapacity_together(): void
-    {
-        $result = $this->denormalizer->denormalize(
-            ['capacity' => 100, 'remainingCapacity' => 42],
-            BookingAvailability::class
-        );
-
-        $this->assertEquals(BookingAvailabilityType::Available(), $result->getType());
-        $this->assertSame(100, $result->getCapacity());
-        $this->assertSame(42, $result->getRemainingCapacity());
-    }
-
-    /**
-     * @test
-     */
-    public function it_denormalizes_capacity_without_remainingCapacity(): void
-    {
-        $result = $this->denormalizer->denormalize(
-            ['type' => 'Available', 'capacity' => 100],
-            BookingAvailability::class
-        );
-
-        $this->assertEquals(BookingAvailabilityType::Available(), $result->getType());
-        $this->assertSame(100, $result->getCapacity());
-        $this->assertNull($result->getRemainingCapacity());
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_remaining_capacity_exceeds_capacity_when_remaining_exceeds_capacity(): void
-    {
-        $this->expectException(RemainingCapacityExceedsCapacity::class);
-
-        $this->denormalizer->denormalize(
-            ['type' => 'Available', 'capacity' => 10, 'remainingCapacity' => 99],
-            BookingAvailability::class
-        );
     }
 
     /**

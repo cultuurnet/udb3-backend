@@ -21,8 +21,6 @@ final class CompletenessTestConfig
             'contactPoint' => 2,
             'bookingInfo' => 2,
             'faqs' => 2,
-            'capacity' => 2,
-            'remainingCapacity' => 2,
             'organizer' => 2,
             'videos' => 1,
         ]);
@@ -41,7 +39,6 @@ final class CompletenessTestConfig
             'priceInfo' => 8,
             'contactPoint' => 2,
             'bookingInfo' => 2,
-            'capacity' => 2,
             'organizer' => 2,
             'videos' => 1,
         ]);

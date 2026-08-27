@@ -242,26 +242,6 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                         ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable())),
                 ),
             ],
-            'one_subEvent_with_capacity_and_remainingCapacity' => [
-                'data' => [
-                    (object)[
-                        'id' => 1,
-                        'bookingAvailability' => (object)[
-                            'capacity' => 100,
-                            'remainingCapacity' => 42,
-                        ],
-                    ],
-                ],
-                'expected_command' => new UpdateSubEvents(
-                    self::EVENT_ID,
-                    (new SubEventUpdate(1))
-                        ->withBookingAvailability(
-                            BookingAvailability::Available()
-                                ->withCapacity(100)
-                                ->withRemainingCapacity(42)
-                        ),
-                ),
-            ],
             'one_subEvent_with_childcare_start_and_end' => [
                 'data' => [
                     (object)[
@@ -284,26 +264,6 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateSubEvents(
                     self::EVENT_ID,
                     (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange(null, null))
-                ),
-            ],
-            'one_subEvent_with_zero_remainingCapacity_derives_unavailable_type' => [
-                'data' => [
-                    (object)[
-                        'id' => 1,
-                        'bookingAvailability' => (object)[
-                            'capacity' => 100,
-                            'remainingCapacity' => 0,
-                        ],
-                    ],
-                ],
-                'expected_command' => new UpdateSubEvents(
-                    self::EVENT_ID,
-                    (new SubEventUpdate(1))
-                        ->withBookingAvailability(
-                            BookingAvailability::Unavailable()
-                                ->withCapacity(100)
-                                ->withRemainingCapacity(0)
-                        ),
                 ),
             ],
             'one_subEvent_with_overnight_true' => [
@@ -485,35 +445,6 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     new SchemaError('/0/status', 'The required properties (type) are missing'),
                 ],
             ],
-            'one_subEvent_with_remainingCapacity_exceeding_capacity' => [
-                'data' => [
-                    (object)[
-                        'id' => 0,
-                        'bookingAvailability' => (object)[
-                            'capacity' => 10,
-                            'remainingCapacity' => 99,
-                        ],
-                    ],
-                ],
-                'expectedSchemaErrors' => [
-                    new SchemaError('/0/bookingAvailability/remainingCapacity', 'remainingCapacity must be less than or equal to capacity'),
-                ],
-            ],
-            'one_subEvent_with_negative_remainingCapacity_and_capacity' => [
-                'data' => [
-                    (object)[
-                        'id' => 0,
-                        'bookingAvailability' => (object)[
-                            'capacity' => -100,
-                            'remainingCapacity' => -100,
-                        ],
-                    ],
-                ],
-                'expectedSchemaErrors' => [
-                    new SchemaError('/0/bookingAvailability/capacity', 'Number must be greater than or equal to 0'),
-                    new SchemaError('/0/bookingAvailability/remainingCapacity', 'Number must be greater than or equal to 0'),
-                ],
-            ],
             'one_subEvent_with_childcare_start_equal_to_startDate_time' => [
                 'data' => [
                     (object)[
@@ -566,7 +497,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     new SchemaError('/0/childcare/end', 'childcare.end must be after the time portion of endDate'),
                 ],
             ],
-            'one_subEvent_with_no_type_and_no_remaining_capacity' => [
+            'one_subEvent_with_bookingAvailability_without_type' => [
                 'data' => [
                     (object)[
                         'id' => 0,
@@ -576,7 +507,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/0/bookingAvailability', 'The data should match exactly one schema'),
+                    new SchemaError('/0/bookingAvailability', 'The required properties (type) are missing'),
                 ],
             ],
             'one_subEvent_with_childcare_start_invalid_format' => [

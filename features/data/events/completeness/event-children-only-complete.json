@@ -24,8 +24,7 @@
   "startDate": "2021-05-17T08:00:00+00:00",
   "endDate": "2021-05-18T22:00:00+00:00",
   "bookingAvailability": {
-    "type": "Available",
-    "capacity": 300
+    "type": "Available"
   },
   "subEvent": [
     {
@@ -36,9 +35,7 @@
         "type": "Available"
       },
       "bookingAvailability": {
-        "type": "Available",
-        "capacity": 300,
-        "remainingCapacity": 150
+        "type": "Available"
       }
     }
   ],

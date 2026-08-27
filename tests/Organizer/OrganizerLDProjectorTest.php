@@ -26,7 +26,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\CountryCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
-use CultuurNet\UDB3\Model\ValueObject\Identity\ItemType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
@@ -104,10 +103,7 @@ final class OrganizerLDProjectorTest extends TestCase
                 new CdbXMLToJsonLDLabelImporter($this->createMock(ReadRepositoryInterface::class)),
                 new CultureFeedAddressFactory()
             ),
-            new CompletenessFromWeights(
-                CompletenessTestConfig::forOrganizers(),
-                ItemType::organizer()
-            ),
+            new CompletenessFromWeights(CompletenessTestConfig::forOrganizers()),
         );
 
         $this->recordedOn = RecordedOn::fromBroadwayDateTime(

@@ -22,7 +22,6 @@ final class OfferValidatingRequestBodyParser implements RequestBodyParser
             new CalendarValidatingRequestBodyParser(),
             new DuplicateLabelValidatingRequestBodyParser(),
             new PriceInfoDuplicateNameValidatingRequestBodyParser(),
-            new RemainingCapacityValidatingRequestBodyParser(),
             $offerType->sameAs(OfferType::event()) ?
                 MainLanguageValidatingRequestBodyParser::createForEvent() :
                 MainLanguageValidatingRequestBodyParser::createForPlace()
