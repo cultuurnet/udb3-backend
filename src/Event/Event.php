@@ -77,6 +77,8 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -166,6 +168,8 @@ final class Event extends Offer
             $event->assertOvernightAllowed($calendar->getSubEvents()->toArray());
         }
 
+        $event->assertChildcareAllowed($calendar);
+
         if ($location->isDummyPlaceForEducation()) {
             // Bookable education events should get education as their audience type. We record this explicitly so we
             // don't have to handle this edge case in every read model projector.
@@ -202,6 +206,8 @@ final class Event extends Offer
                 $calendar
             )
         );
+
+        $copy->assertChildcareAllowed($calendar);
 
         return $copy;
     }
@@ -439,6 +445,8 @@ final class Event extends Offer
 
         $updatedCalendar = $this->rebuildCalendarFromSubEvents($subEvents, $this->calendar);
 
+        $this->assertChildcareAllowed($updatedCalendar);
+
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(
                 new CalendarUpdated($this->eventId, $updatedCalendar)
@@ -451,6 +459,8 @@ final class Event extends Offer
         if ($calendar instanceof CalendarWithSubEvents) {
             $this->assertOvernightAllowed($calendar->getSubEvents()->toArray());
         }
+
+        $this->assertChildcareAllowed($calendar);
 
         parent::updateCalendar($calendar);
     }
@@ -486,6 +496,26 @@ final class Event extends Offer
         );
     }
 
+    private function withoutChildcare(Calendar $calendar): Calendar
+    {
+        if ($calendar instanceof CalendarWithSubEvents) {
+            return $this->rebuildCalendarFromSubEvents(
+                $calendar->getSubEvents()->withoutChildcare()->toArray(),
+                $calendar
+            );
+        }
+
+        if ($calendar instanceof CalendarWithOpeningHours) {
+            $calendar = $calendar->withOpeningHours($calendar->getOpeningHours()->withoutChildcare());
+
+            if ($calendar instanceof CalendarWithAdjustedDays) {
+                $calendar = $calendar->withAdjustedDays($calendar->getAdjustedDays()->withoutChildcare());
+            }
+        }
+
+        return $calendar;
+    }
+
     /**
      * @param SubEvent[] $subEvents
      */
@@ -511,6 +541,17 @@ final class Event extends Offer
             if ($subEvent->isOvernight()) {
                 throw new OvernightNotAllowed();
             }
+        }
+    }
+
+    private function assertChildcareAllowed(Calendar $calendar): void
+    {
+        if (EventTypeResolver::isChildcareAllowed($this->typeId)) {
+            return;
+        }
+
+        if (!$this->sameCalendars($calendar, $this->withoutChildcare($calendar))) {
+            throw new ChildcareNotAllowed();
         }
     }
 

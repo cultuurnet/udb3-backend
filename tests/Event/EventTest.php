@@ -46,9 +46,15 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
@@ -80,6 +86,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -2507,6 +2514,53 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([]);
     }
 
+    private function getKinderopvangCreationEvent(): EventCreated
+    {
+        return new EventCreated(
+            self::EVENT_ID,
+            new Language('nl'),
+            'Kinderopvang De Speelboom',
+            new Category(
+                new CategoryID(EventTypeResolver::CHILDCARE_TERM_ID),
+                new CategoryLabel('Kinderopvang'),
+                CategoryDomain::eventType()
+            ),
+            new LocationId(self::LOCATION_ID),
+            new PermanentCalendar(new OpeningHours())
+        );
+    }
+
+    private function getKinderopvangType(): Category
+    {
+        return new Category(
+            new CategoryID(EventTypeResolver::CHILDCARE_TERM_ID),
+            new CategoryLabel('Kinderopvang'),
+            CategoryDomain::eventType()
+        );
+    }
+
+    private function getSubEventWithChildcare(): SubEvent
+    {
+        return SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withChildcareTimeRange(
+            new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+        );
+    }
+
+    private function getOpeningHoursWithChildcare(): OpeningHours
+    {
+        return new OpeningHours(
+            (new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00')))
+                ->withChildcareTimeRange(
+                    new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+                )
+        );
+    }
+
     private function getKampOrVakantieCreationEvent(): EventCreated
     {
         return new EventCreated(
@@ -2821,6 +2875,167 @@ class EventTest extends AggregateRootScenarioTestCase
                     ))
                 ),
             ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_is_set_during_create_on_a_kinderopvang_event(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        Event::create(
+            self::EVENT_ID,
+            new Language('nl'),
+            new Title('Kinderopvang De Speelboom'),
+            $this->getKinderopvangType(),
+            new LocationId(self::LOCATION_ID),
+            new SingleSubEventCalendar($this->getSubEventWithChildcare())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_is_set_on_a_sub_event_of_a_kinderopvang_event_on_update_calendar(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $this->scenario
+            ->given([$this->getKinderopvangCreationEvent()])
+            ->when(
+                fn (Event $event) => $event->updateCalendar(
+                    new SingleSubEventCalendar($this->getSubEventWithChildcare())
+                )
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_is_set_on_an_opening_hour_of_a_kinderopvang_event_on_update_calendar(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $this->scenario
+            ->given([$this->getKinderopvangCreationEvent()])
+            ->when(
+                fn (Event $event) => $event->updateCalendar(
+                    new PermanentCalendar($this->getOpeningHoursWithChildcare())
+                )
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_is_set_on_an_adjusted_day_of_a_kinderopvang_event_on_update_calendar(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $calendar = (new PermanentCalendar(new OpeningHours()))->withAdjustedDays(
+            new AdjustedDays(
+                new AdjustedDay(
+                    new \DateTimeImmutable('2026-12-25'),
+                    new \DateTimeImmutable('2026-12-25'),
+                    $this->getOpeningHoursWithChildcare()
+                )
+            )
+        );
+
+        $this->scenario
+            ->given([$this->getKinderopvangCreationEvent()])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_is_set_on_a_kinderopvang_event_on_update_sub_events(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getKinderopvangCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withChildcareTimeRange(
+                        new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+                    )
+                )
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_a_kinderopvang_event_is_copied_with_childcare(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $event = Event::create(
+            self::EVENT_ID,
+            new Language('nl'),
+            new Title('Kinderopvang De Speelboom'),
+            $this->getKinderopvangType(),
+            new LocationId(self::LOCATION_ID),
+            new PermanentCalendar(new OpeningHours())
+        );
+        $event->getUncommittedEvents();
+
+        $event->copy(
+            'e49430ca-5729-4768-8364-02ddb385517a',
+            new SingleSubEventCalendar($this->getSubEventWithChildcare())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_childcare_on_an_event_without_the_kinderopvang_term(): void
+    {
+        $calendar = new SingleSubEventCalendar($this->getSubEventWithChildcare());
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([new CalendarUpdated(self::EVENT_ID, $calendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_a_kinderopvang_event_without_childcare(): void
+    {
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                    new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+                )
+            )
+        );
+
+        $this->scenario
+            ->given([$this->getKinderopvangCreationEvent()])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([new CalendarUpdated(self::EVENT_ID, $calendar)]);
     }
 
     /**
