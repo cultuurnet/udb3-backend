@@ -30,4 +30,15 @@ class OpeningHours extends Collection
             )
         );
     }
+
+    public function hasChildcare(): bool
+    {
+        foreach ($this->toArray() as $openingHour) {
+            if ($openingHour->hasChildcare()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

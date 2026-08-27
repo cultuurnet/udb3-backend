@@ -82,7 +82,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
@@ -564,44 +563,19 @@ final class Event extends Offer
 
     private function hasChildcare(Calendar $calendar): bool
     {
-        if ($calendar instanceof CalendarWithSubEvents) {
-            foreach ($calendar->getSubEvents()->toArray() as $subEvent) {
-                if ($this->isChildcareTimeRangeSet($subEvent->getChildcareTimeRange())) {
-                    return true;
-                }
-            }
-        }
-
-        if ($calendar instanceof CalendarWithOpeningHours &&
-            $this->openingHoursHaveChildcare($calendar->getOpeningHours())) {
+        if ($calendar instanceof CalendarWithSubEvents && $calendar->getSubEvents()->hasChildcare()) {
             return true;
         }
 
-        if ($calendar instanceof CalendarWithAdjustedDays) {
-            foreach ($calendar->getAdjustedDays()->toArray() as $adjustedDay) {
-                if ($this->openingHoursHaveChildcare($adjustedDay->getOpeningHours())) {
-                    return true;
-                }
-            }
+        if ($calendar instanceof CalendarWithOpeningHours && $calendar->getOpeningHours()->hasChildcare()) {
+            return true;
+        }
+
+        if ($calendar instanceof CalendarWithAdjustedDays && $calendar->getAdjustedDays()->hasChildcare()) {
+            return true;
         }
 
         return false;
-    }
-
-    private function openingHoursHaveChildcare(OpeningHours $openingHours): bool
-    {
-        foreach ($openingHours->toArray() as $openingHour) {
-            if ($this->isChildcareTimeRangeSet($openingHour->getChildcareTimeRange())) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    private function isChildcareTimeRangeSet(?TimeImmutableRange $childcareTimeRange): bool
-    {
-        return $childcareTimeRange !== null && !$childcareTimeRange->isEmpty();
     }
 
     /**

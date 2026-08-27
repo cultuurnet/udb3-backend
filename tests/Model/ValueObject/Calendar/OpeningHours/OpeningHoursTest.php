@@ -74,4 +74,31 @@ class OpeningHoursTest extends TestCase
         );
         $this->assertNotNull($openingHour->getChildcareTimeRange());
     }
+
+    /**
+     * @test
+     */
+    public function it_has_childcare_when_any_opening_hour_has_childcare(): void
+    {
+        $openingHours = new OpeningHours(
+            new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00')),
+            (new OpeningHour(new Days(Day::tuesday()), Time::fromString('10:00'), Time::fromString('16:00')))
+                ->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('09:00'), Time::fromString('17:00')))
+        );
+
+        $this->assertTrue($openingHours->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_no_childcare_when_no_opening_hour_has_childcare(): void
+    {
+        $openingHours = new OpeningHours(
+            new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+        );
+
+        $this->assertFalse($openingHours->hasChildcare());
+        $this->assertFalse((new OpeningHours())->hasChildcare());
+    }
 }

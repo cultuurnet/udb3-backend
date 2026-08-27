@@ -162,4 +162,47 @@ final class AdjustedDaysTest extends TestCase
         $this->assertEquals(new DateTimeImmutable('2026-12-31'), $adjustedDay->getEndDate());
         $this->assertEquals($description, $adjustedDay->getDescription());
     }
+
+    /**
+     * @test
+     */
+    public function it_has_childcare_when_any_adjusted_day_has_childcare(): void
+    {
+        $openingHoursWithChildcare = new OpeningHours(
+            (new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00')))
+                ->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00')))
+        );
+
+        $collection = new AdjustedDays(
+            new AdjustedDay(
+                new DateTimeImmutable('2026-12-25'),
+                new DateTimeImmutable('2026-12-25'),
+                $this->openingHours
+            ),
+            new AdjustedDay(
+                new DateTimeImmutable('2026-12-26'),
+                new DateTimeImmutable('2026-12-26'),
+                $openingHoursWithChildcare
+            )
+        );
+
+        $this->assertTrue($collection->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_no_childcare_when_no_adjusted_day_has_childcare(): void
+    {
+        $collection = new AdjustedDays(
+            new AdjustedDay(
+                new DateTimeImmutable('2026-12-25'),
+                new DateTimeImmutable('2026-12-25'),
+                $this->openingHours
+            )
+        );
+
+        $this->assertFalse($collection->hasChildcare());
+        $this->assertFalse((new AdjustedDays())->hasChildcare());
+    }
 }

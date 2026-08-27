@@ -50,4 +50,9 @@ final class AdjustedDay
             $this->description
         );
     }
+
+    public function hasChildcare(): bool
+    {
+        return $this->openingHours->hasChildcare();
+    }
 }
