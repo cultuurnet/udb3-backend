@@ -1,7 +1,5 @@
 parameters:
     level: 6
-    parallel:
-        maximumNumberOfProcesses: 2
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
     paths:
