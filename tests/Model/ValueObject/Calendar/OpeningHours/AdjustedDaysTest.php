@@ -6,8 +6,8 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
-use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
