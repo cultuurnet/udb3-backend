@@ -1,7 +1,7 @@
 {
   "mainLanguage": "nl",
-  "name": {"nl": "Kinderopvang De Speelboom"},
-  "terms": [{"id": "K7mPx3nQrT9bWfH2zL5cYv", "label": "Kinderopvang", "domain": "eventtype"}],
+  "name": {"nl": "Event met kinderopvang"},
+  "terms": [{"id": "%{termId}"}],
   "location": {"@id": "%{placeUrl}"},
   "calendarType": "single",
   "startDate": "2026-07-01T09:00:00+02:00",
