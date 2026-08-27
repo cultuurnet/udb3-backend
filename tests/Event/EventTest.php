@@ -3242,7 +3242,7 @@ class EventTest extends AggregateRootScenarioTestCase
         )->withStatus($status);
 
         $courseType = new Category(
-            new CategoryID(EventTypeResolver::COURSE_WITH_OPEN_SESSIONS),
+            new CategoryID(EventTypeResolver::COURSE_WITH_OPEN_SESSIONS_TERM_ID),
             new CategoryLabel('Cursus met open sessies'),
             CategoryDomain::eventType()
         );
