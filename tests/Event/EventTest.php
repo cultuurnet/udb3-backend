@@ -3221,6 +3221,47 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_keeps_the_top_level_status_when_the_calendar_is_rebuilt_on_a_type_change(): void
+    {
+        $status = new Status(
+            StatusType::Unavailable(),
+            new TranslatedStatusReason(new Language('nl'), new StatusReason('Afgelast'))
+        );
+
+        $subEvent1 = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withStatus($status);
+        $subEvent2 = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-08-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-08-05T17:00:00+02:00')
+            )
+        )->withStatus($status);
+
+        $courseType = new Category(
+            new CategoryID(EventTypeResolver::COURSE_WITH_OPEN_SESSIONS),
+            new CategoryLabel('Cursus met open sessies'),
+            CategoryDomain::eventType()
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    (new MultipleSubEventsCalendar(new SubEvents($subEvent1, $subEvent2)))->withStatus($status)
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateType($courseType))
+            ->then([new TypeUpdated(self::EVENT_ID, $courseType)]);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_update_birthdate_range(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';

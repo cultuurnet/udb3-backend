@@ -530,7 +530,9 @@ final class Event extends Offer
             ? new SingleSubEventCalendar($subEvents[0])
             : new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
 
-        return $calendar->withBookingAvailability($source->getBookingAvailability());
+        return $calendar
+            ->withStatus($source->getStatus())
+            ->withBookingAvailability($source->getBookingAvailability());
     }
 
     /**
