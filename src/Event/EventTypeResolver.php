@@ -48,7 +48,7 @@ final class EventTypeResolver implements TypeResolverInterface
         return $eventTermId === self::CAMP_OR_VACATION_TERM_ID;
     }
 
-    public static function isChildcareAllowed(?string $eventTermId): bool
+    public static function isChildcareTimeAllowed(?string $eventTermId): bool
     {
         return $eventTermId !== self::CHILDCARE_TERM_ID;
     }

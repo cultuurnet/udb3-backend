@@ -479,7 +479,7 @@ final class Event extends Offer
             $updatedCalendar = $this->withoutOvernight($updatedCalendar);
         }
 
-        if (!EventTypeResolver::isChildcareAllowed($this->typeId)) {
+        if (!EventTypeResolver::isChildcareTimeAllowed($this->typeId)) {
             $updatedCalendar = $this->withoutChildcare($updatedCalendar);
         }
 
@@ -552,7 +552,7 @@ final class Event extends Offer
 
     private function assertChildcareAllowed(Calendar $calendar): void
     {
-        if (EventTypeResolver::isChildcareAllowed($this->typeId)) {
+        if (EventTypeResolver::isChildcareTimeAllowed($this->typeId)) {
             return;
         }
 
