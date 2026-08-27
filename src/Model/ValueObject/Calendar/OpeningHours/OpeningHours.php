@@ -20,4 +20,14 @@ class OpeningHours extends Collection
     {
         return $this->isEmpty();
     }
+
+    public function withoutChildcare(): self
+    {
+        return new self(
+            ...array_map(
+                fn (OpeningHour $openingHour) => $openingHour->withChildcareTimeRange(null),
+                $this->toArray()
+            )
+        );
+    }
 }

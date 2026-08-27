@@ -273,4 +273,51 @@ final class PeriodicCalendarTest extends TestCase
         // Original calendar should be unchanged
         $this->assertEquals(1, $calendar->getClosedDays()->count());
     }
+
+    /**
+     * @test
+     */
+    public function it_allows_replacing_the_opening_hours(): void
+    {
+        $openingHours = new OpeningHours(
+            new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+        );
+
+        $updatedCalendar = $this->periodicCalendar->withOpeningHours($openingHours);
+
+        $this->assertEquals($openingHours, $updatedCalendar->getOpeningHours());
+        $this->assertTrue($this->periodicCalendar->getOpeningHours()->isEmpty());
+    }
+
+    /**
+     * @test
+     */
+    public function it_only_replaces_the_opening_hours(): void
+    {
+        $calendar = $this->periodicCalendar
+            ->withClosedDays(
+                new ClosedDays(
+                    new ClosedDay(new DateTimeImmutable('2024-12-25'), new DateTimeImmutable('2024-12-25'))
+                )
+            )
+            ->withAdjustedDays(
+                new AdjustedDays(
+                    new AdjustedDay(
+                        new DateTimeImmutable('2024-12-26'),
+                        new DateTimeImmutable('2024-12-26'),
+                        new OpeningHours()
+                    )
+                )
+            );
+
+        $roundTripped = $calendar
+            ->withOpeningHours(
+                new OpeningHours(
+                    new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+                )
+            )
+            ->withOpeningHours($calendar->getOpeningHours());
+
+        $this->assertEquals($calendar, $roundTripped);
+    }
 }

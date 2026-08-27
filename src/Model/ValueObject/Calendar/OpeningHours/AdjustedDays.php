@@ -49,4 +49,19 @@ final class AdjustedDays extends Collection
     {
         return count($this->values);
     }
+
+    public function withoutChildcare(): self
+    {
+        return new self(
+            ...array_map(
+                fn (AdjustedDay $adjustedDay) => new AdjustedDay(
+                    $adjustedDay->getStartDate(),
+                    $adjustedDay->getEndDate(),
+                    $adjustedDay->getOpeningHours()->withoutChildcare(),
+                    $adjustedDay->getDescription()
+                ),
+                $this->values
+            )
+        );
+    }
 }

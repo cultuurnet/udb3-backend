@@ -63,6 +63,13 @@ final class PermanentCalendar implements CalendarWithOpeningHours, CalendarWithC
         return $this->openingHours;
     }
 
+    public function withOpeningHours(OpeningHours $openingHours): static
+    {
+        $clone = clone $this;
+        $clone->openingHours = $openingHours;
+        return $clone;
+    }
+
     public function getClosedDays(): ClosedDays
     {
         return $this->closedDays;
