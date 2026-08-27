@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -86,5 +87,43 @@ final class AdjustedDayTest extends TestCase
                 new OpeningHour(new Days(Day::friday()), Time::fromString('13:00'), Time::fromString('15:00'))
             )
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_the_childcare_time_range_and_keeps_everything_else(): void
+    {
+        $description = new TranslatedAdjustedDescription(
+            new Language('nl'),
+            new AdjustedDescription('Kerstvakantie')
+        );
+
+        $adjustedDay = new AdjustedDay(
+            new DateTimeImmutable('2026-12-21'),
+            new DateTimeImmutable('2026-12-26'),
+            new OpeningHours(
+                (new OpeningHour(new Days(Day::friday()), Time::fromString('13:00'), Time::fromString('15:00')))
+                    ->withChildcareTimeRange(
+                        new TimeImmutableRange(Time::fromString('12:30'), Time::fromString('15:30'))
+                    )
+            ),
+            $description
+        );
+
+        $withoutChildcare = $adjustedDay->withoutChildcare();
+
+        $this->assertEquals(
+            new AdjustedDay(
+                new DateTimeImmutable('2026-12-21'),
+                new DateTimeImmutable('2026-12-26'),
+                new OpeningHours(
+                    new OpeningHour(new Days(Day::friday()), Time::fromString('13:00'), Time::fromString('15:00'))
+                ),
+                $description
+            ),
+            $withoutChildcare
+        );
+        $this->assertNotNull($adjustedDay->getOpeningHours()->toArray()[0]->getChildcareTimeRange());
     }
 }

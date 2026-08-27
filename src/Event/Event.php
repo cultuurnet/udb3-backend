@@ -512,10 +512,10 @@ final class Event extends Offer
 
         if ($calendar instanceof CalendarWithOpeningHours) {
             $calendar = $calendar->withOpeningHours($calendar->getOpeningHours()->withoutChildcare());
+        }
 
-            if ($calendar instanceof CalendarWithAdjustedDays) {
-                $calendar = $calendar->withAdjustedDays($calendar->getAdjustedDays()->withoutChildcare());
-            }
+        if ($calendar instanceof CalendarWithAdjustedDays) {
+            $calendar = $calendar->withAdjustedDays($calendar->getAdjustedDays()->withoutChildcare());
         }
 
         return $calendar;

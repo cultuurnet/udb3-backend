@@ -40,4 +40,14 @@ final class AdjustedDay
     {
         return $this->description;
     }
+
+    public function withoutChildcare(): self
+    {
+        return new self(
+            $this->startDate,
+            $this->endDate,
+            $this->openingHours->withoutChildcare(),
+            $this->description
+        );
+    }
 }

@@ -53,15 +53,7 @@ final class AdjustedDays extends Collection
     public function withoutChildcare(): self
     {
         return new self(
-            ...array_map(
-                fn (AdjustedDay $adjustedDay) => new AdjustedDay(
-                    $adjustedDay->getStartDate(),
-                    $adjustedDay->getEndDate(),
-                    $adjustedDay->getOpeningHours()->withoutChildcare(),
-                    $adjustedDay->getDescription()
-                ),
-                $this->values
-            )
+            ...array_map(fn (AdjustedDay $adjustedDay) => $adjustedDay->withoutChildcare(), $this->toArray())
         );
     }
 }
