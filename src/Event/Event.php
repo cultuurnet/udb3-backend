@@ -405,6 +405,10 @@ final class Event extends Offer
 
         $subEvents = $this->calendar->getSubEvents()->toArray();
 
+        // Report that childcare is not allowed at all before validating the times against the sub event dates,
+        // otherwise the reply complains about times that could never be valid on this event to begin with.
+        $this->assertChildcareAllowedOnUpdates(...$subEventUpdates);
+
         foreach ($subEventUpdates as $subEventUpdate) {
             $index = $subEventUpdate->getSubEventId();
 
@@ -546,6 +550,19 @@ final class Event extends Offer
         foreach ($subEvents as $subEvent) {
             if ($subEvent->isOvernight()) {
                 throw new OvernightNotAllowed();
+            }
+        }
+    }
+
+    private function assertChildcareAllowedOnUpdates(SubEventUpdate ...$subEventUpdates): void
+    {
+        if (EventTypeResolver::isChildcareTimeAllowed($this->typeId)) {
+            return;
+        }
+
+        foreach ($subEventUpdates as $subEventUpdate) {
+            if ($subEventUpdate->setsChildcare()) {
+                throw new ChildcareNotAllowed();
             }
         }
     }

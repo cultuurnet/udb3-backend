@@ -81,6 +81,14 @@ final class SubEventUpdate
         return $this->childcareTimeRange;
     }
 
+    /**
+     * An empty range clears childcare instead of setting it, so it does not count as setting childcare.
+     */
+    public function setsChildcare(): bool
+    {
+        return $this->childcareTimeRange !== null && !$this->childcareTimeRange->isEmpty();
+    }
+
     public function withChildcareTimeRange(?TimeImmutableRange $childcareTimeRange): self
     {
         $c = clone $this;

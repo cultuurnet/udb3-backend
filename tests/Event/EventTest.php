@@ -3262,6 +3262,62 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_reports_that_childcare_is_not_allowed_before_validating_the_childcare_times(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getKinderopvangCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(
+                // 10:00 is after the 09:00 start, so this would also fail the childcare time validation.
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withChildcareTimeRange(
+                        new TimeImmutableRange(Time::fromString('10:00'), Time::fromString('18:00'))
+                    )
+                )
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_clearing_childcare_on_a_kinderopvang_event(): void
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getKinderopvangCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(
+                // An empty range is how "childcare": {} is expressed: it clears childcare instead of setting it.
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange())
+                )
+            )
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_update_birthdate_range(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
