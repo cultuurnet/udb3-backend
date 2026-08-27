@@ -13,16 +13,12 @@ final class ChildcareTimeRangeNormalizer
      */
     public function normalize(?TimeImmutableRange $childcareTimeRange): ?array
     {
-        if ($childcareTimeRange === null) {
+        if ($childcareTimeRange === null || $childcareTimeRange->isEmpty()) {
             return null;
         }
 
         $start = $childcareTimeRange->getStart()?->getValue();
         $end = $childcareTimeRange->getEnd()?->getValue();
-
-        if ($start === null && $end === null) {
-            return null;
-        }
 
         $childcare = [];
         if ($start !== null) {

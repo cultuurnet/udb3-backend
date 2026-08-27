@@ -599,17 +599,9 @@ final class Event extends Offer
         return false;
     }
 
-    /**
-     * An explicitly cleared childcare time range has no start and no end. It is stored as an empty range instead of
-     * null, but it projects to no childcare at all, so it does not count as childcare here either.
-     */
     private function isChildcareTimeRangeSet(?TimeImmutableRange $childcareTimeRange): bool
     {
-        if ($childcareTimeRange === null) {
-            return false;
-        }
-
-        return $childcareTimeRange->getStart() !== null || $childcareTimeRange->getEnd() !== null;
+        return $childcareTimeRange !== null && !$childcareTimeRange->isEmpty();
     }
 
     /**
