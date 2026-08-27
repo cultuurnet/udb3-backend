@@ -437,7 +437,7 @@ final class Event extends Offer
 
         $this->assertOvernightAllowed($subEvents);
 
-        $updatedCalendar = $this->rebuildCalendarFromSubEvents($subEvents);
+        $updatedCalendar = $this->rebuildCalendarFromSubEvents($subEvents, $this->calendar);
 
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(
@@ -459,31 +459,43 @@ final class Event extends Offer
     {
         parent::updateType($category);
 
-        if (!($this->calendar instanceof CalendarWithSubEvents)) {
+        if ($this->calendar === null) {
             return;
         }
 
-        if (EventTypeResolver::isOvernightAllowed($this->typeId)) {
-            return;
+        $updatedCalendar = $this->calendar;
+
+        if (!EventTypeResolver::isOvernightAllowed($this->typeId)) {
+            $updatedCalendar = $this->withoutOvernight($updatedCalendar);
         }
 
-        $resetSubEvents = $this->calendar->getSubEvents()->withoutOvernight()->toArray();
-        $updatedCalendar = $this->rebuildCalendarFromSubEvents($resetSubEvents);
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
         }
     }
 
+    private function withoutOvernight(Calendar $calendar): Calendar
+    {
+        if (!($calendar instanceof CalendarWithSubEvents)) {
+            return $calendar;
+        }
+
+        return $this->rebuildCalendarFromSubEvents(
+            $calendar->getSubEvents()->withoutOvernight()->toArray(),
+            $calendar
+        );
+    }
+
     /**
      * @param SubEvent[] $subEvents
      */
-    private function rebuildCalendarFromSubEvents(array $subEvents): Calendar
+    private function rebuildCalendarFromSubEvents(array $subEvents, Calendar $source): Calendar
     {
-        $calendar = $this->calendar->getType()->sameAs(CalendarType::single())
+        $calendar = $source->getType()->sameAs(CalendarType::single())
             ? new SingleSubEventCalendar($subEvents[0])
             : new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
 
-        return $calendar->withBookingAvailability($this->calendar->getBookingAvailability());
+        return $calendar->withBookingAvailability($source->getBookingAvailability());
     }
 
     /**
