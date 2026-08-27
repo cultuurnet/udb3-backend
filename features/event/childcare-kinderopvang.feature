@@ -83,7 +83,18 @@ Feature: Test that events with the Kinderopvang term cannot have childcare times
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
     And the JSON response at "terms/0/id" should be "K7mPx3nQrT9bWfH2zL5cYv"
-    And the JSON response should not have "subEvent/0/childcare"
+    And the JSON response at "subEvent" should have 1 entry
+    And the JSON response at "subEvent/0" should be:
+    """
+    {
+      "id": 0,
+      "@type": "Event",
+      "startDate": "2026-07-01T09:00:00+02:00",
+      "endDate": "2026-07-05T17:00:00+02:00",
+      "status": {"type": "Available"},
+      "bookingAvailability": {"type": "Available"}
+    }
+    """
 
   Scenario: childcare is removed from opening hours when the event type changes to Kinderopvang
     Given I set the variable "termId" to "0.50.4.0.0"
@@ -92,9 +103,15 @@ Feature: Test that events with the Kinderopvang term cannot have childcare times
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
     And the JSON response at "terms/0/id" should be "K7mPx3nQrT9bWfH2zL5cYv"
-    And the JSON response at "openingHours/0/opens" should be "09:00"
-    And the JSON response at "openingHours/0/closes" should be "17:00"
-    And the JSON response should not have "openingHours/0/childcare"
+    And the JSON response at "openingHours" should have 1 entry
+    And the JSON response at "openingHours/0" should be:
+    """
+    {
+      "opens": "09:00",
+      "closes": "17:00",
+      "dayOfWeek": ["monday", "tuesday", "wednesday"]
+    }
+    """
 
   Scenario: childcare is removed from adjusted opening hours when the event type changes to Kinderopvang
     Given I set the variable "termId" to "0.50.4.0.0"
@@ -103,12 +120,29 @@ Feature: Test that events with the Kinderopvang term cannot have childcare times
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
     And the JSON response at "terms/0/id" should be "K7mPx3nQrT9bWfH2zL5cYv"
-    And the JSON response at "openingHoursAdjustedDays/0/startDate" should be "2026-12-21"
-    And the JSON response at "openingHoursAdjustedDays/0/endDate" should be "2026-12-26"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/opens" should be "13:00"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/closes" should be "15:00"
-    And the JSON response at "openingHoursAdjustedDays/0/openingHours/0/dayOfWeek/0" should be "friday"
-    And the JSON response should not have "openingHoursAdjustedDays/0/openingHours/0/childcare"
+    And the JSON response at "openingHoursAdjustedDays" should have 1 entry
+    And the JSON response at "openingHoursAdjustedDays/0" should be:
+    """
+    {
+      "startDate": "2026-12-21",
+      "endDate": "2026-12-26",
+      "openingHours": [
+        {
+          "opens": "13:00",
+          "closes": "15:00",
+          "dayOfWeek": ["friday"]
+        }
+      ]
+    }
+    """
+    And the JSON response at "openingHours/0" should be:
+    """
+    {
+      "opens": "09:00",
+      "closes": "17:00",
+      "dayOfWeek": ["monday", "tuesday", "wednesday"]
+    }
+    """
 
   Scenario: A Kinderopvang event without childcare is created normally
     When I set the JSON request payload from "events/childcare-kinderopvang/event-single-kinderopvang.json"
