@@ -14,6 +14,8 @@ final class EventTypeResolver implements TypeResolverInterface
 {
     public const CAMP_OR_VACATION_TERM_ID = '0.57.0.0.0';
 
+    public const COURSE_WITH_OPEN_SESSIONS = '0.3.1.0.0';
+
     public function __construct(readonly Categories $types)
     {
     }
@@ -33,7 +35,7 @@ final class EventTypeResolver implements TypeResolverInterface
         return in_array(
             $eventType->getId()->toString(),
             [
-                '0.3.1.0.0',
+                self::COURSE_WITH_OPEN_SESSIONS,
                 self::CAMP_OR_VACATION_TERM_ID,
             ]
         );
