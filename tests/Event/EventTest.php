@@ -58,9 +58,13 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -3171,6 +3175,47 @@ class EventTest extends AggregateRootScenarioTestCase
             ->given([$this->getCreationEvent()])
             ->when(fn (Event $event) => $event->updateType($kinderopvangType))
             ->then([new TypeUpdated(self::EVENT_ID, $kinderopvangType)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_updating_all_statuses_with_a_reason_on_a_kinderopvang_event(): void
+    {
+        $subEvent1 = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+        $subEvent2 = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-08-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-08-05T17:00:00+02:00')
+            )
+        );
+
+        $status = new Status(
+            StatusType::Unavailable(),
+            new TranslatedStatusReason(new Language('nl'), new StatusReason('Afgelast'))
+        );
+
+        $expectedCalendar = new MultipleSubEventsCalendar(
+            new SubEvents($subEvent1->withStatus($status), $subEvent2->withStatus($status))
+        );
+
+        $this->scenario
+            ->given([
+                $this->getKinderopvangCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents($subEvent1, $subEvent2))
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateAllStatuses($status))
+            ->then([
+                new CalendarUpdated(self::EVENT_ID, $expectedCalendar->withStatus($status)),
+            ]);
     }
 
     /**

@@ -82,6 +82,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
@@ -554,9 +555,59 @@ final class Event extends Offer
             return;
         }
 
-        if (!$this->sameCalendars($calendar, $this->withoutChildcare($calendar))) {
+        if ($this->hasChildcare($calendar)) {
             throw new ChildcareNotAllowed();
         }
+    }
+
+    private function hasChildcare(Calendar $calendar): bool
+    {
+        if ($calendar instanceof CalendarWithSubEvents) {
+            foreach ($calendar->getSubEvents()->toArray() as $subEvent) {
+                if ($this->isChildcareTimeRangeSet($subEvent->getChildcareTimeRange())) {
+                    return true;
+                }
+            }
+        }
+
+        if ($calendar instanceof CalendarWithOpeningHours &&
+            $this->openingHoursHaveChildcare($calendar->getOpeningHours())) {
+            return true;
+        }
+
+        if ($calendar instanceof CalendarWithAdjustedDays) {
+            foreach ($calendar->getAdjustedDays()->toArray() as $adjustedDay) {
+                if ($this->openingHoursHaveChildcare($adjustedDay->getOpeningHours())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    private function openingHoursHaveChildcare(OpeningHours $openingHours): bool
+    {
+        foreach ($openingHours->toArray() as $openingHour) {
+            if ($this->isChildcareTimeRangeSet($openingHour->getChildcareTimeRange())) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * An explicitly cleared childcare time range has no start and no end. It is stored as an empty range instead of
+     * null, but it projects to no childcare at all, so it does not count as childcare here either.
+     */
+    private function isChildcareTimeRangeSet(?TimeImmutableRange $childcareTimeRange): bool
+    {
+        if ($childcareTimeRange === null) {
+            return false;
+        }
+
+        return $childcareTimeRange->getStart() !== null || $childcareTimeRange->getEnd() !== null;
     }
 
     /**
