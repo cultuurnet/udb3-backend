@@ -3041,6 +3041,141 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_removes_childcare_from_all_sub_events_when_type_changes_to_kinderopvang(): void
+    {
+        $subEvent1 = $this->getSubEventWithChildcare();
+        $subEvent2 = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-08-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-08-05T17:00:00+02:00')
+            )
+        )->withChildcareTimeRange(
+            new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+        );
+
+        $kinderopvangType = $this->getKinderopvangType();
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents($subEvent1, $subEvent2))
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateType($kinderopvangType))
+            ->then([
+                new TypeUpdated(self::EVENT_ID, $kinderopvangType),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $subEvent1->withChildcareTimeRange(null),
+                        $subEvent2->withChildcareTimeRange(null)
+                    ))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_childcare_from_opening_hours_when_type_changes_to_kinderopvang(): void
+    {
+        $kinderopvangType = $this->getKinderopvangType();
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new PermanentCalendar($this->getOpeningHoursWithChildcare())
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateType($kinderopvangType))
+            ->then([
+                new TypeUpdated(self::EVENT_ID, $kinderopvangType),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new PermanentCalendar($this->getOpeningHoursWithChildcare()->withoutChildcare())
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_childcare_from_adjusted_days_when_type_changes_to_kinderopvang(): void
+    {
+        $kinderopvangType = $this->getKinderopvangType();
+
+        $adjustedDays = new AdjustedDays(
+            new AdjustedDay(
+                new \DateTimeImmutable('2026-12-25'),
+                new \DateTimeImmutable('2026-12-25'),
+                $this->getOpeningHoursWithChildcare()
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    (new PermanentCalendar(new OpeningHours()))->withAdjustedDays($adjustedDays)
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateType($kinderopvangType))
+            ->then([
+                new TypeUpdated(self::EVENT_ID, $kinderopvangType),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    (new PermanentCalendar(new OpeningHours()))->withAdjustedDays($adjustedDays->withoutChildcare())
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_overnight_and_childcare_in_one_calendar_updated_when_type_changes_to_kinderopvang(): void
+    {
+        $subEvent = $this->getSubEventWithChildcare()->withOvernight(true);
+
+        $kinderopvangType = $this->getKinderopvangType();
+
+        $this->scenario
+            ->given([
+                $this->getKampOrVakantieCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(fn (Event $event) => $event->updateType($kinderopvangType))
+            ->then([
+                new TypeUpdated(self::EVENT_ID, $kinderopvangType),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(
+                        $subEvent->withOvernight(false)->withChildcareTimeRange(null)
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_emit_calendar_updated_when_type_changes_to_kinderopvang_but_no_childcare_is_set(): void
+    {
+        $kinderopvangType = $this->getKinderopvangType();
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->updateType($kinderopvangType))
+            ->then([new TypeUpdated(self::EVENT_ID, $kinderopvangType)]);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_update_birthdate_range(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';

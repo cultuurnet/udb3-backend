@@ -479,6 +479,10 @@ final class Event extends Offer
             $updatedCalendar = $this->withoutOvernight($updatedCalendar);
         }
 
+        if (!EventTypeResolver::isChildcareAllowed($this->typeId)) {
+            $updatedCalendar = $this->withoutChildcare($updatedCalendar);
+        }
+
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
         }
