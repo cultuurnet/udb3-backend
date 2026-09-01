@@ -482,7 +482,7 @@ final class Event extends Offer
             $updatedCalendar = $updatedCalendar->withoutOvernightStay();
         }
 
-        if (!EventTypeResolver::isChildcareTimeAllowed($this->typeId)) {
+        if (!EventTypeResolver::isChildcareAllowed($this->typeId)) {
             $updatedCalendar = $updatedCalendar->withoutChildcare();
         }
 
@@ -523,7 +523,7 @@ final class Event extends Offer
 
     private function assertChildcareAllowedOnUpdates(SubEventUpdate ...$subEventUpdates): void
     {
-        if (EventTypeResolver::isChildcareTimeAllowed($this->typeId)) {
+        if (EventTypeResolver::isChildcareAllowed($this->typeId)) {
             return;
         }
 
@@ -536,7 +536,7 @@ final class Event extends Offer
 
     private function assertChildcareAllowed(Calendar $calendar): void
     {
-        if (EventTypeResolver::isChildcareTimeAllowed($this->typeId)) {
+        if (EventTypeResolver::isChildcareAllowed($this->typeId)) {
             return;
         }
 
