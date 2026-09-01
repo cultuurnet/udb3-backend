@@ -77,8 +77,6 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithAdjustedDays;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithOpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
@@ -447,7 +445,7 @@ final class Event extends Offer
 
         $this->assertOvernightStayAllowed($subEvents);
 
-        $updatedCalendar = $this->rebuildCalendarFromSubEvents($subEvents, $this->calendar);
+        $updatedCalendar = $this->rebuildCalendarFromSubEvents($subEvents);
 
         $this->assertChildcareAllowed($updatedCalendar);
 
@@ -479,12 +477,13 @@ final class Event extends Offer
 
         $updatedCalendar = $this->calendar;
 
-        if (!EventTypeResolver::isOvernightStayAllowed($this->typeId)) {
-            $updatedCalendar = $this->withoutOvernightStay($updatedCalendar);
+        if (!EventTypeResolver::isOvernightStayAllowed($this->typeId)
+            && $updatedCalendar instanceof CalendarWithSubEvents) {
+            $updatedCalendar = $updatedCalendar->withoutOvernightStay();
         }
 
         if (!EventTypeResolver::isChildcareTimeAllowed($this->typeId)) {
-            $updatedCalendar = $this->withoutChildcare($updatedCalendar);
+            $updatedCalendar = $updatedCalendar->withoutChildcare();
         }
 
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
@@ -492,50 +491,18 @@ final class Event extends Offer
         }
     }
 
-    private function withoutOvernightStay(Calendar $calendar): Calendar
-    {
-        if (!($calendar instanceof CalendarWithSubEvents)) {
-            return $calendar;
-        }
-
-        return $this->rebuildCalendarFromSubEvents(
-            $calendar->getSubEvents()->withoutOvernightStay()->toArray(),
-            $calendar
-        );
-    }
-
-    private function withoutChildcare(Calendar $calendar): Calendar
-    {
-        if ($calendar instanceof CalendarWithSubEvents) {
-            return $this->rebuildCalendarFromSubEvents(
-                $calendar->getSubEvents()->withoutChildcare()->toArray(),
-                $calendar
-            );
-        }
-
-        if ($calendar instanceof CalendarWithOpeningHours) {
-            $calendar = $calendar->withOpeningHours($calendar->getOpeningHours()->withoutChildcare());
-        }
-
-        if ($calendar instanceof CalendarWithAdjustedDays) {
-            $calendar = $calendar->withAdjustedDays($calendar->getAdjustedDays()->withoutChildcare());
-        }
-
-        return $calendar;
-    }
-
     /**
      * @param SubEvent[] $subEvents
      */
-    private function rebuildCalendarFromSubEvents(array $subEvents, Calendar $source): Calendar
+    private function rebuildCalendarFromSubEvents(array $subEvents): Calendar
     {
-        $calendar = $source->getType()->sameAs(CalendarType::single())
+        $calendar = $this->calendar->getType()->sameAs(CalendarType::single())
             ? new SingleSubEventCalendar($subEvents[0])
             : new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
 
         return $calendar
-            ->withStatus($source->getStatus())
-            ->withBookingAvailability($source->getBookingAvailability());
+            ->withStatus($this->calendar->getStatus())
+            ->withBookingAvailability($this->calendar->getBookingAvailability());
     }
 
     /**
@@ -573,26 +540,9 @@ final class Event extends Offer
             return;
         }
 
-        if ($this->hasChildcare($calendar)) {
+        if ($calendar->hasChildcare()) {
             throw new ChildcareNotAllowed();
         }
-    }
-
-    private function hasChildcare(Calendar $calendar): bool
-    {
-        if ($calendar instanceof CalendarWithSubEvents && $calendar->getSubEvents()->hasChildcare()) {
-            return true;
-        }
-
-        if ($calendar instanceof CalendarWithOpeningHours && $calendar->getOpeningHours()->hasChildcare()) {
-            return true;
-        }
-
-        if ($calendar instanceof CalendarWithAdjustedDays && $calendar->getAdjustedDays()->hasChildcare()) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

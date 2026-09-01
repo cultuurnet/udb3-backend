@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -319,5 +320,98 @@ final class PeriodicCalendarTest extends TestCase
             ->withOpeningHours($calendar->getOpeningHours());
 
         $this->assertEquals($calendar, $roundTripped);
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_no_childcare_by_default(): void
+    {
+        $this->assertFalse($this->periodicCalendar->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_reports_childcare_on_its_opening_hours(): void
+    {
+        $calendar = $this->periodicCalendar->withOpeningHours(
+            new OpeningHours($this->openingHourWithChildcare())
+        );
+
+        $this->assertTrue($calendar->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_reports_childcare_on_its_adjusted_days(): void
+    {
+        $calendar = $this->periodicCalendar->withAdjustedDays(
+            new AdjustedDays(
+                new AdjustedDay(
+                    new DateTimeImmutable('2026-12-25'),
+                    new DateTimeImmutable('2026-12-26'),
+                    new OpeningHours($this->openingHourWithChildcare())
+                )
+            )
+        );
+
+        $this->assertTrue($calendar->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_the_childcare_from_the_opening_hours_and_the_adjusted_days(): void
+    {
+        $withChildcare = $this->periodicCalendar
+            ->withOpeningHours(new OpeningHours($this->openingHourWithChildcare()))
+            ->withAdjustedDays(
+                new AdjustedDays(
+                    new AdjustedDay(
+                        new DateTimeImmutable('2026-12-25'),
+                        new DateTimeImmutable('2026-12-26'),
+                        new OpeningHours($this->openingHourWithChildcare())
+                    )
+                )
+            );
+
+        $withoutChildcare = $withChildcare->withoutChildcare();
+
+        $this->assertFalse($withoutChildcare->hasChildcare());
+        $this->assertTrue($withChildcare->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_only_removes_the_childcare(): void
+    {
+        $calendar = $this->periodicCalendar
+            ->withClosedDays(
+                new ClosedDays(
+                    new ClosedDay(new DateTimeImmutable('2026-12-25'), new DateTimeImmutable('2026-12-25'))
+                )
+            )
+            ->withOpeningHours(
+                new OpeningHours(
+                    new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'))
+                )
+            )
+            ->withStatus(new Status(StatusType::Unavailable()));
+
+        $this->assertEquals($calendar, $calendar->withoutChildcare());
+    }
+
+    private function openingHourWithChildcare(): OpeningHour
+    {
+        return (new OpeningHour(
+            new Days(Day::monday()),
+            Time::fromString('09:00'),
+            Time::fromString('17:00')
+        ))->withChildcareTimeRange(
+            new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+        );
     }
 }
