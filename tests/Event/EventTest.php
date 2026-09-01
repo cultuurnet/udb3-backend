@@ -2533,23 +2533,23 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_preserves_overnight_on_unrelated_sub_event_updates(): void
+    public function it_preserves_overnight_stay_on_unrelated_sub_event_updates(): void
     {
         $unavailable = new \CultuurNet\UDB3\Model\ValueObject\Calendar\Status(
             \CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType::Unavailable()
         );
 
-        $subEventWithOvernight = SubEvent::createAvailable(
+        $subEventWithOvernightStay = SubEvent::createAvailable(
             new DateRange(
                 new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
                 new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
             )
-        )->withOvernight(true);
+        )->withHasOvernightStay(true);
 
         $this->scenario
             ->given([
                 $this->getKampOrVakantieCreationEvent(),
-                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernight)),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernightStay)),
             ])
             ->when(
                 fn (Event $event) => $event->updateSubEvents(
@@ -2559,7 +2559,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([
                 new CalendarUpdated(
                     self::EVENT_ID,
-                    new SingleSubEventCalendar($subEventWithOvernight->withStatus($unavailable))
+                    new SingleSubEventCalendar($subEventWithOvernightStay->withStatus($unavailable))
                 ),
             ]);
     }
@@ -2567,29 +2567,29 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_explicitly_set_overnight_to_false_via_update_sub_events(): void
+    public function it_can_explicitly_set_overnight_stay_to_false_via_update_sub_events(): void
     {
-        $subEventWithOvernight = SubEvent::createAvailable(
+        $subEventWithOvernightStay = SubEvent::createAvailable(
             new DateRange(
                 new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
                 new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
             )
-        )->withOvernight(true);
+        )->withHasOvernightStay(true);
 
         $this->scenario
             ->given([
                 $this->getKampOrVakantieCreationEvent(),
-                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernight)),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernightStay)),
             ])
             ->when(
                 fn (Event $event) => $event->updateSubEvents(
-                    (new SubEventUpdate(0))->withOvernight(false)
+                    (new SubEventUpdate(0))->withHasOvernightStay(false)
                 )
             )
             ->then([
                 new CalendarUpdated(
                     self::EVENT_ID,
-                    new SingleSubEventCalendar($subEventWithOvernight->withOvernight(false))
+                    new SingleSubEventCalendar($subEventWithOvernightStay->withHasOvernightStay(false))
                 ),
             ]);
     }
@@ -2597,7 +2597,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_emit_calendar_updated_when_overnight_is_already_false_and_patched_to_false(): void
+    public function it_does_not_emit_calendar_updated_when_overnight_stay_is_already_false_and_patched_to_false(): void
     {
         $subEvent = SubEvent::createAvailable(
             new DateRange(
@@ -2613,7 +2613,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(
                 fn (Event $event) => $event->updateSubEvents(
-                    (new SubEventUpdate(0))->withOvernight(false)
+                    (new SubEventUpdate(0))->withHasOvernightStay(false)
                 )
             )
             ->then([]);
@@ -2622,10 +2622,10 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_sub_events(): void
+    public function it_throws_when_overnight_stay_is_set_without_kamp_of_vakantie_term_on_update_sub_events(): void
     {
-        $this->expectException(OvernightNotAllowed::class);
-        $this->expectExceptionMessage(OvernightNotAllowed::MESSAGE);
+        $this->expectException(OvernightStayNotAllowed::class);
+        $this->expectExceptionMessage(OvernightStayNotAllowed::MESSAGE);
 
         // Set a single-subEvent calendar first (event is created with PermanentCalendar by default)
         $dateRange = new DateRange(
@@ -2633,16 +2633,16 @@ class EventTest extends AggregateRootScenarioTestCase
             new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
         );
         $this->event->updateCalendar(new SingleSubEventCalendar(SubEvent::createAvailable($dateRange)));
-        $this->event->updateSubEvents((new SubEventUpdate(0))->withOvernight(true));
+        $this->event->updateSubEvents((new SubEventUpdate(0))->withHasOvernightStay(true));
     }
 
     /**
      * @test
      */
-    public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_calendar(): void
+    public function it_throws_when_overnight_stay_is_set_without_kamp_of_vakantie_term_on_update_calendar(): void
     {
-        $this->expectException(OvernightNotAllowed::class);
-        $this->expectExceptionMessage(OvernightNotAllowed::MESSAGE);
+        $this->expectException(OvernightStayNotAllowed::class);
+        $this->expectExceptionMessage(OvernightStayNotAllowed::MESSAGE);
 
         $this->event->updateCalendar(
             new SingleSubEventCalendar(
@@ -2651,7 +2651,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
                         new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
                     )
-                )->withOvernight(true)
+                )->withHasOvernightStay(true)
             )
         );
     }
@@ -2659,10 +2659,10 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_throws_when_overnight_is_set_during_create_without_kamp_of_vakantie_term(): void
+    public function it_throws_when_overnight_stay_is_set_during_create_without_kamp_of_vakantie_term(): void
     {
-        $this->expectException(OvernightNotAllowed::class);
-        $this->expectExceptionMessage(OvernightNotAllowed::MESSAGE);
+        $this->expectException(OvernightStayNotAllowed::class);
+        $this->expectExceptionMessage(OvernightStayNotAllowed::MESSAGE);
 
         Event::create(
             self::EVENT_ID,
@@ -2676,7 +2676,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
                         new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
                     )
-                )->withOvernight(true)
+                )->withHasOvernightStay(true)
             )
         );
     }
@@ -2684,16 +2684,16 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_allows_overnight_on_update_calendar_when_event_has_kamp_of_vakantie_term(): void
+    public function it_allows_overnight_stay_on_update_calendar_when_event_has_kamp_of_vakantie_term(): void
     {
-        $subEventWithOvernight = SubEvent::createAvailable(
+        $subEventWithOvernightStay = SubEvent::createAvailable(
             new DateRange(
                 new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
                 new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
             )
-        )->withOvernight(true);
+        )->withHasOvernightStay(true);
 
-        $calendar = new SingleSubEventCalendar($subEventWithOvernight);
+        $calendar = new SingleSubEventCalendar($subEventWithOvernightStay);
 
         $this->scenario
             ->given([$this->getKampOrVakantieCreationEvent()])
@@ -2732,14 +2732,14 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_resets_overnight_on_all_sub_events_when_type_changes_away_from_kamp_of_vakantie(): void
+    public function it_resets_overnight_stay_on_all_sub_events_when_type_changes_away_from_kamp_of_vakantie(): void
     {
-        $subEventWithOvernight = SubEvent::createAvailable(
+        $subEventWithOvernightStay = SubEvent::createAvailable(
             new DateRange(
                 new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
                 new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
             )
-        )->withOvernight(true);
+        )->withHasOvernightStay(true);
 
         $concertType = new Category(
             new CategoryID('0.50.4.0.0'),
@@ -2750,14 +2750,14 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getKampOrVakantieCreationEvent(),
-                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernight)),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernightStay)),
             ])
             ->when(fn (Event $event) => $event->updateType($concertType))
             ->then([
                 new TypeUpdated(self::EVENT_ID, $concertType),
                 new CalendarUpdated(
                     self::EVENT_ID,
-                    new SingleSubEventCalendar($subEventWithOvernight->withOvernight(false))
+                    new SingleSubEventCalendar($subEventWithOvernightStay->withHasOvernightStay(false))
                 ),
             ]);
     }
@@ -2765,7 +2765,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_emit_calendar_updated_when_type_changes_away_from_kamp_of_vakantie_but_no_overnight_is_set(): void
+    public function it_does_not_emit_calendar_updated_when_type_changes_away_from_kamp_of_vakantie_but_no_overnight_stay_is_set(): void
     {
         $concertType = new Category(
             new CategoryID('0.50.4.0.0'),
@@ -2782,7 +2782,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_resets_overnight_on_multiple_sub_events_when_type_changes(): void
+    public function it_resets_overnight_stay_on_multiple_sub_events_when_type_changes(): void
     {
         $dateRange1 = new DateRange(
             new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
@@ -2793,8 +2793,8 @@ class EventTest extends AggregateRootScenarioTestCase
             new \DateTimeImmutable('2026-08-05T17:00:00+02:00')
         );
 
-        $subEvent1 = SubEvent::createAvailable($dateRange1)->withOvernight(true);
-        $subEvent2 = SubEvent::createAvailable($dateRange2)->withOvernight(true);
+        $subEvent1 = SubEvent::createAvailable($dateRange1)->withHasOvernightStay(true);
+        $subEvent2 = SubEvent::createAvailable($dateRange2)->withHasOvernightStay(true);
 
         $concertType = new Category(
             new CategoryID('0.50.4.0.0'),
@@ -2816,8 +2816,8 @@ class EventTest extends AggregateRootScenarioTestCase
                 new CalendarUpdated(
                     self::EVENT_ID,
                     new MultipleSubEventsCalendar(new SubEvents(
-                        $subEvent1->withOvernight(false),
-                        $subEvent2->withOvernight(false)
+                        $subEvent1->withHasOvernightStay(false),
+                        $subEvent2->withHasOvernightStay(false)
                     ))
                 ),
             ]);

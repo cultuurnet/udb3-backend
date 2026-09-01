@@ -7,9 +7,11 @@ namespace CultuurNet\UDB3;
 use Broadway\Serializer\Serializer;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated as EventBookingInfoUpdated;
+use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated as EventContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated as EventDescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated as EventDescriptionUpdated;
+use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
@@ -66,8 +68,10 @@ class BackwardsCompatiblePayloadSerializerFactory
         $payloadManipulatingSerializer->manipulateEventsOfClass(
             'CultuurNet\UDB3\Event\Events\EventCreated',
             function (array $serializedObject) {
-                return self::removeLocationNameAndAddress(
-                    self::addDefaultMainLanguage($serializedObject)
+                return self::renameOvernightToHasOvernightStay(
+                    self::removeLocationNameAndAddress(
+                        self::addDefaultMainLanguage($serializedObject)
+                    )
                 );
             }
         );
@@ -75,8 +79,10 @@ class BackwardsCompatiblePayloadSerializerFactory
         $payloadManipulatingSerializer->manipulateEventsOfClass(
             MajorInfoUpdated::class,
             function (array $serializedObject) {
-                return self::removeLocationNameAndAddress(
-                    self::replaceEventIdWithItemId($serializedObject)
+                return self::renameOvernightToHasOvernightStay(
+                    self::removeLocationNameAndAddress(
+                        self::replaceEventIdWithItemId($serializedObject)
+                    )
                 );
             }
         );
@@ -453,6 +459,26 @@ class BackwardsCompatiblePayloadSerializerFactory
         );
 
         /**
+         * CALENDAR EVENTS
+         *
+         * EventCreated and MajorInfoUpdated also carry a serialized calendar, but they
+         * already have a manipulation so the rename is composed into it above.
+         */
+        $renameOvernightEvents = [
+            CalendarUpdated::class,
+            EventCopied::class,
+        ];
+
+        foreach ($renameOvernightEvents as $renameOvernightEvent) {
+            $payloadManipulatingSerializer->manipulateEventsOfClass(
+                $renameOvernightEvent,
+                function (array $serializedObject) {
+                    return self::renameOvernightToHasOvernightStay($serializedObject);
+                }
+            );
+        }
+
+        /**
          * Update events whose class has been moved or renamed.
          */
         $movedEventClasses = [
@@ -469,6 +495,37 @@ class BackwardsCompatiblePayloadSerializerFactory
         }
 
         return $payloadManipulatingSerializer;
+    }
+
+    /**
+     * The subEvent property "overnight" was renamed to "hasOvernightStay". Stored payloads keep
+     * the old name, so it is translated on read. Note that sub events are stored under
+     * "timestamps" in the event store, not under "subEvent" like in the JSON-LD read model.
+     *
+     * @see https://jira.publiq.be/browse/III-7371
+     */
+    private static function renameOvernightToHasOvernightStay(array $serializedObject): array
+    {
+        if (!isset($serializedObject['payload']['calendar']['timestamps']) ||
+            !is_array($serializedObject['payload']['calendar']['timestamps'])) {
+            return $serializedObject;
+        }
+
+        $serializedObject['payload']['calendar']['timestamps'] = array_map(
+            function ($subEvent) {
+                if (!is_array($subEvent) || !array_key_exists('overnight', $subEvent)) {
+                    return $subEvent;
+                }
+
+                $subEvent['hasOvernightStay'] = $subEvent['overnight'];
+                unset($subEvent['overnight']);
+
+                return $subEvent;
+            },
+            $serializedObject['payload']['calendar']['timestamps']
+        );
+
+        return $serializedObject;
     }
 
     private static function replaceEventIdWithItemId(array $serializedObject): array
