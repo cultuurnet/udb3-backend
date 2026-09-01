@@ -47,8 +47,8 @@ final class SubEventDenormalizer implements DenormalizerInterface
             $subEvent = $subEvent->withChildcareTimeRange(new TimeImmutableRange($start, $end));
         }
 
-        if (isset($data['overnight'])) {
-            $subEvent = $subEvent->withOvernight($data['overnight']);
+        if (isset($data['hasOvernightStay'])) {
+            $subEvent = $subEvent->withHasOvernightStay($data['hasOvernightStay']);
         }
 
         return $subEvent;

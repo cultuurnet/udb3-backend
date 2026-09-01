@@ -165,7 +165,7 @@ final class Event extends Offer
         );
 
         if ($calendar instanceof CalendarWithSubEvents) {
-            $event->assertOvernightAllowed($calendar->getSubEvents()->toArray());
+            $event->assertOvernightStayAllowed($calendar->getSubEvents()->toArray());
         }
 
         $event->assertChildcareAllowed($calendar);
@@ -440,12 +440,12 @@ final class Event extends Offer
                 $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareToApply);
             }
 
-            $updatedSubEvent = $updatedSubEvent->withOvernight($subEventUpdate->getOvernight() ?? $subEvent->isOvernight());
+            $updatedSubEvent = $updatedSubEvent->withHasOvernightStay($subEventUpdate->getHasOvernightStay() ?? $subEvent->hasOvernightStay());
 
             $subEvents[$index] = $updatedSubEvent;
         }
 
-        $this->assertOvernightAllowed($subEvents);
+        $this->assertOvernightStayAllowed($subEvents);
 
         $updatedCalendar = $this->rebuildCalendarFromSubEvents($subEvents, $this->calendar);
 
@@ -461,7 +461,7 @@ final class Event extends Offer
     public function updateCalendar(Calendar $calendar): void
     {
         if ($calendar instanceof CalendarWithSubEvents) {
-            $this->assertOvernightAllowed($calendar->getSubEvents()->toArray());
+            $this->assertOvernightStayAllowed($calendar->getSubEvents()->toArray());
         }
 
         $this->assertChildcareAllowed($calendar);
@@ -479,8 +479,8 @@ final class Event extends Offer
 
         $updatedCalendar = $this->calendar;
 
-        if (!EventTypeResolver::isOvernightAllowed($this->typeId)) {
-            $updatedCalendar = $this->withoutOvernight($updatedCalendar);
+        if (!EventTypeResolver::isOvernightStayAllowed($this->typeId)) {
+            $updatedCalendar = $this->withoutOvernightStay($updatedCalendar);
         }
 
         if (!EventTypeResolver::isChildcareTimeAllowed($this->typeId)) {
@@ -492,14 +492,14 @@ final class Event extends Offer
         }
     }
 
-    private function withoutOvernight(Calendar $calendar): Calendar
+    private function withoutOvernightStay(Calendar $calendar): Calendar
     {
         if (!($calendar instanceof CalendarWithSubEvents)) {
             return $calendar;
         }
 
         return $this->rebuildCalendarFromSubEvents(
-            $calendar->getSubEvents()->withoutOvernight()->toArray(),
+            $calendar->getSubEvents()->withoutOvernightStay()->toArray(),
             $calendar
         );
     }
@@ -541,15 +541,15 @@ final class Event extends Offer
     /**
      * @param SubEvent[] $subEvents
      */
-    private function assertOvernightAllowed(array $subEvents): void
+    private function assertOvernightStayAllowed(array $subEvents): void
     {
-        if (EventTypeResolver::isOvernightAllowed($this->typeId)) {
+        if (EventTypeResolver::isOvernightStayAllowed($this->typeId)) {
             return;
         }
 
         foreach ($subEvents as $subEvent) {
-            if ($subEvent->isOvernight()) {
-                throw new OvernightNotAllowed();
+            if ($subEvent->hasOvernightStay()) {
+                throw new OvernightStayNotAllowed();
             }
         }
     }

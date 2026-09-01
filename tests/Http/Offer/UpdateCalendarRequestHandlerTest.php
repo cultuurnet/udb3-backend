@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Calendar\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
-use CultuurNet\UDB3\Event\OvernightNotAllowed;
+use CultuurNet\UDB3\Event\OvernightStayNotAllowed;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -957,14 +957,14 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                     )
                 ),
             ],
-            'single_with_overnight_false' => [
+            'single_with_overnight_stay_false' => [
                 'data' => (object)[
                     'calendarType' => 'single',
                     'subEvent' => [
                         (object)[
                             'startDate' => '2026-07-01T09:00:00+02:00',
                             'endDate' => '2026-07-05T17:00:00+02:00',
-                            'overnight' => false,
+                            'hasOvernightStay' => false,
                         ],
                     ],
                 ],
@@ -980,14 +980,14 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                     )
                 ),
             ],
-            'single_with_overnight_true' => [
+            'single_with_overnight_stay_true' => [
                 'data' => (object)[
                     'calendarType' => 'single',
                     'subEvent' => [
                         (object)[
                             'startDate' => '2026-07-01T09:00:00+02:00',
                             'endDate' => '2026-07-05T17:00:00+02:00',
-                            'overnight' => true,
+                            'hasOvernightStay' => true,
                         ],
                     ],
                 ],
@@ -999,18 +999,18 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                                 DateTimeFactory::fromAtom('2026-07-01T09:00:00+02:00'),
                                 DateTimeFactory::fromAtom('2026-07-05T17:00:00+02:00')
                             )
-                        )->withOvernight(true)
+                        )->withHasOvernightStay(true)
                     )
                 ),
             ],
-            'multiple_with_overnight_on_first_sub_event' => [
+            'multiple_with_overnight_stay_on_first_sub_event' => [
                 'data' => (object)[
                     'calendarType' => 'multiple',
                     'subEvent' => [
                         (object)[
                             'startDate' => '2026-07-01T09:00:00+02:00',
                             'endDate' => '2026-07-05T17:00:00+02:00',
-                            'overnight' => true,
+                            'hasOvernightStay' => true,
                         ],
                         (object)[
                             'startDate' => '2026-07-10T09:00:00+02:00',
@@ -1027,7 +1027,7 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                                     DateTimeFactory::fromAtom('2026-07-01T09:00:00+02:00'),
                                     DateTimeFactory::fromAtom('2026-07-05T17:00:00+02:00')
                                 )
-                            )->withOvernight(true),
+                            )->withHasOvernightStay(true),
                             SubEvent::createAvailable(
                                 new DateRange(
                                     DateTimeFactory::fromAtom('2026-07-10T09:00:00+02:00'),
@@ -1816,34 +1816,34 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                     new SchemaError('/openingHoursAdjustedDays/1/startDate', 'adjusted opening hours entries must not overlap'),
                 ],
             ],
-            'single_overnight_wrong_type_string' => [
+            'single_overnight_stay_wrong_type_string' => [
                 'data' => (object)[
                     'calendarType' => 'single',
                     'subEvent' => [
                         (object)[
                             'startDate' => '2026-07-01T09:00:00+02:00',
                             'endDate' => '2026-07-05T17:00:00+02:00',
-                            'overnight' => 'yes',
+                            'hasOvernightStay' => 'yes',
                         ],
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/subEvent/0/overnight', 'The data (string) must match the type: boolean'),
+                    new SchemaError('/subEvent/0/hasOvernightStay', 'The data (string) must match the type: boolean'),
                 ],
             ],
-            'single_overnight_wrong_type_integer' => [
+            'single_overnight_stay_wrong_type_integer' => [
                 'data' => (object)[
                     'calendarType' => 'single',
                     'subEvent' => [
                         (object)[
                             'startDate' => '2026-07-01T09:00:00+02:00',
                             'endDate' => '2026-07-05T17:00:00+02:00',
-                            'overnight' => 1,
+                            'hasOvernightStay' => 1,
                         ],
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/subEvent/0/overnight', 'The data (integer) must match the type: boolean'),
+                    new SchemaError('/subEvent/0/hasOvernightStay', 'The data (integer) must match the type: boolean'),
                 ],
             ],
         ];
@@ -2234,15 +2234,15 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_maps_overnight_not_allowed_to_400(): void
+    public function it_maps_overnight_stay_not_allowed_to_400(): void
     {
         $commandBus = $this->createMock(CommandBus::class);
-        $commandBus->method('dispatch')->willThrowException(new OvernightNotAllowed());
+        $commandBus->method('dispatch')->willThrowException(new OvernightStayNotAllowed());
 
         $handler = new UpdateCalendarRequestHandler($commandBus);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidDataWithDetail(OvernightNotAllowed::MESSAGE),
+            ApiProblem::bodyInvalidDataWithDetail(OvernightStayNotAllowed::MESSAGE),
             fn () => $handler->handle(
                 (new Psr7RequestBuilder())
                     ->withJsonBodyFromObject((object)[
@@ -2251,7 +2251,7 @@ final class UpdateCalendarRequestHandlerTest extends TestCase
                             (object)[
                                 'startDate' => '2026-07-01T09:00:00+02:00',
                                 'endDate' => '2026-07-05T17:00:00+02:00',
-                                'overnight' => true,
+                                'hasOvernightStay' => true,
                             ],
                         ],
                     ])

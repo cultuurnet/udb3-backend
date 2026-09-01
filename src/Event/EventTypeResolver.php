@@ -43,7 +43,7 @@ final class EventTypeResolver implements TypeResolverInterface
         );
     }
 
-    public static function isOvernightAllowed(?string $eventTermId): bool
+    public static function isOvernightStayAllowed(?string $eventTermId): bool
     {
         return $eventTermId === self::CAMP_OR_VACATION_TERM_ID;
     }

@@ -8,7 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\CommandHandling\Testing\TraceableCommandBus;
 use CultuurNet\UDB3\Event\ChildcareTimeInvalid;
 use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
-use CultuurNet\UDB3\Event\OvernightNotAllowed;
+use CultuurNet\UDB3\Event\OvernightStayNotAllowed;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -266,28 +266,28 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange(null, null))
                 ),
             ],
-            'one_subEvent_with_overnight_true' => [
+            'one_subEvent_with_overnight_stay_true' => [
                 'data' => [
                     (object)[
                         'id' => 0,
-                        'overnight' => true,
+                        'hasOvernightStay' => true,
                     ],
                 ],
                 'expected_command' => new UpdateSubEvents(
                     self::EVENT_ID,
-                    (new SubEventUpdate(0))->withOvernight(true)
+                    (new SubEventUpdate(0))->withHasOvernightStay(true)
                 ),
             ],
-            'one_subEvent_with_overnight_false' => [
+            'one_subEvent_with_overnight_stay_false' => [
                 'data' => [
                     (object)[
                         'id' => 0,
-                        'overnight' => false,
+                        'hasOvernightStay' => false,
                     ],
                 ],
                 'expected_command' => new UpdateSubEvents(
                     self::EVENT_ID,
-                    (new SubEventUpdate(0))->withOvernight(false)
+                    (new SubEventUpdate(0))->withHasOvernightStay(false)
                 ),
             ],
         ];
@@ -543,26 +543,26 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     new SchemaError('/0/childcare/start', 'The data (integer) must match the type: string'),
                 ],
             ],
-            'one_subEvent_with_overnight_wrong_type_string' => [
+            'one_subEvent_with_overnight_stay_wrong_type_string' => [
                 'data' => [
                     (object)[
                         'id' => 0,
-                        'overnight' => 'yes',
+                        'hasOvernightStay' => 'yes',
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/0/overnight', 'The data (string) must match the type: boolean'),
+                    new SchemaError('/0/hasOvernightStay', 'The data (string) must match the type: boolean'),
                 ],
             ],
-            'one_subEvent_with_overnight_wrong_type_integer' => [
+            'one_subEvent_with_overnight_stay_wrong_type_integer' => [
                 'data' => [
                     (object)[
                         'id' => 0,
-                        'overnight' => 1,
+                        'hasOvernightStay' => 1,
                     ],
                 ],
                 'expectedSchemaErrors' => [
-                    new SchemaError('/0/overnight', 'The data (integer) must match the type: boolean'),
+                    new SchemaError('/0/hasOvernightStay', 'The data (integer) must match the type: boolean'),
                 ],
             ],
         ];
@@ -571,19 +571,19 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_maps_overnight_not_allowed_to_400(): void
+    public function it_maps_overnight_stay_not_allowed_to_400(): void
     {
         $commandBus = $this->createMock(CommandBus::class);
-        $commandBus->method('dispatch')->willThrowException(new OvernightNotAllowed());
+        $commandBus->method('dispatch')->willThrowException(new OvernightStayNotAllowed());
 
         $handler = new UpdateSubEventsRequestHandler($commandBus);
 
         $this->assertCallableThrowsApiProblem(
-            ApiProblem::bodyInvalidDataWithDetail(OvernightNotAllowed::MESSAGE),
+            ApiProblem::bodyInvalidDataWithDetail(OvernightStayNotAllowed::MESSAGE),
             fn () => $handler->handle(
                 (new Psr7RequestBuilder())
                     ->withJsonBodyFromArray([
-                        (object)['id' => 0, 'overnight' => true],
+                        (object)['id' => 0, 'hasOvernightStay' => true],
                     ])
                     ->withRouteParameter('eventId', self::EVENT_ID)
                     ->build('PUT')

@@ -101,31 +101,31 @@ final class SubEventUpdateDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_set_overnight_when_key_is_absent(): void
+    public function it_does_not_set_overnight_stay_when_key_is_absent(): void
     {
         $update = $this->denormalizer->denormalize(['id' => 0], SubEventUpdate::class);
 
-        $this->assertNull($update->getOvernight());
+        $this->assertNull($update->getHasOvernightStay());
     }
 
     /**
      * @test
      */
-    public function it_sets_overnight_to_true(): void
+    public function it_sets_overnight_stay_to_true(): void
     {
-        $update = $this->denormalizer->denormalize(['id' => 0, 'overnight' => true], SubEventUpdate::class);
+        $update = $this->denormalizer->denormalize(['id' => 0, 'hasOvernightStay' => true], SubEventUpdate::class);
 
-        $this->assertTrue($update->getOvernight());
+        $this->assertTrue($update->getHasOvernightStay());
     }
 
     /**
      * @test
      */
-    public function it_sets_overnight_to_false(): void
+    public function it_sets_overnight_stay_to_false(): void
     {
-        $update = $this->denormalizer->denormalize(['id' => 0, 'overnight' => false], SubEventUpdate::class);
+        $update = $this->denormalizer->denormalize(['id' => 0, 'hasOvernightStay' => false], SubEventUpdate::class);
 
-        $this->assertFalse($update->getOvernight());
+        $this->assertFalse($update->getHasOvernightStay());
     }
 
     /**
