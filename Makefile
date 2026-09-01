@@ -59,6 +59,12 @@ feature-ci:
 feature-ci-es5:
 	docker compose exec php composer feature -- --profile=es5 --suite=default -f pretty -o std -f junit -o output/junit
 
+feature-ci-sapi3:
+	docker compose exec php composer feature -- --suite=sapi3 -f pretty -o std -f junit -o output/junit/sapi3
+
+feature-ci-rest:
+	docker compose exec php composer feature -- --suite=default --tags="~@sapi3" -f pretty -o std -f junit -o output/junit/rest
+
 feature:
 	docker compose exec php composer feature -- --suite=default
 
