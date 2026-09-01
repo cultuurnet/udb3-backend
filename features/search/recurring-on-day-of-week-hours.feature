@@ -10,6 +10,10 @@ Feature: Test the recurringOnDayOfWeek search filter combined with hours
   #
   # Only multiple, periodic and permanent calendars recur. A single calendar is checked once, to pin
   # down that a one-off event gets no recurring hours at all.
+  #
+  # Opening hours crossing midnight are absent on purpose. Entry API rejects an opening hour whose
+  # closes is before its opens, so a permanent offer open 20:00 to 02:00 cannot be created to test
+  # with. Sub-events of a multiple calendar do cross midnight and are covered below.
 
   Background:
     Given I am using the UDB3 base URL
@@ -293,56 +297,6 @@ Feature: Test the recurringOnDayOfWeek search filter combined with hours
       | recurringOnLocalTimeFrom | 0815      |
       | recurringOnLocalTimeTo   | 0829      |
       | disableDefaultFilters    | true      |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 0
-
-  @testIsolation
-  Scenario: Permanent place opening hours crossing midnight have a recurring day of week but no recurring hours
-    # An opening hour from 20:00 to 02:00 becomes a sub-event that starts after it ends, and that is
-    # dropped before the hours are resolved. The place therefore keeps its recurring day of week but
-    # has no recurring hours at all. A multiple calendar sub-event running into the next day does
-    # split at midnight, because it carries both dates and is never inverted.
-    When I create a minimal place with overrides and save the "url" as "placeUrl"
-    """
-    {
-      "calendarType": "permanent",
-      "openingHours": [
-        {
-          "opens": "20:00",
-          "closes": "02:00",
-          "dayOfWeek": ["saturday"]
-        }
-      ]
-    }
-    """
-    And I wait for the place with url "%{placeUrl}" to be indexed
-    And I am using the Search API v3 base URL
-    # The place has to stay indexed and searchable. An hours range written as one inverted range
-    # would make Elasticsearch reject the whole document, not just drop the field.
-    When I send a GET request to "/places" with parameters:
-      | disableDefaultFilters | true |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
-    # Saturday still recurs.
-    When I send a GET request to "/places" with parameters:
-      | recurringOnDayOfWeek  | saturday |
-      | disableDefaultFilters | true     |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 1
-    # But there are no hours to narrow it down with, not before midnight
-    When I send a GET request to "/places" with parameters:
-      | recurringOnDayOfWeek     | saturday |
-      | recurringOnLocalTimeFrom | 2100     |
-      | recurringOnLocalTimeTo   | 2200     |
-      | disableDefaultFilters    | true     |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 0
-    # and not after it.
-    When I send a GET request to "/places" with parameters:
-      | recurringOnDayOfWeek     | sunday |
-      | recurringOnLocalTimeFrom | 0100   |
-      | recurringOnLocalTimeTo   | 0130   |
-      | disableDefaultFilters    | true   |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
 
