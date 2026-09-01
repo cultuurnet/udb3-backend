@@ -22,6 +22,23 @@ Feature: Test that events with the Kinderopvang term cannot have childcare times
     Then the response status should be "400"
     And the JSON response at "detail" should be "childcare is not allowed when the event has term K7mPx3nQrT9bWfH2zL5cYv"
 
+  Scenario: Cannot update a Kinderopvang event with childcare on a subEvent via PUT
+    Given I create an event from "events/childcare-kinderopvang/event-single-kinderopvang.json" and save the "id" as "eventId"
+    And I set the variable "termId" to "K7mPx3nQrT9bWfH2zL5cYv"
+    When I set the JSON request payload from "events/childcare-kinderopvang/event-single-with-childcare.json"
+    And I send a PUT request to "/events/%{eventId}"
+    Then the response status should be "400"
+    And the JSON response at "detail" should be "childcare is not allowed when the event has term K7mPx3nQrT9bWfH2zL5cYv"
+
+  Scenario: Cannot change the type to Kinderopvang and keep the childcare in the same PUT
+    Given I set the variable "termId" to "0.50.4.0.0"
+    And I create an event from "events/childcare-kinderopvang/event-single-with-childcare.json" and save the "id" as "eventId"
+    And I set the variable "termId" to "K7mPx3nQrT9bWfH2zL5cYv"
+    When I set the JSON request payload from "events/childcare-kinderopvang/event-single-with-childcare.json"
+    And I send a PUT request to "/events/%{eventId}"
+    Then the response status should be "400"
+    And the JSON response at "detail" should be "childcare is not allowed when the event has term K7mPx3nQrT9bWfH2zL5cYv"
+
   Scenario: Cannot create a Kinderopvang event with childcare on opening hours via POST
     Given I set the variable "termId" to "K7mPx3nQrT9bWfH2zL5cYv"
     When I set the JSON request payload from "events/childcare-kinderopvang/event-periodic-with-childcare-on-opening-hours.json"
