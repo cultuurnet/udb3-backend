@@ -58,8 +58,8 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
             );
         }
 
-        if (isset($data['overnight'])) {
-            $subEventUpdate = $subEventUpdate->withOvernight($data['overnight']);
+        if (isset($data['hasOvernightStay'])) {
+            $subEventUpdate = $subEventUpdate->withHasOvernightStay($data['hasOvernightStay']);
         }
 
         return $subEventUpdate;
