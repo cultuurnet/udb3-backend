@@ -91,3 +91,12 @@ Feature: Test event childrenOnly property
     And I get the event at "%{eventUrl}"
     And the JSON response at "childrenOnly" should be true
     And the JSON response at "departurePlaces/0" should be "%{departurePlaceUrl}"
+
+  Scenario: On updates ChildrenOnly should only be explicitly overwritten
+    When I create an event from "events/event-children-only.json" and save the "url" as "eventUrl"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response at "childrenOnly" should be true
+    And I update the event at "%{eventUrl}" from "events/event-with-age-range-6-to-12.json"
+    And I get the event at "%{eventUrl}"
+    And show me the unparsed response
+    Then the JSON response at "childrenOnly" should be true
