@@ -1864,12 +1864,12 @@ class EventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_defaults_children_only_to_false_when_field_is_not_present(): void
+    public function it_leaves_children_only_null_when_field_is_not_present(): void
     {
         /** @var ImmutableEvent $event */
         $event = $this->denormalizer->denormalize($this->getMinimalEventData(), ImmutableEvent::class);
 
-        $this->assertFalse($event->getChildrenOnly());
+        $this->assertNull($event->getChildrenOnly());
     }
 
     private function getMinimalEventData(): array
