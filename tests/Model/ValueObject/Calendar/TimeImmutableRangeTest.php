@@ -259,4 +259,38 @@ final class TimeImmutableRangeTest extends TestCase
         // 21:00 UTC == 23:00 CEST → 22:00 is NOT after 23:00.
         $this->assertFalse($range->endIsAfterTimeOf(new DateTimeImmutable('2021-05-17T21:00:00+00:00')));
     }
+
+    /**
+     * @test
+     */
+    public function it_is_empty_without_a_start_and_without_an_end(): void
+    {
+        $this->assertTrue((new TimeImmutableRange())->isEmpty());
+    }
+
+    /**
+     * @test
+     */
+    public function it_is_not_empty_with_only_a_start(): void
+    {
+        $this->assertFalse((new TimeImmutableRange(Time::fromString('08:00')))->isEmpty());
+    }
+
+    /**
+     * @test
+     */
+    public function it_is_not_empty_with_only_an_end(): void
+    {
+        $this->assertFalse((new TimeImmutableRange(null, Time::fromString('18:00')))->isEmpty());
+    }
+
+    /**
+     * @test
+     */
+    public function it_is_not_empty_with_a_start_and_an_end(): void
+    {
+        $range = new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'));
+
+        $this->assertFalse($range->isEmpty());
+    }
 }

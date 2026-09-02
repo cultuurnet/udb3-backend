@@ -65,6 +65,25 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
         return $clone;
     }
 
+    public function withoutOvernightStay(): CalendarWithSubEvents
+    {
+        $clone = clone $this;
+        $clone->dateRanges = $this->dateRanges->withoutOvernightStay();
+        return $clone;
+    }
+
+    public function hasChildcare(): bool
+    {
+        return $this->dateRanges->hasChildcare();
+    }
+
+    public function withoutChildcare(): Calendar
+    {
+        $clone = clone $this;
+        $clone->dateRanges = $this->dateRanges->withoutChildcare();
+        return $clone;
+    }
+
     public function getType(): CalendarType
     {
         return CalendarType::multiple();

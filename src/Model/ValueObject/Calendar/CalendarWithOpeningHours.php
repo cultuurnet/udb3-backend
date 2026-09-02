@@ -9,4 +9,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 interface CalendarWithOpeningHours extends Calendar
 {
     public function getOpeningHours(): OpeningHours;
+
+    public function withOpeningHours(OpeningHours $openingHours): static;
 }
