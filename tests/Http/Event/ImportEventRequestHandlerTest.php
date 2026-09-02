@@ -1017,15 +1017,12 @@ final class ImportEventRequestHandlerTest extends TestCase
 
         $this->importEventRequestHandler->handle($request);
 
-        $recordedCommands = $this->commandBus->getRecordedCommands();
-        $updateChildrenOnlyCommand = array_values(array_filter(
-            $recordedCommands,
-            fn ($c) => $c instanceof UpdateChildrenOnly
-        ))[0];
-
         $this->assertEquals(
-            new UpdateChildrenOnly($eventId, $childrenOnly),
-            $updateChildrenOnlyCommand
+            [new UpdateChildrenOnly($eventId, $childrenOnly)],
+            array_values(array_filter(
+                $this->commandBus->getRecordedCommands(),
+                fn ($c) => $c instanceof UpdateChildrenOnly
+            ))
         );
     }
 
