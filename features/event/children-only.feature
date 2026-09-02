@@ -106,4 +106,4 @@ Feature: Test event childrenOnly property
     Then the JSON response at "childrenOnly" should be true
     And I update the event at "%{eventUrl}" from "events/event-children-only-false.json"
     And I get the event at "%{eventUrl}"
-    Then the JSON response at "childrenOnly" should be false
+    Then the JSON response should not have "childrenOnly"
