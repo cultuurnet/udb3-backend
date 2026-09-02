@@ -98,7 +98,6 @@ Feature: Test event childrenOnly property
     Then the JSON response at "childrenOnly" should be true
     And I update the event at "%{eventUrl}" from "events/event-with-age-range-6-to-12.json"
     And I get the event at "%{eventUrl}"
-    And show me the unparsed response
     Then the JSON response at "childrenOnly" should be true
 
   Scenario: On updates ChildrenOnly can explicitly be overwritten
@@ -107,5 +106,4 @@ Feature: Test event childrenOnly property
     Then the JSON response at "childrenOnly" should be true
     And I update the event at "%{eventUrl}" from "events/event-children-only-false.json"
     And I get the event at "%{eventUrl}"
-    And show me the unparsed response
     Then the JSON response at "childrenOnly" should be false
