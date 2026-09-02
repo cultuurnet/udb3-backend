@@ -987,6 +987,88 @@ final class ImportEventRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider childrenOnlyDataProvider
+     */
+    public function it_imports_children_only(bool $childrenOnly): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+                'terms' => [['id' => '1.50.0.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'permanent',
+                'childrenOnly' => $childrenOnly,
+            ])
+            ->build('POST');
+
+        $this->importEventRequestHandler->handle($request);
+
+        $recordedCommands = $this->commandBus->getRecordedCommands();
+        $updateChildrenOnlyCommand = array_values(array_filter(
+            $recordedCommands,
+            fn ($c) => $c instanceof UpdateChildrenOnly
+        ))[0];
+
+        $this->assertEquals(
+            new UpdateChildrenOnly($eventId, $childrenOnly),
+            $updateChildrenOnlyCommand
+        );
+    }
+
+    public function childrenOnlyDataProvider(): array
+    {
+        return [
+            'enabled' => [true],
+            'explicitly disabled' => [false],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_children_only_when_it_is_not_present(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->once())
+            ->method('generate')
+            ->willReturn($eventId);
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+                'terms' => [['id' => '1.50.0.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'permanent',
+            ])
+            ->build('POST');
+
+        $this->importEventRequestHandler->handle($request);
+
+        $this->assertEmpty(array_filter(
+            $this->commandBus->getRecordedCommands(),
+            fn ($c) => $c instanceof UpdateChildrenOnly
+        ));
+    }
+
+    /**
+     * @test
      */
     public function it_ignores_an_empty_timeSpan(): void
     {
