@@ -989,19 +989,22 @@ final class ImportEventRequestHandlerTest extends TestCase
      * @test
      * @dataProvider childrenOnlyDataProvider
      */
-    public function it_imports_children_only(bool $childrenOnly): void
+    public function it_updates_children_only_when_it_is_explicitly_sent(bool $childrenOnly): void
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
 
-        $this->uuidGenerator->expects($this->once())
-            ->method('generate')
-            ->willReturn($eventId);
+        $this->uuidGenerator->expects($this->never())
+            ->method('generate');
 
         $this->imageCollectionFactory->expects($this->once())
             ->method('fromImages')
             ->willReturn(new ImageCollection());
 
+        $this->aggregateRepository->expects($this->once())
+            ->method('load');
+
         $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', $eventId)
             ->withJsonBodyFromArray([
                 'mainLanguage' => 'nl',
                 'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
@@ -1010,7 +1013,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'calendarType' => 'permanent',
                 'childrenOnly' => $childrenOnly,
             ])
-            ->build('POST');
+            ->build('PUT');
 
         $this->importEventRequestHandler->handle($request);
 
@@ -1041,15 +1044,18 @@ final class ImportEventRequestHandlerTest extends TestCase
     {
         $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
 
-        $this->uuidGenerator->expects($this->once())
-            ->method('generate')
-            ->willReturn($eventId);
+        $this->uuidGenerator->expects($this->never())
+            ->method('generate');
 
         $this->imageCollectionFactory->expects($this->once())
             ->method('fromImages')
             ->willReturn(new ImageCollection());
 
+        $this->aggregateRepository->expects($this->once())
+            ->method('load');
+
         $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', $eventId)
             ->withJsonBodyFromArray([
                 'mainLanguage' => 'nl',
                 'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
@@ -1057,7 +1063,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
                 'calendarType' => 'permanent',
             ])
-            ->build('POST');
+            ->build('PUT');
 
         $this->importEventRequestHandler->handle($request);
 
