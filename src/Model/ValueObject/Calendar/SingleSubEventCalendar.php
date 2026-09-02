@@ -47,6 +47,25 @@ class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEv
         return $clone;
     }
 
+    public function withoutOvernightStay(): CalendarWithSubEvents
+    {
+        $clone = clone $this;
+        $clone->subEvent = $this->subEvent->withHasOvernightStay(false);
+        return $clone;
+    }
+
+    public function hasChildcare(): bool
+    {
+        return $this->subEvent->hasChildcare();
+    }
+
+    public function withoutChildcare(): Calendar
+    {
+        $clone = clone $this;
+        $clone->subEvent = $this->subEvent->withChildcareTimeRange(null);
+        return $clone;
+    }
+
     public function getType(): CalendarType
     {
         return CalendarType::single();

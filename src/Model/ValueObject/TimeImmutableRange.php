@@ -37,6 +37,15 @@ final class TimeImmutableRange
         return $this->end;
     }
 
+    /**
+     * A range without a start and without an end carries no information. It exists because clearing a range
+     * explicitly is expressed as an empty range instead of null, but it is equivalent to having no range at all.
+     */
+    public function isEmpty(): bool
+    {
+        return $this->start === null && $this->end === null;
+    }
+
     public function startIsBeforeTimeOf(DateTimeImmutable $dateTime): bool
     {
         if ($this->start === null) {

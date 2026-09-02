@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use PHPUnit\Framework\TestCase;
 
 class SingleSubEventCalendarTest extends TestCase
@@ -134,5 +136,86 @@ class SingleSubEventCalendarTest extends TestCase
         );
 
         $this->assertEquals($expected, $this->singleSubEventCalendar->getSubEvents());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_no_childcare_by_default(): void
+    {
+        $this->assertFalse($this->singleSubEventCalendar->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_reports_childcare_on_its_sub_event(): void
+    {
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromFormat('d/m/Y', '10/12/2018'),
+                    DateTimeFactory::fromFormat('d/m/Y', '18/12/2018')
+                )
+            )->withChildcareTimeRange(
+                new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+            )
+        );
+
+        $this->assertTrue($calendar->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_the_childcare_from_its_sub_event(): void
+    {
+        $withChildcare = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromFormat('d/m/Y', '10/12/2018'),
+                    DateTimeFactory::fromFormat('d/m/Y', '18/12/2018')
+                )
+            )->withChildcareTimeRange(
+                new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+            )
+        );
+
+        $withoutChildcare = $withChildcare->withoutChildcare();
+
+        $this->assertFalse($withoutChildcare->hasChildcare());
+        $this->assertTrue($withChildcare->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_status_and_the_booking_availability_when_removing_the_childcare(): void
+    {
+        $calendar = $this->singleSubEventCalendar
+            ->withStatus(new Status(StatusType::Unavailable()))
+            ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable()));
+
+        $this->assertEquals($calendar, $calendar->withoutChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_the_overnight_stay_from_its_sub_event(): void
+    {
+        $withOvernightStay = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    DateTimeFactory::fromFormat('d/m/Y', '10/12/2018'),
+                    DateTimeFactory::fromFormat('d/m/Y', '18/12/2018')
+                )
+            )->withHasOvernightStay(true)
+        );
+
+        $subEvents = $withOvernightStay->withoutOvernightStay()->getSubEvents()->toArray();
+
+        $this->assertFalse($subEvents[0]->hasOvernightStay());
+        $this->assertTrue($withOvernightStay->getSubEvents()->toArray()[0]->hasOvernightStay());
     }
 }

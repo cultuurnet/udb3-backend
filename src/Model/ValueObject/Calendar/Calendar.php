@@ -15,4 +15,8 @@ interface Calendar
     public function getBookingAvailability(): BookingAvailability;
 
     public function withBookingAvailability(BookingAvailability $bookingAvailability): Calendar;
+
+    public function hasChildcare(): bool;
+
+    public function withoutChildcare(): Calendar;
 }

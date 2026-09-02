@@ -105,4 +105,34 @@ final class SubEventTest extends TestCase
         $this->assertNotSame($this->subEvent, $updated);
         $this->assertFalse($this->subEvent->hasOvernightStay());
     }
+
+    /**
+     * @test
+     */
+    public function it_has_no_childcare_without_a_childcare_time_range(): void
+    {
+        $this->assertFalse($this->subEvent->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_childcare_with_a_childcare_time_range(): void
+    {
+        $subEvent = $this->subEvent->withChildcareTimeRange(
+            new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+        );
+
+        $this->assertTrue($subEvent->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_no_childcare_with_an_empty_childcare_time_range(): void
+    {
+        $subEvent = $this->subEvent->withChildcareTimeRange(new TimeImmutableRange());
+
+        $this->assertFalse($subEvent->hasChildcare());
+    }
 }

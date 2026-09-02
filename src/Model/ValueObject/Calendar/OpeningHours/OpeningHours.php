@@ -20,4 +20,25 @@ class OpeningHours extends Collection
     {
         return $this->isEmpty();
     }
+
+    public function withoutChildcare(): self
+    {
+        return new self(
+            ...array_map(
+                fn (OpeningHour $openingHour) => $openingHour->withChildcareTimeRange(null),
+                $this->toArray()
+            )
+        );
+    }
+
+    public function hasChildcare(): bool
+    {
+        foreach ($this->toArray() as $openingHour) {
+            if ($openingHour->hasChildcare()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
