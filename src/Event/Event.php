@@ -166,6 +166,8 @@ final class Event extends Offer
             $event->assertOvernightStayAllowed($calendar->getSubEvents()->toArray());
         }
 
+        $event->assertChildcareAllowed($calendar);
+
         if ($location->isDummyPlaceForEducation()) {
             // Bookable education events should get education as their audience type. We record this explicitly so we
             // don't have to handle this edge case in every read model projector.
@@ -202,6 +204,8 @@ final class Event extends Offer
                 $calendar
             )
         );
+
+        $copy->assertChildcareAllowed($calendar);
 
         return $copy;
     }
@@ -399,6 +403,10 @@ final class Event extends Offer
 
         $subEvents = $this->calendar->getSubEvents()->toArray();
 
+        // Report that childcare is not allowed at all before validating the times against the sub event dates,
+        // otherwise the reply complains about times that could never be valid on this event to begin with.
+        $this->assertChildcareAllowedOnUpdates(...$subEventUpdates);
+
         foreach ($subEventUpdates as $subEventUpdate) {
             $index = $subEventUpdate->getSubEventId();
 
@@ -439,6 +447,8 @@ final class Event extends Offer
 
         $updatedCalendar = $this->rebuildCalendarFromSubEvents($subEvents);
 
+        $this->assertChildcareAllowed($updatedCalendar);
+
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(
                 new CalendarUpdated($this->eventId, $updatedCalendar)
@@ -452,6 +462,8 @@ final class Event extends Offer
             $this->assertOvernightStayAllowed($calendar->getSubEvents()->toArray());
         }
 
+        $this->assertChildcareAllowed($calendar);
+
         parent::updateCalendar($calendar);
     }
 
@@ -459,16 +471,21 @@ final class Event extends Offer
     {
         parent::updateType($category);
 
-        if (!($this->calendar instanceof CalendarWithSubEvents)) {
+        if ($this->calendar === null) {
             return;
         }
 
-        if (EventTypeResolver::isOvernightStayAllowed($this->typeId)) {
-            return;
+        $updatedCalendar = $this->calendar;
+
+        if (!EventTypeResolver::isOvernightStayAllowed($this->typeId)
+            && $updatedCalendar instanceof CalendarWithSubEvents) {
+            $updatedCalendar = $updatedCalendar->withoutOvernightStay();
         }
 
-        $resetSubEvents = $this->calendar->getSubEvents()->withoutOvernightStay()->toArray();
-        $updatedCalendar = $this->rebuildCalendarFromSubEvents($resetSubEvents);
+        if (!EventTypeResolver::isChildcareAllowed($this->typeId)) {
+            $updatedCalendar = $updatedCalendar->withoutChildcare();
+        }
+
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
         }
@@ -483,7 +500,9 @@ final class Event extends Offer
             ? new SingleSubEventCalendar($subEvents[0])
             : new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
 
-        return $calendar->withBookingAvailability($this->calendar->getBookingAvailability());
+        return $calendar
+            ->withStatus($this->calendar->getStatus())
+            ->withBookingAvailability($this->calendar->getBookingAvailability());
     }
 
     /**
@@ -499,6 +518,30 @@ final class Event extends Offer
             if ($subEvent->hasOvernightStay()) {
                 throw new OvernightStayNotAllowed();
             }
+        }
+    }
+
+    private function assertChildcareAllowedOnUpdates(SubEventUpdate ...$subEventUpdates): void
+    {
+        if (EventTypeResolver::isChildcareAllowed($this->typeId)) {
+            return;
+        }
+
+        foreach ($subEventUpdates as $subEventUpdate) {
+            if ($subEventUpdate->setsChildcare()) {
+                throw new ChildcareNotAllowed();
+            }
+        }
+    }
+
+    private function assertChildcareAllowed(Calendar $calendar): void
+    {
+        if (EventTypeResolver::isChildcareAllowed($this->typeId)) {
+            return;
+        }
+
+        if ($calendar->hasChildcare()) {
+            throw new ChildcareNotAllowed();
         }
     }
 

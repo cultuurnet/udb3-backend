@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -101,5 +105,104 @@ final class AdjustedDaysTest extends TestCase
                 $this->openingHours
             )
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_the_childcare_time_range_from_every_adjusted_day(): void
+    {
+        $openingHoursWithChildcare = new OpeningHours(
+            (new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00')))
+                ->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00')))
+        );
+
+        $collection = new AdjustedDays(
+            new AdjustedDay(
+                new DateTimeImmutable('2026-12-25'),
+                new DateTimeImmutable('2026-12-25'),
+                $openingHoursWithChildcare
+            ),
+            new AdjustedDay(
+                new DateTimeImmutable('2026-12-26'),
+                new DateTimeImmutable('2026-12-26'),
+                $openingHoursWithChildcare
+            )
+        );
+
+        foreach ($collection->withoutChildcare()->toArray() as $adjustedDay) {
+            foreach ($adjustedDay->getOpeningHours()->toArray() as $openingHour) {
+                $this->assertNull($openingHour->getChildcareTimeRange());
+            }
+        }
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_dates_and_description_when_removing_the_childcare_time_range(): void
+    {
+        $description = new TranslatedAdjustedDescription(
+            new Language('nl'),
+            new AdjustedDescription('Kerstvakantie')
+        );
+
+        $collection = new AdjustedDays(
+            new AdjustedDay(
+                new DateTimeImmutable('2026-12-25'),
+                new DateTimeImmutable('2026-12-31'),
+                $this->openingHours,
+                $description
+            )
+        );
+
+        $adjustedDay = $collection->withoutChildcare()->toArray()[0];
+
+        $this->assertEquals(new DateTimeImmutable('2026-12-25'), $adjustedDay->getStartDate());
+        $this->assertEquals(new DateTimeImmutable('2026-12-31'), $adjustedDay->getEndDate());
+        $this->assertEquals($description, $adjustedDay->getDescription());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_childcare_when_any_adjusted_day_has_childcare(): void
+    {
+        $openingHoursWithChildcare = new OpeningHours(
+            (new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00')))
+                ->withChildcareTimeRange(new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00')))
+        );
+
+        $collection = new AdjustedDays(
+            new AdjustedDay(
+                new DateTimeImmutable('2026-12-25'),
+                new DateTimeImmutable('2026-12-25'),
+                $this->openingHours
+            ),
+            new AdjustedDay(
+                new DateTimeImmutable('2026-12-26'),
+                new DateTimeImmutable('2026-12-26'),
+                $openingHoursWithChildcare
+            )
+        );
+
+        $this->assertTrue($collection->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_no_childcare_when_no_adjusted_day_has_childcare(): void
+    {
+        $collection = new AdjustedDays(
+            new AdjustedDay(
+                new DateTimeImmutable('2026-12-25'),
+                new DateTimeImmutable('2026-12-25'),
+                $this->openingHours
+            )
+        );
+
+        $this->assertFalse($collection->hasChildcare());
+        $this->assertFalse((new AdjustedDays())->hasChildcare());
     }
 }

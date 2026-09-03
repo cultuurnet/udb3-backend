@@ -91,3 +91,36 @@ Feature: Test event childrenOnly property
     And I get the event at "%{eventUrl}"
     And the JSON response at "childrenOnly" should be true
     And the JSON response at "departurePlaces/0" should be "%{departurePlaceUrl}"
+
+  Scenario: On updates childrenOnly cannot implicitly be overwritten
+    When I create an event from "events/event-children-only.json" and save the "url" as "eventUrl"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response at "childrenOnly" should be true
+    And I update the event at "%{eventUrl}" from "events/event-with-age-range-6-to-12.json"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response at "typicalAgeRange" should be "6-12"
+    And the JSON response at "childrenOnly" should be true
+
+  Scenario: On updates childrenOnly can explicitly be overwritten
+    When I create an event from "events/event-children-only.json" and save the "url" as "eventUrl"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response at "childrenOnly" should be true
+    And I update the event at "%{eventUrl}" from "events/event-children-only-false.json"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response should not have "childrenOnly"
+
+  Scenario: On updates departure places can be replaced while childrenOnly is not sent
+    Given I create a minimal place and save the "url" as "departurePlaceUrl1"
+    And I create a minimal place and save the "url" as "departurePlaceUrl2"
+    And I create a minimal place and save the "url" as "departurePlaceUrl3"
+    When I create an event from "events/departure-places/event-with-2-departure-places.json" and save the "url" as "eventUrl"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response at "childrenOnly" should be true
+    And the JSON response at "departurePlaces/0" should be "%{departurePlaceUrl1}"
+    And the JSON response at "departurePlaces/1" should be "%{departurePlaceUrl2}"
+    And I update the event at "%{eventUrl}" from "events/departure-places/event-with-different-departure-place.json"
+    Then the response status should be "200"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response at "childrenOnly" should be true
+    And the JSON response at "departurePlaces/0" should be "%{departurePlaceUrl3}"
+    And the JSON response should not have "departurePlaces/1"

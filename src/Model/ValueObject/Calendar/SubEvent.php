@@ -85,6 +85,11 @@ final class SubEvent
         return $this->childcareTimeRange;
     }
 
+    public function hasChildcare(): bool
+    {
+        return $this->childcareTimeRange !== null && !$this->childcareTimeRange->isEmpty();
+    }
+
     public function hasOvernightStay(): bool
     {
         return $this->hasOvernightStay;

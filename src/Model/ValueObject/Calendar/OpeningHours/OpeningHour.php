@@ -56,6 +56,11 @@ class OpeningHour
         return $this->childcareTimeRange;
     }
 
+    public function hasChildcare(): bool
+    {
+        return $this->childcareTimeRange !== null && !$this->childcareTimeRange->isEmpty();
+    }
+
     public function withChildcareTimeRange(?TimeImmutableRange $childcareTimeRange): self
     {
         $clone = clone $this;

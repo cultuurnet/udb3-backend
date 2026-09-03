@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use PHPUnit\Framework\TestCase;
 
 class MultipleSubEventsCalendarTest extends TestCase
@@ -160,5 +162,77 @@ class MultipleSubEventsCalendarTest extends TestCase
                 $subEvent->getBookingAvailability()
             );
         }
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_no_childcare_by_default(): void
+    {
+        $this->assertFalse($this->multipleSubEventsCalendar->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_reports_childcare_on_any_of_its_sub_events(): void
+    {
+        $calendar = $this->withChildcareOnTheSecondSubEvent();
+
+        $this->assertTrue($calendar->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_the_childcare_from_all_its_sub_events(): void
+    {
+        $withChildcare = $this->withChildcareOnTheSecondSubEvent();
+
+        $withoutChildcare = $withChildcare->withoutChildcare();
+
+        $this->assertFalse($withoutChildcare->hasChildcare());
+        $this->assertTrue($withChildcare->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_status_and_the_booking_availability_when_removing_the_childcare(): void
+    {
+        $calendar = $this->multipleSubEventsCalendar
+            ->withStatus(new Status(StatusType::Unavailable()))
+            ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable()));
+
+        $this->assertEquals($calendar, $calendar->withoutChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_the_overnight_stay_from_all_its_sub_events(): void
+    {
+        $withOvernightStay = new MultipleSubEventsCalendar(
+            new SubEvents(
+                ...\array_map(
+                    fn (SubEvent $subEvent) => $subEvent->withHasOvernightStay(true),
+                    $this->subEvents->toArray()
+                )
+            )
+        );
+
+        foreach ($withOvernightStay->withoutOvernightStay()->getSubEvents()->toArray() as $subEvent) {
+            $this->assertFalse($subEvent->hasOvernightStay());
+        }
+    }
+
+    private function withChildcareOnTheSecondSubEvent(): MultipleSubEventsCalendar
+    {
+        $subEvents = $this->subEvents->toArray();
+        $subEvents[1] = $subEvents[1]->withChildcareTimeRange(
+            new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+        );
+
+        return new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
     }
 }
