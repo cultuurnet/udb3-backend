@@ -33,7 +33,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
 
     private Urls $departurePlaces;
 
-    private bool $childrenOnly = false;
+    private ?bool $childrenOnly = null;
 
     private ?BirthdateRange $birthdateRange = null;
 
@@ -134,7 +134,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
         return $c;
     }
 
-    public function getChildrenOnly(): bool
+    public function getChildrenOnly(): ?bool
     {
         return $this->childrenOnly;
     }
