@@ -103,6 +103,75 @@ Feature: Test the recurringOnDayOfWeek search filter combined with hours
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
+  Scenario: One of the hours on its own leaves the other side of the range open
+    Given I create a minimal place and save the "url" as "placeUrl"
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "calendarType": "permanent",
+      "openingHours": [
+        {
+          "opens": "10:00",
+          "closes": "17:00",
+          "dayOfWeek": ["wednesday"]
+        },
+        {
+          "opens": "13:00",
+          "closes": "18:00",
+          "dayOfWeek": ["saturday"]
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    # Without an end, the search runs to the end of the day. Wednesday is open until 17:00, so it
+    # still has hours from 16:00 on.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek     | wednesday |
+      | recurringOnLocalTimeFrom | 1600      |
+      | disableDefaultFilters    | true      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # The open end does not soften the start. Wednesday closes at 17:00, so a search from 17:00 on
+    # finds nothing, the same half open bound as with an end.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek     | wednesday |
+      | recurringOnLocalTimeFrom | 1700      |
+      | disableDefaultFilters    | true      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    # Without a start, the search runs from midnight. Wednesday opens at 10:00, so it has hours
+    # before 11:00.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek   | wednesday |
+      | recurringOnLocalTimeTo | 1100      |
+      | disableDefaultFilters  | true      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    # And nothing before 10:00.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek   | wednesday |
+      | recurringOnLocalTimeTo | 1000      |
+      | disableDefaultFilters  | true      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    # An open side stays per day of week. Saturday only opens at 13:00, so it has no morning.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek   | saturday |
+      | recurringOnLocalTimeTo | 1200     |
+      | disableDefaultFilters  | true     |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    # The days of week stay OR-combined, so the Wednesday morning is enough.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnDayOfWeek   | wednesday,saturday |
+      | recurringOnLocalTimeTo | 1200               |
+      | disableDefaultFilters  | true               |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+
+  @testIsolation
   Scenario: Permanent event with two opening hour slots on the same day of week is not matched in the gap between them
     Given I create a minimal place and save the "url" as "placeUrl"
     When I create a minimal event with overrides and save the "url" as "eventUrl"
@@ -1098,16 +1167,12 @@ Feature: Test the recurringOnDayOfWeek search filter combined with hours
       | disableDefaultFilters    | true |
     Then the response status should be "404"
     And the JSON response at "detail" should include "recurringOnDayOfWeek"
-
-  @testIsolation
-  Scenario: An incomplete hours range is rejected
-    When I am using the Search API v3 base URL
-    And I send a GET request to "/events" with parameters:
-      | recurringOnDayOfWeek     | wednesday |
-      | recurringOnLocalTimeFrom | 1300      |
-      | disableDefaultFilters    | true      |
+    # One of the hours on its own has no day of week to range over either.
+    When I send a GET request to "/events" with parameters:
+      | recurringOnLocalTimeFrom | 1300 |
+      | disableDefaultFilters    | true |
     Then the response status should be "404"
-    And the JSON response at "detail" should include "recurringOnLocalTimeTo"
+    And the JSON response at "detail" should include "recurringOnDayOfWeek"
 
   @testIsolation
   Scenario: An inverted hours range is rejected
