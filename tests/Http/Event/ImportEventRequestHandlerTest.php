@@ -294,7 +294,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -380,7 +379,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -503,7 +501,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -582,7 +579,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -865,7 +861,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                     )
                 ),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -992,6 +987,91 @@ final class ImportEventRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider childrenOnlyDataProvider
+     */
+    public function it_updates_children_only_when_it_is_explicitly_sent(bool $childrenOnly): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->never())
+            ->method('generate');
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('load');
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', $eventId)
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+                'terms' => [['id' => '1.50.0.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'permanent',
+                'childrenOnly' => $childrenOnly,
+            ])
+            ->build('PUT');
+
+        $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(
+            [new UpdateChildrenOnly($eventId, $childrenOnly)],
+            array_values(array_filter(
+                $this->commandBus->getRecordedCommands(),
+                fn ($c) => $c instanceof UpdateChildrenOnly
+            ))
+        );
+    }
+
+    public function childrenOnlyDataProvider(): array
+    {
+        return [
+            'enabled' => [true],
+            'explicitly disabled' => [false],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_children_only_when_it_is_not_present(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->expects($this->never())
+            ->method('generate');
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('load');
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', $eventId)
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+                'terms' => [['id' => '1.50.0.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'permanent',
+            ])
+            ->build('PUT');
+
+        $this->importEventRequestHandler->handle($request);
+
+        $this->assertEmpty(array_filter(
+            $this->commandBus->getRecordedCommands(),
+            fn ($c) => $c instanceof UpdateChildrenOnly
+        ));
+    }
+
+    /**
+     * @test
      */
     public function it_ignores_an_empty_timeSpan(): void
     {
@@ -1059,7 +1139,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -1134,7 +1213,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -1336,7 +1414,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -1410,7 +1487,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -1494,7 +1570,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -1576,7 +1651,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -1657,7 +1731,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -1742,7 +1815,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -1821,7 +1893,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -1904,7 +1975,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -1981,7 +2051,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -2265,7 +2334,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -3080,7 +3148,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -4406,7 +4473,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteOffer($eventId),
@@ -4745,7 +4811,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -5241,7 +5306,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),
@@ -5349,7 +5413,6 @@ final class ImportEventRequestHandlerTest extends TestCase
                 new ImportImages($eventId, new ImageCollection()),
                 new ImportVideos($eventId, new VideoCollection()),
                 new UpdateFaqs($eventId, new Faqs()),
-                new UpdateChildrenOnly($eventId, false),
                 new UpdateDeparturePlaces($eventId, new Urls()),
                 new DeleteBirthdateRange($eventId),
                 new DeleteCurrentOrganizer($eventId),

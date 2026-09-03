@@ -282,7 +282,11 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         $commands[] = new ImportVideos($eventId, $event->getVideos());
         $commands[] = new UpdateFaqs($eventId, $event->getFaq());
-        $commands[] = new UpdateChildrenOnly($eventId, $event->getChildrenOnly());
+        $childrenOnly = $event->getChildrenOnly();
+        if ($childrenOnly !== null) {
+            $commands[] = new UpdateChildrenOnly($eventId, $childrenOnly);
+        }
+
         $commands[] = new UpdateDeparturePlaces($eventId, $event->getDeparturePlaces());
 
         if ($event->getBirthdateRange() !== null) {
