@@ -16,7 +16,7 @@ final class SubEvent
 
     private ?TimeImmutableRange $childcareTimeRange = null;
 
-    private bool $overnight = false;
+    private bool $hasOvernightStay = false;
 
     public function __construct(
         DateRange $dateRange,
@@ -58,10 +58,10 @@ final class SubEvent
         return $clone;
     }
 
-    public function withOvernight(bool $overnight): self
+    public function withHasOvernightStay(bool $hasOvernightStay): self
     {
         $clone = clone $this;
-        $clone->overnight = $overnight;
+        $clone->hasOvernightStay = $hasOvernightStay;
         return $clone;
     }
 
@@ -85,8 +85,13 @@ final class SubEvent
         return $this->childcareTimeRange;
     }
 
-    public function isOvernight(): bool
+    public function hasChildcare(): bool
     {
-        return $this->overnight;
+        return $this->childcareTimeRange !== null && !$this->childcareTimeRange->isEmpty();
+    }
+
+    public function hasOvernightStay(): bool
+    {
+        return $this->hasOvernightStay;
     }
 }

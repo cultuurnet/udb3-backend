@@ -78,6 +78,27 @@ final class PeriodicCalendar implements CalendarWithDateRange, CalendarWithOpeni
         return $this->openingHours;
     }
 
+    public function withOpeningHours(OpeningHours $openingHours): static
+    {
+        $clone = clone $this;
+        $clone->openingHours = $openingHours;
+        return $clone;
+    }
+
+
+    public function hasChildcare(): bool
+    {
+        return $this->openingHours->hasChildcare() || $this->adjustedDays->hasChildcare();
+    }
+
+    public function withoutChildcare(): Calendar
+    {
+        $clone = clone $this;
+        $clone->openingHours = $this->openingHours->withoutChildcare();
+        $clone->adjustedDays = $this->adjustedDays->withoutChildcare();
+        return $clone;
+    }
+
     public function getClosedDays(): ClosedDays
     {
         return $this->closedDays;

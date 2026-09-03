@@ -6094,12 +6094,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "80aefd607c9ccdbd61902048e78550f27abf0e1e"
+                "reference": "7209e6258fdf37a994f904ece0111178d8140d2a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/80aefd607c9ccdbd61902048e78550f27abf0e1e",
-                "reference": "80aefd607c9ccdbd61902048e78550f27abf0e1e",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/7209e6258fdf37a994f904ece0111178d8140d2a",
+                "reference": "7209e6258fdf37a994f904ece0111178d8140d2a",
                 "shasum": ""
             },
             "type": "library",
@@ -6116,9 +6116,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7407-restore-boa-documentation"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/boa"
             },
-            "time": "2026-08-24T14:27:46+00:00"
+            "time": "2026-09-01T10:11:47+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

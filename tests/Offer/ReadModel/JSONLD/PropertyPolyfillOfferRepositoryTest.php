@@ -513,6 +513,111 @@ class PropertyPolyfillOfferRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_should_rename_overnight_to_has_overnight_stay_on_sub_events(): void
+    {
+        $this
+            ->given([
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'status' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
+                        'overnight' => true,
+                    ],
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-05T16:00:00+01:00',
+                        'endDate' => '2020-01-05T20:00:00+01:00',
+                        'status' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'subEvent' => [
+                    [
+                        'id' => 0,
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'status' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
+                        'hasOvernightStay' => true,
+                    ],
+                    [
+                        'id' => 1,
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-05T16:00:00+01:00',
+                        'endDate' => '2020-01-05T20:00:00+01:00',
+                        'status' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_keep_has_overnight_stay_on_sub_events_that_already_use_the_new_name(): void
+    {
+        $this
+            ->given([
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'status' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
+                        'hasOvernightStay' => true,
+                    ],
+                ],
+            ])
+            ->assertReturnedDocumentContains([
+                'subEvent' => [
+                    [
+                        'id' => 0,
+                        '@type' => 'Event',
+                        'startDate' => '2020-01-01T16:00:00+01:00',
+                        'endDate' => '2020-01-01T20:00:00+01:00',
+                        'status' => [
+                            'type' => 'Available',
+                        ],
+                        'bookingAvailability' => [
+                            'type' => 'Available',
+                        ],
+                        'hasOvernightStay' => true,
+                    ],
+                ],
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_remove_capacity_from_embedded_location_booking_availability(): void
     {
         $this

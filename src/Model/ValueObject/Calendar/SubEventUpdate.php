@@ -16,7 +16,7 @@ final class SubEventUpdate
     private ?BookingAvailability $bookingAvailability = null;
     private ?TimeImmutableRange $childcareTimeRange = null;
 
-    private ?bool $overnight = null;
+    private ?bool $hasOvernightStay = null;
 
     public function __construct(int $subEventId)
     {
@@ -81,6 +81,14 @@ final class SubEventUpdate
         return $this->childcareTimeRange;
     }
 
+    /**
+     * An empty range clears childcare instead of setting it, so it does not count as setting childcare.
+     */
+    public function setsChildcare(): bool
+    {
+        return $this->childcareTimeRange !== null && !$this->childcareTimeRange->isEmpty();
+    }
+
     public function withChildcareTimeRange(?TimeImmutableRange $childcareTimeRange): self
     {
         $c = clone $this;
@@ -88,15 +96,15 @@ final class SubEventUpdate
         return $c;
     }
 
-    public function getOvernight(): ?bool
+    public function getHasOvernightStay(): ?bool
     {
-        return $this->overnight;
+        return $this->hasOvernightStay;
     }
 
-    public function withOvernight(?bool $overnight): self
+    public function withHasOvernightStay(?bool $hasOvernightStay): self
     {
         $c = clone $this;
-        $c->overnight = $overnight;
+        $c->hasOvernightStay = $hasOvernightStay;
         return $c;
     }
 }

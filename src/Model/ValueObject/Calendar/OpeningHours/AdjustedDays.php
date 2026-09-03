@@ -49,4 +49,22 @@ final class AdjustedDays extends Collection
     {
         return count($this->values);
     }
+
+    public function withoutChildcare(): self
+    {
+        return new self(
+            ...array_map(fn (AdjustedDay $adjustedDay) => $adjustedDay->withoutChildcare(), $this->toArray())
+        );
+    }
+
+    public function hasChildcare(): bool
+    {
+        foreach ($this->toArray() as $adjustedDay) {
+            if ($adjustedDay->hasChildcare()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

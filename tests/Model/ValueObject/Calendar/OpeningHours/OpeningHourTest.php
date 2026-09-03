@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours;
 
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use PHPUnit\Framework\TestCase;
 
 class OpeningHourTest extends TestCase
@@ -34,5 +35,40 @@ class OpeningHourTest extends TestCase
         $this->assertEquals($days, $openingHour->getDays());
         $this->assertEquals($openingTime, $openingHour->getOpeningTime());
         $this->assertEquals($closingTime, $openingHour->getClosingTime());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_no_childcare_without_a_childcare_time_range(): void
+    {
+        $this->assertFalse($this->openingHour()->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_childcare_with_a_childcare_time_range(): void
+    {
+        $openingHour = $this->openingHour()->withChildcareTimeRange(
+            new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+        );
+
+        $this->assertTrue($openingHour->hasChildcare());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_no_childcare_with_an_empty_childcare_time_range(): void
+    {
+        $openingHour = $this->openingHour()->withChildcareTimeRange(new TimeImmutableRange());
+
+        $this->assertFalse($openingHour->hasChildcare());
+    }
+
+    private function openingHour(): OpeningHour
+    {
+        return new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00'));
     }
 }

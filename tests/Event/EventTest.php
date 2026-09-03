@@ -46,15 +46,25 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
@@ -80,6 +90,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
 use CultuurNet\UDB3\Model\ValueObject\Text\Title;
+use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
@@ -2507,6 +2518,53 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([]);
     }
 
+    private function getKinderopvangCreationEvent(): EventCreated
+    {
+        return new EventCreated(
+            self::EVENT_ID,
+            new Language('nl'),
+            'Kinderopvang De Speelboom',
+            new Category(
+                new CategoryID(EventTypeResolver::CHILDCARE_TERM_ID),
+                new CategoryLabel('Kinderopvang'),
+                CategoryDomain::eventType()
+            ),
+            new LocationId(self::LOCATION_ID),
+            new PermanentCalendar(new OpeningHours())
+        );
+    }
+
+    private function getKinderopvangType(): Category
+    {
+        return new Category(
+            new CategoryID(EventTypeResolver::CHILDCARE_TERM_ID),
+            new CategoryLabel('Kinderopvang'),
+            CategoryDomain::eventType()
+        );
+    }
+
+    private function getSubEventWithChildcare(): SubEvent
+    {
+        return SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withChildcareTimeRange(
+            new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+        );
+    }
+
+    private function getOpeningHoursWithChildcare(): OpeningHours
+    {
+        return new OpeningHours(
+            (new OpeningHour(new Days(Day::monday()), Time::fromString('09:00'), Time::fromString('17:00')))
+                ->withChildcareTimeRange(
+                    new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+                )
+        );
+    }
+
     private function getKampOrVakantieCreationEvent(): EventCreated
     {
         return new EventCreated(
@@ -2533,23 +2591,23 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_preserves_overnight_on_unrelated_sub_event_updates(): void
+    public function it_preserves_overnight_stay_on_unrelated_sub_event_updates(): void
     {
         $unavailable = new \CultuurNet\UDB3\Model\ValueObject\Calendar\Status(
             \CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType::Unavailable()
         );
 
-        $subEventWithOvernight = SubEvent::createAvailable(
+        $subEventWithOvernightStay = SubEvent::createAvailable(
             new DateRange(
                 new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
                 new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
             )
-        )->withOvernight(true);
+        )->withHasOvernightStay(true);
 
         $this->scenario
             ->given([
                 $this->getKampOrVakantieCreationEvent(),
-                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernight)),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernightStay)),
             ])
             ->when(
                 fn (Event $event) => $event->updateSubEvents(
@@ -2559,7 +2617,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([
                 new CalendarUpdated(
                     self::EVENT_ID,
-                    new SingleSubEventCalendar($subEventWithOvernight->withStatus($unavailable))
+                    new SingleSubEventCalendar($subEventWithOvernightStay->withStatus($unavailable))
                 ),
             ]);
     }
@@ -2567,29 +2625,29 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_can_explicitly_set_overnight_to_false_via_update_sub_events(): void
+    public function it_can_explicitly_set_overnight_stay_to_false_via_update_sub_events(): void
     {
-        $subEventWithOvernight = SubEvent::createAvailable(
+        $subEventWithOvernightStay = SubEvent::createAvailable(
             new DateRange(
                 new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
                 new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
             )
-        )->withOvernight(true);
+        )->withHasOvernightStay(true);
 
         $this->scenario
             ->given([
                 $this->getKampOrVakantieCreationEvent(),
-                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernight)),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernightStay)),
             ])
             ->when(
                 fn (Event $event) => $event->updateSubEvents(
-                    (new SubEventUpdate(0))->withOvernight(false)
+                    (new SubEventUpdate(0))->withHasOvernightStay(false)
                 )
             )
             ->then([
                 new CalendarUpdated(
                     self::EVENT_ID,
-                    new SingleSubEventCalendar($subEventWithOvernight->withOvernight(false))
+                    new SingleSubEventCalendar($subEventWithOvernightStay->withHasOvernightStay(false))
                 ),
             ]);
     }
@@ -2597,7 +2655,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_emit_calendar_updated_when_overnight_is_already_false_and_patched_to_false(): void
+    public function it_does_not_emit_calendar_updated_when_overnight_stay_is_already_false_and_patched_to_false(): void
     {
         $subEvent = SubEvent::createAvailable(
             new DateRange(
@@ -2613,7 +2671,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(
                 fn (Event $event) => $event->updateSubEvents(
-                    (new SubEventUpdate(0))->withOvernight(false)
+                    (new SubEventUpdate(0))->withHasOvernightStay(false)
                 )
             )
             ->then([]);
@@ -2622,10 +2680,10 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_sub_events(): void
+    public function it_throws_when_overnight_stay_is_set_without_kamp_of_vakantie_term_on_update_sub_events(): void
     {
-        $this->expectException(OvernightNotAllowed::class);
-        $this->expectExceptionMessage(OvernightNotAllowed::MESSAGE);
+        $this->expectException(OvernightStayNotAllowed::class);
+        $this->expectExceptionMessage(OvernightStayNotAllowed::MESSAGE);
 
         // Set a single-subEvent calendar first (event is created with PermanentCalendar by default)
         $dateRange = new DateRange(
@@ -2633,16 +2691,16 @@ class EventTest extends AggregateRootScenarioTestCase
             new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
         );
         $this->event->updateCalendar(new SingleSubEventCalendar(SubEvent::createAvailable($dateRange)));
-        $this->event->updateSubEvents((new SubEventUpdate(0))->withOvernight(true));
+        $this->event->updateSubEvents((new SubEventUpdate(0))->withHasOvernightStay(true));
     }
 
     /**
      * @test
      */
-    public function it_throws_when_overnight_is_set_without_kamp_of_vakantie_term_on_update_calendar(): void
+    public function it_throws_when_overnight_stay_is_set_without_kamp_of_vakantie_term_on_update_calendar(): void
     {
-        $this->expectException(OvernightNotAllowed::class);
-        $this->expectExceptionMessage(OvernightNotAllowed::MESSAGE);
+        $this->expectException(OvernightStayNotAllowed::class);
+        $this->expectExceptionMessage(OvernightStayNotAllowed::MESSAGE);
 
         $this->event->updateCalendar(
             new SingleSubEventCalendar(
@@ -2651,7 +2709,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
                         new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
                     )
-                )->withOvernight(true)
+                )->withHasOvernightStay(true)
             )
         );
     }
@@ -2659,10 +2717,10 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_throws_when_overnight_is_set_during_create_without_kamp_of_vakantie_term(): void
+    public function it_throws_when_overnight_stay_is_set_during_create_without_kamp_of_vakantie_term(): void
     {
-        $this->expectException(OvernightNotAllowed::class);
-        $this->expectExceptionMessage(OvernightNotAllowed::MESSAGE);
+        $this->expectException(OvernightStayNotAllowed::class);
+        $this->expectExceptionMessage(OvernightStayNotAllowed::MESSAGE);
 
         Event::create(
             self::EVENT_ID,
@@ -2676,7 +2734,7 @@ class EventTest extends AggregateRootScenarioTestCase
                         new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
                         new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
                     )
-                )->withOvernight(true)
+                )->withHasOvernightStay(true)
             )
         );
     }
@@ -2684,16 +2742,16 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_allows_overnight_on_update_calendar_when_event_has_kamp_of_vakantie_term(): void
+    public function it_allows_overnight_stay_on_update_calendar_when_event_has_kamp_of_vakantie_term(): void
     {
-        $subEventWithOvernight = SubEvent::createAvailable(
+        $subEventWithOvernightStay = SubEvent::createAvailable(
             new DateRange(
                 new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
                 new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
             )
-        )->withOvernight(true);
+        )->withHasOvernightStay(true);
 
-        $calendar = new SingleSubEventCalendar($subEventWithOvernight);
+        $calendar = new SingleSubEventCalendar($subEventWithOvernightStay);
 
         $this->scenario
             ->given([$this->getKampOrVakantieCreationEvent()])
@@ -2732,14 +2790,14 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_resets_overnight_on_all_sub_events_when_type_changes_away_from_kamp_of_vakantie(): void
+    public function it_resets_overnight_stay_on_all_sub_events_when_type_changes_away_from_kamp_of_vakantie(): void
     {
-        $subEventWithOvernight = SubEvent::createAvailable(
+        $subEventWithOvernightStay = SubEvent::createAvailable(
             new DateRange(
                 new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
                 new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
             )
-        )->withOvernight(true);
+        )->withHasOvernightStay(true);
 
         $concertType = new Category(
             new CategoryID('0.50.4.0.0'),
@@ -2750,14 +2808,14 @@ class EventTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 $this->getKampOrVakantieCreationEvent(),
-                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernight)),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEventWithOvernightStay)),
             ])
             ->when(fn (Event $event) => $event->updateType($concertType))
             ->then([
                 new TypeUpdated(self::EVENT_ID, $concertType),
                 new CalendarUpdated(
                     self::EVENT_ID,
-                    new SingleSubEventCalendar($subEventWithOvernight->withOvernight(false))
+                    new SingleSubEventCalendar($subEventWithOvernightStay->withHasOvernightStay(false))
                 ),
             ]);
     }
@@ -2765,7 +2823,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_emit_calendar_updated_when_type_changes_away_from_kamp_of_vakantie_but_no_overnight_is_set(): void
+    public function it_does_not_emit_calendar_updated_when_type_changes_away_from_kamp_of_vakantie_but_no_overnight_stay_is_set(): void
     {
         $concertType = new Category(
             new CategoryID('0.50.4.0.0'),
@@ -2782,7 +2840,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_resets_overnight_on_multiple_sub_events_when_type_changes(): void
+    public function it_resets_overnight_stay_on_multiple_sub_events_when_type_changes(): void
     {
         $dateRange1 = new DateRange(
             new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
@@ -2793,8 +2851,8 @@ class EventTest extends AggregateRootScenarioTestCase
             new \DateTimeImmutable('2026-08-05T17:00:00+02:00')
         );
 
-        $subEvent1 = SubEvent::createAvailable($dateRange1)->withOvernight(true);
-        $subEvent2 = SubEvent::createAvailable($dateRange2)->withOvernight(true);
+        $subEvent1 = SubEvent::createAvailable($dateRange1)->withHasOvernightStay(true);
+        $subEvent2 = SubEvent::createAvailable($dateRange2)->withHasOvernightStay(true);
 
         $concertType = new Category(
             new CategoryID('0.50.4.0.0'),
@@ -2816,11 +2874,445 @@ class EventTest extends AggregateRootScenarioTestCase
                 new CalendarUpdated(
                     self::EVENT_ID,
                     new MultipleSubEventsCalendar(new SubEvents(
-                        $subEvent1->withOvernight(false),
-                        $subEvent2->withOvernight(false)
+                        $subEvent1->withHasOvernightStay(false),
+                        $subEvent2->withHasOvernightStay(false)
                     ))
                 ),
             ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_is_set_during_create_on_a_kinderopvang_event(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        Event::create(
+            self::EVENT_ID,
+            new Language('nl'),
+            new Title('Kinderopvang De Speelboom'),
+            $this->getKinderopvangType(),
+            new LocationId(self::LOCATION_ID),
+            new SingleSubEventCalendar($this->getSubEventWithChildcare())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_is_set_on_a_sub_event_of_a_kinderopvang_event_on_update_calendar(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $this->scenario
+            ->given([$this->getKinderopvangCreationEvent()])
+            ->when(
+                fn (Event $event) => $event->updateCalendar(
+                    new SingleSubEventCalendar($this->getSubEventWithChildcare())
+                )
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_is_set_on_an_opening_hour_of_a_kinderopvang_event_on_update_calendar(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $this->scenario
+            ->given([$this->getKinderopvangCreationEvent()])
+            ->when(
+                fn (Event $event) => $event->updateCalendar(
+                    new PermanentCalendar($this->getOpeningHoursWithChildcare())
+                )
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_is_set_on_an_adjusted_day_of_a_kinderopvang_event_on_update_calendar(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $calendar = (new PermanentCalendar(new OpeningHours()))->withAdjustedDays(
+            new AdjustedDays(
+                new AdjustedDay(
+                    new \DateTimeImmutable('2026-12-25'),
+                    new \DateTimeImmutable('2026-12-25'),
+                    $this->getOpeningHoursWithChildcare()
+                )
+            )
+        );
+
+        $this->scenario
+            ->given([$this->getKinderopvangCreationEvent()])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_is_set_on_a_kinderopvang_event_on_update_sub_events(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getKinderopvangCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withChildcareTimeRange(
+                        new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+                    )
+                )
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_a_kinderopvang_event_is_copied_with_childcare(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $event = Event::create(
+            self::EVENT_ID,
+            new Language('nl'),
+            new Title('Kinderopvang De Speelboom'),
+            $this->getKinderopvangType(),
+            new LocationId(self::LOCATION_ID),
+            new PermanentCalendar(new OpeningHours())
+        );
+        $event->getUncommittedEvents();
+
+        $event->copy(
+            'e49430ca-5729-4768-8364-02ddb385517a',
+            new SingleSubEventCalendar($this->getSubEventWithChildcare())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_childcare_on_an_event_without_the_kinderopvang_term(): void
+    {
+        $calendar = new SingleSubEventCalendar($this->getSubEventWithChildcare());
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([new CalendarUpdated(self::EVENT_ID, $calendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_a_kinderopvang_event_without_childcare(): void
+    {
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                    new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+                )
+            )
+        );
+
+        $this->scenario
+            ->given([$this->getKinderopvangCreationEvent()])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([new CalendarUpdated(self::EVENT_ID, $calendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_childcare_from_all_sub_events_when_type_changes_to_kinderopvang(): void
+    {
+        $subEvent1 = $this->getSubEventWithChildcare();
+        $subEvent2 = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-08-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-08-05T17:00:00+02:00')
+            )
+        )->withChildcareTimeRange(
+            new TimeImmutableRange(Time::fromString('08:00'), Time::fromString('18:00'))
+        );
+
+        $kinderopvangType = $this->getKinderopvangType();
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents($subEvent1, $subEvent2))
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateType($kinderopvangType))
+            ->then([
+                new TypeUpdated(self::EVENT_ID, $kinderopvangType),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $subEvent1->withChildcareTimeRange(null),
+                        $subEvent2->withChildcareTimeRange(null)
+                    ))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_childcare_from_opening_hours_when_type_changes_to_kinderopvang(): void
+    {
+        $kinderopvangType = $this->getKinderopvangType();
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new PermanentCalendar($this->getOpeningHoursWithChildcare())
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateType($kinderopvangType))
+            ->then([
+                new TypeUpdated(self::EVENT_ID, $kinderopvangType),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new PermanentCalendar($this->getOpeningHoursWithChildcare()->withoutChildcare())
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_childcare_from_adjusted_days_when_type_changes_to_kinderopvang(): void
+    {
+        $kinderopvangType = $this->getKinderopvangType();
+
+        $adjustedDays = new AdjustedDays(
+            new AdjustedDay(
+                new \DateTimeImmutable('2026-12-25'),
+                new \DateTimeImmutable('2026-12-25'),
+                $this->getOpeningHoursWithChildcare()
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    (new PermanentCalendar(new OpeningHours()))->withAdjustedDays($adjustedDays)
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateType($kinderopvangType))
+            ->then([
+                new TypeUpdated(self::EVENT_ID, $kinderopvangType),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    (new PermanentCalendar(new OpeningHours()))->withAdjustedDays($adjustedDays->withoutChildcare())
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_overnight_and_childcare_in_one_calendar_updated_when_type_changes_to_kinderopvang(): void
+    {
+        $subEvent = $this->getSubEventWithChildcare()->withHasOvernightStay(true);
+
+        $kinderopvangType = $this->getKinderopvangType();
+
+        $this->scenario
+            ->given([
+                $this->getKampOrVakantieCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(fn (Event $event) => $event->updateType($kinderopvangType))
+            ->then([
+                new TypeUpdated(self::EVENT_ID, $kinderopvangType),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(
+                        $subEvent->withHasOvernightStay(false)->withChildcareTimeRange(null)
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_emit_calendar_updated_when_type_changes_to_kinderopvang_but_no_childcare_is_set(): void
+    {
+        $kinderopvangType = $this->getKinderopvangType();
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(fn (Event $event) => $event->updateType($kinderopvangType))
+            ->then([new TypeUpdated(self::EVENT_ID, $kinderopvangType)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_updating_all_statuses_with_a_reason_on_a_kinderopvang_event(): void
+    {
+        $subEvent1 = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+        $subEvent2 = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-08-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-08-05T17:00:00+02:00')
+            )
+        );
+
+        $status = new Status(
+            StatusType::Unavailable(),
+            new TranslatedStatusReason(new Language('nl'), new StatusReason('Afgelast'))
+        );
+
+        $expectedCalendar = new MultipleSubEventsCalendar(
+            new SubEvents($subEvent1->withStatus($status), $subEvent2->withStatus($status))
+        );
+
+        $this->scenario
+            ->given([
+                $this->getKinderopvangCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents($subEvent1, $subEvent2))
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateAllStatuses($status))
+            ->then([
+                new CalendarUpdated(self::EVENT_ID, $expectedCalendar->withStatus($status)),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_top_level_status_when_the_calendar_is_rebuilt_on_a_type_change(): void
+    {
+        $status = new Status(
+            StatusType::Unavailable(),
+            new TranslatedStatusReason(new Language('nl'), new StatusReason('Afgelast'))
+        );
+
+        $subEvent1 = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withStatus($status);
+        $subEvent2 = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-08-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-08-05T17:00:00+02:00')
+            )
+        )->withStatus($status);
+
+        $courseType = new Category(
+            new CategoryID(EventTypeResolver::COURSE_WITH_OPEN_SESSIONS_TERM_ID),
+            new CategoryLabel('Cursus met open sessies'),
+            CategoryDomain::eventType()
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    (new MultipleSubEventsCalendar(new SubEvents($subEvent1, $subEvent2)))->withStatus($status)
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateType($courseType))
+            ->then([new TypeUpdated(self::EVENT_ID, $courseType)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_reports_that_childcare_is_not_allowed_before_validating_the_childcare_times(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getKinderopvangCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(
+                // 10:00 is after the 09:00 start, so this would also fail the childcare time validation.
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withChildcareTimeRange(
+                        new TimeImmutableRange(Time::fromString('10:00'), Time::fromString('18:00'))
+                    )
+                )
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_clearing_childcare_on_a_kinderopvang_event(): void
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        );
+
+        $this->scenario
+            ->given([
+                $this->getKinderopvangCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(
+                // An empty range is how "childcare": {} is expressed: it clears childcare instead of setting it.
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withChildcareTimeRange(new TimeImmutableRange())
+                )
+            )
+            ->then([]);
     }
 
     /**

@@ -14,6 +14,10 @@ final class EventTypeResolver implements TypeResolverInterface
 {
     public const CAMP_OR_VACATION_TERM_ID = '0.57.0.0.0';
 
+    public const CHILDCARE_TERM_ID = 'K7mPx3nQrT9bWfH2zL5cYv';
+
+    public const COURSE_WITH_OPEN_SESSIONS_TERM_ID = '0.3.1.0.0';
+
     public function __construct(readonly Categories $types)
     {
     }
@@ -33,14 +37,19 @@ final class EventTypeResolver implements TypeResolverInterface
         return in_array(
             $eventType->getId()->toString(),
             [
-                '0.3.1.0.0',
+                self::COURSE_WITH_OPEN_SESSIONS_TERM_ID,
                 self::CAMP_OR_VACATION_TERM_ID,
             ]
         );
     }
 
-    public static function isOvernightAllowed(?string $eventTermId): bool
+    public static function isOvernightStayAllowed(?string $eventTermId): bool
     {
         return $eventTermId === self::CAMP_OR_VACATION_TERM_ID;
+    }
+
+    public static function isChildcareAllowed(?string $eventTermId): bool
+    {
+        return $eventTermId !== self::CHILDCARE_TERM_ID;
     }
 }

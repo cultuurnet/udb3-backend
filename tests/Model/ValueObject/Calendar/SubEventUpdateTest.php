@@ -56,50 +56,50 @@ final class SubEventUpdateTest extends TestCase
     /**
      * @test
      */
-    public function it_has_no_overnight_value_by_default(): void
+    public function it_has_no_overnight_stay_value_by_default(): void
     {
-        $this->assertNull((new SubEventUpdate(0))->getOvernight());
+        $this->assertNull((new SubEventUpdate(0))->getHasOvernightStay());
     }
 
     /**
      * @test
      */
-    public function it_can_set_overnight_to_true(): void
+    public function it_can_set_overnight_stay_to_true(): void
     {
-        $update = (new SubEventUpdate(0))->withOvernight(true);
+        $update = (new SubEventUpdate(0))->withHasOvernightStay(true);
 
-        $this->assertTrue($update->getOvernight());
+        $this->assertTrue($update->getHasOvernightStay());
     }
 
     /**
      * @test
      */
-    public function it_can_set_overnight_to_false(): void
+    public function it_can_set_overnight_stay_to_false(): void
     {
-        $update = (new SubEventUpdate(0))->withOvernight(false);
+        $update = (new SubEventUpdate(0))->withHasOvernightStay(false);
 
-        $this->assertFalse($update->getOvernight());
+        $this->assertFalse($update->getHasOvernightStay());
     }
 
     /**
      * @test
      */
-    public function it_can_set_overnight_to_null_to_leave_it_unchanged(): void
+    public function it_can_set_overnight_stay_to_null_to_leave_it_unchanged(): void
     {
-        $update = (new SubEventUpdate(0))->withOvernight(true)->withOvernight(null);
+        $update = (new SubEventUpdate(0))->withHasOvernightStay(true)->withHasOvernightStay(null);
 
-        $this->assertNull($update->getOvernight());
+        $this->assertNull($update->getHasOvernightStay());
     }
 
     /**
      * @test
      */
-    public function it_returns_a_new_instance_when_setting_overnight(): void
+    public function it_returns_a_new_instance_when_setting_overnight_stay(): void
     {
         $original = new SubEventUpdate(0);
-        $updated = $original->withOvernight(true);
+        $updated = $original->withHasOvernightStay(true);
 
         $this->assertNotSame($original, $updated);
-        $this->assertNull($original->getOvernight());
+        $this->assertNull($original->getHasOvernightStay());
     }
 }

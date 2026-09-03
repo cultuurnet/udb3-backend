@@ -27,8 +27,8 @@ final class SubEventNormalizer implements NormalizerInterface
             $normalized['childcare'] = $childcare;
         }
 
-        if ($subEvent->isOvernight()) {
-            $normalized['overnight'] = true;
+        if ($subEvent->hasOvernightStay()) {
+            $normalized['hasOvernightStay'] = true;
         }
 
         return $normalized;

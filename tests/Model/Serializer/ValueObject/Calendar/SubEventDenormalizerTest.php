@@ -53,7 +53,7 @@ final class SubEventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_defaults_overnight_to_false_when_absent(): void
+    public function it_defaults_overnight_stay_to_false_when_absent(): void
     {
         $subEvent = $this->denormalizer->denormalize(
             [
@@ -63,41 +63,41 @@ final class SubEventDenormalizerTest extends TestCase
             SubEvent::class
         );
 
-        $this->assertFalse($subEvent->isOvernight());
+        $this->assertFalse($subEvent->hasOvernightStay());
     }
 
     /**
      * @test
      */
-    public function it_denormalizes_overnight_true(): void
+    public function it_denormalizes_overnight_stay_true(): void
     {
         $subEvent = $this->denormalizer->denormalize(
             [
                 'startDate' => '2026-07-01T09:00:00+02:00',
                 'endDate' => '2026-07-05T17:00:00+02:00',
-                'overnight' => true,
+                'hasOvernightStay' => true,
             ],
             SubEvent::class
         );
 
-        $this->assertTrue($subEvent->isOvernight());
+        $this->assertTrue($subEvent->hasOvernightStay());
     }
 
     /**
      * @test
      */
-    public function it_denormalizes_overnight_false(): void
+    public function it_denormalizes_overnight_stay_false(): void
     {
         $subEvent = $this->denormalizer->denormalize(
             [
                 'startDate' => '2026-07-01T09:00:00+02:00',
                 'endDate' => '2026-07-05T17:00:00+02:00',
-                'overnight' => false,
+                'hasOvernightStay' => false,
             ],
             SubEvent::class
         );
 
-        $this->assertFalse($subEvent->isOvernight());
+        $this->assertFalse($subEvent->hasOvernightStay());
     }
 
     /**
