@@ -1,0 +1,43 @@
+# Dev tooling
+docker/
+docker-compose.yml
+docker-compose.prod.yml
+docker.md
+Makefile
+Rakefile
+Gemfile
+Gemfile.lock
+Jenkinsfile
+.bundle/
+
+# Tests and analysis
+tests/
+features/
+phpunit.xml.dist
+phpcs.xml.dist
+phpstan.neon
+rector.php
+behat.yml
+
+# Docs
+docs/
+readme.md
+
+# Local config/secrets (mounted at runtime)
+config.php
+config.allow_all.php
+config.client_permissions.php
+config.kinepolis.php
+config.completeness.php
+config.externalid_mapping_organizer.php
+config.externalid_mapping_place.php
+api_keys_matched_to_client_ids.php
+public-uitidv1.pem
+public-keycloak.pem
+
+# Dependencies — built inside image
+vendor/
+
+# Git
+.git/
+.gitignore
