@@ -568,6 +568,146 @@ class TabularDataEventFormatterTest extends TestCase
 
     /**
      * @test
+     * @dataProvider ageRangesAndLeeftijd
+     */
+    public function it_should_export_the_age_ranges_as_leeftijd(string $event, string $leeftijd): void
+    {
+        $formatter = new TabularDataEventFormatter(['id', 'typicalAgeRange']);
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $this->assertSame($leeftijd, $formattedEvent['typicalAgeRange']);
+    }
+
+    public function ageRangesAndLeeftijd(): array
+    {
+        return [
+            'only a typical age range' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => '6-12']),
+                'leeftijd' => '6-12',
+            ],
+            'only a birthdate range' => [
+                'offerJson' => $this->encodeEvent(
+                    ['birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31']]
+                ),
+                'leeftijd' => '2010-01-01 - 2010-12-31',
+            ],
+            'both an age range and a birthdate range' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'typicalAgeRange' => '6-12',
+                        'birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31'],
+                    ]
+                ),
+                'leeftijd' => '6-12; 2010-01-01 - 2010-12-31',
+            ],
+            'an all ages event' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => '-']),
+                'leeftijd' => '-',
+            ],
+            'an incomplete birthdate range' => [
+                'offerJson' => $this->encodeEvent(['birthdateRange' => ['from' => '2010-01-01']]),
+                'leeftijd' => '',
+            ],
+            'neither an age range nor a birthdate range' => [
+                'offerJson' => $this->encodeEvent([]),
+                'leeftijd' => '',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider eventsAndDoelgroep
+     */
+    public function it_should_export_the_target_audience_as_doelgroep(string $event, string $doelgroep): void
+    {
+        $formatter = new TabularDataEventFormatter(['id', 'childrenOnly']);
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $this->assertSame($doelgroep, $formattedEvent['childrenOnly']);
+    }
+
+    public function eventsAndDoelgroep(): array
+    {
+        $childrenWithGuardian = 'Voor kinderen samen met hun familie of een andere begeleider';
+
+        return [
+            'children only' => [
+                'offerJson' => $this->encodeEvent(['childrenOnly' => true, 'typicalAgeRange' => '6-12']),
+                'doelgroep' => 'Voor kinderen alleen',
+            ],
+            'children only without an age range' => [
+                'offerJson' => $this->encodeEvent(['childrenOnly' => true]),
+                'doelgroep' => 'Voor kinderen alleen',
+            ],
+            'children only wins from the age range' => [
+                'offerJson' => $this->encodeEvent(['childrenOnly' => true, 'typicalAgeRange' => '18-']),
+                'doelgroep' => 'Voor kinderen alleen',
+            ],
+            'an age range within 0 - 12' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => '6-12']),
+                'doelgroep' => $childrenWithGuardian,
+            ],
+            'an age range overlapping 0 - 12 at the top' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => '12-18']),
+                'doelgroep' => $childrenWithGuardian,
+            ],
+            'an age range without an upper age that starts below 12' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => '5-']),
+                'doelgroep' => $childrenWithGuardian,
+            ],
+            'an age range without a lower age' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => '-12']),
+                'doelgroep' => $childrenWithGuardian,
+            ],
+            'an age range for babies only' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => '0-0']),
+                'doelgroep' => $childrenWithGuardian,
+            ],
+            'an age range above 12' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => '13-18']),
+                'doelgroep' => '',
+            ],
+            'an age range without an upper age that starts above 12' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => '18-']),
+                'doelgroep' => '',
+            ],
+            'an all ages event' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => '-']),
+                'doelgroep' => '',
+            ],
+            'an event for everyone from birth' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => '0-']),
+                'doelgroep' => '',
+            ],
+            'childrenOnly false is treated as absent' => [
+                'offerJson' => $this->encodeEvent(['childrenOnly' => false, 'typicalAgeRange' => '13-18']),
+                'doelgroep' => '',
+            ],
+            'an invalid age range' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => 'zes-twaalf']),
+                'doelgroep' => '',
+            ],
+            'no age range at all' => [
+                'offerJson' => $this->encodeEvent([]),
+                'doelgroep' => '',
+            ],
+            'only a birthdate range' => [
+                'offerJson' => $this->encodeEvent(
+                    ['birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31']]
+                ),
+                'doelgroep' => '',
+            ],
+        ];
+    }
+
+    private function encodeEvent(array $properties): string
+    {
+        return Json::encode(['@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d'] + $properties);
+    }
+
+    /**
+     * @test
      * @dataProvider audienceTypesAndToegang
      */
     public function it_should_export_audience_type_as_toegang(string $event, string $toegang): void

@@ -20,6 +20,8 @@ use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\InvalidAgeRangeException;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
 use DateTimeInterface;
 use Exception;
@@ -27,6 +29,15 @@ use stdClass;
 
 class TabularDataEventFormatter
 {
+    private const CHILDREN_ONLY = 'Voor kinderen alleen';
+
+    private const CHILDREN_WITH_GUARDIAN = 'Voor kinderen samen met hun familie of een andere begeleider';
+
+    /**
+     * The highest age that still counts as a child for the "doelgroep" column.
+     */
+    private const CHILD_AGE_LIMIT = 12;
+
     protected StripHtmlStringFilter $htmlFilter;
 
     /**
@@ -387,9 +398,16 @@ class TabularDataEventFormatter
             'typicalAgeRange' => [
                 'name' => 'leeftijd',
                 'include' => function ($event) {
-                    return $event->typicalAgeRange ?? '';
+                    return $this->formatAgeRange($event);
                 },
                 'property' => 'typicalAgeRange',
+            ],
+            'childrenOnly' => [
+                'name' => 'doelgroep',
+                'include' => function ($event) {
+                    return $this->formatTargetAudience($event);
+                },
+                'property' => 'childrenOnly',
             ],
             'performer' => [
                 'name' => 'uitvoerders',
@@ -790,6 +808,59 @@ class TabularDataEventFormatter
         $mainLanguage = $event->mainLanguage ?? 'nl';
 
         return $event->location->address->{$mainLanguage}->{$addressField} ?? '';
+    }
+
+    /**
+     * An event describes its audience with a typicalAgeRange or a birthdateRange. Older projections
+     * can still carry both, in which case both are exported.
+     */
+    private function formatAgeRange(stdClass $event): string
+    {
+        $ages = [];
+
+        if (isset($event->typicalAgeRange) && is_string($event->typicalAgeRange)) {
+            $ages[] = $event->typicalAgeRange;
+        }
+
+        if (isset($event->birthdateRange->from, $event->birthdateRange->to)) {
+            $ages[] = $event->birthdateRange->from . ' - ' . $event->birthdateRange->to;
+        }
+
+        return implode('; ', $ages);
+    }
+
+    private function formatTargetAudience(stdClass $event): string
+    {
+        if (isset($event->childrenOnly) && $event->childrenOnly === true) {
+            return self::CHILDREN_ONLY;
+        }
+
+        return $this->isAimedAtChildren($event) ? self::CHILDREN_WITH_GUARDIAN : '';
+    }
+
+    private function isAimedAtChildren(stdClass $event): bool
+    {
+        if (!isset($event->typicalAgeRange) || !is_string($event->typicalAgeRange)) {
+            return false;
+        }
+
+        try {
+            $ageRange = AgeRange::fromString($event->typicalAgeRange);
+        } catch (InvalidAgeRangeException) {
+            return false;
+        }
+
+        // An all ages event is not specifically aimed at children. Note that AgeRange::toString()
+        // also returns "-" for "0-", which is why it is compared instead of the original string.
+        if ($ageRange->toString() === '-') {
+            return false;
+        }
+
+        // The upper age is always greater than or equal to the lower age, so the range overlaps
+        // 0 - 12 as soon as it starts at or below the child age limit.
+        $from = $ageRange->getFrom();
+
+        return $from !== null && $from->toInteger() <= self::CHILD_AGE_LIMIT;
     }
 
     private function formatStatus(stdClass $status): string
