@@ -243,10 +243,10 @@ class HTMLEventFormatter
             return;
         }
 
-        $ageRange = AgeRangeDescription::fromTypicalAgeRange($event->typicalAgeRange);
+        $ageRangeDescription = AgeRangeDescription::fromTypicalAgeRange($event->typicalAgeRange);
 
-        if ($ageRange !== null) {
-            $formattedEvent['ageRange'] = $ageRange;
+        if ($ageRangeDescription !== null) {
+            $formattedEvent['ageRange'] = $ageRangeDescription;
         }
     }
 
