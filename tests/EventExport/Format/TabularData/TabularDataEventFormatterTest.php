@@ -701,6 +701,141 @@ class TabularDataEventFormatterTest extends TestCase
         ];
     }
 
+    /**
+     * @test
+     * @dataProvider faqsAndFaq
+     */
+    public function it_should_export_the_faqs(string $event, string $faq): void
+    {
+        $formatter = new TabularDataEventFormatter(['id', 'faqs']);
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $this->assertSame($faq, $formattedEvent['faqs']);
+    }
+
+    public function faqsAndFaq(): array
+    {
+        return [
+            'a single item in a single language' => [
+                'offerJson' => $this->encodeEvent(
+                    ['faqs' => [['nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.']]]]
+                ),
+                'faq' => '[nl] Hoe geraak ik er? Met de bus.',
+            ],
+            'every translation of every item' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            [
+                                'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                                'fr' => ['question' => 'Comment puis-je y accéder?', 'answer' => 'En bus.'],
+                            ],
+                            ['nl' => ['question' => 'Wat kost het?', 'answer' => '10 euro.']],
+                        ],
+                    ]
+                ),
+                'faq' => "[nl] Hoe geraak ik er? Met de bus.\n" .
+                    "[fr] Comment puis-je y accéder? En bus.\n" .
+                    '[nl] Wat kost het? 10 euro.',
+            ],
+            'an answer spanning multiple lines is kept on one line' => [
+                'offerJson' => $this->encodeEvent(
+                    ['faqs' => [['nl' => ['question' => 'Hoe?', 'answer' => "Met de bus.\n\n  Of te voet."]]]]
+                ),
+                'faq' => '[nl] Hoe? Met de bus. Of te voet.',
+            ],
+            'an item without an answer is skipped' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            ['nl' => ['question' => 'Hoe geraak ik er?']],
+                            ['nl' => ['question' => 'Wat kost het?', 'answer' => '10 euro.']],
+                        ],
+                    ]
+                ),
+                'faq' => '[nl] Wat kost het? 10 euro.',
+            ],
+            'an empty list of faqs' => [
+                'offerJson' => $this->encodeEvent(['faqs' => []]),
+                'faq' => '',
+            ],
+            'no faqs at all' => [
+                'offerJson' => $this->encodeEvent([]),
+                'faq' => '',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider eventsAndOvernightStay
+     */
+    public function it_should_export_whether_the_event_has_an_overnight_stay(
+        string $event,
+        string $metOvernachting
+    ): void {
+        $formatter = new TabularDataEventFormatter(['id', 'hasOvernightStay']);
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $this->assertSame($metOvernachting, $formattedEvent['hasOvernightStay']);
+    }
+
+    public function eventsAndOvernightStay(): array
+    {
+        $camp = [['id' => '0.57.0.0.0', 'label' => 'Kamp of vakantie', 'domain' => 'eventtype']];
+        $concert = [['id' => '0.50.4.0.0', 'label' => 'Concert', 'domain' => 'eventtype']];
+
+        return [
+            'a camp with an overnight stay' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'terms' => $camp,
+                        'subEvent' => [['id' => 0, 'hasOvernightStay' => true]],
+                    ]
+                ),
+                'metOvernachting' => 'ja',
+            ],
+            'a camp where only a later occurrence has an overnight stay' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'terms' => $camp,
+                        'subEvent' => [['id' => 0], ['id' => 1, 'hasOvernightStay' => true]],
+                    ]
+                ),
+                'metOvernachting' => 'ja',
+            ],
+            'a camp without an overnight stay' => [
+                'offerJson' => $this->encodeEvent(
+                    ['terms' => $camp, 'subEvent' => [['id' => 0]]]
+                ),
+                'metOvernachting' => 'nee',
+            ],
+            'a camp without occurrences' => [
+                'offerJson' => $this->encodeEvent(['terms' => $camp]),
+                'metOvernachting' => 'nee',
+            ],
+            'a concert cannot have an overnight stay' => [
+                'offerJson' => $this->encodeEvent(
+                    ['terms' => $concert, 'subEvent' => [['id' => 0, 'hasOvernightStay' => true]]]
+                ),
+                'metOvernachting' => '',
+            ],
+            'the camp id in another domain does not count' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'terms' => [['id' => '0.57.0.0.0', 'label' => 'Kamp of vakantie', 'domain' => 'theme']],
+                        'subEvent' => [['id' => 0, 'hasOvernightStay' => true]],
+                    ]
+                ),
+                'metOvernachting' => '',
+            ],
+            'an event without terms' => [
+                'offerJson' => $this->encodeEvent([]),
+                'metOvernachting' => '',
+            ],
+        ];
+    }
+
     private function encodeEvent(array $properties): string
     {
         return Json::encode(['@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d'] + $properties);

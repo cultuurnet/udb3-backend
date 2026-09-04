@@ -11,6 +11,7 @@ use CommerceGuys\Intl\Formatter\NumberFormatter;
 use CommerceGuys\Intl\Formatter\NumberFormatterInterface;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
@@ -354,6 +355,13 @@ class TabularDataEventFormatter
                 },
                 'property' => 'description',
             ],
+            'faqs' => [
+                'name' => 'faq',
+                'include' => function ($event) {
+                    return $this->formatFaqs($event);
+                },
+                'property' => 'faqs',
+            ],
             'organizer' => [
                 'name' => 'organisatie',
                 'include' => function ($event) {
@@ -512,6 +520,13 @@ class TabularDataEventFormatter
                     return '';
                 },
                 'property' => 'endDate',
+            ],
+            'hasOvernightStay' => [
+                'name' => 'met overnachting',
+                'include' => function ($event) {
+                    return $this->formatOvernightStay($event);
+                },
+                'property' => 'subEvent',
             ],
             'calendarType' => [
                 'name' => 'tijd type',
@@ -861,6 +876,86 @@ class TabularDataEventFormatter
         $from = $ageRange->getFrom();
 
         return $from !== null && $from->toInteger() <= self::CHILD_AGE_LIMIT;
+    }
+
+    /**
+     * Every translation of every FAQ item, one per line, as "[nl] question answer".
+     */
+    private function formatFaqs(stdClass $event): string
+    {
+        if (!isset($event->faqs) || !is_array($event->faqs)) {
+            return '';
+        }
+
+        $lines = [];
+
+        foreach ($event->faqs as $faq) {
+            if (!$faq instanceof stdClass) {
+                continue;
+            }
+
+            foreach (get_object_vars($faq) as $language => $translation) {
+                if (!isset($translation->question, $translation->answer)) {
+                    continue;
+                }
+
+                $lines[] = '[' . $language . '] ' . $this->collapseWhitespace($translation->question) .
+                    ' ' . $this->collapseWhitespace($translation->answer);
+            }
+        }
+
+        return implode("\n", $lines);
+    }
+
+    /**
+     * Keeps a single FAQ item on a single line, no matter how its answer was entered.
+     */
+    private function collapseWhitespace(string $text): string
+    {
+        return trim(preg_replace('/\s+/', ' ', $text));
+    }
+
+    /**
+     * Only camps and vacations can have an overnight stay, so for any other event type the
+     * column stays empty instead of claiming there is none.
+     */
+    private function formatOvernightStay(stdClass $event): string
+    {
+        if (!EventTypeResolver::isOvernightStayAllowed($this->getEventTypeId($event))) {
+            return '';
+        }
+
+        return $this->hasOvernightStay($event) ? 'ja' : 'nee';
+    }
+
+    private function hasOvernightStay(stdClass $event): bool
+    {
+        if (!isset($event->subEvent) || !is_array($event->subEvent)) {
+            return false;
+        }
+
+        foreach ($event->subEvent as $subEvent) {
+            if (isset($subEvent->hasOvernightStay) && $subEvent->hasOvernightStay === true) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function getEventTypeId(stdClass $event): ?string
+    {
+        if (!isset($event->terms) || !is_array($event->terms)) {
+            return null;
+        }
+
+        foreach ($event->terms as $term) {
+            if (isset($term->domain, $term->id) && $term->domain === 'eventtype') {
+                return $term->id;
+            }
+        }
+
+        return null;
     }
 
     private function formatStatus(stdClass $status): string
