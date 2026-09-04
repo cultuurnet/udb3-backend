@@ -28,12 +28,12 @@ final class AgeRangeDescription
             return 'Geschikt voor ' . $from . ' jaar en ouder';
         }
 
-        if ($from === null || $from === 0) {
-            return 'Geschikt tot ' . $to . ' jaar';
-        }
-
         if ($from === $to) {
             return 'Geschikt voor ' . $from . ' jaar';
+        }
+
+        if ($from === 0) {
+            return 'Geschikt tot ' . $to . ' jaar';
         }
 
         return 'Geschikt voor ' . $from . ' tot ' . $to . ' jaar';

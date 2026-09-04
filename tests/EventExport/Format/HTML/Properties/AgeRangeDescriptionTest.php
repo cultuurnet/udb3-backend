@@ -74,6 +74,28 @@ final class AgeRangeDescriptionTest extends TestCase
     /**
      * @test
      */
+    public function it_describes_a_range_for_babies_only(): void
+    {
+        $this->assertSame(
+            'Geschikt voor 0 jaar',
+            AgeRangeDescription::fromTypicalAgeRange('0-0')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_describes_a_range_without_a_lower_age_and_an_upper_age_of_zero(): void
+    {
+        $this->assertSame(
+            'Geschikt voor 0 jaar',
+            AgeRangeDescription::fromTypicalAgeRange('-0')
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_does_not_describe_a_range_for_all_ages(): void
     {
         $this->assertNull(AgeRangeDescription::fromTypicalAgeRange('-'));
