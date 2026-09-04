@@ -11,6 +11,7 @@ use CommerceGuys\Intl\Formatter\NumberFormatter;
 use CommerceGuys\Intl\Formatter\NumberFormatterInterface;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
@@ -20,6 +21,8 @@ use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\InvalidAgeRangeException;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
 use DateTimeInterface;
 use Exception;
@@ -27,6 +30,15 @@ use stdClass;
 
 class TabularDataEventFormatter
 {
+    private const CHILDREN_ONLY = 'Voor kinderen alleen';
+
+    private const CHILDREN_WITH_GUARDIAN = 'Voor kinderen samen met hun familie of een andere begeleider';
+
+    /**
+     * The highest age that still counts as a child for the "doelgroep" column.
+     */
+    private const CHILD_AGE_LIMIT = 12;
+
     protected StripHtmlStringFilter $htmlFilter;
 
     /**
@@ -343,6 +355,13 @@ class TabularDataEventFormatter
                 },
                 'property' => 'description',
             ],
+            'faqs' => [
+                'name' => 'faq',
+                'include' => function ($event) {
+                    return $this->formatFaqs($event);
+                },
+                'property' => 'faqs',
+            ],
             'organizer' => [
                 'name' => 'organisatie',
                 'include' => function ($event) {
@@ -387,9 +406,16 @@ class TabularDataEventFormatter
             'typicalAgeRange' => [
                 'name' => 'leeftijd',
                 'include' => function ($event) {
-                    return $event->typicalAgeRange ?? '';
+                    return $this->formatAgeRange($event);
                 },
                 'property' => 'typicalAgeRange',
+            ],
+            'childrenOnly' => [
+                'name' => 'doelgroep',
+                'include' => function ($event) {
+                    return $this->formatTargetAudience($event);
+                },
+                'property' => 'childrenOnly',
             ],
             'performer' => [
                 'name' => 'uitvoerders',
@@ -494,6 +520,13 @@ class TabularDataEventFormatter
                     return '';
                 },
                 'property' => 'endDate',
+            ],
+            'hasOvernightStay' => [
+                'name' => 'met overnachting',
+                'include' => function ($event) {
+                    return $this->formatOvernightStay($event);
+                },
+                'property' => 'subEvent',
             ],
             'calendarType' => [
                 'name' => 'tijd type',
@@ -790,6 +823,139 @@ class TabularDataEventFormatter
         $mainLanguage = $event->mainLanguage ?? 'nl';
 
         return $event->location->address->{$mainLanguage}->{$addressField} ?? '';
+    }
+
+    /**
+     * An event describes its audience with a typicalAgeRange or a birthdateRange. Older projections
+     * can still carry both, in which case both are exported.
+     */
+    private function formatAgeRange(stdClass $event): string
+    {
+        $ages = [];
+
+        if (isset($event->typicalAgeRange) && is_string($event->typicalAgeRange)) {
+            $ages[] = $event->typicalAgeRange;
+        }
+
+        if (isset($event->birthdateRange->from, $event->birthdateRange->to)) {
+            $ages[] = $event->birthdateRange->from . ' - ' . $event->birthdateRange->to;
+        }
+
+        return implode('; ', $ages);
+    }
+
+    private function formatTargetAudience(stdClass $event): string
+    {
+        if (isset($event->childrenOnly) && $event->childrenOnly === true) {
+            return self::CHILDREN_ONLY;
+        }
+
+        return $this->isAimedAtChildren($event) ? self::CHILDREN_WITH_GUARDIAN : '';
+    }
+
+    private function isAimedAtChildren(stdClass $event): bool
+    {
+        if (!isset($event->typicalAgeRange) || !is_string($event->typicalAgeRange)) {
+            return false;
+        }
+
+        try {
+            $ageRange = AgeRange::fromString($event->typicalAgeRange);
+        } catch (InvalidAgeRangeException) {
+            return false;
+        }
+
+        // An all ages event is not specifically aimed at children. Note that AgeRange::toString()
+        // also returns "-" for "0-", which is why it is compared instead of the original string.
+        if ($ageRange->toString() === '-') {
+            return false;
+        }
+
+        // The upper age is always greater than or equal to the lower age, so the range overlaps
+        // 0 - 12 as soon as it starts at or below the child age limit.
+        $from = $ageRange->getFrom();
+
+        return $from !== null && $from->toInteger() <= self::CHILD_AGE_LIMIT;
+    }
+
+    /**
+     * Every translation of every FAQ item, one per line, as "[nl] question answer".
+     */
+    private function formatFaqs(stdClass $event): string
+    {
+        if (!isset($event->faqs) || !is_array($event->faqs)) {
+            return '';
+        }
+
+        $lines = [];
+
+        foreach ($event->faqs as $faq) {
+            if (!$faq instanceof stdClass) {
+                continue;
+            }
+
+            foreach (get_object_vars($faq) as $language => $translation) {
+                if (!isset($translation->question, $translation->answer)) {
+                    continue;
+                }
+
+                $lines[] = '[' . $language . '] ' . $this->collapseWhitespace($translation->question) .
+                    ' ' . $this->collapseWhitespace($translation->answer);
+            }
+        }
+
+        return implode("\n", $lines);
+    }
+
+    /**
+     * Keeps a single FAQ item on a single line, no matter how its answer was entered.
+     */
+    private function collapseWhitespace(string $text): string
+    {
+        return trim(preg_replace('/\s+/', ' ', $text));
+    }
+
+    /**
+     * Only camps and vacations can have an overnight stay, so for any other event type the
+     * column stays empty instead of claiming there is none.
+     */
+    private function formatOvernightStay(stdClass $event): string
+    {
+        if (!EventTypeResolver::isOvernightStayAllowed($this->getEventTypeId($event))) {
+            return '';
+        }
+
+        return $this->hasOvernightStay($event) ? 'ja' : 'nee';
+    }
+
+    private function hasOvernightStay(stdClass $event): bool
+    {
+        if (!isset($event->subEvent) || !is_array($event->subEvent)) {
+            return false;
+        }
+
+        foreach ($event->subEvent as $subEvent) {
+            if (isset($subEvent->hasOvernightStay) && $subEvent->hasOvernightStay === true) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private function getEventTypeId(stdClass $event): ?string
+    {
+        if (!isset($event->terms) || !is_array($event->terms)) {
+            return null;
+        }
+
+        foreach ($event->terms as $term) {
+            if (isset($term->domain, $term->id) && $term->domain === 'eventtype') {
+                return $term->id;
+            }
+        }
+
+        return null;
     }
 
     private function formatStatus(stdClass $status): string
