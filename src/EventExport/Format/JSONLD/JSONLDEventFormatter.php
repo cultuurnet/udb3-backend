@@ -7,7 +7,9 @@ namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
+use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 final class JSONLDEventFormatter
 {
@@ -23,12 +25,18 @@ final class JSONLDEventFormatter
 
     private CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
+    private DeparturePlaceResolver $departurePlaceResolver;
+
     /**
      * @param string[] $include
      */
-    public function __construct(array $include, CalendarSummaryRepositoryInterface $calendarSummaryRepository)
-    {
+    public function __construct(
+        array $include,
+        CalendarSummaryRepositoryInterface $calendarSummaryRepository,
+        ?DocumentRepository $placeRepository = null
+    ) {
         $this->calendarSummaryRepository = $calendarSummaryRepository;
+        $this->departurePlaceResolver = new DeparturePlaceResolver($placeRepository);
 
         $include[] = '@id';
         // The address property is nested inside location.

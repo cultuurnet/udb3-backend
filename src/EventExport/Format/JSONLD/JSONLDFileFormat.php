@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\FileFormatInterface;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 final class JSONLDFileFormat implements FileFormatInterface
 {
@@ -16,15 +17,19 @@ final class JSONLDFileFormat implements FileFormatInterface
 
     private CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
+    private ?DocumentRepository $placeRepository;
+
     /**
      * @param null|string[] $include
      */
     public function __construct(
         ?array $include = null,
-        CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
+        CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
+        ?DocumentRepository $placeRepository = null
     ) {
         $this->include = $include;
         $this->calendarSummaryRepository = $calendarSummaryRepository;
+        $this->placeRepository = $placeRepository;
     }
 
     public function getFileNameExtension(): string
@@ -34,6 +39,6 @@ final class JSONLDFileFormat implements FileFormatInterface
 
     public function getWriter(): JSONLDFileWriter
     {
-        return new JSONLDFileWriter($this->include, $this->calendarSummaryRepository);
+        return new JSONLDFileWriter($this->include, $this->calendarSummaryRepository, $this->placeRepository);
     }
 }
