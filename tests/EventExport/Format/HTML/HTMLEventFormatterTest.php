@@ -724,6 +724,44 @@ class HTMLEventFormatterTest extends TestCase
     /**
      * @test
      */
+    public function it_adds_an_age_range_description_when_event_has_a_birthdate_range(): void
+    {
+        $event = Json::decode(
+            $this->getJSONEventFromFile('event_with_all_icon_labels.json')
+        );
+        unset($event->typicalAgeRange);
+        $event->birthdateRange = (object) ['from' => '2026-01-01', 'to' => '2026-08-27'];
+
+        $formattedEvent = $this->eventFormatter->formatEvent(
+            'd1f0e71d-a9a8-4069-81fb-530134502c58',
+            Json::encode($event)
+        );
+        $this->assertSame(
+            'Geschikt voor mensen geboren tussen 01/01/2026 en 27/08/2026',
+            $formattedEvent['ageRange']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_prefers_the_typical_age_range_over_the_birthdate_range(): void
+    {
+        $event = Json::decode(
+            $this->getJSONEventFromFile('event_with_all_icon_labels.json')
+        );
+        $event->birthdateRange = (object) ['from' => '2026-01-01', 'to' => '2026-08-27'];
+
+        $formattedEvent = $this->eventFormatter->formatEvent(
+            'd1f0e71d-a9a8-4069-81fb-530134502c58',
+            Json::encode($event)
+        );
+        $this->assertSame('Geschikt voor 5 jaar en ouder', $formattedEvent['ageRange']);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_include_the_media_object_of_the_main_image_when_set(): void
     {
         $event = $this->getJSONEventFromFile('event_with_main_image.json');

@@ -96,6 +96,17 @@ final class MapActivitiesTemplateTest extends TestCase
     /**
      * @test
      */
+    public function it_shows_a_birthdate_range_description_as_the_age_range(): void
+    {
+        $html = $this->render(['ageRange' => 'Geschikt voor mensen geboren tussen 01/01/2026 en 27/08/2026']);
+
+        $this->assertStringContainsString('<i class="fa fa-user"></i>', $html);
+        $this->assertStringContainsString('Geschikt voor mensen geboren tussen 01/01/2026 en 27/08/2026', $html);
+    }
+
+    /**
+     * @test
+     */
     public function it_does_not_show_an_age_range_when_the_event_has_none(): void
     {
         $html = $this->render([]);

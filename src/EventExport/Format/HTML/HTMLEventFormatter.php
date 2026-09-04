@@ -17,6 +17,7 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
 use CultuurNet\UDB3\EventExport\CalendarSummary\SummaryUnavailableException;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\AgeRangeDescription;
+use CultuurNet\UDB3\EventExport\Format\HTML\Properties\BirthdateRangeDescription;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\TaalicoonDescription;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
@@ -239,14 +240,18 @@ class HTMLEventFormatter
 
     private function addAgeRangeInfo(stdClass $event, array &$formattedEvent): void
     {
-        if (!isset($event->typicalAgeRange) || !is_string($event->typicalAgeRange)) {
-            return;
+        $description = null;
+
+        if (isset($event->typicalAgeRange) && is_string($event->typicalAgeRange)) {
+            $description = AgeRangeDescription::fromTypicalAgeRange($event->typicalAgeRange);
         }
 
-        $ageRangeDescription = AgeRangeDescription::fromTypicalAgeRange($event->typicalAgeRange);
+        if ($description === null && isset($event->birthdateRange) && $event->birthdateRange instanceof stdClass) {
+            $description = BirthdateRangeDescription::fromBirthdateRange($event->birthdateRange);
+        }
 
-        if ($ageRangeDescription !== null) {
-            $formattedEvent['ageRange'] = $ageRangeDescription;
+        if ($description !== null) {
+            $formattedEvent['ageRange'] = $description;
         }
     }
 
