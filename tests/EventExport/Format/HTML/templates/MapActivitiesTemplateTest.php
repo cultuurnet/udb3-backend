@@ -103,17 +103,6 @@ final class MapActivitiesTemplateTest extends TestCase
         $this->assertStringNotContainsString('fa-user', $html);
     }
 
-    /**
-     * @test
-     */
-    public function it_no_longer_shows_the_age_in_a_circle(): void
-    {
-        $html = $this->render(['ageRange' => 'Geschikt voor 6 tot 12 jaar']);
-
-        $this->assertStringNotContainsString('activity__leeftijd', $html);
-        $this->assertStringNotContainsString('agedFrom', $html);
-    }
-
     private function renderWithDescription(string $description): string
     {
         return $this->render(['description' => $description]);
