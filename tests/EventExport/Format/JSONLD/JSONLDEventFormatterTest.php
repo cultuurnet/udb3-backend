@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
+use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -184,5 +187,144 @@ class JSONLDEventFormatterTest extends TestCase
             '{"@id":"https:\/\/udb-silex-acc.uitdatabank.be\/event\/0c70b8f3-66a0-4532-959f-2e13b4624f04","attendanceMode":"mixed","onlineUrl":"https:\/\/www.publiq.be\/livestream"}',
             $event
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_describes_the_departure_places(): void
+    {
+        $formatter = new JSONLDEventFormatter(
+            ['id', 'departurePlaces'],
+            $this->calendarSummaryRepository,
+            $this->givenPlaces([
+                'place-1' => ['name' => 'Sportcentrum', 'postalCode' => '3000', 'locality' => 'Leuven'],
+                'place-2' => ['name' => 'Jeugdhuis', 'postalCode' => '2000', 'locality' => 'Antwerpen'],
+            ])
+        );
+
+        $event = $formatter->formatEvent(
+            $this->encodeEvent(
+                [
+                    'departurePlaces' => [
+                        'https://io.uitdatabank.be/places/place-1',
+                        'https://io.uitdatabank.be/places/place-2',
+                    ],
+                ]
+            )
+        );
+
+        $this->assertEquals(
+            [
+                '@id' => 'https://io.uitdatabank.be/events/event-1',
+                'departurePlaces' => [
+                    [
+                        '@id' => 'https://io.uitdatabank.be/places/place-1',
+                        'name' => 'Sportcentrum',
+                        'postalCode' => '3000',
+                        'addressLocality' => 'Leuven',
+                    ],
+                    [
+                        '@id' => 'https://io.uitdatabank.be/places/place-2',
+                        'name' => 'Jeugdhuis',
+                        'postalCode' => '2000',
+                        'addressLocality' => 'Antwerpen',
+                    ],
+                ],
+            ],
+            Json::decodeAssociatively($event)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_out_a_departure_place_that_no_longer_exists(): void
+    {
+        $formatter = new JSONLDEventFormatter(
+            ['id', 'departurePlaces'],
+            $this->calendarSummaryRepository,
+            $this->givenPlaces([
+                'place-2' => ['name' => 'Jeugdhuis', 'postalCode' => '2000', 'locality' => 'Antwerpen'],
+            ])
+        );
+
+        $event = $formatter->formatEvent(
+            $this->encodeEvent(
+                [
+                    'departurePlaces' => [
+                        'https://io.uitdatabank.be/places/place-1',
+                        'https://io.uitdatabank.be/places/place-2',
+                    ],
+                ]
+            )
+        );
+
+        $this->assertEquals(
+            [
+                '@id' => 'https://io.uitdatabank.be/events/event-1',
+                'departurePlaces' => [
+                    [
+                        '@id' => 'https://io.uitdatabank.be/places/place-2',
+                        'name' => 'Jeugdhuis',
+                        'postalCode' => '2000',
+                        'addressLocality' => 'Antwerpen',
+                    ],
+                ],
+            ],
+            Json::decodeAssociatively($event)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_departure_place_urls_when_no_place_repository_is_available(): void
+    {
+        $formatter = new JSONLDEventFormatter(['id', 'departurePlaces'], $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent(
+            $this->encodeEvent(['departurePlaces' => ['https://io.uitdatabank.be/places/place-1']])
+        );
+
+        $this->assertEquals(
+            [
+                '@id' => 'https://io.uitdatabank.be/events/event-1',
+                'departurePlaces' => ['https://io.uitdatabank.be/places/place-1'],
+            ],
+            Json::decodeAssociatively($event)
+        );
+    }
+
+    private function givenPlaces(array $places): InMemoryDocumentRepository
+    {
+        $placeRepository = new InMemoryDocumentRepository();
+
+        foreach ($places as $placeId => $place) {
+            $placeRepository->save(
+                new JsonDocument(
+                    $placeId,
+                    Json::encode(
+                        [
+                            '@id' => $placeId,
+                            'name' => ['nl' => $place['name']],
+                            'address' => [
+                                'nl' => [
+                                    'postalCode' => $place['postalCode'],
+                                    'addressLocality' => $place['locality'],
+                                ],
+                            ],
+                        ]
+                    )
+                )
+            );
+        }
+
+        return $placeRepository;
+    }
+
+    private function encodeEvent(array $properties): string
+    {
+        return Json::encode(['@id' => 'https://io.uitdatabank.be/events/event-1'] + $properties);
     }
 }

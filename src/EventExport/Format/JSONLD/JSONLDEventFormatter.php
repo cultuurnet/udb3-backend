@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
+use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlace;
 use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -25,7 +26,7 @@ final class JSONLDEventFormatter
 
     private CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
-    private DeparturePlaceResolver $departurePlaceResolver;
+    private ?DeparturePlaceResolver $departurePlaceResolver;
 
     /**
      * @param string[] $include
@@ -36,7 +37,7 @@ final class JSONLDEventFormatter
         ?DocumentRepository $placeRepository = null
     ) {
         $this->calendarSummaryRepository = $calendarSummaryRepository;
-        $this->departurePlaceResolver = new DeparturePlaceResolver($placeRepository);
+        $this->departurePlaceResolver = $placeRepository ? new DeparturePlaceResolver($placeRepository) : null;
 
         $include[] = '@id';
         // The address property is nested inside location.
@@ -116,6 +117,10 @@ final class JSONLDEventFormatter
                 $eventObject->calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::plain(), Format::md());
             }
 
+            if (in_array('departurePlaces', $includedProperties)) {
+                $this->describeDeparturePlaces($eventObject);
+            }
+
             // filter out base properties
             foreach ($eventObject as $propertyName => $value) {
                 if (!in_array($propertyName, $includedProperties)) {
@@ -127,6 +132,27 @@ final class JSONLDEventFormatter
         }
 
         return $event;
+    }
+
+    /**
+     * An event only stores the URLs of its departure places, which say nothing about where they
+     * are. Each one is replaced by a description that keeps the URL as its "@id".
+     */
+    private function describeDeparturePlaces(\stdClass $event): void
+    {
+        if ($this->departurePlaceResolver === null || !isset($event->departurePlaces)) {
+            return;
+        }
+
+        $event->departurePlaces = array_map(
+            fn (DeparturePlace $departurePlace): \stdClass => (object) [
+                '@id' => $departurePlace->id,
+                'name' => $departurePlace->name,
+                'postalCode' => $departurePlace->postalCode,
+                'addressLocality' => $departurePlace->addressLocality,
+            ],
+            $this->departurePlaceResolver->resolve($event)
+        );
     }
 
     private function parseEventIdFromUrl(\stdClass $event): string

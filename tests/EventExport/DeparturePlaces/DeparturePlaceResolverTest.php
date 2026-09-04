@@ -159,16 +159,6 @@ final class DeparturePlaceResolverTest extends TestCase
         $this->assertSame([], $this->resolver->resolve($this->event([['not' => 'a url'], ''])));
     }
 
-    /**
-     * @test
-     */
-    public function it_resolves_nothing_without_a_place_repository(): void
-    {
-        $resolver = new DeparturePlaceResolver();
-
-        $this->assertSame([], $resolver->resolve($this->event([self::SPORTCENTRUM_URL])));
-    }
-
     private function givenPlace(string $placeId, array $place): void
     {
         $this->placeRepository->save(
