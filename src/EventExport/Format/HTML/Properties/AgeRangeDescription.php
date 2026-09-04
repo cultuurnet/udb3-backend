@@ -13,7 +13,7 @@ final class AgeRangeDescription
     {
         try {
             $ageRange = AgeRange::fromString($typicalAgeRange);
-        } catch (InvalidAgeRangeException $exception) {
+        } catch (InvalidAgeRangeException) {
             return null;
         }
 
