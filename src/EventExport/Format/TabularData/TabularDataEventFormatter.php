@@ -62,7 +62,7 @@ class TabularDataEventFormatter
 
     protected CurrencyRepositoryInterface $currencyRepository;
 
-    private DeparturePlaceResolver $departurePlaceResolver;
+    private ?DeparturePlaceResolver $departurePlaceResolver;
 
     /**
      * @param string[] $include
@@ -73,7 +73,7 @@ class TabularDataEventFormatter
         ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
         ?DocumentRepository $placeRepository = null
     ) {
-        $this->departurePlaceResolver = new DeparturePlaceResolver($placeRepository);
+        $this->departurePlaceResolver = $placeRepository ? new DeparturePlaceResolver($placeRepository) : null;
         $this->htmlFilter = new StripHtmlStringFilter();
         $this->includedProperties = $this->includedOrDefaultProperties($include);
         $this->uitpas = $uitpas;
@@ -422,6 +422,13 @@ class TabularDataEventFormatter
                     return $this->formatTargetAudience($event);
                 },
                 'property' => 'childrenOnly',
+            ],
+            'departurePlaces' => [
+                'name' => 'vertreklocaties',
+                'include' => function ($event) {
+                    return $this->formatDeparturePlaces($event);
+                },
+                'property' => 'departurePlaces',
             ],
             'performer' => [
                 'name' => 'uitvoerders',
@@ -882,6 +889,29 @@ class TabularDataEventFormatter
         $from = $ageRange->getFrom();
 
         return $from !== null && $from->toInteger() <= self::CHILD_AGE_LIMIT;
+    }
+
+    /**
+     * The departure places numbered in the order they were entered, as
+     * "Vertreklocatie 1: postcode, gemeente, naam".
+     */
+    private function formatDeparturePlaces(stdClass $event): string
+    {
+        if ($this->departurePlaceResolver === null) {
+            return '';
+        }
+
+        $descriptions = [];
+
+        foreach ($this->departurePlaceResolver->resolve($event) as $index => $departurePlace) {
+            $address = array_filter(
+                [$departurePlace->postalCode, $departurePlace->addressLocality, $departurePlace->name]
+            );
+
+            $descriptions[] = 'Vertreklocatie ' . ($index + 1) . ': ' . implode(', ', $address);
+        }
+
+        return implode('; ', $descriptions);
     }
 
     /**

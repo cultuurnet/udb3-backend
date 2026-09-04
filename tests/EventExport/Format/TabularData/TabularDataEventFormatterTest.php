@@ -11,6 +11,8 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
@@ -834,6 +836,113 @@ class TabularDataEventFormatterTest extends TestCase
                 'metOvernachting' => '',
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_export_the_departure_places_as_vertreklocaties(): void
+    {
+        $formatter = new TabularDataEventFormatter(
+            ['id', 'departurePlaces'],
+            null,
+            null,
+            $this->givenPlaces([
+                'place-1' => ['name' => 'Sportcentrum', 'postalCode' => '3000', 'locality' => 'Leuven'],
+                'place-2' => ['name' => 'Jeugdhuis', 'postalCode' => '2000', 'locality' => 'Antwerpen'],
+            ])
+        );
+
+        $formattedEvent = $formatter->formatEvent(
+            $this->encodeEvent(
+                [
+                    'departurePlaces' => [
+                        'https://io.uitdatabank.be/places/place-1',
+                        'https://io.uitdatabank.be/places/place-2',
+                    ],
+                ]
+            )
+        );
+
+        $this->assertSame(
+            'Vertreklocatie 1: 3000, Leuven, Sportcentrum; Vertreklocatie 2: 2000, Antwerpen, Jeugdhuis',
+            $formattedEvent['departurePlaces']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_leave_out_a_departure_place_that_no_longer_exists(): void
+    {
+        $formatter = new TabularDataEventFormatter(
+            ['id', 'departurePlaces'],
+            null,
+            null,
+            $this->givenPlaces([
+                'place-2' => ['name' => 'Jeugdhuis', 'postalCode' => '2000', 'locality' => 'Antwerpen'],
+            ])
+        );
+
+        $formattedEvent = $formatter->formatEvent(
+            $this->encodeEvent(
+                [
+                    'departurePlaces' => [
+                        'https://io.uitdatabank.be/places/place-1',
+                        'https://io.uitdatabank.be/places/place-2',
+                    ],
+                ]
+            )
+        );
+
+        $this->assertSame(
+            'Vertreklocatie 1: 2000, Antwerpen, Jeugdhuis',
+            $formattedEvent['departurePlaces']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_export_no_vertreklocaties_for_an_event_without_departure_places(): void
+    {
+        $formatter = new TabularDataEventFormatter(
+            ['id', 'departurePlaces'],
+            null,
+            null,
+            $this->givenPlaces([])
+        );
+
+        $formattedEvent = $formatter->formatEvent($this->encodeEvent([]));
+
+        $this->assertSame('', $formattedEvent['departurePlaces']);
+    }
+
+    private function givenPlaces(array $places): InMemoryDocumentRepository
+    {
+        $placeRepository = new InMemoryDocumentRepository();
+
+        foreach ($places as $placeId => $place) {
+            $placeRepository->save(
+                new JsonDocument(
+                    $placeId,
+                    Json::encode(
+                        [
+                            '@id' => $placeId,
+                            'name' => ['nl' => $place['name']],
+                            'address' => [
+                                'nl' => [
+                                    'postalCode' => $place['postalCode'],
+                                    'addressLocality' => $place['locality'],
+                                ],
+                            ],
+                        ]
+                    )
+                )
+            );
+        }
+
+        return $placeRepository;
     }
 
     private function encodeEvent(array $properties): string

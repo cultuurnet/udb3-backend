@@ -15,7 +15,7 @@ use stdClass;
  */
 final class DeparturePlaceResolver
 {
-    public function __construct(private readonly ?DocumentRepository $placeRepository = null)
+    public function __construct(private readonly DocumentRepository $placeRepository)
     {
     }
 
@@ -26,9 +26,7 @@ final class DeparturePlaceResolver
      */
     public function resolve(stdClass $event): array
     {
-        if ($this->placeRepository === null
-            || !isset($event->departurePlaces)
-            || !is_array($event->departurePlaces)) {
+        if (!isset($event->departurePlaces) || !is_array($event->departurePlaces)) {
             return [];
         }
 
