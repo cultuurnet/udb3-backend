@@ -9,6 +9,7 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
 use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlace;
 use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
+use CultuurNet\UDB3\EventExport\OvernightStay;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
@@ -121,6 +122,10 @@ final class JSONLDEventFormatter
                 $this->describeDeparturePlaces($eventObject);
             }
 
+            if (in_array('hasOvernightStay', $includedProperties)) {
+                $this->addOvernightStay($eventObject);
+            }
+
             // filter out base properties
             foreach ($eventObject as $propertyName => $value) {
                 if (!in_array($propertyName, $includedProperties)) {
@@ -132,6 +137,19 @@ final class JSONLDEventFormatter
         }
 
         return $event;
+    }
+
+    /**
+     * An overnight stay is stored per occurrence, so it is summarised into a single flag for the
+     * whole event. An event type that could never have one keeps the property out entirely.
+     */
+    private function addOvernightStay(\stdClass $event): void
+    {
+        $hasOvernightStay = OvernightStay::forEvent($event);
+
+        if ($hasOvernightStay !== null) {
+            $event->hasOvernightStay = $hasOvernightStay;
+        }
     }
 
     /**
