@@ -17,12 +17,12 @@ final class AgeRangeDescription
             return null;
         }
 
-        $from = $ageRange->getFrom()?->toInteger();
-        $to = $ageRange->getTo()?->toInteger();
-
-        if ($to === null && ($from === null || $from === 0)) {
+        if ($ageRange->toString() === '-') {
             return null;
         }
+
+        $from = $ageRange->getFrom()?->toInteger();
+        $to = $ageRange->getTo()?->toInteger();
 
         if ($to === null) {
             return 'Geschikt voor ' . $from . ' jaar en ouder';
