@@ -296,6 +296,83 @@ class JSONLDEventFormatterTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     * @dataProvider eventsAndOvernightStay
+     */
+    public function it_exports_whether_the_event_has_an_overnight_stay(
+        array $eventProperties,
+        array $expectedEvent
+    ): void {
+        $formatter = new JSONLDEventFormatter(['id', 'hasOvernightStay'], $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($this->encodeEvent($eventProperties));
+
+        $this->assertEquals(
+            ['@id' => 'https://io.uitdatabank.be/events/event-1'] + $expectedEvent,
+            Json::decodeAssociatively($event)
+        );
+    }
+
+    public function eventsAndOvernightStay(): array
+    {
+        $camp = [['id' => '0.57.0.0.0', 'label' => 'Kamp of vakantie', 'domain' => 'eventtype']];
+        $concert = [['id' => '0.50.4.0.0', 'label' => 'Concert', 'domain' => 'eventtype']];
+
+        return [
+            'a camp with an overnight stay' => [
+                'eventProperties' => [
+                    'terms' => $camp,
+                    'subEvent' => [['id' => 0, 'hasOvernightStay' => true]],
+                ],
+                'expectedEvent' => ['hasOvernightStay' => true],
+            ],
+            'a camp without an overnight stay' => [
+                'eventProperties' => ['terms' => $camp, 'subEvent' => [['id' => 0]]],
+                'expectedEvent' => ['hasOvernightStay' => false],
+            ],
+            'a concert leaves the property out' => [
+                'eventProperties' => [
+                    'terms' => $concert,
+                    'subEvent' => [['id' => 0, 'hasOvernightStay' => true]],
+                ],
+                'expectedEvent' => [],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider passedThroughProperties
+     */
+    public function it_passes_through_the_audience_properties_unchanged(string $property, mixed $value): void
+    {
+        $formatter = new JSONLDEventFormatter(['id', $property], $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($this->encodeEvent([$property => $value]));
+
+        $this->assertEquals(
+            ['@id' => 'https://io.uitdatabank.be/events/event-1', $property => $value],
+            Json::decodeAssociatively($event)
+        );
+    }
+
+    public function passedThroughProperties(): array
+    {
+        return [
+            'typicalAgeRange' => ['property' => 'typicalAgeRange', 'value' => '6-12'],
+            'birthdateRange' => [
+                'property' => 'birthdateRange',
+                'value' => ['from' => '2010-01-01', 'to' => '2010-12-31'],
+            ],
+            'childrenOnly' => ['property' => 'childrenOnly', 'value' => true],
+            'faqs' => [
+                'property' => 'faqs',
+                'value' => [['nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.']]],
+            ],
+        ];
+    }
+
     private function givenPlaces(array $places): InMemoryDocumentRepository
     {
         $placeRepository = new InMemoryDocumentRepository();
