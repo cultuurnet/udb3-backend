@@ -45,16 +45,12 @@
                 <section class="activity
                 {%- for brand in event.brands %} {{ brand }}{% endfor -%}
                 {%- if event.image is not defined %} imageless{% endif -%}
-                {%- if event.ageFrom %} agedFrom{% endif -%}
                 ">
                     {% if event.image -%}
                     <div class="activity__image-container">
                         <img src="{{ event.image }}?width=600&height=600&maxheight=600&crop=auto" class="activity__image" />
                         <span class="activity__image__copyright">&copy; {{ event.mediaObject.copyrightHolder }}</span>
                     </div>
-                    {% endif -%}
-                    {% if event.ageFrom -%}
-                    <p class="activity__leeftijd">{{ event.ageFrom }}+</p>
                     {% endif -%}
                     <p class="activity__type">{{ event.type }}</p>
                     <p class="activity__title">{{ event.title }}</p>
@@ -112,6 +108,17 @@
                             </tr>
                             {%- endfor %}
 
+                            {%- endif -%}
+                            {%- if event.ageRange %}
+
+                            <tr>
+                                <td>
+                                    <i class="fa fa-user"></i>&nbsp;
+                                </td>
+                                <td>
+                                    {{ event.ageRange }}
+                                </td>
+                            </tr>
                             {%- endif -%}
                             {%- if event.taalicoonCount %}
 

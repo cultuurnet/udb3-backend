@@ -336,7 +336,7 @@ final class HTMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_shows_the_starting_age(): void
+    public function it_shows_the_age_range(): void
     {
         $events = [
             [
@@ -356,7 +356,7 @@ final class HTMLFileWriterTest extends TestCase
                 'brands' => [
                     'uitpas',
                 ],
-                'ageFrom' => '5',
+                'ageRange' => 'Geschikt voor 6 tot 12 jaar',
             ],
         ];
 
@@ -392,7 +392,7 @@ final class HTMLFileWriterTest extends TestCase
                 'taalicoonDescription' => 'Je begrijpt of spreekt nog niet veel Nederlands.',
                 'brands' => [
                 ],
-                'ageFrom' => '5',
+                'ageRange' => 'Geschikt voor 6 tot 12 jaar',
                 'uitpas' => [
                     'prices' => [
                         [
