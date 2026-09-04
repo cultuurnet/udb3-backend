@@ -17,8 +17,8 @@ final class AgeRangeDescription
             return null;
         }
 
-        $from = $ageRange->getFrom() ? $ageRange->getFrom()->toInteger() : null;
-        $to = $ageRange->getTo() ? $ageRange->getTo()->toInteger() : null;
+        $from = $ageRange->getFrom()?->toInteger();
+        $to = $ageRange->getTo()?->toInteger();
 
         if ($to === null && ($from === null || $from === 0)) {
             return null;
