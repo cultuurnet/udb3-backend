@@ -17,7 +17,7 @@ final class AgeRangeDescription
             return null;
         }
 
-        if ($ageRange->toString() === '-') {
+        if ($ageRange->isForAllAges()) {
             return null;
         }
 
