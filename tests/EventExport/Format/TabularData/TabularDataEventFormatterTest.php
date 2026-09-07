@@ -589,7 +589,13 @@ class TabularDataEventFormatterTest extends TestCase
                 'offerJson' => $this->encodeEvent(
                     ['birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31']]
                 ),
-                'leeftijd' => '2010-01-01 - 2010-12-31',
+                'leeftijd' => '01/01/2010 - 31/12/2010',
+            ],
+            'a birthdate range of a single day' => [
+                'offerJson' => $this->encodeEvent(
+                    ['birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-01-01']]
+                ),
+                'leeftijd' => '01/01/2010 - 01/01/2010',
             ],
             'both an age range and a birthdate range' => [
                 'offerJson' => $this->encodeEvent(
@@ -598,14 +604,48 @@ class TabularDataEventFormatterTest extends TestCase
                         'birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31'],
                     ]
                 ),
-                'leeftijd' => '6-12; 2010-01-01 - 2010-12-31',
+                'leeftijd' => '6-12',
             ],
             'an all ages event' => [
                 'offerJson' => $this->encodeEvent(['typicalAgeRange' => '-']),
                 'leeftijd' => '-',
             ],
+            'an all ages event with a birthdate range' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'typicalAgeRange' => '-',
+                        'birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31'],
+                    ]
+                ),
+                'leeftijd' => '01/01/2010 - 31/12/2010',
+            ],
+            'an unparsable age range with a birthdate range' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'typicalAgeRange' => 'zes-twaalf',
+                        'birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31'],
+                    ]
+                ),
+                'leeftijd' => '01/01/2010 - 31/12/2010',
+            ],
+            'an unparsable age range without a birthdate range' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => 'zes-twaalf']),
+                'leeftijd' => 'zes-twaalf',
+            ],
             'an incomplete birthdate range' => [
                 'offerJson' => $this->encodeEvent(['birthdateRange' => ['from' => '2010-01-01']]),
+                'leeftijd' => '',
+            ],
+            'an out of range birthdate' => [
+                'offerJson' => $this->encodeEvent(
+                    ['birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-13-45']]
+                ),
+                'leeftijd' => '',
+            ],
+            'an inverted birthdate range' => [
+                'offerJson' => $this->encodeEvent(
+                    ['birthdateRange' => ['from' => '2010-12-31', 'to' => '2010-01-01']]
+                ),
                 'leeftijd' => '',
             ],
             'neither an age range nor a birthdate range' => [
@@ -738,11 +778,85 @@ class TabularDataEventFormatterTest extends TestCase
                     "[fr] Comment puis-je y accéder? En bus.\n" .
                     '[nl] Wat kost het? 10 euro.',
             ],
+            'the main language of the event comes first' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'mainLanguage' => 'nl',
+                        'faqs' => [
+                            [
+                                'fr' => ['question' => 'Comment puis-je y accéder?', 'answer' => 'En bus.'],
+                                'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                                'de' => ['question' => 'Wie komme ich dorthin?', 'answer' => 'Mit dem Bus.'],
+                            ],
+                        ],
+                    ]
+                ),
+                'faq' => "[nl] Hoe geraak ik er? Met de bus.\n" .
+                    "[fr] Comment puis-je y accéder? En bus.\n" .
+                    '[de] Wie komme ich dorthin? Mit dem Bus.',
+            ],
+            'a main language other than dutch comes first' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'mainLanguage' => 'fr',
+                        'faqs' => [
+                            [
+                                'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                                'fr' => ['question' => 'Comment puis-je y accéder?', 'answer' => 'En bus.'],
+                            ],
+                        ],
+                    ]
+                ),
+                'faq' => "[fr] Comment puis-je y accéder? En bus.\n" .
+                    '[nl] Hoe geraak ik er? Met de bus.',
+            ],
+            'an item without the main language keeps its own order' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'mainLanguage' => 'nl',
+                        'faqs' => [
+                            [
+                                'fr' => ['question' => 'Comment puis-je y accéder?', 'answer' => 'En bus.'],
+                                'de' => ['question' => 'Wie komme ich dorthin?', 'answer' => 'Mit dem Bus.'],
+                            ],
+                        ],
+                    ]
+                ),
+                'faq' => "[fr] Comment puis-je y accéder? En bus.\n" .
+                    '[de] Wie komme ich dorthin? Mit dem Bus.',
+            ],
             'an answer spanning multiple lines is kept on one line' => [
                 'offerJson' => $this->encodeEvent(
                     ['faqs' => [['nl' => ['question' => 'Hoe?', 'answer' => "Met de bus.\n\n  Of te voet."]]]]
                 ),
                 'faq' => '[nl] Hoe? Met de bus. Of te voet.',
+            ],
+            'markup in a question or an answer is stripped' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            [
+                                'nl' => [
+                                    'question' => '<strong>Hoe</strong> geraak ik er?',
+                                    'answer' => '<p>Met de bus.</p><p>Of te voet &amp; te fiets.</p>',
+                                ],
+                            ],
+                        ],
+                    ]
+                ),
+                'faq' => '[nl] Hoe geraak ik er? Met de bus. Of te voet & te fiets.',
+            ],
+            'a line break in an answer does not split the item over two lines' => [
+                'offerJson' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            ['nl' => ['question' => 'Hoe?', 'answer' => 'Met de bus.<br>Of te voet.']],
+                            ['nl' => ['question' => 'Wat kost het?', 'answer' => '10 euro.']],
+                        ],
+                    ]
+                ),
+                'faq' => "[nl] Hoe? Met de bus. Of te voet.\n" .
+                    '[nl] Wat kost het? 10 euro.',
             ],
             'an item without an answer is skipped' => [
                 'offerJson' => $this->encodeEvent(

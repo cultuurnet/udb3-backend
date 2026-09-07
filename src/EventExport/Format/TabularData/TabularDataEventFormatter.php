@@ -12,6 +12,7 @@ use CommerceGuys\Intl\Formatter\NumberFormatterInterface;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Event\EventTypeResolver;
+use CultuurNet\UDB3\EventExport\BirthdateRangeFactory;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
@@ -368,8 +369,7 @@ class TabularDataEventFormatter
                     /** @var stdClass $event */
                     if (isset($event->organizer, $event->organizer->name)) {
                         $name = (array) $event->organizer->name;
-                        $mainLanguage = $event->mainLanguage ?? 'nl';
-                        return $name[$mainLanguage] ?? current($name);
+                        return $name[$this->getMainLanguage($event)] ?? current($name);
                     }
                     return '';
                 },
@@ -820,28 +820,36 @@ class TabularDataEventFormatter
             return $event->location->address->{$addressField};
         }
 
-        $mainLanguage = $event->mainLanguage ?? 'nl';
-
-        return $event->location->address->{$mainLanguage}->{$addressField} ?? '';
+        return $event->location->address->{$this->getMainLanguage($event)}->{$addressField} ?? '';
     }
 
     /**
      * An event describes its audience with a typicalAgeRange or a birthdateRange. Older projections
-     * can still carry both, in which case both are exported.
+     * can still carry both, in which case the typicalAgeRange takes precedence just like it does in
+     * the HTML export.
+     *
+     * @see \CultuurNet\UDB3\EventExport\Format\HTML\HTMLEventFormatter::addAgeRangeInfo()
      */
     private function formatAgeRange(stdClass $event): string
     {
-        $ages = [];
+        $typicalAgeRange = $this->getTypicalAgeRange($event);
 
-        if (isset($event->typicalAgeRange) && is_string($event->typicalAgeRange)) {
-            $ages[] = $event->typicalAgeRange;
+        if ($this->parseSpecificAgeRange($typicalAgeRange) !== null) {
+            return $typicalAgeRange;
         }
 
-        if (isset($event->birthdateRange->from, $event->birthdateRange->to)) {
-            $ages[] = $event->birthdateRange->from . ' - ' . $event->birthdateRange->to;
+        // The birthdate range only fills in when there is no specific age range, so for an all ages
+        // or a malformed value.
+        $birthdateRange = BirthdateRangeFactory::fromJson($event->birthdateRange ?? null);
+
+        if ($birthdateRange !== null) {
+            return $birthdateRange->getFrom()->format(BirthdateRangeFactory::DISPLAY_FORMAT) . ' - ' .
+                $birthdateRange->getTo()->format(BirthdateRangeFactory::DISPLAY_FORMAT);
         }
 
-        return implode('; ', $ages);
+        // Without a usable birthdate range the original value is still the best available answer,
+        // which keeps exporting "-" for an all ages event.
+        return $typicalAgeRange;
     }
 
     private function formatTargetAudience(stdClass $event): string
@@ -855,19 +863,11 @@ class TabularDataEventFormatter
 
     private function isAimedAtChildren(stdClass $event): bool
     {
-        if (!isset($event->typicalAgeRange) || !is_string($event->typicalAgeRange)) {
-            return false;
-        }
+        // An all ages event is not specifically aimed at children, so an age range that is not
+        // specific never satisfies this.
+        $ageRange = $this->parseSpecificAgeRange($this->getTypicalAgeRange($event));
 
-        try {
-            $ageRange = AgeRange::fromString($event->typicalAgeRange);
-        } catch (InvalidAgeRangeException) {
-            return false;
-        }
-
-        // An all ages event is not specifically aimed at children. Note that AgeRange::toString()
-        // also returns "-" for "0-", which is why it is compared instead of the original string.
-        if ($ageRange->toString() === '-') {
+        if ($ageRange === null) {
             return false;
         }
 
@@ -878,8 +878,38 @@ class TabularDataEventFormatter
         return $from !== null && $from->toInteger() <= self::CHILD_AGE_LIMIT;
     }
 
+    private function getMainLanguage(stdClass $event): string
+    {
+        return $event->mainLanguage ?? 'nl';
+    }
+
+    private function getTypicalAgeRange(stdClass $event): string
+    {
+        return isset($event->typicalAgeRange) && is_string($event->typicalAgeRange)
+            ? $event->typicalAgeRange
+            : '';
+    }
+
     /**
-     * Every translation of every FAQ item, one per line, as "[nl] question answer".
+     * Parses a typicalAgeRange, treating everything that does not describe a specific age as absent.
+     */
+    private function parseSpecificAgeRange(string $typicalAgeRange): ?AgeRange
+    {
+        try {
+            $ageRange = AgeRange::fromString($typicalAgeRange);
+        } catch (InvalidAgeRangeException) {
+            return null;
+        }
+
+        // Note that AgeRange::toString() also returns "-" for "0-", which is why it is compared
+        // instead of the original string.
+        return $ageRange->toString() === '-' ? null : $ageRange;
+    }
+
+    /**
+     * Every translation of every FAQ item as "[nl] question answer", the main language first, one
+     * per line. Unlike the short values in the label or sameAs columns these are whole sentences,
+     * so they get a line of their own in the wrapped cell instead of a ";" separator.
      */
     private function formatFaqs(stdClass $event): string
     {
@@ -887,32 +917,52 @@ class TabularDataEventFormatter
             return '';
         }
 
-        $lines = [];
+        $items = [];
 
         foreach ($event->faqs as $faq) {
             if (!$faq instanceof stdClass) {
                 continue;
             }
 
-            foreach (get_object_vars($faq) as $language => $translation) {
+            foreach ($this->mainLanguageFirst(get_object_vars($faq), $event) as $language => $translation) {
                 if (!isset($translation->question, $translation->answer)) {
                     continue;
                 }
 
-                $lines[] = '[' . $language . '] ' . $this->collapseWhitespace($translation->question) .
-                    ' ' . $this->collapseWhitespace($translation->answer);
+                $items[] = '[' . $language . '] ' . $this->toSingleLine($translation->question) .
+                    ' ' . $this->toSingleLine($translation->answer);
             }
         }
 
-        return implode("\n", $lines);
+        return implode("\n", $items);
     }
 
     /**
-     * Keeps a single FAQ item on a single line, no matter how its answer was entered.
+     * Translations are returned in the order they happen to appear in the projection, which can
+     * leave a Dutch user reading a French answer first, so the main language is moved to the front.
      */
-    private function collapseWhitespace(string $text): string
+    private function mainLanguageFirst(array $translations, stdClass $event): array
     {
-        return trim(preg_replace('/\s+/', ' ', $text));
+        $mainLanguage = $this->getMainLanguage($event);
+
+        if (!isset($translations[$mainLanguage])) {
+            return $translations;
+        }
+
+        // Keys on the left win and keep their position, so the other translations follow in their
+        // original order.
+        return [$mainLanguage => $translations[$mainLanguage]] + $translations;
+    }
+
+    /**
+     * Keeps a single FAQ item on a single line, no matter how its answer was entered, so that no
+     * line break ends up in a cell. Questions and answers are free text that can contain markup,
+     * just like a description, so the tags are stripped first: the filter turns a <br> or a </p>
+     * into newlines, which then collapse into the single space that separates the words.
+     */
+    private function toSingleLine(string $text): string
+    {
+        return trim(preg_replace('/\s+/', ' ', $this->htmlFilter->filter($text)));
     }
 
     /**
