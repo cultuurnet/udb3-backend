@@ -33,6 +33,7 @@ use CultuurNet\UDB3\Http\Event\UpdateOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsJsonLdRequestHandler;
+use CultuurNet\UDB3\Http\FastRead\FastReadMiddleware;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsOoXmlRequestHandler;
 use CultuurNet\UDB3\Http\Export\ExportEventsAsPdfRequestHandler;
 use CultuurNet\UDB3\Http\Holidays\GetHolidaysRequestHandler;
@@ -271,6 +272,15 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function registerMiddlewares(ContainerInterface $container, Router $router): void
     {
+        // Must run first (before any other middleware, and before the route handler is
+        // resolved): serves eligible offer-detail GETs directly from a fast Redis-backed
+        // read path, entirely skipping resolution of the (expensive) fully-decorated
+        // 'event_jsonld_repository' / 'place_jsonld_repository' container services. Falls
+        // back to $handler->handle() - i.e. everything below - when not eligible or on
+        // any unexpected error. See FastReadMiddleware's docblock and
+        // claude/read-side-performance-investigation.md for why this has to run this early.
+        $router->middleware($container->get(FastReadMiddleware::class));
+
         // Intercepts all "ProjectedToJSONLD" messages during request handling, and publishes the unique ones on the
         // event bus afterwards. See class docblock for more info.
         $router->middleware(new ProjectedToJSONLDInterceptingMiddleware($container->get(EventBus::class)));

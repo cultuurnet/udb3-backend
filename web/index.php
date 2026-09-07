@@ -5,6 +5,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use CultuurNet\UDB3\Http\Auth\CorsHeadersResponseDecorator;
+use CultuurNet\UDB3\Http\FastRead\FastReadServiceProvider;
 use CultuurNet\UDB3\Http\LegacyPathRewriter;
 use CultuurNet\UDB3\Http\MiddlewareServiceProvider;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
@@ -33,6 +34,8 @@ $container->addServiceProvider(new WebErrorHandlerProvider());
 $container->addServiceProvider(new PsrRouterServiceProvider());
 
 $container->addServiceProvider(new MiddlewareServiceProvider());
+
+$container->addServiceProvider(new FastReadServiceProvider());
 
 /**
  * Register service providers for request handlers.
