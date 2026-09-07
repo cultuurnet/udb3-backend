@@ -16,6 +16,8 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterfa
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
 use CultuurNet\UDB3\EventExport\CalendarSummary\SummaryUnavailableException;
+use CultuurNet\UDB3\EventExport\Format\HTML\Properties\AgeRangeDescription;
+use CultuurNet\UDB3\EventExport\Format\HTML\Properties\BirthdateRangeDescription;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\TaalicoonDescription;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
@@ -162,10 +164,7 @@ class HTMLEventFormatter
 
         $formattedEvent['brands'] = $this->getBrands($event);
 
-        if (isset($event->typicalAgeRange)) {
-            $ageRange = $event->typicalAgeRange;
-            $formattedEvent['ageFrom'] = explode('-', $ageRange)[0];
-        }
+        $this->addAgeRangeInfo($event, $formattedEvent);
 
         $this->addMediaObject($event, $formattedEvent);
 
@@ -237,6 +236,23 @@ class HTMLEventFormatter
                 }
             )
         );
+    }
+
+    private function addAgeRangeInfo(stdClass $event, array &$formattedEvent): void
+    {
+        $description = null;
+
+        if (isset($event->typicalAgeRange) && is_string($event->typicalAgeRange)) {
+            $description = AgeRangeDescription::fromTypicalAgeRange($event->typicalAgeRange);
+        }
+
+        if ($description === null && isset($event->birthdateRange) && $event->birthdateRange instanceof stdClass) {
+            $description = BirthdateRangeDescription::fromBirthdateRange($event->birthdateRange);
+        }
+
+        if ($description !== null) {
+            $formattedEvent['ageRange'] = $description;
+        }
     }
 
     private function addPriceInfo(stdClass $event, array &$formattedEvent): void

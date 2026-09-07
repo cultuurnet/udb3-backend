@@ -111,4 +111,9 @@ class AgeRange
 
         return $from . '-' . $to;
     }
+
+    public function isForAllAges(): bool
+    {
+        return $this->toString() === '-';
+    }
 }
