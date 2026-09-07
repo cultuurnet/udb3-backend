@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\FastRead;
 
+use Closure;
 use CultuurNet\UDB3\Http\Request\QueryParameters;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\JsonLdResponse;
-use CultuurNet\UDB3\Offer\ReadModel\JSONLD\FastRead\FastOfferJsonDocumentReader;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use Psr\Http\Message\ResponseInterface;
@@ -30,6 +30,17 @@ use Throwable;
  * work this is meant to skip has already happened. Short-circuiting here, before
  * $handler->handle($request) is called, is what actually avoids it.
  *
+ * $readerFactory MUST stay a lazy closure, not a resolved FastOfferJsonDocumentReader:
+ * global middlewares are all resolved eagerly in
+ * PsrRouterServiceProvider::registerMiddlewares(), which runs on every request regardless
+ * of route (Router::class is built unconditionally in web/index.php). Injecting an
+ * already-built reader here would resolve its whole leaf-dependency graph (permission
+ * voter, contributor repository, term repository, ...) on every request to the entire
+ * app, not just eligible offer-detail GETs - confirmed via profiling: doing so inflated
+ * registerMiddlewares() from ~5% to ~35% of total request cost, for ALL routes. Calling
+ * the factory only after isEligible() passes keeps that cost scoped to the requests that
+ * actually benefit from it.
+ *
  * On anything other than a genuine cache miss (DocumentDoesNotExist, which matches the
  * normal path's own 404 behaviour), this falls back to the normal $handler->handle()
  * rather than risk serving an incorrect response - a bug here should cost speed, not
@@ -42,12 +53,13 @@ final class FastReadMiddleware implements MiddlewareInterface
 {
     private const ALLOWED_QUERY_PARAMS = ['includeMetadata', 'embedUitpasPrices'];
 
-    private FastOfferJsonDocumentReader $reader;
+    /** @var Closure(): \CultuurNet\UDB3\Offer\ReadModel\JSONLD\FastRead\FastOfferJsonDocumentReader */
+    private Closure $readerFactory;
     private LoggerInterface $logger;
 
-    public function __construct(FastOfferJsonDocumentReader $reader, LoggerInterface $logger)
+    public function __construct(Closure $readerFactory, LoggerInterface $logger)
     {
-        $this->reader = $reader;
+        $this->readerFactory = $readerFactory;
         $this->logger = $logger;
     }
 
@@ -61,7 +73,8 @@ final class FastReadMiddleware implements MiddlewareInterface
         $queryParameters = new QueryParameters($request);
 
         try {
-            $document = $this->reader->fetch(
+            $reader = ($this->readerFactory)();
+            $document = $reader->fetch(
                 $routeParameters->getOfferType(),
                 $routeParameters->getOfferId(),
                 $queryParameters->getAsBoolean('includeMetadata')

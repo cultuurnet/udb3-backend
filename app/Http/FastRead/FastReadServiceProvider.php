@@ -25,6 +25,11 @@ use CultuurNet\UDB3\User\CurrentUser;
  * from scratch. See FastOfferJsonDocumentReader for why this is still fast despite reusing
  * container-resolved services: it deliberately avoids resolving 'event_jsonld_repository'
  * / 'place_jsonld_repository' themselves, which is where almost all the cost is.
+ *
+ * FastReadMiddleware is handed a CLOSURE that resolves FastOfferJsonDocumentReader, not the
+ * reader itself - see FastReadMiddleware's docblock for why that laziness matters: without
+ * it, every request to the entire app (not just eligible offer-detail GETs) would pay the
+ * cost of resolving this reader's full leaf-dependency graph.
  */
 final class FastReadServiceProvider extends AbstractServiceProvider
 {
@@ -69,7 +74,7 @@ final class FastReadServiceProvider extends AbstractServiceProvider
         $container->addShared(
             FastReadMiddleware::class,
             fn () => new FastReadMiddleware(
-                $container->get(FastOfferJsonDocumentReader::class),
+                fn () => $container->get(FastOfferJsonDocumentReader::class),
                 LoggerFactory::create($container, LoggerName::forWeb())
             )
         );
