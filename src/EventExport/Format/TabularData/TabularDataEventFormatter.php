@@ -954,9 +954,7 @@ class TabularDataEventFormatter
             return null;
         }
 
-        // Note that AgeRange::toString() also returns "-" for "0-", which is why it is compared
-        // instead of the original string.
-        return $ageRange->toString() === '-' ? null : $ageRange;
+        return $ageRange->isForAllAges() ? null : $ageRange;
     }
 
     /**
