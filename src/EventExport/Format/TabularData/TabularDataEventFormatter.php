@@ -432,26 +432,14 @@ class TabularDataEventFormatter
             'terms.theme' => [
                 'name' => 'thema',
                 'include' => function ($event) {
-                    if (property_exists($event, 'terms')) {
-                        foreach ($event->terms as $term) {
-                            if ($term->domain && $term->label && $term->domain === 'theme') {
-                                return $term->label;
-                            }
-                        }
-                    }
+                    return $this->getTermInDomain($event, 'theme')?->label ?? '';
                 },
                 'property' => 'terms.theme',
             ],
             'terms.eventtype' => [
                 'name' => 'soort aanbod',
                 'include' => function ($event) {
-                    if (property_exists($event, 'terms')) {
-                        foreach ($event->terms as $term) {
-                            if ($term->label && $term->domain === 'eventtype') {
-                                return $term->label;
-                            }
-                        }
-                    }
+                    return $this->getTermInDomain($event, 'eventtype')?->label ?? '';
                 },
                 'property' => 'terms.eventtype',
             ],
@@ -1046,13 +1034,24 @@ class TabularDataEventFormatter
 
     private function getEventTypeId(stdClass $event): ?string
     {
+        $id = $this->getTermInDomain($event, 'eventtype')?->id;
+
+        return is_string($id) ? $id : null;
+    }
+
+    /**
+     * An event carries at most one term per domain, so the thema and soort aanbod columns and the
+     * overnight stay lookup all come down to this single walk over the terms.
+     */
+    private function getTermInDomain(stdClass $event, string $domain): ?stdClass
+    {
         if (!isset($event->terms) || !is_array($event->terms)) {
             return null;
         }
 
         foreach ($event->terms as $term) {
-            if (isset($term->domain, $term->id) && $term->domain === 'eventtype') {
-                return $term->id;
+            if ($term instanceof stdClass && ($term->domain ?? null) === $domain) {
+                return $term;
             }
         }
 
