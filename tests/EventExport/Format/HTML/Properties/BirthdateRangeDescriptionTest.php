@@ -35,101 +35,12 @@ final class BirthdateRangeDescriptionTest extends TestCase
     }
 
     /**
+     * Every way a value can fail to be a range is covered by BirthdateRangeFactoryTest, so this
+     * only asserts that there is no sentence to describe when the factory hands back nothing.
+     *
      * @test
      */
-    public function it_does_not_describe_a_range_with_a_from_after_the_to(): void
-    {
-        $this->assertNull(
-            BirthdateRangeDescription::fromBirthdateRange(
-                (object) ['from' => '2026-08-27', 'to' => '2026-01-01']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_describe_a_range_without_a_from(): void
-    {
-        $this->assertNull(
-            BirthdateRangeDescription::fromBirthdateRange((object) ['to' => '2026-08-27'])
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_describe_a_range_without_a_to(): void
-    {
-        $this->assertNull(
-            BirthdateRangeDescription::fromBirthdateRange((object) ['from' => '2026-01-01'])
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_describe_a_range_with_a_non_string_birthdate(): void
-    {
-        $this->assertNull(
-            BirthdateRangeDescription::fromBirthdateRange(
-                (object) ['from' => 2026, 'to' => '2026-08-27']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_describe_a_range_with_an_out_of_range_birthdate(): void
-    {
-        $this->assertNull(
-            BirthdateRangeDescription::fromBirthdateRange(
-                (object) ['from' => '2026-13-45', 'to' => '2026-08-27']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_describe_a_range_with_a_birthdate_that_is_not_a_date(): void
-    {
-        $this->assertNull(
-            BirthdateRangeDescription::fromBirthdateRange(
-                (object) ['from' => '2026-01-01', 'to' => 'gisteren']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_describe_a_range_with_a_birthdate_in_another_format(): void
-    {
-        $this->assertNull(
-            BirthdateRangeDescription::fromBirthdateRange(
-                (object) ['from' => '01/01/2026', 'to' => '27/08/2026']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_describe_a_range_with_an_empty_birthdate(): void
-    {
-        $this->assertNull(
-            BirthdateRangeDescription::fromBirthdateRange(
-                (object) ['from' => '', 'to' => '']
-            )
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_does_not_describe_an_empty_range(): void
+    public function it_does_not_describe_a_value_that_is_not_a_range(): void
     {
         $this->assertNull(BirthdateRangeDescription::fromBirthdateRange((object) []));
     }
