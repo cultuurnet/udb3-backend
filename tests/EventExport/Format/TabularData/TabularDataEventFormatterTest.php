@@ -24,6 +24,74 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
+    public function it_keeps_the_columns_of_a_default_export_in_a_stable_order(): void
+    {
+        $formatter = new TabularDataEventFormatter([]);
+
+        $this->assertSame(
+            [
+                'id',
+                'titel',
+                'auteur',
+                'basistarief',
+                'prijsinformatie',
+                'kansentarief',
+                'reservatie url',
+                'reservatie tel',
+                'reservatie e-mail',
+                'omschrijving',
+                'organisatie',
+                'korte kalendersamenvatting',
+                'lange kalendersamenvatting',
+                'labels',
+                'verborgen labels',
+                'leeftijd',
+                'uitvoerders',
+                'taal van het aanbod',
+                'thema',
+                'soort aanbod',
+                'datum aangemaakt',
+                'datum laatste aanpassing',
+                'embargodatum',
+                'startdatum',
+                'einddatum',
+                'tijd type',
+                'locatie naam',
+                'straat',
+                'postcode',
+                'gemeente',
+                'land',
+                'afbeelding URL',
+                'afbeelding beschrijving',
+                'afbeelding copyright',
+                'externe ids',
+                'contact e-mail',
+                'contact tel',
+                'contact url',
+                'e-mail reservaties',
+                'telefoon reservaties',
+                'online reservaties',
+                'toegang',
+                'status',
+                'tickets & plaatsen',
+                'videos URL',
+                'videos copyright',
+                'Aanwezigheidsvorm (fysiek / online)',
+                'online url',
+                'Volledigheid',
+                // New columns belong at the end, so that the position of every column that
+                // integrators already read stays the same.
+                'faq',
+                'doelgroep',
+                'met overnachting',
+            ],
+            $formatter->formatHeader()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_excludes_all_terms_when_none_are_included(): void
     {
         $includedProperties = [

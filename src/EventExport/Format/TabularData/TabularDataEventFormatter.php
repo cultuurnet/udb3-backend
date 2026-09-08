@@ -356,13 +356,6 @@ class TabularDataEventFormatter
                 },
                 'property' => 'description',
             ],
-            'faqs' => [
-                'name' => 'faq',
-                'include' => function ($event) {
-                    return $this->formatFaqs($event);
-                },
-                'property' => 'faqs',
-            ],
             'organizer' => [
                 'name' => 'organisatie',
                 'include' => function ($event) {
@@ -409,13 +402,6 @@ class TabularDataEventFormatter
                     return $this->formatAgeRange($event);
                 },
                 'property' => 'typicalAgeRange',
-            ],
-            'childrenOnly' => [
-                'name' => 'doelgroep',
-                'include' => function ($event) {
-                    return $this->formatTargetAudience($event);
-                },
-                'property' => 'childrenOnly',
             ],
             'performer' => [
                 'name' => 'uitvoerders',
@@ -520,13 +506,6 @@ class TabularDataEventFormatter
                     return '';
                 },
                 'property' => 'endDate',
-            ],
-            'hasOvernightStay' => [
-                'name' => 'met overnachting',
-                'include' => function ($event) {
-                    return $this->formatOvernightStay($event);
-                },
-                'property' => 'subEvent',
             ],
             'calendarType' => [
                 'name' => 'tijd type',
@@ -717,6 +696,27 @@ class TabularDataEventFormatter
                     return $event->completeness ?? '';
                 },
                 'property' => 'completeness',
+            ],
+            'faqs' => [
+                'name' => 'faq',
+                'include' => function ($event) {
+                    return $this->formatFaqs($event);
+                },
+                'property' => 'faqs',
+            ],
+            'childrenOnly' => [
+                'name' => 'doelgroep',
+                'include' => function ($event) {
+                    return $this->formatTargetAudience($event);
+                },
+                'property' => 'childrenOnly',
+            ],
+            'hasOvernightStay' => [
+                'name' => 'met overnachting',
+                'include' => function ($event) {
+                    return $this->formatOvernightStay($event);
+                },
+                'property' => 'subEvent',
             ],
         ];
     }
