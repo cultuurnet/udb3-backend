@@ -16,6 +16,12 @@ use PHPUnit\Framework\TestCase;
 
 class TabularDataEventFormatterTest extends TestCase
 {
+    /**
+     * A birthdate only says how old someone is relative to a day, so the doelgroep expectations
+     * below are ages on the day the event starts.
+     */
+    private const START_DATE = '2026-06-15T20:00:00+02:00';
+
     private function getJSONEventFromFile(string $fileName): string
     {
         return SampleFiles::read(__DIR__ . '/../../samples/' . $fileName);
@@ -756,8 +762,12 @@ class TabularDataEventFormatterTest extends TestCase
                 'offerJson' => $this->encodeEvent(['typicalAgeRange' => '6-12']),
                 'doelgroep' => $childrenWithGuardian,
             ],
-            'an age range overlapping 0 - 12 at the top' => [
+            'an age range that only starts at the child age limit' => [
                 'offerJson' => $this->encodeEvent(['typicalAgeRange' => '12-18']),
+                'doelgroep' => '',
+            ],
+            'an age range overlapping 0 - 11 at the top' => [
+                'offerJson' => $this->encodeEvent(['typicalAgeRange' => '11-18']),
                 'doelgroep' => $childrenWithGuardian,
             ],
             'an age range without an upper age that starts below 12' => [
@@ -800,11 +810,109 @@ class TabularDataEventFormatterTest extends TestCase
                 'offerJson' => $this->encodeEvent([]),
                 'doelgroep' => '',
             ],
-            'only a birthdate range' => [
+            // A birthdate range can replace the typical age range, so it decides on its own.
+            'a birthdate range of children' => [
+                'offerJson' => $this->encodeEvent([
+                    'startDate' => self::START_DATE,
+                    'birthdateRange' => ['from' => '2020-01-01', 'to' => '2020-12-31'],
+                ]),
+                'doelgroep' => $childrenWithGuardian,
+            ],
+            'a birthdate range of adults' => [
+                'offerJson' => $this->encodeEvent([
+                    'startDate' => self::START_DATE,
+                    'birthdateRange' => ['from' => '1950-01-01', 'to' => '1960-12-31'],
+                ]),
+                'doelgroep' => '',
+            ],
+            // The youngest person the range describes is the one born on its last day, and turning
+            // twelve is what ends being a child.
+            'a birthdate range whose youngest turns 12 on the day of the event' => [
+                'offerJson' => $this->encodeEvent([
+                    'startDate' => self::START_DATE,
+                    'birthdateRange' => ['from' => '2010-01-01', 'to' => '2014-06-15'],
+                ]),
+                'doelgroep' => '',
+            ],
+            'a birthdate range whose youngest turns 12 the day after the event' => [
+                'offerJson' => $this->encodeEvent([
+                    'startDate' => self::START_DATE,
+                    'birthdateRange' => ['from' => '2010-01-01', 'to' => '2014-06-16'],
+                ]),
+                'doelgroep' => $childrenWithGuardian,
+            ],
+            // A multi day event carries its first day as the startDate, and by its last day the
+            // youngest has turned 12, which does not take the event away from children.
+            'a birthdate range measured against the first day of a multi day event' => [
+                'offerJson' => $this->encodeEvent([
+                    'startDate' => self::START_DATE,
+                    'endDate' => '2026-08-31T20:00:00+02:00',
+                    'birthdateRange' => ['from' => '2010-01-01', 'to' => '2014-06-16'],
+                ]),
+                'doelgroep' => $childrenWithGuardian,
+            ],
+            // A permanent event has no start date, so the day it became available stands in.
+            'a birthdate range on a permanent event' => [
+                'offerJson' => $this->encodeEvent([
+                    'calendarType' => 'permanent',
+                    'availableFrom' => self::START_DATE,
+                    'birthdateRange' => ['from' => '2020-01-01', 'to' => '2020-12-31'],
+                ]),
+                'doelgroep' => $childrenWithGuardian,
+            ],
+            'a start date wins from the available from' => [
+                'offerJson' => $this->encodeEvent([
+                    'startDate' => self::START_DATE,
+                    'availableFrom' => '2040-01-01T00:00:00+01:00',
+                    'birthdateRange' => ['from' => '2020-01-01', 'to' => '2020-12-31'],
+                ]),
+                'doelgroep' => $childrenWithGuardian,
+            ],
+            'a birthdate range without a date to measure it against' => [
                 'offerJson' => $this->encodeEvent(
-                    ['birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31']]
+                    ['birthdateRange' => ['from' => '2020-01-01', 'to' => '2020-12-31']]
                 ),
                 'doelgroep' => '',
+            ],
+            'a birthdate range that is not born yet on the day of the event' => [
+                'offerJson' => $this->encodeEvent([
+                    'startDate' => self::START_DATE,
+                    'birthdateRange' => ['from' => '2030-01-01', 'to' => '2030-12-31'],
+                ]),
+                'doelgroep' => $childrenWithGuardian,
+            ],
+            'an invalid birthdate range' => [
+                'offerJson' => $this->encodeEvent([
+                    'startDate' => self::START_DATE,
+                    'birthdateRange' => ['from' => '2020-12-31', 'to' => '2020-01-01'],
+                ]),
+                'doelgroep' => '',
+            ],
+            // Same precedence as the leeftijd column: a specific age range wins, an all ages one
+            // leaves the birthdate range to answer.
+            'a specific age range wins from the birthdate range' => [
+                'offerJson' => $this->encodeEvent([
+                    'startDate' => self::START_DATE,
+                    'typicalAgeRange' => '18-',
+                    'birthdateRange' => ['from' => '2020-01-01', 'to' => '2020-12-31'],
+                ]),
+                'doelgroep' => '',
+            ],
+            'an all ages event falls back to the birthdate range' => [
+                'offerJson' => $this->encodeEvent([
+                    'startDate' => self::START_DATE,
+                    'typicalAgeRange' => '-',
+                    'birthdateRange' => ['from' => '2020-01-01', 'to' => '2020-12-31'],
+                ]),
+                'doelgroep' => $childrenWithGuardian,
+            ],
+            'children only wins from the birthdate range' => [
+                'offerJson' => $this->encodeEvent([
+                    'startDate' => self::START_DATE,
+                    'childrenOnly' => true,
+                    'birthdateRange' => ['from' => '1950-01-01', 'to' => '1960-12-31'],
+                ]),
+                'doelgroep' => 'Voor kinderen alleen',
             ],
         ];
     }

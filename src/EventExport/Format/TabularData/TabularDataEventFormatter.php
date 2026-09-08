@@ -23,8 +23,10 @@ use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\InvalidAgeRangeException;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Exception;
 use stdClass;
@@ -36,7 +38,8 @@ class TabularDataEventFormatter
     private const CHILDREN_WITH_GUARDIAN = 'Voor kinderen samen met hun familie of een andere begeleider';
 
     /**
-     * The highest age that still counts as a child for the "doelgroep" column.
+     * The first age that no longer counts as a child for the "doelgroep" column, so everyone
+     * younger than twelve.
      */
     private const CHILD_AGE_LIMIT = 12;
 
@@ -113,24 +116,24 @@ class TabularDataEventFormatter
 
     protected function formatDate(string $date): string
     {
+        $datetime = $this->parseLocalDateTime($date);
+
+        return $datetime === null ? '' : $datetime->format('Y-m-d H:i');
+    }
+
+    private function parseLocalDateTime(string $date): ?DateTimeImmutable
+    {
         $timezoneUtc = new \DateTimeZone('UTC');
-        $timezoneBrussels = new \DateTimeZone('Europe/Brussels');
 
-        // Try to create from various formats to maintain backwards
-        // compatibility with external systems with older json-ld
-        // projections (eg. OMD).
-        $formats = [DateTimeInterface::ATOM, DateTimeInterface::ATOM, 'Y-m-d\TH:i:s'];
+        foreach ([DateTimeInterface::ATOM, 'Y-m-d\TH:i:s'] as $format) {
+            $datetime = DateTimeImmutable::createFromFormat($format, $date, $timezoneUtc);
 
-        do {
-            $datetime = \DateTime::createFromFormat(current($formats), $date, $timezoneUtc);
-        } while ($datetime === false && next($formats));
-
-        if ($datetime instanceof \DateTime) {
-            $datetime->setTimezone($timezoneBrussels);
-            return $datetime->format('Y-m-d H:i');
+            if ($datetime instanceof DateTimeImmutable) {
+                return $datetime->setTimezone(new \DateTimeZone('Europe/Brussels'));
+            }
         }
 
-        return '';
+        return null;
     }
 
     protected function formatDateWithoutTime(string $date): string
@@ -861,21 +864,71 @@ class TabularDataEventFormatter
         return $this->isAimedAtChildren($event) ? self::CHILDREN_WITH_GUARDIAN : '';
     }
 
+    /**
+     * Reads the audience the same way formatAgeRange() does, so that the doelgroep column never
+     * contradicts the leeftijd column next to it: a specific typicalAgeRange decides, and only
+     * when there is none does the birthdate range get a say.
+     */
     private function isAimedAtChildren(stdClass $event): bool
     {
         // An all ages event is not specifically aimed at children, so an age range that is not
         // specific never satisfies this.
         $ageRange = $this->parseSpecificAgeRange($this->getTypicalAgeRange($event));
 
-        if ($ageRange === null) {
+        if ($ageRange !== null) {
+            // The upper age is always greater than or equal to the lower age, so the range covers
+            // a child as soon as it starts below the child age limit.
+            $from = $ageRange->getFrom();
+
+            return $from !== null && $from->toInteger() < self::CHILD_AGE_LIMIT;
+        }
+
+        // Since III-7377 a birthdate range can replace the typical age range, and then it is the
+        // only description of the audience there is.
+        $birthdateRange = BirthdateRangeFactory::fromJson($event->birthdateRange ?? null);
+        $eventDate = $this->getEventDate($event);
+
+        if ($birthdateRange === null || $eventDate === null) {
             return false;
         }
 
-        // The upper age is always greater than or equal to the lower age, so the range overlaps
-        // 0 - 12 as soon as it starts at or below the child age limit.
-        $from = $ageRange->getFrom();
+        return $this->youngestAgeAt($birthdateRange, $eventDate) < self::CHILD_AGE_LIMIT;
+    }
 
-        return $from !== null && $from->toInteger() <= self::CHILD_AGE_LIMIT;
+    /**
+     * The day the audience has to be a child on. A multi day event already carries its first day
+     * as the startDate, and a permanent event has no start date at all, so there the day it became
+     * available is the closest thing to one. Without either the age cannot be told, and the column
+     * stays empty rather than aging the audience by the day the export happens to run.
+     */
+    private function getEventDate(stdClass $event): ?DateTimeImmutable
+    {
+        $date = $event->startDate ?? $event->availableFrom ?? null;
+
+        if (!is_string($date)) {
+            return null;
+        }
+
+        $localDateTime = $this->parseLocalDateTime($date);
+
+        if ($localDateTime === null) {
+            return null;
+        }
+
+        // Only the day matters, and dropping the time makes the difference with a birthdate a
+        // whole number of days so that the age never lands a day off.
+        return DateTimeFactory::fromFormat('!Y-m-d', $localDateTime->format('Y-m-d'));
+    }
+
+    /**
+     * The youngest person a birthdate range describes is the one born on its last day.
+     */
+    private function youngestAgeAt(BirthdateRange $birthdateRange, DateTimeImmutable $date): int
+    {
+        $birthdate = $birthdateRange->getTo();
+
+        // A birthdate after the event would count back up again, and nobody is younger than unborn.
+        return $birthdate > $date ? 0 : $birthdate->diff($date)->y;
     }
 
     private function getMainLanguage(stdClass $event): string
