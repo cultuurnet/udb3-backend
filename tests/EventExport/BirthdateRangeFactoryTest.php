@@ -13,7 +13,7 @@ final class BirthdateRangeFactoryTest extends TestCase
      */
     public function it_creates_a_range_from_two_birthdates(): void
     {
-        $range = BirthdateRangeFactory::fromJson((object) ['from' => '2026-01-01', 'to' => '2026-08-27']);
+        $range = BirthdateRangeFactory::fromProjection((object) ['from' => '2026-01-01', 'to' => '2026-08-27']);
 
         $this->assertNotNull($range);
         $this->assertSame('2026-01-01', $range->getFrom()->format('Y-m-d'));
@@ -25,7 +25,7 @@ final class BirthdateRangeFactoryTest extends TestCase
      */
     public function it_resets_the_time_of_a_birthdate(): void
     {
-        $range = BirthdateRangeFactory::fromJson((object) ['from' => '2026-01-01', 'to' => '2026-01-01']);
+        $range = BirthdateRangeFactory::fromProjection((object) ['from' => '2026-01-01', 'to' => '2026-01-01']);
 
         $this->assertNotNull($range);
         $this->assertSame('00:00:00', $range->getFrom()->format('H:i:s'));
@@ -38,7 +38,7 @@ final class BirthdateRangeFactoryTest extends TestCase
      */
     public function it_does_not_create_a_range_from_an_unusable_value(mixed $birthdateRange): void
     {
-        $this->assertNull(BirthdateRangeFactory::fromJson($birthdateRange));
+        $this->assertNull(BirthdateRangeFactory::fromProjection($birthdateRange));
     }
 
     public function unusableBirthdateRanges(): array

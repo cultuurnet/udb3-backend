@@ -13,12 +13,9 @@ final class BirthdateRangeFactory
 {
     private const INPUT_FORMAT = 'Y-m-d';
 
-    /**
-     * Every export renders birthdates identically, so this format is shared instead of repeated.
-     */
     public const DISPLAY_FORMAT = 'd/m/Y';
 
-    public static function fromJson(mixed $birthdateRange): ?BirthdateRange
+    public static function fromProjection(mixed $birthdateRange): ?BirthdateRange
     {
         if (!$birthdateRange instanceof stdClass) {
             return null;

@@ -843,7 +843,7 @@ class TabularDataEventFormatter
 
         // The birthdate range only fills in when there is no specific age range, so for an all ages
         // or a malformed value.
-        $birthdateRange = BirthdateRangeFactory::fromJson($event->birthdateRange ?? null);
+        $birthdateRange = BirthdateRangeFactory::fromProjection($event->birthdateRange ?? null);
 
         if ($birthdateRange !== null) {
             return $birthdateRange->getFrom()->format(BirthdateRangeFactory::DISPLAY_FORMAT) . ' - ' .
@@ -857,7 +857,7 @@ class TabularDataEventFormatter
 
     private function formatTargetAudience(stdClass $event): string
     {
-        if (isset($event->childrenOnly) && $event->childrenOnly === true) {
+        if (($event->childrenOnly ?? false) === true) {
             return self::CHILDREN_ONLY;
         }
 
@@ -885,7 +885,7 @@ class TabularDataEventFormatter
 
         // Since III-7377 a birthdate range can replace the typical age range, and then it is the
         // only description of the audience there is.
-        $birthdateRange = BirthdateRangeFactory::fromJson($event->birthdateRange ?? null);
+        $birthdateRange = BirthdateRangeFactory::fromProjection($event->birthdateRange ?? null);
         $eventDate = $this->getEventDate($event);
 
         if ($birthdateRange === null || $eventDate === null) {
@@ -1036,7 +1036,7 @@ class TabularDataEventFormatter
         }
 
         foreach ($event->subEvent as $subEvent) {
-            if (isset($subEvent->hasOvernightStay) && $subEvent->hasOvernightStay === true) {
+            if (($subEvent->hasOvernightStay ?? false) === true) {
                 return true;
             }
         }

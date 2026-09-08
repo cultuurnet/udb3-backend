@@ -11,7 +11,7 @@ final class BirthdateRangeDescription
 {
     public static function fromBirthdateRange(stdClass $birthdateRange): ?string
     {
-        $range = BirthdateRangeFactory::fromJson($birthdateRange);
+        $range = BirthdateRangeFactory::fromProjection($birthdateRange);
 
         if ($range === null) {
             return null;
