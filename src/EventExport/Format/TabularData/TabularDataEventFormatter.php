@@ -34,9 +34,6 @@ class TabularDataEventFormatter
 
     private const CHILDREN_WITH_GUARDIAN = 'voor kinderen samen met hun familie of een andere begeleider';
 
-    /**
-     * A child is younger than this, so an age range starting at it is no longer aimed at children.
-     */
     private const CHILD_AGE_LIMIT = 12;
 
     protected StripHtmlStringFilter $htmlFilter;
