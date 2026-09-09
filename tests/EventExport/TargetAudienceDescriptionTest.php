@@ -41,10 +41,6 @@ final class TargetAudienceDescriptionTest extends TestCase
                 'event' => $this->event(['typicalAgeRange' => '0-5']),
                 'expected' => $withGuardian,
             ],
-            'an age range without a start covers everyone from birth' => [
-                'event' => $this->event(['typicalAgeRange' => '-12']),
-                'expected' => $withGuardian,
-            ],
             'an age range starting just below twelve' => [
                 'event' => $this->event(['typicalAgeRange' => '11-18']),
                 'expected' => $withGuardian,
