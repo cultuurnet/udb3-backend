@@ -11,6 +11,7 @@ use CommerceGuys\Intl\Formatter\NumberFormatter;
 use CommerceGuys\Intl\Formatter\NumberFormatterInterface;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\EventExport\AgeRangeFactory;
 use CultuurNet\UDB3\EventExport\BirthdateRangeFactory;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
@@ -22,8 +23,6 @@ use CultuurNet\UDB3\EventExport\OvernightStay;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
-use CultuurNet\UDB3\Model\ValueObject\Audience\InvalidAgeRangeException;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
 use DateTimeInterface;
 use Exception;
@@ -922,7 +921,7 @@ class TabularDataEventFormatter
             ? $event->typicalAgeRange
             : '';
 
-        if ($this->parseSpecificAgeRange($typicalAgeRange) !== null) {
+        if (AgeRangeFactory::hasSpecificAgeRange($typicalAgeRange)) {
             return $typicalAgeRange;
         }
 
@@ -938,20 +937,6 @@ class TabularDataEventFormatter
         // Without a usable birthdate range the original value is still the best available answer,
         // which keeps exporting "-" for an all ages event.
         return $typicalAgeRange;
-    }
-
-    /**
-     * Parses a typicalAgeRange, treating everything that does not describe a specific age as absent.
-     */
-    private function parseSpecificAgeRange(string $typicalAgeRange): ?AgeRange
-    {
-        try {
-            $ageRange = AgeRange::fromString($typicalAgeRange);
-        } catch (InvalidAgeRangeException) {
-            return null;
-        }
-
-        return $ageRange->isForAllAges() ? null : $ageRange;
     }
 
     /**
