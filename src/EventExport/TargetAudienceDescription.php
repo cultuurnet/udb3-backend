@@ -19,7 +19,7 @@ final class TargetAudienceDescription
 
     public static function fromEvent(stdClass $event): ?string
     {
-        if (isset($event->childrenOnly) && $event->childrenOnly === true) {
+        if (($event->childrenOnly ?? null) === true) {
             return self::CHILDREN_ONLY;
         }
 
