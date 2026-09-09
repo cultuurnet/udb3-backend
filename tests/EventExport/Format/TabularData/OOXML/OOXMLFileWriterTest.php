@@ -45,7 +45,7 @@ final class OOXMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_wraps_the_text_of_a_cell(): void
+    public function it_wraps_a_cell_that_holds_newlines(): void
     {
         $sheet = $this->write(['id', 'faq'], ['1', self::FAQ]);
 
@@ -58,13 +58,41 @@ final class OOXMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_widens_every_column_of_the_header(): void
+    public function it_leaves_a_cell_without_newlines_alone(): void
+    {
+        $sheet = $this->write(['id', 'faq'], ['1', self::FAQ]);
+
+        $this->assertFalse($sheet->getStyle('A1')->getAlignment()->getWrapText());
+        $this->assertFalse($sheet->getStyle('B1')->getAlignment()->getWrapText());
+        $this->assertFalse($sheet->getStyle('A2')->getAlignment()->getWrapText());
+    }
+
+    /**
+     * @test
+     */
+    public function it_widens_only_a_column_that_holds_a_wrapped_cell(): void
     {
         $sheet = $this->write(['id', 'titel', 'faq'], ['1', 'Concert', self::FAQ]);
 
-        foreach (['A', 'B', 'C'] as $column) {
-            $this->assertSame(40.0, $sheet->getColumnDimension($column)->getWidth());
-        }
+        $this->assertSame(40.0, $sheet->getColumnDimension('C')->getWidth());
+        $this->assertNotSame(40.0, $sheet->getColumnDimension('A')->getWidth());
+        $this->assertNotSame(40.0, $sheet->getColumnDimension('B')->getWidth());
+    }
+
+    /**
+     * @test
+     */
+    public function it_widens_a_column_in_which_only_a_later_row_needs_wrapping(): void
+    {
+        $sheet = $this->write(
+            ['id', 'faq'],
+            ['1', 'Hoe geraak ik er? Met de bus.'],
+            ['2', self::FAQ]
+        );
+
+        $this->assertSame(40.0, $sheet->getColumnDimension('B')->getWidth());
+        $this->assertFalse($sheet->getStyle('B2')->getAlignment()->getWrapText());
+        $this->assertTrue($sheet->getStyle('B3')->getAlignment()->getWrapText());
     }
 
     private function write(array ...$rows): Worksheet
