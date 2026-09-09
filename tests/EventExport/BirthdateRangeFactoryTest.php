@@ -24,11 +24,7 @@ final class BirthdateRangeFactoryTest extends TestCase
             return;
         }
 
-        $this->assertSame(
-            $expected,
-            $range->getFrom()->format(BirthdateRangeFactory::DISPLAY_FORMAT) . ' - ' .
-                $range->getTo()->format(BirthdateRangeFactory::DISPLAY_FORMAT)
-        );
+        $this->assertSame($expected, BirthdateRangeFactory::formatRange($range));
     }
 
     public function birthdateRanges(): array

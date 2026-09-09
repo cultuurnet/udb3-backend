@@ -932,8 +932,7 @@ class TabularDataEventFormatter
         $birthdateRange = BirthdateRangeFactory::fromJson($event->birthdateRange ?? null);
 
         if ($birthdateRange !== null) {
-            return $birthdateRange->getFrom()->format(BirthdateRangeFactory::DISPLAY_FORMAT) . ' - ' .
-                $birthdateRange->getTo()->format(BirthdateRangeFactory::DISPLAY_FORMAT);
+            return BirthdateRangeFactory::formatRange($birthdateRange);
         }
 
         // Without a usable birthdate range the original value is still the best available answer,
