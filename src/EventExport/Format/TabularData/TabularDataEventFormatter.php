@@ -910,10 +910,6 @@ class TabularDataEventFormatter
     }
 
     /**
-     * The column stays empty for an event type that could never have an overnight stay, instead of
-     * claiming there is none.
-     */
-    /**
      * An event describes its audience with a typicalAgeRange or a birthdateRange, and the polyfill
      * drops the typicalAgeRange of an event that has a birthdate range. An older projection can
      * still carry both, in which case a specific age range wins, just like in the HTML export.
@@ -958,6 +954,10 @@ class TabularDataEventFormatter
         return $ageRange->isForAllAges() ? null : $ageRange;
     }
 
+    /**
+     * The column stays empty for an event type that could never have an overnight stay, instead of
+     * claiming there is none.
+     */
     private function formatOvernightStay(stdClass $event): string
     {
         $hasOvernightStay = OvernightStay::forEvent($event);
