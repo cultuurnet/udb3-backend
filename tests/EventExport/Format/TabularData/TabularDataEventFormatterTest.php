@@ -944,7 +944,7 @@ class TabularDataEventFormatterTest extends TestCase
                         ],
                     ]
                 ),
-                'faq' => 'Hoe geraak ik er? Met de bus.;Wat kost het? 10 euro.',
+                'faq' => "Hoe geraak ik er? Met de bus.\nWat kost het? 10 euro.",
             ],
             'the main language when there is no Dutch' => [
                 'event' => $this->encodeEvent(
@@ -1003,7 +1003,7 @@ class TabularDataEventFormatterTest extends TestCase
                         ],
                     ]
                 ),
-                'faq' => 'Combien? 10 euros.;Wanneer? Morgen.',
+                'faq' => "Combien? 10 euros.\nWanneer? Morgen.",
             ],
             'an item without an answer is skipped' => [
                 'event' => $this->encodeEvent(

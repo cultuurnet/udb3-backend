@@ -824,7 +824,7 @@ class TabularDataEventFormatter
                 $this->toSingleLine($translation->answer);
         }
 
-        return implode(';', $items);
+        return implode("\n", $items);
     }
 
     /**
