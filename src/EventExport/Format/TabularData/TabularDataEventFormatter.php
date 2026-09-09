@@ -801,9 +801,6 @@ class TabularDataEventFormatter
         return $event->mainLanguage ?? 'nl';
     }
 
-    /**
-     * One question and answer per FAQ item, in Dutch.
-     */
     private function formatFaqs(stdClass $event): string
     {
         if (!isset($event->faqs) || !is_array($event->faqs)) {
