@@ -21,6 +21,7 @@ use CultuurNet\UDB3\EventExport\Media\MediaFinder;
 use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\EventExport\OvernightStay;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
+use CultuurNet\UDB3\EventExport\TargetAudienceDescription;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
@@ -30,12 +31,6 @@ use stdClass;
 
 class TabularDataEventFormatter
 {
-    private const CHILDREN_ONLY = 'voor kinderen alleen';
-
-    private const CHILDREN_WITH_GUARDIAN = 'voor kinderen samen met hun familie of een andere begeleider';
-
-    private const CHILD_AGE_LIMIT = 12;
-
     protected StripHtmlStringFilter $htmlFilter;
 
     /**
@@ -741,9 +736,7 @@ class TabularDataEventFormatter
             ],
             'childrenOnly' => [
                 'name' => 'doelgroep',
-                'include' => function ($event) {
-                    return $this->formatTargetAudience($event);
-                },
+                'include' => fn ($event) => TargetAudienceDescription::fromEvent($event),
                 'property' => 'childrenOnly',
             ],
         ];
@@ -949,26 +942,6 @@ class TabularDataEventFormatter
         // Without a usable birthdate range the original value is still the best available answer,
         // which keeps exporting "-" for an all ages event.
         return $typicalAgeRange;
-    }
-
-    private function formatTargetAudience(stdClass $event): string
-    {
-        if (($event->childrenOnly ?? null) === true) {
-            return self::CHILDREN_ONLY;
-        }
-
-        return $this->isAimedAtChildren($event) ? self::CHILDREN_WITH_GUARDIAN : '';
-    }
-
-    private function isAimedAtChildren(stdClass $event): bool
-    {
-        $ageRange = AgeRangeFactory::specificFromString($event->typicalAgeRange ?? null);
-
-        if ($ageRange === null) {
-            return false;
-        }
-
-        return ($ageRange->getFrom()?->toInteger() ?? 0) < self::CHILD_AGE_LIMIT;
     }
 
     /**
