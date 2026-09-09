@@ -39,10 +39,6 @@ final class TargetAudienceDescription
         return $from < self::CHILD_AGE_LIMIT;
     }
 
-    /**
-     * A birthdate range says when the audience was born rather than how old it is, so an age only
-     * follows once there is a day to count towards.
-     */
     private static function isAimedAtChildrenByBirthdate(stdClass $event): bool
     {
         $birthdateRange = BirthdateRangeFactory::fromJson($event->birthdateRange ?? null);
