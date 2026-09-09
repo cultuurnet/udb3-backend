@@ -837,17 +837,13 @@ class TabularDataEventFormatter
      */
     private function pickTranslation(array $translations, string $mainLanguage): ?stdClass
     {
-        $candidates = [];
-
         if (isset($translations[$mainLanguage])) {
-            $candidates[] = $translations[$mainLanguage];
+            // Keys on the left win and keep their position, so the main language moves to the front
+            // and every other language keeps its projection order.
+            $translations = [$mainLanguage => $translations[$mainLanguage]] + $translations;
         }
 
-        foreach ($translations as $translation) {
-            $candidates[] = $translation;
-        }
-
-        foreach ($candidates as $candidate) {
+        foreach ($translations as $candidate) {
             if ($candidate instanceof stdClass
                 && isset($candidate->question, $candidate->answer)
                 && is_string($candidate->question)
