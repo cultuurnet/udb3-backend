@@ -11,7 +11,7 @@ use stdClass;
 
 final class BirthdateRangeFactory
 {
-    public const DISPLAY_FORMAT = 'd/m/Y';
+    private const DISPLAY_FORMAT = 'd/m/Y';
 
     private const INPUT_FORMAT = 'Y-m-d';
 
@@ -37,6 +37,22 @@ final class BirthdateRangeFactory
         } catch (InvalidAgeRangeException) {
             return null;
         }
+    }
+
+    /**
+     * The whole range as one value, for a column that holds it next to an age range like "6-12".
+     */
+    public static function formatRange(BirthdateRange $range): string
+    {
+        return self::formatDate($range->getFrom()) . ' - ' . self::formatDate($range->getTo());
+    }
+
+    /**
+     * One end of a range, for a sentence that puts the two dates in different places.
+     */
+    public static function formatDate(DateTimeImmutable $date): string
+    {
+        return $date->format(self::DISPLAY_FORMAT);
     }
 
     private static function parseDate(mixed $date): ?DateTimeImmutable

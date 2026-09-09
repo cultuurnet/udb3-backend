@@ -17,8 +17,8 @@ final class BirthdateRangeDescription
             return null;
         }
 
-        $from = $range->getFrom()->format(BirthdateRangeFactory::DISPLAY_FORMAT);
-        $to = $range->getTo()->format(BirthdateRangeFactory::DISPLAY_FORMAT);
+        $from = BirthdateRangeFactory::formatDate($range->getFrom());
+        $to = BirthdateRangeFactory::formatDate($range->getTo());
 
         if ($from === $to) {
             return 'Geschikt voor mensen geboren op ' . $from;
