@@ -37,8 +37,8 @@ final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
             ->method('getEventCardSystems')
             ->with($eventId)
             ->willReturn([
-                (new CardSystem(new Id('1'), 'Card system 1'))->withDistributionKeys([
-                    new DistributionKey(new Id('1'), 'Distribution key 1'),
+                (new CardSystem(new Id('1'), 'Card system 1', true))->withDistributionKeys([
+                    new DistributionKey(new Id('1'), 'Distribution key 1', true),
                     new DistributionKey(new Id('2'), 'Distribution key 2', false),
                 ]),
                 new CardSystem(new Id('2'), 'Card system 2', false),
@@ -81,7 +81,7 @@ final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
         $this->uitpasClient->expects($this->once())
             ->method('getEventCardSystems')
             ->willReturn([
-                new CardSystem(new Id('not-a-number'), 'Card system 1'),
+                new CardSystem(new Id('not-a-number'), 'Card system 1', true),
             ]);
 
         $request = (new Psr7RequestBuilder())
@@ -100,8 +100,8 @@ final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
         $this->uitpasClient->expects($this->once())
             ->method('getEventCardSystems')
             ->willReturn([
-                (new CardSystem(new Id('1'), 'Card system 1'))->withDistributionKeys([
-                    new DistributionKey(new Id('not-a-number'), 'Distribution key 1'),
+                (new CardSystem(new Id('1'), 'Card system 1', true))->withDistributionKeys([
+                    new DistributionKey(new Id('not-a-number'), 'Distribution key 1', true),
                 ]),
             ]);
 

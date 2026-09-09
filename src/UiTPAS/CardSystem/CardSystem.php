@@ -22,7 +22,7 @@ final class CardSystem
     public function __construct(
         Id $id,
         string $name,
-        bool $enabled = true
+        bool $enabled
     ) {
         $this->id = $id;
         $this->name = $name;

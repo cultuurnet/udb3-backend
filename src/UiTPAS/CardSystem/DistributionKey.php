@@ -14,7 +14,7 @@ final class DistributionKey
 
     private bool $enabled;
 
-    public function __construct(Id $id, ?string $name = null, bool $enabled = true)
+    public function __construct(Id $id, ?string $name, bool $enabled)
     {
         $this->id = $id;
         $this->name = $name;
