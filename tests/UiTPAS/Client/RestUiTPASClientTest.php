@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPAS\Client;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\User\ManagementToken\ManagementTokenProvider;
 use GuzzleHttp\Client;
@@ -135,12 +136,56 @@ final class RestUiTPASClientTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_list_on_404(): void
+    public function it_throws_a_not_found_api_problem_when_uitpas_does_not_know_the_event(): void
     {
         $client = $this->createClient(new NullLogger());
         $this->mockHandler->append(new Response(404, [], ''));
 
-        $this->assertEquals([], $client->getEventCardSystems('unknown-event'));
+        $this->expectException(ApiProblem::class);
+        $this->expectExceptionMessage('Not Found');
+
+        $client->getEventCardSystems('unknown-event');
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_throw_when_setting_card_systems_on_an_event_uitpas_does_not_know(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(new Response(404, [], ''));
+
+        $client->setCardSystemsForEvent('unknown-event', [8]);
+
+        $this->assertTrue(true, 'Matches the legacy XML endpoint, which answered 200 on this route');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_adding_a_card_system_to_an_event_uitpas_does_not_know(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(new Response(404, [], ''));
+
+        $this->expectException(ApiProblem::class);
+        $this->expectExceptionMessage('Not Found');
+
+        $client->addCardSystemToEvent('unknown-event', 8);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_deleting_a_card_system_from_an_event_uitpas_does_not_know(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(new Response(404, [], ''));
+
+        $this->expectException(ApiProblem::class);
+        $this->expectExceptionMessage('Not Found');
+
+        $client->deleteCardSystemFromEvent('unknown-event', 8);
     }
 
     /**
