@@ -926,41 +926,48 @@ class TabularDataEventFormatterTest extends TestCase
     public function eventsAndFaq(): array
     {
         return [
-            'a single item in a single language' => [
+            'a single item' => [
                 'event' => $this->encodeEvent(
                     ['faqs' => [['nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.']]]]
                 ),
-                'faq' => '[nl] Hoe geraak ik er? Met de bus.',
+                'faq' => 'Hoe geraak ik er? Met de bus.',
             ],
-            'every translation of every item' => [
+            'only the Dutch translation of every item' => [
                 'event' => $this->encodeEvent(
                     [
                         'faqs' => [
                             [
                                 'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
-                                'fr' => ['question' => 'Comment y accéder?', 'answer' => 'En bus.'],
+                                'fr' => ['question' => 'Comment venir?', 'answer' => 'En bus.'],
                             ],
                             ['nl' => ['question' => 'Wat kost het?', 'answer' => '10 euro.']],
                         ],
                     ]
                 ),
-                'faq' => '[nl] Hoe geraak ik er? Met de bus.;' .
-                    '[fr] Comment y accéder? En bus.;' .
-                    '[nl] Wat kost het? 10 euro.',
+                'faq' => 'Hoe geraak ik er? Met de bus.;Wat kost het? 10 euro.',
             ],
-            'the main language is listed first' => [
+            'the main language when there is no Dutch' => [
                 'event' => $this->encodeEvent(
                     [
-                        'mainLanguage' => 'nl',
+                        'mainLanguage' => 'fr',
                         'faqs' => [
                             [
-                                'fr' => ['question' => 'Comment y accéder?', 'answer' => 'En bus.'],
-                                'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                                'de' => ['question' => 'Wie komme ich dahin?', 'answer' => 'Mit dem Bus.'],
+                                'fr' => ['question' => 'Comment venir?', 'answer' => 'En bus.'],
                             ],
                         ],
                     ]
                 ),
-                'faq' => '[nl] Hoe geraak ik er? Met de bus.;[fr] Comment y accéder? En bus.',
+                'faq' => 'Comment venir? En bus.',
+            ],
+            'any language when there is neither Dutch nor a main language translation' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'mainLanguage' => 'nl',
+                        'faqs' => [['de' => ['question' => 'Wie komme ich dahin?', 'answer' => 'Mit dem Bus.']]],
+                    ]
+                ),
+                'faq' => 'Wie komme ich dahin? Mit dem Bus.',
             ],
             'markup is stripped' => [
                 'event' => $this->encodeEvent(
@@ -975,25 +982,28 @@ class TabularDataEventFormatterTest extends TestCase
                         ],
                     ]
                 ),
-                'faq' => '[nl] Hoe geraak ik er? Met de bus. Of te voet.',
+                'faq' => 'Hoe geraak ik er? Met de bus. Of te voet.',
             ],
             'an answer spanning multiple lines is kept on one line' => [
                 'event' => $this->encodeEvent(
                     ['faqs' => [['nl' => ['question' => 'Hoe?', 'answer' => "Met de bus.\n\n  Of te voet."]]]]
                 ),
-                'faq' => '[nl] Hoe? Met de bus. Of te voet.',
+                'faq' => 'Hoe? Met de bus. Of te voet.',
             ],
-            'a question or an answer that is not a string is skipped' => [
+            'a question or an answer that is not a string is passed over' => [
                 'event' => $this->encodeEvent(
                     [
                         'faqs' => [
-                            ['nl' => ['question' => 'Wat kost het?', 'answer' => 10]],
+                            [
+                                'nl' => ['question' => 'Wat kost het?', 'answer' => 10],
+                                'fr' => ['question' => 'Combien?', 'answer' => '10 euros.'],
+                            ],
                             ['nl' => ['question' => ['nl' => 'Hoe?'], 'answer' => 'Met de bus.']],
                             ['nl' => ['question' => 'Wanneer?', 'answer' => 'Morgen.']],
                         ],
                     ]
                 ),
-                'faq' => '[nl] Wanneer? Morgen.',
+                'faq' => 'Combien? 10 euros.;Wanneer? Morgen.',
             ],
             'an item without an answer is skipped' => [
                 'event' => $this->encodeEvent(
@@ -1004,7 +1014,7 @@ class TabularDataEventFormatterTest extends TestCase
                         ],
                     ]
                 ),
-                'faq' => '[nl] Wat kost het? 10 euro.',
+                'faq' => 'Wat kost het? 10 euro.',
             ],
             'an empty list of faqs' => [
                 'event' => $this->encodeEvent(['faqs' => []]),

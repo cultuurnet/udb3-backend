@@ -27,6 +27,11 @@ use stdClass;
 
 class TabularDataEventFormatter
 {
+    /**
+     * The tabular export is read in Dutch, so a translated value is exported in Dutch.
+     */
+    private const EXPORT_LANGUAGE = 'nl';
+
     protected StripHtmlStringFilter $htmlFilter;
 
     /**
@@ -802,7 +807,7 @@ class TabularDataEventFormatter
     }
 
     /**
-     * Every translation of every FAQ item as "[nl] question answer", the main language first.
+     * One question and answer per FAQ item, in Dutch.
      */
     private function formatFaqs(stdClass $event): string
     {
@@ -817,39 +822,52 @@ class TabularDataEventFormatter
                 continue;
             }
 
-            $translations = $this->mainLanguageFirst(get_object_vars($faq), $this->getMainLanguage($event));
+            $translation = $this->pickTranslation(get_object_vars($faq), $this->getMainLanguage($event));
 
-            foreach ($translations as $language => $translation) {
-                // A question or an answer that is not text at all can still turn up in an older
-                // projection, and must not fail the export of every other event in the result set.
-                if (!isset($translation->question, $translation->answer)
-                    || !is_string($translation->question)
-                    || !is_string($translation->answer)
-                ) {
-                    continue;
-                }
-
-                $items[] = '[' . $language . '] ' . $this->toSingleLine($translation->question) .
-                    ' ' . $this->toSingleLine($translation->answer);
+            if ($translation === null) {
+                continue;
             }
+
+            $items[] = $this->toSingleLine($translation->question) . ' ' .
+                $this->toSingleLine($translation->answer);
         }
 
         return implode(';', $items);
     }
 
     /**
-     * Translations are returned in the order they happen to appear in the projection, which can
-     * leave a Dutch user reading a French answer first, so the main language is moved to the front.
+     * An item that was never translated to Dutch falls back to the main language of the event, and
+     * then to whatever translation it does have, so that no question disappears from the export.
+     *
+     * A question or an answer that is not text at all can still turn up in an older projection.
+     * Such a translation is passed over instead of handed to a string parameter, where it would
+     * raise a TypeError that fails the export of the whole result set.
      */
-    private function mainLanguageFirst(array $translations, string $mainLanguage): array
+    private function pickTranslation(array $translations, string $mainLanguage): ?stdClass
     {
-        if (!isset($translations[$mainLanguage])) {
-            return $translations;
+        $candidates = [];
+
+        foreach ([self::EXPORT_LANGUAGE, $mainLanguage] as $language) {
+            if (isset($translations[$language])) {
+                $candidates[] = $translations[$language];
+            }
         }
 
-        // Keys on the left win and keep their position, so the other translations follow in their
-        // original order.
-        return [$mainLanguage => $translations[$mainLanguage]] + $translations;
+        foreach ($translations as $translation) {
+            $candidates[] = $translation;
+        }
+
+        foreach ($candidates as $candidate) {
+            if ($candidate instanceof stdClass
+                && isset($candidate->question, $candidate->answer)
+                && is_string($candidate->question)
+                && is_string($candidate->answer)
+            ) {
+                return $candidate;
+            }
+        }
+
+        return null;
     }
 
     /**
