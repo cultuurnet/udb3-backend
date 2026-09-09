@@ -983,6 +983,18 @@ class TabularDataEventFormatterTest extends TestCase
                 ),
                 'faq' => '[nl] Hoe? Met de bus. Of te voet.',
             ],
+            'a question or an answer that is not a string is skipped' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            ['nl' => ['question' => 'Wat kost het?', 'answer' => 10]],
+                            ['nl' => ['question' => ['nl' => 'Hoe?'], 'answer' => 'Met de bus.']],
+                            ['nl' => ['question' => 'Wanneer?', 'answer' => 'Morgen.']],
+                        ],
+                    ]
+                ),
+                'faq' => '[nl] Wanneer? Morgen.',
+            ],
             'an item without an answer is skipped' => [
                 'event' => $this->encodeEvent(
                     [

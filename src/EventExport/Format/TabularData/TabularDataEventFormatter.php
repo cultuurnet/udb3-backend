@@ -801,6 +801,9 @@ class TabularDataEventFormatter
         return $event->mainLanguage ?? 'nl';
     }
 
+    /**
+     * Every translation of every FAQ item as "[nl] question answer", the main language first.
+     */
     private function formatFaqs(stdClass $event): string
     {
         if (!isset($event->faqs) || !is_array($event->faqs)) {
@@ -814,8 +817,15 @@ class TabularDataEventFormatter
                 continue;
             }
 
-            foreach ($this->mainLanguageFirst(get_object_vars($faq), $event) as $language => $translation) {
-                if (!isset($translation->question, $translation->answer)) {
+            $translations = $this->mainLanguageFirst(get_object_vars($faq), $this->getMainLanguage($event));
+
+            foreach ($translations as $language => $translation) {
+                // A question or an answer that is not text at all can still turn up in an older
+                // projection, and must not fail the export of every other event in the result set.
+                if (!isset($translation->question, $translation->answer)
+                    || !is_string($translation->question)
+                    || !is_string($translation->answer)
+                ) {
                     continue;
                 }
 
@@ -827,17 +837,26 @@ class TabularDataEventFormatter
         return implode(';', $items);
     }
 
-    private function mainLanguageFirst(array $translations, stdClass $event): array
+    /**
+     * Translations are returned in the order they happen to appear in the projection, which can
+     * leave a Dutch user reading a French answer first, so the main language is moved to the front.
+     */
+    private function mainLanguageFirst(array $translations, string $mainLanguage): array
     {
-        $mainLanguage = $this->getMainLanguage($event);
-
         if (!isset($translations[$mainLanguage])) {
             return $translations;
         }
 
+        // Keys on the left win and keep their position, so the other translations follow in their
+        // original order.
         return [$mainLanguage => $translations[$mainLanguage]] + $translations;
     }
 
+    /**
+     * Questions and answers are free text that can contain markup, just like a description, so the
+     * tags are stripped first: the filter turns a <br> or a </p> into newlines, which then collapse
+     * into the single space that separates the words.
+     */
     private function toSingleLine(string $text): string
     {
         return trim(preg_replace('/\s+/', ' ', $this->htmlFilter->filter($text)));
