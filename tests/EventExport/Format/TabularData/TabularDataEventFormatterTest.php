@@ -11,6 +11,8 @@ use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
@@ -84,6 +86,7 @@ class TabularDataEventFormatterTest extends TestCase
                 'faq',
                 'met overnachting',
                 'doelgroep',
+                'vertreklocaties',
             ],
             $formatter->formatHeader()
         );
@@ -1040,6 +1043,83 @@ class TabularDataEventFormatterTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_should_export_the_departure_places_one_per_line(): void
+    {
+        $formatter = new TabularDataEventFormatter(
+            ['departurePlaces'],
+            null,
+            null,
+            $this->placeRepository([
+                'abc-123' => [
+                    'name' => ['nl' => 'Centraal Station'],
+                    'address' => ['nl' => ['postalCode' => '2000', 'addressLocality' => 'Antwerpen']],
+                ],
+                'def-456' => [
+                    'name' => ['nl' => 'Sint-Pietersplein'],
+                    'address' => ['nl' => ['postalCode' => '9000', 'addressLocality' => 'Gent']],
+                ],
+            ])
+        );
+
+        $event = $this->encodeEvent([
+            'departurePlaces' => [
+                'https://io.uitdatabank.be/place/abc-123',
+                'https://io.uitdatabank.be/place/def-456',
+            ],
+        ]);
+
+        $this->assertSame(
+            "2000, Antwerpen, Centraal Station\n9000, Gent, Sint-Pietersplein",
+            $formatter->formatEvent($event)['departurePlaces']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_out_a_departure_place_part_that_is_missing(): void
+    {
+        $formatter = new TabularDataEventFormatter(
+            ['departurePlaces'],
+            null,
+            null,
+            $this->placeRepository(['abc-123' => ['name' => ['nl' => 'Centraal Station']]])
+        );
+
+        $event = $this->encodeEvent(
+            ['departurePlaces' => ['https://io.uitdatabank.be/place/abc-123']]
+        );
+
+        $this->assertSame('Centraal Station', $formatter->formatEvent($event)['departurePlaces']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_the_departure_places_empty_without_a_place_repository(): void
+    {
+        $formatter = new TabularDataEventFormatter(['departurePlaces']);
+
+        $event = $this->encodeEvent(
+            ['departurePlaces' => ['https://io.uitdatabank.be/place/abc-123']]
+        );
+
+        $this->assertSame('', $formatter->formatEvent($event)['departurePlaces']);
+    }
+
+    private function placeRepository(array $places): DocumentRepository
+    {
+        $repository = $this->createMock(DocumentRepository::class);
+        $repository->method('fetch')->willReturnCallback(
+            fn (string $id): JsonDocument => new JsonDocument($id, Json::encode($places[$id]))
+        );
+
+        return $repository;
+    }
+
+    /**
+     * @test
      * @dataProvider eventsAndOvernightStay
      */
     public function it_should_export_whether_the_event_has_an_overnight_stay(
@@ -1106,13 +1186,19 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_reports_the_faq_column_of_a_default_export_as_wrapping(): void
+    public function it_reports_every_column_of_a_default_export_that_wraps(): void
     {
         $formatter = new TabularDataEventFormatter([]);
 
         $header = $formatter->formatHeader();
 
-        $this->assertSame([array_search('faq', $header, true) + 1], $formatter->wrappedColumns());
+        $this->assertSame(
+            [
+                array_search('faq', $header, true) + 1,
+                array_search('vertreklocaties', $header, true) + 1,
+            ],
+            $formatter->wrappedColumns()
+        );
     }
 
     /**

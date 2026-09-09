@@ -121,6 +121,7 @@ final class ExportServiceProvider extends AbstractServiceProvider
                     new CalendarSummaryWithFormatterRepository($container->get('event_jsonld_repository')),
                     $eventInfoService,
                     $container->get('event_export_twig_environment'),
+                    $container->get('place_jsonld_repository'),
                 );
                 $eventExportCommandHandler->setLogger(
                     LoggerFactory::create($container, LoggerName::forResqueWorker('event-export'))

@@ -16,6 +16,7 @@ use CultuurNet\UDB3\EventExport\BirthdateRangeFactory;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
+use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\Media\MediaFinder;
 use CultuurNet\UDB3\EventExport\Media\Url;
@@ -24,6 +25,7 @@ use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\TargetAudienceDescription;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
 use CultuurNet\UDB3\StringFilter\TruncateStringFilter;
 use DateTimeInterface;
@@ -57,14 +59,18 @@ class TabularDataEventFormatter
 
     protected CurrencyRepositoryInterface $currencyRepository;
 
+    private ?DeparturePlaceResolver $departurePlaceResolver;
+
     /**
      * @param string[] $include
      */
     public function __construct(
         array $include,
         EventInfoServiceInterface $uitpas = null,
-        ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
+        ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
+        ?DocumentRepository $placeRepository = null
     ) {
+        $this->departurePlaceResolver = $placeRepository ? new DeparturePlaceResolver($placeRepository) : null;
         $this->htmlFilter = new StripHtmlStringFilter();
         $this->faqFilter = new TruncateStringFilter(self::EXCEL_MAX_CELL_LENGTH);
         $this->faqFilter->addEllipsis();
@@ -747,6 +753,14 @@ class TabularDataEventFormatter
                 'include' => fn ($event) => TargetAudienceDescription::fromEvent($event),
                 'property' => 'childrenOnly',
             ],
+            'departurePlaces' => [
+                'name' => 'vertreklocaties',
+                'include' => function ($event) {
+                    return $this->formatDeparturePlaces($event);
+                },
+                'property' => 'departurePlaces',
+                'wrap' => true,
+            ],
         ];
     }
 
@@ -944,6 +958,32 @@ class TabularDataEventFormatter
         // Without a usable birthdate range the original value is still the best available answer,
         // which keeps exporting "-" for an all ages event.
         return $typicalAgeRange;
+    }
+
+    /**
+     * Every departure place as "postcode, gemeente, naam", one per line. Without a place repository
+     * there is nothing to look the URLs up in, so the column stays empty rather than listing them.
+     */
+    private function formatDeparturePlaces(stdClass $event): string
+    {
+        if ($this->departurePlaceResolver === null) {
+            return '';
+        }
+
+        $lines = [];
+
+        foreach ($this->departurePlaceResolver->resolve($event) as $departurePlace) {
+            // A place can be missing any of the three, and an empty part would leave a stray comma.
+            $parts = array_filter(
+                [$departurePlace->postalCode, $departurePlace->addressLocality, $departurePlace->name]
+            );
+
+            if ($parts !== []) {
+                $lines[] = implode(', ', $parts);
+            }
+        }
+
+        return implode("\n", $lines);
     }
 
     /**

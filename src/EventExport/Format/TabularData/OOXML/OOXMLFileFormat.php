@@ -8,6 +8,7 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterfa
 use CultuurNet\UDB3\EventExport\FileFormatInterface;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\Format\TabularData\TabularDataFileWriter;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class OOXMLFileFormat implements FileFormatInterface
 {
@@ -21,17 +22,21 @@ class OOXMLFileFormat implements FileFormatInterface
 
     protected ?CalendarSummaryRepositoryInterface $calendarSummaryRepository;
 
+    private ?DocumentRepository $placeRepository;
+
     /**
      * @param string[]|null                      $include
      */
     public function __construct(
         ?array $include = null,
         ?EventInfoServiceInterface $uitpas = null,
-        ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
+        ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
+        ?DocumentRepository $placeRepository = null
     ) {
         $this->include = $include;
         $this->uitpas = $uitpas;
         $this->calendarSummaryRepository = $calendarSummaryRepository;
+        $this->placeRepository = $placeRepository;
     }
 
     public function getFileNameExtension(): string
@@ -45,7 +50,8 @@ class OOXMLFileFormat implements FileFormatInterface
             new OOXMLFileWriterFactory(),
             $this->include,
             $this->uitpas,
-            $this->calendarSummaryRepository
+            $this->calendarSummaryRepository,
+            $this->placeRepository
         );
     }
 }

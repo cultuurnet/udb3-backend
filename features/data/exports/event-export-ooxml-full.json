@@ -10,6 +10,7 @@
     "calendarSummary",
     "image",
     "location",
+    "departurePlaces",
     "address",
     "organizer",
     "priceInfo",
