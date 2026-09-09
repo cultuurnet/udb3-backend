@@ -828,8 +828,8 @@ class TabularDataEventFormatter
     }
 
     /**
-     * An item that was never translated to Dutch falls back to the main language of the event, and
-     * then to whatever translation it does have, so that no question disappears from the export.
+     * An item that was never translated to the main language of the event falls back to whatever
+     * translation it does have, so that no question disappears from the export.
      *
      * A question or an answer that is not text at all can still turn up in an older projection.
      * Such a translation is passed over instead of handed to a string parameter, where it would
@@ -839,10 +839,8 @@ class TabularDataEventFormatter
     {
         $candidates = [];
 
-        foreach (['nl', $mainLanguage] as $language) {
-            if (isset($translations[$language])) {
-                $candidates[] = $translations[$language];
-            }
+        if (isset($translations[$mainLanguage])) {
+            $candidates[] = $translations[$mainLanguage];
         }
 
         foreach ($translations as $translation) {

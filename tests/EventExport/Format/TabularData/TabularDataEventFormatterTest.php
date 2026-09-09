@@ -932,7 +932,7 @@ class TabularDataEventFormatterTest extends TestCase
                 ),
                 'faq' => 'Hoe geraak ik er? Met de bus.',
             ],
-            'only the Dutch translation of every item' => [
+            'one translation of every item' => [
                 'event' => $this->encodeEvent(
                     [
                         'faqs' => [
@@ -946,13 +946,13 @@ class TabularDataEventFormatterTest extends TestCase
                 ),
                 'faq' => "Hoe geraak ik er? Met de bus.\nWat kost het? 10 euro.",
             ],
-            'the main language when there is no Dutch' => [
+            'the main language of the event, even when there is a Dutch translation' => [
                 'event' => $this->encodeEvent(
                     [
                         'mainLanguage' => 'fr',
                         'faqs' => [
                             [
-                                'de' => ['question' => 'Wie komme ich dahin?', 'answer' => 'Mit dem Bus.'],
+                                'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
                                 'fr' => ['question' => 'Comment venir?', 'answer' => 'En bus.'],
                             ],
                         ],
@@ -960,7 +960,20 @@ class TabularDataEventFormatterTest extends TestCase
                 ),
                 'faq' => 'Comment venir? En bus.',
             ],
-            'any language when there is neither Dutch nor a main language translation' => [
+            'Dutch when the event has no main language' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            [
+                                'fr' => ['question' => 'Comment venir?', 'answer' => 'En bus.'],
+                                'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                            ],
+                        ],
+                    ]
+                ),
+                'faq' => 'Hoe geraak ik er? Met de bus.',
+            ],
+            'any language when the item has no translation in the main language' => [
                 'event' => $this->encodeEvent(
                     [
                         'mainLanguage' => 'nl',
