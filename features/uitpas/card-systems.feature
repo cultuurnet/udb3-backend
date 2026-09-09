@@ -1,4 +1,3 @@
-@external
 Feature: Manage the card systems of a real UiTPAS event
 
   Background:

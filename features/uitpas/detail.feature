@@ -1,4 +1,3 @@
-@external
 Feature: Get the UiTPAS details of an event
 
   Background:

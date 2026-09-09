@@ -1,6 +1,6 @@
 # UiTPAS test data (ACC)
 
-Fixtures for the `@external` scenarios in `features/uitpas/`. They live on ACC because UiTPAS only knows events it received from the acceptance environment. A locally created event never reaches it.
+Fixtures for `features/uitpas/`. They live on ACC because UiTPAS only knows events it received from the acceptance environment. A locally created event never reaches it, so these records are shared and the scenarios reset them in their Background.
 
 | | |
 |---|---|
