@@ -984,6 +984,17 @@ class TabularDataEventFormatterTest extends TestCase
                 ),
                 'faq' => 'Hoe geraak ik er? Met de bus. Of te voet.',
             ],
+            'a semicolon in a question or an answer needs no escaping' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            ['nl' => ['question' => 'Kost het 10 euro; of meer?', 'answer' => 'Ja; soms.']],
+                            ['nl' => ['question' => 'Wanneer?', 'answer' => 'Morgen.']],
+                        ],
+                    ]
+                ),
+                'faq' => "Kost het 10 euro; of meer? Ja; soms.\nWanneer? Morgen.",
+            ],
             'an answer spanning multiple lines is kept on one line' => [
                 'event' => $this->encodeEvent(
                     ['faqs' => [['nl' => ['question' => 'Hoe?', 'answer' => "Met de bus.\n\n  Of te voet."]]]]
