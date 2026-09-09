@@ -73,6 +73,103 @@ final class TargetAudienceDescriptionTest extends TestCase
                 'event' => $this->event([]),
                 'expected' => null,
             ],
+            'a birthdate range of children at the start of the event' => [
+                'event' => $this->event([
+                    'birthdateRange' => ['from' => '2015-01-01', 'to' => '2015-12-31'],
+                    'startDate' => '2026-06-01T10:00:00+02:00',
+                ]),
+                'expected' => $withGuardian,
+            ],
+            'a birthdate range of adults at the start of the event' => [
+                'event' => $this->event([
+                    'birthdateRange' => ['from' => '1990-01-01', 'to' => '1990-12-31'],
+                    'startDate' => '2026-06-01T10:00:00+02:00',
+                ]),
+                'expected' => null,
+            ],
+            'the youngest turning twelve the day before the event' => [
+                'event' => $this->event([
+                    'birthdateRange' => ['from' => '2010-01-01', 'to' => '2014-05-31'],
+                    'startDate' => '2026-06-01T10:00:00+02:00',
+                ]),
+                'expected' => null,
+            ],
+            'the youngest turning twelve the day after the event' => [
+                'event' => $this->event([
+                    'birthdateRange' => ['from' => '2010-01-01', 'to' => '2014-06-02'],
+                    'startDate' => '2026-06-01T10:00:00+02:00',
+                ]),
+                'expected' => $withGuardian,
+            ],
+            'an audience not born yet when the event starts' => [
+                'event' => $this->event([
+                    'birthdateRange' => ['from' => '2030-01-01', 'to' => '2030-12-31'],
+                    'startDate' => '2026-06-01T10:00:00+02:00',
+                ]),
+                'expected' => $withGuardian,
+            ],
+            'a permanent event counts towards the day it became available' => [
+                'event' => $this->event([
+                    'calendarType' => 'permanent',
+                    'birthdateRange' => ['from' => '2015-01-01', 'to' => '2015-12-31'],
+                    'availableFrom' => '2026-06-01T10:00:00+02:00',
+                ]),
+                'expected' => $withGuardian,
+            ],
+            'a permanent event whose audience has grown up by the day it became available' => [
+                'event' => $this->event([
+                    'calendarType' => 'permanent',
+                    'birthdateRange' => ['from' => '1990-01-01', 'to' => '1990-12-31'],
+                    'availableFrom' => '2026-06-01T10:00:00+02:00',
+                ]),
+                'expected' => null,
+            ],
+            'a start date wins from an available from' => [
+                'event' => $this->event([
+                    'birthdateRange' => ['from' => '2015-01-01', 'to' => '2015-12-31'],
+                    'startDate' => '2040-06-01T10:00:00+02:00',
+                    'availableFrom' => '2026-06-01T10:00:00+02:00',
+                ]),
+                'expected' => null,
+            ],
+            'an unreadable start date gives way to the available from' => [
+                'event' => $this->event([
+                    'birthdateRange' => ['from' => '2015-01-01', 'to' => '2015-12-31'],
+                    'startDate' => '500 BC',
+                    'availableFrom' => '2026-06-01T10:00:00+02:00',
+                ]),
+                'expected' => $withGuardian,
+            ],
+            'a birthdate range without a day to count towards' => [
+                'event' => $this->event([
+                    'birthdateRange' => ['from' => '2015-01-01', 'to' => '2015-12-31'],
+                ]),
+                'expected' => null,
+            ],
+            'a specific age range wins from a birthdate range' => [
+                'event' => $this->event([
+                    'typicalAgeRange' => '18-99',
+                    'birthdateRange' => ['from' => '2015-01-01', 'to' => '2015-12-31'],
+                    'startDate' => '2026-06-01T10:00:00+02:00',
+                ]),
+                'expected' => null,
+            ],
+            'an all ages range gives way to a birthdate range' => [
+                'event' => $this->event([
+                    'typicalAgeRange' => '-',
+                    'birthdateRange' => ['from' => '2015-01-01', 'to' => '2015-12-31'],
+                    'startDate' => '2026-06-01T10:00:00+02:00',
+                ]),
+                'expected' => $withGuardian,
+            ],
+            'an event only for children keeps saying so whatever its birthdate range' => [
+                'event' => $this->event([
+                    'childrenOnly' => true,
+                    'birthdateRange' => ['from' => '1990-01-01', 'to' => '1990-12-31'],
+                    'startDate' => '2026-06-01T10:00:00+02:00',
+                ]),
+                'expected' => $childrenOnly,
+            ],
         ];
     }
 
