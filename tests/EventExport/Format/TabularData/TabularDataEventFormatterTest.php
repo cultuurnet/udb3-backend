@@ -1038,7 +1038,6 @@ class TabularDataEventFormatterTest extends TestCase
         $this->assertSame('', $formatter->formatEvent($this->encodeEvent([]))['childrenOnly']);
     }
 
-
     /**
      * @test
      * @dataProvider eventsAndOvernightStay
