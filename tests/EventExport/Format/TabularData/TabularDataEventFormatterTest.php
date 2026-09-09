@@ -912,6 +912,39 @@ class TabularDataEventFormatterTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_reports_the_faq_column_as_wrapping(): void
+    {
+        $formatter = new TabularDataEventFormatter(['name', 'description', 'faqs']);
+
+        // Column 4, because the export always prepends an id column of its own.
+        $this->assertSame([4], $formatter->wrappedColumns());
+    }
+
+    /**
+     * @test
+     */
+    public function it_reports_no_wrapping_column_when_the_faqs_are_not_included(): void
+    {
+        $formatter = new TabularDataEventFormatter(['name', 'description']);
+
+        $this->assertSame([], $formatter->wrappedColumns());
+    }
+
+    /**
+     * @test
+     */
+    public function it_reports_the_faq_column_of_a_default_export_as_wrapping(): void
+    {
+        $formatter = new TabularDataEventFormatter([]);
+
+        $header = $formatter->formatHeader();
+
+        $this->assertSame([array_search('faq', $header, true) + 1], $formatter->wrappedColumns());
+    }
+
+    /**
+     * @test
      * @dataProvider eventsAndFaq
      */
     public function it_should_export_the_faqs(string $event, string $faq): void

@@ -78,6 +78,27 @@ class TabularDataEventFormatter
         return $columns;
     }
 
+    /**
+     * The columns that hold a value of more than one line, as column numbers, so that a writer can
+     * render those lines. A column is named here rather than recognised by its content, because a
+     * newline in a description is markup that has always been shown as a single run of text.
+     *
+     * @return int[]
+     */
+    public function wrappedColumns(): array
+    {
+        $columns = $this->columns();
+        $wrapped = [];
+
+        foreach (array_values($this->includedProperties) as $index => $property) {
+            if ($columns[$property]['wrap'] ?? false) {
+                $wrapped[] = $index + 1;
+            }
+        }
+
+        return $wrapped;
+    }
+
     public function formatEvent(string $event): array
     {
         $event = Json::decode($event);
@@ -690,6 +711,7 @@ class TabularDataEventFormatter
                     return $this->formatFaqs($event);
                 },
                 'property' => 'faqs',
+                'wrap' => true,
             ],
         ];
     }

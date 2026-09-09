@@ -25,83 +25,69 @@ class OOXMLFileWriter implements TabularDataFileWriterInterface
     private Spreadsheet $spreadsheet;
 
     /**
-     * The columns that hold a wrapped cell, as column numbers.
-     *
-     * @var array<int, true>
+     * @var int[]
      */
-    private array $wrappedColumns = [];
+    private array $wrappedColumns;
 
-    public function __construct(string $filePath)
+    /**
+     * @param int[] $wrappedColumns
+     *   The columns whose value holds more than one line, as column numbers. Excel only shows a
+     *   newline inside a cell as a line break when the cell wraps its text, so those columns are
+     *   wrapped and widened. Every other column is left exactly as it was.
+     */
+    public function __construct(string $filePath, array $wrappedColumns = [])
     {
         $this->filePath = $filePath;
+        $this->wrappedColumns = $wrappedColumns;
         $this->spreadsheet = new Spreadsheet();
         $this->spreadsheet->setActiveSheetIndex(0);
         $this->i = 1;
+
+        $this->widenWrappedColumns();
     }
 
     /**
      * @param string[] $row
      */
-    public function writeRow($row): void
+    public function writeRow(array $row): void
     {
-        $sheet = $this->spreadsheet->getActiveSheet();
-
-        $sheet->fromArray(
+        $this->spreadsheet->getActiveSheet()->fromArray(
             $row,
             '',
             'A' . $this->i
         );
 
-        $this->wrapCellsWithNewlines($row);
+        $this->wrapCells();
 
         $this->i++;
     }
 
-    /**
-     * The faq column holds a line per question, and the description column keeps the line breaks of
-     * its markup. Excel only shows those as line breaks when the cell wraps its text. Only such a
-     * cell is wrapped, so that every value that renders on one line today keeps doing so.
-     *
-     * @param string[] $row
-     */
-    private function wrapCellsWithNewlines(array $row): void
+    private function wrapCells(): void
     {
         $sheet = $this->spreadsheet->getActiveSheet();
 
-        foreach (array_values($row) as $index => $value) {
-            if (!is_string($value) || !str_contains($value, "\n")) {
-                continue;
-            }
-
-            $column = $index + 1;
-            $this->wrappedColumns[$column] = true;
+        foreach ($this->wrappedColumns as $column) {
+            $cell = Coordinate::stringFromColumnIndex($column) . $this->i;
 
             // The row keeps its automatic height, so it grows to fit whatever the cell wraps to.
-            $cell = Coordinate::stringFromColumnIndex($column) . $this->i;
             $alignment = $sheet->getStyle($cell)->getAlignment();
             $alignment->setWrapText(true);
             $alignment->setVertical(Alignment::VERTICAL_TOP);
         }
     }
 
-    public function close(): void
-    {
-        $this->widenWrappedColumns();
-
-        $objWriter = new Xlsx($this->spreadsheet);
-        $objWriter->save($this->filePath);
-    }
-
-    /**
-     * Widening happens once every row is known, because a column is only widened when a cell in it
-     * turned out to need wrapping.
-     */
     private function widenWrappedColumns(): void
     {
         $sheet = $this->spreadsheet->getActiveSheet();
 
-        foreach (array_keys($this->wrappedColumns) as $column) {
+        foreach ($this->wrappedColumns as $column) {
             $sheet->getColumnDimensionByColumn($column)->setWidth(self::COLUMN_WIDTH);
         }
+    }
+
+    public function close(): void
+    {
+        $objWriter = new Xlsx($this->spreadsheet);
+        $objWriter->save($this->filePath);
     }
 }
