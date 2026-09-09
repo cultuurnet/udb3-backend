@@ -5,6 +5,7 @@
     "name",
     "description",
     "faqs",
+    "hasOvernightStay",
     "labels",
     "calendarSummary",
     "image",
