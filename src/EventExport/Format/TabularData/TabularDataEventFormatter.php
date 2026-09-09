@@ -951,11 +951,6 @@ class TabularDataEventFormatter
         return $typicalAgeRange;
     }
 
-    /**
-     * An event that is only for children says so itself. One that welcomes children along with
-     * whoever brings them does not, so it is recognised by an age range that reaches below the age
-     * a child stops being one. An event for no particular age says nothing about its audience.
-     */
     private function formatTargetAudience(stdClass $event): string
     {
         if (isset($event->childrenOnly) && $event->childrenOnly === true) {
