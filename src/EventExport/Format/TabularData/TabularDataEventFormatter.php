@@ -15,12 +15,15 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterfa
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
+use CultuurNet\UDB3\EventExport\BirthdateRangeFactory;
 use CultuurNet\UDB3\EventExport\Media\MediaFinder;
 use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\EventExport\OvernightStay;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
+use CultuurNet\UDB3\Model\ValueObject\Audience\InvalidAgeRangeException;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
 use DateTimeInterface;
 use Exception;
@@ -206,6 +209,11 @@ class TabularDataEventFormatter
                 'attendance.mode',
                 'attendance.url',
             ],
+            // An event carries either a typicalAgeRange or a birthdateRange, and the leeftijd
+            // column renders whichever one it has, so both include values name that one column.
+            'birthdateRange' => [
+                'typicalAgeRange',
+            ],
         ];
 
         foreach ($properties as $property) {
@@ -225,6 +233,11 @@ class TabularDataEventFormatter
             $properties = $this->expandMultiColumnProperties($include);
 
             array_unshift($properties, 'id');
+
+            // Asking for the typicalAgeRange and the birthdateRange both name the leeftijd column,
+            // and an id the export prepends anyway can also be asked for, so a property that is
+            // named twice still becomes a single column.
+            $properties = array_values(array_unique($properties));
         } else {
             $properties = array_keys($this->columns());
         }
@@ -408,7 +421,7 @@ class TabularDataEventFormatter
             'typicalAgeRange' => [
                 'name' => 'leeftijd',
                 'include' => function ($event) {
-                    return $event->typicalAgeRange ?? '';
+                    return $this->formatAgeRange($event);
                 },
                 'property' => 'typicalAgeRange',
             ],
@@ -900,6 +913,51 @@ class TabularDataEventFormatter
      * The column stays empty for an event type that could never have an overnight stay, instead of
      * claiming there is none.
      */
+    /**
+     * An event describes its audience with a typicalAgeRange or a birthdateRange, and the polyfill
+     * drops the typicalAgeRange of an event that has a birthdate range. An older projection can
+     * still carry both, in which case a specific age range wins, just like in the HTML export.
+     *
+     * @see \CultuurNet\UDB3\EventExport\Format\HTML\HTMLEventFormatter::addAgeRangeInfo()
+     */
+    private function formatAgeRange(stdClass $event): string
+    {
+        $typicalAgeRange = isset($event->typicalAgeRange) && is_string($event->typicalAgeRange)
+            ? $event->typicalAgeRange
+            : '';
+
+        if ($this->parseSpecificAgeRange($typicalAgeRange) !== null) {
+            return $typicalAgeRange;
+        }
+
+        // The birthdate range only fills in when there is no specific age range, so for an all ages
+        // or a malformed value.
+        $birthdateRange = BirthdateRangeFactory::fromJson($event->birthdateRange ?? null);
+
+        if ($birthdateRange !== null) {
+            return $birthdateRange->getFrom()->format(BirthdateRangeFactory::DISPLAY_FORMAT) . ' - ' .
+                $birthdateRange->getTo()->format(BirthdateRangeFactory::DISPLAY_FORMAT);
+        }
+
+        // Without a usable birthdate range the original value is still the best available answer,
+        // which keeps exporting "-" for an all ages event.
+        return $typicalAgeRange;
+    }
+
+    /**
+     * Parses a typicalAgeRange, treating everything that does not describe a specific age as absent.
+     */
+    private function parseSpecificAgeRange(string $typicalAgeRange): ?AgeRange
+    {
+        try {
+            $ageRange = AgeRange::fromString($typicalAgeRange);
+        } catch (InvalidAgeRangeException) {
+            return null;
+        }
+
+        return $ageRange->isForAllAges() ? null : $ageRange;
+    }
+
     private function formatOvernightStay(stdClass $event): string
     {
         $hasOvernightStay = OvernightStay::forEvent($event);

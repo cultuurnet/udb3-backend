@@ -35,6 +35,7 @@
     "calendarType",
     "sameAs",
     "typicalAgeRange",
+    "birthdateRange",
     "language",
     "completeness"
   ],

@@ -269,4 +269,30 @@ class JSONLDEventFormatterTest extends TestCase
             $event
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_exports_the_birthdate_range(): void
+    {
+        $includedProperties = [
+            'id',
+            'birthdateRange',
+        ];
+        $eventWithBirthdateRange = $this->getJSONEventFromFile('event_with_birthdate_range.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithBirthdateRange);
+
+        $this->assertEquals(
+            Json::encode([
+                '@id' => 'https://udb-silex-acc.uitdatabank.be/event/0c70b8f3-66a0-4532-959f-2e13b4624f04',
+                'birthdateRange' => [
+                    'from' => '2010-01-01',
+                    'to' => '2010-12-31',
+                ],
+            ]),
+            $event
+        );
+    }
 }
