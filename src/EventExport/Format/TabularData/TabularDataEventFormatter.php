@@ -27,11 +27,6 @@ use stdClass;
 
 class TabularDataEventFormatter
 {
-    /**
-     * The tabular export is read in Dutch, so a translated value is exported in Dutch.
-     */
-    private const EXPORT_LANGUAGE = 'nl';
-
     protected StripHtmlStringFilter $htmlFilter;
 
     /**
@@ -847,7 +842,7 @@ class TabularDataEventFormatter
     {
         $candidates = [];
 
-        foreach ([self::EXPORT_LANGUAGE, $mainLanguage] as $language) {
+        foreach (['nl', $mainLanguage] as $language) {
             if (isset($translations[$language])) {
                 $candidates[] = $translations[$language];
             }
