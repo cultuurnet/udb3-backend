@@ -30,6 +30,15 @@ use stdClass;
 
 class TabularDataEventFormatter
 {
+    private const CHILDREN_ONLY = 'voor kinderen alleen';
+
+    private const CHILDREN_WITH_GUARDIAN = 'voor kinderen samen met hun familie of een andere begeleider';
+
+    /**
+     * A child is younger than this, so an age range starting at it is no longer aimed at children.
+     */
+    private const CHILD_AGE_LIMIT = 12;
+
     protected StripHtmlStringFilter $htmlFilter;
 
     /**
@@ -733,6 +742,13 @@ class TabularDataEventFormatter
                 },
                 'property' => 'subEvent',
             ],
+            'childrenOnly' => [
+                'name' => 'doelgroep',
+                'include' => function ($event) {
+                    return $this->formatTargetAudience($event);
+                },
+                'property' => 'childrenOnly',
+            ],
         ];
     }
 
@@ -936,6 +952,34 @@ class TabularDataEventFormatter
         // Without a usable birthdate range the original value is still the best available answer,
         // which keeps exporting "-" for an all ages event.
         return $typicalAgeRange;
+    }
+
+    /**
+     * An event that is only for children says so itself. One that welcomes children along with
+     * whoever brings them does not, so it is recognised by an age range that reaches below the age
+     * a child stops being one. An event for no particular age says nothing about its audience.
+     */
+    private function formatTargetAudience(stdClass $event): string
+    {
+        if (isset($event->childrenOnly) && $event->childrenOnly === true) {
+            return self::CHILDREN_ONLY;
+        }
+
+        return $this->isAimedAtChildren($event) ? self::CHILDREN_WITH_GUARDIAN : '';
+    }
+
+    private function isAimedAtChildren(stdClass $event): bool
+    {
+        $ageRange = AgeRangeFactory::specificFromString($event->typicalAgeRange ?? null);
+
+        if ($ageRange === null) {
+            return false;
+        }
+
+        // An age range without a start covers everyone from birth onwards.
+        $from = $ageRange->getFrom()?->toInteger() ?? 0;
+
+        return $from < self::CHILD_AGE_LIMIT;
     }
 
     /**

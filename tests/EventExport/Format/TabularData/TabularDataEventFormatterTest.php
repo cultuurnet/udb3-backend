@@ -83,6 +83,7 @@ class TabularDataEventFormatterTest extends TestCase
                 // integrators already read stays the same.
                 'faq',
                 'met overnachting',
+                'doelgroep',
             ],
             $formatter->formatHeader()
         );
@@ -1012,6 +1013,82 @@ class TabularDataEventFormatterTest extends TestCase
         $formatter = new TabularDataEventFormatter(['id', 'name']);
 
         $this->assertSame(['id', 'titel'], $formatter->formatHeader());
+    }
+
+    /**
+     * @test
+     * @dataProvider eventsAndDoelgroep
+     */
+    public function it_should_export_the_target_audience_as_doelgroep(
+        string $event,
+        string $doelgroep
+    ): void {
+        $formatter = new TabularDataEventFormatter(['childrenOnly']);
+
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $this->assertSame($doelgroep, $formattedEvent['childrenOnly']);
+    }
+
+    public function eventsAndDoelgroep(): array
+    {
+        $childrenOnly = 'voor kinderen alleen';
+        $withGuardian = 'voor kinderen samen met hun familie of een andere begeleider';
+
+        return [
+            'an event only for children' => [
+                'event' => $this->encodeEvent(['childrenOnly' => true]),
+                'doelgroep' => $childrenOnly,
+            ],
+            'an event only for children keeps saying so whatever its age range' => [
+                'event' => $this->encodeEvent(['childrenOnly' => true, 'typicalAgeRange' => '18-99']),
+                'doelgroep' => $childrenOnly,
+            ],
+            'an age range reaching below twelve' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => '6-12']),
+                'doelgroep' => $withGuardian,
+            ],
+            'an age range of the youngest children' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => '0-5']),
+                'doelgroep' => $withGuardian,
+            ],
+            'an age range without a start covers everyone from birth' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => '-12']),
+                'doelgroep' => $withGuardian,
+            ],
+            'an age range starting just below twelve' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => '11-18']),
+                'doelgroep' => $withGuardian,
+            ],
+            'an age range starting exactly at twelve is not for children' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => '12-18']),
+                'doelgroep' => '',
+            ],
+            'an age range for adults' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => '18-99']),
+                'doelgroep' => '',
+            ],
+            'an all ages event' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => '-']),
+                'doelgroep' => '',
+            ],
+            'an all ages event written as 0-' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => '0-']),
+                'doelgroep' => '',
+            ],
+            'childrenOnly false falls back to the age range' => [
+                'event' => $this->encodeEvent(['childrenOnly' => false, 'typicalAgeRange' => '6-12']),
+                'doelgroep' => $withGuardian,
+            ],
+            'an age range that is not a range' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => 'zes tot twaalf']),
+                'doelgroep' => '',
+            ],
+            'neither a flag nor an age range' => [
+                'event' => $this->encodeEvent([]),
+                'doelgroep' => '',
+            ],
+        ];
     }
 
     /**
