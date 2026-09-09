@@ -24,6 +24,72 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
+    public function it_keeps_the_columns_of_a_default_export_in_a_stable_order(): void
+    {
+        $formatter = new TabularDataEventFormatter([]);
+
+        $this->assertSame(
+            [
+                'id',
+                'titel',
+                'auteur',
+                'basistarief',
+                'prijsinformatie',
+                'kansentarief',
+                'reservatie url',
+                'reservatie tel',
+                'reservatie e-mail',
+                'omschrijving',
+                'organisatie',
+                'korte kalendersamenvatting',
+                'lange kalendersamenvatting',
+                'labels',
+                'verborgen labels',
+                'leeftijd',
+                'uitvoerders',
+                'taal van het aanbod',
+                'thema',
+                'soort aanbod',
+                'datum aangemaakt',
+                'datum laatste aanpassing',
+                'embargodatum',
+                'startdatum',
+                'einddatum',
+                'tijd type',
+                'locatie naam',
+                'straat',
+                'postcode',
+                'gemeente',
+                'land',
+                'afbeelding URL',
+                'afbeelding beschrijving',
+                'afbeelding copyright',
+                'externe ids',
+                'contact e-mail',
+                'contact tel',
+                'contact url',
+                'e-mail reservaties',
+                'telefoon reservaties',
+                'online reservaties',
+                'toegang',
+                'status',
+                'tickets & plaatsen',
+                'videos URL',
+                'videos copyright',
+                'Aanwezigheidsvorm (fysiek / online)',
+                'online url',
+                'Volledigheid',
+                // New columns belong at the end, so that the position of every column that
+                // integrators already read stays the same.
+                'faq',
+            ],
+            $formatter->formatHeader()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_excludes_all_terms_when_none_are_included(): void
     {
         $includedProperties = [
@@ -771,6 +837,11 @@ class TabularDataEventFormatterTest extends TestCase
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);
     }
 
+    private function encodeEvent(array $properties): string
+    {
+        return Json::encode(['@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d'] + $properties);
+    }
+
     /**
      * @test
      */
@@ -837,5 +908,100 @@ class TabularDataEventFormatterTest extends TestCase
         ];
 
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);
+    }
+
+    /**
+     * @test
+     * @dataProvider eventsAndFaq
+     */
+    public function it_should_export_the_faqs(string $event, string $faq): void
+    {
+        $formatter = new TabularDataEventFormatter(['id', 'faqs']);
+
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $this->assertSame($faq, $formattedEvent['faqs']);
+    }
+
+    public function eventsAndFaq(): array
+    {
+        return [
+            'a single item in a single language' => [
+                'event' => $this->encodeEvent(
+                    ['faqs' => [['nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.']]]]
+                ),
+                'faq' => '[nl] Hoe geraak ik er? Met de bus.',
+            ],
+            'every translation of every item' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            [
+                                'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                                'fr' => ['question' => 'Comment y accéder?', 'answer' => 'En bus.'],
+                            ],
+                            ['nl' => ['question' => 'Wat kost het?', 'answer' => '10 euro.']],
+                        ],
+                    ]
+                ),
+                'faq' => '[nl] Hoe geraak ik er? Met de bus.;' .
+                    '[fr] Comment y accéder? En bus.;' .
+                    '[nl] Wat kost het? 10 euro.',
+            ],
+            'the main language is listed first' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'mainLanguage' => 'nl',
+                        'faqs' => [
+                            [
+                                'fr' => ['question' => 'Comment y accéder?', 'answer' => 'En bus.'],
+                                'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                            ],
+                        ],
+                    ]
+                ),
+                'faq' => '[nl] Hoe geraak ik er? Met de bus.;[fr] Comment y accéder? En bus.',
+            ],
+            'markup is stripped' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            [
+                                'nl' => [
+                                    'question' => 'Hoe geraak ik er?',
+                                    'answer' => '<p>Met de <strong>bus</strong>.</p><p>Of te voet.</p>',
+                                ],
+                            ],
+                        ],
+                    ]
+                ),
+                'faq' => '[nl] Hoe geraak ik er? Met de bus. Of te voet.',
+            ],
+            'an answer spanning multiple lines is kept on one line' => [
+                'event' => $this->encodeEvent(
+                    ['faqs' => [['nl' => ['question' => 'Hoe?', 'answer' => "Met de bus.\n\n  Of te voet."]]]]
+                ),
+                'faq' => '[nl] Hoe? Met de bus. Of te voet.',
+            ],
+            'an item without an answer is skipped' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            ['nl' => ['question' => 'Hoe geraak ik er?']],
+                            ['nl' => ['question' => 'Wat kost het?', 'answer' => '10 euro.']],
+                        ],
+                    ]
+                ),
+                'faq' => '[nl] Wat kost het? 10 euro.',
+            ],
+            'an empty list of faqs' => [
+                'event' => $this->encodeEvent(['faqs' => []]),
+                'faq' => '',
+            ],
+            'no faqs at all' => [
+                'event' => $this->encodeEvent([]),
+                'faq' => '',
+            ],
+        ];
     }
 }

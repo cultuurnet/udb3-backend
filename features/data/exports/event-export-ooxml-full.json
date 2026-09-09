@@ -4,6 +4,7 @@
   "include": [
     "name",
     "description",
+    "faqs",
     "labels",
     "calendarSummary",
     "image",

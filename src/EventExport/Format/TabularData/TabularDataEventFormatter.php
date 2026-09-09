@@ -349,8 +349,7 @@ class TabularDataEventFormatter
                     /** @var stdClass $event */
                     if (isset($event->organizer, $event->organizer->name)) {
                         $name = (array) $event->organizer->name;
-                        $mainLanguage = $event->mainLanguage ?? 'nl';
-                        return $name[$mainLanguage] ?? current($name);
+                        return $name[$this->getMainLanguage($event)] ?? current($name);
                     }
                     return '';
                 },
@@ -685,6 +684,13 @@ class TabularDataEventFormatter
                 },
                 'property' => 'completeness',
             ],
+            'faqs' => [
+                'name' => 'faq',
+                'include' => function ($event) {
+                    return $this->formatFaqs($event);
+                },
+                'property' => 'faqs',
+            ],
         ];
     }
 
@@ -787,9 +793,54 @@ class TabularDataEventFormatter
             return $event->location->address->{$addressField};
         }
 
-        $mainLanguage = $event->mainLanguage ?? 'nl';
+        return $event->location->address->{$this->getMainLanguage($event)}->{$addressField} ?? '';
+    }
 
-        return $event->location->address->{$mainLanguage}->{$addressField} ?? '';
+    private function getMainLanguage(stdClass $event): string
+    {
+        return $event->mainLanguage ?? 'nl';
+    }
+
+    private function formatFaqs(stdClass $event): string
+    {
+        if (!isset($event->faqs) || !is_array($event->faqs)) {
+            return '';
+        }
+
+        $items = [];
+
+        foreach ($event->faqs as $faq) {
+            if (!$faq instanceof stdClass) {
+                continue;
+            }
+
+            foreach ($this->mainLanguageFirst(get_object_vars($faq), $event) as $language => $translation) {
+                if (!isset($translation->question, $translation->answer)) {
+                    continue;
+                }
+
+                $items[] = '[' . $language . '] ' . $this->toSingleLine($translation->question) .
+                    ' ' . $this->toSingleLine($translation->answer);
+            }
+        }
+
+        return implode(';', $items);
+    }
+
+    private function mainLanguageFirst(array $translations, stdClass $event): array
+    {
+        $mainLanguage = $this->getMainLanguage($event);
+
+        if (!isset($translations[$mainLanguage])) {
+            return $translations;
+        }
+
+        return [$mainLanguage => $translations[$mainLanguage]] + $translations;
+    }
+
+    private function toSingleLine(string $text): string
+    {
+        return trim(preg_replace('/\s+/', ' ', $this->htmlFilter->filter($text)));
     }
 
     private function formatStatus(stdClass $status): string

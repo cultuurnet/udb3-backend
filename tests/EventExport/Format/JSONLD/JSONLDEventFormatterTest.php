@@ -185,4 +185,26 @@ class JSONLDEventFormatterTest extends TestCase
             $event
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_exports_the_faqs_unchanged(): void
+    {
+        $includedProperties = [
+            'id',
+            'faqs',
+        ];
+        $eventWithFaqs = $this->getJSONEventFromFile('event_with_faqs.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithFaqs);
+
+        /* @codingStandardsIgnoreStart */
+        $this->assertEquals(
+            '{"@id":"https:\/\/udb-silex-acc.uitdatabank.be\/event\/0c70b8f3-66a0-4532-959f-2e13b4624f04","faqs":[{"nl":{"question":"Hoe geraak ik er?","answer":"<p>Met de <strong>bus<\/strong>.<\/p>"},"fr":{"question":"Comment venir?","answer":"<p>En bus.<\/p>"}},{"nl":{"question":"Wat kost het?","answer":"10 euro."}}]}',
+            $event
+        );
+        /* @codingStandardsIgnoreEnd */
+    }
 }
