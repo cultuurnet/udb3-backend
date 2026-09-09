@@ -21,7 +21,7 @@ final class OOXMLFileWriterTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->filePath = tempnam(sys_get_temp_dir(), uniqid()) . '.xlsx';
+        $this->filePath = sys_get_temp_dir() . '/' . uniqid('ooxml', true) . '.xlsx';
     }
 
     protected function tearDown(): void
