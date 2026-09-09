@@ -16,6 +16,7 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\Media\MediaFinder;
+use CultuurNet\UDB3\EventExport\OvernightStay;
 use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
@@ -721,6 +722,13 @@ class TabularDataEventFormatter
                 'property' => 'faqs',
                 'wrap' => true,
             ],
+            'hasOvernightStay' => [
+                'name' => 'met overnachting',
+                'include' => function ($event) {
+                    return $this->formatOvernightStay($event);
+                },
+                'property' => 'subEvent',
+            ],
         ];
     }
 
@@ -888,6 +896,21 @@ class TabularDataEventFormatter
     private function toSingleLine(string $text): string
     {
         return trim(preg_replace('/\s+/', ' ', $this->htmlFilter->filter($text)));
+    }
+
+    /**
+     * The column stays empty for an event type that could never have an overnight stay, instead of
+     * claiming there is none.
+     */
+    private function formatOvernightStay(stdClass $event): string
+    {
+        $hasOvernightStay = OvernightStay::forEvent($event);
+
+        if ($hasOvernightStay === null) {
+            return '';
+        }
+
+        return $hasOvernightStay ? 'ja' : 'nee';
     }
 
     private function formatStatus(stdClass $status): string

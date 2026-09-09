@@ -82,6 +82,7 @@ class TabularDataEventFormatterTest extends TestCase
                 // New columns belong at the end, so that the position of every column that
                 // integrators already read stays the same.
                 'faq',
+                'met overnachting',
             ],
             $formatter->formatHeader()
         );
@@ -908,6 +909,50 @@ class TabularDataEventFormatterTest extends TestCase
         ];
 
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);
+    }
+
+    /**
+     * @test
+     * @dataProvider eventsAndOvernightStay
+     */
+    public function it_should_export_whether_the_event_has_an_overnight_stay(
+        string $event,
+        string $metOvernachting
+    ): void {
+        $formatter = new TabularDataEventFormatter(['hasOvernightStay']);
+
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $this->assertSame($metOvernachting, $formattedEvent['hasOvernightStay']);
+    }
+
+    public function eventsAndOvernightStay(): array
+    {
+        $camp = ['id' => '0.57.0.0.0', 'domain' => 'eventtype', 'label' => 'Kamp of vakantie'];
+        $concert = ['id' => '0.50.4.0.0', 'domain' => 'eventtype', 'label' => 'Concert'];
+
+        return [
+            'a camp with an overnight stay' => [
+                'event' => $this->encodeEvent(
+                    ['terms' => [$camp], 'subEvent' => [['hasOvernightStay' => true]]]
+                ),
+                'metOvernachting' => 'ja',
+            ],
+            'a camp without an overnight stay' => [
+                'event' => $this->encodeEvent(['terms' => [$camp], 'subEvent' => [[], []]]),
+                'metOvernachting' => 'nee',
+            ],
+            'an event type that can never have an overnight stay stays empty' => [
+                'event' => $this->encodeEvent(
+                    ['terms' => [$concert], 'subEvent' => [['hasOvernightStay' => true]]]
+                ),
+                'metOvernachting' => '',
+            ],
+            'an event without an event type stays empty' => [
+                'event' => $this->encodeEvent(['subEvent' => [[]]]),
+                'metOvernachting' => '',
+            ],
+        ];
     }
 
     /**
