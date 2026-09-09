@@ -953,7 +953,7 @@ class TabularDataEventFormatter
 
     private function formatTargetAudience(stdClass $event): string
     {
-        if (isset($event->childrenOnly) && $event->childrenOnly === true) {
+        if (($event->childrenOnly ?? null) === true) {
             return self::CHILDREN_ONLY;
         }
 
@@ -968,10 +968,7 @@ class TabularDataEventFormatter
             return false;
         }
 
-        // An age range without a start covers everyone from birth onwards.
-        $from = $ageRange->getFrom()?->toInteger() ?? 0;
-
-        return $from < self::CHILD_AGE_LIMIT;
+        return ($ageRange->getFrom()?->toInteger() ?? 0) < self::CHILD_AGE_LIMIT;
     }
 
     /**
