@@ -8,14 +8,13 @@ Feature: Test the UiTPAS events
 
   Scenario: Get details of an event that is not an UiTPAS event
     When I send a GET request to "/uitpas/events/18827e56-mock-4961-a5c8-7acd5dcfed9a"
-    Then the response status should be "404"
+    Then the response status should be "200"
     And the JSON response should be:
     """
     {
-     "type": "https://api.publiq.be/probs/url/not-found",
-     "title": "Not Found",
-     "status": 404,
-     "detail": "Event with id '18827e56-mock-4961-a5c8-7acd5dcfed9a' was not found in UiTPAS. Are you sure it is an UiTPAS event?"
+     "@id": "%{baseUrl}/uitpas/events18827e56-mock-4961-a5c8-7acd5dcfed9a",
+     "cardSystems": "%{baseUrl}/uitpas/events18827e56-mock-4961-a5c8-7acd5dcfed9a/card-systems",
+     "hasTicketSales": false
     }
     """
 
