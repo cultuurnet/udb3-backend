@@ -13,7 +13,8 @@ Feature: Get the UiTPAS details of an event
     And the JSON response should be:
     """
     {
-      "@id": "%{baseUrl}/uitpas/events/%{uitpasEventId}",
-      "cardSystems": "%{baseUrl}/uitpas/events/%{uitpasEventId}/card-systems"
+      "@id": "%{baseUrl}/uitpas/events%{uitpasEventId}",
+      "cardSystems": "%{baseUrl}/uitpas/events%{uitpasEventId}/card-systems",
+      "hasTicketSales": false
     }
     """
