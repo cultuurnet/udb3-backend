@@ -50,12 +50,14 @@ class CardSystemsJsonResponse extends JsonResponse
                 $distributionKeys[$distributionKeyId] = [
                     'id' => $distributionKeyId,
                     'name' => $distributionKey->getName(),
+                    'enabled' => $distributionKey->isEnabled(),
                 ];
             }
 
             $data[$id] = [
                 'id' => $id,
                 'name' => $cardSystem->getName(),
+                'enabled' => $cardSystem->isEnabled(),
                 'distributionKeys' => $distributionKeys,
             ];
         }
@@ -88,6 +90,10 @@ class CardSystemsJsonResponse extends JsonResponse
         return [
             'id' => $cardSystem->id,
             'name' => $cardSystem->name,
+            // The legacy XML endpoint only ever returned the card systems that are active for the
+            // event, so everything it hands us is enabled. Emitted anyway to keep the response shape
+            // the same whichever client sits behind uitpas.rest_api.enabled.
+            'enabled' => true,
             'distributionKeys' => $distributionKeys,
         ];
     }
@@ -97,6 +103,7 @@ class CardSystemsJsonResponse extends JsonResponse
         return [
             'id' => $distributionKey->id,
             'name' => $distributionKey->name,
+            'enabled' => true,
         ];
     }
 }

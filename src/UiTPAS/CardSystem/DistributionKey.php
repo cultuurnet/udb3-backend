@@ -12,10 +12,13 @@ final class DistributionKey
 
     private ?string $name;
 
-    public function __construct(Id $id, ?string $name = null)
+    private bool $enabled;
+
+    public function __construct(Id $id, ?string $name = null, bool $enabled = true)
     {
         $this->id = $id;
         $this->name = $name;
+        $this->enabled = $enabled;
     }
 
     public function getId(): Id
@@ -26,5 +29,10 @@ final class DistributionKey
     public function getName(): ?string
     {
         return $this->name;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
     }
 }
