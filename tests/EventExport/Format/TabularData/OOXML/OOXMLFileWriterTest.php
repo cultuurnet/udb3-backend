@@ -59,13 +59,11 @@ final class OOXMLFileWriterTest extends TestCase
     /**
      * @test
      */
-    public function it_widens_every_column_of_the_header(): void
+    public function it_widens_the_columns(): void
     {
         $sheet = $this->write(['id', 'titel', 'faq'], ['1', 'Concert', '[nl] Hoe? Met de bus.']);
 
-        foreach (['A', 'B', 'C'] as $column) {
-            $this->assertSame(40.0, $sheet->getColumnDimension($column)->getWidth());
-        }
+        $this->assertSame(40.0, $sheet->getDefaultColumnDimension()->getWidth());
     }
 
     private function write(array ...$rows): Worksheet
