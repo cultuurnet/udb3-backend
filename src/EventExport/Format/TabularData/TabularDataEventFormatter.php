@@ -17,7 +17,7 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\Media\MediaFinder;
 use CultuurNet\UDB3\EventExport\Media\Url;
-use CultuurNet\UDB3\EventExport\OvernightStay;
+use CultuurNet\UDB3\EventExport\OvernightStayResolver;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
@@ -904,7 +904,7 @@ class TabularDataEventFormatter
      */
     private function formatOvernightStay(stdClass $event): string
     {
-        $hasOvernightStay = OvernightStay::forEvent($event);
+        $hasOvernightStay = OvernightStayResolver::forEvent($event);
 
         if ($hasOvernightStay === null) {
             return '';
