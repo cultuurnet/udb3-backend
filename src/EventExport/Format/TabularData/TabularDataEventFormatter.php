@@ -11,6 +11,8 @@ use CommerceGuys\Intl\Formatter\NumberFormatter;
 use CommerceGuys\Intl\Formatter\NumberFormatterInterface;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\EventExport\AgeRangeFactory;
+use CultuurNet\UDB3\EventExport\BirthdateRangeFactory;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
@@ -214,6 +216,11 @@ class TabularDataEventFormatter
                 'attendance.mode',
                 'attendance.url',
             ],
+            // An event carries either a typicalAgeRange or a birthdateRange, and the leeftijd
+            // column renders whichever one it has, so both include values name that one column.
+            'birthdateRange' => [
+                'typicalAgeRange',
+            ],
         ];
 
         foreach ($properties as $property) {
@@ -233,6 +240,11 @@ class TabularDataEventFormatter
             $properties = $this->expandMultiColumnProperties($include);
 
             array_unshift($properties, 'id');
+
+            // Asking for the typicalAgeRange and the birthdateRange both name the leeftijd column,
+            // and an id the export prepends anyway can also be asked for, so a property that is
+            // named twice still becomes a single column.
+            $properties = array_values(array_unique($properties));
         } else {
             $properties = array_keys($this->columns());
         }
@@ -416,7 +428,7 @@ class TabularDataEventFormatter
             'typicalAgeRange' => [
                 'name' => 'leeftijd',
                 'include' => function ($event) {
-                    return $event->typicalAgeRange ?? '';
+                    return $this->formatAgeRange($event);
                 },
                 'property' => 'typicalAgeRange',
             ],
@@ -896,6 +908,36 @@ class TabularDataEventFormatter
     private function toSingleLine(string $text): string
     {
         return trim(preg_replace('/\s+/', ' ', $this->htmlFilter->filter($text)));
+    }
+
+    /**
+     * An event describes its audience with a typicalAgeRange or a birthdateRange, and the polyfill
+     * drops the typicalAgeRange of an event that has a birthdate range. An older projection can
+     * still carry both, in which case a specific age range wins, just like in the HTML export.
+     *
+     * @see \CultuurNet\UDB3\EventExport\Format\HTML\HTMLEventFormatter::addAgeRangeInfo()
+     */
+    private function formatAgeRange(stdClass $event): string
+    {
+        $typicalAgeRange = isset($event->typicalAgeRange) && is_string($event->typicalAgeRange)
+            ? $event->typicalAgeRange
+            : '';
+
+        if (AgeRangeFactory::hasSpecificAgeRange($typicalAgeRange)) {
+            return $typicalAgeRange;
+        }
+
+        // The birthdate range only fills in when there is no specific age range, so for an all ages
+        // or a malformed value.
+        $birthdateRange = BirthdateRangeFactory::fromJson($event->birthdateRange ?? null);
+
+        if ($birthdateRange !== null) {
+            return BirthdateRangeFactory::formatRange($birthdateRange);
+        }
+
+        // Without a usable birthdate range the original value is still the best available answer,
+        // which keeps exporting "-" for an all ages event.
+        return $typicalAgeRange;
     }
 
     /**

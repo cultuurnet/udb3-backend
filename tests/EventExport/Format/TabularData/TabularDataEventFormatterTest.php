@@ -913,6 +913,109 @@ class TabularDataEventFormatterTest extends TestCase
 
     /**
      * @test
+     * @dataProvider eventsAndLeeftijd
+     */
+    public function it_should_export_the_age_range_or_the_birthdate_range_as_leeftijd(
+        string $event,
+        string $leeftijd
+    ): void {
+        $formatter = new TabularDataEventFormatter(['typicalAgeRange']);
+
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $this->assertSame($leeftijd, $formattedEvent['typicalAgeRange']);
+    }
+
+    public function eventsAndLeeftijd(): array
+    {
+        return [
+            'a typical age range' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => '6-12']),
+                'leeftijd' => '6-12',
+            ],
+            'a birthdate range' => [
+                'event' => $this->encodeEvent(
+                    ['birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31']]
+                ),
+                'leeftijd' => '01/01/2010 - 31/12/2010',
+            ],
+            'a birthdate range of a single day' => [
+                'event' => $this->encodeEvent(
+                    ['birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-01-01']]
+                ),
+                'leeftijd' => '01/01/2010 - 01/01/2010',
+            ],
+            'a specific age range wins from a birthdate range' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'typicalAgeRange' => '6-12',
+                        'birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31'],
+                    ]
+                ),
+                'leeftijd' => '6-12',
+            ],
+            'an all ages range gives way to a birthdate range' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'typicalAgeRange' => '-',
+                        'birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31'],
+                    ]
+                ),
+                'leeftijd' => '01/01/2010 - 31/12/2010',
+            ],
+            'an all ages event without a birthdate range' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => '-']),
+                'leeftijd' => '-',
+            ],
+            'an incomplete birthdate range' => [
+                'event' => $this->encodeEvent(['birthdateRange' => ['from' => '2010-01-01']]),
+                'leeftijd' => '',
+            ],
+            'a birthdate range that is not a real date' => [
+                'event' => $this->encodeEvent(
+                    ['birthdateRange' => ['from' => '2010-13-45', 'to' => '2010-12-31']]
+                ),
+                'leeftijd' => '',
+            ],
+            'neither an age range nor a birthdate range' => [
+                'event' => $this->encodeEvent([]),
+                'leeftijd' => '',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_exports_the_birthdate_range_in_the_leeftijd_column(): void
+    {
+        $formatter = new TabularDataEventFormatter(['birthdateRange']);
+
+        $this->assertSame(['id', 'leeftijd'], $formatter->formatHeader());
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_one_leeftijd_column_when_both_age_properties_are_included(): void
+    {
+        $formatter = new TabularDataEventFormatter(['typicalAgeRange', 'birthdateRange']);
+
+        $this->assertSame(['id', 'leeftijd'], $formatter->formatHeader());
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_one_id_column_when_the_id_is_included_as_well(): void
+    {
+        $formatter = new TabularDataEventFormatter(['id', 'name']);
+
+        $this->assertSame(['id', 'titel'], $formatter->formatHeader());
+    }
+
+    /**
+     * @test
      * @dataProvider eventsAndOvernightStay
      */
     public function it_should_export_whether_the_event_has_an_overnight_stay(
