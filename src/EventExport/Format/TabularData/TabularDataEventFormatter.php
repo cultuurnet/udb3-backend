@@ -23,6 +23,7 @@ use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\EventExport\OvernightStayResolver;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\TargetAudienceDescription;
+use CultuurNet\UDB3\EventExport\Translation\TranslatedProperty;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -396,11 +397,10 @@ class TabularDataEventFormatter
                 'name' => 'organisatie',
                 'include' => function ($event) {
                     /** @var stdClass $event */
-                    if (isset($event->organizer, $event->organizer->name)) {
-                        $name = (array) $event->organizer->name;
-                        return $name[$this->getMainLanguage($event)] ?? current($name);
-                    }
-                    return '';
+                    return TranslatedProperty::asString(
+                        $event->organizer->name ?? null,
+                        TranslatedProperty::mainLanguage($event)
+                    );
                 },
                 'property' => 'organizer',
             ],
@@ -851,22 +851,13 @@ class TabularDataEventFormatter
         };
     }
 
-    /**
-     * @replay_i18n
-     * @see https://jira.uitdatabank.be/browse/III-2201
-     */
     private function getAddressField(stdClass $event, string $addressField): string
     {
-        if (isset($event->location->address->{$addressField})) {
-            return $event->location->address->{$addressField};
-        }
-
-        return $event->location->address->{$this->getMainLanguage($event)}->{$addressField} ?? '';
-    }
-
-    private function getMainLanguage(stdClass $event): string
-    {
-        return $event->mainLanguage ?? 'nl';
+        return TranslatedProperty::addressField(
+            $event->location->address ?? null,
+            $addressField,
+            TranslatedProperty::mainLanguage($event)
+        );
     }
 
     private function formatFaqs(stdClass $event): string
@@ -882,7 +873,7 @@ class TabularDataEventFormatter
                 continue;
             }
 
-            $translation = $this->pickTranslation(get_object_vars($faq), $this->getMainLanguage($event));
+            $translation = $this->pickTranslation(get_object_vars($faq), TranslatedProperty::mainLanguage($event));
 
             if ($translation === null) {
                 continue;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\DeparturePlaces;
 
+use CultuurNet\UDB3\EventExport\Translation\TranslatedProperty;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
@@ -79,10 +80,12 @@ final class DeparturePlaceResolver
             return null;
         }
 
+        $mainLanguage = TranslatedProperty::mainLanguage($place);
+
         return new DeparturePlace(
-            $this->getName($place),
-            $this->getAddressField($place, 'postalCode'),
-            $this->getAddressField($place, 'addressLocality')
+            TranslatedProperty::asString($place->name ?? null, $mainLanguage),
+            TranslatedProperty::addressField($place->address ?? null, 'postalCode', $mainLanguage),
+            TranslatedProperty::addressField($place->address ?? null, 'addressLocality', $mainLanguage)
         );
     }
 
@@ -91,56 +94,5 @@ final class DeparturePlaceResolver
         $urlParts = explode('/', rtrim($placeUrl, '/'));
 
         return (string) array_pop($urlParts);
-    }
-
-    private function getName(stdClass $place): string
-    {
-        if (!isset($place->name)) {
-            return '';
-        }
-
-        if (is_string($place->name)) {
-            return $place->name;
-        }
-
-        $translations = get_object_vars($place->name);
-        $name = $translations[$this->getMainLanguage($place)] ?? reset($translations);
-
-        return is_string($name) ? $name : '';
-    }
-
-    /**
-     * @replay_i18n
-     * @see https://jira.uitdatabank.be/browse/III-2201
-     */
-    private function getAddressField(stdClass $place, string $addressField): string
-    {
-        if (!isset($place->address)) {
-            return '';
-        }
-
-        if (isset($place->address->{$addressField})) {
-            return (string) $place->address->{$addressField};
-        }
-
-        $mainLanguage = $this->getMainLanguage($place);
-
-        if (isset($place->address->{$mainLanguage}->{$addressField})) {
-            return (string) $place->address->{$mainLanguage}->{$addressField};
-        }
-
-        $translations = get_object_vars($place->address);
-        $address = reset($translations);
-
-        if ($address instanceof stdClass && isset($address->{$addressField})) {
-            return (string) $address->{$addressField};
-        }
-
-        return '';
-    }
-
-    private function getMainLanguage(stdClass $place): string
-    {
-        return is_string($place->mainLanguage ?? null) ? $place->mainLanguage : 'nl';
     }
 }

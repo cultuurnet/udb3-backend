@@ -253,6 +253,28 @@ class TabularDataEventFormatterTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_handles_an_address_that_is_not_translated_into_the_main_language_of_the_event(): void
+    {
+        $event = Json::decode($this->getJSONEventFromFile('event_with_translated_address_and_main_language.json'));
+        $event->mainLanguage = 'de';
+
+        $formatter = new TabularDataEventFormatter(['id', 'address']);
+
+        $this->assertEquals(
+            [
+                'id' => 'd1f0e71d-a9a8-4069-81fb-530134502c58',
+                'address.streetAddress' => 'Sint-Jorisplein 20 ',
+                'address.postalCode' => '3300',
+                'address.addressLocality' => 'Tienen',
+                'address.addressCountry' => 'BE',
+            ],
+            $formatter->formatEvent(Json::encode($event))
+        );
+    }
+
+    /**
+     * @test
      * @dataProvider eventDateProvider
      */
     public function it_formats_dates(string $eventFile, array $expectedFormattedEvent): void
