@@ -8,7 +8,7 @@ use CultuurNet\UDB3\Event\EventTypeResolver;
 use CultuurNet\UDB3\Json;
 use PHPUnit\Framework\TestCase;
 
-final class OvernightStayTest extends TestCase
+final class OvernightStayResolverTest extends TestCase
 {
     private const CONCERT_TERM_ID = '0.50.4.0.0';
 
@@ -18,8 +18,7 @@ final class OvernightStayTest extends TestCase
      */
     public function it_summarises_the_occurrences_of_an_event(array $event, ?bool $expected): void
     {
-        // The cast keeps an event without any properties an object rather than an empty array.
-        $this->assertSame($expected, OvernightStay::forEvent(Json::decode(Json::encode((object) $event))));
+        $this->assertSame($expected, OvernightStayResolver::forEvent(Json::decode(Json::encode((object) $event))));
     }
 
     public function eventsAndOvernightStay(): array

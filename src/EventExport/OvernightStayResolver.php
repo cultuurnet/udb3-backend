@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\EventExport;
 use CultuurNet\UDB3\Event\EventTypeResolver;
 use stdClass;
 
-final class OvernightStay
+final class OvernightStayResolver
 {
     /**
      * An overnight stay is stored per occurrence, and SubEventNormalizer only writes it when there
