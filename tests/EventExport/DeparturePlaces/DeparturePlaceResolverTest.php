@@ -149,6 +149,37 @@ final class DeparturePlaceResolverTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_looks_up_a_place_shared_by_several_events_once(): void
+    {
+        $this->placeRepository->expects($this->once())->method('fetch')->willReturn(
+            new JsonDocument('abc-123', Json::encode([
+                'name' => ['nl' => 'Centraal Station'],
+                'address' => ['nl' => ['postalCode' => '2000', 'addressLocality' => 'Antwerpen']],
+            ]))
+        );
+
+        $departurePlace = new DeparturePlace('Centraal Station', '2000', 'Antwerpen');
+
+        $this->assertEquals([$departurePlace], $this->resolver->resolve($this->event(['abc-123'])));
+        $this->assertEquals([$departurePlace], $this->resolver->resolve($this->event(['abc-123'])));
+    }
+
+    /**
+     * @test
+     */
+    public function it_looks_up_a_place_that_no_longer_exists_once(): void
+    {
+        $this->placeRepository->expects($this->once())->method('fetch')->willThrowException(
+            DocumentDoesNotExist::withId('gone-999')
+        );
+
+        $this->assertSame([], $this->resolver->resolve($this->event(['gone-999'])));
+        $this->assertSame([], $this->resolver->resolve($this->event(['gone-999'])));
+    }
+
+    /**
+     * @test
      * @dataProvider eventsWithoutDeparturePlaces
      */
     public function it_describes_nothing_without_departure_places(array $properties): void

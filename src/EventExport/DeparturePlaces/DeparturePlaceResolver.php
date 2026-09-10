@@ -15,6 +15,11 @@ use stdClass;
  */
 final class DeparturePlaceResolver
 {
+    /**
+     * @var array<string, DeparturePlace|null>
+     */
+    private array $resolved = [];
+
     public function __construct(private readonly DocumentRepository $placeRepository)
     {
     }
@@ -55,6 +60,15 @@ final class DeparturePlaceResolver
             return null;
         }
 
+        if (!array_key_exists($placeId, $this->resolved)) {
+            $this->resolved[$placeId] = $this->describePlace($placeId);
+        }
+
+        return $this->resolved[$placeId];
+    }
+
+    private function describePlace(string $placeId): ?DeparturePlace
+    {
         try {
             $place = Json::decode($this->placeRepository->fetch($placeId)->getRawBody());
         } catch (DocumentDoesNotExist) {
