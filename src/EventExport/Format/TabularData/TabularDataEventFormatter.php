@@ -849,33 +849,27 @@ class TabularDataEventFormatter
         return implode("\n", $items);
     }
 
-    /**
-     * An item that was never translated to the main language of the event falls back to whatever
-     * translation it does have, so that no question disappears from the export.
-     *
-     * A question or an answer that is not text at all can still turn up in an older projection.
-     * Such a translation is passed over instead of handed to a string parameter, where it would
-     * raise a TypeError that fails the export of the whole result set.
-     */
     private function pickTranslation(array $translations, string $mainLanguage): ?stdClass
     {
-        if (isset($translations[$mainLanguage])) {
-            // Keys on the left win and keep their position, so the main language moves to the front
-            // and every other language keeps its projection order.
-            $translations = [$mainLanguage => $translations[$mainLanguage]] + $translations;
+        if ($this->isValidTranslation($translations[$mainLanguage] ?? null)) {
+            return $translations[$mainLanguage];
         }
 
         foreach ($translations as $candidate) {
-            if ($candidate instanceof stdClass
-                && isset($candidate->question, $candidate->answer)
-                && is_string($candidate->question)
-                && is_string($candidate->answer)
-            ) {
+            if ($this->isValidTranslation($candidate)) {
                 return $candidate;
             }
         }
 
         return null;
+    }
+
+    private function isValidTranslation($candidate): bool
+    {
+        return $candidate instanceof stdClass
+            && isset($candidate->question, $candidate->answer)
+            && is_string($candidate->question)
+            && is_string($candidate->answer);
     }
 
     /**
