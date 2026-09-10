@@ -90,7 +90,7 @@ class CalendarSummaryParametersTest extends TestCase
             ApiProblem::queryParameterInvalidValue(
                 'format',
                 'foo',
-                ['xs', 'sm', 'md', 'lg']
+                ['xs', 'sm', 'md', 'lg', 'xl']
             ),
             fn () => new CalendarSummaryParameters($request)
         );
