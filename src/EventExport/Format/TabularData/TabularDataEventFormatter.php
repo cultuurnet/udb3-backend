@@ -21,6 +21,7 @@ use CultuurNet\UDB3\EventExport\Media\MediaFinder;
 use CultuurNet\UDB3\EventExport\Media\Url;
 use CultuurNet\UDB3\EventExport\OvernightStayResolver;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
+use CultuurNet\UDB3\EventExport\TargetAudienceDescription;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
@@ -740,6 +741,11 @@ class TabularDataEventFormatter
                     return $this->formatOvernightStay($event);
                 },
                 'property' => 'subEvent',
+            ],
+            'childrenOnly' => [
+                'name' => 'doelgroep',
+                'include' => fn ($event) => TargetAudienceDescription::fromEvent($event),
+                'property' => 'childrenOnly',
             ],
         ];
     }

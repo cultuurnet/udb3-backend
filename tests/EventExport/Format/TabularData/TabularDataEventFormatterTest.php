@@ -83,6 +83,7 @@ class TabularDataEventFormatterTest extends TestCase
                 // integrators already read stays the same.
                 'faq',
                 'met overnachting',
+                'doelgroep',
             ],
             $formatter->formatHeader()
         );
@@ -1012,6 +1013,29 @@ class TabularDataEventFormatterTest extends TestCase
         $formatter = new TabularDataEventFormatter(['id', 'name']);
 
         $this->assertSame(['id', 'titel'], $formatter->formatHeader());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_export_the_target_audience_as_doelgroep(): void
+    {
+        $formatter = new TabularDataEventFormatter(['childrenOnly']);
+
+        $this->assertSame(
+            'voor kinderen alleen',
+            $formatter->formatEvent($this->encodeEvent(['childrenOnly' => true]))['childrenOnly']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_the_doelgroep_empty_when_there_is_nothing_to_say(): void
+    {
+        $formatter = new TabularDataEventFormatter(['childrenOnly']);
+
+        $this->assertSame('', $formatter->formatEvent($this->encodeEvent([]))['childrenOnly']);
     }
 
     /**

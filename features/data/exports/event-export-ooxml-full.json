@@ -27,6 +27,7 @@
     "calendarType",
     "sameAs",
     "typicalAgeRange",
+    "childrenOnly",
     "birthdateRange",
     "language",
     "audience"
