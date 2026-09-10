@@ -7,7 +7,7 @@ namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
-use CultuurNet\UDB3\EventExport\OvernightStay;
+use CultuurNet\UDB3\EventExport\OvernightStayResolver;
 use CultuurNet\UDB3\Json;
 
 final class JSONLDEventFormatter
@@ -133,7 +133,7 @@ final class JSONLDEventFormatter
      */
     private function addOvernightStay(\stdClass $event): void
     {
-        $hasOvernightStay = OvernightStay::forEvent($event);
+        $hasOvernightStay = OvernightStayResolver::forEvent($event);
 
         if ($hasOvernightStay !== null) {
             $event->hasOvernightStay = $hasOvernightStay;

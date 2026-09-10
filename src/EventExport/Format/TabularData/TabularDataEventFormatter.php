@@ -19,18 +19,23 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\Media\MediaFinder;
 use CultuurNet\UDB3\EventExport\Media\Url;
-use CultuurNet\UDB3\EventExport\OvernightStay;
+use CultuurNet\UDB3\EventExport\OvernightStayResolver;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
+use CultuurNet\UDB3\StringFilter\TruncateStringFilter;
 use DateTimeInterface;
 use Exception;
 use stdClass;
 
 class TabularDataEventFormatter
 {
+    private const EXCEL_MAX_CELL_LENGTH = 32767;
+
     protected StripHtmlStringFilter $htmlFilter;
+
+    private TruncateStringFilter $faqFilter;
 
     /**
      * A list of all included properties
@@ -60,6 +65,9 @@ class TabularDataEventFormatter
         ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
     ) {
         $this->htmlFilter = new StripHtmlStringFilter();
+        $this->faqFilter = new TruncateStringFilter(self::EXCEL_MAX_CELL_LENGTH);
+        $this->faqFilter->addEllipsis();
+        $this->faqFilter->turnOnWordSafe(1);
         $this->includedProperties = $this->includedOrDefaultProperties($include);
         $this->uitpas = $uitpas;
         $this->uitpasInfoFormatter = new UitpasInfoFormatter(new PriceFormatter(2, ',', '.', 'Gratis'));
@@ -866,36 +874,30 @@ class TabularDataEventFormatter
                 $this->toSingleLine($translation->answer);
         }
 
-        return implode("\n", $items);
+        return $this->faqFilter->filter(implode("\n", $items));
     }
 
-    /**
-     * An item that was never translated to the main language of the event falls back to whatever
-     * translation it does have, so that no question disappears from the export.
-     *
-     * A question or an answer that is not text at all can still turn up in an older projection.
-     * Such a translation is passed over instead of handed to a string parameter, where it would
-     * raise a TypeError that fails the export of the whole result set.
-     */
     private function pickTranslation(array $translations, string $mainLanguage): ?stdClass
     {
-        if (isset($translations[$mainLanguage])) {
-            // Keys on the left win and keep their position, so the main language moves to the front
-            // and every other language keeps its projection order.
-            $translations = [$mainLanguage => $translations[$mainLanguage]] + $translations;
+        if ($this->isValidTranslation($translations[$mainLanguage] ?? null)) {
+            return $translations[$mainLanguage];
         }
 
         foreach ($translations as $candidate) {
-            if ($candidate instanceof stdClass
-                && isset($candidate->question, $candidate->answer)
-                && is_string($candidate->question)
-                && is_string($candidate->answer)
-            ) {
+            if ($this->isValidTranslation($candidate)) {
                 return $candidate;
             }
         }
 
         return null;
+    }
+
+    private function isValidTranslation(mixed $candidate): bool
+    {
+        return $candidate instanceof stdClass
+            && isset($candidate->question, $candidate->answer)
+            && is_string($candidate->question)
+            && is_string($candidate->answer);
     }
 
     /**
@@ -944,7 +946,7 @@ class TabularDataEventFormatter
      */
     private function formatOvernightStay(stdClass $event): string
     {
-        $hasOvernightStay = OvernightStay::forEvent($event);
+        $hasOvernightStay = OvernightStayResolver::forEvent($event);
 
         if ($hasOvernightStay === null) {
             return '';

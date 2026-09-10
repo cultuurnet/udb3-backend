@@ -22,12 +22,12 @@ final class CalendarSummaryParameters
 
         // Validate query parameters.
         $this->queryParameters->guardEnum('language', ['nl', 'fr', 'de', 'en']);
-        $this->queryParameters->guardEnum('size', ['xs', 'sm', 'md', 'lg']);
+        $this->queryParameters->guardEnum('size', ['xs', 'sm', 'md', 'lg', 'xl']);
 
         // Validate deprecated query parameters.
         $this->queryParameters->guardEnum('langCode', ['nl_BE', 'fr_BE', 'de_BE', 'en_BE']);
         $this->queryParameters->guardEnum('style', ['html', 'text']);
-        $this->queryParameters->guardEnum('format', ['xs', 'sm', 'md', 'lg']);
+        $this->queryParameters->guardEnum('format', ['xs', 'sm', 'md', 'lg', 'xl']);
     }
 
     public function getContentType(): string
