@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\EventExport\Format\TabularData;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
+use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
@@ -1072,7 +1073,7 @@ class TabularDataEventFormatterTest extends TestCase
             ['departurePlaces'],
             null,
             null,
-            $this->placeRepository([
+            $this->departurePlaceResolver([
                 'abc-123' => [
                     'name' => ['nl' => 'Centraal Station'],
                     'address' => ['nl' => ['postalCode' => '2000', 'addressLocality' => 'Antwerpen']],
@@ -1106,7 +1107,7 @@ class TabularDataEventFormatterTest extends TestCase
             ['departurePlaces'],
             null,
             null,
-            $this->placeRepository(['abc-123' => ['name' => ['nl' => 'Centraal Station']]])
+            $this->departurePlaceResolver(['abc-123' => ['name' => ['nl' => 'Centraal Station']]])
         );
 
         $event = $this->encodeEvent(
@@ -1119,7 +1120,7 @@ class TabularDataEventFormatterTest extends TestCase
     /**
      * @test
      */
-    public function it_leaves_the_departure_places_empty_without_a_place_repository(): void
+    public function it_leaves_the_departure_places_empty_without_a_departure_place_resolver(): void
     {
         $formatter = new TabularDataEventFormatter(['departurePlaces']);
 
@@ -1130,14 +1131,14 @@ class TabularDataEventFormatterTest extends TestCase
         $this->assertSame('', $formatter->formatEvent($event)['departurePlaces']);
     }
 
-    private function placeRepository(array $places): DocumentRepository
+    private function departurePlaceResolver(array $places): DeparturePlaceResolver
     {
         $repository = $this->createMock(DocumentRepository::class);
         $repository->method('fetch')->willReturnCallback(
             fn (string $id): JsonDocument => new JsonDocument($id, Json::encode($places[$id]))
         );
 
-        return $repository;
+        return new DeparturePlaceResolver($repository);
     }
 
     /**

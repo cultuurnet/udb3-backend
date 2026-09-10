@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Format\TabularData;
 
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
+use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\EventExport\FileWriterInterface;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
 
 class TabularDataFileWriter implements FileWriterInterface
 {
@@ -23,14 +23,14 @@ class TabularDataFileWriter implements FileWriterInterface
         array $include,
         EventInfoServiceInterface $uitpas = null,
         CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
-        ?DocumentRepository $placeRepository = null
+        ?DeparturePlaceResolver $departurePlaceResolver = null
     ) {
         $this->tabularDataFileWriterFactory = $tabularDataFileWriterFactory;
         $this->eventFormatter = new TabularDataEventFormatter(
             $include,
             $uitpas,
             $calendarSummaryRepository,
-            $placeRepository
+            $departurePlaceResolver
         );
     }
 

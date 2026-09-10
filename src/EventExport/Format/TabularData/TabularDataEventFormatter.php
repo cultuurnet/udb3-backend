@@ -26,7 +26,6 @@ use CultuurNet\UDB3\EventExport\TargetAudienceDescription;
 use CultuurNet\UDB3\EventExport\Translation\TranslatedProperty;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
 use CultuurNet\UDB3\StringFilter\TruncateStringFilter;
 use DateTimeInterface;
@@ -69,9 +68,9 @@ class TabularDataEventFormatter
         array $include,
         EventInfoServiceInterface $uitpas = null,
         ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
-        ?DocumentRepository $placeRepository = null
+        ?DeparturePlaceResolver $departurePlaceResolver = null
     ) {
-        $this->departurePlaceResolver = $placeRepository ? new DeparturePlaceResolver($placeRepository) : null;
+        $this->departurePlaceResolver = $departurePlaceResolver;
         $this->htmlFilter = new StripHtmlStringFilter();
         $this->faqFilter = new TruncateStringFilter(self::EXCEL_MAX_CELL_LENGTH);
         $this->faqFilter->addEllipsis();
