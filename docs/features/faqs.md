@@ -101,3 +101,51 @@ Serialized using `FaqsNormalizer` / deserialized using `FaqsDenormalizer`. Store
 
 - Sets `faqs` on the JSON-LD document when the list is non-empty
 - Removes `faqs` entirely when the list is empty
+
+## Export
+
+FAQs are exportable by adding `faqs` to the `include` list of an event export.
+
+| Method | Endpoint                | Format | FAQ output                     |
+|--------|-------------------------|--------|--------------------------------|
+| POST   | `/events/export/ooxml/` | Excel  | A `faq` column                 |
+| POST   | `/events/export/json/`  | JSON   | The `faqs` property, unchanged |
+
+The PDF export does not include FAQs.
+
+```json
+{"email": "export@publiq.be", "query": "...", "include": ["name", "faqs"]}
+```
+
+### Excel
+
+**Formatter:** `src/EventExport/Format/TabularData/TabularDataEventFormatter.php` — `formatFaqs()`
+
+The column is headed `faq` and holds one question and answer per item, each on a line of its own
+inside the cell:
+
+```
+Hoe geraak ik er? Met de bus.
+Wat kost het? 10 euro.
+```
+
+- **One translation per item.** The main language of the event wins (`mainLanguage`, or `nl` when
+  the event does not name one), the same rule the `organisatie` and address columns follow. An item
+  with no translation in that language falls back to whatever translation it does have, so that no
+  question disappears from the export.
+- **Markup is stripped** with `StripHtmlStringFilter`, and the whitespace left over is collapsed to
+  single spaces, so an item is always exactly one line.
+- **Nothing is escaped.** Since an item can never contain a newline, the newline between items is
+  unambiguous and a `;` inside a question or answer is ordinary text.
+- A translation whose `question` or `answer` is not a string is passed over instead of exported.
+
+A cell that holds a newline is wrapped and its column widened, because Excel only draws a newline
+inside a cell as a line break when the cell wraps (`OOXMLFileWriter`).
+
+### JSON
+
+**Formatter:** `src/EventExport/Format/JSONLD/JSONLDEventFormatter.php`
+
+The JSON export filters the projection against the `include` list, so `faqs` passes through exactly
+as the read model stores it: every translation, markup included. None of the Excel rules above
+apply.

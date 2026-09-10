@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -182,6 +183,46 @@ class JSONLDEventFormatterTest extends TestCase
 
         $this->assertEquals(
             '{"@id":"https:\/\/udb-silex-acc.uitdatabank.be\/event\/0c70b8f3-66a0-4532-959f-2e13b4624f04","attendanceMode":"mixed","onlineUrl":"https:\/\/www.publiq.be\/livestream"}',
+            $event
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_exports_the_faqs_unchanged(): void
+    {
+        $includedProperties = [
+            'id',
+            'faqs',
+        ];
+        $eventWithFaqs = $this->getJSONEventFromFile('event_with_faqs.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithFaqs);
+
+        $this->assertEquals(
+            Json::encode([
+                '@id' => 'https://udb-silex-acc.uitdatabank.be/event/0c70b8f3-66a0-4532-959f-2e13b4624f04',
+                'faqs' => [
+                    [
+                        'nl' => [
+                            'question' => 'Hoe geraak ik er?',
+                            'answer' => '<p>Met de <strong>bus</strong>.</p>',
+                        ],
+                        'fr' => [
+                            'question' => 'Comment venir?',
+                            'answer' => '<p>En bus.</p>',
+                        ],
+                    ],
+                    [
+                        'nl' => [
+                            'question' => 'Wat kost het?',
+                            'answer' => '10 euro.',
+                        ],
+                    ],
+                ],
+            ]),
             $event
         );
     }

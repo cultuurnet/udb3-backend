@@ -57,7 +57,8 @@ class TabularDataFileWriter implements FileWriterInterface
     protected function openFileWriter(string $filePath): TabularDataFileWriterInterface
     {
         return $this->tabularDataFileWriterFactory->openTabularDataFileWriter(
-            $filePath
+            $filePath,
+            $this->eventFormatter->wrappedColumns()
         );
     }
 }

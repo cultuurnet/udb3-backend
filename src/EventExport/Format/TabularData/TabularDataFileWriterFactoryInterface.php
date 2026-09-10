@@ -6,5 +6,11 @@ namespace CultuurNet\UDB3\EventExport\Format\TabularData;
 
 interface TabularDataFileWriterFactoryInterface
 {
-    public function openTabularDataFileWriter(string $filePath): TabularDataFileWriterInterface;
+    /**
+     * @param int[] $wrappedColumns
+     */
+    public function openTabularDataFileWriter(
+        string $filePath,
+        array $wrappedColumns = []
+    ): TabularDataFileWriterInterface;
 }

@@ -21,13 +21,18 @@ use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
+use CultuurNet\UDB3\StringFilter\TruncateStringFilter;
 use DateTimeInterface;
 use Exception;
 use stdClass;
 
 class TabularDataEventFormatter
 {
+    private const EXCEL_MAX_CELL_LENGTH = 32767;
+
     protected StripHtmlStringFilter $htmlFilter;
+
+    private TruncateStringFilter $faqFilter;
 
     /**
      * A list of all included properties
@@ -57,6 +62,9 @@ class TabularDataEventFormatter
         ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
     ) {
         $this->htmlFilter = new StripHtmlStringFilter();
+        $this->faqFilter = new TruncateStringFilter(self::EXCEL_MAX_CELL_LENGTH);
+        $this->faqFilter->addEllipsis();
+        $this->faqFilter->turnOnWordSafe(1);
         $this->includedProperties = $this->includedOrDefaultProperties($include);
         $this->uitpas = $uitpas;
         $this->uitpasInfoFormatter = new UitpasInfoFormatter(new PriceFormatter(2, ',', '.', 'Gratis'));
@@ -76,6 +84,27 @@ class TabularDataEventFormatter
         }
 
         return $columns;
+    }
+
+    /**
+     * The columns that hold a value of more than one line, as column numbers, so that a writer can
+     * render those lines. A column is named here rather than recognised by its content, because a
+     * newline in a description is markup that has always been shown as a single run of text.
+     *
+     * @return int[]
+     */
+    public function wrappedColumns(): array
+    {
+        $columns = $this->columns();
+        $wrapped = [];
+
+        foreach (array_values($this->includedProperties) as $index => $property) {
+            if ($columns[$property]['wrap'] ?? false) {
+                $wrapped[] = $index + 1;
+            }
+        }
+
+        return $wrapped;
     }
 
     public function formatEvent(string $event): array
@@ -349,8 +378,7 @@ class TabularDataEventFormatter
                     /** @var stdClass $event */
                     if (isset($event->organizer, $event->organizer->name)) {
                         $name = (array) $event->organizer->name;
-                        $mainLanguage = $event->mainLanguage ?? 'nl';
-                        return $name[$mainLanguage] ?? current($name);
+                        return $name[$this->getMainLanguage($event)] ?? current($name);
                     }
                     return '';
                 },
@@ -685,6 +713,14 @@ class TabularDataEventFormatter
                 },
                 'property' => 'completeness',
             ],
+            'faqs' => [
+                'name' => 'faq',
+                'include' => function ($event) {
+                    return $this->formatFaqs($event);
+                },
+                'property' => 'faqs',
+                'wrap' => true,
+            ],
         ];
     }
 
@@ -787,9 +823,71 @@ class TabularDataEventFormatter
             return $event->location->address->{$addressField};
         }
 
-        $mainLanguage = $event->mainLanguage ?? 'nl';
+        return $event->location->address->{$this->getMainLanguage($event)}->{$addressField} ?? '';
+    }
 
-        return $event->location->address->{$mainLanguage}->{$addressField} ?? '';
+    private function getMainLanguage(stdClass $event): string
+    {
+        return $event->mainLanguage ?? 'nl';
+    }
+
+    private function formatFaqs(stdClass $event): string
+    {
+        if (!isset($event->faqs) || !is_array($event->faqs)) {
+            return '';
+        }
+
+        $items = [];
+
+        foreach ($event->faqs as $faq) {
+            if (!$faq instanceof stdClass) {
+                continue;
+            }
+
+            $translation = $this->pickTranslation(get_object_vars($faq), $this->getMainLanguage($event));
+
+            if ($translation === null) {
+                continue;
+            }
+
+            $items[] = $this->toSingleLine($translation->question) . ' ' .
+                $this->toSingleLine($translation->answer);
+        }
+
+        return $this->faqFilter->filter(implode("\n", $items));
+    }
+
+    private function pickTranslation(array $translations, string $mainLanguage): ?stdClass
+    {
+        if ($this->isValidTranslation($translations[$mainLanguage] ?? null)) {
+            return $translations[$mainLanguage];
+        }
+
+        foreach ($translations as $candidate) {
+            if ($this->isValidTranslation($candidate)) {
+                return $candidate;
+            }
+        }
+
+        return null;
+    }
+
+    private function isValidTranslation(mixed $candidate): bool
+    {
+        return $candidate instanceof stdClass
+            && isset($candidate->question, $candidate->answer)
+            && is_string($candidate->question)
+            && is_string($candidate->answer);
+    }
+
+    /**
+     * Questions and answers are free text that can contain markup, just like a description, so the
+     * tags are stripped first: the filter turns a <br> or a </p> into newlines, which then collapse
+     * into the single space that separates the words.
+     */
+    private function toSingleLine(string $text): string
+    {
+        return trim(preg_replace('/\s+/', ' ', $this->htmlFilter->filter($text)));
     }
 
     private function formatStatus(stdClass $status): string
