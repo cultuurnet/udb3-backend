@@ -1001,6 +1001,25 @@ class TabularDataEventFormatterTest extends TestCase
         $this->assertSame($faq, $formattedEvent['faqs']);
     }
 
+    /**
+     * @test
+     */
+    public function it_cuts_off_faqs_that_do_not_fit_in_an_excel_cell(): void
+    {
+        $event = $this->encodeEvent(
+            ['faqs' => [['nl' => ['question' => 'Hoe geraak ik er?', 'answer' => str_repeat('met de bus ', 5000)]]]]
+        );
+
+        $formatter = new TabularDataEventFormatter(['id', 'faqs']);
+
+        $faq = $formatter->formatEvent($event)['faqs'];
+
+        $this->assertLessThanOrEqual(32767, mb_strlen($faq));
+        $this->assertGreaterThan(32000, mb_strlen($faq));
+        $this->assertStringStartsWith('Hoe geraak ik er? met de bus', $faq);
+        $this->assertStringEndsWith('bus...', $faq);
+    }
+
     public function eventsAndFaq(): array
     {
         return [

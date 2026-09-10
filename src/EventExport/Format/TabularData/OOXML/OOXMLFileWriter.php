@@ -31,9 +31,6 @@ class OOXMLFileWriter implements TabularDataFileWriterInterface
 
     /**
      * @param int[] $wrappedColumns
-     *   The columns whose value holds more than one line, as column numbers. Excel only shows a
-     *   newline inside a cell as a line break when the cell wraps its text, so those columns are
-     *   wrapped and widened. Every other column is left exactly as it was.
      */
     public function __construct(string $filePath, array $wrappedColumns = [])
     {
