@@ -415,7 +415,6 @@ Feature: Test the Search API v3 calendar summary
     When I send a GET request to "/offers" with parameters:
       | q                        | id:(%{placeId} OR %{eventId}) |
       | embedCalendarSummaries[] | xxl-text                      |
-    And show me the unparsed response
     Then the JSON response should be:
     """
     {
