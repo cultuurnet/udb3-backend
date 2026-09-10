@@ -414,13 +414,13 @@ Feature: Test the Search API v3 calendar summary
   Scenario: I cannot use an unsupported format
     When I send a GET request to "/offers" with parameters:
       | q                        | id:(%{placeId} OR %{eventId}) |
-      | embedCalendarSummaries[] | xl-text                          |
+      | embedCalendarSummaries[] | xxl-text                      |
     Then the JSON response should be:
     """
     {
       "title": "Not Found",
       "type": "https:\/\/api.publiq.be\/probs\/url\/not-found",
       "status": 404,
-      "detail": "Invalid format: xl. Use one of: xs,sm,md,lg"
+      "detail": "Invalid format: xxl. Use one of: xs,sm,md,lg,xl"
     }
     """
