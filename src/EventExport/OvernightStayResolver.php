@@ -10,9 +10,7 @@ use stdClass;
 final class OvernightStayResolver
 {
     /**
-     * An overnight stay is stored per occurrence, and SubEventNormalizer only writes it when there
-     * is one, so its absence cannot be told apart from an event type that could never have one.
-     * Only camps and vacations can, which is why any other event type answers null instead of
+     * Only camps and vacations can have vacation, which is why any other event type answers null instead of
      * false, and every export renders that in its own way.
      */
     public static function forEvent(stdClass $event): ?bool
