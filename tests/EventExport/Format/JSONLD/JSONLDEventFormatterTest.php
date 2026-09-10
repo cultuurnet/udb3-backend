@@ -226,4 +226,47 @@ class JSONLDEventFormatterTest extends TestCase
             $event
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_summarises_the_overnight_stay_of_the_occurrences(): void
+    {
+        $includedProperties = [
+            'id',
+            'hasOvernightStay',
+        ];
+        $eventWithOvernightStay = $this->getJSONEventFromFile('event_with_overnight_stay.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithOvernightStay);
+
+        $this->assertEquals(
+            Json::encode([
+                '@id' => 'https://udb-silex-acc.uitdatabank.be/event/0c70b8f3-66a0-4532-959f-2e13b4624f04',
+                'hasOvernightStay' => true,
+            ]),
+            $event
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_out_the_overnight_stay_of_an_event_type_that_can_never_have_one(): void
+    {
+        $includedProperties = [
+            'id',
+            'hasOvernightStay',
+        ];
+        $eventWithTerms = $this->getJSONEventFromFile('event_with_terms.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithTerms);
+
+        $this->assertEquals(
+            Json::encode(['@id' => 'http://culudb-silex.dev:8080/event/d1f0e71d-a9a8-4069-81fb-530134502c58']),
+            $event
+        );
+    }
 }
