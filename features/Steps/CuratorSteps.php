@@ -27,7 +27,7 @@ trait CuratorSteps
 
         $response = $this->getHttpClient()->postJSON(
             '/news-articles/',
-            $this->variableState->replaceVariables(Json::encode($article))
+            Json::encode($article)
         );
         $this->responseState->setResponse($response);
 

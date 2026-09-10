@@ -18,10 +18,10 @@ trait OwnershipSteps
     ): void {
         $this->requestOwnership(
             '/ownerships',
-            $this->variableState->replaceVariables(Json::encode([
+            Json::encode([
                 'itemId' => $organizerId,
                 'itemType' => 'organizer',
-            ])),
+            ]),
             $jsonPath,
             $variableName
         );
@@ -38,11 +38,11 @@ trait OwnershipSteps
     ): void {
         $this->requestOwnership(
             '/ownerships',
-            $this->variableState->replaceVariables(Json::encode([
+            Json::encode([
                 'itemId' => $organizerId,
                 'itemType' => 'organizer',
                 'ownerId' => $ownerId,
-            ])),
+            ]),
             $jsonPath,
             $variableName
         );
@@ -59,11 +59,11 @@ trait OwnershipSteps
     ): void {
         $this->requestOwnership(
             '/ownerships',
-            $this->variableState->replaceVariables(Json::encode([
+            Json::encode([
                 'itemId' => $organizerId,
                 'itemType' => 'organizer',
                 'ownerEmail' => $ownerEmail,
-            ])),
+            ]),
             $jsonPath,
             $variableName
         );
@@ -75,7 +75,7 @@ trait OwnershipSteps
     public function iApproveTheOwnershipWithOwnershipId(string $ownershipId): void
     {
         $response = $this->getHttpClient()->postEmpty(
-            '/ownerships/' . $this->variableState->replaceVariables($ownershipId) . '/approve',
+            '/ownerships/' . $ownershipId . '/approve',
         );
         $this->responseState->setResponse($response);
 
@@ -88,7 +88,7 @@ trait OwnershipSteps
     public function iRejectTheOwnershipWithOwnershipId(string $ownershipId): void
     {
         $response = $this->getHttpClient()->postEmpty(
-            '/ownerships/' . $this->variableState->replaceVariables($ownershipId) . '/reject',
+            '/ownerships/' . $ownershipId . '/reject',
         );
         $this->responseState->setResponse($response);
 
@@ -101,7 +101,7 @@ trait OwnershipSteps
     public function iDeleteTheOwnershipWithOwnershipId(string $ownershipId): void
     {
         $response = $this->getHttpClient()->delete(
-            '/ownerships/' . $this->variableState->replaceVariables($ownershipId),
+            '/ownerships/' . $ownershipId,
         );
         $this->responseState->setResponse($response);
 
@@ -114,7 +114,7 @@ trait OwnershipSteps
     public function iGetTheOwnershipWithOwnershipId(string $ownershipId): void
     {
         $this->responseState->setResponse(
-            $this->getHttpClient()->get('/ownerships/' . $this->variableState->replaceVariables($ownershipId))
+            $this->getHttpClient()->get('/ownerships/' . $ownershipId)
         );
 
         $this->theResponseStatusShouldBe(200);

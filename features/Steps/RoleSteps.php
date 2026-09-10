@@ -38,7 +38,7 @@ trait RoleSteps
      */
     public function iRemoveAllRolesForUserWithId(string $userId): void
     {
-        $userId = $this->variableState->replaceVariables($userId);
+        $userId = $userId;
         $this->getRolesForUser($userId);
 
         $roles = $this->responseState->getJsonContent();
@@ -109,11 +109,9 @@ trait RoleSteps
     {
         $response = $this->getHttpClient()->postJSON(
             '/roles',
-            $this->variableState->replaceVariables(
-                Json::encode([
-                    'name' => $name,
-                ])
-            )
+            Json::encode([
+                'name' => $name,
+            ])
         );
         $this->responseState->setResponse($response);
 

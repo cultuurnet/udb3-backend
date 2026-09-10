@@ -43,7 +43,7 @@ trait LabelSteps
     public function iCreateALabelWithName(string $name): void
     {
         $this->createLabel(
-            $this->variableState->replaceVariables($name),
+            $name,
             true,
             true
         );
@@ -146,13 +146,11 @@ trait LabelSteps
     {
         $response = $this->getHttpClient()->postJSON(
             '/labels',
-            $this->variableState->replaceVariables(
-                Json::encode([
-                    'name' => $name,
-                    'visibility' => $visible ? 'visible' : 'invisible',
-                    'privacy' => $public ? 'public' : 'private',
-                ])
-            )
+            Json::encode([
+                'name' => $name,
+                'visibility' => $visible ? 'visible' : 'invisible',
+                'privacy' => $public ? 'public' : 'private',
+            ])
         );
         $this->responseState->setResponse($response);
 
