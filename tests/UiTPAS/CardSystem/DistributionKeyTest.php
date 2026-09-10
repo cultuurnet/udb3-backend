@@ -14,7 +14,7 @@ class DistributionKeyTest extends TestCase
      */
     public function it_exposes_its_id_and_name(): void
     {
-        $distributionKey = new DistributionKey(new Id('123'), '3 euro per dag');
+        $distributionKey = new DistributionKey(new Id('123'), '3 euro per dag', true);
 
         $this->assertEquals('123', $distributionKey->getId()->toNative());
         $this->assertEquals('3 euro per dag', $distributionKey->getName());
@@ -25,7 +25,7 @@ class DistributionKeyTest extends TestCase
      */
     public function it_allows_a_missing_name(): void
     {
-        $distributionKey = new DistributionKey(new Id('456'));
+        $distributionKey = new DistributionKey(new Id('456'), null, true);
 
         $this->assertEquals('456', $distributionKey->getId()->toNative());
         $this->assertNull($distributionKey->getName());
