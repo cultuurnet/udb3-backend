@@ -864,7 +864,7 @@ class TabularDataEventFormatter
         return null;
     }
 
-    private function isValidTranslation($candidate): bool
+    private function isValidTranslation(mixed $candidate): bool
     {
         return $candidate instanceof stdClass
             && isset($candidate->question, $candidate->answer)
