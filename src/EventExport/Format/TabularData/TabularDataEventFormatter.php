@@ -21,13 +21,18 @@ use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
+use CultuurNet\UDB3\StringFilter\TruncateStringFilter;
 use DateTimeInterface;
 use Exception;
 use stdClass;
 
 class TabularDataEventFormatter
 {
+    private const EXCEL_MAX_CELL_LENGTH = 32767;
+
     protected StripHtmlStringFilter $htmlFilter;
+
+    private TruncateStringFilter $faqFilter;
 
     /**
      * A list of all included properties
@@ -57,6 +62,9 @@ class TabularDataEventFormatter
         ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
     ) {
         $this->htmlFilter = new StripHtmlStringFilter();
+        $this->faqFilter = new TruncateStringFilter(self::EXCEL_MAX_CELL_LENGTH);
+        $this->faqFilter->addEllipsis();
+        $this->faqFilter->turnOnWordSafe(1);
         $this->includedProperties = $this->includedOrDefaultProperties($include);
         $this->uitpas = $uitpas;
         $this->uitpasInfoFormatter = new UitpasInfoFormatter(new PriceFormatter(2, ',', '.', 'Gratis'));
@@ -846,7 +854,7 @@ class TabularDataEventFormatter
                 $this->toSingleLine($translation->answer);
         }
 
-        return implode("\n", $items);
+        return $this->faqFilter->filter(implode("\n", $items));
     }
 
     private function pickTranslation(array $translations, string $mainLanguage): ?stdClass
