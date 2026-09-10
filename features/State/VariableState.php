@@ -8,7 +8,9 @@ use RuntimeException;
 
 final class VariableState
 {
-    private const VARIABLE_PATTERN = '%\\{([A-Za-z0-9_]+)\\}';
+    // Variable names are whatever a scenario puts between the delimiters, which includes
+    // characters like '-' and '@' (%{id_pdf-map}, %{image_@id}), so match up to the first '}'.
+    private const VARIABLE_PATTERN = '%\\{([^}]+)\\}';
 
     private static ?string $scenarioLabel = null;
 
