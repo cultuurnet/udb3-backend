@@ -755,9 +755,7 @@ class TabularDataEventFormatter
             ],
             'departurePlaces' => [
                 'name' => 'vertreklocaties',
-                'include' => function ($event) {
-                    return $this->formatDeparturePlaces($event);
-                },
+                'include' => fn ($event) => $this->formatDeparturePlaces($event),
                 'property' => 'departurePlaces',
                 'wrap' => true,
             ],
