@@ -949,18 +949,21 @@ class TabularDataEventFormatter
     }
 
     /**
-     * Every departure place as "postcode, gemeente, naam", one per line. Without a place repository
-     * there is nothing to look the URLs up in, so the column stays empty rather than listing them.
+     * Every departure place as "postcode, gemeente, naam", one per line. Without a resolver there is
+     * nothing to look the URLs up in, so the column stays empty rather than listing them.
      */
     private function formatDeparturePlaces(stdClass $event): string
     {
-        if ($this->departurePlaceResolver === null) {
+        if ($this->departurePlaceResolver === null
+            || !property_exists($event, 'departurePlaces')
+            || !is_array($event->departurePlaces)
+        ) {
             return '';
         }
 
         $lines = [];
 
-        foreach ($this->departurePlaceResolver->resolve($event) as $departurePlace) {
+        foreach ($this->departurePlaceResolver->resolve($event->departurePlaces) as $departurePlace) {
             // A place can be missing any of the three, and an empty part would leave a stray comma.
             $parts = array_filter(
                 [$departurePlace->postalCode, $departurePlace->addressLocality, $departurePlace->name]

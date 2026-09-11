@@ -1131,6 +1131,21 @@ class TabularDataEventFormatterTest extends TestCase
         $this->assertSame('', $formatter->formatEvent($event)['departurePlaces']);
     }
 
+    /**
+     * @test
+     */
+    public function it_leaves_the_departure_places_empty_for_an_event_without_any(): void
+    {
+        $formatter = new TabularDataEventFormatter(
+            ['departurePlaces'],
+            null,
+            null,
+            $this->departurePlaceResolver([])
+        );
+
+        $this->assertSame('', $formatter->formatEvent($this->encodeEvent([]))['departurePlaces']);
+    }
+
     private function departurePlaceResolver(array $places): DeparturePlaceResolver
     {
         $repository = $this->createMock(DocumentRepository::class);

@@ -20,7 +20,8 @@ final class TranslatedProperty
 
     public static function mainLanguage(stdClass $document): string
     {
-        return is_string($document->mainLanguage ?? null) ? $document->mainLanguage : self::DEFAULT_LANGUAGE;
+        $mainLanguage = $document->mainLanguage ?? null;
+        return is_string($mainLanguage) ? $mainLanguage : self::DEFAULT_LANGUAGE;
     }
 
     public static function asString(mixed $property, string $mainLanguage): string

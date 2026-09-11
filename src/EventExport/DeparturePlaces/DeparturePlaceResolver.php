@@ -10,10 +10,6 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use stdClass;
 
-/**
- * An event stores its departure places as place URLs, which say nothing about where they are, so
- * describing one in an export needs a lookup.
- */
 final class DeparturePlaceResolver
 {
     /**
@@ -28,21 +24,14 @@ final class DeparturePlaceResolver
     /**
      * A place that no longer exists is skipped, so a deleted place cannot fail a whole export.
      *
+     * @param string[] $placeUrls
      * @return DeparturePlace[]
      */
-    public function resolve(stdClass $event): array
+    public function resolve(array $placeUrls): array
     {
-        if (!isset($event->departurePlaces) || !is_array($event->departurePlaces)) {
-            return [];
-        }
-
         $departurePlaces = [];
 
-        foreach ($event->departurePlaces as $placeUrl) {
-            if (!is_string($placeUrl)) {
-                continue;
-            }
-
+        foreach ($placeUrls as $placeUrl) {
             $departurePlace = $this->fetchDeparturePlace($placeUrl);
 
             if ($departurePlace !== null) {

@@ -10,7 +10,6 @@ use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 final class DeparturePlaceResolverTest extends TestCase
 {
@@ -40,7 +39,7 @@ final class DeparturePlaceResolverTest extends TestCase
             ],
         ]);
 
-        $departurePlaces = $this->resolver->resolve($this->event(['abc-123', 'def-456']));
+        $departurePlaces = $this->resolver->resolve($this->placeUrls(['abc-123', 'def-456']));
 
         $this->assertEquals(
             [
@@ -69,7 +68,7 @@ final class DeparturePlaceResolverTest extends TestCase
 
         $this->assertEquals(
             [new DeparturePlace('Gare du Midi', '1060', 'Saint-Gilles')],
-            $this->resolver->resolve($this->event(['abc-123']))
+            $this->resolver->resolve($this->placeUrls(['abc-123']))
         );
     }
 
@@ -88,7 +87,7 @@ final class DeparturePlaceResolverTest extends TestCase
 
         $this->assertEquals(
             [new DeparturePlace('Gare du Midi', '1060', 'Saint-Gilles')],
-            $this->resolver->resolve($this->event(['abc-123']))
+            $this->resolver->resolve($this->placeUrls(['abc-123']))
         );
     }
 
@@ -106,7 +105,7 @@ final class DeparturePlaceResolverTest extends TestCase
 
         $this->assertEquals(
             [new DeparturePlace('Centraal Station', '2000', 'Antwerpen')],
-            $this->resolver->resolve($this->event(['abc-123']))
+            $this->resolver->resolve($this->placeUrls(['abc-123']))
         );
     }
 
@@ -130,7 +129,7 @@ final class DeparturePlaceResolverTest extends TestCase
 
         $this->assertEquals(
             [new DeparturePlace('Centraal Station', '2000', 'Antwerpen')],
-            $this->resolver->resolve($this->event(['gone-999', 'abc-123']))
+            $this->resolver->resolve($this->placeUrls(['gone-999', 'abc-123']))
         );
     }
 
@@ -143,7 +142,7 @@ final class DeparturePlaceResolverTest extends TestCase
 
         $this->assertEquals(
             [new DeparturePlace('Centraal Station', '', '')],
-            $this->resolver->resolve($this->event(['abc-123']))
+            $this->resolver->resolve($this->placeUrls(['abc-123']))
         );
     }
 
@@ -161,8 +160,8 @@ final class DeparturePlaceResolverTest extends TestCase
 
         $departurePlace = new DeparturePlace('Centraal Station', '2000', 'Antwerpen');
 
-        $this->assertEquals([$departurePlace], $this->resolver->resolve($this->event(['abc-123'])));
-        $this->assertEquals([$departurePlace], $this->resolver->resolve($this->event(['abc-123'])));
+        $this->assertEquals([$departurePlace], $this->resolver->resolve($this->placeUrls(['abc-123'])));
+        $this->assertEquals([$departurePlace], $this->resolver->resolve($this->placeUrls(['abc-123'])));
     }
 
     /**
@@ -174,30 +173,18 @@ final class DeparturePlaceResolverTest extends TestCase
             DocumentDoesNotExist::withId('gone-999')
         );
 
-        $this->assertSame([], $this->resolver->resolve($this->event(['gone-999'])));
-        $this->assertSame([], $this->resolver->resolve($this->event(['gone-999'])));
+        $this->assertSame([], $this->resolver->resolve($this->placeUrls(['gone-999'])));
+        $this->assertSame([], $this->resolver->resolve($this->placeUrls(['gone-999'])));
     }
 
     /**
      * @test
-     * @dataProvider eventsWithoutDeparturePlaces
      */
-    public function it_describes_nothing_without_departure_places(array $properties): void
+    public function it_describes_nothing_without_departure_places(): void
     {
         $this->placeRepository->expects($this->never())->method('fetch');
 
-        $event = Json::decode(Json::encode((object) $properties));
-
-        $this->assertSame([], $this->resolver->resolve($event));
-    }
-
-    public function eventsWithoutDeparturePlaces(): array
-    {
-        return [
-            'no departure places at all' => ['properties' => []],
-            'an empty list' => ['properties' => ['departurePlaces' => []]],
-            'a list of something other than urls' => ['properties' => ['departurePlaces' => [12, null]]],
-        ];
+        $this->assertSame([], $this->resolver->resolve([]));
     }
 
     private function givenPlaces(array $places): void
@@ -207,13 +194,14 @@ final class DeparturePlaceResolverTest extends TestCase
         );
     }
 
-    private function event(array $placeIds): stdClass
+    /**
+     * @return string[]
+     */
+    private function placeUrls(array $placeIds): array
     {
-        return Json::decode(Json::encode([
-            'departurePlaces' => array_map(
-                fn (string $id): string => 'https://io.uitdatabank.be/place/' . $id,
-                $placeIds
-            ),
-        ]));
+        return array_map(
+            fn (string $id): string => 'https://io.uitdatabank.be/place/' . $id,
+            $placeIds
+        );
     }
 }
