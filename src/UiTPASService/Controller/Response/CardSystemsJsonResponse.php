@@ -30,8 +30,10 @@ class CardSystemsJsonResponse extends JsonResponse
     }
 
     /**
-     * Builds the same JSON shape from the UiTPAS REST value objects instead of the legacy
-     * CultureFeed objects, so the response stays identical regardless of the client behind it.
+     * Builds the response from the UiTPAS REST value objects instead of the legacy CultureFeed
+     * objects. Unlike the legacy endpoint, which only knows about the card systems that are active
+     * for an event, this returns every card system linked to its organizer and says per entry
+     * whether it is enabled, so consumers know what they can still turn on.
      *
      * @param CardSystem[] $cardSystems
      */
@@ -50,12 +52,14 @@ class CardSystemsJsonResponse extends JsonResponse
                 $distributionKeys[$distributionKeyId] = [
                     'id' => $distributionKeyId,
                     'name' => $distributionKey->getName(),
+                    'enabled' => $distributionKey->isEnabled(),
                 ];
             }
 
             $data[$id] = [
                 'id' => $id,
                 'name' => $cardSystem->getName(),
+                'enabled' => $cardSystem->isEnabled(),
                 'distributionKeys' => $distributionKeys,
             ];
         }

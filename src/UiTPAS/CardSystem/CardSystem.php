@@ -12,6 +12,8 @@ final class CardSystem
 
     private string $name;
 
+    private bool $enabled;
+
     /**
      * @var DistributionKey[]
      */
@@ -19,10 +21,12 @@ final class CardSystem
 
     public function __construct(
         Id $id,
-        string $name
+        string $name,
+        bool $enabled
     ) {
         $this->id = $id;
         $this->name = $name;
+        $this->enabled = $enabled;
     }
 
     /**
@@ -43,6 +47,11 @@ final class CardSystem
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
     }
 
     /**

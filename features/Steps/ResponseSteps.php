@@ -35,7 +35,7 @@ trait ResponseSteps
 
         assertEquals(
             $expected,
-            $this->responseState->getValueOnPath($jsonPath)
+            $this->responseState->getValueOnPath($this->variableState->replaceVariables($jsonPath))
         );
     }
 
@@ -58,7 +58,7 @@ trait ResponseSteps
         // TODO: Fix this workaround
         if (str_contains($jsonPath, 'videos/')) {
             $expectedVideo = Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw()));
-            $actualVideo = $this->responseState->getValueOnPath($jsonPath);
+            $actualVideo = $this->responseState->getValueOnPath($this->variableState->replaceVariables($jsonPath));
 
             unset($expectedVideo['id']);
             unset($actualVideo['id']);
@@ -69,7 +69,7 @@ trait ResponseSteps
 
         assertEquals(
             Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
-            $this->responseState->getValueOnPath($jsonPath)
+            $this->responseState->getValueOnPath($this->variableState->replaceVariables($jsonPath))
         );
     }
 
@@ -80,7 +80,7 @@ trait ResponseSteps
     {
         assertNotEquals(
             $this->variableState->replaceVariables($value),
-            $this->responseState->getValueOnPath($jsonPath)
+            $this->responseState->getValueOnPath($this->variableState->replaceVariables($jsonPath))
         );
     }
 
@@ -111,7 +111,7 @@ trait ResponseSteps
      */
     public function theJsonResponseAtShouldInclude(string $jsonPath, string $value): void
     {
-        $actual = $this->responseState->getValueOnPath($jsonPath);
+        $actual = $this->responseState->getValueOnPath($this->variableState->replaceVariables($jsonPath));
         if ($jsonPath == '/') {
             $actual = $this->responseState->getContent();
         }
@@ -134,7 +134,7 @@ trait ResponseSteps
      */
     public function theJsonResponseAtShouldInclude2(string $jsonPath, PyStringNode $value): void
     {
-        $actual = $this->responseState->getValueOnPath($jsonPath);
+        $actual = $this->responseState->getValueOnPath($this->variableState->replaceVariables($jsonPath));
 
         if (is_array($actual)) {
             assertContains(
@@ -154,7 +154,7 @@ trait ResponseSteps
      */
     public function theJsonResponseShouldNotHave(string $jsonPath): void
     {
-        assertNull($this->responseState->getValueOnPath($jsonPath));
+        assertNull($this->responseState->getValueOnPath($this->variableState->replaceVariables($jsonPath)));
     }
 
     /**
@@ -162,7 +162,7 @@ trait ResponseSteps
      */
     public function theJsonResponseShouldHave(string $jsonPath): void
     {
-        assertNotEquals(null, $this->responseState->getValueOnPath($jsonPath));
+        assertNotEquals(null, $this->responseState->getValueOnPath($this->variableState->replaceVariables($jsonPath)));
     }
 
     /**
@@ -172,7 +172,7 @@ trait ResponseSteps
     {
         assertEquals(
             $nrOfEntries,
-            count($this->responseState->getValueOnPath($jsonPath))
+            count($this->responseState->getValueOnPath($this->variableState->replaceVariables($jsonPath)))
         );
     }
 
@@ -227,7 +227,7 @@ trait ResponseSteps
     {
         $this->variableState->setVariable(
             $variableName,
-            $this->responseState->getValueOnPath($jsonPath)
+            $this->responseState->getValueOnPath($this->variableState->replaceVariables($jsonPath))
         );
     }
 
@@ -293,7 +293,7 @@ trait ResponseSteps
     {
         assertEquals(
             $this->requestState->getBaseUrl() . '/places/' . Uuid::NIL,
-            $this->responseState->getValueOnPath($jsonPath)
+            $this->responseState->getValueOnPath($this->variableState->replaceVariables($jsonPath))
         );
     }
 
