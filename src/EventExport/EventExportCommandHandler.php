@@ -68,6 +68,8 @@ final class EventExportCommandHandler extends SimpleCommandHandler implements Lo
     public function handleExportEventsAsOOXML(
         ExportEventsAsOOXML $exportCommand
     ): void {
+        $this->departurePlaceResolver?->reset();
+
         $this->eventExportService->exportEvents(
             new OOXMLFileFormat(
                 $exportCommand->getInclude(),

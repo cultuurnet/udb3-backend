@@ -167,6 +167,28 @@ final class DeparturePlaceResolverTest extends TestCase
     /**
      * @test
      */
+    public function it_looks_up_a_place_again_after_a_reset(): void
+    {
+        $this->placeRepository->expects($this->exactly(2))->method('fetch')->willReturn(
+            new JsonDocument('abc-123', Json::encode([
+                'name' => ['nl' => 'Centraal Station'],
+                'address' => ['nl' => ['postalCode' => '2000', 'addressLocality' => 'Antwerpen']],
+            ]))
+        );
+
+        $this->resolver->resolve($this->placeUrls(['abc-123']));
+
+        $this->resolver->reset();
+
+        $this->assertEquals(
+            [new DeparturePlace('Centraal Station', '2000', 'Antwerpen')],
+            $this->resolver->resolve($this->placeUrls(['abc-123']))
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_looks_up_a_place_that_no_longer_exists_once(): void
     {
         $this->placeRepository->expects($this->once())->method('fetch')->willThrowException(

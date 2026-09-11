@@ -21,6 +21,11 @@ final class DeparturePlaceResolver
     {
     }
 
+    public function reset(): void
+    {
+        $this->resolved = [];
+    }
+
     /**
      * A place that no longer exists is skipped, so a deleted place cannot fail a whole export.
      *
