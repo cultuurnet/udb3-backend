@@ -56,6 +56,16 @@ trait OfferHistoryProjectorTrait
         );
     }
 
+    private function projectDescriptionDeleted(DomainMessage $domainMessage): void
+    {
+        $event = $domainMessage->getPayload();
+
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, "Beschrijving verwijderd ({$event->getLanguage()->toString()})")
+        );
+    }
+
     private function projectDescriptionTranslated(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();
