@@ -18,7 +18,7 @@ trait PlaceSteps
 
         $this->createOrganizer(
             '/places',
-            $this->variableState->replaceVariables($this->requestState->getJson()),
+            $this->requestState->getJson(),
             $jsonPath,
             $variableName
         );
@@ -50,7 +50,7 @@ trait PlaceSteps
             $this->fixtures->loadJson('places/place-with-required-fields.json', $this->variableState)
         );
         $overrides = Json::decodeAssociatively(
-            $this->variableState->replaceVariables($overridesJson->getRaw())
+            $overridesJson->getRaw()
         );
         $this->createPlace('/places', Json::encode(array_merge($base, $overrides)), $jsonPath, $variableName, 201);
     }
@@ -60,7 +60,7 @@ trait PlaceSteps
      */
     public function iCreateAPlaceWithNameAndSaveTheAs(string $name, string $jsonPath, string $variableName): void
     {
-        $this->variableState->setVariable('name', $this->variableState->replaceVariables($name));
+        $this->variableState->setVariable('name', $name);
 
         $this->createPlace(
             '/places',
