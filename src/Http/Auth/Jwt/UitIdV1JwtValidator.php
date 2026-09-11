@@ -30,7 +30,6 @@ final class UitIdV1JwtValidator implements JwtValidator
     {
         $this->baseValidator->validateClaims($token);
 
-        // Only tokens that pass all validation are logged, so the log reflects actual v1 usage.
         $this->logger->error(
             $token->getUserId() .
             ' has used a v1-token ' .
