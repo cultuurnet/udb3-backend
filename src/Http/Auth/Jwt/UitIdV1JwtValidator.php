@@ -10,15 +10,12 @@ final class UitIdV1JwtValidator implements JwtValidator
 {
     private JwtValidator $baseValidator;
 
-    private LoggerInterface $logger;
-
     public function __construct(
         string $publicKey,
         array $validIssuers,
-        LoggerInterface $logger
+        private readonly LoggerInterface $logger
     ) {
         $this->baseValidator = new GenericJwtValidator($publicKey, ['uid'], $validIssuers);
-        $this->logger = $logger;
     }
 
     public function verifySignature(JsonWebToken $token): void
