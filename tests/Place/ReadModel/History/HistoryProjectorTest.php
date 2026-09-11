@@ -195,10 +195,7 @@ class HistoryProjectorTest extends TestCase
      */
     public function it_projects_DescriptionDeleted_event(): void
     {
-        $descriptionDeletedEvent = new DescriptionDeleted(
-            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
-            new Language('en')
-        );
+        $descriptionDeletedEvent = $this->aDescriptionDeletedEvent();
         $domainMessage = $this->aDomainMessageForEvent(
             $descriptionDeletedEvent->getItemId(),
             $descriptionDeletedEvent
@@ -1085,6 +1082,14 @@ class HistoryProjectorTest extends TestCase
             'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
             new Language('en'),
             new Description('description')
+        );
+    }
+
+    private function aDescriptionDeletedEvent(): DescriptionDeleted
+    {
+        return new DescriptionDeleted(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new Language('en')
         );
     }
 
