@@ -45,6 +45,7 @@ use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\CalendarUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Place\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\FacilitiesUpdated;
@@ -186,6 +187,27 @@ class HistoryProjectorTest extends TestCase
         $this->assertHistoryContainsLogWithDescription(
             $descriptionTranslatedEvent->getItemId(),
             "Beschrijving vertaald ({$descriptionTranslatedEvent->getLanguage()->toString()})"
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_DescriptionDeleted_event(): void
+    {
+        $descriptionDeletedEvent = new DescriptionDeleted(
+            'a0ee7b1c-a9c1-4da1-af7e-d15496014656',
+            new Language('en')
+        );
+        $domainMessage = $this->aDomainMessageForEvent(
+            $descriptionDeletedEvent->getItemId(),
+            $descriptionDeletedEvent
+        );
+
+        $this->historyProjector->handle($domainMessage);
+        $this->assertHistoryContainsLogWithDescription(
+            $descriptionDeletedEvent->getItemId(),
+            "Beschrijving verwijderd ({$descriptionDeletedEvent->getLanguage()->toString()})"
         );
     }
 
