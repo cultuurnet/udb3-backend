@@ -28,19 +28,4 @@ return (new Config())
                     ->withContexts('FeatureContext')
                     ->withFilter(new TagFilter('@init'))
             )
-    )
-    ->withProfile(
-        (new Profile('es5'))
-            ->withSuite(
-                (new Suite('default'))
-                    ->withFilter(new TagFilter('~@init&&~@external'))
-            )
-            ->withSuite(
-                (new Suite('sapi3'))
-                    ->withFilter(new TagFilter('@sapi3'))
-            )
-            ->withSuite(
-                (new Suite('init'))
-                    ->withFilter(new TagFilter('@init'))
-            )
     );
