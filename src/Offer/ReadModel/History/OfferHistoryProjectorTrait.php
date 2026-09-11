@@ -8,6 +8,7 @@ use Broadway\Domain\DomainMessage;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
+use CultuurNet\UDB3\Offer\Events\AbstractDescriptionDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoDeleted;
 use CultuurNet\UDB3\Offer\Events\AbstractVideoEvent;
 use CultuurNet\UDB3\Offer\Events\Image\AbstractImageEvent;
@@ -58,6 +59,7 @@ trait OfferHistoryProjectorTrait
 
     private function projectDescriptionDeleted(DomainMessage $domainMessage): void
     {
+        /* @var AbstractDescriptionDeleted $event */
         $event = $domainMessage->getPayload();
 
         $this->writeHistory(
