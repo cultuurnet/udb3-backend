@@ -31,13 +31,23 @@ final class UitIdV1JwtValidatorTest extends TestCase
     private function createValidToken(array $claims): JsonWebToken
     {
         return JsonWebTokenFactory::createWithClaims(
-            [
+            $claims + [
                 'iat' => time() - 3600,
                 'nbf' => time() - 3600,
                 'exp' => time() + 3600,
                 'iss' => 'valid-issuer',
-            ] + $claims
+            ]
         );
+    }
+
+    private function assertApiProblemDetail(string $expectedDetail, JsonWebToken $token): void
+    {
+        try {
+            $this->v1Validator->validateClaims($token);
+            $this->fail('Expected an ApiProblem to be thrown.');
+        } catch (ApiProblem $apiProblem) {
+            $this->assertEquals($expectedDetail, $apiProblem->getDetail());
+        }
     }
 
     /**
@@ -74,25 +84,68 @@ final class UitIdV1JwtValidatorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_log_a_token_with_invalid_claims(): void
+    public function it_does_not_log_an_expired_token(): void
     {
-        $expiredToken = JsonWebTokenFactory::createWithClaims(
-            [
-                'iat' => time() - 3600,
-                'nbf' => time() - 3600,
-                'exp' => time() - 1800,
-                'iss' => 'valid-issuer',
-                'uid' => self::USER_ID,
-                'email' => 'mock@example.com',
-            ]
-        );
-
         $this->logger->expects($this->never())
             ->method('error');
 
-        $this->expectException(ApiProblem::class);
+        $this->assertApiProblemDetail(
+            'Token expired (or not yet usable).',
+            $this->createValidToken(
+                [
+                    'exp' => time() - 1800,
+                    'uid' => self::USER_ID,
+                    'email' => 'mock@example.com',
+                ]
+            )
+        );
+    }
 
-        $this->v1Validator->validateClaims($expiredToken);
+    /**
+     * @test
+     */
+    public function it_does_not_log_a_token_from_an_invalid_issuer(): void
+    {
+        $this->logger->expects($this->never())
+            ->method('error');
+
+        $this->assertApiProblemDetail(
+            'Token is not issued by a valid issuer.',
+            $this->createValidToken(
+                [
+                    'iss' => 'invalid-issuer',
+                    'uid' => self::USER_ID,
+                    'email' => 'mock@example.com',
+                ]
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_log_a_token_without_a_uid_claim(): void
+    {
+        $this->logger->expects($this->never())
+            ->method('error');
+
+        $this->assertApiProblemDetail(
+            'Token is missing one of its required claims.',
+            $this->createValidToken(['sub' => 'mock-id'])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_accepts_a_valid_signature_without_logging(): void
+    {
+        $this->logger->expects($this->never())
+            ->method('error');
+
+        $this->v1Validator->verifySignature($this->createValidToken(['uid' => self::USER_ID]));
+
+        $this->addToAssertionCount(1);
     }
 
     /**
@@ -106,33 +159,5 @@ final class UitIdV1JwtValidatorTest extends TestCase
         $this->expectException(ApiProblem::class);
 
         $this->v1Validator->verifySignature(JsonWebTokenFactory::createWithInvalidSignature());
-    }
-
-    /**
-     * @test
-     */
-    public function it_verifies_the_basic_claims_via_the_decoratee(): void
-    {
-        $this->expectException(ApiProblem::class);
-
-        $this->v1Validator->validateClaims(JsonWebTokenFactory::createWithClaims([]));
-    }
-
-    /**
-     * @test
-     */
-    public function it_requires_a_uid_claim(): void
-    {
-        $token = $this->createValidToken(['sub' => 'mock-id']);
-
-        $this->logger->expects($this->never())
-            ->method('error');
-
-        try {
-            $this->v1Validator->validateClaims($token);
-            $this->fail('Expected an ApiProblem to be thrown.');
-        } catch (ApiProblem $apiProblem) {
-            $this->assertEquals('Token is missing one of its required claims.', $apiProblem->getDetail());
-        }
     }
 }
