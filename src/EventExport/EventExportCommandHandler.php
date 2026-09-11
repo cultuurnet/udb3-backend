@@ -9,6 +9,7 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterfa
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXML;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDF;
+use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\EventExport\Format\HTML\PDF\PDFWebArchiveFileFormat;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\Format\JSONLD\JSONLDFileFormat;
@@ -31,18 +32,22 @@ final class EventExportCommandHandler extends SimpleCommandHandler implements Lo
 
     private ?Environment $twig;
 
+    private ?DeparturePlaceResolver $departurePlaceResolver;
+
     public function __construct(
         EventExportServiceInterface $eventExportService,
         string $princeXMLBinaryPath,
         CalendarSummaryRepositoryInterface $calendarSummaryRepository,
         EventInfoServiceInterface $uitpas = null,
-        Environment $twig = null
+        Environment $twig = null,
+        ?DeparturePlaceResolver $departurePlaceResolver = null
     ) {
         $this->eventExportService = $eventExportService;
         $this->princeXMLBinaryPath = $princeXMLBinaryPath;
         $this->calendarSummaryRepository = $calendarSummaryRepository;
         $this->uitpas = $uitpas;
         $this->twig = $twig;
+        $this->departurePlaceResolver = $departurePlaceResolver;
     }
 
     public function handleExportEventsAsJsonLD(
@@ -63,11 +68,14 @@ final class EventExportCommandHandler extends SimpleCommandHandler implements Lo
     public function handleExportEventsAsOOXML(
         ExportEventsAsOOXML $exportCommand
     ): void {
+        $this->departurePlaceResolver?->reset();
+
         $this->eventExportService->exportEvents(
             new OOXMLFileFormat(
                 $exportCommand->getInclude(),
                 $this->uitpas,
-                $this->calendarSummaryRepository
+                $this->calendarSummaryRepository,
+                $this->departurePlaceResolver
             ),
             $exportCommand->getQuery(),
             $exportCommand->getAddress(),

@@ -24,6 +24,7 @@ use CultuurNet\UDB3\EventExport\PriceFormatter;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\EventExport\Media\MediaFinder;
 use CultuurNet\UDB3\EventExport\Media\Url;
+use CultuurNet\UDB3\EventExport\Translation\TranslatedProperty;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -287,19 +288,13 @@ class HTMLEventFormatter
     }
 
 
-    /**
-    * @replay_i18n
-    * @see https://jira.uitdatabank.be/browse/III-2201
-    */
     private function getAddressField(stdClass $event, string $addressField): string
     {
-        if (isset($event->location->address->{$addressField})) {
-            return $event->location->address->{$addressField};
-        }
-
-        $mainLanguage = $event->mainLanguage ?? 'nl';
-
-        return $event->location->address->{$mainLanguage}->{$addressField} ?? '';
+        return TranslatedProperty::addressField(
+            $event->location->address ?? null,
+            $addressField,
+            TranslatedProperty::mainLanguage($event)
+        );
     }
 
     private function eventTypeFromJSONLDEvent(string $eventString): ?Category
