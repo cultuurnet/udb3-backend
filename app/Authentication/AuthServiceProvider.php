@@ -213,7 +213,8 @@ final class AuthServiceProvider extends AbstractServiceProvider
         if ($container->get('config')['allow_v1_tokens'] ?? true) {
             return new UitIdV1JwtValidator(
                 'file://' . __DIR__ . '/../../' . $container->get('config')['jwt']['v1']['keys']['public']['file'],
-                $container->get('config')['jwt']['v1']['valid_issuers']
+                $container->get('config')['jwt']['v1']['valid_issuers'],
+                LoggerFactory::create($this->getContainer(), LoggerName::forWeb())
             );
         }
 
