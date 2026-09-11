@@ -21,9 +21,14 @@ use CultuurNet\UDB3\Geocoding\Coordinate\Coordinates;
 use CultuurNet\UDB3\Geocoding\Coordinate\Latitude;
 use CultuurNet\UDB3\Geocoding\Coordinate\Longitude;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeDeleted;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
+use CultuurNet\UDB3\Event\Events\ChildrenOnlyUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
+use CultuurNet\UDB3\Event\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
@@ -32,6 +37,7 @@ use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
+use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
 use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\Image\ImagesUpdatedFromUDB2;
@@ -65,10 +71,16 @@ use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
+use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Answer;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Faqs;
+use CultuurNet\UDB3\Model\ValueObject\Faq\Question;
+use CultuurNet\UDB3\Model\ValueObject\Faq\TranslatedFaq;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
@@ -83,6 +95,7 @@ use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\SampleFiles;
@@ -1753,6 +1766,200 @@ class HistoryProjectorTest extends TestCase
                 (object) [
                     'date' => '2015-03-27T10:17:19+02:00',
                     'description' => 'Leeftijds-info aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_birthdate_range_updated(): void
+    {
+        $event = new BirthdateRangeUpdated(
+            self::EVENT_ID_1,
+            new BirthdateRange(
+                new DateTimeImmutable('2010-01-01'),
+                new DateTimeImmutable('2012-12-31')
+            )
+        );
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'description' => 'Geboortedatum-info aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_birthdate_range_deleted(): void
+    {
+        $event = new BirthdateRangeDeleted(self::EVENT_ID_1);
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'description' => 'Geboortedatum-info verwijderd',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_children_only_updated(): void
+    {
+        $event = new ChildrenOnlyUpdated(self::EVENT_ID_1, true);
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'description' => 'Enkel voor kinderen aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_departure_places_updated(): void
+    {
+        $event = new DeparturePlacesUpdated(
+            self::EVENT_ID_1,
+            new Urls(new Url('https://io.uitdatabank.be/places/0a3a5b2e-8a1f-4f8e-8b9e-1a2b3c4d5e6f'))
+        );
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'description' => 'Vertrekplaatsen aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_faqs_updated(): void
+    {
+        $event = new FaqsUpdated(
+            self::EVENT_ID_1,
+            (new Faqs())->with(
+                new TranslatedFaq(
+                    new Language('nl'),
+                    new Faq(
+                        new Question('Hoe geraak ik er?'),
+                        new Answer('Met de bus.')
+                    )
+                )
+            )
+        );
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'description' => 'Veelgestelde vragen aangepast',
+                    'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
+                ],
+            ]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_logs_description_deleted(): void
+    {
+        $event = new DescriptionDeleted(self::EVENT_ID_1, new Language('nl'));
+
+        $domainMessage = new DomainMessage(
+            $event->getItemId(),
+            3,
+            new Metadata(['user_id' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7']),
+            $event,
+            DateTime::fromString('2015-03-27T10:17:19.176169+02:00')
+        );
+
+        $this->historyProjector->handle($domainMessage);
+
+        $this->assertHistoryContainsLogs(
+            self::EVENT_ID_1,
+            [
+                (object) [
+                    'date' => '2015-03-27T10:17:19+02:00',
+                    'description' => 'Beschrijving verwijderd (nl)',
                     'author' => 'fc54f5c1-aa5a-45d1-837e-919b742ca6c7',
                 ],
             ]
