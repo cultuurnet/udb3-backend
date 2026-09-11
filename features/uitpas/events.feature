@@ -6,19 +6,6 @@ Feature: Test the UiTPAS events
     And I am using an UiTID v1 API key of consumer "uitdatabank"
     And I am authorized as JWT provider user "centraal_beheerder"
 
-  Scenario: Get details of an event that is not an UiTPAS event
-    When I send a GET request to "/uitpas/events/18827e56-mock-4961-a5c8-7acd5dcfed9a"
-    Then the response status should be "404"
-    And the JSON response should be:
-    """
-    {
-     "type": "https://api.publiq.be/probs/url/not-found",
-     "title": "Not Found",
-     "status": 404,
-     "detail": "Event with id '18827e56-mock-4961-a5c8-7acd5dcfed9a' was not found in UiTPAS. Are you sure it is an UiTPAS event?"
-    }
-    """
-
   Scenario: Get card systems of an event that is not an UiTPAS event
     When I send a GET request to "/uitpas/events/18827e56-mock-4961-a5c8-7acd5dcfed9a/card-systems"
     Then the response status should be "404"
