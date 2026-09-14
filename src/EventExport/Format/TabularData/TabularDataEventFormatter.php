@@ -954,10 +954,7 @@ class TabularDataEventFormatter
      */
     private function formatDeparturePlaces(stdClass $event): string
     {
-        if ($this->departurePlaceResolver === null
-            || !property_exists($event, 'departurePlaces')
-            || !is_array($event->departurePlaces)
-        ) {
+        if ($this->departurePlaceResolver === null || !is_array($event->departurePlaces ?? null)) {
             return '';
         }
 
