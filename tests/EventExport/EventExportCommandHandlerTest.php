@@ -8,12 +8,16 @@ use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterfa
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsJsonLD;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsOOXML;
 use CultuurNet\UDB3\EventExport\Command\ExportEventsAsPDF;
+use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\EventExport\Format\HTML\WebArchive\WebArchiveTemplate;
 use CultuurNet\UDB3\EventExport\Format\HTML\PDF\PDFWebArchiveFileFormat;
 use CultuurNet\UDB3\EventExport\Format\HTML\Properties\Title;
 use CultuurNet\UDB3\EventExport\Format\JSONLD\JSONLDFileFormat;
 use CultuurNet\UDB3\EventExport\Format\TabularData\OOXML\OOXMLFileFormat;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -97,6 +101,44 @@ class EventExportCommandHandlerTest extends TestCase
             );
 
         $this->eventExportCommandHandler->handle($exportEventsAsOOXML);
+    }
+
+    /**
+     * @test
+     */
+    public function it_starts_every_ooxml_export_with_an_empty_departure_place_memo(): void
+    {
+        $placeRepository = $this->createMock(DocumentRepository::class);
+        $placeRepository->expects($this->exactly(2))->method('fetch')->willReturn(
+            new JsonDocument('abc-123', Json::encode(['name' => ['nl' => 'Centraal Station']]))
+        );
+
+        $departurePlaceResolver = new DeparturePlaceResolver($placeRepository);
+
+        $eventExportCommandHandler = new EventExportCommandHandler(
+            $this->eventExportService,
+            $this->princeXMLBinaryPath,
+            $this->calendarSummary,
+            null,
+            null,
+            $departurePlaceResolver
+        );
+        $eventExportCommandHandler->setLogger($this->logger);
+
+        $placeUrls = ['https://io.uitdatabank.be/place/abc-123'];
+
+        $departurePlaceResolver->resolve($placeUrls);
+
+        $eventExportCommandHandler->handle(
+            new ExportEventsAsOOXML(
+                new EventExportQuery('query'),
+                ['departurePlaces'],
+                new EmailAddress('jane@anonymous.com'),
+                null
+            )
+        );
+
+        $departurePlaceResolver->resolve($placeUrls);
     }
 
     /**
