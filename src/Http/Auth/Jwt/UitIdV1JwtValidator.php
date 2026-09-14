@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Auth\Jwt;
 
+use CultuurNet\UDB3\Model\ValueObject\Web\InvalidEmailAddress;
 use Psr\Log\LoggerInterface;
 
 final class UitIdV1JwtValidator implements JwtValidator
@@ -27,10 +28,16 @@ final class UitIdV1JwtValidator implements JwtValidator
     {
         $this->baseValidator->validateClaims($token);
 
+        try {
+            $emailAdress = $token->getEmailAddress()?->toString();
+        } catch (InvalidEmailAddress) {
+            $emailAdress = null;
+        }
+
         $this->logger->error(
             $token->getUserId() .
             ' has used a v1-token ' .
-            'e-mail: ' . ($token->getEmailAddress()?->toString() ?? 'Unknown')
+            'e-mail: ' . ($emailAdress ?? 'Unknown')
         );
     }
 }
