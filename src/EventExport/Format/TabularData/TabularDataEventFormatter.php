@@ -964,7 +964,6 @@ class TabularDataEventFormatter
         $lines = [];
 
         foreach ($this->departurePlaceResolver->resolve($event->departurePlaces) as $departurePlace) {
-            // A place can be missing any of the three, and an empty part would leave a stray comma.
             $parts = array_filter(
                 [$departurePlace->postalCode, $departurePlace->addressLocality, $departurePlace->name]
             );
