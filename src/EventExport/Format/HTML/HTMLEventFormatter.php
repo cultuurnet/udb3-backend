@@ -287,7 +287,10 @@ class HTMLEventFormatter
         }
     }
 
-
+    /**
+     * @replay_i18n
+     * @see https://jira.uitdatabank.be/browse/III-2201
+     */
     private function getAddressField(stdClass $event, string $addressField): string
     {
         return TranslatedProperty::addressField(
