@@ -56,13 +56,13 @@ final class DeparturePlaceResolver
         }
 
         if (!array_key_exists($placeId, $this->resolved)) {
-            $this->resolved[$placeId] = $this->describePlace($placeId);
+            $this->resolved[$placeId] = $this->fetchPlace($placeId);
         }
 
         return $this->resolved[$placeId];
     }
 
-    private function describePlace(string $placeId): ?DeparturePlace
+    private function fetchPlace(string $placeId): ?DeparturePlace
     {
         try {
             $place = Json::decode($this->placeRepository->fetch($placeId)->getRawBody());
