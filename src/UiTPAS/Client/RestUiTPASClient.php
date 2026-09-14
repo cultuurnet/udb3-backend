@@ -138,19 +138,11 @@ final class RestUiTPASClient implements UiTPASClient
 
     public function eventHasTicketSales(string $eventId): bool
     {
-        // limit=0 returns no items, just the total count.
-        $response = $this->client->sendRequest(
-            $this->authenticatedRequest('GET', 'ticket-sales?eventId=' . rawurlencode($eventId) . '&limit=0')
-        );
-
-        if ($response->getStatusCode() !== 200) {
-            throw new RuntimeException(
-                'UiTPAS REST API returned status code ' . $response->getStatusCode()
-                . ' for ticket sales: ' . $response->getBody()->getContents()
-            );
-        }
-
-        return (Json::decodeAssociatively($response->getBody()->getContents())['totalItems'] ?? 0) > 0;
+        // UiTPAS used to require that the distribution keys of an event could no longer be changed once
+        // it had at least one ticket sale, and has since relaxed that requirement. So there is nothing
+        // left to check and no reason to call UiTPAS for it. The method stays on the interface until the
+        // legacy XML client is removed, since that one still answers from the old endpoint.
+        return false;
     }
 
     /**
