@@ -83,8 +83,17 @@ pipeline {
             }
         }
 
+        stage('Run acceptance tests') {
+            when {
+                expression { params.RUN_ACCEPTANCE_TESTS }
+            }
+            agent { 'ubuntu' && '20.04' && 'docker' }
+            steps {
+                build job: 'uitdatabank-acceptance-tests', wait: true
+            }
+        }
+
         stage('Deploy to testing') {
-            input { message "Deploy to Testing?" }
             agent { label 'ubuntu && 20.04' }
             options { skipDefaultCheckout() }
             environment {
@@ -104,7 +113,6 @@ pipeline {
         }
 
         stage('Deploy to production') {
-            input { message "Deploy to Production?" }
             agent { label 'ubuntu && 20.04' }
             options { skipDefaultCheckout() }
             environment {
