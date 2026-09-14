@@ -973,7 +973,7 @@ class TabularDataEventFormatter
             }
         }
 
-        return implode("\n", $lines);
+        return implode(PHP_EOL, $lines);
     }
 
     /**
