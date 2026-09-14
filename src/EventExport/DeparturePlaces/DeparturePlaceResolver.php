@@ -13,7 +13,7 @@ use stdClass;
 final class DeparturePlaceResolver
 {
     /**
-     * @var array<string, DeparturePlace|null>
+     * @var array<string, DeparturePlace>
      */
     private array $resolved = [];
 
