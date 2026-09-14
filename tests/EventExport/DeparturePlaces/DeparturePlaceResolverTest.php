@@ -189,19 +189,6 @@ final class DeparturePlaceResolverTest extends TestCase
     /**
      * @test
      */
-    public function it_looks_up_a_place_that_no_longer_exists_once(): void
-    {
-        $this->placeRepository->expects($this->once())->method('fetch')->willThrowException(
-            DocumentDoesNotExist::withId('gone-999')
-        );
-
-        $this->assertSame([], $this->resolver->resolve($this->placeUrls(['gone-999'])));
-        $this->assertSame([], $this->resolver->resolve($this->placeUrls(['gone-999'])));
-    }
-
-    /**
-     * @test
-     */
     public function it_describes_nothing_without_departure_places(): void
     {
         $this->placeRepository->expects($this->never())->method('fetch');

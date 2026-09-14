@@ -8,6 +8,7 @@ use CultuurNet\UDB3\EventExport\Translation\TranslatedProperty;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use Exception;
 use stdClass;
 
 final class DeparturePlaceResolver
@@ -37,26 +38,26 @@ final class DeparturePlaceResolver
         $departurePlaces = [];
 
         foreach ($placeUrls as $placeUrl) {
-            $departurePlace = $this->fetchDeparturePlace($placeUrl);
-
-            if ($departurePlace !== null) {
-                $departurePlaces[] = $departurePlace;
+            try {
+                $departurePlaces[] = $this->fetchDeparturePlace($placeUrl);
+            } catch (Exception) {
+                continue;
             }
         }
 
         return $departurePlaces;
     }
 
-    private function fetchDeparturePlace(string $placeUrl): ?DeparturePlace
+    private function fetchDeparturePlace(string $placeUrl): DeparturePlace
     {
         $placeId = $this->parsePlaceIdFromUrl($placeUrl);
 
-        if ($placeId === '') {
-            return null;
-        }
-
-        if (!array_key_exists($placeId, $this->resolved)) {
-            $this->resolved[$placeId] = $this->fetchPlace($placeId);
+        if (!isset($this->resolved[$placeId])) {
+            $fetchedPlace = $this->fetchPlace($placeId);
+            if ($fetchedPlace === null) {
+                throw new Exception('Could not resolve place ' . $placeId);
+            }
+            $this->resolved[$placeId] = $fetchedPlace;
         }
 
         return $this->resolved[$placeId];
@@ -87,6 +88,12 @@ final class DeparturePlaceResolver
     {
         $urlParts = explode('/', rtrim($placeUrl, '/'));
 
-        return (string) array_pop($urlParts);
+        $placeId = (string) array_pop($urlParts);
+
+        if ($placeId === '') {
+            throw new Exception('Could not parse placeId from url');
+        }
+
+        return $placeId;
     }
 }
