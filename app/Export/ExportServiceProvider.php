@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryWithFormatterRepository;
+use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\EventExport\EventExportCommandHandler;
 use CultuurNet\UDB3\EventExport\EventExportService;
 use CultuurNet\UDB3\EventExport\Format\HTML\Twig\GoogleMapUrlGenerator;
@@ -121,6 +122,7 @@ final class ExportServiceProvider extends AbstractServiceProvider
                     new CalendarSummaryWithFormatterRepository($container->get('event_jsonld_repository')),
                     $eventInfoService,
                     $container->get('event_export_twig_environment'),
+                    new DeparturePlaceResolver($container->get('place_jsonld_cache')),
                 );
                 $eventExportCommandHandler->setLogger(
                     LoggerFactory::create($container, LoggerName::forResqueWorker('event-export'))
