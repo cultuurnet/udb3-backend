@@ -94,6 +94,7 @@ pipeline {
         }
 
         stage('Deploy to testing') {
+            input { message "Deploy to Testing?" }
             agent { label 'ubuntu && 20.04' }
             options { skipDefaultCheckout() }
             environment {
@@ -113,6 +114,7 @@ pipeline {
         }
 
         stage('Deploy to production') {
+            input { message "Deploy to Production?" }
             agent { label 'ubuntu && 20.04' }
             options { skipDefaultCheckout() }
             environment {
