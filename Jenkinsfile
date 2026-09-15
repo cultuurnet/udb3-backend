@@ -74,7 +74,6 @@ pipeline {
             steps {
                 publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'focal'
                 triggerDeployment nodeName: 'uitdatabank-web-acc01'
-                triggerDeployment nodeName: 'uitdatabank-rdf-acc01'
             }
             post {
                 always {
@@ -94,7 +93,6 @@ pipeline {
             steps {
                 publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'focal'
                 triggerDeployment nodeName: 'uitdatabank-web-test01'
-                triggerDeployment nodeName: 'uitdatabank-rdf-test01'
             }
             post {
                 always {
@@ -114,7 +112,6 @@ pipeline {
             steps {
                 publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'focal'
                 triggerDeployment nodeName: 'uitdatabank-web-prod01'
-                triggerDeployment nodeName: 'uitdatabank-rdf-prod01'
             }
             post {
                 always {
