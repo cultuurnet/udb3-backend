@@ -9,9 +9,14 @@ use CultuurNet\UDB3\Cdb\EventItemFactory;
 use CultuurNet\UDB3\Event\Events\AttendanceModeUpdated;
 use CultuurNet\UDB3\Event\Events\AudienceUpdated;
 use CultuurNet\UDB3\Event\Events\AvailableFromUpdated;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeDeleted;
+use CultuurNet\UDB3\Event\Events\BirthdateRangeUpdated;
 use CultuurNet\UDB3\Event\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
+use CultuurNet\UDB3\Event\Events\ChildrenOnlyUpdated;
 use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
+use CultuurNet\UDB3\Event\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Event\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Event\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
@@ -20,17 +25,17 @@ use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
+use CultuurNet\UDB3\Event\Events\FaqsUpdated;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
-use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
-use CultuurNet\UDB3\Event\Events\Image\ImagesUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\ImageAdded;
 use CultuurNet\UDB3\Event\Events\ImageRemoved;
 use CultuurNet\UDB3\Event\Events\ImageUpdated;
+use CultuurNet\UDB3\Event\Events\Image\ImagesImportedFromUDB2;
+use CultuurNet\UDB3\Event\Events\Image\ImagesUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LabelsImported;
 use CultuurNet\UDB3\Event\Events\LabelsReplaced as LabelsReplacedEvent;
-use CultuurNet\UDB3\Place\Events\LabelsReplaced as LabelsReplacedPlace;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
 use CultuurNet\UDB3\Event\Events\MainImageSelected;
 use CultuurNet\UDB3\Event\Events\MajorInfoUpdated;
@@ -57,6 +62,7 @@ use CultuurNet\UDB3\Event\Events\VideoUpdated;
 use CultuurNet\UDB3\History\BaseHistoryProjector;
 use CultuurNet\UDB3\History\Log;
 use CultuurNet\UDB3\Offer\ReadModel\History\OfferHistoryProjectorTrait;
+use CultuurNet\UDB3\Place\Events\LabelsReplaced as LabelsReplacedPlace;
 use DateTime;
 use DateTimeZone;
 
@@ -78,6 +84,18 @@ final class HistoryProjector extends BaseHistoryProjector
             case $event instanceof AttendanceModeUpdated:
                 $this->projectAttendanceModeUpdated($domainMessage);
                 break;
+            case $event instanceof BirthdateRangeUpdated:
+                $this->projectBirthdateRangeUpdated($domainMessage);
+                break;
+            case $event instanceof BirthdateRangeDeleted:
+                $this->projectBirthdateRangeDeleted($domainMessage);
+                break;
+            case $event instanceof ChildrenOnlyUpdated:
+                $this->projectChildrenOnlyUpdated($domainMessage);
+                break;
+            case $event instanceof DeparturePlacesUpdated:
+                $this->projectDeparturePlacesUpdated($domainMessage);
+                break;
             case $event instanceof OnlineUrlUpdated:
                 $this->projectOnlineUrlUpdated($domainMessage);
                 break;
@@ -92,6 +110,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof ContactPointUpdated:
                 $this->projectContactPointUpdated($domainMessage);
+                break;
+            case $event instanceof DescriptionDeleted:
+                $this->projectDescriptionDeleted($domainMessage);
                 break;
             case $event instanceof DescriptionTranslated:
                 $this->projectDescriptionTranslated($domainMessage);
@@ -116,6 +137,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof FacilitiesUpdated:
                 $this->projectFacilitiesUpdated($domainMessage);
+                break;
+            case $event instanceof FaqsUpdated:
+                $this->projectFaqsUpdated($domainMessage);
                 break;
             case $event instanceof FlaggedAsDuplicate:
                 $this->projectFlaggedAsDuplicate($domainMessage);
@@ -231,6 +255,46 @@ final class HistoryProjector extends BaseHistoryProjector
         $this->writeHistory(
             $domainMessage->getId(),
             Log::createFromDomainMessage($domainMessage, 'Deelnamevorm (fysiek / online) aangepast')
+        );
+    }
+
+    private function projectBirthdateRangeUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Geboortedatum-info aangepast')
+        );
+    }
+
+    private function projectBirthdateRangeDeleted(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Geboortedatum-info verwijderd')
+        );
+    }
+
+    private function projectChildrenOnlyUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Enkel voor kinderen aangepast')
+        );
+    }
+
+    private function projectDeparturePlacesUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Vertrekplaatsen aangepast')
+        );
+    }
+
+    private function projectFaqsUpdated(DomainMessage $domainMessage): void
+    {
+        $this->writeHistory(
+            $domainMessage->getId(),
+            Log::createFromDomainMessage($domainMessage, 'Veelgestelde vragen aangepast')
         );
     }
 

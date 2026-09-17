@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Place\Events\AvailableFromUpdated;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
 use CultuurNet\UDB3\Place\Events\CalendarUpdated;
 use CultuurNet\UDB3\Place\Events\ContactPointUpdated;
+use CultuurNet\UDB3\Place\Events\DescriptionDeleted;
 use CultuurNet\UDB3\Place\Events\DescriptionTranslated;
 use CultuurNet\UDB3\Place\Events\DescriptionUpdated;
 use CultuurNet\UDB3\Place\Events\FacilitiesUpdated;
@@ -78,6 +79,9 @@ final class HistoryProjector extends BaseHistoryProjector
                 break;
             case $event instanceof ContactPointUpdated:
                 $this->projectContactPointUpdated($domainMessage);
+                break;
+            case $event instanceof DescriptionDeleted:
+                $this->projectDescriptionDeleted($domainMessage);
                 break;
             case $event instanceof DescriptionTranslated:
                 $this->projectDescriptionTranslated($domainMessage);
