@@ -8,12 +8,12 @@ Feature: Test requesting ownership
 
   Scenario: Requesting ownership of an organizer as creator of the organizer
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
-    And the JSON response at "ownerId" should be "auth0|64089494e980aedd96740212"
+    And the JSON response at "ownerId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "d759fd36-fb28-4fe3-8ec6-b4aaf990371d"
     And the JSON response at "requesterEmail" should be "dev+udbtestinvoerder@publiq.be"
@@ -47,7 +47,7 @@ Feature: Test requesting ownership
     {
       "itemId": "%{organizerId}",
       "itemType": "organizer",
-      "ownerId": "auth0|64089494e980aedd96740212"
+      "ownerId": "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     }
     """
     When I send a POST request to '/ownerships'
@@ -69,7 +69,7 @@ Feature: Test requesting ownership
     Then the JSON response at "id" should be "%{ownershipId}"
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
-    And the JSON response at "ownerId" should be "auth0|64089494e980aedd96740212"
+    And the JSON response at "ownerId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
     And the JSON response at "requesterId" should be "d759fd36-fb28-4fe3-8ec6-b4aaf990371d"
     And the JSON response at "state" should be "requested"
@@ -78,13 +78,13 @@ Feature: Test requesting ownership
     
   Scenario: Requesting the same ownership of an organizer is not allowed
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I set the JSON request payload to:
     """
     {
       "itemId": "%{organizerId}",
       "itemType": "organizer",
-      "ownerId": "auth0|64089494e980aedd96740212"
+      "ownerId": "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     }
     """
     When I send a POST request to '/ownerships'
@@ -101,14 +101,14 @@ Feature: Test requesting ownership
 
   Scenario: Requesting the same ownership of an organizer is not allowed when already approved
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I approve the ownership with ownershipId "%{ownershipId}"
     And I set the JSON request payload to:
     """
     {
       "itemId": "%{organizerId}",
       "itemType": "organizer",
-      "ownerId": "auth0|64089494e980aedd96740212"
+      "ownerId": "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     }
     """
     When I send a POST request to '/ownerships'
@@ -125,17 +125,17 @@ Feature: Test requesting ownership
 
   Scenario: Requesting the same ownership of an organizer is allowed when the previous request was rejected
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I reject the ownership with ownershipId "%{ownershipId}"
-    When I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    When I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
 
   Scenario: Requesting the same ownership of an organizer is allowed when the previous request was deleted
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I delete the ownership with ownershipId "%{ownershipId}"
-    When I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    When I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
 
@@ -145,7 +145,7 @@ Feature: Test requesting ownership
     {
       "itemId": "b192b05f-9294-4c07-a3f9-6a15e267d746",
       "itemType": "organizer",
-      "ownerId": "auth0|64089494e980aedd96740212"
+      "ownerId": "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     }
     """
     When I send a POST request to '/ownerships'
