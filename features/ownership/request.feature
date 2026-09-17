@@ -14,7 +14,7 @@ Feature: Test requesting ownership
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "ownerEmail" should be "dev+invoerderownerships@publiq.be"
     And the JSON response at "requesterId" should be "d759fd36-fb28-4fe3-8ec6-b4aaf990371d"
     And the JSON response at "requesterEmail" should be "dev+udbtestinvoerder@publiq.be"
     And the JSON response at "state" should be "requested"
@@ -64,13 +64,13 @@ Feature: Test requesting ownership
 
   Scenario: Requesting ownership of an organizer via email
     Given I create a minimal organizer and save the "id" as "organizerId"
-    And I request ownership for email "dev+e2etest@publiq.be" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for email "dev+invoerderownerships@publiq.be" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I get the ownership with ownershipId "%{ownershipId}"
     Then the JSON response at "id" should be "%{ownershipId}"
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "ownerEmail" should be "dev+invoerderownerships@publiq.be"
     And the JSON response at "requesterId" should be "d759fd36-fb28-4fe3-8ec6-b4aaf990371d"
     And the JSON response at "state" should be "requested"
     And I wait till there are 1 mails in the mailbox

@@ -10,7 +10,7 @@ Feature: Test getting creator of organizer
         When I send a GET request to "/organizers/%{organizerId}/creator"
         Then the response status should be 200
         And the JSON response at "userId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-        And the JSON response at "email" should be "dev+e2etest@publiq.be"
+        And the JSON response at "email" should be "dev+invoerderownerships@publiq.be"
 
     Scenario: Getting the creator of an organizer as a different owner
         And I create a minimal organizer and save the "id" as "organizerId"
@@ -22,7 +22,7 @@ Feature: Test getting creator of organizer
         And I send a GET request to "/organizers/%{organizerId}/creator"
         Then the response status should be 200
         And the JSON response at "userId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-        And the JSON response at "email" should be "dev+e2etest@publiq.be"
+        And the JSON response at "email" should be "dev+invoerderownerships@publiq.be"
 
     Scenario: Getting the creator of an organizer that you're not an owner of is not allowed
         And I create a minimal organizer and save the "id" as "organizerId"

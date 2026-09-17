@@ -16,12 +16,12 @@ Feature: Test approving ownership
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "ownerEmail" should be "dev+invoerderownerships@publiq.be"
     And the JSON response at "requesterId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     And the JSON response at "state" should be "approved"
     And the JSON response at "approvedById" should be "edcee0f7-5906-4e92-8551-a7f5d37ba453"
     And I wait till there are 2 mails in the mailbox
-    And an "ownership-approved" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je bent nu beheerder van organisatie %{name}!"
+    And an "ownership-approved" mail has been sent from "no-reply@uitdatabank.be" to "dev+invoerderownerships@publiq.be" with subject "Je bent nu beheerder van organisatie %{name}!"
 
   Scenario: Approving ownership of an organizer as creator
     And I am authorized as JWT provider user "invoerder_ownerships"
@@ -33,13 +33,13 @@ Feature: Test approving ownership
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "ownerEmail" should be "dev+invoerderownerships@publiq.be"
     And the JSON response at "requesterId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     And the JSON response at "state" should be "approved"
     And the JSON response at "approvedById" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "approvedByEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "approvedByEmail" should be "dev+invoerderownerships@publiq.be"
     And I wait till there are 2 mails in the mailbox
-    And an "ownership-approved" mail has been sent from "no-reply@uitdatabank.be" to "dev+e2etest@publiq.be" with subject "Je bent nu beheerder van organisatie %{name}!"
+    And an "ownership-approved" mail has been sent from "no-reply@uitdatabank.be" to "dev+invoerderownerships@publiq.be" with subject "Je bent nu beheerder van organisatie %{name}!"
 
   Scenario: Approving a non-existing ownership
     When I send a POST request to '/ownerships/21a5c45b-78f8-4034-ab4d-5528847860b3/approve'

@@ -16,7 +16,7 @@ Feature: Test deleting ownership
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "ownerEmail" should be "dev+invoerderownerships@publiq.be"
     And the JSON response at "requesterId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     And the JSON response at "state" should be "deleted"
     And the JSON response at "deletedById" should be "edcee0f7-5906-4e92-8551-a7f5d37ba453"
@@ -33,7 +33,7 @@ Feature: Test deleting ownership
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "ownerEmail" should be "dev+invoerderownerships@publiq.be"
     And the JSON response at "requesterId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     And the JSON response at "state" should be "deleted"
     And the JSON response at "deletedById" should be "edcee0f7-5906-4e92-8551-a7f5d37ba453"
@@ -50,7 +50,7 @@ Feature: Test deleting ownership
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "ownerEmail" should be "dev+invoerderownerships@publiq.be"
     And the JSON response at "requesterId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     And the JSON response at "state" should be "deleted"
     And the JSON response at "deletedById" should be "edcee0f7-5906-4e92-8551-a7f5d37ba453"
@@ -65,11 +65,11 @@ Feature: Test deleting ownership
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "ownerEmail" should be "dev+invoerderownerships@publiq.be"
     And the JSON response at "requesterId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     And the JSON response at "state" should be "deleted"
     And the JSON response at "deletedById" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "deletedByEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "deletedByEmail" should be "dev+invoerderownerships@publiq.be"
 
   Scenario: Deleting an approved ownership of an organizer as creator
     And I am authorized as JWT provider user "invoerder_ownerships"
@@ -82,11 +82,11 @@ Feature: Test deleting ownership
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "ownerEmail" should be "dev+invoerderownerships@publiq.be"
     And the JSON response at "requesterId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     And the JSON response at "state" should be "deleted"
     And the JSON response at "deletedById" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "deletedByEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "deletedByEmail" should be "dev+invoerderownerships@publiq.be"
 
   Scenario: Deleting a rejected ownership of an organizer as creator
     And I am authorized as JWT provider user "invoerder_ownerships"
@@ -99,11 +99,11 @@ Feature: Test deleting ownership
     And the JSON response at "itemId" should be "%{organizerId}"
     And the JSON response at "itemType" should be "organizer"
     And the JSON response at "ownerId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "ownerEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "ownerEmail" should be "dev+invoerderownerships@publiq.be"
     And the JSON response at "requesterId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     And the JSON response at "state" should be "deleted"
     And the JSON response at "deletedById" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
-    And the JSON response at "deletedByEmail" should be "dev+e2etest@publiq.be"
+    And the JSON response at "deletedByEmail" should be "dev+invoerderownerships@publiq.be"
 
   Scenario: Deleting a non-existing ownership
     When I send a DELETE request to '/ownerships/21a5c45b-78f8-4034-ab4d-5528847860b3'
