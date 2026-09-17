@@ -15,7 +15,7 @@ Feature: Test permissions based on ownership
     """
     And I send a PUT request to "/organizers/%{organizerId}/name/nl"
     And the response status should be "403"
-    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I am authorized as JWT provider user "centraal_beheerder"
     And I approve the ownership with ownershipId "%{ownershipId}"
     And I am authorized as JWT provider user "invoerder_ownerships"
@@ -29,7 +29,7 @@ Feature: Test permissions based on ownership
   Scenario: Deleting the ownership of an organizer removes permission on the organizer
     Given I create a minimal organizer and save the "id" as "organizerId"
     And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
-    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I approve the ownership with ownershipId "%{ownershipId}"
     And I am authorized as JWT provider user "invoerder_ownerships"
     And I set the JSON request payload to:
@@ -61,7 +61,7 @@ Feature: Test permissions based on ownership
     """
     And I send a PUT request to "/events/%{eventId}/name/nl"
     And the response status should be "403"
-    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I am authorized as JWT provider user "centraal_beheerder"
     And I approve the ownership with ownershipId "%{ownershipId}"
     And I am authorized as JWT provider user "invoerder_ownerships"
@@ -78,7 +78,7 @@ Feature: Test permissions based on ownership
     And I create a minimal place and save the "id" as "placeId"
     And I create an event from "events/event-with-organizer.json" and save the "id" as "eventId"
     And I wait for the event with url "/events/%{eventId}" to be indexed
-    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     And I am authorized as JWT provider user "centraal_beheerder"
     And I approve the ownership with ownershipId "%{ownershipId}"
     And I am authorized as JWT provider user "invoerder_ownerships"
@@ -111,7 +111,7 @@ Feature: Test permissions based on ownership
     """
     And I send a PUT request to "/places/%{placeId}/name/nl"
     And the response status should be "403"
-    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
     When I am authorized as JWT provider user "centraal_beheerder"
     And I approve the ownership with ownershipId "%{ownershipId}"
     And I am authorized as JWT provider user "invoerder_ownerships"
