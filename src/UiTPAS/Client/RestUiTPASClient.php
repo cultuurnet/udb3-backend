@@ -29,16 +29,13 @@ final class RestUiTPASClient implements UiTPASClient
     {
         $cardSystems = [];
         foreach ($this->getEventCardSystemsData($eventId) as $cardSystemData) {
-            // The REST API returns the full master list (enabled and disabled), but consumers
-            // should only see the card systems that are active for the event, matching the
-            // legacy XML endpoint. The full list is kept in getEventCardSystemsData() for writes.
-            if (($cardSystemData['enabled'] ?? false) !== true) {
-                continue;
-            }
-
+            // UiTPAS returns every card system linked to the organizer of the event, each with a flag
+            // saying whether it is active for this event. Consumers need the full list to know what
+            // they can enable, so pass the flag along instead of filtering the disabled ones out.
             $cardSystems[] = (new CardSystem(
                 new Id((string) $cardSystemData['id']),
-                $cardSystemData['name']
+                $cardSystemData['name'],
+                ($cardSystemData['enabled'] ?? false) === true
             ))->withDistributionKeys(
                 $this->mapDistributionKeys($cardSystemData['manualDistributionKeys'] ?? [])
             );
@@ -55,14 +52,11 @@ final class RestUiTPASClient implements UiTPASClient
     {
         $distributionKeys = [];
         foreach ($distributionKeysData as $distributionKeyData) {
-            // Same as card systems: only expose the distribution keys that are enabled for the event.
-            if (($distributionKeyData['enabled'] ?? false) !== true) {
-                continue;
-            }
-
+            // Same as card systems: expose all of them with their flag.
             $distributionKeys[] = new DistributionKey(
                 new Id((string) $distributionKeyData['id']),
-                $distributionKeyData['name'] ?? null
+                $distributionKeyData['name'] ?? null,
+                ($distributionKeyData['enabled'] ?? false) === true
             );
         }
 
