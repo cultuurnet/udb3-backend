@@ -4,7 +4,7 @@
 * @LucWollants @JonasVHG @grubolsch @bertramakers @steftrenson
 
 # Jenkins / deployment owners
-Gemfile* @willaerk
-Jenkinsfile @willaerk
-Rakefile @willaerk
-lib/ @willaerk
+Gemfile* @willaerk @vincentjanv @caterinamennito
+Jenkinsfile @willaerk @vincentjanv @caterinamennito
+Rakefile @willaerk @vincentjanv @caterinamennito
+lib/ @willaerk @vincentjanv @caterinamennito
