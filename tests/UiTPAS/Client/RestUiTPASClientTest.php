@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPAS\Client;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\User\ManagementToken\ManagementTokenProvider;
 use GuzzleHttp\Client;
@@ -135,12 +136,56 @@ final class RestUiTPASClientTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_an_empty_list_on_404(): void
+    public function it_throws_a_not_found_api_problem_when_uitpas_does_not_know_the_event(): void
     {
         $client = $this->createClient(new NullLogger());
         $this->mockHandler->append(new Response(404, [], ''));
 
-        $this->assertEquals([], $client->getEventCardSystems('unknown-event'));
+        $this->expectException(ApiProblem::class);
+        $this->expectExceptionMessage('Not Found');
+
+        $client->getEventCardSystems('unknown-event');
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_throw_when_setting_card_systems_on_an_event_uitpas_does_not_know(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(new Response(404, [], ''));
+
+        $client->setCardSystemsForEvent('unknown-event', [8]);
+
+        $this->assertTrue(true, 'Matches the legacy XML endpoint, which answered 200 on this route');
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_adding_a_card_system_to_an_event_uitpas_does_not_know(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(new Response(404, [], ''));
+
+        $this->expectException(ApiProblem::class);
+        $this->expectExceptionMessage('Not Found');
+
+        $client->addCardSystemToEvent('unknown-event', 8);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_deleting_a_card_system_from_an_event_uitpas_does_not_know(): void
+    {
+        $client = $this->createClient(new NullLogger());
+        $this->mockHandler->append(new Response(404, [], ''));
+
+        $this->expectException(ApiProblem::class);
+        $this->expectExceptionMessage('Not Found');
+
+        $client->deleteCardSystemFromEvent('unknown-event', 8);
     }
 
     /**
@@ -377,39 +422,11 @@ final class RestUiTPASClientTest extends TestCase
     /**
      * @test
      */
-    public function it_reports_ticket_sales_when_the_total_is_positive(): void
+    public function it_never_reports_ticket_sales_and_does_not_call_uitpas_for_them(): void
     {
         $client = $this->createClient(new NullLogger());
-        $this->mockHandler->append(new Response(200, [], Json::encode(['totalItems' => 2, 'member' => []])));
-
-        $this->assertTrue($client->eventHasTicketSales('event-id-1'));
-
-        $this->assertEquals(
-            'https://uitpas-test.publiq.be/ticket-sales?eventId=event-id-1&limit=0',
-            (string) $this->mockHandler->getLastRequest()->getUri()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_reports_no_ticket_sales_when_the_total_is_zero(): void
-    {
-        $client = $this->createClient(new NullLogger());
-        $this->mockHandler->append(new Response(200, [], Json::encode(['totalItems' => 0, 'member' => []])));
 
         $this->assertFalse($client->eventHasTicketSales('event-id-1'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_when_the_ticket_sales_request_fails(): void
-    {
-        $client = $this->createClient(new NullLogger());
-        $this->mockHandler->append(new Response(500, [], 'boom'));
-
-        $this->expectException(\RuntimeException::class);
-        $client->eventHasTicketSales('event-id-1');
+        $this->assertNull($this->mockHandler->getLastRequest());
     }
 }
