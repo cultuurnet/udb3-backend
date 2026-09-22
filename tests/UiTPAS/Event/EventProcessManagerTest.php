@@ -143,15 +143,18 @@ final class EventProcessManagerTest extends TestCase
         $cardSystems = [
             'c73d78b7-95a7-45b3-bde5-5b2ec7b13afa' => new CardSystem(
                 new Id('c73d78b7-95a7-45b3-bde5-5b2ec7b13afa'),
-                'Mock CS Paspartoe'
+                'Mock CS Paspartoe',
+                true
             ),
             'f23ccb75-190a-4814-945e-c95e83101cc5' => new CardSystem(
                 new Id('f23ccb75-190a-4814-945e-c95e83101cc5'),
-                'Mock CS UiTPAS Gent'
+                'Mock CS UiTPAS Gent',
+                true
             ),
             '98ce6fbc-fb68-4efc-b8c7-95763cb967dd' => new CardSystem(
                 new Id('98ce6fbc-fb68-4efc-b8c7-95763cb967dd'),
-                'Mock CS UiTPAS Oostende'
+                'Mock CS UiTPAS Oostende',
+                true
             ),
         ];
 
@@ -188,7 +191,7 @@ final class EventProcessManagerTest extends TestCase
     public function it_should_log_a_warning_if_no_label_can_be_found_for_an_active_card_system_on_an_event(): void
     {
         $eventId = new Id('cbee7413-ac1e-4dfb-8004-34767eafb8b7');
-        $cardSystems = [7 => new CardSystem(new Id('7'), 'Mock CS')];
+        $cardSystems = [7 => new CardSystem(new Id('7'), 'Mock CS', true)];
 
         $cardSystemsUpdated = new EventCardSystemsUpdated($eventId, $cardSystems);
 
@@ -255,15 +258,18 @@ final class EventProcessManagerTest extends TestCase
         $cardSystems = [
             'c73d78b7-95a7-45b3-bde5-5b2ec7b13afa' => new CardSystem(
                 new Id('c73d78b7-95a7-45b3-bde5-5b2ec7b13afa'),
-                'Mock CS Paspartoe'
+                'Mock CS Paspartoe',
+                true
             ),
             'f23ccb75-190a-4814-945e-c95e83101cc5' => new CardSystem(
                 new Id('f23ccb75-190a-4814-945e-c95e83101cc5'),
-                'Mock CS UiTPAS Gent'
+                'Mock CS UiTPAS Gent',
+                true
             ),
             '98ce6fbc-fb68-4efc-b8c7-95763cb967dd' => new CardSystem(
                 new Id('98ce6fbc-fb68-4efc-b8c7-95763cb967dd'),
-                'Mock CS UiTPAS Oostende'
+                'Mock CS UiTPAS Oostende',
+                true
             ),
         ];
 
@@ -300,7 +306,7 @@ final class EventProcessManagerTest extends TestCase
     public function it_should_log_a_warning_if_no_label_can_be_found_for_an_active_card_system_on_a_place(): void
     {
         $placeId = new Id('b99aa687-e965-4a88-936c-a568c586d979');
-        $cardSystems = [7 => new CardSystem(new Id('7'), 'Mock CS')];
+        $cardSystems = [7 => new CardSystem(new Id('7'), 'Mock CS', true)];
 
         $cardSystemsUpdated = new PlaceCardSystemsUpdated($placeId, $cardSystems);
 
@@ -367,15 +373,18 @@ final class EventProcessManagerTest extends TestCase
         $cardSystems = [
             'c73d78b7-95a7-45b3-bde5-5b2ec7b13afa' => new CardSystem(
                 new Id('c73d78b7-95a7-45b3-bde5-5b2ec7b13afa'),
-                'Mock CS Paspartoe'
+                'Mock CS Paspartoe',
+                true
             ),
             'f23ccb75-190a-4814-945e-c95e83101cc5' => new CardSystem(
                 new Id('f23ccb75-190a-4814-945e-c95e83101cc5'),
-                'Mock CS UiTPAS Gent'
+                'Mock CS UiTPAS Gent',
+                true
             ),
             '98ce6fbc-fb68-4efc-b8c7-95763cb967dd' => new CardSystem(
                 new Id('98ce6fbc-fb68-4efc-b8c7-95763cb967dd'),
-                'Mock CS UiTPAS Oostende'
+                'Mock CS UiTPAS Oostende',
+                true
             ),
         ];
 
@@ -412,7 +421,7 @@ final class EventProcessManagerTest extends TestCase
     public function it_should_log_a_warning_if_no_label_can_be_found_for_an_active_card_system_on_an_organizer(): void
     {
         $organizerId = new Id('3d3b551c-2175-4903-914c-50d215a125e3');
-        $cardSystems = [7 => new CardSystem(new Id('7'), 'Mock CS')];
+        $cardSystems = [7 => new CardSystem(new Id('7'), 'Mock CS', true)];
 
         $cardSystemsUpdated = new OrganizerCardSystemsUpdated($organizerId, $cardSystems);
 

@@ -91,7 +91,7 @@ final class RestUiTPASClientTest extends TestCase
     /**
      * @test
      */
-    public function it_filters_out_disabled_card_systems(): void
+    public function it_keeps_disabled_card_systems_with_their_flag(): void
     {
         $client = $this->createClient(new NullLogger());
         $this->mockHandler->append(
@@ -103,14 +103,17 @@ final class RestUiTPASClientTest extends TestCase
 
         $cardSystems = $client->getEventCardSystems('event-id-1');
 
-        $this->assertCount(1, $cardSystems);
+        $this->assertCount(2, $cardSystems);
         $this->assertEquals('1', $cardSystems[0]->getId()->toNative());
+        $this->assertTrue($cardSystems[0]->isEnabled());
+        $this->assertEquals('8', $cardSystems[1]->getId()->toNative());
+        $this->assertFalse($cardSystems[1]->isEnabled());
     }
 
     /**
      * @test
      */
-    public function it_filters_out_disabled_distribution_keys(): void
+    public function it_keeps_disabled_distribution_keys_with_their_flag(): void
     {
         $client = $this->createClient(new NullLogger());
         $this->mockHandler->append(
@@ -129,8 +132,11 @@ final class RestUiTPASClientTest extends TestCase
 
         $distributionKeys = $client->getEventCardSystems('event-id-1')[0]->getDistributionKeys();
 
-        $this->assertCount(1, $distributionKeys);
+        $this->assertCount(2, $distributionKeys);
         $this->assertEquals('123', $distributionKeys[0]->getId()->toNative());
+        $this->assertTrue($distributionKeys[0]->isEnabled());
+        $this->assertEquals('456', $distributionKeys[1]->getId()->toNative());
+        $this->assertFalse($distributionKeys[1]->isEnabled());
     }
 
     /**

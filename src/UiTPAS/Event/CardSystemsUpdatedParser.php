@@ -41,9 +41,12 @@ final class CardSystemsUpdatedParser
                 throw new \InvalidArgumentException('Encountered cardSystems entry without name.');
             }
 
+            // UiTPAS only sends the card systems that apply to the event or organizer, so they are
+            // all enabled. EventProcessManager turns each one into a label.
             $cardSystems[$cardSystem->id] = new CardSystem(
                 new Id((string) $cardSystem->id),
-                $cardSystem->name
+                $cardSystem->name,
+                true
             );
         }
 
