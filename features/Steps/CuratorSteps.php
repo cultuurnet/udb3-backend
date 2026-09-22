@@ -14,6 +14,7 @@ trait CuratorSteps
     public function iCreateANewsArticleAndSaveTheIdAs(string $variableName): void
     {
         $this->iCreateARandomNameOfCharacters(12);
+        $name = $this->variableState->getVariable('name');
 
         $article = [
             'headline' => 'Curator API migrated',
@@ -22,12 +23,12 @@ trait CuratorSteps
             'about' => '17284745-7bcf-461a-aad0-d3ad54880e75',
             'publisher' => 'BILL',
             'publisherLogo' => 'https://www.bill.be/img/favicon.png',
-            'url' => 'https://www.publiq.be/blog/%{name}',
+            'url' => 'https://www.publiq.be/blog/' . $name,
         ];
 
         $response = $this->getHttpClient()->postJSON(
             '/news-articles/',
-            $this->variableState->replaceVariables(Json::encode($article))
+            Json::encode($article)
         );
         $this->responseState->setResponse($response);
 

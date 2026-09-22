@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Behat\Behat\Context\Context;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Hook\Scope\AfterScenarioScope;
 use Behat\Behat\Hook\Scope\BeforeScenarioScope;
 use Behat\Testwork\Hook\Scope\BeforeSuiteScope;
@@ -113,18 +114,27 @@ final class FeatureContext implements Context
     }
 
     /**
-     * @Transform :url
+     * Resolves %{variables} in every step argument that holds one, so no step has to do it itself.
+     * Arguments without a variable are left alone, which keeps the ones that take a variable name
+     * rather than a value, like "I set the variable :variableName to :value", intact.
+     *
+     * @Transform /^(.*%\{.+)$/
      */
-    public function replaceUrl(string $url): string
+    public function replaceVariablesInArgument(string $argument): string
     {
-        return $this->variableState->replaceVariables($url);
+        return $this->variableState->replaceVariables($argument);
     }
 
     /**
-     * @Transform :id
+     * Same for the multiline arguments, the request payloads and expected response bodies.
+     *
+     * @Transform
      */
-    public function replaceId(string $id): string
+    public function replaceVariablesInMultilineArgument(PyStringNode $argument): PyStringNode
     {
-        return $this->variableState->replaceVariables($id);
+        return new PyStringNode(
+            explode("\n", $this->variableState->replaceVariables($argument->getRaw())),
+            $argument->getLine()
+        );
     }
 }

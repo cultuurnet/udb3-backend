@@ -43,7 +43,7 @@ trait EventSteps
     {
         $json = $this->fixtures->loadJson('/events/event-with-workflow-status-ready-for-validation.json', $this->variableState);
         $data = Json::decodeAssociatively($json);
-        $data['name']['nl'] = $this->variableState->replaceVariables($name);
+        $data['name']['nl'] = $name;
         $this->createEvent(
             '/events',
             Json::encode($data),
@@ -61,7 +61,7 @@ trait EventSteps
             $this->fixtures->loadJson('/events/event-minimal-permanent.json', $this->variableState)
         );
         $overrides = Json::decodeAssociatively(
-            $this->variableState->replaceVariables($overridesJson->getRaw())
+            $overridesJson->getRaw()
         );
         $this->createEvent('/events', Json::encode(array_merge($base, $overrides)), $jsonPath, $variableName);
     }
