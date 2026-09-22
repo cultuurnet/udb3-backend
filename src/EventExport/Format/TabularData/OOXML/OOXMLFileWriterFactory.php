@@ -9,8 +9,13 @@ use CultuurNet\UDB3\EventExport\Format\TabularData\TabularDataFileWriterInterfac
 
 class OOXMLFileWriterFactory implements TabularDataFileWriterFactoryInterface
 {
-    public function openTabularDataFileWriter(string $filePath): TabularDataFileWriterInterface
-    {
-        return new OOXMLFileWriter($filePath);
+    /**
+     * @param int[] $wrappedColumns
+     */
+    public function openTabularDataFileWriter(
+        string $filePath,
+        array $wrappedColumns = []
+    ): TabularDataFileWriterInterface {
+        return new OOXMLFileWriter($filePath, $wrappedColumns);
     }
 }

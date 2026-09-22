@@ -11,23 +11,34 @@ use CommerceGuys\Intl\Formatter\NumberFormatter;
 use CommerceGuys\Intl\Formatter\NumberFormatterInterface;
 use CommerceGuys\Intl\NumberFormat\NumberFormatRepository;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\EventExport\AgeRangeFactory;
+use CultuurNet\UDB3\EventExport\BirthdateRangeFactory;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
+use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\EventExport\Media\MediaFinder;
 use CultuurNet\UDB3\EventExport\Media\Url;
+use CultuurNet\UDB3\EventExport\OvernightStayResolver;
 use CultuurNet\UDB3\EventExport\PriceFormatter;
+use CultuurNet\UDB3\EventExport\TargetAudienceDescription;
+use CultuurNet\UDB3\EventExport\Translation\TranslatedProperty;
 use CultuurNet\UDB3\EventExport\UitpasInfoFormatter;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\StringFilter\StripHtmlStringFilter;
+use CultuurNet\UDB3\StringFilter\TruncateStringFilter;
 use DateTimeInterface;
 use Exception;
 use stdClass;
 
 class TabularDataEventFormatter
 {
+    private const EXCEL_MAX_CELL_LENGTH = 32767;
+
     protected StripHtmlStringFilter $htmlFilter;
+
+    private TruncateStringFilter $faqFilter;
 
     /**
      * A list of all included properties
@@ -48,15 +59,22 @@ class TabularDataEventFormatter
 
     protected CurrencyRepositoryInterface $currencyRepository;
 
+    private ?DeparturePlaceResolver $departurePlaceResolver;
+
     /**
      * @param string[] $include
      */
     public function __construct(
         array $include,
         EventInfoServiceInterface $uitpas = null,
-        ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null
+        ?CalendarSummaryRepositoryInterface $calendarSummaryRepository = null,
+        ?DeparturePlaceResolver $departurePlaceResolver = null
     ) {
+        $this->departurePlaceResolver = $departurePlaceResolver;
         $this->htmlFilter = new StripHtmlStringFilter();
+        $this->faqFilter = new TruncateStringFilter(self::EXCEL_MAX_CELL_LENGTH);
+        $this->faqFilter->addEllipsis();
+        $this->faqFilter->turnOnWordSafe(1);
         $this->includedProperties = $this->includedOrDefaultProperties($include);
         $this->uitpas = $uitpas;
         $this->uitpasInfoFormatter = new UitpasInfoFormatter(new PriceFormatter(2, ',', '.', 'Gratis'));
@@ -76,6 +94,27 @@ class TabularDataEventFormatter
         }
 
         return $columns;
+    }
+
+    /**
+     * The columns that hold a value of more than one line, as column numbers, so that a writer can
+     * render those lines. A column is named here rather than recognised by its content, because a
+     * newline in a description is markup that has always been shown as a single run of text.
+     *
+     * @return int[]
+     */
+    public function wrappedColumns(): array
+    {
+        $columns = $this->columns();
+        $wrapped = [];
+
+        foreach (array_values($this->includedProperties) as $index => $property) {
+            if ($columns[$property]['wrap'] ?? false) {
+                $wrapped[] = $index + 1;
+            }
+        }
+
+        return $wrapped;
     }
 
     public function formatEvent(string $event): array
@@ -184,6 +223,11 @@ class TabularDataEventFormatter
                 'attendance.mode',
                 'attendance.url',
             ],
+            // An event carries either a typicalAgeRange or a birthdateRange, and the leeftijd
+            // column renders whichever one it has, so both include values name that one column.
+            'birthdateRange' => [
+                'typicalAgeRange',
+            ],
         ];
 
         foreach ($properties as $property) {
@@ -203,6 +247,11 @@ class TabularDataEventFormatter
             $properties = $this->expandMultiColumnProperties($include);
 
             array_unshift($properties, 'id');
+
+            // Asking for the typicalAgeRange and the birthdateRange both name the leeftijd column,
+            // and an id the export prepends anyway can also be asked for, so a property that is
+            // named twice still becomes a single column.
+            $properties = array_values(array_unique($properties));
         } else {
             $properties = array_keys($this->columns());
         }
@@ -347,12 +396,10 @@ class TabularDataEventFormatter
                 'name' => 'organisatie',
                 'include' => function ($event) {
                     /** @var stdClass $event */
-                    if (isset($event->organizer, $event->organizer->name)) {
-                        $name = (array) $event->organizer->name;
-                        $mainLanguage = $event->mainLanguage ?? 'nl';
-                        return $name[$mainLanguage] ?? current($name);
-                    }
-                    return '';
+                    return TranslatedProperty::asString(
+                        $event->organizer->name ?? null,
+                        TranslatedProperty::mainLanguage($event)
+                    );
                 },
                 'property' => 'organizer',
             ],
@@ -387,7 +434,7 @@ class TabularDataEventFormatter
             'typicalAgeRange' => [
                 'name' => 'leeftijd',
                 'include' => function ($event) {
-                    return $event->typicalAgeRange ?? '';
+                    return $this->formatAgeRange($event);
                 },
                 'property' => 'typicalAgeRange',
             ],
@@ -685,6 +732,32 @@ class TabularDataEventFormatter
                 },
                 'property' => 'completeness',
             ],
+            'faqs' => [
+                'name' => 'faq',
+                'include' => function ($event) {
+                    return $this->formatFaqs($event);
+                },
+                'property' => 'faqs',
+                'wrap' => true,
+            ],
+            'hasOvernightStay' => [
+                'name' => 'met overnachting',
+                'include' => function ($event) {
+                    return $this->formatOvernightStay($event);
+                },
+                'property' => 'subEvent',
+            ],
+            'childrenOnly' => [
+                'name' => 'doelgroep',
+                'include' => fn ($event) => TargetAudienceDescription::fromEvent($event),
+                'property' => 'childrenOnly',
+            ],
+            'departurePlaces' => [
+                'name' => 'vertreklocaties',
+                'include' => fn ($event) => $this->formatDeparturePlaces($event),
+                'property' => 'departurePlaces',
+                'wrap' => true,
+            ],
         ];
     }
 
@@ -777,19 +850,142 @@ class TabularDataEventFormatter
         };
     }
 
-    /**
-     * @replay_i18n
-     * @see https://jira.uitdatabank.be/browse/III-2201
-     */
     private function getAddressField(stdClass $event, string $addressField): string
     {
-        if (isset($event->location->address->{$addressField})) {
-            return $event->location->address->{$addressField};
+        return TranslatedProperty::addressField(
+            $event->location->address ?? null,
+            $addressField,
+            TranslatedProperty::mainLanguage($event)
+        );
+    }
+
+    private function formatFaqs(stdClass $event): string
+    {
+        if (!isset($event->faqs) || !is_array($event->faqs)) {
+            return '';
         }
 
-        $mainLanguage = $event->mainLanguage ?? 'nl';
+        $items = [];
 
-        return $event->location->address->{$mainLanguage}->{$addressField} ?? '';
+        foreach ($event->faqs as $faq) {
+            if (!$faq instanceof stdClass) {
+                continue;
+            }
+
+            $translation = $this->pickTranslation(get_object_vars($faq), TranslatedProperty::mainLanguage($event));
+
+            if ($translation === null) {
+                continue;
+            }
+
+            $items[] = $this->toSingleLine($translation->question) . ' ' .
+                $this->toSingleLine($translation->answer);
+        }
+
+        return $this->faqFilter->filter(implode("\n", $items));
+    }
+
+    private function pickTranslation(array $translations, string $mainLanguage): ?stdClass
+    {
+        if ($this->isValidTranslation($translations[$mainLanguage] ?? null)) {
+            return $translations[$mainLanguage];
+        }
+
+        foreach ($translations as $candidate) {
+            if ($this->isValidTranslation($candidate)) {
+                return $candidate;
+            }
+        }
+
+        return null;
+    }
+
+    private function isValidTranslation(mixed $candidate): bool
+    {
+        return $candidate instanceof stdClass
+            && isset($candidate->question, $candidate->answer)
+            && is_string($candidate->question)
+            && is_string($candidate->answer);
+    }
+
+    /**
+     * Questions and answers are free text that can contain markup, just like a description, so the
+     * tags are stripped first: the filter turns a <br> or a </p> into newlines, which then collapse
+     * into the single space that separates the words.
+     */
+    private function toSingleLine(string $text): string
+    {
+        return trim(preg_replace('/\s+/', ' ', $this->htmlFilter->filter($text)));
+    }
+
+    /**
+     * An event describes its audience with a typicalAgeRange or a birthdateRange, and the polyfill
+     * drops the typicalAgeRange of an event that has a birthdate range. An older projection can
+     * still carry both, in which case a specific age range wins, just like in the HTML export.
+     *
+     * @see \CultuurNet\UDB3\EventExport\Format\HTML\HTMLEventFormatter::addAgeRangeInfo()
+     */
+    private function formatAgeRange(stdClass $event): string
+    {
+        $typicalAgeRange = isset($event->typicalAgeRange) && is_string($event->typicalAgeRange)
+            ? $event->typicalAgeRange
+            : '';
+
+        if (AgeRangeFactory::hasSpecificAgeRange($typicalAgeRange)) {
+            return $typicalAgeRange;
+        }
+
+        // The birthdate range only fills in when there is no specific age range, so for an all ages
+        // or a malformed value.
+        $birthdateRange = BirthdateRangeFactory::fromJson($event->birthdateRange ?? null);
+
+        if ($birthdateRange !== null) {
+            return BirthdateRangeFactory::formatRange($birthdateRange);
+        }
+
+        // Without a usable birthdate range the original value is still the best available answer,
+        // which keeps exporting "-" for an all ages event.
+        return $typicalAgeRange;
+    }
+
+    /**
+     * Every departure place as "postcode, gemeente, naam", one per line. Without a resolver there is
+     * nothing to look the URLs up in, so the column stays empty rather than listing them.
+     */
+    private function formatDeparturePlaces(stdClass $event): string
+    {
+        if ($this->departurePlaceResolver === null || !is_array($event->departurePlaces ?? null)) {
+            return '';
+        }
+
+        $lines = [];
+
+        foreach ($this->departurePlaceResolver->resolve($event->departurePlaces) as $departurePlace) {
+            $parts = array_filter(
+                [$departurePlace->postalCode, $departurePlace->addressLocality, $departurePlace->name]
+            );
+
+            if ($parts !== []) {
+                $lines[] = implode(', ', $parts);
+            }
+        }
+
+        return implode(PHP_EOL, $lines);
+    }
+
+    /**
+     * The column stays empty for an event type that could never have an overnight stay, instead of
+     * claiming there is none.
+     */
+    private function formatOvernightStay(stdClass $event): string
+    {
+        $hasOvernightStay = OvernightStayResolver::forEvent($event);
+
+        if ($hasOvernightStay === null) {
+            return '';
+        }
+
+        return $hasOvernightStay ? 'ja' : 'nee';
     }
 
     private function formatStatus(stdClass $status): string

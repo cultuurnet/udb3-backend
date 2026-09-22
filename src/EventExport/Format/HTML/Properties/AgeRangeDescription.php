@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\EventExport\Format\HTML\Properties;
 
-use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
-use CultuurNet\UDB3\Model\ValueObject\Audience\InvalidAgeRangeException;
+use CultuurNet\UDB3\EventExport\AgeRangeFactory;
 
 final class AgeRangeDescription
 {
     public static function fromTypicalAgeRange(string $typicalAgeRange): ?string
     {
-        try {
-            $ageRange = AgeRange::fromString($typicalAgeRange);
-        } catch (InvalidAgeRangeException) {
-            return null;
-        }
+        $ageRange = AgeRangeFactory::specificFromString($typicalAgeRange);
 
-        if ($ageRange->isForAllAges()) {
+        if ($ageRange === null) {
             return null;
         }
 

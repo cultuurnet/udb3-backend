@@ -4,10 +4,13 @@
   "include": [
     "name",
     "description",
+    "faqs",
+    "hasOvernightStay",
     "labels",
     "calendarSummary",
     "image",
     "location",
+    "departurePlaces",
     "address",
     "organizer",
     "priceInfo",
@@ -25,6 +28,8 @@
     "calendarType",
     "sameAs",
     "typicalAgeRange",
+    "childrenOnly",
+    "birthdateRange",
     "language",
     "audience"
   ],

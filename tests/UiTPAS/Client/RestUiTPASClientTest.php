@@ -428,39 +428,11 @@ final class RestUiTPASClientTest extends TestCase
     /**
      * @test
      */
-    public function it_reports_ticket_sales_when_the_total_is_positive(): void
+    public function it_never_reports_ticket_sales_and_does_not_call_uitpas_for_them(): void
     {
         $client = $this->createClient(new NullLogger());
-        $this->mockHandler->append(new Response(200, [], Json::encode(['totalItems' => 2, 'member' => []])));
-
-        $this->assertTrue($client->eventHasTicketSales('event-id-1'));
-
-        $this->assertEquals(
-            'https://uitpas-test.publiq.be/ticket-sales?eventId=event-id-1&limit=0',
-            (string) $this->mockHandler->getLastRequest()->getUri()
-        );
-    }
-
-    /**
-     * @test
-     */
-    public function it_reports_no_ticket_sales_when_the_total_is_zero(): void
-    {
-        $client = $this->createClient(new NullLogger());
-        $this->mockHandler->append(new Response(200, [], Json::encode(['totalItems' => 0, 'member' => []])));
 
         $this->assertFalse($client->eventHasTicketSales('event-id-1'));
-    }
-
-    /**
-     * @test
-     */
-    public function it_throws_when_the_ticket_sales_request_fails(): void
-    {
-        $client = $this->createClient(new NullLogger());
-        $this->mockHandler->append(new Response(500, [], 'boom'));
-
-        $this->expectException(\RuntimeException::class);
-        $client->eventHasTicketSales('event-id-1');
+        $this->assertNull($this->mockHandler->getLastRequest());
     }
 }
