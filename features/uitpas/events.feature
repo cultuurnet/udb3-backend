@@ -74,3 +74,32 @@ Feature: Test the UiTPAS events
     }
     """
 
+  Scenario: Set card systems with a payload that is not an array
+    When I set the JSON request payload to:
+    """
+    "8"
+    """
+    And I send a PUT request to "/uitpas/events/18827e56-mock-4961-a5c8-7acd5dcfed9a/card-systems"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+     "type": "https://api.publiq.be/probs/body/invalid-data",
+     "title": "Invalid body data",
+     "status": 400,
+     "detail": "Payload should be an array of card system ids"
+    }
+    """
+
+  Scenario: Set card systems without a payload
+    When I send a PUT request to "/uitpas/events/18827e56-mock-4961-a5c8-7acd5dcfed9a/card-systems"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+     "type": "https://api.publiq.be/probs/body/invalid-data",
+     "title": "Invalid body data",
+     "status": 400,
+     "detail": "Payload should be an array of card system ids"
+    }
+    """
