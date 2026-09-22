@@ -7,10 +7,13 @@ namespace CultuurNet\UDB3\EventExport\Format\TabularData;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
+use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\Event\EventAdvantage;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfo;
 use CultuurNet\UDB3\EventExport\Format\HTML\Uitpas\EventInfo\EventInfoServiceInterface;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\ReadModel\JsonDocument;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\TestCase;
 
@@ -19,6 +22,75 @@ class TabularDataEventFormatterTest extends TestCase
     private function getJSONEventFromFile(string $fileName): string
     {
         return SampleFiles::read(__DIR__ . '/../../samples/' . $fileName);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_columns_of_a_default_export_in_a_stable_order(): void
+    {
+        $formatter = new TabularDataEventFormatter([]);
+
+        $this->assertSame(
+            [
+                'id',
+                'titel',
+                'auteur',
+                'basistarief',
+                'prijsinformatie',
+                'kansentarief',
+                'reservatie url',
+                'reservatie tel',
+                'reservatie e-mail',
+                'omschrijving',
+                'organisatie',
+                'korte kalendersamenvatting',
+                'lange kalendersamenvatting',
+                'labels',
+                'verborgen labels',
+                'leeftijd',
+                'uitvoerders',
+                'taal van het aanbod',
+                'thema',
+                'soort aanbod',
+                'datum aangemaakt',
+                'datum laatste aanpassing',
+                'embargodatum',
+                'startdatum',
+                'einddatum',
+                'tijd type',
+                'locatie naam',
+                'straat',
+                'postcode',
+                'gemeente',
+                'land',
+                'afbeelding URL',
+                'afbeelding beschrijving',
+                'afbeelding copyright',
+                'externe ids',
+                'contact e-mail',
+                'contact tel',
+                'contact url',
+                'e-mail reservaties',
+                'telefoon reservaties',
+                'online reservaties',
+                'toegang',
+                'status',
+                'tickets & plaatsen',
+                'videos URL',
+                'videos copyright',
+                'Aanwezigheidsvorm (fysiek / online)',
+                'online url',
+                'Volledigheid',
+                // New columns belong at the end, so that the position of every column that
+                // integrators already read stays the same.
+                'faq',
+                'met overnachting',
+                'doelgroep',
+                'vertreklocaties',
+            ],
+            $formatter->formatHeader()
+        );
     }
 
     /**
@@ -178,6 +250,28 @@ class TabularDataEventFormatterTest extends TestCase
                 'event_with_translated_address_and_main_language.json',
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_an_address_that_is_not_translated_into_the_main_language_of_the_event(): void
+    {
+        $event = Json::decode($this->getJSONEventFromFile('event_with_translated_address_and_main_language.json'));
+        $event->mainLanguage = 'de';
+
+        $formatter = new TabularDataEventFormatter(['id', 'address']);
+
+        $this->assertEquals(
+            [
+                'id' => 'd1f0e71d-a9a8-4069-81fb-530134502c58',
+                'address.streetAddress' => 'Sint-Jorisplein 20 ',
+                'address.postalCode' => '3300',
+                'address.addressLocality' => 'Tienen',
+                'address.addressCountry' => 'BE',
+            ],
+            $formatter->formatEvent(Json::encode($event))
+        );
     }
 
     /**
@@ -771,6 +865,11 @@ class TabularDataEventFormatterTest extends TestCase
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);
     }
 
+    private function encodeEvent(array $properties): string
+    {
+        return Json::encode(['@id' => '4232b0d3-5de2-483d-a693-1ff852250f5d'] + $properties);
+    }
+
     /**
      * @test
      */
@@ -837,5 +936,466 @@ class TabularDataEventFormatterTest extends TestCase
         ];
 
         $this->assertEquals($expectedFormattedEvent, $formattedEvent);
+    }
+
+    /**
+     * @test
+     * @dataProvider eventsAndLeeftijd
+     */
+    public function it_should_export_the_age_range_or_the_birthdate_range_as_leeftijd(
+        string $event,
+        string $leeftijd
+    ): void {
+        $formatter = new TabularDataEventFormatter(['typicalAgeRange']);
+
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $this->assertSame($leeftijd, $formattedEvent['typicalAgeRange']);
+    }
+
+    public function eventsAndLeeftijd(): array
+    {
+        return [
+            'a typical age range' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => '6-12']),
+                'leeftijd' => '6-12',
+            ],
+            'a birthdate range' => [
+                'event' => $this->encodeEvent(
+                    ['birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31']]
+                ),
+                'leeftijd' => '01/01/2010 - 31/12/2010',
+            ],
+            'a birthdate range of a single day' => [
+                'event' => $this->encodeEvent(
+                    ['birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-01-01']]
+                ),
+                'leeftijd' => '01/01/2010 - 01/01/2010',
+            ],
+            'a specific age range wins from a birthdate range' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'typicalAgeRange' => '6-12',
+                        'birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31'],
+                    ]
+                ),
+                'leeftijd' => '6-12',
+            ],
+            'an all ages range gives way to a birthdate range' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'typicalAgeRange' => '-',
+                        'birthdateRange' => ['from' => '2010-01-01', 'to' => '2010-12-31'],
+                    ]
+                ),
+                'leeftijd' => '01/01/2010 - 31/12/2010',
+            ],
+            'an all ages event without a birthdate range' => [
+                'event' => $this->encodeEvent(['typicalAgeRange' => '-']),
+                'leeftijd' => '-',
+            ],
+            'an incomplete birthdate range' => [
+                'event' => $this->encodeEvent(['birthdateRange' => ['from' => '2010-01-01']]),
+                'leeftijd' => '',
+            ],
+            'a birthdate range that is not a real date' => [
+                'event' => $this->encodeEvent(
+                    ['birthdateRange' => ['from' => '2010-13-45', 'to' => '2010-12-31']]
+                ),
+                'leeftijd' => '',
+            ],
+            'neither an age range nor a birthdate range' => [
+                'event' => $this->encodeEvent([]),
+                'leeftijd' => '',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_exports_the_birthdate_range_in_the_leeftijd_column(): void
+    {
+        $formatter = new TabularDataEventFormatter(['birthdateRange']);
+
+        $this->assertSame(['id', 'leeftijd'], $formatter->formatHeader());
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_one_leeftijd_column_when_both_age_properties_are_included(): void
+    {
+        $formatter = new TabularDataEventFormatter(['typicalAgeRange', 'birthdateRange']);
+
+        $this->assertSame(['id', 'leeftijd'], $formatter->formatHeader());
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_one_id_column_when_the_id_is_included_as_well(): void
+    {
+        $formatter = new TabularDataEventFormatter(['id', 'name']);
+
+        $this->assertSame(['id', 'titel'], $formatter->formatHeader());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_export_the_target_audience_as_doelgroep(): void
+    {
+        $formatter = new TabularDataEventFormatter(['childrenOnly']);
+
+        $this->assertSame(
+            'voor kinderen alleen',
+            $formatter->formatEvent($this->encodeEvent(['childrenOnly' => true]))['childrenOnly']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_the_doelgroep_empty_when_there_is_nothing_to_say(): void
+    {
+        $formatter = new TabularDataEventFormatter(['childrenOnly']);
+
+        $this->assertSame('', $formatter->formatEvent($this->encodeEvent([]))['childrenOnly']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_export_the_departure_places_one_per_line(): void
+    {
+        $formatter = new TabularDataEventFormatter(
+            ['departurePlaces'],
+            null,
+            null,
+            $this->departurePlaceResolver([
+                'abc-123' => [
+                    'name' => ['nl' => 'Centraal Station'],
+                    'address' => ['nl' => ['postalCode' => '2000', 'addressLocality' => 'Antwerpen']],
+                ],
+                'def-456' => [
+                    'name' => ['nl' => 'Sint-Pietersplein'],
+                    'address' => ['nl' => ['postalCode' => '9000', 'addressLocality' => 'Gent']],
+                ],
+            ])
+        );
+
+        $event = $this->encodeEvent([
+            'departurePlaces' => [
+                'https://io.uitdatabank.be/place/abc-123',
+                'https://io.uitdatabank.be/place/def-456',
+            ],
+        ]);
+
+        $this->assertSame(
+            "2000, Antwerpen, Centraal Station\n9000, Gent, Sint-Pietersplein",
+            $formatter->formatEvent($event)['departurePlaces']
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_out_a_departure_place_part_that_is_missing(): void
+    {
+        $formatter = new TabularDataEventFormatter(
+            ['departurePlaces'],
+            null,
+            null,
+            $this->departurePlaceResolver(['abc-123' => ['name' => ['nl' => 'Centraal Station']]])
+        );
+
+        $event = $this->encodeEvent(
+            ['departurePlaces' => ['https://io.uitdatabank.be/place/abc-123']]
+        );
+
+        $this->assertSame('Centraal Station', $formatter->formatEvent($event)['departurePlaces']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_the_departure_places_empty_without_a_departure_place_resolver(): void
+    {
+        $formatter = new TabularDataEventFormatter(['departurePlaces']);
+
+        $event = $this->encodeEvent(
+            ['departurePlaces' => ['https://io.uitdatabank.be/place/abc-123']]
+        );
+
+        $this->assertSame('', $formatter->formatEvent($event)['departurePlaces']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_the_departure_places_empty_for_an_event_without_any(): void
+    {
+        $formatter = new TabularDataEventFormatter(
+            ['departurePlaces'],
+            null,
+            null,
+            $this->departurePlaceResolver([])
+        );
+
+        $this->assertSame('', $formatter->formatEvent($this->encodeEvent([]))['departurePlaces']);
+    }
+
+    private function departurePlaceResolver(array $places): DeparturePlaceResolver
+    {
+        $repository = $this->createMock(DocumentRepository::class);
+        $repository->method('fetch')->willReturnCallback(
+            fn (string $id): JsonDocument => new JsonDocument($id, Json::encode($places[$id]))
+        );
+
+        return new DeparturePlaceResolver($repository);
+    }
+
+    /**
+     * @test
+     * @dataProvider eventsAndOvernightStay
+     */
+    public function it_should_export_whether_the_event_has_an_overnight_stay(
+        string $event,
+        string $metOvernachting
+    ): void {
+        $formatter = new TabularDataEventFormatter(['hasOvernightStay']);
+
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $this->assertSame($metOvernachting, $formattedEvent['hasOvernightStay']);
+    }
+
+    public function eventsAndOvernightStay(): array
+    {
+        $camp = ['id' => '0.57.0.0.0', 'domain' => 'eventtype', 'label' => 'Kamp of vakantie'];
+        $concert = ['id' => '0.50.4.0.0', 'domain' => 'eventtype', 'label' => 'Concert'];
+
+        return [
+            'a camp with an overnight stay' => [
+                'event' => $this->encodeEvent(
+                    ['terms' => [$camp], 'subEvent' => [['hasOvernightStay' => true]]]
+                ),
+                'metOvernachting' => 'ja',
+            ],
+            'a camp without an overnight stay' => [
+                'event' => $this->encodeEvent(['terms' => [$camp], 'subEvent' => [[], []]]),
+                'metOvernachting' => 'nee',
+            ],
+            'an event type that can never have an overnight stay stays empty' => [
+                'event' => $this->encodeEvent(
+                    ['terms' => [$concert], 'subEvent' => [['hasOvernightStay' => true]]]
+                ),
+                'metOvernachting' => '',
+            ],
+            'an event without an event type stays empty' => [
+                'event' => $this->encodeEvent(['subEvent' => [[]]]),
+                'metOvernachting' => '',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_reports_the_faq_column_as_wrapping(): void
+    {
+        $formatter = new TabularDataEventFormatter(['name', 'description', 'faqs']);
+
+        // Column 4, because the export always prepends an id column of its own.
+        $this->assertSame([4], $formatter->wrappedColumns());
+    }
+
+    /**
+     * @test
+     */
+    public function it_reports_no_wrapping_column_when_the_faqs_are_not_included(): void
+    {
+        $formatter = new TabularDataEventFormatter(['name', 'description']);
+
+        $this->assertSame([], $formatter->wrappedColumns());
+    }
+
+    /**
+     * @test
+     */
+    public function it_reports_every_column_of_a_default_export_that_wraps(): void
+    {
+        $formatter = new TabularDataEventFormatter([]);
+
+        $header = $formatter->formatHeader();
+
+        $this->assertSame(
+            [
+                array_search('faq', $header, true) + 1,
+                array_search('vertreklocaties', $header, true) + 1,
+            ],
+            $formatter->wrappedColumns()
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider eventsAndFaq
+     */
+    public function it_should_export_the_faqs(string $event, string $faq): void
+    {
+        $formatter = new TabularDataEventFormatter(['id', 'faqs']);
+
+        $formattedEvent = $formatter->formatEvent($event);
+
+        $this->assertSame($faq, $formattedEvent['faqs']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_cuts_off_faqs_that_do_not_fit_in_an_excel_cell(): void
+    {
+        $event = $this->encodeEvent(
+            ['faqs' => [['nl' => ['question' => 'Hoe geraak ik er?', 'answer' => str_repeat('met de bus ', 5000)]]]]
+        );
+
+        $formatter = new TabularDataEventFormatter(['id', 'faqs']);
+
+        $faq = $formatter->formatEvent($event)['faqs'];
+
+        $this->assertLessThanOrEqual(32767, mb_strlen($faq));
+        $this->assertGreaterThan(32000, mb_strlen($faq));
+        $this->assertStringStartsWith('Hoe geraak ik er? met de bus', $faq);
+        $this->assertStringEndsWith('bus...', $faq);
+    }
+
+    public function eventsAndFaq(): array
+    {
+        return [
+            'a single item' => [
+                'event' => $this->encodeEvent(
+                    ['faqs' => [['nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.']]]]
+                ),
+                'faq' => 'Hoe geraak ik er? Met de bus.',
+            ],
+            'one translation of every item' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            [
+                                'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                                'fr' => ['question' => 'Comment venir?', 'answer' => 'En bus.'],
+                            ],
+                            ['nl' => ['question' => 'Wat kost het?', 'answer' => '10 euro.']],
+                        ],
+                    ]
+                ),
+                'faq' => "Hoe geraak ik er? Met de bus.\nWat kost het? 10 euro.",
+            ],
+            'the main language of the event, even when there is a Dutch translation' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'mainLanguage' => 'fr',
+                        'faqs' => [
+                            [
+                                'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                                'fr' => ['question' => 'Comment venir?', 'answer' => 'En bus.'],
+                            ],
+                        ],
+                    ]
+                ),
+                'faq' => 'Comment venir? En bus.',
+            ],
+            'Dutch when the event has no main language' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            [
+                                'fr' => ['question' => 'Comment venir?', 'answer' => 'En bus.'],
+                                'nl' => ['question' => 'Hoe geraak ik er?', 'answer' => 'Met de bus.'],
+                            ],
+                        ],
+                    ]
+                ),
+                'faq' => 'Hoe geraak ik er? Met de bus.',
+            ],
+            'any language when the item has no translation in the main language' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'mainLanguage' => 'nl',
+                        'faqs' => [['de' => ['question' => 'Wie komme ich dahin?', 'answer' => 'Mit dem Bus.']]],
+                    ]
+                ),
+                'faq' => 'Wie komme ich dahin? Mit dem Bus.',
+            ],
+            'markup is stripped' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            [
+                                'nl' => [
+                                    'question' => 'Hoe geraak ik er?',
+                                    'answer' => '<p>Met de <strong>bus</strong>.</p><p>Of te voet.</p>',
+                                ],
+                            ],
+                        ],
+                    ]
+                ),
+                'faq' => 'Hoe geraak ik er? Met de bus. Of te voet.',
+            ],
+            'a semicolon in a question or an answer needs no escaping' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            ['nl' => ['question' => 'Kost het 10 euro; of meer?', 'answer' => 'Ja; soms.']],
+                            ['nl' => ['question' => 'Wanneer?', 'answer' => 'Morgen.']],
+                        ],
+                    ]
+                ),
+                'faq' => "Kost het 10 euro; of meer? Ja; soms.\nWanneer? Morgen.",
+            ],
+            'an answer spanning multiple lines is kept on one line' => [
+                'event' => $this->encodeEvent(
+                    ['faqs' => [['nl' => ['question' => 'Hoe?', 'answer' => "Met de bus.\n\n  Of te voet."]]]]
+                ),
+                'faq' => 'Hoe? Met de bus. Of te voet.',
+            ],
+            'a question or an answer that is not a string is passed over' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            [
+                                'nl' => ['question' => 'Wat kost het?', 'answer' => 10],
+                                'fr' => ['question' => 'Combien?', 'answer' => '10 euros.'],
+                            ],
+                            ['nl' => ['question' => ['nl' => 'Hoe?'], 'answer' => 'Met de bus.']],
+                            ['nl' => ['question' => 'Wanneer?', 'answer' => 'Morgen.']],
+                        ],
+                    ]
+                ),
+                'faq' => "Combien? 10 euros.\nWanneer? Morgen.",
+            ],
+            'an item without an answer is skipped' => [
+                'event' => $this->encodeEvent(
+                    [
+                        'faqs' => [
+                            ['nl' => ['question' => 'Hoe geraak ik er?']],
+                            ['nl' => ['question' => 'Wat kost het?', 'answer' => '10 euro.']],
+                        ],
+                    ]
+                ),
+                'faq' => 'Wat kost het? 10 euro.',
+            ],
+            'an empty list of faqs' => [
+                'event' => $this->encodeEvent(['faqs' => []]),
+                'faq' => '',
+            ],
+            'no faqs at all' => [
+                'event' => $this->encodeEvent([]),
+                'faq' => '',
+            ],
+        ];
     }
 }

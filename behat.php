@@ -14,33 +14,18 @@ return (new Config())
                 (new Suite('default'))
                     ->withPaths('%paths.base%/features')
                     ->withContexts('FeatureContext')
-                    ->withFilter(new TagFilter('~@init&&~@external&&~@negativeBoosting'))
-            )
-            ->withSuite(
-                (new Suite('sapi3'))
-                    ->withPaths('%paths.base%/features')
-                    ->withContexts('FeatureContext')
-                    ->withFilter(new TagFilter('@sapi3&&~@negativeBoosting'))
-            )
-            ->withSuite(
-                (new Suite('init'))
-                    ->withPaths('%paths.base%/features')
-                    ->withContexts('FeatureContext')
-                    ->withFilter(new TagFilter('@init'))
-            )
-    )
-    ->withProfile(
-        (new Profile('es5'))
-            ->withSuite(
-                (new Suite('default'))
                     ->withFilter(new TagFilter('~@init&&~@external'))
             )
             ->withSuite(
                 (new Suite('sapi3'))
+                    ->withPaths('%paths.base%/features')
+                    ->withContexts('FeatureContext')
                     ->withFilter(new TagFilter('@sapi3'))
             )
             ->withSuite(
                 (new Suite('init'))
+                    ->withPaths('%paths.base%/features')
+                    ->withContexts('FeatureContext')
                     ->withFilter(new TagFilter('@init'))
             )
     );
