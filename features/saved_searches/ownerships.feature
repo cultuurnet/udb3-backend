@@ -7,7 +7,7 @@ Feature: Test the UDB3 ownerships saved searches API
     And I send and accept "application/json"
     And I create a minimal organizer and save the "id" as "organizerId"
     And I am authorized as JWT provider user "invoerder_ownerships"
-    And I request ownership for "auth0|64089494e980aedd96740212" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
+    And I request ownership for "d4e7ed87-50ac-4c35-8193-f899ea0af66b" on the organizer with organizerId "%{organizerId}" and save the "id" as "ownershipId"
 
   Scenario: Requested ownerships should not show up in saved searches
     Given I am authorized as JWT provider user "invoerder_ownerships"

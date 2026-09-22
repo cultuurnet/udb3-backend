@@ -56,17 +56,11 @@ feature-tag:
 feature-ci:
 	docker compose exec php composer feature -- --suite=default -f pretty -o std -f junit -o output/junit
 
-feature-ci-es5:
-	docker compose exec php composer feature -- --profile=es5 --suite=default -f pretty -o std -f junit -o output/junit
-
 feature:
 	docker compose exec php composer feature -- --suite=default
 
 feature-sapi3:
 	docker compose exec php composer feature -- --suite=sapi3
-
-feature-sapi3-es5:
-	docker compose exec php composer feature -- --profile=es5 --suite=sapi3
 
 feature-filter:
 	docker compose exec php composer feature -- $(path)

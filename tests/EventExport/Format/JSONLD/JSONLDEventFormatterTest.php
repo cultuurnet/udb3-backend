@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -182,6 +183,141 @@ class JSONLDEventFormatterTest extends TestCase
 
         $this->assertEquals(
             '{"@id":"https:\/\/udb-silex-acc.uitdatabank.be\/event\/0c70b8f3-66a0-4532-959f-2e13b4624f04","attendanceMode":"mixed","onlineUrl":"https:\/\/www.publiq.be\/livestream"}',
+            $event
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_exports_the_faqs_unchanged(): void
+    {
+        $includedProperties = [
+            'id',
+            'faqs',
+        ];
+        $eventWithFaqs = $this->getJSONEventFromFile('event_with_faqs.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithFaqs);
+
+        $this->assertEquals(
+            Json::encode([
+                '@id' => 'https://udb-silex-acc.uitdatabank.be/event/0c70b8f3-66a0-4532-959f-2e13b4624f04',
+                'faqs' => [
+                    [
+                        'nl' => [
+                            'question' => 'Hoe geraak ik er?',
+                            'answer' => '<p>Met de <strong>bus</strong>.</p>',
+                        ],
+                        'fr' => [
+                            'question' => 'Comment venir?',
+                            'answer' => '<p>En bus.</p>',
+                        ],
+                    ],
+                    [
+                        'nl' => [
+                            'question' => 'Wat kost het?',
+                            'answer' => '10 euro.',
+                        ],
+                    ],
+                ],
+            ]),
+            $event
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_summarises_the_overnight_stay_of_the_occurrences(): void
+    {
+        $includedProperties = [
+            'id',
+            'hasOvernightStay',
+        ];
+        $eventWithOvernightStay = $this->getJSONEventFromFile('event_with_overnight_stay.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithOvernightStay);
+
+        $this->assertEquals(
+            Json::encode([
+                '@id' => 'https://udb-silex-acc.uitdatabank.be/event/0c70b8f3-66a0-4532-959f-2e13b4624f04',
+                'hasOvernightStay' => true,
+            ]),
+            $event
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_out_the_overnight_stay_of_an_event_type_that_can_never_have_one(): void
+    {
+        $includedProperties = [
+            'id',
+            'hasOvernightStay',
+        ];
+        $eventWithTerms = $this->getJSONEventFromFile('event_with_terms.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithTerms);
+
+        $this->assertEquals(
+            Json::encode(['@id' => 'http://culudb-silex.dev:8080/event/d1f0e71d-a9a8-4069-81fb-530134502c58']),
+            $event
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_exports_the_birthdate_range(): void
+    {
+        $includedProperties = [
+            'id',
+            'birthdateRange',
+        ];
+        $eventWithBirthdateRange = $this->getJSONEventFromFile('event_with_birthdate_range.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithBirthdateRange);
+
+        $this->assertEquals(
+            Json::encode([
+                '@id' => 'https://udb-silex-acc.uitdatabank.be/event/0c70b8f3-66a0-4532-959f-2e13b4624f04',
+                'birthdateRange' => [
+                    'from' => '2010-01-01',
+                    'to' => '2010-12-31',
+                ],
+            ]),
+            $event
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_exports_the_departure_places_as_stored(): void
+    {
+        $includedProperties = [
+            'id',
+            'departurePlaces',
+        ];
+        $eventWithDeparturePlaces = $this->getJSONEventFromFile('event_with_departure_places.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithDeparturePlaces);
+
+        $this->assertEquals(
+            Json::encode([
+                '@id' => 'https://udb-silex-acc.uitdatabank.be/event/0c70b8f3-66a0-4532-959f-2e13b4624f04',
+                'departurePlaces' => [
+                    'https://io.uitdatabank.be/place/abc-123',
+                    'https://io.uitdatabank.be/place/def-456',
+                ],
+            ]),
             $event
         );
     }

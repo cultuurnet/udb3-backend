@@ -1,4 +1,4 @@
-Beste dev+e2etest,
+Beste dev+invoerderownerships@publiq.be,
 
 Je aanvraag tot beheer voor de organisatie op de UiTdatabank is geweigerd door de huidige beheerder(s) van de organisatie of door een admin.
 
