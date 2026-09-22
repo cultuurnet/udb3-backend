@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\UiTPAS\Client;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\UiTPAS\CardSystem\CardSystem;
 use CultuurNet\UDB3\UiTPAS\CardSystem\DistributionKey;
@@ -28,16 +29,13 @@ final class RestUiTPASClient implements UiTPASClient
     {
         $cardSystems = [];
         foreach ($this->getEventCardSystemsData($eventId) as $cardSystemData) {
-            // The REST API returns the full master list (enabled and disabled), but consumers
-            // should only see the card systems that are active for the event, matching the
-            // legacy XML endpoint. The full list is kept in getEventCardSystemsData() for writes.
-            if (($cardSystemData['enabled'] ?? false) !== true) {
-                continue;
-            }
-
+            // UiTPAS returns every card system linked to the organizer of the event, each with a flag
+            // saying whether it is active for this event. Consumers need the full list to know what
+            // they can enable, so pass the flag along instead of filtering the disabled ones out.
             $cardSystems[] = (new CardSystem(
                 new Id((string) $cardSystemData['id']),
-                $cardSystemData['name']
+                $cardSystemData['name'],
+                ($cardSystemData['enabled'] ?? false) === true
             ))->withDistributionKeys(
                 $this->mapDistributionKeys($cardSystemData['manualDistributionKeys'] ?? [])
             );
@@ -54,14 +52,11 @@ final class RestUiTPASClient implements UiTPASClient
     {
         $distributionKeys = [];
         foreach ($distributionKeysData as $distributionKeyData) {
-            // Same as card systems: only expose the distribution keys that are enabled for the event.
-            if (($distributionKeyData['enabled'] ?? false) !== true) {
-                continue;
-            }
-
+            // Same as card systems: expose all of them with their flag.
             $distributionKeys[] = new DistributionKey(
                 new Id((string) $distributionKeyData['id']),
-                $distributionKeyData['name'] ?? null
+                $distributionKeyData['name'] ?? null,
+                ($distributionKeyData['enabled'] ?? false) === true
             );
         }
 
@@ -114,36 +109,34 @@ final class RestUiTPASClient implements UiTPASClient
 
     public function setCardSystemsForEvent(string $eventId, array $cardSystemIds): void
     {
-        // Enable exactly the given card systems and disable the rest.
-        $cardSystems = $this->getEventCardSystemsData($eventId);
+        try {
+            // Enable exactly the given card systems and disable the rest.
+            $cardSystems = $this->getEventCardSystemsData($eventId);
 
-        foreach ($cardSystems as $index => $cardSystem) {
-            $cardSystems[$index]['enabled'] = in_array((int) $cardSystem['id'], $cardSystemIds, true);
+            foreach ($cardSystems as $index => $cardSystem) {
+                $cardSystems[$index]['enabled'] = in_array((int) $cardSystem['id'], $cardSystemIds, true);
+            }
+
+            $existingIds = array_map(static fn (array $cardSystem): int => (int) $cardSystem['id'], $cardSystems);
+            foreach (array_diff($cardSystemIds, $existingIds) as $cardSystemId) {
+                $cardSystems[] = ['id' => $cardSystemId, 'enabled' => true];
+            }
+
+            $this->putEventCardSystems($eventId, $cardSystems);
+        } catch (ApiProblem $apiProblem) {
+            // The legacy XML endpoint answered 200 for an event it did not know on this route, while the
+            // single card system routes answered 404. Keep that inconsistency so flipping
+            // uitpas.rest_api.enabled does not change the API for consumers.
         }
-
-        $existingIds = array_map(static fn (array $cardSystem): int => (int) $cardSystem['id'], $cardSystems);
-        foreach (array_diff($cardSystemIds, $existingIds) as $cardSystemId) {
-            $cardSystems[] = ['id' => $cardSystemId, 'enabled' => true];
-        }
-
-        $this->putEventCardSystems($eventId, $cardSystems);
     }
 
     public function eventHasTicketSales(string $eventId): bool
     {
-        // limit=0 returns no items, just the total count.
-        $response = $this->client->sendRequest(
-            $this->authenticatedRequest('GET', 'ticket-sales?eventId=' . rawurlencode($eventId) . '&limit=0')
-        );
-
-        if ($response->getStatusCode() !== 200) {
-            throw new RuntimeException(
-                'UiTPAS REST API returned status code ' . $response->getStatusCode()
-                . ' for ticket sales: ' . $response->getBody()->getContents()
-            );
-        }
-
-        return (Json::decodeAssociatively($response->getBody()->getContents())['totalItems'] ?? 0) > 0;
+        // UiTPAS used to require that the distribution keys of an event could no longer be changed once
+        // it had at least one ticket sale, and has since relaxed that requirement. So there is nothing
+        // left to check and no reason to call UiTPAS for it. The method stays on the interface until the
+        // legacy XML client is removed, since that one still answers from the old endpoint.
+        return false;
     }
 
     /**
@@ -155,9 +148,9 @@ final class RestUiTPASClient implements UiTPASClient
             $this->authenticatedRequest('GET', 'events/' . $eventId . '/card-systems')
         );
 
-        // UiTPAS doesn't know this event, so there are no card systems.
+        // UiTPAS doesn't know this event, which the legacy XML endpoint reported as a 404 as well.
         if ($response->getStatusCode() === 404) {
-            return [];
+            throw self::eventNotFoundInUiTPAS($eventId);
         }
 
         // Throw on other errors so we never overwrite the real list with an empty one.
@@ -190,12 +183,26 @@ final class RestUiTPASClient implements UiTPASClient
             )
         );
 
+        if ($response->getStatusCode() === 404) {
+            throw self::eventNotFoundInUiTPAS($eventId);
+        }
+
         if ($response->getStatusCode() !== 204) {
             throw new RuntimeException(
                 'UiTPAS REST API returned status code ' . $response->getStatusCode()
                 . ' while updating event card systems: ' . $response->getBody()->getContents()
             );
         }
+    }
+
+    private static function eventNotFoundInUiTPAS(string $eventId): ApiProblem
+    {
+        return ApiProblem::urlNotFound(
+            sprintf(
+                'Event with id \'%s\' was not found in UiTPAS. Are you sure it is an UiTPAS event?',
+                $eventId
+            )
+        );
     }
 
     private function authenticatedRequest(string $method, string $path, ?string $body = null): Request

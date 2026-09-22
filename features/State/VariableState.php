@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\State;
 
+use RuntimeException;
+
 final class VariableState
 {
-    private const START_DELIMITER = '%{';
-    private const END_DELIMITER = '}';
+    // Variable names are whatever a scenario puts between the delimiters, which includes
+    // characters like '-' and '@' (%{id_pdf-map}, %{image_@id}), so match up to the first '}'.
+    private const VARIABLE_PATTERN = '%\\{([^}]+)\\}';
 
     private static ?string $scenarioLabel = null;
 
@@ -55,19 +58,19 @@ final class VariableState
         self::$scenarioLabel = null;
     }
 
-    public function replaceVariables(string $key): string
+    public function replaceVariables(string $input): string
     {
-        if ($this->isVariable($key)) {
-            return $this->variables[$this->extractVariable($key)];
-        }
+        return preg_replace_callback(
+            '/' . self::VARIABLE_PATTERN . '/',
+            function (array $match): string {
+                if (!array_key_exists($match[1], $this->variables)) {
+                    throw new RuntimeException('Unknown variable %{' . $match[1] . '} used in a step');
+                }
 
-        while ($this->containsVariable($key)) {
-            $variable = $this->extractVariable($key);
-            $value = $this->variables[$variable];
-            $key = str_replace('%{' . $variable . '}', $value, $key);
-        }
-
-        return $this->variableState[$key] ?? $key;
+                return $this->variables[$match[1]];
+            },
+            $input
+        );
     }
 
     private function generateRandomVariable(int $length): string
@@ -81,39 +84,5 @@ final class VariableState
         }
 
         return $randomVariable;
-    }
-
-    private function extractVariable(string $input): string
-    {
-        $startPos = strpos($input, self::START_DELIMITER);
-
-        if ($startPos === false) {
-            return '';
-        }
-
-        $startPos += strlen(self::START_DELIMITER);
-        $endPos = strpos($input, self::END_DELIMITER, $startPos);
-
-        if ($endPos === false) {
-            return '';
-        }
-
-        return substr($input, $startPos, $endPos - $startPos);
-    }
-
-    private function containsVariable(string $input): bool
-    {
-        $containsStart = strpos($input, self::START_DELIMITER) !== false;
-        $containsEnd = strpos($input, self::END_DELIMITER) !== false;
-
-        return $containsStart && $containsEnd;
-    }
-
-    private function isVariable(string $input): bool
-    {
-        $containsStart = strpos($input, self::START_DELIMITER);
-        $containsEnd = strpos($input, self::END_DELIMITER);
-
-        return $containsStart === 0 && $containsEnd === strlen($input);
     }
 }

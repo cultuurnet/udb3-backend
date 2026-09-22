@@ -23,7 +23,7 @@ trait ResponseSteps
      */
     public function theJsonResponseAtShouldBe(string $jsonPath, string $value): void
     {
-        $expected = $this->variableState->replaceVariables($value);
+        $expected = $value;
 
         if ($value === 'true' || $value === 'false') {
             $expected = $value === 'true';
@@ -45,7 +45,7 @@ trait ResponseSteps
     public function theJsonResponseShouldBe(PyStringNode $value): void
     {
         assertEquals(
-            Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
+            Json::decodeAssociatively($value->getRaw()),
             $this->responseState->getJsonContent()
         );
     }
@@ -57,7 +57,7 @@ trait ResponseSteps
     {
         // TODO: Fix this workaround
         if (str_contains($jsonPath, 'videos/')) {
-            $expectedVideo = Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw()));
+            $expectedVideo = Json::decodeAssociatively($value->getRaw());
             $actualVideo = $this->responseState->getValueOnPath($jsonPath);
 
             unset($expectedVideo['id']);
@@ -68,7 +68,7 @@ trait ResponseSteps
         }
 
         assertEquals(
-            Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
+            Json::decodeAssociatively($value->getRaw()),
             $this->responseState->getValueOnPath($jsonPath)
         );
     }
@@ -79,7 +79,7 @@ trait ResponseSteps
     public function theJsonResponseAtShouldNotBe(string $jsonPath, string $value): void
     {
         assertNotEquals(
-            $this->variableState->replaceVariables($value),
+            $value,
             $this->responseState->getValueOnPath($jsonPath)
         );
     }
@@ -90,7 +90,7 @@ trait ResponseSteps
     public function theJsonResponseShouldInclude(PyStringNode $value): void
     {
         assertStringContainsString(
-            $this->variableState->replaceVariables($value->getRaw()),
+            $value->getRaw(),
             $this->responseState->getContent()
         );
     }
@@ -101,7 +101,7 @@ trait ResponseSteps
     public function theJsonResponseShouldNotInclude(PyStringNode $value): void
     {
         assertStringNotContainsString(
-            $this->variableState->replaceVariables($value->getRaw()),
+            $value->getRaw(),
             $this->responseState->getContent()
         );
     }
@@ -118,12 +118,12 @@ trait ResponseSteps
 
         if (is_array($actual)) {
             assertContains(
-                $this->variableState->replaceVariables($value),
+                $value,
                 $actual
             );
         } else {
             assertStringContainsString(
-                $this->variableState->replaceVariables($value),
+                $value,
                 $actual
             );
         }
@@ -138,12 +138,12 @@ trait ResponseSteps
 
         if (is_array($actual)) {
             assertContains(
-                Json::decodeAssociatively($this->variableState->replaceVariables($value->getRaw())),
+                Json::decodeAssociatively($value->getRaw()),
                 $actual
             );
         } else {
             assertStringContainsString(
-                $this->variableState->replaceVariables($value->getRaw()),
+                $value->getRaw(),
                 $actual
             );
         }
@@ -334,7 +334,7 @@ trait ResponseSteps
         string $imageId,
         string $hashKey
     ): void {
-        $imageId = $this->variableState->replaceVariables($imageId);
+        $imageId = $imageId;
 
         $data = [
             '@id' => 'http://io.uitdatabank.local:80/images/' . $imageId,

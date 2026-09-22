@@ -55,7 +55,7 @@ trait RequestSteps
     public function iSetTheJsonRequestPayloadTo(PyStringNode $jsonPayload): void
     {
         $this->requestState->setJson(
-            $this->variableState->replaceVariables($jsonPayload->getRaw())
+            $jsonPayload->getRaw()
         );
     }
 
@@ -65,7 +65,7 @@ trait RequestSteps
     public function iSetThePlainTextRequestPayloadTo(PyStringNode $plainTextPayload): void
     {
         $this->requestState->setJson(
-            $this->variableState->replaceVariables($plainTextPayload->getRaw())
+            $plainTextPayload->getRaw()
         );
     }
 
@@ -84,7 +84,7 @@ trait RequestSteps
     {
         $response = $this->getHttpClient()->postJSON(
             $url,
-            $this->variableState->replaceVariables($this->requestState->getJson())
+            $this->requestState->getJson()
         );
         $this->responseState->setResponse($response);
     }
@@ -197,7 +197,7 @@ trait RequestSteps
     {
         $elapsedTime = 0;
         do {
-            $response = $this->getHttpClient()->get('/jobs/' . $this->variableState->replaceVariables($commandId));
+            $response = $this->getHttpClient()->get('/jobs/' . $commandId);
             $this->responseState->setResponse($response);
 
             if ($this->responseState->getContent() !== 'complete') {
@@ -253,7 +253,7 @@ trait RequestSteps
 
     private function waitForItemWithUrlToBeIndex(string $url): void
     {
-        $url = $this->variableState->replaceVariables($url);
+        $url = $url;
 
         $pathSegments = explode('/', $url);
         $segmentCount = count($pathSegments);

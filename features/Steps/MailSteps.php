@@ -15,7 +15,7 @@ trait MailSteps
      */
     public function aMailHasBeenSentFromToWith(string $messageType, string $from, string $to, string $subject): void
     {
-        $subject = $this->variableState->replaceVariables($subject);
+        $subject = $subject;
         $mailObjects = $this->getMailClient()->searchMails(
             'from:' . $from .
             ' to:' . $to .

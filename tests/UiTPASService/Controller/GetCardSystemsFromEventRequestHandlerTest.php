@@ -29,7 +29,7 @@ final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_card_systems_of_an_event_in_the_same_shape_as_the_legacy_endpoint(): void
+    public function it_returns_every_card_system_of_an_event_with_its_enabled_flag(): void
     {
         $eventId = 'db93a8d0-331a-4575-a23d-2c78d4ceb925';
 
@@ -37,11 +37,11 @@ final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
             ->method('getEventCardSystems')
             ->with($eventId)
             ->willReturn([
-                (new CardSystem(new Id('1'), 'Card system 1'))->withDistributionKeys([
-                    new DistributionKey(new Id('1'), 'Distribution key 1'),
-                    new DistributionKey(new Id('2'), 'Distribution key 2'),
+                (new CardSystem(new Id('1'), 'Card system 1', true))->withDistributionKeys([
+                    new DistributionKey(new Id('1'), 'Distribution key 1', true),
+                    new DistributionKey(new Id('2'), 'Distribution key 2', false),
                 ]),
-                new CardSystem(new Id('2'), 'Card system 2'),
+                new CardSystem(new Id('2'), 'Card system 2', false),
             ]);
 
         $request = (new Psr7RequestBuilder())
@@ -56,14 +56,16 @@ final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
                 '1' => [
                     'id' => 1,
                     'name' => 'Card system 1',
+                    'enabled' => true,
                     'distributionKeys' => [
-                        '1' => ['id' => 1, 'name' => 'Distribution key 1'],
-                        '2' => ['id' => 2, 'name' => 'Distribution key 2'],
+                        '1' => ['id' => 1, 'name' => 'Distribution key 1', 'enabled' => true],
+                        '2' => ['id' => 2, 'name' => 'Distribution key 2', 'enabled' => false],
                     ],
                 ],
                 '2' => [
                     'id' => 2,
                     'name' => 'Card system 2',
+                    'enabled' => false,
                     'distributionKeys' => [],
                 ],
             ],
@@ -79,7 +81,7 @@ final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
         $this->uitpasClient->expects($this->once())
             ->method('getEventCardSystems')
             ->willReturn([
-                new CardSystem(new Id('not-a-number'), 'Card system 1'),
+                new CardSystem(new Id('not-a-number'), 'Card system 1', true),
             ]);
 
         $request = (new Psr7RequestBuilder())
@@ -98,8 +100,8 @@ final class GetCardSystemsFromEventRequestHandlerTest extends TestCase
         $this->uitpasClient->expects($this->once())
             ->method('getEventCardSystems')
             ->willReturn([
-                (new CardSystem(new Id('1'), 'Card system 1'))->withDistributionKeys([
-                    new DistributionKey(new Id('not-a-number'), 'Distribution key 1'),
+                (new CardSystem(new Id('1'), 'Card system 1', true))->withDistributionKeys([
+                    new DistributionKey(new Id('not-a-number'), 'Distribution key 1', true),
                 ]),
             ]);
 
