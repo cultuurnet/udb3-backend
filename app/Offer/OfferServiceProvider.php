@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Offer;
 
 use Broadway\EventHandling\EventBus;
-use CultuurNet\UDB3\ApiGuard\Consumer\ConsumerReadRepository;
-use CultuurNet\UDB3\ApiGuard\Consumer\Specification\ConsumerIsInPermissionGroup;
-use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Contributor\ContributorRepository;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -85,7 +82,6 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
 use CultuurNet\UDB3\Offer\Popularity\DBALPopularityRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
-use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
 use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
@@ -107,10 +103,8 @@ final class OfferServiceProvider extends AbstractServiceProvider
             OfferJsonDocumentReadRepository::class,
             OfferMetadataRepository::class,
             OfferMetadataProjector::class,
-            AutoApproveForUiTIDv1ApiKeysProcessManager::class,
             PopularityRepository::class,
             'iri_offer_identifier_factory',
-            'should_auto_approve_new_offer',
             OfferRepository::class,
             EventHasTicketSalesGuard::class,
             UpdateTitleHandler::class,
@@ -214,17 +208,6 @@ final class OfferServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            AutoApproveForUiTIDv1ApiKeysProcessManager::class,
-            fn () => new ReplayFilteringEventListener(
-                new AutoApproveForUiTIDv1ApiKeysProcessManager(
-                    $container->get(OfferRepository::class),
-                    $container->get(ConsumerReadRepository::class),
-                    $container->get('should_auto_approve_new_offer')
-                )
-            )
-        );
-
-        $container->addShared(
             PopularityRepository::class,
             fn () => new DBALPopularityRepository($container->get('dbal_connection'))
         );
@@ -232,13 +215,6 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'iri_offer_identifier_factory',
             fn () => new IriOfferIdentifierFactory($container->get('config')['offer_url_regex'])
-        );
-
-        $container->addShared(
-            'should_auto_approve_new_offer',
-            fn () => new ConsumerIsInPermissionGroup(
-                (string) $container->get('config')['uitid']['auto_approve_group_id']
-            )
         );
 
         $container->addShared(
