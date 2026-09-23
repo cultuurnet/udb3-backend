@@ -2772,6 +2772,33 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_clears_an_explicit_false_overnight_stay_without_kamp_of_vakantie_term_on_update_calendar(): void
+    {
+        $dateRange = new DateRange(
+            new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+            new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+        );
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(
+                fn (Event $event) => $event->updateCalendar(
+                    new SingleSubEventCalendar(
+                        SubEvent::createAvailable($dateRange)->withHasOvernightStay(false)
+                    )
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(SubEvent::createAvailable($dateRange))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_overnight_stay_is_set_during_create_without_kamp_of_vakantie_term(): void
     {
         $this->expectException(OvernightStayNotAllowed::class);
