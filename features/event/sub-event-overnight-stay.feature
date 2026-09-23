@@ -44,7 +44,7 @@ Feature: Test SubEvent hasOvernightStay
     And the JSON response at "subEvent/0/hasOvernightStay" should be true
     And the JSON response should not have "subEvent/1/hasOvernightStay"
 
-  Scenario: hasOvernightStay false is omitted from the GET response
+  Scenario: hasOvernightStay false is returned as false
     When I set the JSON request payload to:
     """
     {
@@ -68,9 +68,9 @@ Feature: Test SubEvent hasOvernightStay
     Then the response status should be "201"
     And I keep the value of the JSON response at "url" as "eventUrl"
     And I get the event at "%{eventUrl}"
-    And the JSON response should not have "subEvent/0/hasOvernightStay"
+    And the JSON response at "subEvent/0/hasOvernightStay" should be false
 
-  Scenario: hasOvernightStay is omitted from GET response when not set
+  Scenario: hasOvernightStay is absent from the GET response when it was never set
     Given I create an event from "events/sub-event-overnight-stay/event-single-kamp.json" and save the "url" as "eventUrl"
     And I get the event at "%{eventUrl}"
     And the JSON response should not have "subEvent/0/hasOvernightStay"
@@ -97,7 +97,7 @@ Feature: Test SubEvent hasOvernightStay
     And I send a PATCH request to "%{eventUrl}/subEvents"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response should not have "subEvent/0/hasOvernightStay"
+    And the JSON response at "subEvent/0/hasOvernightStay" should be false
 
   Scenario: hasOvernightStay is preserved when omitted from PATCH
     Given I create an event from "events/sub-event-overnight-stay/event-single-with-overnight-stay.json" and save the "url" as "eventUrl"
@@ -115,9 +115,132 @@ Feature: Test SubEvent hasOvernightStay
     And I get the event at "%{eventUrl}"
     And the JSON response at "subEvent/0/hasOvernightStay" should be true
 
+  Scenario: An explicit hasOvernightStay false is preserved when omitted from PATCH
+    Given I create an event from "events/sub-event-overnight-stay/event-single-with-overnight-stay-false.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "status": {"type": "Available"}
+      }
+    ]
+    """
+    And I send a PATCH request to "%{eventUrl}/subEvents"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "subEvent/0/hasOvernightStay" should be false
+
+  Scenario: An unset hasOvernightStay stays unset when omitted from PATCH
+    Given I create an event from "events/sub-event-overnight-stay/event-single-kamp.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "status": {"type": "Available"}
+      }
+    ]
+    """
+    And I send a PATCH request to "%{eventUrl}/subEvents"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response should not have "subEvent/0/hasOvernightStay"
+
+  Scenario: An unset hasOvernightStay can be set to an explicit false via PATCH
+    Given I create an event from "events/sub-event-overnight-stay/event-single-kamp.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "hasOvernightStay": false
+      }
+    ]
+    """
+    And I send a PATCH request to "%{eventUrl}/subEvents"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "subEvent/0/hasOvernightStay" should be false
+
+  Scenario: An explicit hasOvernightStay false can be flipped to true via PATCH
+    Given I create an event from "events/sub-event-overnight-stay/event-single-with-overnight-stay-false.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    [
+      {
+        "id": 0,
+        "hasOvernightStay": true
+      }
+    ]
+    """
+    And I send a PATCH request to "%{eventUrl}/subEvents"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "subEvent/0/hasOvernightStay" should be true
+
+  Scenario: PUT calendar replaces the calendar, so an omitted hasOvernightStay is unset again
+    Given I create an event from "events/sub-event-overnight-stay/event-single-with-overnight-stay.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "calendarType": "single",
+      "subEvent": [
+        {
+          "startDate": "2026-07-01T09:00:00+02:00",
+          "endDate": "2026-07-05T17:00:00+02:00"
+        }
+      ]
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/calendar"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response should not have "subEvent/0/hasOvernightStay"
+
+  Scenario: PUT calendar can record an explicit hasOvernightStay false
+    Given I create an event from "events/sub-event-overnight-stay/event-single-kamp.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "calendarType": "single",
+      "subEvent": [
+        {
+          "startDate": "2026-07-01T09:00:00+02:00",
+          "endDate": "2026-07-05T17:00:00+02:00",
+          "hasOvernightStay": false
+        }
+      ]
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/calendar"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "subEvent/0/hasOvernightStay" should be false
+
   Scenario: hasOvernightStay is reset when the event type changes away from kamp of vakantie
     Given I create an event from "events/sub-event-overnight-stay/event-single-with-overnight-stay.json" and save the "url" as "eventUrl"
     When I send a PUT request to "%{eventUrl}/type/0.50.4.0.0"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response should not have "subEvent/0/hasOvernightStay"
+
+  Scenario: hasOvernightStay false is accepted but not recorded on a non kamp of vakantie event
+    Given I create an event from "events/sub-event-overnight-stay/event-single-concert.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "calendarType": "single",
+      "subEvent": [
+        {
+          "startDate": "2026-07-01T09:00:00+02:00",
+          "endDate": "2026-07-05T17:00:00+02:00",
+          "hasOvernightStay": false
+        }
+      ]
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/calendar"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
     And the JSON response should not have "subEvent/0/hasOvernightStay"
