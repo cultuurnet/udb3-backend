@@ -92,7 +92,8 @@ Feature: Test the hasOvernightStay search filter on offers
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
-  Scenario: A periodic event with opening hours matches hasOvernightStay=false
+  Scenario: A periodic event with opening hours matches neither hasOvernightStay filter
+    # An opening hours calendar has no sub-event to carry the flag, so it is absent rather than false.
     When I create a minimal event with overrides and save the "url" as "eventUrl"
     """
     {
@@ -111,29 +112,180 @@ Feature: Test the hasOvernightStay search filter on offers
     And I wait for the event with url "%{eventUrl}" to be indexed
     And I am using the Search API v3 base URL
     When I send a GET request to "/events" with parameters:
-      | hasOvernightStay          | false       |
-      | disableDefaultFilters | true        |
+      | hasOvernightStay      | false |
+      | disableDefaultFilters | true  |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | hasOvernightStay      | true |
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+
+  @testIsolation
+  Scenario: Places match neither hasOvernightStay filter
+    # A place can never have an overnight stay, so the flag is absent rather than false.
+    Given I am using the Search API v3 base URL
+    When I send a GET request to "/places" with parameters:
+      | hasOvernightStay      | true |
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    When I send a GET request to "/places" with parameters:
+      | hasOvernightStay      | false |
+      | disableDefaultFilters | true  |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    When I send a GET request to "/places" with parameters:
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+
+  @testIsolation
+  Scenario: An event whose sub-events never mention an overnight stay matches neither filter
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
+      "calendarType": "multiple",
+      "subEvent": [
+        {
+          "startDate": "2126-10-01T09:00:00+02:00",
+          "endDate": "2126-10-05T17:00:00+02:00"
+        },
+        {
+          "startDate": "2126-10-10T09:00:00+02:00",
+          "endDate": "2126-10-14T17:00:00+02:00"
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | hasOvernightStay      | true |
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | hasOvernightStay      | false |
+      | disableDefaultFilters | true  |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+    When I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+
+  @testIsolation
+  Scenario: One sub-event with hasOvernightStay false is enough to match hasOvernightStay=false
+    # The other sub-event says nothing, so only the explicit false counts.
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
+      "calendarType": "multiple",
+      "subEvent": [
+        {
+          "startDate": "2126-11-01T09:00:00+02:00",
+          "endDate": "2126-11-05T17:00:00+02:00",
+          "hasOvernightStay": false
+        },
+        {
+          "startDate": "2126-11-10T09:00:00+02:00",
+          "endDate": "2126-11-14T17:00:00+02:00"
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | hasOvernightStay      | false |
+      | disableDefaultFilters | true  |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
     When I send a GET request to "/events" with parameters:
-      | hasOvernightStay          | true        |
-      | disableDefaultFilters | true        |
+      | hasOvernightStay      | true |
+      | disableDefaultFilters | true |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 0
 
   @testIsolation
-  Scenario: Places are never returned by hasOvernightStay=true
-    Given I am using the Search API v3 base URL
-    When I send a GET request to "/places" with parameters:
-      | hasOvernightStay          | true        |
-      | disableDefaultFilters | true        |
-    Then the response status should be "200"
-    And the JSON response at "totalItems" should be 0
-    When I send a GET request to "/places" with parameters:
-      | hasOvernightStay          | false       |
-      | disableDefaultFilters | true        |
+  Scenario: A sub-event with hasOvernightStay true wins from one that is false
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
+      "calendarType": "multiple",
+      "subEvent": [
+        {
+          "startDate": "2126-12-01T09:00:00+02:00",
+          "endDate": "2126-12-05T17:00:00+02:00",
+          "hasOvernightStay": false
+        },
+        {
+          "startDate": "2126-12-10T09:00:00+02:00",
+          "endDate": "2126-12-14T17:00:00+02:00",
+          "hasOvernightStay": true
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | hasOvernightStay      | true |
+      | disableDefaultFilters | true |
     Then the response status should be "200"
     And the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | hasOvernightStay      | false |
+      | disableDefaultFilters | true  |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
+
+  @testIsolation
+  Scenario: hasOvernightStay=false does not match a sub-event that never mentioned it inside a date window
+    # Only the first sub-event is explicitly false; a window over the second one matches nothing.
+    When I create a minimal event with overrides and save the "url" as "eventUrl"
+    """
+    {
+      "terms": [{"id": "0.57.0.0.0", "label": "Kamp of vakantie", "domain": "eventtype"}],
+      "calendarType": "multiple",
+      "subEvent": [
+        {
+          "startDate": "2127-01-01T09:00:00+02:00",
+          "endDate": "2127-01-02T17:00:00+02:00",
+          "hasOvernightStay": false
+        },
+        {
+          "startDate": "2127-01-10T09:00:00+02:00",
+          "endDate": "2127-01-11T17:00:00+02:00"
+        }
+      ]
+    }
+    """
+    And I wait for the event with url "%{eventUrl}" to be indexed
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | hasOvernightStay      | false                     |
+      | dateFrom              | 2127-01-01T00:00:00+02:00 |
+      | dateTo                | 2127-01-02T23:59:59+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    When I send a GET request to "/events" with parameters:
+      | hasOvernightStay      | false                     |
+      | dateFrom              | 2127-01-10T00:00:00+02:00 |
+      | dateTo                | 2127-01-11T23:59:59+02:00 |
+      | disableDefaultFilters | true                      |
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 0
 
   @testIsolation
   Scenario: hasOvernightStay=true combines with a matching date window
