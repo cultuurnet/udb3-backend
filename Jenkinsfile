@@ -5,10 +5,6 @@ pipeline {
 
     agent none
 
-    parameters {
-        booleanParam(name: 'RUN_ACCEPTANCE_TESTS', defaultValue: false, description: 'Run the acceptance test suite after deploying to acceptance')
-    }
-
     environment {
         PIPELINE_VERSION = util.pipelineVersion()
         REPOSITORY_NAME  = 'uitdatabank-entry-api'
