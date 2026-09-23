@@ -53,7 +53,7 @@ final class SubEventDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_defaults_overnight_stay_to_false_when_absent(): void
+    public function it_leaves_overnight_stay_null_when_absent(): void
     {
         $subEvent = $this->denormalizer->denormalize(
             [
@@ -63,7 +63,7 @@ final class SubEventDenormalizerTest extends TestCase
             SubEvent::class
         );
 
-        $this->assertFalse($subEvent->hasOvernightStay());
+        $this->assertNull($subEvent->getHasOvernightStay());
     }
 
     /**
@@ -80,7 +80,7 @@ final class SubEventDenormalizerTest extends TestCase
             SubEvent::class
         );
 
-        $this->assertTrue($subEvent->hasOvernightStay());
+        $this->assertTrue($subEvent->getHasOvernightStay());
     }
 
     /**
@@ -97,7 +97,7 @@ final class SubEventDenormalizerTest extends TestCase
             SubEvent::class
         );
 
-        $this->assertFalse($subEvent->hasOvernightStay());
+        $this->assertFalse($subEvent->getHasOvernightStay());
     }
 
     /**

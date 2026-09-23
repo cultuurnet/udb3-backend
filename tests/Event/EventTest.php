@@ -2655,7 +2655,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_does_not_emit_calendar_updated_when_overnight_stay_is_already_false_and_patched_to_false(): void
+    public function it_emits_calendar_updated_when_an_unset_overnight_stay_is_patched_to_false(): void
     {
         $subEvent = SubEvent::createAvailable(
             new DateRange(
@@ -2672,6 +2672,61 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 fn (Event $event) => $event->updateSubEvents(
                     (new SubEventUpdate(0))->withHasOvernightStay(false)
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($subEvent->withHasOvernightStay(false))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_emit_calendar_updated_when_overnight_stay_is_already_false_and_patched_to_false(): void
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withHasOvernightStay(false);
+
+        $this->scenario
+            ->given([
+                $this->getKampOrVakantieCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withHasOvernightStay(false)
+                )
+            )
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_preserves_an_explicit_false_overnight_stay_when_it_is_omitted_from_a_patch(): void
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withHasOvernightStay(false);
+
+        $this->scenario
+            ->given([
+                $this->getKampOrVakantieCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($subEvent)),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withStatus(new Status(StatusType::Available()))
                 )
             )
             ->then([]);

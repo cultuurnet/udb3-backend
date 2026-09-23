@@ -16,7 +16,8 @@ final class SubEvent
 
     private ?TimeImmutableRange $childcareTimeRange = null;
 
-    private bool $hasOvernightStay = false;
+    // Null means the API never mentioned it, which is not the same as an explicit false.
+    private ?bool $hasOvernightStay = null;
 
     public function __construct(
         DateRange $dateRange,
@@ -58,7 +59,7 @@ final class SubEvent
         return $clone;
     }
 
-    public function withHasOvernightStay(bool $hasOvernightStay): self
+    public function withHasOvernightStay(?bool $hasOvernightStay): self
     {
         $clone = clone $this;
         $clone->hasOvernightStay = $hasOvernightStay;
@@ -90,7 +91,7 @@ final class SubEvent
         return $this->childcareTimeRange !== null && !$this->childcareTimeRange->isEmpty();
     }
 
-    public function hasOvernightStay(): bool
+    public function getHasOvernightStay(): ?bool
     {
         return $this->hasOvernightStay;
     }

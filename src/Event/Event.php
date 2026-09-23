@@ -438,7 +438,7 @@ final class Event extends Offer
                 $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareToApply);
             }
 
-            $updatedSubEvent = $updatedSubEvent->withHasOvernightStay($subEventUpdate->getHasOvernightStay() ?? $subEvent->hasOvernightStay());
+            $updatedSubEvent = $updatedSubEvent->withHasOvernightStay($subEventUpdate->getHasOvernightStay() ?? $subEvent->getHasOvernightStay());
 
             $subEvents[$index] = $updatedSubEvent;
         }
@@ -479,7 +479,7 @@ final class Event extends Offer
 
         if (!EventTypeResolver::isOvernightStayAllowed($this->typeId)
             && $updatedCalendar instanceof CalendarWithSubEvents) {
-            $updatedCalendar = $updatedCalendar->withoutOvernightStay();
+            $updatedCalendar = $updatedCalendar->withHasOvernightStayOnSubEvents(null);
         }
 
         if (!EventTypeResolver::isChildcareAllowed($this->typeId)) {
@@ -515,7 +515,7 @@ final class Event extends Offer
         }
 
         foreach ($subEvents as $subEvent) {
-            if ($subEvent->hasOvernightStay()) {
+            if ($subEvent->getHasOvernightStay() === true) {
                 throw new OvernightStayNotAllowed();
             }
         }
