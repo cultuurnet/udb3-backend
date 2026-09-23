@@ -21,7 +21,6 @@ use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProje
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Media\ReadModel\ImageLDProjector;
 use CultuurNet\UDB3\Mailer\Handler\SendMailsForOwnershipEventHandler;
-use CultuurNet\UDB3\Offer\ProcessManagers\AutoApproveForUiTIDv1ApiKeysProcessManager;
 use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Organizer\OrganizerJSONLDServiceProvider;
@@ -86,7 +85,6 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                             'organizer_geocoordinates_process_manager',
                             'uitpas_event_process_manager',
                             RelocateEventToCanonicalPlace::class,
-                            AutoApproveForUiTIDv1ApiKeysProcessManager::class,
                             OwnershipLDProjector::class,
                             OwnershipSearchProjector::class,
                             OwnershipPermissionProjector::class,
