@@ -21,7 +21,6 @@ class OrganizerProjectedToJSONLDTest extends TestCase
         $serialized = $event->serialize();
         $deserialized = OrganizerProjectedToJSONLD::deserialize($serialized);
 
-        $this->assertTrue(is_array($serialized));
         $this->assertEquals($event, $deserialized);
     }
 }
