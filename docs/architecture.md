@@ -4,7 +4,7 @@ UiTdatabank 3 (UDB3) is an event-sourced backend built with Broadway.
 
 ## Tech Stack
 
-- **Language**: PHP 8.2+
+- **Language**: PHP 8.3+
 - **Architecture**: Event Sourcing with [Broadway](https://github.com/broadway/broadway)
 - **Database**: Doctrine DBAL
 - **Message Broker**: RabbitMQ (AMQP)
