@@ -302,7 +302,6 @@ final class CalendarSerializerTest extends TestCase
 
         $this->assertInstanceOf(PeriodicCalendar::class, $calendar);
         $this->assertInstanceOf(CalendarWithClosedDays::class, $calendar);
-        /** @var CalendarWithClosedDays $calendar */
         $this->assertFalse($calendar->getClosedDays()->isEmpty());
         $this->assertEquals(1, $calendar->getClosedDays()->count());
 
@@ -437,7 +436,6 @@ final class CalendarSerializerTest extends TestCase
 
         $this->assertInstanceOf(PeriodicCalendar::class, $calendar);
         $this->assertInstanceOf(CalendarWithAdjustedDays::class, $calendar);
-        /** @var CalendarWithAdjustedDays $calendar */
         $this->assertFalse($calendar->getAdjustedDays()->isEmpty());
         $this->assertEquals(1, $calendar->getAdjustedDays()->count());
 
@@ -528,7 +526,6 @@ final class CalendarSerializerTest extends TestCase
 
         $this->assertInstanceOf(PermanentCalendar::class, $calendar);
         $this->assertInstanceOf(CalendarWithAdjustedDays::class, $calendar);
-        /** @var CalendarWithAdjustedDays $calendar */
         $this->assertFalse($calendar->getAdjustedDays()->isEmpty());
         $this->assertEquals(1, $calendar->getAdjustedDays()->count());
 
@@ -632,7 +629,6 @@ final class CalendarSerializerTest extends TestCase
 
         $this->assertInstanceOf(PermanentCalendar::class, $calendar);
         $this->assertInstanceOf(CalendarWithClosedDays::class, $calendar);
-        /** @var CalendarWithClosedDays $calendar */
         $this->assertFalse($calendar->getClosedDays()->isEmpty());
         $this->assertEquals(2, $calendar->getClosedDays()->count());
 

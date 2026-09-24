@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use DateTimeImmutable;
-use DateTimeInterface;
 
 class AvailableTo
 {
@@ -20,11 +19,9 @@ class AvailableTo
             return self::forever();
         }
 
-        /** @var DateTimeInterface $availableTo */
         $availableTo = $calendar->getEndDate();
 
         if ($eventType && EventTypeResolver::isOnlyAvailableUntilStartDate($eventType)) {
-            /** @var DateTimeInterface $availableTo */
             $availableTo = $calendar->getStartDate();
         }
 

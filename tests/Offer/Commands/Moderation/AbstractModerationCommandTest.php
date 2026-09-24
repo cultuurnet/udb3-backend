@@ -14,7 +14,6 @@ class AbstractModerationCommandTest extends TestCase
      */
     public function it_has_permission_aanbod_modereren(): void
     {
-        /** @var AbstractModerationCommand $abstractModerationCommand */
         $abstractModerationCommand = $this->getMockForAbstractClass(
             AbstractModerationCommand::class,
             ['e1d026e2-d158-40e9-b82a-dfcd62de2a77']

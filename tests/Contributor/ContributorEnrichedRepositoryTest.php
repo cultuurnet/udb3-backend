@@ -21,9 +21,6 @@ final class ContributorEnrichedRepositoryTest extends TestCase
 
     private InMemoryDocumentRepository $documentRepository;
 
-    /**
-     * @var PermissionVoter&MockObject;
-     */
     private PermissionVoter&MockObject $permissionVoter;
 
     private ?string $currentUserId;
