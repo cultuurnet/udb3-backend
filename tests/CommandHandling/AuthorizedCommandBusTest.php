@@ -46,7 +46,6 @@ class AuthorizedCommandBusTest extends TestCase
      */
     public function it_delegates_is_authorized_call_to_security(): void
     {
-        /** @var AuthorizableCommand $command */
         $command = $this->createMock(AuthorizableCommand::class);
 
         $this->mockIsAuthorized(true);

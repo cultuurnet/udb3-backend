@@ -206,7 +206,6 @@ class EventStreamTest extends TestCase
         $history = $this->fillHistory();
         $eventStream = $this->eventStream->withStartId(4);
 
-        /** @var EventStream|\Generator $domainEventStreams */
         $domainEventStreams = $eventStream();
 
         $domainEventStreams = iterator_to_array($domainEventStreams);

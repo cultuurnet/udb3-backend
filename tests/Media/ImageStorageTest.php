@@ -13,14 +13,8 @@ class ImageStorageTest extends TestCase
 {
     private string $mediaDirectory = '/media';
 
-    /**
-     * @var FilesystemOperator&MockObject;
-     */
     private FilesystemOperator&MockObject $localFilesystem;
 
-    /**
-     * @var FilesystemOperator&MockObject;
-     */
     private FilesystemOperator&MockObject $s3Filesystem;
 
     private ImageStorage $imageStorage;
