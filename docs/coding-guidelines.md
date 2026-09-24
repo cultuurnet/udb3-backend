@@ -6,13 +6,11 @@
 - Follow PSR-4 autoloading under `CultuurNet\UDB3\` namespace
 - Keep classes small and focused (Single Responsibility)
 
-## PHP 8.1 Features
+## PHP 8.2 Features
 
 Use **readonly properties** with constructor promotion for immutable class properties.
 
 See `src/Doctrine/DBALDatabaseConnectionChecker.php` for an example.
-
-> **Note**: Do NOT use PHP 8.2 `readonly class` syntax - we're on PHP 8.1.
 
 ## Preferences
 
