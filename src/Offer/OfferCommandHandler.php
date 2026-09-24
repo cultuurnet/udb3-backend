@@ -23,23 +23,18 @@ use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsDuplicate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractFlagAsInappropriate;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractPublish;
 use CultuurNet\UDB3\Offer\Commands\Moderation\AbstractReject;
-use CultuurNet\UDB3\Organizer\Organizer;
 
 abstract class OfferCommandHandler extends Udb3CommandHandler
 {
     protected Repository $offerRepository;
 
-    protected Repository $organizerRepository;
-
     protected MediaManagerInterface $mediaManager;
 
     public function __construct(
         Repository $offerRepository,
-        Repository $organizerRepository,
         MediaManagerInterface $mediaManager
     ) {
         $this->offerRepository = $offerRepository;
-        $this->organizerRepository = $organizerRepository;
         $this->mediaManager = $mediaManager;
     }
 
@@ -248,13 +243,5 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer =  $this->offerRepository->load($id);
 
         return $offer;
-    }
-
-    private function loadOrganizer(string $id): Organizer
-    {
-        /** @var Organizer $organizer */
-        $organizer = $this->organizerRepository->load($id);
-
-        return $organizer;
     }
 }

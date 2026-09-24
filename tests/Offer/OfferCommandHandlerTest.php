@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Offer;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Price\PriceInfo;
 use CultuurNet\UDB3\Model\ValueObject\Price\Tariff;
@@ -39,7 +38,6 @@ final class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
     protected PriceInfo $priceInfo;
     protected ItemCreated $itemCreated;
 
-    protected Repository&MockObject $organizerRepository;
 
     protected MediaManagerInterface&MockObject $mediaManager;
 
@@ -69,12 +67,10 @@ final class OfferCommandHandlerTest extends CommandHandlerScenarioTestCase
         EventStore $eventStore,
         EventBus $eventBus
     ): ItemCommandHandler {
-        $this->organizerRepository = $this->createMock(Repository::class);
         $this->mediaManager = $this->createMock(MediaManagerInterface::class);
 
         return new ItemCommandHandler(
             new ItemRepository($eventStore, $eventBus),
-            $this->organizerRepository,
             $this->mediaManager
         );
     }
