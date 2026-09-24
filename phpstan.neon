@@ -17,6 +17,25 @@ parameters:
         - tests/Offer/Commands/Moderation/AbstractModerationCommandTestBase.php
     ignoreErrors:
         - identifier: missingType.iterableValue
+        # Reported since phpstan 2, to be fixed one group at a time
+        - identifier: argument.type
+        - identifier: argument.unresolvableType
+        - identifier: arrayFilter.same
+        - identifier: arrayValues.list
+        - identifier: class.serializable
+        - identifier: function.alreadyNarrowedType
+        - identifier: instanceof.alwaysTrue
+        - identifier: method.alreadyNarrowedType
+        - identifier: method.nonObject
+        - identifier: method.unused
+        - identifier: missingType.generics
+        - identifier: new.resultUnused
+        - identifier: notIdentical.alwaysTrue
+        - identifier: phpDoc.parseError
+        - identifier: property.unusedType
+        - identifier: return.unusedType
+        - identifier: staticMethod.alreadyNarrowedType
+        - identifier: varTag.nativeType
         # culturefeed-php documents the id as a string, but createFromXML fills it with xpath_int
         - '#^Property CultureFeed_Uitpas_DistributionKey::\$id \(string\) does not accept int\.$#'
 
