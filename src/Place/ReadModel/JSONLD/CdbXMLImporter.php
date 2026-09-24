@@ -132,15 +132,13 @@ class CdbXMLImporter
 
         $this->importTerms($item, $jsonLD);
 
-        if ($item instanceof \CultureFeed_Cdb_Item_Actor) {
-            $calendar = $this->calendarFactory->createFromWeekScheme(
-                $item->getWeekScheme()
-            );
-            $jsonLD = (object)array_merge(
-                (array)$jsonLD,
-                (new CalendarNormalizer())->normalize($calendar)
-            );
-        }
+        $calendar = $this->calendarFactory->createFromWeekScheme(
+            $item->getWeekScheme()
+        );
+        $jsonLD = (object)array_merge(
+            (array)$jsonLD,
+            (new CalendarNormalizer())->normalize($calendar)
+        );
 
         return $jsonLD;
     }

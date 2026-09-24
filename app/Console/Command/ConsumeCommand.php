@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Broadway\AMQP\ConsumerInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use Psr\Container\ContainerInterface;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -76,12 +75,6 @@ class ConsumeCommand extends Command
         /** @var ConsumerInterface $consumer */
         $consumer = $this->container->get($this->consumerName);
         $channel = $consumer->getChannel();
-
-        if (!$channel instanceof AMQPChannel) {
-            throw new RuntimeException(
-                'The consumer channel is not of the expected type AMQPChannel'
-            );
-        }
 
         return $channel;
     }

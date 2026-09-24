@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Broadway\AMQP\DomainMessage;
 
 use Broadway\Domain\DomainMessage;
-use InvalidArgumentException;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
@@ -18,9 +17,6 @@ class PayloadIsInstanceOf implements SpecificationInterface, LoggerAwareInterfac
 
     public function __construct(string $typeName)
     {
-        if (!is_string($typeName)) {
-            throw new InvalidArgumentException('Value for argument typeName should be a string');
-        }
         $this->typeName = $typeName;
         $this->logger = new NullLogger();
     }

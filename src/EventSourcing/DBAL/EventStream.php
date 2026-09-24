@@ -56,10 +56,6 @@ class EventStream
 
     public function withStartId(int $startId): EventStream
     {
-        if (!is_int($startId)) {
-            throw new \InvalidArgumentException('StartId should have type int.');
-        }
-
         if ($startId <= 0) {
             throw new \InvalidArgumentException('StartId should be higher than 0.');
         }
@@ -82,10 +78,6 @@ class EventStream
      */
     public function withCdbids(array $cdbids): EventStream
     {
-        if (!is_array($cdbids)) {
-            throw new \InvalidArgumentException('Cdbids should have type array.');
-        }
-
         if (empty($cdbids)) {
             throw new \InvalidArgumentException('Cdbids can\'t be empty.');
         }
