@@ -23,7 +23,7 @@ final class ContributorEnrichedRepositoryTest extends TestCase
 
     private PermissionVoter&MockObject $permissionVoter;
 
-    private ?string $currentUserId;
+    private string $currentUserId;
 
     private ContributorEnrichedRepository $contributorEnrichedRepository;
 

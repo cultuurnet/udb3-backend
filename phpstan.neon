@@ -9,6 +9,8 @@ parameters:
         - web/index.php
     bootstrapFiles:
         - tests/bootstrap.php
+    stubFiles:
+        - app/Phpstan/stubs/CultureFeed_Cdb_Data_Address.stub
     scanFiles:
         - vendor/gridonic/princexml-php/lib/prince.php
     excludePaths:
@@ -21,8 +23,6 @@ parameters:
         - identifier: argument.type
         - identifier: class.serializable
         - identifier: method.unused
-        - identifier: property.unusedType
-        - identifier: return.unusedType
         # culturefeed-php documents the id as a string, but createFromXML fills it with xpath_int
         - '#^Property CultureFeed_Uitpas_DistributionKey::\$id \(string\) does not accept int\.$#'
 
