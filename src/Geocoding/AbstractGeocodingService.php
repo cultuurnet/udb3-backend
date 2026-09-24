@@ -28,7 +28,7 @@ abstract class AbstractGeocodingService implements GeocodingService
     }
 
     // We do not use $locationName on purpose - see GeocodingServiceWithLocationName
-    public function getCoordinates(string $address, string $locationName=''): ?Coordinates
+    public function getCoordinates(string $address, string $locationName = ''): ?Coordinates
     {
         try {
             $addresses = $this->geocoder->geocode($this->searchTerm($address, $locationName));

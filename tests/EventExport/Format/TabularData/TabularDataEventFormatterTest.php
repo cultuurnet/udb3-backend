@@ -143,7 +143,7 @@ class TabularDataEventFormatterTest extends TestCase
 
         $formattedEvent = $formatter->formatEvent($eventWithTerms);
         $expectedFormatting = [
-            'id' =>'d1f0e71d-a9a8-4069-81fb-530134502c58',
+            'id' => 'd1f0e71d-a9a8-4069-81fb-530134502c58',
             'terms.eventtype' => 'Cursus of workshop',
             'terms.theme' => 'Geschiedenis',
         ];
@@ -227,7 +227,7 @@ class TabularDataEventFormatterTest extends TestCase
 
         $formattedEvent = $formatter->formatEvent($eventWithTerms);
         $expectedFormatting = [
-            'id' =>'d1f0e71d-a9a8-4069-81fb-530134502c58',
+            'id' => 'd1f0e71d-a9a8-4069-81fb-530134502c58',
             'address.streetAddress' => 'Sint-Jorisplein 20 ',
             'address.postalCode' => '3300',
             'address.addressLocality' => 'Tienen',
@@ -381,7 +381,7 @@ class TabularDataEventFormatterTest extends TestCase
         $formattedEvent = $formatter->formatEvent($eventWithContactPoints);
 
         $expectedFormatting = [
-            'id' =>'16744083-859a-4d3d-bd1d-16ea5bd3e2a3',
+            'id' => '16744083-859a-4d3d-bd1d-16ea5bd3e2a3',
             'contactPoint.email' => 'nicolas.leroy+test@gmail.com;jane.doe@example.com',
             'contactPoint.phone' => '016 66 69 99;016 99 96 66',
             'contactPoint.url' => 'http://contact.example.com;https://contact.example.com',
@@ -404,7 +404,7 @@ class TabularDataEventFormatterTest extends TestCase
 
         $formattedEvent = $formatter->formatEvent($eventWithAvailableDate);
         $expectedFormatting = [
-            'id' =>'16744083-859a-4d3d-bd1d-16ea5bd3e2a3',
+            'id' => '16744083-859a-4d3d-bd1d-16ea5bd3e2a3',
             'available' => '2015-10-13',
         ];
 
@@ -436,7 +436,7 @@ class TabularDataEventFormatterTest extends TestCase
 
         $formattedEvent = $formatter->formatEvent($eventWithUnwantedLineBreaks);
         $expectedFormatting = [
-            'id' =>'ee7c4030-d69f-4584-b0f2-a700955c7df2',
+            'id' => 'ee7c4030-d69f-4584-b0f2-a700955c7df2',
             'description' => $expectedDescription,
         ];
 

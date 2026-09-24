@@ -8,6 +8,7 @@ use Behat\Gherkin\Node\PyStringNode;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\RDF\NodeUri\CRC32HashGenerator;
+
 use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;

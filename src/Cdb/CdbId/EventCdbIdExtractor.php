@@ -14,9 +14,6 @@ class EventCdbIdExtractor implements EventCdbIdExtractorInterface
 
     private MappingServiceInterface $organizerExternalIdMappingService;
 
-    /**
-     * @param MappingServiceInterface $organizerExternalIdMappingService
-     */
     public function __construct(
         MappingServiceInterface $placeExternalIdMappingService = null,
         MappingServiceInterface $organizerExternalIdMappingService = null

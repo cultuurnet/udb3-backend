@@ -8,10 +8,7 @@ abstract class Collection implements \IteratorAggregate, \Countable
 {
     private array $values;
 
-    /**
-     * @param mixed ...$values
-     */
-    public function __construct(...$values)
+    public function __construct(mixed ...$values)
     {
         array_walk(
             $values,

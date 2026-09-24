@@ -37,7 +37,7 @@ final class JSONLDEventFormatter
         // out and placing it directly on the object.
         if (in_array('address', $include)
                 && !in_array('location', $include)
-            ) {
+        ) {
             $include[] = 'location';
         }
 
@@ -48,7 +48,7 @@ final class JSONLDEventFormatter
         );
         if (!empty($includedBookingInfoProperties)
                 && !in_array('bookingInfo', $include)
-            ) {
+        ) {
             $include[] = 'bookingInfo';
         }
 

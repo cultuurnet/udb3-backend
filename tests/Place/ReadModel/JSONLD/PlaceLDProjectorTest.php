@@ -307,7 +307,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD = new stdClass();
         $jsonLD->{'@id'} = 'http://io.uitdatabank.be/place/66f30742-dee9-4794-ac92-fa44634692b8';
         $jsonLD->mainLanguage = 'nl';
-        $jsonLD->name = (object) ['nl'=>'some representative title'];
+        $jsonLD->name = (object) ['nl' => 'some representative title'];
         $jsonLD->address = (object) [
             'nl' => (object) [
                 'addressCountry' => '$country',
@@ -335,7 +335,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD = new stdClass();
         $expectedJsonLD->{'@id'} = 'http://io.uitdatabank.be/place/66f30742-dee9-4794-ac92-fa44634692b8';
         $expectedJsonLD->mainLanguage = 'nl';
-        $expectedJsonLD->name = (object) ['nl'=>'some representative title'];
+        $expectedJsonLD->name = (object) ['nl' => 'some representative title'];
         $expectedJsonLD->address = (object) [
             'nl' => (object) [
                 'addressCountry' => 'BE',
@@ -386,7 +386,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD = new stdClass();
         $jsonLD->{'@id'} = 'http://io.uitdatabank.be/place/66f30742-dee9-4794-ac92-fa44634692b8';
         $jsonLD->mainLanguage = 'nl';
-        $jsonLD->name = (object) ['nl'=>'some representative title'];
+        $jsonLD->name = (object) ['nl' => 'some representative title'];
         $jsonLD->address = (object) [
             'nl' => (object) [
                 'addressCountry' => '$country',
@@ -414,7 +414,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD = new stdClass();
         $expectedJsonLD->{'@id'} = 'http://io.uitdatabank.be/place/66f30742-dee9-4794-ac92-fa44634692b8';
         $expectedJsonLD->mainLanguage = 'nl';
-        $expectedJsonLD->name = (object) ['nl'=>'some representative title'];
+        $expectedJsonLD->name = (object) ['nl' => 'some representative title'];
         $expectedJsonLD->address = (object) [
             'nl' => (object) [
                 'addressCountry' => '$country',
@@ -598,7 +598,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $initialJsonLd = new stdClass();
         $initialJsonLd->{'@id'} = 'http://io.uitdatabank.be/place/66f30742-dee9-4794-ac92-fa44634692b8';
         $initialJsonLd->mainLanguage = 'nl';
-        $initialJsonLd->name = (object) ['nl'=>'some representative title'];
+        $initialJsonLd->name = (object) ['nl' => 'some representative title'];
         $initialJsonLd->address = (object) [
             'nl' => (object) [
                 'addressCountry' => 'BE',
@@ -771,7 +771,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $jsonLD = new stdClass();
         $jsonLD->{'@id'} = 'http://io.uitdatabank.be/place/foo';
         $jsonLD->mainLanguage = 'en';
-        $jsonLD->name = (object)['en'=>'some representative title'];
+        $jsonLD->name = (object)['en' => 'some representative title'];
         $jsonLD->address = (object) [
             'en' => (object) [
                 'addressCountry' => '$country',
@@ -799,7 +799,7 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
         $expectedJsonLD = new stdClass();
         $expectedJsonLD->{'@id'} = 'http://io.uitdatabank.be/place/foo';
         $expectedJsonLD->mainLanguage = 'en';
-        $expectedJsonLD->name = (object)['en'=>'new title'];
+        $expectedJsonLD->name = (object)['en' => 'new title'];
         $expectedJsonLD->address = (object) [
             'en' => (object) [
                 'addressCountry' => 'BE',

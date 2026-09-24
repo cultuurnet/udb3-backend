@@ -30,7 +30,7 @@ class EntireDomainMessageBodyFactoryTest extends TestCase
             'F68E71A1-DBB0-4542-AEE5-BD937E095F74',
             2,
             new Metadata([
-                'meta' =>'data',
+                'meta' => 'data',
                 'oranges' => 'apples',
             ]),
             new DummyEvent(
