@@ -43,7 +43,7 @@ abstract class AbstractGeocodeCommand extends AbstractCommand
             ->addOption(
                 'id',
                 null,
-                InputOption::VALUE_IS_ARRAY|InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_IS_ARRAY | InputOption::VALUE_OPTIONAL,
                 'Fixed list of ids of the items to geocode.'
             )
             ->addOption(

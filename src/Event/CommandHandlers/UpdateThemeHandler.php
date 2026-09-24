@@ -17,7 +17,7 @@ final class UpdateThemeHandler implements CommandHandler
 {
     private Repository $eventRepository;
 
-    public function __construct(Repository $eventRepository, readonly CategoryResolverInterface $eventCategoryResolver)
+    public function __construct(Repository $eventRepository, public readonly CategoryResolverInterface $eventCategoryResolver)
     {
         $this->eventRepository = $eventRepository;
     }

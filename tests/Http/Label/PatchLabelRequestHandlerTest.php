@@ -30,7 +30,7 @@ final class PatchLabelRequestHandlerTest extends TestCase
     {
         $this->traceableCommandBus = new TraceableCommandBus();
 
-        $this->patchLabelRequestHandler = new PatchLabelRequestHandler($this->traceableCommandBus, );
+        $this->patchLabelRequestHandler = new PatchLabelRequestHandler($this->traceableCommandBus);
     }
 
     /**

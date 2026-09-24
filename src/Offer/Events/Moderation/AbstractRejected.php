@@ -32,7 +32,7 @@ abstract class AbstractRejected extends AbstractEvent
     {
         return new static(
             $data['item_id'],
-           $data['reason']
+            $data['reason']
         );
     }
 }

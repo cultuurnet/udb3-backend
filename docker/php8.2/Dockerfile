@@ -1,4 +1,4 @@
-FROM php:8.1-apache
+FROM php:8.2-apache
 
 ARG ENABLE_XDEBUG
 
@@ -53,7 +53,7 @@ CMD ["/usr/bin/supervisord", "-n", "-c", "/etc/supervisor/conf.d/supervisord.con
 COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 RUN if [ "$ENABLE_XDEBUG" = "true" ] ; then \
-      pecl install xdebug-3.1.5 && \
+      pecl install xdebug-3.3.2 && \
       docker-php-ext-enable xdebug ; \
   else \
       rm /usr/local/etc/php/conf.d/xdebug.ini ; \

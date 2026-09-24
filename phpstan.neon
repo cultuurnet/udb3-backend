@@ -17,6 +17,9 @@ parameters:
         - tests/Event/Productions/SimilarEventsRepositoryTest.php
         - tests/Http/Productions/SuggestProductionRequestHandlerTest.php
         - tests/Offer/Commands/Moderation/AbstractModerationCommandTestBase.php
+    ignoreErrors:
+        # culturefeed-php documents the id as a string, but createFromXML fills it with xpath_int
+        - '#^Property CultureFeed_Uitpas_DistributionKey::\$id \(string\) does not accept int\.$#'
 
 services:
     -

@@ -466,7 +466,7 @@ class DBALOwnershipSearchRepositoryTest extends TestCase
      * @test
      * @dataProvider  sortOptionsProvider
      */
-    public function it_can_sort_search_results(string $sortField, array $expectedOutputs, ): void
+    public function it_can_sort_search_results(string $sortField, array $expectedOutputs): void
     {
         $ownershipItemA = new OwnershipItem(
             'e6e1f3a0-3e5e-4b3e-8e3e-3f3e3e3e3e3e',

@@ -570,8 +570,8 @@ class OfferLDProjectorTest extends TestCase
             Json::encode([
                 'mainLanguage' => 'en',
                 'name' => [
-                    'nl'=> 'Fietsen langs kapelletjes',
-                    'en'=> 'Cycling through Flanders',
+                    'nl' => 'Fietsen langs kapelletjes',
+                    'en' => 'Cycling through Flanders',
                 ],
             ])
         );
@@ -581,8 +581,8 @@ class OfferLDProjectorTest extends TestCase
             Json::encode([
                 'mainLanguage' => 'en',
                 'name' => [
-                    'nl'=> 'Fietsen langs kapelletjes',
-                    'en'=> 'A cycling adventure',
+                    'nl' => 'Fietsen langs kapelletjes',
+                    'en' => 'A cycling adventure',
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,
@@ -617,7 +617,7 @@ class OfferLDProjectorTest extends TestCase
             'foo',
             Json::encode([
                 'name' => [
-                    'nl'=> 'Titel',
+                    'nl' => 'Titel',
                 ],
                 'description' => [
                     'nl' => 'Omschrijving',
@@ -632,7 +632,7 @@ class OfferLDProjectorTest extends TestCase
         $this->assertEquals(
             (object)[
                 'name' => (object)[
-                    'nl'=> 'Titel',
+                    'nl' => 'Titel',
                     'en' => 'English title',
                 ],
                 'description' => (object)[
@@ -661,7 +661,7 @@ class OfferLDProjectorTest extends TestCase
             'foo',
             Json::encode([
                 'name' => [
-                    'nl'=> 'Titel',
+                    'nl' => 'Titel',
                 ],
                 'description' => [
                     'nl' => 'Omschrijving',
@@ -676,7 +676,7 @@ class OfferLDProjectorTest extends TestCase
         $this->assertEquals(
             (object)[
                 'name' => (object)[
-                    'nl'=> 'Titel',
+                    'nl' => 'Titel',
                 ],
                 'description' => (object)[
                     'nl' => 'Omschrijving',
@@ -705,7 +705,7 @@ class OfferLDProjectorTest extends TestCase
             'foo',
             Json::encode([
                 'name' => [
-                    'nl'=> 'Titel',
+                    'nl' => 'Titel',
                 ],
                 'description' => [
                     'nl' => 'Omschrijving',
@@ -721,7 +721,7 @@ class OfferLDProjectorTest extends TestCase
         $this->assertEquals(
             (object)[
                 'name' => (object)[
-                    'nl'=> 'Titel',
+                    'nl' => 'Titel',
                 ],
                 'description' => (object)[
                     'fr' => 'Le description',
@@ -749,7 +749,7 @@ class OfferLDProjectorTest extends TestCase
             'foo',
             Json::encode([
                 'name' => [
-                    'nl'=> 'Titel',
+                    'nl' => 'Titel',
                 ],
                 'description' => [
                     'nl' => 'Omschrijving',
@@ -764,7 +764,7 @@ class OfferLDProjectorTest extends TestCase
         $this->assertEquals(
             (object)[
                 'name' => (object)[
-                    'nl'=> 'Titel',
+                    'nl' => 'Titel',
                 ],
                 'modified' => $this->recordedOn->toString(),
                 'playhead' => 1,

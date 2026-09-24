@@ -21,7 +21,7 @@ final class UpdateSavedSearchJSONDeserializer extends JSONDeserializer
     {
         parent::__construct();
         $this->userId = $userId;
-        $this->id =$id;
+        $this->id = $id;
     }
 
     public function deserialize(string $data): UpdateSavedSearch

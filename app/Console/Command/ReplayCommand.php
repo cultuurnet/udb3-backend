@@ -34,7 +34,7 @@ final class ReplayCommand extends AbstractCommand
         'event_relations' => 'event',
         'offer_metadata' => 'id',
         'organizer_permission_readmodel' => 'organizer_id',
-        'place_permission_readmodel'=> 'place_id',
+        'place_permission_readmodel' => 'place_id',
         'place_relations' => 'place',
     ];
 

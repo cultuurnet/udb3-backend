@@ -344,7 +344,7 @@ class GetDetailRequestHandlerTest extends TestCase
             [
                 '@id' => '/events/' . $eventId,
                 'metadata' => ['foo' => 'bar'],
-                'priceInfo'=> [
+                'priceInfo' => [
                     [
                         'category' => 'base',
                         'name' => 'Base price',
