@@ -121,7 +121,6 @@ class CdbXmlContactInfoImporter implements CdbXmlContactInfoImporterInterface
             $contactPoint['url'] = array_values($contactPoint['url']);
         }
 
-        array_filter($contactPoint);
         if (!empty($contactPoint)) {
             $jsonLD->contactPoint = $contactPoint;
         }
