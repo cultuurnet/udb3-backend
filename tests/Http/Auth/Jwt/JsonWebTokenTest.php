@@ -17,7 +17,7 @@ class JsonWebTokenTest extends TestCase
     public function it_returns_the_json_web_token_string_as_credentials(): void
     {
         $jwt = JsonWebTokenFactory::createWithClaims([]);
-        $this->assertTrue(is_string($jwt->getCredentials()));
+        $this->assertCount(3, explode('.', $jwt->getCredentials()));
     }
 
     /**

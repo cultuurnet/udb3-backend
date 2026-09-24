@@ -39,16 +39,6 @@ class CreatedTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_extends_an_event(): void
-    {
-        $this->assertTrue(is_subclass_of(
-            $this->created,
-            AbstractEvent::class
-        ));
-    }
 
     /**
      * @test

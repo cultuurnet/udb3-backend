@@ -70,7 +70,7 @@ class InvokableRequestHandlerContainerTest extends TestCase
         $modifiedRequestHandler = $this->invokableRequestHandlerContainer->get('mock_request_handler');
         $alreadyCallableRequestHandler = $this->invokableRequestHandlerContainer->get('mock_request_handler_callable');
 
-        $this->assertIsCallable($modifiedRequestHandler);
+        $this->assertInstanceOf(InvokableRequestHandler::class, $modifiedRequestHandler);
         $this->assertIsCallable($alreadyCallableRequestHandler);
 
         // Make sure the request handler that was already callable is not altered

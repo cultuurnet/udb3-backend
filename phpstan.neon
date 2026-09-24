@@ -20,13 +20,7 @@ parameters:
         # Reported since phpstan 2, to be fixed one group at a time
         - identifier: argument.type
         - identifier: class.serializable
-        -
-            identifier: function.alreadyNarrowedType
-            path: tests/*
-        - identifier: method.alreadyNarrowedType
-        - identifier: method.nonObject
         - identifier: method.unused
-        - identifier: new.resultUnused
         - identifier: property.unusedType
         - identifier: return.unusedType
         # culturefeed-php documents the id as a string, but createFromXML fills it with xpath_int
