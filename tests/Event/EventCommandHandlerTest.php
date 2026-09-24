@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use Broadway\Repository\Repository;
 use Cake\Chronos\Chronos;
 use CultureFeed_Cdb_Xml;
 use CultuurNet\UDB3\Event\Commands\CreateEvent;
@@ -48,13 +47,11 @@ class EventCommandHandlerTest extends CommandHandlerScenarioTestCase
             $eventBus
         );
 
-        $this->organizerRepository = $this->createMock(Repository::class);
 
         $this->mediaManager = $this->createMock(MediaManagerInterface::class);
 
         return new EventCommandHandler(
             $repository,
-            $this->organizerRepository,
             $this->mediaManager
         );
     }

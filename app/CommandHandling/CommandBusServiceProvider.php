@@ -184,7 +184,6 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe(
                             new EventCommandHandler(
                                 $container->get('event_repository'),
-                                $container->get('organizer_repository'),
                                 $container->get('media_manager')
                             )
                         );
@@ -194,7 +193,6 @@ final class CommandBusServiceProvider extends AbstractServiceProvider
                         $commandBus->subscribe(
                             new PlaceCommandHandler(
                                 $container->get('place_repository'),
-                                $container->get('organizer_repository'),
                                 $container->get('media_manager')
                             )
                         );
