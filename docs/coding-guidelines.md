@@ -6,7 +6,7 @@
 - Follow PSR-4 autoloading under `CultuurNet\UDB3\` namespace
 - Keep classes small and focused (Single Responsibility)
 
-## PHP 8.2 Features
+## PHP 8.3 Features
 
 Use **readonly properties** with constructor promotion for immutable class properties.
 
