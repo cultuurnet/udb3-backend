@@ -111,11 +111,7 @@ final class CalendarDenormalizer implements DenormalizerInterface
                 break;
         }
 
-        if ($topLevelStatus !== null) {
-            $calendar = $calendar->withStatus($topLevelStatus);
-        }
-
-        return $calendar;
+        return $calendar->withStatus($topLevelStatus);
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool

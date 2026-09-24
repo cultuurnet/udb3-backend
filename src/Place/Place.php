@@ -89,8 +89,6 @@ class Place extends Offer
      */
     private array $duplicates = [];
 
-    private ?string $canonicalPlaceId = null;
-
     public function __construct()
     {
         parent::__construct();
@@ -304,11 +302,6 @@ class Place extends Offer
     protected function applyPlaceDeleted(PlaceDeleted $event): void
     {
         $this->workflowStatus = WorkflowStatus::DELETED();
-    }
-
-    public function getCanonicalPlaceId(): ?string
-    {
-        return $this->canonicalPlaceId;
     }
 
     public function updateWithCdbXml(string $cdbXml, string $cdbXmlNamespaceUri): void

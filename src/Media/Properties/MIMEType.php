@@ -29,10 +29,6 @@ final class MIMEType
      */
     public static function fromSubtype(string $subtypeString): MIMEType
     {
-        if (!is_string($subtypeString)) {
-            throw new InvalidArgumentException($subtypeString);
-        }
-
         $typeSupported = array_key_exists($subtypeString, self::$supportedSubtypes);
 
         if (!$typeSupported) {

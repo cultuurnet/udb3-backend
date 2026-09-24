@@ -13,7 +13,7 @@ use RuntimeException;
 
 final class JsonSchemaLocator
 {
-    private static ?string $schemaDirectory;
+    private static ?string $schemaDirectory = null;
     public const EVENT = 'event.json';
 
     public const EVENT_NAME_PUT = 'event-name-put.json';

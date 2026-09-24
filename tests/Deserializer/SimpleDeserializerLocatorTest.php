@@ -17,9 +17,7 @@ class SimpleDeserializerLocatorTest extends TestCase
 
     public function testGivesBackDeserializerThatWasRegistered(): void
     {
-        /** @var DeserializerInterface $firstDeserializer */
         $firstDeserializer = $this->createMock(DeserializerInterface::class);
-        /** @var DeserializerInterface $anotherDeserializer */
         $anotherDeserializer = $this->createMock(DeserializerInterface::class);
 
         $this->deserializerLocator->registerDeserializer(

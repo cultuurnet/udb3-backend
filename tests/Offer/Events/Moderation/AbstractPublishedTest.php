@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Offer\Events\Moderation;
 
-use CultuurNet\UDB3\Offer\Events\AbstractEvent;
 use DateTimeInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -29,16 +28,6 @@ class AbstractPublishedTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_derives_from_abstract_event(): void
-    {
-        $this->assertTrue(is_subclass_of(
-            $this->abstractPublished,
-            AbstractEvent::class
-        ));
-    }
 
     /**
      * @test

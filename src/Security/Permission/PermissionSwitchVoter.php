@@ -13,7 +13,7 @@ final class PermissionSwitchVoter implements PermissionVoter
      */
     private array $mapping;
 
-    private ?PermissionVoter $defaultVoter;
+    private PermissionVoter $defaultVoter;
 
     public function isAllowed(
         Permission $permission,

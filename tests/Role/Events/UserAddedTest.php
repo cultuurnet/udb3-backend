@@ -24,16 +24,6 @@ class UserAddedTest extends TestCase
         $this->userAdded = new UserAdded($this->uuid, $this->userId);
     }
 
-    /**
-     * @test
-     */
-    public function it_extends_an_abstract_user_event(): void
-    {
-        $this->assertTrue(is_subclass_of(
-            $this->userAdded,
-            AbstractUserEvent::class
-        ));
-    }
 
     /**
      * @test

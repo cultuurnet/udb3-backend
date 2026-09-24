@@ -57,14 +57,4 @@ class AbstractDBALRepositoryTest extends TestCase
             $this->abstractDBALRepository->getTableName()
         );
     }
-
-    /**
-     * @test
-     */
-    public function it_creates_a_query_builder(): void
-    {
-        $this->assertNotNull(
-            $this->abstractDBALRepository->createQueryBuilder()
-        );
-    }
 }

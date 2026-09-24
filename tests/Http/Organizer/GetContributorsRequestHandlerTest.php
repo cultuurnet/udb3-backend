@@ -35,7 +35,7 @@ final class GetContributorsRequestHandlerTest extends TestCase
 
     private PermissionVoter&MockObject $permissionVoter;
 
-    private ?string $currentUserId;
+    private string $currentUserId;
 
     private string $organizerId;
 
