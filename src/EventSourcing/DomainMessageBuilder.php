@@ -17,7 +17,7 @@ class DomainMessageBuilder
     private ?string $id = null;
     private ?int $playhead = null;
     private ?DateTime $recordedOn = null;
-    private ?bool $forReplay = false;
+    private bool $forReplay = false;
     private UuidFactory $uuidFactory;
 
     public function __construct(UuidFactory $uuidFactory = null)
@@ -84,15 +84,13 @@ class DomainMessageBuilder
             $this->recordedOn ?? DateTime::now()
         );
 
-        if (is_bool($this->forReplay)) {
-            $replayMetadata = new Metadata(
-                [
-                    DomainMessageIsReplayed::METADATA_REPLAY_KEY => $this->forReplay,
-                ]
-            );
+        $replayMetadata = new Metadata(
+            [
+                DomainMessageIsReplayed::METADATA_REPLAY_KEY => $this->forReplay,
+            ]
+        );
 
-            $message = $message->andMetadata($replayMetadata);
-        }
+        $message = $message->andMetadata($replayMetadata);
 
         return $message;
     }
