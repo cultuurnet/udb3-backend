@@ -71,7 +71,7 @@ The PDF export does not include it.
 {"email": "export@publiq.be", "query": "...", "include": ["name", "hasOvernightStay"]}
 ```
 
-**Rule:** `src/EventExport/OvernightStay.php` — `forEvent()`
+**Rule:** `src/EventExport/OvernightStayResolver.php` — `forEvent()`
 
 The occurrences are summarised into a single answer for the whole event, which has **three** states.
 The third one exists because an event type that can never have an overnight stay must not be
