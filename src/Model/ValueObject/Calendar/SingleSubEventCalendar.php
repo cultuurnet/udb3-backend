@@ -47,10 +47,10 @@ class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEv
         return $clone;
     }
 
-    public function withoutOvernightStay(): CalendarWithSubEvents
+    public function withHasOvernightStayOnSubEvents(?bool $hasOvernightStay): CalendarWithSubEvents
     {
         $clone = clone $this;
-        $clone->subEvent = $this->subEvent->withHasOvernightStay(false);
+        $clone->subEvent = $this->subEvent->withHasOvernightStay($hasOvernightStay);
         return $clone;
     }
 

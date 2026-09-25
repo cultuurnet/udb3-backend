@@ -10,7 +10,7 @@ can have one on some of them and not on others.
 
 | Concept                | Where                                                                   |
 |------------------------|-------------------------------------------------------------------------|
-| Value object           | `src/Model/ValueObject/Calendar/SubEvent.php` — `hasOvernightStay()`     |
+| Value object           | `src/Model/ValueObject/Calendar/SubEvent.php` — `getHasOvernightStay()`  |
 | Update value object    | `src/Model/ValueObject/Calendar/SubEventUpdate.php`                      |
 | Normalizer             | `src/Model/Serializer/ValueObject/Calendar/SubEventNormalizer.php`       |
 | Event type rule        | `src/Event/EventTypeResolver.php` — `isOvernightStayAllowed()`           |
@@ -20,18 +20,30 @@ can have an overnight stay.
 
 ### JSON structure
 
-`SubEventNormalizer` writes the property **only when it is true**. An occurrence without an
-overnight stay carries no `hasOvernightStay` at all:
+`SubEventNormalizer` writes the property **only when it has a value**, so an occurrence has three
+states, see https://jira.publiq.be/browse/III-7524:
+
+| Request                     | Occurrence | Projection                  |
+|-----------------------------|------------|-----------------------------|
+| absent                      | `null`     | *(property absent)*         |
+| `"hasOvernightStay": false` | `false`    | `"hasOvernightStay": false` |
+| `"hasOvernightStay": true`  | `true`     | `"hasOvernightStay": true`  |
+
+`null` means nobody ever filled it in, `false` means the occurrence really has none.
 
 ```json
 "subEvent": [
   {"startDate": "...", "endDate": "...", "hasOvernightStay": true},
+  {"startDate": "...", "endDate": "...", "hasOvernightStay": false},
   {"startDate": "...", "endDate": "..."}
 ]
 ```
 
-This is the reason the export has three states rather than two: an absent flag says nothing about
-whether the event could ever have had one.
+A PATCH that omits the property keeps the current value. A PUT of the whole calendar clears it, the
+same way it resets `status`, `bookingAvailability` and `childcare`.
+
+On any other event type `true` is refused with a 400 and `false` is accepted but reset to `null`, so
+those events never carry a value.
 
 ## API endpoints
 
@@ -59,7 +71,7 @@ The PDF export does not include it.
 {"email": "export@publiq.be", "query": "...", "include": ["name", "hasOvernightStay"]}
 ```
 
-**Rule:** `src/EventExport/OvernightStay.php` — `forEvent()`
+**Rule:** `src/EventExport/OvernightStayResolver.php` — `forEvent()`
 
 The occurrences are summarised into a single answer for the whole event, which has **three** states.
 The third one exists because an event type that can never have an overnight stay must not be

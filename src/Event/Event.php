@@ -149,6 +149,11 @@ final class Event extends Offer
     ): self {
         $event = new self();
 
+        if ($calendar instanceof CalendarWithSubEvents) {
+            self::assertOvernightStayAllowed($eventType->getId()->toString(), $calendar->getSubEvents()->toArray());
+            $calendar = self::clearOvernightStayWhenNotAllowed($eventType->getId()->toString(), $calendar);
+        }
+
         $event->apply(
             new EventCreated(
                 $eventId,
@@ -161,10 +166,6 @@ final class Event extends Offer
                 $publicationDate
             )
         );
-
-        if ($calendar instanceof CalendarWithSubEvents) {
-            $event->assertOvernightStayAllowed($calendar->getSubEvents()->toArray());
-        }
 
         $event->assertChildcareAllowed($calendar);
 
@@ -438,14 +439,17 @@ final class Event extends Offer
                 $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareToApply);
             }
 
-            $updatedSubEvent = $updatedSubEvent->withHasOvernightStay($subEventUpdate->getHasOvernightStay() ?? $subEvent->hasOvernightStay());
+            $updatedSubEvent = $updatedSubEvent->withHasOvernightStay($subEventUpdate->getHasOvernightStay() ?? $subEvent->getHasOvernightStay());
 
             $subEvents[$index] = $updatedSubEvent;
         }
 
-        $this->assertOvernightStayAllowed($subEvents);
+        self::assertOvernightStayAllowed($this->typeId, $subEvents);
 
-        $updatedCalendar = $this->rebuildCalendarFromSubEvents($subEvents);
+        $updatedCalendar = self::clearOvernightStayWhenNotAllowed(
+            $this->typeId,
+            $this->rebuildCalendarFromSubEvents($subEvents)
+        );
 
         $this->assertChildcareAllowed($updatedCalendar);
 
@@ -459,7 +463,8 @@ final class Event extends Offer
     public function updateCalendar(Calendar $calendar): void
     {
         if ($calendar instanceof CalendarWithSubEvents) {
-            $this->assertOvernightStayAllowed($calendar->getSubEvents()->toArray());
+            self::assertOvernightStayAllowed($this->typeId, $calendar->getSubEvents()->toArray());
+            $calendar = self::clearOvernightStayWhenNotAllowed($this->typeId, $calendar);
         }
 
         $this->assertChildcareAllowed($calendar);
@@ -477,10 +482,7 @@ final class Event extends Offer
 
         $updatedCalendar = $this->calendar;
 
-        if (!EventTypeResolver::isOvernightStayAllowed($this->typeId)
-            && $updatedCalendar instanceof CalendarWithSubEvents) {
-            $updatedCalendar = $updatedCalendar->withoutOvernightStay();
-        }
+        $updatedCalendar = self::clearOvernightStayWhenNotAllowed($this->typeId, $updatedCalendar);
 
         if (!EventTypeResolver::isChildcareAllowed($this->typeId)) {
             $updatedCalendar = $updatedCalendar->withoutChildcare();
@@ -508,17 +510,30 @@ final class Event extends Offer
     /**
      * @param SubEvent[] $subEvents
      */
-    private function assertOvernightStayAllowed(array $subEvents): void
+    private static function assertOvernightStayAllowed(?string $typeId, array $subEvents): void
     {
-        if (EventTypeResolver::isOvernightStayAllowed($this->typeId)) {
+        if (EventTypeResolver::isOvernightStayAllowed($typeId)) {
             return;
         }
 
         foreach ($subEvents as $subEvent) {
-            if ($subEvent->hasOvernightStay()) {
+            if ($subEvent->getHasOvernightStay() === true) {
                 throw new OvernightStayNotAllowed();
             }
         }
+    }
+
+    /**
+     * An explicit false is accepted on a type that cannot have an overnight stay, but it is not
+     * recorded: every such event ends up with null, whichever endpoint wrote it.
+     */
+    private static function clearOvernightStayWhenNotAllowed(?string $typeId, Calendar $calendar): Calendar
+    {
+        if (!$calendar instanceof CalendarWithSubEvents || EventTypeResolver::isOvernightStayAllowed($typeId)) {
+            return $calendar;
+        }
+
+        return $calendar->withHasOvernightStayOnSubEvents(null);
     }
 
     private function assertChildcareAllowedOnUpdates(SubEventUpdate ...$subEventUpdates): void

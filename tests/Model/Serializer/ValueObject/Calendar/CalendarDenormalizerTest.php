@@ -322,13 +322,13 @@ final class CalendarDenormalizerTest extends TestCase
         $result = $this->denormalizer->denormalize($data, Calendar::class);
 
         $this->assertInstanceOf(SingleSubEventCalendar::class, $result);
-        $this->assertTrue($result->getSubEvents()->toArray()[0]->hasOvernightStay());
+        $this->assertTrue($result->getSubEvents()->toArray()[0]->getHasOvernightStay());
     }
 
     /**
      * @test
      */
-    public function it_defaults_overnight_stay_to_false_when_key_is_absent(): void
+    public function it_leaves_overnight_stay_null_when_key_is_absent(): void
     {
         $data = [
             'calendarType' => 'single',
@@ -343,7 +343,7 @@ final class CalendarDenormalizerTest extends TestCase
         $result = $this->denormalizer->denormalize($data, Calendar::class);
 
         $this->assertInstanceOf(SingleSubEventCalendar::class, $result);
-        $this->assertFalse($result->getSubEvents()->toArray()[0]->hasOvernightStay());
+        $this->assertNull($result->getSubEvents()->toArray()[0]->getHasOvernightStay());
     }
 
     /**
@@ -370,8 +370,8 @@ final class CalendarDenormalizerTest extends TestCase
 
         $this->assertInstanceOf(MultipleSubEventsCalendar::class, $result);
         $subEvents = $result->getSubEvents()->toArray();
-        $this->assertTrue($subEvents[0]->hasOvernightStay());
-        $this->assertFalse($subEvents[1]->hasOvernightStay());
+        $this->assertTrue($subEvents[0]->getHasOvernightStay());
+        $this->assertNull($subEvents[1]->getHasOvernightStay());
     }
 
     /**
@@ -392,6 +392,6 @@ final class CalendarDenormalizerTest extends TestCase
 
         $result = $this->denormalizer->denormalize($data, Calendar::class);
 
-        $this->assertFalse($result->getSubEvents()->toArray()[0]->hasOvernightStay());
+        $this->assertFalse($result->getSubEvents()->toArray()[0]->getHasOvernightStay());
     }
 }
