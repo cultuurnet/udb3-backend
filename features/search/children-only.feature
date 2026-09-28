@@ -11,9 +11,11 @@ Feature: Test the Search API v3 boa feature
     And I publish the event at "/events/%{otherChildrenOnlyEventId}"
     And I create an event from "events/event-minimal-permanent.json" and save the "id" as "basicEventId"
     And I publish the event at "/events/%{basicEventId}"
+    And I am using a x-client-id header for client "boa_client"
     And I wait for the place with url "%{placeUrl}" to be indexed
     And I wait for the event with url "/events/%{otherChildrenOnlyEventId}" to be indexed
     And I wait for the event with url "/events/%{basicEventId}" to be indexed
+    And I am not using a x-client-id header
     And I am not authorized
     And I am not using an UiTID v1 API key
 
@@ -24,6 +26,7 @@ Feature: Test the Search API v3 boa feature
     When I am authorized with an OAuth client access token for "test_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I am using a x-client-id header for client "boa_client"
     And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "test_client"
@@ -49,6 +52,7 @@ Feature: Test the Search API v3 boa feature
     When I am authorized with an OAuth client access token for "test_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I am using a x-client-id header for client "boa_client"
     And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "test_client"
@@ -75,6 +79,7 @@ Feature: Test the Search API v3 boa feature
     When I am authorized with an OAuth client access token for "test_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I am using a x-client-id header for client "boa_client"
     And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "test_client"
@@ -101,6 +106,7 @@ Feature: Test the Search API v3 boa feature
     When I am authorized with an OAuth client access token for "boa_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I am using a x-client-id header for client "boa_client"
     And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "boa_client"
@@ -126,6 +132,7 @@ Feature: Test the Search API v3 boa feature
     When I am authorized with an OAuth client access token for "boa_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I am using a x-client-id header for client "boa_client"
     And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "boa_client"
@@ -152,6 +159,7 @@ Feature: Test the Search API v3 boa feature
     When I am authorized with an OAuth client access token for "boa_client"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I am using a x-client-id header for client "boa_client"
     And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
     And I am using the Search API v3 base URL
     And I am using a x-client-id header for client "boa_client"
@@ -176,7 +184,9 @@ Feature: Test the Search API v3 boa feature
     And I am authorized as JWT provider user "centraal_beheerder"
     And I create an event from "events/event-children-only.json" and save the "id" as "myChildrenOnlyEventId"
     And I publish the event at "/events/%{myChildrenOnlyEventId}"
+    And I am using a x-client-id header for client "boa_client"
     And I wait for the event with url "/events/%{myChildrenOnlyEventId}" to be indexed
+    And I am not using a x-client-id header
     And I am using the Search API v3 base URL
     And I am not authorized
     And I am using an UiTID v1 API key of consumer "uitdatabank"
