@@ -54,7 +54,7 @@ feature-tag:
 	docker compose exec php composer feature -- --tags $(tag)
 
 feature-ci:
-	docker compose exec php composer feature -- --suite=default -f pretty -o std -f junit -o output/junit
+	docker compose exec -e JUNIT_DIRECTORY=output/junit php bin/feature-parallel.sh
 
 feature:
 	docker compose exec php composer feature -- --suite=default
