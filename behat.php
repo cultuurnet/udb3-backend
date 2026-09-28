@@ -20,10 +20,12 @@ $allDirectories = array_map(
 );
 $runInBetween = array_diff($allDirectories, $runFirst, $runLast);
 
-$orderedPaths = array_map(
+$toPaths = fn (array $directories): array => array_map(
     fn (string $directory): string => '%paths.base%/features/' . $directory,
-    [...$runFirst, ...$runInBetween, ...$runLast]
+    $directories
 );
+$orderedPaths = $toPaths([...$runFirst, ...$runInBetween, ...$runLast]);
+$sharedStatePaths = $toPaths([...$runFirst, ...$runInBetween]);
 
 return (new Config())
     ->withProfile(
@@ -31,6 +33,14 @@ return (new Config())
             ->withSuite(
                 (new Suite('default'))
                     ->withPaths(...$orderedPaths)
+                    ->withContexts('FeatureContext')
+                    ->withFilter(new TagFilter('~@init&&~@external'))
+            )
+            // The first part of the default suite, which a parallel run runs in sequence before the rest,
+            // see bin/feature-parallel.sh
+            ->withSuite(
+                (new Suite('shared-state'))
+                    ->withPaths(...$sharedStatePaths)
                     ->withContexts('FeatureContext')
                     ->withFilter(new TagFilter('~@init&&~@external'))
             )

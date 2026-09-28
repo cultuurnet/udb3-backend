@@ -1,4 +1,4 @@
-.PHONY: up down bash config install migrate init ci stan cs cs-fix test feature destroy
+.PHONY: up down bash config install migrate init ci stan cs cs-fix test feature feature-parallel destroy
 
 up:
 	docker compose up -d
@@ -58,6 +58,9 @@ feature-ci:
 
 feature:
 	docker compose exec php composer feature -- --suite=default
+
+feature-parallel:
+	docker compose exec php bin/feature-parallel.sh
 
 feature-sapi3:
 	docker compose exec php composer feature -- --suite=sapi3
