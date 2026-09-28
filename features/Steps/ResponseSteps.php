@@ -12,6 +12,7 @@ use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertNotEquals;
 use function PHPUnit\Framework\assertNull;
+use function PHPUnit\Framework\assertSame;
 use function PHPUnit\Framework\assertStringContainsString;
 use function PHPUnit\Framework\assertStringNotContainsString;
 use function PHPUnit\Framework\assertTrue;
@@ -23,11 +24,15 @@ trait ResponseSteps
      */
     public function theJsonResponseAtShouldBe(string $jsonPath, string $value): void
     {
-        $expected = $value;
-
         if ($value === 'true' || $value === 'false') {
-            $expected = $value === 'true';
+            assertSame(
+                $value === 'true',
+                $this->responseState->getValueOnPath($jsonPath)
+            );
+            return;
         }
+
+        $expected = $value;
 
         if (is_numeric($value)) {
             $expected = (int)$value;

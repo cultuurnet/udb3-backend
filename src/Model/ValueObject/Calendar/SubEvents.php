@@ -53,9 +53,9 @@ class SubEvents extends Collection
         return $this->endDate;
     }
 
-    public function withoutOvernightStay(): self
+    public function withHasOvernightStay(?bool $hasOvernightStay): self
     {
-        return new self(...array_map(fn (SubEvent $se) => $se->withHasOvernightStay(false), $this->toArray()));
+        return new self(...array_map(fn (SubEvent $se) => $se->withHasOvernightStay($hasOvernightStay), $this->toArray()));
     }
 
     public function withoutChildcare(): self

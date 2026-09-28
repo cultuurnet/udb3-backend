@@ -213,9 +213,9 @@ class SingleSubEventCalendarTest extends TestCase
             )->withHasOvernightStay(true)
         );
 
-        $subEvents = $withOvernightStay->withoutOvernightStay()->getSubEvents()->toArray();
+        $subEvents = $withOvernightStay->withHasOvernightStayOnSubEvents(null)->getSubEvents()->toArray();
 
-        $this->assertFalse($subEvents[0]->hasOvernightStay());
-        $this->assertTrue($withOvernightStay->getSubEvents()->toArray()[0]->hasOvernightStay());
+        $this->assertNull($subEvents[0]->getHasOvernightStay());
+        $this->assertTrue($withOvernightStay->getSubEvents()->toArray()[0]->getHasOvernightStay());
     }
 }
