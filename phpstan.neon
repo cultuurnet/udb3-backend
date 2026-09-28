@@ -20,8 +20,6 @@ parameters:
         - tests/Offer/Commands/Moderation/AbstractModerationCommandTestBase.php
     ignoreErrors:
         - identifier: missingType.iterableValue
-        # Reported since phpstan 2, to be fixed one group at a time
-        - identifier: class.serializable
 
 services:
     -
