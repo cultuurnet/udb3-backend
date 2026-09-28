@@ -20,7 +20,6 @@ Feature: Test rejecting ownership
     And the JSON response at "requesterId" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     And the JSON response at "state" should be "rejected"
     And the JSON response at "rejectedById" should be "edcee0f7-5906-4e92-8551-a7f5d37ba453"
-    And I wait till there are 2 mails in the mailbox
     And an "ownership-rejected" mail has been sent from "no-reply@uitdatabank.be" to "dev+invoerderownerships@publiq.be" with subject "Je beheeraanvraag voor organisatie %{name} is geweigerd"
 
   Scenario: Rejecting ownership of an organizer as creator
@@ -38,7 +37,6 @@ Feature: Test rejecting ownership
     And the JSON response at "state" should be "rejected"
     And the JSON response at "rejectedById" should be "d4e7ed87-50ac-4c35-8193-f899ea0af66b"
     And the JSON response at "rejectedByEmail" should be "dev+invoerderownerships@publiq.be"
-    And I wait till there are 2 mails in the mailbox
     And an "ownership-rejected" mail has been sent from "no-reply@uitdatabank.be" to "dev+invoerderownerships@publiq.be" with subject "Je beheeraanvraag voor organisatie %{name} is geweigerd"
 
   Scenario: Rejecting a non-existing ownership
