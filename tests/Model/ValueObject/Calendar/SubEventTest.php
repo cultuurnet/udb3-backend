@@ -69,9 +69,9 @@ final class SubEventTest extends TestCase
     /**
      * @test
      */
-    public function it_has_no_overnight_stay_by_default(): void
+    public function it_has_an_unknown_overnight_stay_by_default(): void
     {
-        $this->assertFalse($this->subEvent->hasOvernightStay());
+        $this->assertNull($this->subEvent->getHasOvernightStay());
     }
 
     /**
@@ -81,7 +81,17 @@ final class SubEventTest extends TestCase
     {
         $updated = $this->subEvent->withHasOvernightStay(true);
 
-        $this->assertTrue($updated->hasOvernightStay());
+        $this->assertTrue($updated->getHasOvernightStay());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_be_set_to_explicitly_have_no_overnight_stay(): void
+    {
+        $updated = $this->subEvent->withHasOvernightStay(false);
+
+        $this->assertFalse($updated->getHasOvernightStay());
     }
 
     /**
@@ -90,9 +100,9 @@ final class SubEventTest extends TestCase
     public function it_can_clear_overnight_stay(): void
     {
         $withHasOvernightStay = $this->subEvent->withHasOvernightStay(true);
-        $cleared = $withHasOvernightStay->withHasOvernightStay(false);
+        $cleared = $withHasOvernightStay->withHasOvernightStay(null);
 
-        $this->assertFalse($cleared->hasOvernightStay());
+        $this->assertNull($cleared->getHasOvernightStay());
     }
 
     /**
@@ -103,7 +113,7 @@ final class SubEventTest extends TestCase
         $updated = $this->subEvent->withHasOvernightStay(true);
 
         $this->assertNotSame($this->subEvent, $updated);
-        $this->assertFalse($this->subEvent->hasOvernightStay());
+        $this->assertNull($this->subEvent->getHasOvernightStay());
     }
 
     /**

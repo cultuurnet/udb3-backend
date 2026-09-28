@@ -181,8 +181,8 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         $calendar = $calendarUpdated->getCalendar();
         $subEvents = $calendar->getSubEvents()->toArray();
 
-        $this->assertTrue($subEvents[0]->hasOvernightStay());
-        $this->assertFalse($subEvents[1]->hasOvernightStay());
+        $this->assertTrue($subEvents[0]->getHasOvernightStay());
+        $this->assertNull($subEvents[1]->getHasOvernightStay());
     }
 
     /**
@@ -198,7 +198,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /** @var CalendarWithSubEvents $calendar */
         $calendar = $calendarUpdated->getCalendar();
 
-        $this->assertTrue($calendar->getSubEvents()->toArray()[0]->hasOvernightStay());
+        $this->assertTrue($calendar->getSubEvents()->toArray()[0]->getHasOvernightStay());
     }
 
     /**
@@ -223,7 +223,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /** @var CalendarWithSubEvents $calendar */
         $calendar = $eventCopied->getCalendar();
 
-        $this->assertTrue($calendar->getSubEvents()->toArray()[0]->hasOvernightStay());
+        $this->assertTrue($calendar->getSubEvents()->toArray()[0]->getHasOvernightStay());
     }
 
     /**
@@ -251,8 +251,8 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /** @var CalendarWithSubEvents $calendar */
         $calendar = $calendarUpdated->getCalendar();
 
-        // The sub event is rebuilt from the start and end date, so it never had an overnight stay.
-        $this->assertFalse($calendar->getSubEvents()->toArray()[0]->hasOvernightStay());
+        // The sub event is rebuilt from the start and end date, so nothing was ever said about an overnight stay.
+        $this->assertNull($calendar->getSubEvents()->toArray()[0]->getHasOvernightStay());
     }
 
     /**
@@ -294,7 +294,7 @@ class BackwardsCompatiblePayloadSerializerFactoryTest extends TestCase
         /** @var CalendarWithSubEvents $calendar */
         $calendar = $eventCreated->getCalendar();
 
-        $this->assertTrue($calendar->getSubEvents()->toArray()[0]->hasOvernightStay());
+        $this->assertTrue($calendar->getSubEvents()->toArray()[0]->getHasOvernightStay());
         // The manipulations that were already in place still run.
         $this->assertTrue((new Language('nl'))->sameAs($eventCreated->getMainLanguage()));
         $this->assertEquals(new LocationId('54131948-ffb9-4973-b528-800590265be5'), $eventCreated->getLocation());

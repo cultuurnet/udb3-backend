@@ -221,8 +221,8 @@ class MultipleSubEventsCalendarTest extends TestCase
             )
         );
 
-        foreach ($withOvernightStay->withoutOvernightStay()->getSubEvents()->toArray() as $subEvent) {
-            $this->assertFalse($subEvent->hasOvernightStay());
+        foreach ($withOvernightStay->withHasOvernightStayOnSubEvents(null)->getSubEvents()->toArray() as $subEvent) {
+            $this->assertNull($subEvent->getHasOvernightStay());
         }
     }
 

@@ -160,7 +160,7 @@ final class SubEventNormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_omits_overnight_stay_when_false(): void
+    public function it_omits_overnight_stay_when_it_was_never_set(): void
     {
         $subEvent = SubEvent::createAvailable(
             new DateRange(
@@ -172,6 +172,24 @@ final class SubEventNormalizerTest extends TestCase
         $normalized = $this->normalizer->normalize($subEvent);
 
         $this->assertArrayNotHasKey('hasOvernightStay', $normalized);
+    }
+
+    /**
+     * @test
+     */
+    public function it_includes_overnight_stay_when_explicitly_false(): void
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withHasOvernightStay(false);
+
+        $normalized = $this->normalizer->normalize($subEvent);
+
+        $this->assertArrayHasKey('hasOvernightStay', $normalized);
+        $this->assertFalse($normalized['hasOvernightStay']);
     }
 
     /**

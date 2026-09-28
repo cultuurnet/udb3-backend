@@ -65,10 +65,10 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
         return $clone;
     }
 
-    public function withoutOvernightStay(): CalendarWithSubEvents
+    public function withHasOvernightStayOnSubEvents(?bool $hasOvernightStay): CalendarWithSubEvents
     {
         $clone = clone $this;
-        $clone->dateRanges = $this->dateRanges->withoutOvernightStay();
+        $clone->dateRanges = $this->dateRanges->withHasOvernightStay($hasOvernightStay);
         return $clone;
     }
 

@@ -183,7 +183,7 @@ final class CalendarDenormalizer implements DenormalizerInterface
             );
         }
 
-        if (isset($subEventData['hasOvernightStay'])) {
+        if (array_key_exists('hasOvernightStay', $subEventData)) {
             $subEvent = $subEvent->withHasOvernightStay($subEventData['hasOvernightStay']);
         }
 
