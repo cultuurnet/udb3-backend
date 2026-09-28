@@ -201,7 +201,7 @@ trait RequestSteps
             $this->responseState->setResponse($response);
 
             return $this->responseState->getContent() === 'complete';
-        }, 5);
+        }, 5, 'command ' . $commandId . ' to complete');
     }
 
     /**
@@ -242,7 +242,7 @@ trait RequestSteps
             $this->responseState->setResponse($response);
 
             return $this->responseState->getTotalItems() === $count;
-        }, 10);
+        }, 10, 'the response to contain ' . $count . ' result(s)');
     }
 
     private function waitForItemWithUrlToBeIndex(string $url): void
@@ -269,6 +269,6 @@ trait RequestSteps
 
             return $this->responseState->getTotalItems() === 1
                 && ($expectedPlayhead === null || ($memberPlayhead !== null && $memberPlayhead >= $expectedPlayhead));
-        }, 10);
+        }, 10, $url . ' to be indexed' . ($expectedPlayhead !== null ? ' with playhead ' . $expectedPlayhead : ''));
     }
 }

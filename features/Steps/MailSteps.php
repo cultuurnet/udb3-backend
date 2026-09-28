@@ -39,6 +39,6 @@ trait MailSteps
      */
     public function iWaitTillThereAreMailsInTheMailbox(int $count): void
     {
-        Poll::until(fn (): bool => $this->getMailClient()->getMailCount() == $count, 5);
+        Poll::until(fn (): bool => $this->getMailClient()->getMailCount() == $count, 5, $count . ' mail(s) in the mailbox');
     }
 }
