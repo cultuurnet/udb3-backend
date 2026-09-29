@@ -17,7 +17,7 @@ class ConsumeCommand extends Command
 {
     private string $consumerName;
     private ContainerInterface $container;
-    private ?Closure $heartBeat;
+    private Closure $heartBeat;
 
     public function __construct(string $name, string $consumerName, ContainerInterface $container, Closure $heartBeat)
     {
@@ -54,9 +54,7 @@ class ConsumeCommand extends Command
         $output->writeln('Connected. Listening for incoming messages...');
 
         while (count($channel->callbacks) > 0) {
-            if ($this->heartBeat) {
-                call_user_func($this->heartBeat);
-            }
+            call_user_func($this->heartBeat);
 
             pcntl_signal_dispatch();
 
