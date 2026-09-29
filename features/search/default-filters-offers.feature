@@ -231,7 +231,7 @@ Feature: Test the Search API v3 default filters on offers
     """
     When I send a GET request to "/events" with parameters:
       | q | id:%{eventId} |
-    Then the JSON response at "totalItems" should be 0
+    Then I wait until the response contains 0 results
 
   Scenario: By default events with available from in the future should not be shown
     Given I create a minimal place and save the "id" as "placeId"

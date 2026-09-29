@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Steps;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 use CultuurNet\UDB3\State\VariableState;
+use CultuurNet\UDB3\Support\Poll;
 
 trait RequestSteps
 {
@@ -195,16 +196,12 @@ trait RequestSteps
      */
     public function iWaitForTheCommandWithIdToComplete(string $commandId): void
     {
-        $elapsedTime = 0;
-        do {
+        Poll::until(function () use ($commandId): bool {
             $response = $this->getHttpClient()->get('/jobs/' . $commandId);
             $this->responseState->setResponse($response);
 
-            if ($this->responseState->getContent() !== 'complete') {
-                sleep(1);
-                $elapsedTime++;
-            }
-        } while ($this->responseState->getContent() !== 'complete' && $elapsedTime < 5);
+            return $this->responseState->getContent() === 'complete';
+        }, 5, 'command ' . $commandId . ' to complete');
     }
 
     /**
@@ -236,19 +233,16 @@ trait RequestSteps
      */
     public function iWaitUntilTheResponseContains(int $count): void
     {
-        $elapsedTime = 0;
-        do {
+        Poll::until(function () use ($count): bool {
             $response = $this->getHttpClient()->getWithParameters(
                 $this->requestState->getLastGetUrl(),
                 $this->requestState->getLastGetParams(),
                 $this->variableState
             );
             $this->responseState->setResponse($response);
-            if ($this->responseState->getTotalItems() !== $count) {
-                sleep(1);
-                $elapsedTime++;
-            }
-        } while ($this->responseState->getTotalItems() !== $count && $elapsedTime < 10);
+
+            return $this->responseState->getTotalItems() === $count;
+        }, 10, 'the response to contain ' . $count . ' result(s)');
     }
 
     private function waitForItemWithUrlToBeIndex(string $url): void
@@ -267,19 +261,14 @@ trait RequestSteps
         $scenarioLabel = VariableState::getScenarioLabel();
         $labelParam = $scenarioLabel !== null ? '&q=labels:' . $scenarioLabel : '';
 
-        $elapsedTime = 0;
-        do {
+        Poll::until(function () use ($item, $id, $labelParam, $expectedPlayhead): bool {
             $response = $this->getHttpClient()->get('/' . $item . '/?disableDefaultFilters=true&embed=true&id=' . $id . $labelParam);
             $this->responseState->setResponse($response);
 
             $memberPlayhead = $this->responseState->getValueOnPath('member/0/playhead');
-            $isCaughtUp = $this->responseState->getTotalItems() === 1
-                && ($expectedPlayhead === null || ($memberPlayhead !== null && $memberPlayhead >= $expectedPlayhead));
 
-            if (!$isCaughtUp) {
-                sleep(1);
-                $elapsedTime++;
-            }
-        } while (!$isCaughtUp && $elapsedTime < 10);
+            return $this->responseState->getTotalItems() === 1
+                && ($expectedPlayhead === null || ($memberPlayhead !== null && $memberPlayhead >= $expectedPlayhead));
+        }, 10, $url . ' to be indexed' . ($expectedPlayhead !== null ? ' with playhead ' . $expectedPlayhead : ''));
     }
 }
