@@ -1,0 +1,15 @@
+<?php
+
+// culturefeed-cdb documents the physical address as always present, but it is null for an address without one
+class CultureFeed_Cdb_Data_Address
+{
+    /**
+     * @return CultureFeed_Cdb_Data_Address_PhysicalAddress|null
+     */
+    public function getPhysicalAddress() {}
+}
+
+// Declared here only because phpstan validates a stub against the other stubs
+class CultureFeed_Cdb_Data_Address_PhysicalAddress
+{
+}
