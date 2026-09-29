@@ -161,9 +161,10 @@ final class RestUiTPASClientTest extends TestCase
         $client = $this->createClient(new NullLogger());
         $this->mockHandler->append(new Response(404, [], ''));
 
-        $client->setCardSystemsForEvent('unknown-event', [8]);
+        // Matches the legacy XML endpoint, which answered 200 on this route
+        $this->expectNotToPerformAssertions();
 
-        $this->assertTrue(true, 'Matches the legacy XML endpoint, which answered 200 on this route');
+        $client->setCardSystemsForEvent('unknown-event', [8]);
     }
 
     /**

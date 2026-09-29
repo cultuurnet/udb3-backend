@@ -18,7 +18,6 @@ class AbstractRejectTest extends AbstractModerationCommandTestBase
     {
         $reason = 'This event is the same as.';
 
-        /** @var AbstractReject $abstractReject */
         $abstractReject = $this->getMockForAbstractClass(
             AbstractReject::class,
             [
