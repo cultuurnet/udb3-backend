@@ -202,35 +202,35 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $this->offerRepository->save($offer);
     }
 
-    private function handlePublish(AbstractPublish $publish): void
+    public function handlePublish(AbstractPublish $publish): void
     {
         $offer = $this->load($publish->getItemId());
         $offer->publish($publish->getPublicationDate());
         $this->offerRepository->save($offer);
     }
 
-    private function handleApprove(AbstractApprove $approve): void
+    public function handleApprove(AbstractApprove $approve): void
     {
         $offer = $this->load($approve->getItemId());
         $offer->approve();
         $this->offerRepository->save($offer);
     }
 
-    private function handleReject(AbstractReject $reject): void
+    public function handleReject(AbstractReject $reject): void
     {
         $offer = $this->load($reject->getItemId());
         $offer->reject($reject->getReason());
         $this->offerRepository->save($offer);
     }
 
-    private function handleFlagAsDuplicate(AbstractFlagAsDuplicate $flagAsDuplicate): void
+    public function handleFlagAsDuplicate(AbstractFlagAsDuplicate $flagAsDuplicate): void
     {
         $offer = $this->load($flagAsDuplicate->getItemId());
         $offer->flagAsDuplicate();
         $this->offerRepository->save($offer);
     }
 
-    private function handleFlagAsInappropriate(AbstractFlagAsInappropriate $flagAsInappropriate): void
+    public function handleFlagAsInappropriate(AbstractFlagAsInappropriate $flagAsInappropriate): void
     {
         $offer = $this->load($flagAsInappropriate->getItemId());
         $offer->flagAsInappropriate();

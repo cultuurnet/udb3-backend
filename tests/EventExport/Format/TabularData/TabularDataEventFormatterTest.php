@@ -1228,12 +1228,13 @@ class TabularDataEventFormatterTest extends TestCase
     {
         $formatter = new TabularDataEventFormatter([]);
 
-        $header = $formatter->formatHeader();
+        // Maps each column name to its 0 based position, the + 1 below turns that into a spreadsheet column number
+        $columnIndexes = array_flip($formatter->formatHeader());
 
         $this->assertSame(
             [
-                array_search('faq', $header, true) + 1,
-                array_search('vertreklocaties', $header, true) + 1,
+                $columnIndexes['faq'] + 1,
+                $columnIndexes['vertreklocaties'] + 1,
             ],
             $formatter->wrappedColumns()
         );
