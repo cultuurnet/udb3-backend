@@ -6,11 +6,17 @@ namespace CultuurNet\UDB3\Support;
 
 use CultuurNet\UDB3\State\VariableState;
 use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\RequestOptions;
 use Psr\Http\Message\ResponseInterface;
 
 final class HttpClient
 {
+    /**
+     * Shared by every client, so the connections it keeps open are reused across requests and steps.
+     */
+    private static ?HandlerStack $handlerStack = null;
+
     private Client $client;
     private array $urlParams;
 
@@ -48,6 +54,7 @@ final class HttpClient
 
         $this->client = new Client([
             'base_uri' => $baseUrl,
+            'handler' => self::$handlerStack ??= HandlerStack::create(),
             'http_errors' => false,
             RequestOptions::HEADERS => $headers,
         ]);

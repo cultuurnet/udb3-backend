@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Steps;
 
+use CultuurNet\UDB3\Support\Poll;
+
 use function PHPUnit\Framework\assertCount;
 use function PHPUnit\Framework\assertEquals;
 use function PHPUnit\Framework\assertStringMatchesFormat;
@@ -37,13 +39,6 @@ trait MailSteps
      */
     public function iWaitTillThereAreMailsInTheMailbox(int $count): void
     {
-        $elapsedTime = 0;
-        do {
-            $messagesCount = $this->getMailClient()->getMailCount();
-            if ($messagesCount != $count) {
-                sleep(1);
-                $elapsedTime++;
-            }
-        } while ($messagesCount != $count && $elapsedTime < 5);
+        Poll::until(fn (): bool => $this->getMailClient()->getMailCount() == $count, 5);
     }
 }
