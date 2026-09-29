@@ -7,7 +7,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ["8.2"]
+                php-versions: ["8.3"]
         name: Unit tests ${{ matrix.php-versions }}
         services:
             mysql:
@@ -65,7 +65,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ["8.2"]
+                php-versions: ["8.3"]
         name: Code style ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
@@ -98,7 +98,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ["8.2"]
+                php-versions: ["8.3"]
         name: Static analysis ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
@@ -131,7 +131,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                php-versions: ["8.2"]
+                php-versions: ["8.3"]
         name: Unused composer dependencies ${{ matrix.php-versions }}
         steps:
             - name: 📤 Checkout project
