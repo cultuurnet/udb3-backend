@@ -17,12 +17,14 @@ trait MailSteps
      */
     public function aMailHasBeenSentFromToWith(string $messageType, string $from, string $to, string $subject): void
     {
-        $subject = $subject;
-        $mailObjects = $this->getMailClient()->searchMails(
-            'from:' . $from .
-            ' to:' . $to .
-            ' subject:' . $subject
-        );
+        $query = 'from:' . $from . ' to:' . $to . ' subject:' . $subject;
+        $mailObjects = [];
+        Poll::until(function () use ($query, &$mailObjects): bool {
+            $mailObjects = $this->getMailClient()->searchMails($query);
+
+            return $mailObjects !== [];
+        }, 5, 'a mail from ' . $from . ' to ' . $to . ' with subject "' . $subject . '"');
+
         assertCount(1, $mailObjects);
         $mailobject = $mailObjects[0];
         assertEquals($from, $mailobject->getFrom()->toString());
@@ -32,13 +34,5 @@ trait MailSteps
             $this->fixtures->loadMail($messageType, $this->variableState),
             $mailobject->getContent()
         );
-    }
-
-    /**
-     * @When I wait till there are :count mails in the mailbox
-     */
-    public function iWaitTillThereAreMailsInTheMailbox(int $count): void
-    {
-        Poll::until(fn (): bool => $this->getMailClient()->getMailCount() == $count, 5);
     }
 }
