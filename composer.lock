@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cf339a51bc719c557617e152a14fdb0b",
+    "content-hash": "0a00abc03b3818f847f03ab5b16e0ae2",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -946,16 +946,16 @@
         },
         {
             "name": "cultuurnet/culturefeed-php",
-            "version": "v2.2",
+            "version": "v2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/culturefeed-php.git",
-                "reference": "48105654e98f7d9be6ec63bf1fc730770d496255"
+                "reference": "27d89c11f2d867a40113b47489062033b5781706"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/48105654e98f7d9be6ec63bf1fc730770d496255",
-                "reference": "48105654e98f7d9be6ec63bf1fc730770d496255",
+                "url": "https://api.github.com/repos/cultuurnet/culturefeed-php/zipball/27d89c11f2d867a40113b47489062033b5781706",
+                "reference": "27d89c11f2d867a40113b47489062033b5781706",
                 "shasum": ""
             },
             "require": {
@@ -987,9 +987,9 @@
             "description": "Culturefeed PHP library",
             "support": {
                 "issues": "https://github.com/cultuurnet/culturefeed-php/issues",
-                "source": "https://github.com/cultuurnet/culturefeed-php/tree/v2.2"
+                "source": "https://github.com/cultuurnet/culturefeed-php/tree/v2.3"
             },
-            "time": "2026-09-21T09:39:01+00:00"
+            "time": "2026-09-29T12:53:31+00:00"
         },
         {
             "name": "cultuurnet/udb3-api-guard",
