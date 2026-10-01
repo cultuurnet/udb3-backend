@@ -22,6 +22,8 @@ class BookingInfoDenormalizer implements DenormalizerInterface
 {
     private DenormalizerInterface $websiteLabelDenormalizer;
 
+    private bool $skipsInvalidEmailAndUrl = false;
+
     public function __construct(DenormalizerInterface $websiteLabelDenormalizer = null)
     {
         if (!$websiteLabelDenormalizer) {
@@ -29,6 +31,19 @@ class BookingInfoDenormalizer implements DenormalizerInterface
         }
 
         $this->websiteLabelDenormalizer = $websiteLabelDenormalizer;
+    }
+
+    /**
+     * For data from the event store or a read model, which can hold an email or url that is no longer valid.
+     * Requests and imports stay strict, because the JSON schema accepts urls that Url does not.
+     * Once the RDF read side is gone, this can move into the events that deserialize the stored data.
+     */
+    public static function forStoredData(): self
+    {
+        $denormalizer = new self();
+        $denormalizer->skipsInvalidEmailAndUrl = true;
+
+        return $denormalizer;
     }
 
     /**
@@ -57,14 +72,20 @@ class BookingInfoDenormalizer implements DenormalizerInterface
         if (!empty($data['email'])) {
             try {
                 $email = new EmailAddress($data['email']);
-            } catch (InvalidEmailAddress) {
+            } catch (InvalidEmailAddress $invalidEmailAddress) {
+                if (!$this->skipsInvalidEmailAndUrl) {
+                    throw $invalidEmailAddress;
+                }
             }
         }
 
         if (!empty($data['url']) && !empty($data['urlLabel'])) {
             try {
                 $url = new Url($data['url']);
-            } catch (InvalidUrl) {
+            } catch (InvalidUrl $invalidUrl) {
+                if (!$this->skipsInvalidEmailAndUrl) {
+                    throw $invalidUrl;
+                }
             }
         }
 
