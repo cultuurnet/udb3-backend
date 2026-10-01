@@ -63,7 +63,7 @@ final class PatchOfferRequestHandler implements RequestHandlerInterface
         $contentType = $request->getHeaderLine('Content-Type');
         preg_match(self::DOMAIN_MODEL_REGEX, $contentType, $matches);
 
-        if (!is_array($matches) || !array_key_exists(1, $matches)) {
+        if (!array_key_exists(1, $matches)) {
             throw new \Exception('Unable to determine domain-model');
         }
 

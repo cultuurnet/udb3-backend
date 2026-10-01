@@ -18,7 +18,7 @@ final class SubscribeToSavedSearchJSONDeserializerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->userId ='xyx';
+        $this->userId = 'xyx';
 
         $this->deserializer = new SubscribeToSavedSearchJSONDeserializer(
             self::ID,

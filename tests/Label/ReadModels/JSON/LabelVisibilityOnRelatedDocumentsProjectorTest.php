@@ -282,7 +282,7 @@ class LabelVisibilityOnRelatedDocumentsProjectorTest extends TestCase
     {
         $labelId = new Uuid('aabf18cd-00dd-4327-9d8b-8179b4a7c36a');
         $labelName = 'black';
-        $documentId ='B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A';
+        $documentId = 'B8A3FF1E-64A3-41C4-A2DB-A6FA35E4219A';
         $madeVisibleEvent = new MadeInvisible($labelId, $labelName);
 
         $existingDocument = new JsonDocument(

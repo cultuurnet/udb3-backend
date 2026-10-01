@@ -9,7 +9,6 @@ use Broadway\Domain\DomainEventStream;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventSourcing\EventStreamDecorator;
-use Broadway\EventStore\EventStore;
 use Broadway\Serializer\SimpleInterfaceSerializer;
 use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\DBALTestConnectionTrait;
@@ -207,7 +206,6 @@ class EventStreamTest extends TestCase
         $history = $this->fillHistory();
         $eventStream = $this->eventStream->withStartId(4);
 
-        /** @var EventStream|\Generator $domainEventStreams */
         $domainEventStreams = $eventStream();
 
         $domainEventStreams = iterator_to_array($domainEventStreams);
@@ -499,16 +497,6 @@ class EventStreamTest extends TestCase
                 DateTime::fromString('2015-01-03T19:45:00+0100')
             ),
         ];
-    }
-
-    private function appendDomainMessages(EventStore $eventStore, array $domainMessages): void
-    {
-        foreach ($domainMessages as $domainMessage) {
-            $eventStore->append(
-                $domainMessage->getId(),
-                new DomainEventStream([$domainMessage])
-            );
-        }
     }
 
     private function createAggregateAwareDBALEventStore(AggregateType $aggregateType): AggregateAwareDBALEventStore

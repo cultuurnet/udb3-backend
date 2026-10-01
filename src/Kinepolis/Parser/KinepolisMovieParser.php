@@ -28,7 +28,7 @@ final class KinepolisMovieParser implements MovieParser
         array $termsMapper,
         array $theatreMapper,
         DateParser $dateParser,
-        readonly ThemeResolverInterface $eventThemeResolver
+        public readonly ThemeResolverInterface $eventThemeResolver
     ) {
         $this->termsMapper = $termsMapper;
         $this->theatreMapper = $theatreMapper;

@@ -99,7 +99,7 @@ class TruncateStringFilter implements StringFilterInterface
             // Make sure the string does not end in more than 3 dots. The pattern looks for a sequence of
             // 4 or more ("{4,}") dots ("(\\.)") at the end of the string ("$").
             $pattern = '(\\.){4,}$';
-            $truncated = $truncated->regexReplace($pattern, $suffix);
+            $truncated = $truncated->regexReplace($pattern, (string) $suffix);
         }
 
         return (string) $truncated;

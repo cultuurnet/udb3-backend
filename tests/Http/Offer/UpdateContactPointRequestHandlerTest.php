@@ -167,7 +167,7 @@ final class UpdateContactPointRequestHandlerTest extends TestCase
     public function offerTypeDataProvider(): Iterator
     {
         $offers = [
-            'events'=> EventUpdateContactPoint::class,
+            'events' => EventUpdateContactPoint::class,
             'places' => PlaceUpdateContactPoint::class,
         ];
 

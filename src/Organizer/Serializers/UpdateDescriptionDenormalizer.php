@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Organizer\Serializers;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Organizer\Commands\UpdateDescription;
-
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 final class UpdateDescriptionDenormalizer implements DenormalizerInterface

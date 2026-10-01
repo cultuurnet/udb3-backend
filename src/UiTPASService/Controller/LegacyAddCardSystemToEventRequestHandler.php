@@ -24,8 +24,8 @@ final class LegacyAddCardSystemToEventRequestHandler implements RequestHandlerIn
     {
         $routeParameters = new RouteParameters($request);
         $eventId = $routeParameters->getEventId();
-        $cardSystemId = $routeParameters->get('cardSystemId');
-        $distributionKeyId = $routeParameters->has('distributionKeyId') ? $routeParameters->get('distributionKeyId') : null;
+        $cardSystemId = (int) $routeParameters->get('cardSystemId');
+        $distributionKeyId = $routeParameters->has('distributionKeyId') ? (int) $routeParameters->get('distributionKeyId') : null;
 
         $this->uitpas->addCardSystemToEvent($eventId, $cardSystemId, $distributionKeyId);
 

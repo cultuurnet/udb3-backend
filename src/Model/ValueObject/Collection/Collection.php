@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\ValueObject\Collection;
 
+/**
+ * @implements \IteratorAggregate<int, mixed>
+ */
 abstract class Collection implements \IteratorAggregate, \Countable
 {
     private array $values;
 
-    /**
-     * @param mixed ...$values
-     */
-    public function __construct(...$values)
+    public function __construct(mixed ...$values)
     {
         array_walk(
             $values,
@@ -126,6 +126,9 @@ abstract class Collection implements \IteratorAggregate, \Countable
         return null;
     }
 
+    /**
+     * @return \ArrayIterator<int, mixed>
+     */
     public function getIterator(): \ArrayIterator
     {
         return new \ArrayIterator($this->values);

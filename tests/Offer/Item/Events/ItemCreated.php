@@ -43,7 +43,7 @@ class ItemCreated implements Serializable
     {
         return [
             'itemId' => $this->itemId,
-            'main_language'=> $this->mainLanguage->getCode(),
+            'main_language' => $this->mainLanguage->getCode(),
         ];
     }
 }
