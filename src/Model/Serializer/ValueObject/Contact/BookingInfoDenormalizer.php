@@ -10,8 +10,6 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
-use CultuurNet\UDB3\Model\ValueObject\Web\InvalidEmailAddress;
-use CultuurNet\UDB3\Model\ValueObject\Web\InvalidUrl;
 use CultuurNet\UDB3\Model\ValueObject\Web\TranslatedWebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
@@ -46,7 +44,6 @@ class BookingInfoDenormalizer implements DenormalizerInterface
 
         $phone = null;
         $email = null;
-        $url = null;
         $website = null;
         $bookingDateRange = null;
 
@@ -55,20 +52,12 @@ class BookingInfoDenormalizer implements DenormalizerInterface
         }
 
         if (!empty($data['email'])) {
-            try {
-                $email = new EmailAddress($data['email']);
-            } catch (InvalidEmailAddress) {
-            }
+            $email = new EmailAddress($data['email']);
         }
 
         if (!empty($data['url']) && !empty($data['urlLabel'])) {
-            try {
-                $url = new Url($data['url']);
-            } catch (InvalidUrl) {
-            }
-        }
+            $url = new Url($data['url']);
 
-        if ($url !== null) {
             /* @var TranslatedWebsiteLabel $label */
             $label = $this->websiteLabelDenormalizer->denormalize(
                 $data['urlLabel'],
