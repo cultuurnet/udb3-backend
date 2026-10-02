@@ -86,6 +86,11 @@ final class FeatureContext implements Context
      */
     public static function beforeSuite(BeforeSuiteScope $scope): void
     {
+        // Parallel runs share the tokens of the run before them, see bin/feature-parallel.sh
+        if (getenv('KEEP_TOKEN_CACHE') === 'true') {
+            return;
+        }
+
         TokenCache::clearTokens();
     }
 
