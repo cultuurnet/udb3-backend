@@ -509,7 +509,7 @@ final class EventJsonToTurtleConverter implements JsonToTurtleConverter
     {
         (new ContactPointEditor($this->rdfResourceFactory))->setContactPoint(
             $organizerResource,
-            (new ContactPointDenormalizer())->denormalize(
+            ContactPointDenormalizer::forStoredData()->denormalize(
                 $contactPointData,
                 ContactPoint::class
             )

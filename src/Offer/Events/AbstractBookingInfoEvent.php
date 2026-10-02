@@ -34,7 +34,7 @@ abstract class AbstractBookingInfoEvent extends AbstractEvent
     {
         return new static(
             $data['item_id'],
-            (new BookingInfoDenormalizer())->denormalize($data['bookingInfo'], BookingInfo::class)
+            BookingInfoDenormalizer::forStoredData()->denormalize($data['bookingInfo'], BookingInfo::class)
         );
     }
 }
