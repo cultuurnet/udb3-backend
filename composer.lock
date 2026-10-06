@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0a00abc03b3818f847f03ab5b16e0ae2",
+    "content-hash": "e9bc1f0d1a9efe34d12fd1c853734915",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -854,16 +854,16 @@
         },
         {
             "name": "cultuurnet/calendar-summary-v3",
-            "version": "v4.1.1",
+            "version": "v4.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/calendar-summary-v3.git",
-                "reference": "7fb409a0abd0104d2afcfa235c5d46e92f4e4314"
+                "reference": "e5ffa9dbe9fda8e445282703a3f0cb55f7ed8bae"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/7fb409a0abd0104d2afcfa235c5d46e92f4e4314",
-                "reference": "7fb409a0abd0104d2afcfa235c5d46e92f4e4314",
+                "url": "https://api.github.com/repos/cultuurnet/calendar-summary-v3/zipball/e5ffa9dbe9fda8e445282703a3f0cb55f7ed8bae",
+                "reference": "e5ffa9dbe9fda8e445282703a3f0cb55f7ed8bae",
                 "shasum": ""
             },
             "require": {
@@ -898,9 +898,9 @@
             "description": "Library to convert cultuurnet dates to a readable summary",
             "support": {
                 "issues": "https://github.com/cultuurnet/calendar-summary-v3/issues",
-                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.1.1"
+                "source": "https://github.com/cultuurnet/calendar-summary-v3/tree/v4.1.2"
             },
-            "time": "2026-08-20T05:56:39+00:00"
+            "time": "2026-10-05T11:14:21+00:00"
         },
         {
             "name": "cultuurnet/cdb",
@@ -13281,6 +13281,6 @@
         "ext-tidy": "*",
         "ext-xmlreader": "*"
     },
-    "platform-dev": {},
-    "plugin-api-version": "2.9.0"
+    "platform-dev": [],
+    "plugin-api-version": "2.6.0"
 }
