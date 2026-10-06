@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Organizer;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
 use CultuurNet\UDB3\Address\Parser\AddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -30,7 +31,7 @@ final class OrganizerRdfServiceProvider extends AbstractServiceProvider
             fn (): OrganizerJsonToTurtleConverter => new OrganizerJsonToTurtleConverter(
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['organizersRdfBaseUri']),
                 $this->container->get('organizer_jsonld_repository'),
-                new OrganizerDenormalizer(),
+                new OrganizerDenormalizer(contactPointDenormalizer: ContactPointDenormalizer::forStoredData()),
                 $this->container->get(AddressParser::class),
                 $this->container->get(ImageNormalizer::class),
                 $this->container->get(RdfResourceFactory::class),
