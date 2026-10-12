@@ -47,6 +47,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
+use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
@@ -287,7 +288,7 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdateChildrenOnly($eventId, $childrenOnly);
         }
 
-        $commands[] = new UpdateDeparturePlaces($eventId, $event->getDeparturePlaces());
+        $commands[] = new UpdateDeparturePlaces($eventId, $event->getDeparturePlaces() ?? new Urls());
 
         if ($event->getBirthdateRange() !== null) {
             $commands[] = new UpdateBirthdateRange($eventId, $event->getBirthdateRange());

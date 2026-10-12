@@ -31,7 +31,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
 
     private Faqs $faqs;
 
-    private Urls $departurePlaces;
+    private ?Urls $departurePlaces = null;
 
     private ?bool $childrenOnly = null;
 
@@ -59,7 +59,6 @@ class ImmutableEvent extends ImmutableOffer implements Event
         $this->attendanceMode = AttendanceMode::offline();
         $this->audience = AudienceType::everyone();
         $this->faqs = new Faqs();
-        $this->departurePlaces = new Urls();
     }
 
     public function getPlaceReference(): PlaceReference
@@ -122,7 +121,7 @@ class ImmutableEvent extends ImmutableOffer implements Event
         return $c;
     }
 
-    public function getDeparturePlaces(): Urls
+    public function getDeparturePlaces(): ?Urls
     {
         return $this->departurePlaces;
     }
