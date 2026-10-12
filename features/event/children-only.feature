@@ -124,3 +124,25 @@ Feature: Test event childrenOnly property
     Then the JSON response at "childrenOnly" should be true
     And the JSON response at "departurePlaces/0" should be "%{departurePlaceUrl3}"
     And the JSON response should not have "departurePlaces/1"
+
+  Scenario: On updates departure places are kept when childrenOnly and departurePlaces are not sent
+    Given I create a minimal place and save the "url" as "departurePlaceUrl1"
+    And I create a minimal place and save the "url" as "departurePlaceUrl2"
+    When I create an event from "events/departure-places/event-with-2-departure-places.json" and save the "url" as "eventUrl"
+    And I update the event at "%{eventUrl}" from "events/event-with-age-range-6-to-12.json"
+    Then the response status should be "200"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response at "typicalAgeRange" should be "6-12"
+    And the JSON response at "childrenOnly" should be true
+    And the JSON response at "departurePlaces/0" should be "%{departurePlaceUrl1}"
+    And the JSON response at "departurePlaces/1" should be "%{departurePlaceUrl2}"
+
+  Scenario: On updates departure places are removed when childrenOnly is explicitly set to false
+    Given I create a minimal place and save the "url" as "departurePlaceUrl1"
+    And I create a minimal place and save the "url" as "departurePlaceUrl2"
+    When I create an event from "events/departure-places/event-with-2-departure-places.json" and save the "url" as "eventUrl"
+    And I update the event at "%{eventUrl}" from "events/event-children-only-false.json"
+    Then the response status should be "200"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response should not have "childrenOnly"
+    And the JSON response should not have "departurePlaces"

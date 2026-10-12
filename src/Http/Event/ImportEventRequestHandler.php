@@ -288,7 +288,12 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             $commands[] = new UpdateChildrenOnly($eventId, $childrenOnly);
         }
 
-        $commands[] = new UpdateDeparturePlaces($eventId, $event->getDeparturePlaces() ?? new Urls());
+        $departurePlaces = $event->getDeparturePlaces();
+        if ($departurePlaces !== null) {
+            $commands[] = new UpdateDeparturePlaces($eventId, $departurePlaces);
+        } elseif ($childrenOnly === false) {
+            $commands[] = new UpdateDeparturePlaces($eventId, new Urls());
+        }
 
         if ($event->getBirthdateRange() !== null) {
             $commands[] = new UpdateBirthdateRange($eventId, $event->getBirthdateRange());
