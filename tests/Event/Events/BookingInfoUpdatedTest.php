@@ -46,6 +46,38 @@ class BookingInfoUpdatedTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_leaves_out_an_invalid_email_and_url_from_the_event_store(): void
+    {
+        $this->assertEquals(
+            new BookingInfoUpdated(
+                'foo',
+                new BookingInfo(
+                    null,
+                    new TelephoneNumber('0123456789'),
+                    null,
+                    BookingDateRange::fromTo(
+                        DateTimeFactory::fromAtom('2016-01-01T00:00:00+01:00'),
+                        DateTimeFactory::fromAtom('2016-01-31T00:00:00+01:00')
+                    )
+                )
+            ),
+            BookingInfoUpdated::deserialize([
+                'item_id' => 'foo',
+                'bookingInfo' => [
+                    'phone' => '0123456789',
+                    'email' => 'not an email address',
+                    'url' => 'not a url',
+                    'urlLabel' => ['nl' => 'urlLabel'],
+                    'availabilityStarts' => '2016-01-01T00:00:00+01:00',
+                    'availabilityEnds' => '2016-01-31T00:00:00+01:00',
+                ],
+            ])
+        );
+    }
+
     public function serializationDataProvider(): array
     {
         return [

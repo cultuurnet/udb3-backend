@@ -34,7 +34,7 @@ abstract class AbstractContactPointUpdated extends AbstractEvent
     {
         return new static(
             $data['item_id'],
-            (new ContactPointDenormalizer())->denormalize($data['contactPoint'], ContactPoint::class)
+            ContactPointDenormalizer::forStoredData()->denormalize($data['contactPoint'], ContactPoint::class)
         );
     }
 }
