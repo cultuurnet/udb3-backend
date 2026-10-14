@@ -1898,6 +1898,30 @@ class EventDenormalizerTest extends TestCase
         $this->assertNull($event->getChildrenOnly());
     }
 
+    /**
+     * @test
+     */
+    public function it_leaves_departure_places_null_when_field_is_not_present(): void
+    {
+        /** @var ImmutableEvent $event */
+        $event = $this->denormalizer->denormalize($this->getMinimalEventData(), ImmutableEvent::class);
+
+        $this->assertNull($event->getDeparturePlaces());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_an_empty_departure_places_array_to_empty_urls(): void
+    {
+        $eventData = $this->getMinimalEventData() + ['departurePlaces' => []];
+
+        /** @var ImmutableEvent $event */
+        $event = $this->denormalizer->denormalize($eventData, ImmutableEvent::class);
+
+        $this->assertEquals(new Urls(), $event->getDeparturePlaces());
+    }
+
     private function getMinimalEventData(): array
     {
         return [

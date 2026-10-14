@@ -25,7 +25,7 @@ interface Event extends Offer
 
     public function getFaq(): Faqs;
 
-    public function getDeparturePlaces(): Urls;
+    public function getDeparturePlaces(): ?Urls;
 
     public function getChildrenOnly(): ?bool;
 
