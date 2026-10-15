@@ -12,7 +12,7 @@ use Exception;
 
 final class EventThemeResolver implements ThemeResolverInterface
 {
-    public function __construct(readonly Categories $themes)
+    public function __construct(public readonly Categories $themes)
     {
     }
 

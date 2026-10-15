@@ -66,7 +66,7 @@ final class EventProcessManagerTest extends TestCase
             'd9cf96b6-1256-4760-b66b-1c31152d7db4' => new Label(new LabelName('UiTPAS Zuidwest')),
             'aaf3a58e-2aac-45b3-a9e9-3f3ebf467681' => new Label(new LabelName('UiTPAS Mechelen')),
             '47256d4c-47e8-4046-b9bb-acb166920f76' => new Label(new LabelName('UiTPAS Kempen')),
-            '54b5273e-5e0b-4c1e-b33f-93eca55eb472' =>new Label(new LabelName('UiTPAS Maasmechelen')),
+            '54b5273e-5e0b-4c1e-b33f-93eca55eb472' => new Label(new LabelName('UiTPAS Maasmechelen')),
         ];
 
         $uitpasLabelsRepository->expects($this->any())

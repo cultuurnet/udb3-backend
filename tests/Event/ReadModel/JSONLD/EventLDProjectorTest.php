@@ -2529,7 +2529,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 'type' => 'Available',
             ],
             'address' => (object) [
-                'nl' =>(object) [
+                'nl' => (object) [
                     'addressCountry' => 'BE',
                     'addressLocality' => '___',
                     'postalCode' => '0000',

@@ -14,6 +14,7 @@ use Psr\Http\Message\UriInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
+
 use function http_build_query;
 
 class Sapi3SearchService implements SearchServiceInterface, LoggerAwareInterface

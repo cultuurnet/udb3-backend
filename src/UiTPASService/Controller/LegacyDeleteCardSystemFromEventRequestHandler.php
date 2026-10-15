@@ -24,7 +24,7 @@ final class LegacyDeleteCardSystemFromEventRequestHandler implements RequestHand
     {
         $routeParameters = new RouteParameters($request);
         $eventId = $routeParameters->getEventId();
-        $cardSystemId = $routeParameters->get('cardSystemId');
+        $cardSystemId = (int) $routeParameters->get('cardSystemId');
 
         $this->uitpas->deleteCardSystemFromEvent($eventId, $cardSystemId);
 

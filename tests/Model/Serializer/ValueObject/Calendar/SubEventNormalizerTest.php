@@ -38,7 +38,6 @@ final class SubEventNormalizerTest extends TestCase
 
         $normalized = $this->normalizer->normalize($subEvent);
 
-        $this->assertIsArray($normalized);
         $this->assertArrayHasKey('startDate', $normalized);
         $this->assertArrayHasKey('endDate', $normalized);
         $this->assertArrayHasKey('status', $normalized);

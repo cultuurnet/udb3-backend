@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Place;
 use Broadway\CommandHandling\Testing\CommandHandlerScenarioTestCase;
 use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
-use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Media\MediaManagerInterface;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
@@ -122,13 +121,11 @@ class CommandHandlerTest extends CommandHandlerScenarioTestCase
             $eventBus
         );
 
-        $this->organizerRepository = $this->createMock(Repository::class);
 
         $this->mediaManager = $this->createMock(MediaManagerInterface::class);
 
         return new CommandHandler(
             $repository,
-            $this->organizerRepository,
             $this->mediaManager
         );
     }

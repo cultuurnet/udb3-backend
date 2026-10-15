@@ -9,7 +9,6 @@ use CultuurNet\UDB3\Broadway\AMQP\ConsumerInterface;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Exception\AMQPTimeoutException;
 use Psr\Container\ContainerInterface;
-use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -18,7 +17,7 @@ class ConsumeCommand extends Command
 {
     private string $consumerName;
     private ContainerInterface $container;
-    private ?Closure $heartBeat;
+    private Closure $heartBeat;
 
     public function __construct(string $name, string $consumerName, ContainerInterface $container, Closure $heartBeat)
     {
@@ -55,9 +54,7 @@ class ConsumeCommand extends Command
         $output->writeln('Connected. Listening for incoming messages...');
 
         while (count($channel->callbacks) > 0) {
-            if ($this->heartBeat) {
-                call_user_func($this->heartBeat);
-            }
+            call_user_func($this->heartBeat);
 
             pcntl_signal_dispatch();
 
@@ -76,12 +73,6 @@ class ConsumeCommand extends Command
         /** @var ConsumerInterface $consumer */
         $consumer = $this->container->get($this->consumerName);
         $channel = $consumer->getChannel();
-
-        if (!$channel instanceof AMQPChannel) {
-            throw new RuntimeException(
-                'The consumer channel is not of the expected type AMQPChannel'
-            );
-        }
 
         return $channel;
     }

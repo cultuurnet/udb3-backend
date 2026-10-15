@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoDenormalizer;
+use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\ContactPointDenormalizer;
 use CultuurNet\UDB3\Address\Parser\AddressParser;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -34,7 +36,10 @@ final class EventRdfServiceProvider extends AbstractServiceProvider
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['rdf']['organizersRdfBaseUri']),
                 RdfServiceProvider::createIriGenerator($this->container->get('config')['taxonomy']['terms']),
                 $this->container->get('event_jsonld_repository'),
-                (new EventDenormalizer())->handlesDummyOrganizers(),
+                (new EventDenormalizer(
+                    bookingInfoDenormalizer: BookingInfoDenormalizer::forStoredData(),
+                    contactPointDenormalizer: ContactPointDenormalizer::forStoredData()
+                ))->handlesDummyOrganizers(),
                 $this->container->get(AddressParser::class),
                 $this->container->get(RdfResourceFactory::class),
                 new VideoNormalizer($this->container->get('config')['media']['video_default_copyright']),

@@ -235,6 +235,7 @@ final class CachedTaxonomyApiClientTest extends TestCase
         $httpClient = $this->createMock(ClientInterface::class);
         $httpClient->expects($this->never())->method('sendRequest');
 
+        // @phpstan-ignore new.resultUnused (constructing both clients is what this test is about)
         new CachedTaxonomyApiClient(
             new JsonTaxonomyApiClient($httpClient, 'https://taxonomy.example.com/terms', new NullLogger()),
             new ArrayAdapter()

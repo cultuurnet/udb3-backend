@@ -34,7 +34,7 @@ class CulturefeedSlugger implements SluggerInterface
 
         // replace multiple occurrences of separator by one instance
         $string = preg_replace(
-            '/' . preg_quote($this->separator) . '[' . preg_quote($this->separator) . ']*/',
+            '/' . preg_quote($this->separator, '/') . '[' . preg_quote($this->separator, '/') . ']*/',
             $this->separator,
             $string
         );
@@ -46,12 +46,12 @@ class CulturefeedSlugger implements SluggerInterface
 
         // remove separator from start and end of string
         $string = preg_replace(
-            '/' . preg_quote($this->separator) . '$/',
+            '/' . preg_quote($this->separator, '/') . '$/',
             '',
             $string
         );
         return preg_replace(
-            '/^' . preg_quote($this->separator) . '/',
+            '/^' . preg_quote($this->separator, '/') . '/',
             '',
             $string
         );

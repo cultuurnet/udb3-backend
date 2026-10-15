@@ -94,7 +94,6 @@ final class ProjectedToJSONLDInterceptingMiddlewareTest extends TestCase
                     ),
                 ];
 
-                /** @var AbstractEventWithIri|OrganizerProjectedToJSONLD $message */
                 foreach ($messages as $message) {
                     $id = $message instanceof AbstractEventWithIri ? $message->getItemId() : $message->getId();
                     $this->eventBus->publish(

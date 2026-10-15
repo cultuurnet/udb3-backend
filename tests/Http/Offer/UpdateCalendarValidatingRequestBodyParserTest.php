@@ -34,9 +34,8 @@ final class UpdateCalendarValidatingRequestBodyParserTest extends TestCase
             ->withParsedBody($data);
 
         // Should not throw
+        $this->expectNotToPerformAssertions();
         $this->parser->parse($request);
-
-        $this->assertTrue(true);
     }
 
     public function validClosedDaysDataProvider(): array

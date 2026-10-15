@@ -1,0 +1,10 @@
+<?php
+
+// culturefeed-php documents the id as a string, but createFromXML fills it with xpath_int
+class CultureFeed_Uitpas_DistributionKey
+{
+    /**
+     * @var int
+     */
+    public $id;
+}

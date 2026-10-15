@@ -28,16 +28,6 @@ class AddPermissionTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
-    public function it_extends_an_abstract_command(): void
-    {
-        $this->assertTrue(is_subclass_of(
-            $this->addPermission,
-            AbstractPermissionCommand::class
-        ));
-    }
 
     /**
      * @test

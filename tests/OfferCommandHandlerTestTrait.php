@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3;
 
-use Broadway\Repository\Repository;
 use Broadway\CommandHandling\Testing\Scenario;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\ImageCollection;
@@ -35,11 +34,6 @@ use ReflectionObject;
  */
 trait OfferCommandHandlerTestTrait
 {
-    /**
-     * @var Repository&MockObject
-     */
-    protected $organizerRepository;
-
     /**
      * @var MediaManagerInterface&MockObject
      */

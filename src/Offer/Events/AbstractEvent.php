@@ -12,11 +12,6 @@ abstract class AbstractEvent implements Serializable
 
     public function __construct(string $itemId)
     {
-        if (!is_string($itemId)) {
-            throw new \InvalidArgumentException(
-                'Expected itemId to be a string, received ' . gettype($itemId)
-            );
-        }
 
         $this->itemId = $itemId;
     }

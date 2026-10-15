@@ -33,9 +33,8 @@ final class CalendarValidatingRequestBodyParserAdjustedDaysTest extends TestCase
             ->withParsedBody($data);
 
         // Should not throw
+        $this->expectNotToPerformAssertions();
         $this->parser->parse($request);
-
-        $this->assertTrue(true);
     }
 
     public function validAdjustedDaysDataProvider(): array

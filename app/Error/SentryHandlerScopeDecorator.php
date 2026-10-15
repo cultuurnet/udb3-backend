@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\HandlerInterface;
 use Sentry\State\Scope;
+
 use function Sentry\withScope;
 
 /**

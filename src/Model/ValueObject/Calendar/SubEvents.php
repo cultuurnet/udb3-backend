@@ -21,9 +21,6 @@ class SubEvents extends Collection
      */
     private $endDate;
 
-    /**
-     * @param SubEvent ...$subEvents
-     */
     public function __construct(SubEvent ...$subEvents)
     {
         $this->guardNotEmpty($subEvents);

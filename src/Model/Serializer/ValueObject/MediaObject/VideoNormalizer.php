@@ -24,9 +24,6 @@ final class VideoNormalizer implements NormalizerInterface
         $this->defaultCopyrightHolders = $defaultCopyrightHolders;
     }
 
-    /**
-     * @param Video $video
-     */
     public function normalize($video, $format = null, array $context = []): array
     {
         if (!$video instanceof Video) {

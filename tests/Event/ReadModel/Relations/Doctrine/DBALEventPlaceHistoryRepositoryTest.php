@@ -37,7 +37,7 @@ class DBALEventPlaceHistoryRepositoryTest extends TestCase
             'SELECT * FROM event_place_history'
         );
 
-        $this->assertNotNull($result);
+        $this->assertIsArray($result);
         $this->assertEquals($eventId->toString(), $result['event']);
         $this->assertNull($result['old_place']);
         $this->assertEquals($placeId->toString(), $result['new_place']);
@@ -58,7 +58,7 @@ class DBALEventPlaceHistoryRepositoryTest extends TestCase
             'SELECT * FROM event_place_history'
         );
 
-        $this->assertNotNull($result);
+        $this->assertIsArray($result);
         $this->assertEquals($eventId->toString(), $result['event']);
         $this->assertEquals($oldPlaceId->toString(), $result['old_place']);
         $this->assertEquals($newPlaceId->toString(), $result['new_place']);

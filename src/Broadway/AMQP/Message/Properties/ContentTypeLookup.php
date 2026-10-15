@@ -25,18 +25,6 @@ class ContentTypeLookup implements ContentTypeLookupInterface
 
     private function setContentType(string $payloadClass, string $contentType): void
     {
-        if (!is_string($payloadClass)) {
-            throw new \InvalidArgumentException(
-                'Value for argument payloadClass should be a string'
-            );
-        }
-
-        if (!is_string($contentType)) {
-            throw new \InvalidArgumentException(
-                'Value for argument contentType should be a string'
-            );
-        }
-
         if (isset($this->payloadClassToContentTypeMap[$payloadClass])) {
             $currentContentType = $this->payloadClassToContentTypeMap[$payloadClass];
             throw new \InvalidArgumentException(

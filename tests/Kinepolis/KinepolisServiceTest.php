@@ -442,7 +442,7 @@ final class KinepolisServiceTest extends TestCase
                             )
                         ),
                         '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94E2/HO00010201/0000024162/Het_Smelt.jpg'
-                    ))->withDescription(new Description('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.'), ),
+                    ))->withDescription(new Description('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')),
                 ]
             );
 
@@ -620,7 +620,7 @@ final class KinepolisServiceTest extends TestCase
                             )
                         ),
                         '/MovieService/cdn.kinepolis.be/images/BE/65459BAD-CA99-4711-A97B-E049A5FA94E2/HO00010201/0000024162/Het_Smelt.jpg'
-                    ))->withDescription(new Description('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.'), ),
+                    ))->withDescription(new Description('Eva groeit samen met twee jongens op in het kleine dorp Bovenmeer.')),
                 ]
             );
 

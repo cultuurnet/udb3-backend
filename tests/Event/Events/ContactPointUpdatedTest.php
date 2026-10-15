@@ -43,6 +43,31 @@ class ContactPointUpdatedTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_leaves_out_an_invalid_email_and_url_from_the_event_store(): void
+    {
+        $this->assertEquals(
+            new ContactPointUpdated(
+                'foo',
+                new ContactPoint(
+                    new TelephoneNumbers(new TelephoneNumber('0123456789')),
+                    new EmailAddresses(new EmailAddress('foo@bar.com')),
+                    new Urls(new Url('http://foo.bar'))
+                )
+            ),
+            ContactPointUpdated::deserialize([
+                'item_id' => 'foo',
+                'contactPoint' => [
+                    'phone' => ['0123456789'],
+                    'email' => ['foo@bar.com', 'not an email address'],
+                    'url' => ['http://foo.bar', 'https://www.arboretumkalmthout.be%20'],
+                ],
+            ])
+        );
+    }
+
     public function serializationDataProvider(): array
     {
         return [

@@ -20,16 +20,6 @@ class RemoveConstraintTest extends TestCase
         $this->removeConstraint = new RemoveConstraint($this->uuid);
     }
 
-    /**
-     * @test
-     */
-    public function it_extends_an_abstract_command(): void
-    {
-        $this->assertTrue(is_subclass_of(
-            $this->removeConstraint,
-            AbstractCommand::class
-        ));
-    }
 
     /**
      * @test

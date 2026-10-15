@@ -8,6 +8,9 @@ use ArrayIterator;
 use IteratorAggregate;
 use Traversable;
 
+/**
+ * @implements IteratorAggregate<string, UserIdentityDetails>
+ */
 class Recipients implements IteratorAggregate
 {
     /** @var UserIdentityDetails[] */

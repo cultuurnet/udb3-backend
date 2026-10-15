@@ -12,7 +12,7 @@ use Exception;
 
 class EventFacilityResolver implements OfferFacilityResolverInterface
 {
-    public function __construct(readonly Categories $facilities)
+    public function __construct(public readonly Categories $facilities)
     {
     }
 

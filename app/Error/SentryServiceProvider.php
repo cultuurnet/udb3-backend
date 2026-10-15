@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Error;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use Sentry\SentrySdk;
 use Sentry\State\HubInterface;
+
 use function Sentry\init;
 
 final class SentryServiceProvider extends AbstractServiceProvider

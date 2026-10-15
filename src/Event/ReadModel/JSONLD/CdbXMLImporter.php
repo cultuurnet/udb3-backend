@@ -288,7 +288,7 @@ class CdbXMLImporter
         if ($contactInfo = $event->getContactInfo()) {
             /** @var \CultureFeed_Cdb_Data_Url[] $contactUrls */
             $contactUrls = $contactInfo->getUrls();
-            if (is_array($contactUrls) && count($contactUrls) > 0) {
+            if (count($contactUrls) > 0) {
                 foreach ($contactUrls as $contactUrl) {
                     if (!$contactUrl->isForReservations()) {
                         $jsonLD->seeAlso[] = $contactUrl->getUrl();

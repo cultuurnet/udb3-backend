@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Place;
 
 use Broadway\CommandHandling\CommandBus;
 use CultureFeed_Cdb_Data_Address;
+use CultureFeed_Cdb_Data_Address_PhysicalAddress;
 use CultuurNet\UDB3\Actor\ActorImportedFromUDB2;
 use CultuurNet\UDB3\Address\CultureFeed\CultureFeedAddressFactoryInterface;
 use CultuurNet\UDB3\Cdb\ActorItemFactory;
@@ -103,7 +104,7 @@ class GeoCoordinatesProcessManager extends AbstractGeoCoordinatesProcessManager
 
         // Get all physical locations from the list of addresses.
         $addresses = array_map(
-            function (CultureFeed_Cdb_Data_Address $address) {
+            function (CultureFeed_Cdb_Data_Address $address): ?CultureFeed_Cdb_Data_Address_PhysicalAddress {
                 return $address->getPhysicalAddress();
             },
             $contactInfo->getAddresses()

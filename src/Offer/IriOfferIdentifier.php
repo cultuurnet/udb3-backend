@@ -48,25 +48,43 @@ class IriOfferIdentifier implements \JsonSerializable, \Serializable
         ];
     }
 
-    public function serialize(): string
+    /**
+     * @return array{iri: string, id: string, type: string}
+     */
+    public function __serialize(): array
     {
-        return Json::encode(
-            [
-                'iri' => $this->iri->toString(),
-                'id' => $this->id,
-                'type' => $this->type->toString(),
-            ]
-        );
+        return [
+            'iri' => $this->iri->toString(),
+            'id' => $this->id,
+            'type' => $this->type->toString(),
+        ];
     }
 
     /**
+     * @param array{iri: string, id: string, type: string} $data
+     */
+    public function __unserialize(array $data): void
+    {
+        $this->iri = new Url($data['iri']);
+        $this->id = $data['id'];
+        $this->type = new OfferType($data['type']);
+    }
+
+    /**
+     * Only kept so identifiers serialized before __serialize existed can still be unserialized.
+     */
+    public function serialize(): string
+    {
+        return Json::encode($this->__serialize());
+    }
+
+    /**
+     * Only kept so identifiers serialized before __serialize existed can still be unserialized.
+     *
      * @param string $serialized
      */
     public function unserialize($serialized): void
     {
-        $data = Json::decodeAssociatively($serialized);
-        $this->iri = new Url($data['iri']);
-        $this->id = $data['id'];
-        $this->type = new OfferType($data['type']);
+        $this->__unserialize(Json::decodeAssociatively($serialized));
     }
 }

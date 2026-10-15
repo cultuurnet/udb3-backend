@@ -34,6 +34,16 @@ class IriOfferIdentifierTest extends TestCase
     /**
      * @test
      */
+    public function it_can_still_be_unserialized_from_the_format_before_serialize_magic_methods(): void
+    {
+        $serialized = 'C:40:"CultuurNet\\UDB3\\Offer\\IriOfferIdentifier":58:{{"iri":"http:\\/\\/du.de\\/place\\/1","id":"1","type":"Place"}}';
+
+        $this->assertEquals($this->identifier, unserialize($serialized));
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_all_properties(): void
     {
         $this->assertEquals(new Url('http://du.de/place/1'), $this->identifier->getIri());

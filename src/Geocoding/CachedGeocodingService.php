@@ -24,7 +24,7 @@ class CachedGeocodingService implements GeocodingService
         $this->cache = $cache;
     }
 
-    public function getCoordinates(string $address, string $locationName=''): ?Coordinates
+    public function getCoordinates(string $address, string $locationName = ''): ?Coordinates
     {
         $key = $this->geocodingService->searchTerm($address, $locationName);
 

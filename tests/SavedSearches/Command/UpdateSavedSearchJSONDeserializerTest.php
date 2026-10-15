@@ -18,7 +18,7 @@ final class UpdateSavedSearchJSONDeserializerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->userId ='4c04f805-5eb8-4fdf-90c0-5e0bdf5740ae ';
+        $this->userId = '4c04f805-5eb8-4fdf-90c0-5e0bdf5740ae ';
         $this->id = '550e8400-e29b-41d4-a716-446655440000';
 
         $this->deserializer = new UpdateSavedSearchJSONDeserializer(

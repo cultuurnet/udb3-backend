@@ -18,7 +18,7 @@ final class EventTypeResolver implements TypeResolverInterface
 
     public const COURSE_WITH_OPEN_SESSIONS_TERM_ID = '0.3.1.0.0';
 
-    public function __construct(readonly Categories $types)
+    public function __construct(public readonly Categories $types)
     {
     }
 

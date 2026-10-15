@@ -66,7 +66,7 @@ final class ChangeOrganizerOnOffer extends AbstractCommand
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): ?int
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $organizerId = $input->getArgument(self::ORGANIZER_UUID);
         $query = $input->getArgument(self::QUERY);

@@ -74,7 +74,6 @@ class CultureFeedEventInfoService implements EventInfoServiceInterface, LoggerAw
 
                 $promotions = $this->getUitpasPointsPromotionsFromEvent($uitpasEvent);
             }
-            $advantages = array_unique($advantages);
         } catch (\Exception $exception) {
             $prices = [];
             $advantages = [];

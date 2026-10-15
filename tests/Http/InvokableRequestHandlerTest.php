@@ -23,14 +23,6 @@ class InvokableRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_is_callable(): void
-    {
-        $this->assertIsCallable($this->invokableRequestHandler);
-    }
-
-    /**
-     * @test
-     */
     public function it_delegates_the_invoke_method_call_to_the_handle_method_of_the_decorated_request_handler(): void
     {
         $request = (new Psr7RequestBuilder())->withUriFromString('/mock')->build('GET');

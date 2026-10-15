@@ -24,16 +24,6 @@ class UserRemovedTest extends TestCase
         $this->userRemoved = new UserRemoved($this->uuid, $this->userId);
     }
 
-    /**
-     * @test
-     */
-    public function it_extends_an_abstract_user_event(): void
-    {
-        $this->assertTrue(is_subclass_of(
-            $this->userRemoved,
-            AbstractUserEvent::class
-        ));
-    }
 
     /**
      * @test

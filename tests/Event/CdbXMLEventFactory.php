@@ -12,7 +12,7 @@ class CdbXMLEventFactory
 {
     public const AN_EVENT_ID = 'someId';
 
-    private ?string $samplesPath;
+    private string $samplesPath;
 
     public function __construct(string $samplesPath = null)
     {
