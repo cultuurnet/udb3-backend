@@ -26,14 +26,14 @@ services:
         condition: service_healthy
 
   php:
-      container_name: php.uitdatabank
+      container_name: php.${UDB3_STACK:-uitdatabank}
       extends:
           service: php-base-8-3
       ports:
           - '${FORWARD_HTTP_PORT:-8000}:80'
 
   php-xdebug:
-      container_name: php-xdebug.uitdatabank
+      container_name: php-xdebug.${UDB3_STACK:-uitdatabank}
       extends:
           service: php-base-8-3
       profiles:
@@ -50,7 +50,7 @@ services:
 
   mysql:
     image: 'mysql:8.4'
-    container_name: mysql.uitdatabank
+    container_name: mysql.${UDB3_STACK:-uitdatabank}
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
       - MYSQL_DATABASE=${MYSQL_DATABASE}
@@ -74,7 +74,7 @@ services:
 
   redis:
     image: 'redis:alpine'
-    container_name: redis.uitdatabank
+    container_name: redis.${UDB3_STACK:-uitdatabank}
     ports:
       - '${FORWARD_REDIS_PORT:-6379}:6379'
     volumes:
@@ -91,7 +91,7 @@ services:
   rabbitmq:
     image: rabbitmq:3.12.12-management
     hostname: 'rabbitdocker'
-    container_name: rabbitmq.uitdatabank
+    container_name: rabbitmq.${UDB3_STACK:-uitdatabank}
     ports:
       - '${FORWARD_RABBITMQ_PORT:-5672}:5672'
       - '${FORWARD_RABBITMQ_MANAGEMENT_PORT:-15672}:15672'
@@ -110,7 +110,7 @@ services:
   mailpit:
     image: axllent/mailpit:latest
     hostname: 'mailpit'
-    container_name: mailpit.uitdatabank
+    container_name: mailpit.${UDB3_STACK:-uitdatabank}
     restart: unless-stopped
     volumes:
       - 'udb3-mailpit:/data'
@@ -135,7 +135,8 @@ services:
 
 networks:
   uitdatabank-backend:
-    name: uitdatabank
+    # Set UDB3_STACK (e.g. uitdatabank-iii-123) to run several stacks side by side; the search service joins this network.
+    name: ${UDB3_STACK:-uitdatabank}
     driver: bridge
 
 volumes:
