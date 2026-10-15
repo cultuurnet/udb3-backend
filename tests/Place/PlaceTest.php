@@ -9,7 +9,17 @@ use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
@@ -642,6 +652,165 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 }
             )
             ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_periodic_calendar_with_closed_days(): void
+    {
+        $placeCreated = $this->createPlaceCreatedEvent();
+        $placeId = $placeCreated->getPlaceId();
+
+        $calendar = (new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromISO8601('2026-01-01T00:00:00+00:00'),
+                DateTimeFactory::fromISO8601('2026-12-31T23:59:59+00:00')
+            ),
+            new OpeningHours()
+        ))->withClosedDays(
+            new ClosedDays(
+                new ClosedDay(
+                    DateTimeFactory::fromISO8601('2026-12-25T00:00:00+00:00'),
+                    DateTimeFactory::fromISO8601('2026-12-26T23:59:59+00:00')
+                )
+            )
+        );
+
+        $this->scenario
+            ->withAggregateId($placeId)
+            ->given([$placeCreated])
+            ->when(fn (Place $place) => $place->updateCalendar($calendar))
+            ->then([new CalendarUpdated($placeId, $calendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_replaces_closed_days_when_updating_calendar(): void
+    {
+        $placeCreated = $this->createPlaceCreatedEvent();
+        $placeId = $placeCreated->getPlaceId();
+
+        $oldCalendar = (new PermanentCalendar(new OpeningHours()))->withClosedDays(
+            new ClosedDays(
+                new ClosedDay(
+                    DateTimeFactory::fromISO8601('2026-12-25T00:00:00+00:00'),
+                    DateTimeFactory::fromISO8601('2026-12-25T23:59:59+00:00')
+                )
+            )
+        );
+        $newCalendar = (new PermanentCalendar(new OpeningHours()))->withClosedDays(
+            new ClosedDays(
+                new ClosedDay(
+                    DateTimeFactory::fromISO8601('2026-12-31T00:00:00+00:00'),
+                    DateTimeFactory::fromISO8601('2026-12-31T23:59:59+00:00')
+                )
+            )
+        );
+
+        $this->scenario
+            ->withAggregateId($placeId)
+            ->given([
+                $placeCreated,
+                new CalendarUpdated($placeId, $oldCalendar),
+            ])
+            ->when(fn (Place $place) => $place->updateCalendar($newCalendar))
+            ->then([new CalendarUpdated($placeId, $newCalendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_closed_days_when_updating_calendar_without_them(): void
+    {
+        $placeCreated = $this->createPlaceCreatedEvent();
+        $placeId = $placeCreated->getPlaceId();
+
+        $oldCalendar = (new PermanentCalendar(new OpeningHours()))->withClosedDays(
+            new ClosedDays(
+                new ClosedDay(
+                    DateTimeFactory::fromISO8601('2026-12-25T00:00:00+00:00'),
+                    DateTimeFactory::fromISO8601('2026-12-25T23:59:59+00:00')
+                )
+            )
+        );
+        $newCalendar = new PermanentCalendar(new OpeningHours());
+
+        $this->scenario
+            ->withAggregateId($placeId)
+            ->given([
+                $placeCreated,
+                new CalendarUpdated($placeId, $oldCalendar),
+            ])
+            ->when(fn (Place $place) => $place->updateCalendar($newCalendar))
+            ->then([new CalendarUpdated($placeId, $newCalendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_permanent_calendar_with_adjusted_days(): void
+    {
+        $placeCreated = $this->createPlaceCreatedEvent();
+        $placeId = $placeCreated->getPlaceId();
+
+        $calendar = (new PermanentCalendar(new OpeningHours()))->withAdjustedDays(
+            new AdjustedDays(
+                new AdjustedDay(
+                    DateTimeFactory::fromDateOrISO8601('2026-12-21'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-26'),
+                    new OpeningHours(
+                        new OpeningHour(
+                            new Days(Day::friday(), Day::saturday(), Day::sunday()),
+                            new Time(new Hour(13), new Minute(0)),
+                            new Time(new Hour(15), new Minute(0))
+                        )
+                    )
+                )
+            )
+        );
+
+        $this->scenario
+            ->withAggregateId($placeId)
+            ->given([$placeCreated])
+            ->when(fn (Place $place) => $place->updateCalendar($calendar))
+            ->then([new CalendarUpdated($placeId, $calendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_adjusted_days_when_updating_calendar_without_them(): void
+    {
+        $placeCreated = $this->createPlaceCreatedEvent();
+        $placeId = $placeCreated->getPlaceId();
+
+        $oldCalendar = (new PermanentCalendar(new OpeningHours()))->withAdjustedDays(
+            new AdjustedDays(
+                new AdjustedDay(
+                    DateTimeFactory::fromDateOrISO8601('2026-12-21'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-26'),
+                    new OpeningHours(
+                        new OpeningHour(
+                            new Days(Day::friday()),
+                            new Time(new Hour(13), new Minute(0)),
+                            new Time(new Hour(15), new Minute(0))
+                        )
+                    )
+                )
+            )
+        );
+        $newCalendar = new PermanentCalendar(new OpeningHours());
+
+        $this->scenario
+            ->withAggregateId($placeId)
+            ->given([
+                $placeCreated,
+                new CalendarUpdated($placeId, $oldCalendar),
+            ])
+            ->when(fn (Place $place) => $place->updateCalendar($newCalendar))
+            ->then([new CalendarUpdated($placeId, $newCalendar)]);
     }
 
     private function createPlaceCreatedEvent(): PlaceCreated
