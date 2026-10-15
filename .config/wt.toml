@@ -1,0 +1,44 @@
+# Worktrunk project config — https://worktrunk.dev
+# Every worktree gets its own docker stack (containers, network, ports, volumes) next to the
+# primary checkout, which keeps the defaults from docker-compose.yml.
+
+# Steps run in order: .env must be copied before it is extended.
+
+# Copies local, gitignored setup (.env, config*.php, *.pem, features/config.features.php, vendor/, …)
+# from the primary checkout. Reflinked on APFS, so vendor/ costs no extra disk.
+[[pre-start]]
+copy = "wt step copy-ignored"
+
+# Gives this worktree's docker stack its own names and ports, derived from the branch.
+# The search service derives UDB3_STACK the same way, so worktrees on the same branch share a network.
+# Safe to re-run with `wt hook pre-start`: the block is replaced, not appended twice.
+[[pre-start]]
+docker-env = """
+sed -i.bak '/^# worktrunk/,$d' .env && rm .env.bak
+cat >> .env <<'EOF'
+# worktrunk: isolated docker stack for this worktree, everything below is regenerated
+COMPOSE_PROJECT_NAME=udb3-backend-{{ branch | sanitize | lower }}
+UDB3_STACK=uitdatabank-{{ branch | sanitize | lower }}
+FORWARD_HTTP_PORT={{ (branch ~ "-http") | hash_port }}
+FORWARD_XDEBUG_HTTP_PORT={{ (branch ~ "-xdebug") | hash_port }}
+MYSQL_PORT={{ (branch ~ "-mysql") | hash_port }}
+FORWARD_REDIS_PORT={{ (branch ~ "-redis") | hash_port }}
+FORWARD_RABBITMQ_PORT={{ (branch ~ "-amqp") | hash_port }}
+FORWARD_RABBITMQ_MANAGEMENT_PORT={{ (branch ~ "-rabbitmq-ui") | hash_port }}
+MAILPIT_GUI_PORT={{ (branch ~ "-mailpit-ui") | hash_port }}
+MAILPIT_SMTP_PORT={{ (branch ~ "-mailpit-smtp") | hash_port }}
+EOF
+"""
+
+# Boots the stack in the background, installs composer packages and runs the migrations.
+[post-start]
+docker = "make up && make init"
+
+# Removes this worktree's containers and volumes. Only when .env carries the worktrunk block,
+# so the shared default stack is never touched. Never blocks removing the worktree.
+[pre-remove]
+docker = "grep -q '^UDB3_STACK=' .env && docker compose down -v || true"
+
+[step.copy-ignored]
+# log/ and web/downloads/ hold a tracked .gitignore, so their contents need a /* pattern.
+exclude = ["log/*", "web/downloads/*", ".idea/", ".DS_Store", ".php-cs-fixer.cache", ".phpunit.result.cache"]
