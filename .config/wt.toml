@@ -1,0 +1,10 @@
+# Worktrunk project config — https://worktrunk.dev
+
+# Copies local, gitignored setup (.env, config*.php, *.pem, features/config.features.php, vendor/, …)
+# from the primary checkout. Reflinked on APFS, so vendor/ costs no extra disk.
+[pre-start]
+copy = "wt step copy-ignored"
+
+[step.copy-ignored]
+# log/ and web/downloads/ hold a tracked .gitignore, so their contents need a /* pattern.
+exclude = ["log/*", "web/downloads/*", ".idea/", ".DS_Store", ".php-cs-fixer.cache", ".phpunit.result.cache"]
