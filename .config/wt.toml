@@ -30,6 +30,15 @@ MAILPIT_SMTP_PORT={{ (branch ~ "-mailpit-smtp") | hash_port }}
 EOF
 """
 
+# Boots the stack in the background, installs composer packages and runs the migrations.
+[post-start]
+docker = "make up && make init"
+
+# Removes this worktree's containers and volumes. Only when .env carries the worktrunk block,
+# so the shared default stack is never touched. Never blocks removing the worktree.
+[pre-remove]
+docker = "grep -q '^UDB3_STACK=' .env && docker compose down -v || true"
+
 [step.copy-ignored]
 # log/ and web/downloads/ hold a tracked .gitignore, so their contents need a /* pattern.
 exclude = ["log/*", "web/downloads/*", ".idea/", ".DS_Store", ".php-cs-fixer.cache", ".phpunit.result.cache"]
