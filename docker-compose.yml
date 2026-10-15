@@ -30,7 +30,7 @@ services:
       extends:
           service: php-base-8-3
       ports:
-          - '8000:80'
+          - '${FORWARD_HTTP_PORT:-8000}:80'
 
   php-xdebug:
       container_name: php-xdebug.uitdatabank
@@ -46,7 +46,7 @@ services:
           XDEBUG_MODE: debug
           XDEBUG_CONFIG: client_host=host.docker.internal
       ports:
-          - '8001:80'  # Explicitly override to port 8001
+          - '${FORWARD_XDEBUG_HTTP_PORT:-8001}:80'
 
   mysql:
     image: 'mysql:8.4'
@@ -93,8 +93,8 @@ services:
     hostname: 'rabbitdocker'
     container_name: rabbitmq.uitdatabank
     ports:
-      - 5672:5672
-      - 15672:15672
+      - '${FORWARD_RABBITMQ_PORT:-5672}:5672'
+      - '${FORWARD_RABBITMQ_MANAGEMENT_PORT:-15672}:15672'
     volumes:
       - ./docker/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config
       - ./docker/rabbitmq/definitions.json:/etc/rabbitmq/definitions.json
