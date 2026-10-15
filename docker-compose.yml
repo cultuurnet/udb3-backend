@@ -1,6 +1,7 @@
 services:
   php-base-8-3:
     build: docker/php8.3
+    image: udb3-backend-php-base-8-3
     volumes:
       - .:/var/www/html:cached
     working_dir: /var/www/html
@@ -27,6 +28,7 @@ services:
 
   php:
       container_name: php.${UDB3_STACK:-uitdatabank}
+      image: udb3-backend-php
       extends:
           service: php-base-8-3
       ports:
@@ -34,6 +36,7 @@ services:
 
   php-xdebug:
       container_name: php-xdebug.${UDB3_STACK:-uitdatabank}
+      image: udb3-backend-php-xdebug
       extends:
           service: php-base-8-3
       profiles:

@@ -90,6 +90,8 @@ With [worktrunk](https://worktrunk.dev) this is automated by `.config/wt.toml`. 
 
 `wt remove` stops the stack and deletes its volumes. Worktrunk asks once to approve these commands.
 
+All stacks share the PHP images, so a new stack starts without building. After a change to the Dockerfile, run `make build` once; every stack picks up the new image when its containers are recreated.
+
 A new stack starts with an empty database, so run `make feature-init` before running the acceptance tests.
 The API is available on `http://io.uitdatabank.local:<FORWARD_HTTP_PORT>`.
 `UDB3_STACK` is also the network name, so a search service stack that sets the same value joins this stack.
