@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use DateTimeImmutable;
 
 final class SubEventUpdate
@@ -17,6 +18,13 @@ final class SubEventUpdate
     private ?TimeImmutableRange $childcareTimeRange = null;
 
     private ?bool $hasOvernightStay = null;
+
+    /**
+     * The waiting list url follows the PATCH convention independently of the booking availability type:
+     * not updated (left unchanged), updated with a url (set) or updated without a url (cleared).
+     */
+    private bool $updatesWaitingListUrl = false;
+    private ?Url $waitingListUrl = null;
 
     public function __construct(int $subEventId)
     {
@@ -105,6 +113,32 @@ final class SubEventUpdate
     {
         $c = clone $this;
         $c->hasOvernightStay = $hasOvernightStay;
+        return $c;
+    }
+
+    public function updatesWaitingListUrl(): bool
+    {
+        return $this->updatesWaitingListUrl;
+    }
+
+    public function getWaitingListUrl(): ?Url
+    {
+        return $this->waitingListUrl;
+    }
+
+    public function withWaitingListUrl(Url $waitingListUrl): self
+    {
+        $c = clone $this;
+        $c->updatesWaitingListUrl = true;
+        $c->waitingListUrl = $waitingListUrl;
+        return $c;
+    }
+
+    public function withoutWaitingListUrl(): self
+    {
+        $c = clone $this;
+        $c->updatesWaitingListUrl = true;
+        $c->waitingListUrl = null;
         return $c;
     }
 }

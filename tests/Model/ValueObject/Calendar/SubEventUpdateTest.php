@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 final class SubEventUpdateTest extends TestCase
@@ -101,5 +102,63 @@ final class SubEventUpdateTest extends TestCase
 
         $this->assertNotSame($original, $updated);
         $this->assertNull($original->getHasOvernightStay());
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_the_waiting_list_url_by_default(): void
+    {
+        $update = new SubEventUpdate(0);
+
+        $this->assertFalse($update->updatesWaitingListUrl());
+        $this->assertNull($update->getWaitingListUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_a_waiting_list_url(): void
+    {
+        $url = new Url('https://publiq.be/wachtlijst');
+        $update = (new SubEventUpdate(0))->withWaitingListUrl($url);
+
+        $this->assertTrue($update->updatesWaitingListUrl());
+        $this->assertEquals($url, $update->getWaitingListUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_clear_the_waiting_list_url(): void
+    {
+        $update = (new SubEventUpdate(0))
+            ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+            ->withoutWaitingListUrl();
+
+        $this->assertTrue($update->updatesWaitingListUrl());
+        $this->assertNull($update->getWaitingListUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_the_waiting_list_url_when_only_the_booking_availability_type_is_given(): void
+    {
+        $update = (new SubEventUpdate(0))->withBookingAvailability(BookingAvailability::Unavailable());
+
+        $this->assertFalse($update->updatesWaitingListUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_new_instance_when_updating_the_waiting_list_url(): void
+    {
+        $original = new SubEventUpdate(0);
+
+        $this->assertNotSame($original, $original->withWaitingListUrl(new Url('https://publiq.be/wachtlijst')));
+        $this->assertNotSame($original, $original->withoutWaitingListUrl());
+        $this->assertFalse($original->updatesWaitingListUrl());
     }
 }
