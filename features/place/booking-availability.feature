@@ -23,3 +23,19 @@ Feature: Test place bookingAvailability property
       "detail": "Updating booking availability on calendar type: \"PERMANENT\" is not supported. Only single and multiple calendar types can be updated."
     }
     """
+
+  Scenario: Removed capacity on the bookingAvailability of a place calendar update is ignored
+    Given I set the JSON request payload to:
+    """
+    {
+      "calendarType": "permanent",
+      "bookingAvailability": {"type": "Available", "capacity": 200}
+    }
+    """
+    When I send a PUT request to "%{placeUrl}/calendar"
+    Then the response status should be "204"
+    And I get the place at "%{placeUrl}"
+    And the JSON response at "bookingAvailability" should be:
+    """
+    {"type": "Available"}
+    """
