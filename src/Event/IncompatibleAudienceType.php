@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Event;
 
+use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\ConvertsToApiProblem;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use Exception;
 
-final class IncompatibleAudienceType extends Exception
+final class IncompatibleAudienceType extends Exception implements ConvertsToApiProblem
 {
     public static function forDummyPlaceForEducation(string $eventId, AudienceType $audienceType): self
     {
@@ -21,5 +23,10 @@ final class IncompatibleAudienceType extends Exception
         return new self(
             'Departure places can only be set on events where "childrenOnly" is true. Event: ' . $eventId
         );
+    }
+
+    public function toApiProblem(): ApiProblem
+    {
+        return ApiProblem::inCompatibleAudienceType($this->getMessage());
     }
 }
