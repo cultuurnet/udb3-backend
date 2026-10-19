@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateTheme;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
 use CultuurNet\UDB3\Event\Commands\UpdateBirthdateRange;
 use CultuurNet\UDB3\Event\Event as EventAggregate;
+use CultuurNet\UDB3\Event\IncompatibleAudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
@@ -47,7 +48,6 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Online\AttendanceMode;
-use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Offer\Commands\DeleteCurrentOrganizer;
 use CultuurNet\UDB3\Offer\Commands\DeleteOffer;
 use CultuurNet\UDB3\Offer\Commands\ImportLabels;
@@ -169,6 +169,14 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
             );
         }
 
+        $childrenOnly = $event->getChildrenOnly();
+        $departurePlaces = $event->getDeparturePlaces();
+
+        $isNotChildrenOnly = $childrenOnly === false || ($childrenOnly === null && !$eventExists);
+        if ($departurePlaces !== null && !$departurePlaces->isEmpty() && $isNotChildrenOnly) {
+            throw IncompatibleAudienceType::forDeparturePlaces($eventId);
+        }
+
         // Get the workflowStatus from the JSON. If the JSON has no workflowStatus, it will be DRAFT by default.
         // If the request URL contains "imports", overwrite the workflowStatus to READY_FOR_VALIDATION to ensure
         // backward compatibility with existing integrations that use those deprecated imports paths without a
@@ -179,6 +187,13 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         }
 
         $commands = [];
+        if ($childrenOnly !== null) {
+            $commands[] = new UpdateChildrenOnly($eventId, $childrenOnly);
+        }
+        if ($departurePlaces !== null) {
+            $commands[] = new UpdateDeparturePlaces($eventId, $departurePlaces);
+        }
+
         if (!$eventExists) {
             $eventAggregate = EventAggregate::create(
                 $eventId,
@@ -283,17 +298,6 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
 
         $commands[] = new ImportVideos($eventId, $event->getVideos());
         $commands[] = new UpdateFaqs($eventId, $event->getFaq());
-        $childrenOnly = $event->getChildrenOnly();
-        if ($childrenOnly !== null) {
-            $commands[] = new UpdateChildrenOnly($eventId, $childrenOnly);
-        }
-
-        $departurePlaces = $event->getDeparturePlaces();
-        if ($departurePlaces !== null) {
-            $commands[] = new UpdateDeparturePlaces($eventId, $departurePlaces);
-        } elseif ($childrenOnly === false) {
-            $commands[] = new UpdateDeparturePlaces($eventId, new Urls());
-        }
 
         if ($event->getBirthdateRange() !== null) {
             $commands[] = new UpdateBirthdateRange($eventId, $event->getBirthdateRange());
