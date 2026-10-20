@@ -439,6 +439,10 @@ final class Event extends Offer
                 $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareToApply);
             }
 
+            $updatedSubEvent = $updatedSubEvent->withBookingInfo(
+                $subEventUpdate->getBookingInfo() ?? $subEvent->getBookingInfo()
+            );
+
             $updatedSubEvent = $updatedSubEvent->withHasOvernightStay($subEventUpdate->getHasOvernightStay() ?? $subEvent->getHasOvernightStay());
 
             $subEvents[$index] = $updatedSubEvent;

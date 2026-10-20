@@ -14,6 +14,7 @@ final class SubEventUpdate
     private ?DateTimeImmutable $endDate = null;
     private ?Status $status = null;
     private ?BookingAvailability $bookingAvailability = null;
+    private ?SubEventBookingInfo $bookingInfo = null;
     private ?TimeImmutableRange $childcareTimeRange = null;
 
     private ?bool $hasOvernightStay = null;
@@ -73,6 +74,18 @@ final class SubEventUpdate
     {
         $c = clone $this;
         $c->bookingAvailability = $bookingAvailability;
+        return $c;
+    }
+
+    public function getBookingInfo(): ?SubEventBookingInfo
+    {
+        return $this->bookingInfo;
+    }
+
+    public function withBookingInfo(?SubEventBookingInfo $bookingInfo): self
+    {
+        $c = clone $this;
+        $c->bookingInfo = $bookingInfo;
         return $c;
     }
 
