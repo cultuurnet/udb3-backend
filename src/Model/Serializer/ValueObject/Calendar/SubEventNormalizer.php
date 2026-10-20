@@ -22,6 +22,10 @@ final class SubEventNormalizer implements NormalizerInterface
             'bookingAvailability' => (new BookingAvailabilityNormalizer())->normalize($subEvent->getBookingAvailability()),
         ];
 
+        if ($subEvent->getBookingInfo() !== null) {
+            $normalized['bookingInfo'] = (new SubEventBookingInfoNormalizer())->normalize($subEvent->getBookingInfo());
+        }
+
         $childcare = (new ChildcareTimeRangeNormalizer())->normalize($subEvent->getChildcareTimeRange());
         if ($childcare !== null) {
             $normalized['childcare'] = $childcare;
