@@ -29,6 +29,7 @@ pipeline {
                             alwaysPull true
                         }
                     }
+                    options { skipDefaultCheckout() }
                     steps {
                         sh label: 'Install composer packages', script: 'composer install --no-dev --ignore-platform-reqs --optimize-autoloader --prefer-dist --no-interaction'
                     }
@@ -41,6 +42,7 @@ pipeline {
                             reuseNode true
                         }
                     }
+                    options { skipDefaultCheckout() }
                     environment {
                         GIT_SHORT_COMMIT = util.shortCommitRef()
                         ARTIFACT_VERSION = "${env.PIPELINE_VERSION}" + '+sha.' + "${env.GIT_SHORT_COMMIT}"
