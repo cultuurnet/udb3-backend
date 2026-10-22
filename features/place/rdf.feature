@@ -23,3 +23,5 @@ Feature: Test RDF projection of places
     And I accept "text/turtle"
     When I get the RDF of place with id "%{placeId}"
     Then the RDF response should match place projection "places/rdf/place-with-invalid-address.ttl"
+    # The name is fixed so Google does not find a match for it, and the place is deleted so a next run is no duplicate
+    And I delete the place at "/places/%{placeId}"
