@@ -1,0 +1,42 @@
+{
+  "mainLanguage": "nl",
+  "name": {"nl": "%{name}"},
+  "terms": [{"id": "Yf4aZBfsUEu2NsQqsprngw"}],
+  "address": {
+    "nl": {
+      "addressCountry": "BE",
+      "addressLocality": "Scherpenheuvel-Zichem",
+      "postalCode": "3271",
+      "streetAddress": "Hoornblaas 107"
+    }
+  },
+  "calendarType": "periodic",
+  "startDate": "2026-01-01T00:00:00+00:00",
+  "endDate": "2026-12-31T23:59:59+00:00",
+  "openingHours": [
+    {
+      "opens": "09:00",
+      "closes": "17:00",
+      "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"]
+    }
+  ],
+  "openingHoursClosedDays": [
+    {
+      "startDate": "2026-06-15",
+      "endDate": "2026-06-15",
+      "description": {
+        "nl": "Gesloten wegens personeelsfeest",
+        "en": "Closed for staff party"
+      }
+    },
+    {
+      "startDate": "2026-12-25",
+      "endDate": "2026-12-26",
+      "description": {
+        "nl": "Gesloten met kerstdagen",
+        "en": "Closed on Christmas holidays",
+        "fr": "Fermé pendant les vacances de Noël"
+      }
+    }
+  ]
+}

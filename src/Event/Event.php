@@ -709,6 +709,10 @@ final class Event extends Offer
 
     public function updateChildrenOnly(bool $childrenOnly): void
     {
+        if (!$childrenOnly && !$this->departurePlaces->isEmpty()) {
+            $this->apply(new DeparturePlacesUpdated($this->eventId, new Urls()));
+        }
+
         if ($this->childrenOnly === $childrenOnly) {
             return;
         }
