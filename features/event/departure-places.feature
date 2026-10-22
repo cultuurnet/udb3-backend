@@ -117,3 +117,19 @@ Feature: Test event departure places
     And I send a POST request to "/events/"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/error" should be "Array should have at most 20 items, 21 found"
+
+  Scenario: Reject departure places when creating an event that is not childrenOnly
+    When I set the JSON request payload from "events/departure-places/event-with-departure-places-without-children-only.json"
+    And I send a POST request to "/events/"
+    Then the response status should be "400"
+    And the JSON response at "type" should be "https://api.publiq.be/probs/uitdatabank/incompatible-audience-type"
+
+  Scenario: Reject departure places when updating an event that is not childrenOnly, without changing the event
+    Given I create a minimal permanent event and save the "url" as "eventUrl"
+    When I set the JSON request payload from "events/departure-places/event-with-departure-places-without-children-only.json"
+    And I send a PUT request to "%{eventUrl}"
+    Then the response status should be "400"
+    And the JSON response at "type" should be "https://api.publiq.be/probs/uitdatabank/incompatible-audience-type"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response at "name/nl" should be "Permanent event"
+    And the JSON response should not have "departurePlaces"

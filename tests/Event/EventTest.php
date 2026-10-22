@@ -2420,7 +2420,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_keeps_departure_places_when_disabling_children_only(): void
+    public function it_removes_departure_places_when_disabling_children_only(): void
     {
         $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
 
@@ -2433,6 +2433,47 @@ class EventTest extends AggregateRootScenarioTestCase
                 $this->getCreationEvent(),
                 new ChildrenOnlyUpdated($eventId, true),
                 new DeparturePlacesUpdated($eventId, $departurePlaces),
+            ])
+            ->when(fn (Event $event) => $event->updateChildrenOnly(false))
+            ->then([
+                new DeparturePlacesUpdated($eventId, new Urls()),
+                new ChildrenOnlyUpdated($eventId, false),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_leftover_departure_places_when_children_only_is_already_disabled(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $departurePlaces = new Urls(
+            new Url('https://io.uitdatabank.be/places/5a0b4a1e-2a3b-4c4d-8e5f-6a7b8c9d0e1f'),
+        );
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new ChildrenOnlyUpdated($eventId, true),
+                new DeparturePlacesUpdated($eventId, $departurePlaces),
+                new ChildrenOnlyUpdated($eventId, false),
+            ])
+            ->when(fn (Event $event) => $event->updateChildrenOnly(false))
+            ->then([new DeparturePlacesUpdated($eventId, new Urls())]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_only_disables_children_only_when_there_are_no_departure_places(): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new ChildrenOnlyUpdated($eventId, true),
             ])
             ->when(fn (Event $event) => $event->updateChildrenOnly(false))
             ->then([new ChildrenOnlyUpdated($eventId, false)]);
