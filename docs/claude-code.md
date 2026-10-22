@@ -21,6 +21,6 @@ They need:
 
 ## Output style
 
-`To the point` keeps answers short and structured: tables, trees and numbered steps instead of long prose, issues before nits, links to tickets and PRs.
+`To the point` keeps answers short and structured: tables, trees and numbered steps instead of long prose.
 
 Turn it on with `/output-style` and pick `To the point`. Claude Code stores the choice in `.claude/settings.local.json`, so it only applies to you. Switch back the same way.
