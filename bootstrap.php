@@ -74,7 +74,6 @@ use CultuurNet\UDB3\Security\GeneralSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\Term\TermServiceProvider;
-use CultuurNet\UDB3\Ticketing\TicketingServiceProvider;
 use CultuurNet\UDB3\UDB2\UDB2EventServicesProvider;
 use CultuurNet\UDB3\UiTPAS\UiTPASClientServiceProvider;
 use CultuurNet\UDB3\UiTPAS\UiTPASIncomingEventServicesProvider;
@@ -135,9 +134,6 @@ $container->addServiceProvider(new EventPermissionServiceProvider());
 $container->addServiceProvider(new ProductionServiceProvider());
 $container->addServiceProvider(new EventGeoCoordinatesServiceProvider());
 $container->addServiceProvider(new EventHistoryServiceProvider());
-
-/** Ticketing */
-$container->addServiceProvider(new TicketingServiceProvider());
 
 /** Place **/
 $container->addServiceProvider(new PlaceServiceProvider());
