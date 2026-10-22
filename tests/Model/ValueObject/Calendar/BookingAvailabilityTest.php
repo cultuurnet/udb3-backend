@@ -43,6 +43,31 @@ final class BookingAvailabilityTest extends TestCase
     /**
      * @test
      */
+    public function it_keeps_the_waiting_list_url_when_changing_the_type(): void
+    {
+        $url = new Url('https://publiq.be/wachtlijst');
+        $bookingAvailability = BookingAvailability::Unavailable()
+            ->withWaitingListUrl($url)
+            ->withType(BookingAvailabilityType::Available());
+
+        $this->assertTrue($bookingAvailability->getType()->sameAs(BookingAvailabilityType::Available()));
+        $this->assertEquals($url, $bookingAvailability->getWaitingListUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_new_instance_when_changing_the_type(): void
+    {
+        $original = BookingAvailability::Unavailable();
+
+        $this->assertNotSame($original, $original->withType(BookingAvailabilityType::Available()));
+        $this->assertTrue($original->getType()->sameAs(BookingAvailabilityType::Unavailable()));
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_a_new_instance_when_changing_the_waiting_list_url(): void
     {
         $original = BookingAvailability::Unavailable();

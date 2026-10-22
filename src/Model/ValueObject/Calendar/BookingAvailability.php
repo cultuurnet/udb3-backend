@@ -25,6 +25,13 @@ final class BookingAvailability
         return $this->type;
     }
 
+    public function withType(BookingAvailabilityType $type): self
+    {
+        $clone = clone $this;
+        $clone->type = $type;
+        return $clone;
+    }
+
     public function getWaitingListUrl(): ?Url
     {
         return $this->waitingListUrl;
