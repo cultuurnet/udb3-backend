@@ -20,17 +20,16 @@ final class TicketingRegistrationsProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
 
-    private TicketingRegistrationRepository $repository;
-
     /** @var string[] */
-    private array $reservationLinkHosts;
+    private readonly array $reservationLinkHosts;
 
     /**
      * @param string[] $reservationLinkHosts
      */
-    public function __construct(TicketingRegistrationRepository $repository, array $reservationLinkHosts)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        private readonly TicketingRegistrationRepository $repository,
+        array $reservationLinkHosts
+    ) {
         $this->reservationLinkHosts = array_map('strtolower', $reservationLinkHosts);
     }
 
