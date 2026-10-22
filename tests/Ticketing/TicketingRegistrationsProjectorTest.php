@@ -73,6 +73,23 @@ final class TicketingRegistrationsProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_ignores_links_that_do_not_fit_in_the_table(): void
+    {
+        $this->repository->expects($this->never())->method('add');
+
+        $this->projector->handle(
+            $this->domainMessage(
+                new ReservationLinkAdded(
+                    self::EVENT_ID,
+                    new Url('https://leuven-school-met-cultuur.ticketmatic.com/30cc/register/12345?' . str_repeat('a', 500))
+                )
+            )
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_ignores_links_on_the_ticketing_host_of_another_environment(): void
     {
         $this->repository->expects($this->never())->method('add');
