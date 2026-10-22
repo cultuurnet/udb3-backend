@@ -16,7 +16,7 @@ Start a skill with its slash command, the argument is optional.
 They need:
 
 - the GitHub CLI, logged in (`gh auth login`)
-- a Jira and Confluence connection in Claude Code, for example the [mcp-atlassian](https://github.com/sooperset/mcp-atlassian) server with your own token
+- a Jira and Confluence connection in Claude Code, see [Connect to Jira & Confluence publiq](https://confluence.publiq.be/spaces/UPW/pages/217580782/Connect+to+Jira+Confluence+publiq)
 - for `/api-docs`: the apidocs repo checked out next to this one
 
 ## Output style
