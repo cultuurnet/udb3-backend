@@ -11,8 +11,9 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 final class SubEventBookingInfoDenormalizer implements DenormalizerInterface
 {
     /**
-     * Returns null when there is no url, which only happens for events stored before III-7324,
-     * when a subEvent bookingInfo could also have only a phone or email.
+     * Events stored between III-7040 and III-7324 (February to July 2026) can still have a subEvent bookingInfo.
+     * That copy of the event's bookingInfo can have only a phone or email, which returns null here, or a url,
+     * which comes back as the reservation link of that date.
      */
     public function denormalize($data, $class, $format = null, array $context = []): ?SubEventBookingInfo
     {
