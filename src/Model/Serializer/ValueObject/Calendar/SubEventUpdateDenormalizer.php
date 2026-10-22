@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use DateTimeImmutable;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -51,6 +52,14 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
                     BookingAvailability::class
                 )
             );
+
+            // array_key_exists instead of isset, because an explicit null clears the waiting list url
+            // while an absent key leaves it unchanged.
+            if (array_key_exists('waitingListUrl', $data['bookingAvailability'])) {
+                $subEventUpdate = $data['bookingAvailability']['waitingListUrl'] === null
+                    ? $subEventUpdate->withoutWaitingListUrl()
+                    : $subEventUpdate->withWaitingListUrl(new Url($data['bookingAvailability']['waitingListUrl']));
+            }
         }
         if (isset($data['childcare'])) {
             $subEventUpdate = $subEventUpdate->withChildcareTimeRange(

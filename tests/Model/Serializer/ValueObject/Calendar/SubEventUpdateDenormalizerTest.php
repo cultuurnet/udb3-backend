@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 final class SubEventUpdateDenormalizerTest extends TestCase
@@ -126,6 +127,57 @@ final class SubEventUpdateDenormalizerTest extends TestCase
         $update = $this->denormalizer->denormalize(['id' => 0, 'hasOvernightStay' => false], SubEventUpdate::class);
 
         $this->assertFalse($update->getHasOvernightStay());
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_the_waiting_list_url_without_booking_availability(): void
+    {
+        $update = $this->denormalizer->denormalize(['id' => 0], SubEventUpdate::class);
+
+        $this->assertFalse($update->updatesWaitingListUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_the_waiting_list_url_when_it_is_absent_from_booking_availability(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'bookingAvailability' => ['type' => 'Available']],
+            SubEventUpdate::class
+        );
+
+        $this->assertFalse($update->updatesWaitingListUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_the_waiting_list_url(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'bookingAvailability' => ['type' => 'Unavailable', 'waitingListUrl' => 'https://publiq.be/wachtlijst']],
+            SubEventUpdate::class
+        );
+
+        $this->assertTrue($update->updatesWaitingListUrl());
+        $this->assertEquals(new Url('https://publiq.be/wachtlijst'), $update->getWaitingListUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_the_waiting_list_url_when_it_is_null(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'bookingAvailability' => ['type' => 'Available', 'waitingListUrl' => null]],
+            SubEventUpdate::class
+        );
+
+        $this->assertTrue($update->updatesWaitingListUrl());
+        $this->assertNull($update->getWaitingListUrl());
     }
 
     /**
