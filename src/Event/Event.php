@@ -242,10 +242,17 @@ final class Event extends Offer
      */
     public function apply($event): void
     {
+        $calendarBefore = $this->calendar;
+        $wasDeleted = $this->isDeleted();
         // A copy starts from the state of the original, but all its links are new for the copy.
         $linksBefore = $event instanceof EventCopied ? new ReservationLinks() : $this->getReservationLinks();
 
         parent::apply($event);
+
+        // Most events don't touch the calendar or the deleted status, so there is nothing to compare.
+        if (!$event instanceof EventCopied && $this->calendar === $calendarBefore && $this->isDeleted() === $wasDeleted) {
+            return;
+        }
 
         $linksAfter = $this->getReservationLinks();
 
