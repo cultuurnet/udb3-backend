@@ -243,11 +243,11 @@ final class Event extends Offer
     public function apply($event): void
     {
         // A copy starts from the state of the original, but all its links are new for the copy.
-        $linksBefore = $event instanceof EventCopied ? new ReservationLinks() : ReservationLinks::fromCalendar($this->calendar);
+        $linksBefore = $event instanceof EventCopied ? new ReservationLinks() : $this->getReservationLinks();
 
         parent::apply($event);
 
-        $linksAfter = ReservationLinks::fromCalendar($this->calendar);
+        $linksAfter = $this->getReservationLinks();
 
         foreach ($linksBefore->notIn($linksAfter) as $removedLink) {
             parent::apply(new ReservationLinkRemoved($this->eventId, $removedLink));
@@ -256,6 +256,15 @@ final class Event extends Offer
         foreach ($linksAfter->notIn($linksBefore) as $addedLink) {
             parent::apply(new ReservationLinkAdded($this->eventId, $addedLink));
         }
+    }
+
+    /**
+     * A deleted event keeps its calendar, but its links no longer count: deleting the event removes them, and a
+     * calendar change on a deleted event adds none.
+     */
+    private function getReservationLinks(): ReservationLinks
+    {
+        return $this->isDeleted() ? new ReservationLinks() : ReservationLinks::fromCalendar($this->calendar);
     }
 
     protected function applyEventCreated(EventCreated $eventCreated): void
