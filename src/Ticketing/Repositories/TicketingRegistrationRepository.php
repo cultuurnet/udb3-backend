@@ -16,8 +16,6 @@ interface TicketingRegistrationRepository
 
     public function remove(Uuid $eventId, Url $reservationLink): void;
 
-    public function removeAllOfEvent(Uuid $eventId): void;
-
     public function findByEvent(Uuid $eventId): TicketingRegistrations;
 
     public function findByIdentifier(string $identifier): TicketingRegistrations;

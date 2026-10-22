@@ -47,11 +47,6 @@ final class DBALTicketingRegistrationRepository implements TicketingRegistration
         );
     }
 
-    public function removeAllOfEvent(Uuid $eventId): void
-    {
-        $this->connection->delete(self::TABLE, ['udb_event_id' => $eventId->toString()]);
-    }
-
     public function findByEvent(Uuid $eventId): TicketingRegistrations
     {
         $rows = $this->connection->createQueryBuilder()

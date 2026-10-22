@@ -71,22 +71,6 @@ final class DBALTicketingRegistrationRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_removes_all_registrations_of_an_event(): void
-    {
-        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_A)));
-        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_B)));
-        $other = new TicketingRegistration($this->otherEventId, new Url(self::LINK_A));
-        $this->repository->add($other);
-
-        $this->repository->removeAllOfEvent($this->eventId);
-
-        $this->assertEquals(new TicketingRegistrations(), $this->repository->findByEvent($this->eventId));
-        $this->assertEquals(new TicketingRegistrations($other), $this->repository->findByEvent($this->otherEventId));
-    }
-
-    /**
-     * @test
-     */
     public function it_sets_the_identifier_only_on_the_link_of_that_event(): void
     {
         $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_A)));
