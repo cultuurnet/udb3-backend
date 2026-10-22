@@ -10,6 +10,9 @@ interface CalendarWithSubEvents extends Calendar
 
     public function withStatusOnSubEvents(Status $status): CalendarWithSubEvents;
 
+    /**
+     * Only copies the type to the sub events, so their waiting list urls are kept.
+     */
     public function withBookingAvailabilityOnSubEvents(BookingAvailability $bookingAvailability): CalendarWithSubEvents;
 
     public function withHasOvernightStayOnSubEvents(?bool $hasOvernightStay): CalendarWithSubEvents;

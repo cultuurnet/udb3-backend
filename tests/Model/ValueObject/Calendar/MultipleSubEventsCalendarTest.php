@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 class MultipleSubEventsCalendarTest extends TestCase
@@ -162,6 +163,44 @@ class MultipleSubEventsCalendarTest extends TestCase
                 $subEvent->getBookingAvailability()
             );
         }
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_urls_when_setting_a_booking_availability_on_sub_events(): void
+    {
+        $calendar = new MultipleSubEventsCalendar(
+            new SubEvents(
+                new SubEvent(
+                    new DateRange(
+                        DateTimeFactory::fromFormat('d/m/Y', '10/12/2018'),
+                        DateTimeFactory::fromFormat('d/m/Y', '11/12/2018')
+                    ),
+                    new Status(StatusType::Available()),
+                    BookingAvailability::Available()
+                        ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                ),
+                new SubEvent(
+                    new DateRange(
+                        DateTimeFactory::fromFormat('d/m/Y', '12/12/2018'),
+                        DateTimeFactory::fromFormat('d/m/Y', '13/12/2018')
+                    ),
+                    new Status(StatusType::Available()),
+                    BookingAvailability::Available()
+                )
+            )
+        );
+
+        $subEvents = $calendar
+            ->withBookingAvailabilityOnSubEvents(BookingAvailability::Unavailable())
+            ->getSubEvents()->toArray();
+
+        $this->assertEquals(BookingAvailabilityType::Unavailable(), $subEvents[0]->getBookingAvailability()->getType());
+        $this->assertEquals(new Url('https://publiq.be/wachtlijst'), $subEvents[0]->getBookingAvailability()->getWaitingListUrl());
+
+        $this->assertEquals(BookingAvailabilityType::Unavailable(), $subEvents[1]->getBookingAvailability()->getType());
+        $this->assertNull($subEvents[1]->getBookingAvailability()->getWaitingListUrl());
     }
 
     /**
