@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
@@ -3714,6 +3715,41 @@ class EventTest extends AggregateRootScenarioTestCase
             ->given([$this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(self::RESERVATION_LINK_A))])
             ->when(fn (Event $event) => $event->updateTitle(new Language('nl'), new Title('Andere titel')))
             ->then([new TitleUpdated(self::EVENT_ID, 'Andere titel')]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_all_links_when_the_event_is_deleted(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar(
+                    $this->getMultipleCalendarWithLinks(self::RESERVATION_LINK_A, self::RESERVATION_LINK_B)
+                ),
+            ])
+            ->when(fn (Event $event) => $event->delete())
+            ->then([
+                new EventDeleted(self::EVENT_ID),
+                new ReservationLinkRemoved(self::EVENT_ID, new Url(self::RESERVATION_LINK_A)),
+                new ReservationLinkRemoved(self::EVENT_ID, new Url(self::RESERVATION_LINK_B)),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_add_links_to_a_deleted_event(): void
+    {
+        $calendar = $this->getSingleCalendarWithLink(self::RESERVATION_LINK_A);
+
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(null)),
+                new EventDeleted(self::EVENT_ID),
+            ])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([new CalendarUpdated(self::EVENT_ID, $calendar)]);
     }
 
     private function getCreationEventWithCalendar(Calendar $calendar): EventCreated
