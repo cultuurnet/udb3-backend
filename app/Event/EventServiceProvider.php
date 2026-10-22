@@ -12,6 +12,9 @@ use CultuurNet\UDB3\Event\ReadModel\Calendar\EventCalendarProjector;
 use CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Offer\OfferLocator;
+use CultuurNet\UDB3\Ticketing\Repositories\DBALTicketingRegistrationRepository;
+use CultuurNet\UDB3\Ticketing\Repositories\TicketingRegistrationRepository;
+use CultuurNet\UDB3\Ticketing\TicketingRegistrationsProjector;
 
 final class EventServiceProvider extends AbstractServiceProvider
 {
@@ -22,6 +25,8 @@ final class EventServiceProvider extends AbstractServiceProvider
             'event_store',
             'event_calendar_repository',
             'event_calendar_projector',
+            TicketingRegistrationRepository::class,
+            TicketingRegistrationsProjector::class,
             'events_locator_event_stream_decorator',
             'event_repository',
         ];
@@ -56,6 +61,19 @@ final class EventServiceProvider extends AbstractServiceProvider
             'event_calendar_projector',
             fn () => new EventCalendarProjector(
                 $container->get('event_calendar_repository')
+            )
+        );
+
+        $container->addShared(
+            TicketingRegistrationRepository::class,
+            fn () => new DBALTicketingRegistrationRepository($container->get('dbal_connection'))
+        );
+
+        $container->addShared(
+            TicketingRegistrationsProjector::class,
+            fn () => new TicketingRegistrationsProjector(
+                $container->get(TicketingRegistrationRepository::class),
+                $container->get('config')['ticketing']['ticketmatic']['reservation_link_hosts'] ?? []
             )
         );
 

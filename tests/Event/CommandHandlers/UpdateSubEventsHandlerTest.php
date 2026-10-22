@@ -12,6 +12,8 @@ use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
@@ -1095,6 +1097,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                         )->withBookingInfo(new SubEventBookingInfo(new Url('https://www.example.com/second')))
                     )
                 ),
+                new ReservationLinkRemoved('1', new Url('https://www.example.com/first')),
+                new ReservationLinkAdded('1', new Url('https://www.example.com/second')),
             ]);
     }
 
