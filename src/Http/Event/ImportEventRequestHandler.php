@@ -172,6 +172,9 @@ final class ImportEventRequestHandler implements RequestHandlerInterface
         $childrenOnly = $event->getChildrenOnly();
         $departurePlaces = $event->getDeparturePlaces();
 
+        // The aggregate also rejects this, but a new event is already saved by then. Checking the body here keeps a
+        // rejected request from creating half an event. The aggregate check stays for PUT /departure-places and for
+        // existing events without childrenOnly in the body.
         $isNotChildrenOnly = $childrenOnly === false || ($childrenOnly === null && !$eventExists);
         if ($departurePlaces !== null && !$departurePlaces->isEmpty() && $isNotChildrenOnly) {
             throw IncompatibleAudienceType::forDeparturePlaces($eventId);
