@@ -23,6 +23,7 @@ use CultuurNet\UDB3\Event\Commands\UpdateFaqs;
 use CultuurNet\UDB3\Event\Commands\UpdateLocation;
 use CultuurNet\UDB3\Event\Commands\UpdateOnlineUrl;
 use CultuurNet\UDB3\Event\Commands\UpdateTypicalAgeRange;
+use CultuurNet\UDB3\Event\IncompatibleAudienceType;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\Import\Taxonomy\Category\CategoryResolverInterface;
 use CultuurNet\UDB3\Model\ValueObject\Faq\Faq;
@@ -956,6 +957,7 @@ final class ImportEventRequestHandlerTest extends TestCase
                 'terms' => [['id' => '1.50.0.0.0']],
                 'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
                 'calendarType' => 'permanent',
+                'childrenOnly' => true,
                 'departurePlaces' => [
                     'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84',
                 ],
@@ -1069,7 +1071,7 @@ final class ImportEventRequestHandlerTest extends TestCase
      * @test
      * @dataProvider departurePlacesDataProvider
      */
-    public function it_only_updates_departure_places_when_sent_or_when_children_only_is_explicitly_false(
+    public function it_only_updates_departure_places_when_sent(
         array $extraData,
         array $expectedCommands
     ): void {
@@ -1135,8 +1137,101 @@ final class ImportEventRequestHandlerTest extends TestCase
             ],
             'childrenOnly explicitly false and departurePlaces not sent' => [
                 ['childrenOnly' => false],
+                [],
+            ],
+            'childrenOnly explicitly false and departurePlaces explicitly empty' => [
+                ['childrenOnly' => false, 'departurePlaces' => []],
                 [new UpdateDeparturePlaces($eventId, new Urls())],
             ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_dispatches_children_only_and_departure_places_before_the_other_commands(): void
+    {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+        $departurePlaceUrl = 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84';
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('eventId', $eventId)
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+                'terms' => [['id' => '1.50.0.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'permanent',
+                'childrenOnly' => true,
+                'departurePlaces' => [$departurePlaceUrl],
+            ])
+            ->build('PUT');
+
+        $this->importEventRequestHandler->handle($request);
+
+        $this->assertEquals(
+            [
+                new UpdateChildrenOnly($eventId, true),
+                new UpdateDeparturePlaces($eventId, new Urls(new Url($departurePlaceUrl))),
+            ],
+            array_slice($this->commandBus->getRecordedCommands(), 0, 2)
+        );
+    }
+
+    /**
+     * @test
+     * @dataProvider departurePlacesWithoutChildrenOnlyDataProvider
+     */
+    public function it_rejects_departure_places_without_children_only_before_saving_anything(
+        string $method,
+        array $extraData
+    ): void {
+        $eventId = 'f2850154-553a-4553-8d37-b32dd14546e4';
+
+        $this->uuidGenerator->method('generate')->willReturn($eventId);
+
+        $this->aggregateRepository->expects($this->never())
+            ->method('save');
+
+        $requestBuilder = new Psr7RequestBuilder();
+        if ($method === 'PUT') {
+            $requestBuilder = $requestBuilder->withRouteParameter('eventId', $eventId);
+        }
+
+        $request = $requestBuilder
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Pannenkoeken voor het goede doel'],
+                'terms' => [['id' => '1.50.0.0.0']],
+                'location' => ['@id' => 'https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+                'calendarType' => 'permanent',
+                'departurePlaces' => ['https://io.uitdatabank.dev/places/5cf42d51-3a4f-46f0-a8af-1cf672be8c84'],
+            ] + $extraData)
+            ->build($method);
+
+        try {
+            $this->importEventRequestHandler->handle($request);
+            $this->fail('Expected an IncompatibleAudienceType exception');
+        } catch (IncompatibleAudienceType $e) {
+            $this->assertEquals(
+                'Departure places can only be set on events where "childrenOnly" is true. Event: ' . $eventId,
+                $e->getMessage()
+            );
+        }
+
+        $this->assertEmpty($this->commandBus->getRecordedCommands());
+    }
+
+    public function departurePlacesWithoutChildrenOnlyDataProvider(): array
+    {
+        return [
+            'new event without childrenOnly' => ['POST', []],
+            'new event with childrenOnly false' => ['POST', ['childrenOnly' => false]],
+            'existing event with childrenOnly false' => ['PUT', ['childrenOnly' => false]],
         ];
     }
 
