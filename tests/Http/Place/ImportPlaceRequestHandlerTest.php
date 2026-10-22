@@ -31,6 +31,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
 use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
@@ -48,6 +49,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
@@ -5432,7 +5434,7 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                     ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']],
                 ],
                 'openingHoursClosedDays' => [
-                    ['startDate' => '2026-12-25', 'endDate' => '2026-12-26'],
+                    ['startDate' => '2026-12-25', 'endDate' => '2026-12-26', 'description' => ['nl' => 'Kerstdagen', 'en' => 'Christmas']],
                 ],
             ])
             ->build('PUT');
@@ -5455,7 +5457,14 @@ final class ImportPlaceRequestHandlerTest extends TestCase
             new ClosedDays(
                 new ClosedDay(
                     DateTimeFactory::fromDateOrISO8601('2026-12-25'),
-                    DateTimeFactory::fromDateOrISO8601('2026-12-26')
+                    DateTimeFactory::fromDateOrISO8601('2026-12-26'),
+                    (new TranslatedAdjustedDescription(
+                        new Language('nl'),
+                        new AdjustedDescription('Kerstdagen')
+                    ))->withTranslation(
+                        new Language('en'),
+                        new AdjustedDescription('Christmas')
+                    )
                 )
             )
         );
@@ -5535,6 +5544,70 @@ final class ImportPlaceRequestHandlerTest extends TestCase
                 ],
             ],
             [new SchemaError('/openingHoursClosedDays/0/endDate', 'endDate should not be before startDate')]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_closed_days_start_date_is_before_calendar_start_date(): void
+    {
+        $this->assertValidationErrors(
+            [
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Ongeldige plaats'],
+                'terms' => [['id' => 'Yf4aZBfsUEu2NsQqsprngw']],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-03-01T00:00:00+00:00',
+                'endDate' => '2026-12-31T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday']],
+                ],
+                'openingHoursClosedDays' => [
+                    ['startDate' => '2026-01-01', 'endDate' => '2026-01-01'],
+                ],
+            ],
+            [new SchemaError('/openingHoursClosedDays/0/startDate', 'the start date of a closed day should not be before the calendar start date')]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_closed_days_end_date_is_after_calendar_end_date(): void
+    {
+        $this->assertValidationErrors(
+            [
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Ongeldige plaats'],
+                'terms' => [['id' => 'Yf4aZBfsUEu2NsQqsprngw']],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-01-01T00:00:00+00:00',
+                'endDate' => '2026-11-30T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday']],
+                ],
+                'openingHoursClosedDays' => [
+                    ['startDate' => '2026-12-25', 'endDate' => '2026-12-25'],
+                ],
+            ],
+            [new SchemaError('/openingHoursClosedDays/0/endDate', 'the end date of a closed day should not be after the calendar end date')]
         );
     }
 

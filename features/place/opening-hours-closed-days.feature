@@ -82,32 +82,10 @@ Feature: Test opening hours closed days for places
     """
 
   Scenario: Update place calendar to add closed days
-    Given I create a random name of 6 characters
-    And I set the JSON request payload from "places/opening-hours-closed-days/place-periodic-without-closed-days.json"
-    And I send a POST request to "/places/"
-    And the response status should be "201"
-    And I keep the value of the JSON response at "url" as "placeUrl"
-    When I set the JSON request payload to:
-    """
-    {
-      "calendarType": "periodic",
-      "startDate": "2026-01-01T00:00:00+00:00",
-      "endDate": "2026-12-31T23:59:59+00:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "dayOfWeek": ["monday", "tuesday", "wednesday", "thursday", "friday"]
-        }
-      ],
-      "openingHoursClosedDays": [
-        {
-          "startDate": "2026-12-25",
-          "endDate": "2026-12-25"
-        }
-      ]
-    }
-    """
+    Given I create a place from "places/opening-hours-closed-days/place-periodic-without-closed-days.json" and save the "url" as "placeUrl"
+    When I set the variable "closedStartDate" to "2026-12-25"
+    And I set the variable "closedEndDate" to "2026-12-25"
+    And I set the JSON request payload from "places/opening-hours-closed-days/calendar-periodic-with-closed-day.json"
     And I send a PUT request to "%{placeUrl}/calendar"
     Then the response status should be "204"
     And I get the place at "%{placeUrl}"
@@ -121,12 +99,27 @@ Feature: Test opening hours closed days for places
     ]
     """
 
+  Scenario: Update permanent place calendar to periodic with closed days
+    Given I create a place from "places/opening-hours-closed-days/place-permanent-without-closed-days.json" and save the "url" as "placeUrl"
+    When I set the variable "closedStartDate" to "2026-07-21"
+    And I set the variable "closedEndDate" to "2026-07-21"
+    And I set the JSON request payload from "places/opening-hours-closed-days/calendar-periodic-with-closed-day.json"
+    And I send a PUT request to "%{placeUrl}/calendar"
+    Then the response status should be "204"
+    And I get the place at "%{placeUrl}"
+    Then the JSON response at "calendarType" should be "periodic"
+    And the JSON response at "openingHoursClosedDays" should be:
+    """
+    [
+      {
+        "startDate": "2026-07-21",
+        "endDate": "2026-07-21"
+      }
+    ]
+    """
+
   Scenario: Update place calendar to replace existing closed days
-    Given I create a random name of 6 characters
-    And I set the JSON request payload from "places/opening-hours-closed-days/place-periodic-with-closed-days.json"
-    And I send a POST request to "/places/"
-    And the response status should be "201"
-    And I keep the value of the JSON response at "url" as "placeUrl"
+    Given I create a place from "places/opening-hours-closed-days/place-periodic-with-closed-days.json" and save the "url" as "placeUrl"
     When I set the JSON request payload to:
     """
     {
@@ -164,11 +157,7 @@ Feature: Test opening hours closed days for places
     """
 
   Scenario: Clear closed days by updating calendar without the field
-    Given I create a random name of 6 characters
-    And I set the JSON request payload from "places/opening-hours-closed-days/place-periodic-with-closed-days.json"
-    And I send a POST request to "/places/"
-    And the response status should be "201"
-    And I keep the value of the JSON response at "url" as "placeUrl"
+    Given I create a place from "places/opening-hours-closed-days/place-periodic-with-closed-days.json" and save the "url" as "placeUrl"
     When I set the JSON request payload to:
     """
     {
@@ -226,32 +215,10 @@ Feature: Test opening hours closed days for places
     And the JSON response at "schemaErrors/0/error" should be "the end date of a closed day should not be after the calendar end date"
 
   Scenario: Cannot update place calendar when closed day is invalid
-    Given I create a random name of 6 characters
-    And I set the JSON request payload from "places/opening-hours-closed-days/place-periodic-without-closed-days.json"
-    And I send a POST request to "/places/"
-    And the response status should be "201"
-    And I keep the value of the JSON response at "url" as "placeUrl"
-    When I set the JSON request payload to:
-    """
-    {
-      "calendarType": "periodic",
-      "startDate": "2026-01-01T00:00:00+00:00",
-      "endDate": "2026-12-31T23:59:59+00:00",
-      "openingHours": [
-        {
-          "opens": "09:00",
-          "closes": "17:00",
-          "dayOfWeek": ["monday"]
-        }
-      ],
-      "openingHoursClosedDays": [
-        {
-          "startDate": "2026-12-25",
-          "endDate": "2026-12-24"
-        }
-      ]
-    }
-    """
+    Given I create a place from "places/opening-hours-closed-days/place-periodic-without-closed-days.json" and save the "url" as "placeUrl"
+    When I set the variable "closedStartDate" to "2026-12-25"
+    And I set the variable "closedEndDate" to "2026-12-24"
+    And I set the JSON request payload from "places/opening-hours-closed-days/calendar-periodic-with-closed-day.json"
     And I send a PUT request to "%{placeUrl}/calendar"
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/openingHoursClosedDays/0/endDate"

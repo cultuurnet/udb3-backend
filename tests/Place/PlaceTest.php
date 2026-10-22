@@ -671,8 +671,8 @@ class PlaceTest extends AggregateRootScenarioTestCase
         ))->withClosedDays(
             new ClosedDays(
                 new ClosedDay(
-                    DateTimeFactory::fromISO8601('2026-12-25T00:00:00+00:00'),
-                    DateTimeFactory::fromISO8601('2026-12-26T23:59:59+00:00')
+                    DateTimeFactory::fromDateOrISO8601('2026-12-25'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-26')
                 )
             )
         );
@@ -695,16 +695,16 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $oldCalendar = (new PermanentCalendar(new OpeningHours()))->withClosedDays(
             new ClosedDays(
                 new ClosedDay(
-                    DateTimeFactory::fromISO8601('2026-12-25T00:00:00+00:00'),
-                    DateTimeFactory::fromISO8601('2026-12-25T23:59:59+00:00')
+                    DateTimeFactory::fromDateOrISO8601('2026-12-25'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-25')
                 )
             )
         );
         $newCalendar = (new PermanentCalendar(new OpeningHours()))->withClosedDays(
             new ClosedDays(
                 new ClosedDay(
-                    DateTimeFactory::fromISO8601('2026-12-31T00:00:00+00:00'),
-                    DateTimeFactory::fromISO8601('2026-12-31T23:59:59+00:00')
+                    DateTimeFactory::fromDateOrISO8601('2026-12-31'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-31')
                 )
             )
         );
@@ -730,8 +730,8 @@ class PlaceTest extends AggregateRootScenarioTestCase
         $oldCalendar = (new PermanentCalendar(new OpeningHours()))->withClosedDays(
             new ClosedDays(
                 new ClosedDay(
-                    DateTimeFactory::fromISO8601('2026-12-25T00:00:00+00:00'),
-                    DateTimeFactory::fromISO8601('2026-12-25T23:59:59+00:00')
+                    DateTimeFactory::fromDateOrISO8601('2026-12-25'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-25')
                 )
             )
         );
@@ -745,6 +745,30 @@ class PlaceTest extends AggregateRootScenarioTestCase
             ])
             ->when(fn (Place $place) => $place->updateCalendar($newCalendar))
             ->then([new CalendarUpdated($placeId, $newCalendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_record_calendar_updated_when_closed_days_are_unchanged(): void
+    {
+        $placeCreated = $this->createPlaceCreatedEvent();
+        $placeId = $placeCreated->getPlaceId();
+
+        $calendar = (new PermanentCalendar(new OpeningHours()))->withClosedDays(
+            new ClosedDays(
+                new ClosedDay(
+                    DateTimeFactory::fromDateOrISO8601('2026-12-25'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-25')
+                )
+            )
+        );
+
+        $this->scenario
+            ->withAggregateId($placeId)
+            ->given([$placeCreated, new CalendarUpdated($placeId, $calendar)])
+            ->when(fn (Place $place) => $place->updateCalendar($calendar))
+            ->then([]);
     }
 
     /**
@@ -776,6 +800,55 @@ class PlaceTest extends AggregateRootScenarioTestCase
             ->given([$placeCreated])
             ->when(fn (Place $place) => $place->updateCalendar($calendar))
             ->then([new CalendarUpdated($placeId, $calendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_replaces_adjusted_days_when_updating_calendar(): void
+    {
+        $placeCreated = $this->createPlaceCreatedEvent();
+        $placeId = $placeCreated->getPlaceId();
+
+        $oldCalendar = (new PermanentCalendar(new OpeningHours()))->withAdjustedDays(
+            new AdjustedDays(
+                new AdjustedDay(
+                    DateTimeFactory::fromDateOrISO8601('2026-12-21'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-26'),
+                    new OpeningHours(
+                        new OpeningHour(
+                            new Days(Day::friday()),
+                            new Time(new Hour(13), new Minute(0)),
+                            new Time(new Hour(15), new Minute(0))
+                        )
+                    )
+                )
+            )
+        );
+        $newCalendar = (new PermanentCalendar(new OpeningHours()))->withAdjustedDays(
+            new AdjustedDays(
+                new AdjustedDay(
+                    DateTimeFactory::fromDateOrISO8601('2026-12-28'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-31'),
+                    new OpeningHours(
+                        new OpeningHour(
+                            new Days(Day::monday(), Day::tuesday()),
+                            new Time(new Hour(10), new Minute(0)),
+                            new Time(new Hour(12), new Minute(0))
+                        )
+                    )
+                )
+            )
+        );
+
+        $this->scenario
+            ->withAggregateId($placeId)
+            ->given([
+                $placeCreated,
+                new CalendarUpdated($placeId, $oldCalendar),
+            ])
+            ->when(fn (Place $place) => $place->updateCalendar($newCalendar))
+            ->then([new CalendarUpdated($placeId, $newCalendar)]);
     }
 
     /**
