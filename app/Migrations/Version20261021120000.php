@@ -23,16 +23,12 @@ final class Version20261021120000 extends AbstractMigration
             ->setLength(512)
             ->setNotnull(true);
 
-        $table->addColumn('source', Types::STRING)
-            ->setLength(16)
-            ->setNotnull(true);
-
         $table->addColumn('identifier', Types::STRING)
             ->setLength(255)
             ->setNotnull(false)
             ->setDefault(null);
 
-        $table->setPrimaryKey(['udb_event_id', 'reservation_link', 'source']);
+        $table->setPrimaryKey(['udb_event_id', 'reservation_link']);
         $table->addIndex(['identifier'], 'ticketing_registrations_identifier');
     }
 

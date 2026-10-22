@@ -14,18 +14,17 @@ interface TicketingRegistrationRepository
      */
     public function add(TicketingRegistration $registration): void;
 
-    public function remove(Uuid $eventId, Url $reservationLink, RegistrationSource $source): void;
+    public function remove(Uuid $eventId, Url $reservationLink): void;
 
     public function removeAllOfEvent(Uuid $eventId): void;
 
-    public function findByEvent(Uuid $eventId, RegistrationSource $source): TicketingRegistrations;
+    public function findByEvent(Uuid $eventId): TicketingRegistrations;
 
     public function findByIdentifier(string $identifier): TicketingRegistrations;
 
     public function findWithoutIdentifier(): TicketingRegistrations;
 
     /**
-     * Sets the identifier on every row of the event with this link, on the top level and on its subEvents.
      * Does nothing when the link was removed from the event in the meantime.
      */
     public function setIdentifier(Uuid $eventId, Url $reservationLink, string $identifier): void;

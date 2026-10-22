@@ -31,15 +31,15 @@ final class DBALTicketingRegistrationRepositoryTest extends TestCase
     /**
      * @test
      */
-    public function it_finds_the_registrations_of_an_event_per_source(): void
+    public function it_finds_the_registrations_of_an_event(): void
     {
-        $topLevel = new TicketingRegistration($this->eventId, new Url(self::LINK_A), RegistrationSource::TopLevel);
-        $subEvent = new TicketingRegistration($this->eventId, new Url(self::LINK_A), RegistrationSource::SubEvent);
-        $this->repository->add($topLevel);
-        $this->repository->add($subEvent);
+        $linkA = new TicketingRegistration($this->eventId, new Url(self::LINK_A));
+        $linkB = new TicketingRegistration($this->eventId, new Url(self::LINK_B));
+        $this->repository->add($linkA);
+        $this->repository->add($linkB);
+        $this->repository->add(new TicketingRegistration($this->otherEventId, new Url(self::LINK_A)));
 
-        $this->assertEquals(new TicketingRegistrations($topLevel), $this->repository->findByEvent($this->eventId, RegistrationSource::TopLevel));
-        $this->assertEquals(new TicketingRegistrations($subEvent), $this->repository->findByEvent($this->eventId, RegistrationSource::SubEvent));
+        $this->assertEquals(new TicketingRegistrations($linkA, $linkB), $this->repository->findByEvent($this->eventId));
     }
 
     /**
@@ -47,11 +47,11 @@ final class DBALTicketingRegistrationRepositoryTest extends TestCase
      */
     public function it_ignores_adding_a_registration_twice(): void
     {
-        $registration = new TicketingRegistration($this->eventId, new Url(self::LINK_A), RegistrationSource::SubEvent);
+        $registration = new TicketingRegistration($this->eventId, new Url(self::LINK_A));
         $this->repository->add($registration);
         $this->repository->add($registration);
 
-        $this->assertEquals(new TicketingRegistrations($registration), $this->repository->findByEvent($this->eventId, RegistrationSource::SubEvent));
+        $this->assertEquals(new TicketingRegistrations($registration), $this->repository->findByEvent($this->eventId));
     }
 
     /**
@@ -59,13 +59,13 @@ final class DBALTicketingRegistrationRepositoryTest extends TestCase
      */
     public function it_removes_one_registration(): void
     {
-        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_A), RegistrationSource::SubEvent));
-        $kept = new TicketingRegistration($this->eventId, new Url(self::LINK_B), RegistrationSource::SubEvent);
+        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_A)));
+        $kept = new TicketingRegistration($this->eventId, new Url(self::LINK_B));
         $this->repository->add($kept);
 
-        $this->repository->remove($this->eventId, new Url(self::LINK_A), RegistrationSource::SubEvent);
+        $this->repository->remove($this->eventId, new Url(self::LINK_A));
 
-        $this->assertEquals(new TicketingRegistrations($kept), $this->repository->findByEvent($this->eventId, RegistrationSource::SubEvent));
+        $this->assertEquals(new TicketingRegistrations($kept), $this->repository->findByEvent($this->eventId));
     }
 
     /**
@@ -73,39 +73,33 @@ final class DBALTicketingRegistrationRepositoryTest extends TestCase
      */
     public function it_removes_all_registrations_of_an_event(): void
     {
-        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_A), RegistrationSource::TopLevel));
-        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_B), RegistrationSource::SubEvent));
-        $other = new TicketingRegistration($this->otherEventId, new Url(self::LINK_A), RegistrationSource::TopLevel);
+        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_A)));
+        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_B)));
+        $other = new TicketingRegistration($this->otherEventId, new Url(self::LINK_A));
         $this->repository->add($other);
 
         $this->repository->removeAllOfEvent($this->eventId);
 
-        $this->assertEquals(new TicketingRegistrations(), $this->repository->findByEvent($this->eventId, RegistrationSource::TopLevel));
-        $this->assertEquals(new TicketingRegistrations(), $this->repository->findByEvent($this->eventId, RegistrationSource::SubEvent));
-        $this->assertEquals(new TicketingRegistrations($other), $this->repository->findByEvent($this->otherEventId, RegistrationSource::TopLevel));
+        $this->assertEquals(new TicketingRegistrations(), $this->repository->findByEvent($this->eventId));
+        $this->assertEquals(new TicketingRegistrations($other), $this->repository->findByEvent($this->otherEventId));
     }
 
     /**
      * @test
      */
-    public function it_sets_the_identifier_on_every_row_of_the_event_with_that_link(): void
+    public function it_sets_the_identifier_only_on_the_link_of_that_event(): void
     {
-        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_A), RegistrationSource::TopLevel));
-        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_A), RegistrationSource::SubEvent));
-        $this->repository->add(new TicketingRegistration($this->otherEventId, new Url(self::LINK_A), RegistrationSource::TopLevel));
+        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_A)));
+        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_B)));
+        $this->repository->add(new TicketingRegistration($this->otherEventId, new Url(self::LINK_A)));
 
         $this->repository->setIdentifier($this->eventId, new Url(self::LINK_A), 'ticketmatic:cultuurhuis:1001');
 
-        $found = $this->repository->findByIdentifier('ticketmatic:cultuurhuis:1001');
-
-        $this->assertCount(2, $found);
-        $this->assertContainsEquals(
-            new TicketingRegistration($this->eventId, new Url(self::LINK_A), RegistrationSource::TopLevel, 'ticketmatic:cultuurhuis:1001'),
-            $found->toArray()
-        );
-        $this->assertContainsEquals(
-            new TicketingRegistration($this->eventId, new Url(self::LINK_A), RegistrationSource::SubEvent, 'ticketmatic:cultuurhuis:1001'),
-            $found->toArray()
+        $this->assertEquals(
+            new TicketingRegistrations(
+                new TicketingRegistration($this->eventId, new Url(self::LINK_A), 'ticketmatic:cultuurhuis:1001')
+            ),
+            $this->repository->findByIdentifier('ticketmatic:cultuurhuis:1001')
         );
     }
 
@@ -124,8 +118,8 @@ final class DBALTicketingRegistrationRepositoryTest extends TestCase
      */
     public function it_finds_the_registrations_of_several_events_by_identifier(): void
     {
-        $original = new TicketingRegistration($this->eventId, new Url(self::LINK_A), RegistrationSource::SubEvent, 'ticketmatic:cultuurhuis:2002');
-        $copy = new TicketingRegistration($this->otherEventId, new Url(self::LINK_A), RegistrationSource::SubEvent, 'ticketmatic:cultuurhuis:2002');
+        $original = new TicketingRegistration($this->eventId, new Url(self::LINK_A), 'ticketmatic:cultuurhuis:2002');
+        $copy = new TicketingRegistration($this->otherEventId, new Url(self::LINK_A), 'ticketmatic:cultuurhuis:2002');
         $this->repository->add($original);
         $this->repository->add($copy);
 
@@ -141,8 +135,8 @@ final class DBALTicketingRegistrationRepositoryTest extends TestCase
      */
     public function it_finds_the_registrations_without_identifier(): void
     {
-        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_A), RegistrationSource::TopLevel, 'ticketmatic:cultuurhuis:1001'));
-        $unregistered = new TicketingRegistration($this->eventId, new Url(self::LINK_B), RegistrationSource::SubEvent);
+        $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_A), 'ticketmatic:cultuurhuis:1001'));
+        $unregistered = new TicketingRegistration($this->eventId, new Url(self::LINK_B));
         $this->repository->add($unregistered);
 
         $this->assertEquals(new TicketingRegistrations($unregistered), $this->repository->findWithoutIdentifier());
