@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Ticketing;
 
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -47,6 +48,18 @@ final class TicketingRegistrationsProjector implements EventListener
                 new Uuid($reservationLinkAdded->getItemId()),
                 $reservationLinkAdded->reservationLink
             )
+        );
+    }
+
+    /**
+     * No host check here: removing a link that was never stored does nothing, and this way a link is still cleaned up
+     * when its host is no longer configured.
+     */
+    protected function applyReservationLinkRemoved(ReservationLinkRemoved $reservationLinkRemoved): void
+    {
+        $this->repository->remove(
+            new Uuid($reservationLinkRemoved->getItemId()),
+            $reservationLinkRemoved->reservationLink
         );
     }
 

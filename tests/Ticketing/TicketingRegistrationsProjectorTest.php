@@ -107,18 +107,29 @@ final class TicketingRegistrationsProjectorTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_handle_removed_links_yet(): void
+    public function it_removes_the_registration_of_a_removed_link(): void
     {
-        $this->repository->expects($this->never())->method($this->anything());
+        $link = new Url('https://leuven-school-met-cultuur.ticketmatic.com/30cc/register/12345');
 
-        $this->projector->handle(
-            $this->domainMessage(
-                new ReservationLinkRemoved(
-                    self::EVENT_ID,
-                    new Url('https://leuven-school-met-cultuur.ticketmatic.com/30cc/register/12345')
-                )
-            )
-        );
+        $this->repository->expects($this->once())
+            ->method('remove')
+            ->with(new Uuid(self::EVENT_ID), $link);
+
+        $this->projector->handle($this->domainMessage(new ReservationLinkRemoved(self::EVENT_ID, $link)));
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_a_link_on_a_host_that_is_no_longer_configured(): void
+    {
+        $link = new Url('https://www.example.com/tickets');
+
+        $this->repository->expects($this->once())
+            ->method('remove')
+            ->with(new Uuid(self::EVENT_ID), $link);
+
+        $this->projector->handle($this->domainMessage(new ReservationLinkRemoved(self::EVENT_ID, $link)));
     }
 
     private function domainMessage(object $payload): DomainMessage
