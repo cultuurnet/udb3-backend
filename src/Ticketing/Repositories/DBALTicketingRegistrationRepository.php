@@ -59,6 +59,7 @@ final class DBALTicketingRegistrationRepository implements TicketingRegistration
             ->from(self::TABLE)
             ->where('udb_event_id = :eventId')
             ->setParameter(':eventId', $eventId->toString())
+            ->orderBy('reservation_link')
             ->execute()
             ->fetchAllAssociative();
 
@@ -72,6 +73,8 @@ final class DBALTicketingRegistrationRepository implements TicketingRegistration
             ->from(self::TABLE)
             ->where('identifier = :identifier')
             ->setParameter(':identifier', $identifier)
+            ->orderBy('udb_event_id')
+            ->addOrderBy('reservation_link')
             ->execute()
             ->fetchAllAssociative();
 
@@ -84,6 +87,8 @@ final class DBALTicketingRegistrationRepository implements TicketingRegistration
             ->select('*')
             ->from(self::TABLE)
             ->where('identifier IS NULL')
+            ->orderBy('udb_event_id')
+            ->addOrderBy('reservation_link')
             ->execute()
             ->fetchAllAssociative();
 
