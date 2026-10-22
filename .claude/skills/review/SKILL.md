@@ -1,6 +1,7 @@
 ---
 name: review
 description: Review a pull request, a branch or local uncommitted work the publiq way, functional first (does it do what the ticket asks, without side effects, tested well) and technical second (design, guidelines, naming). Reports real issues and nits separately, short and without repetition. Use whenever asked to review a PR, a branch or the current changes.
+user-invocable: true
 ---
 
 # Reviewing a pull request
