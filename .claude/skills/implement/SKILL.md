@@ -28,11 +28,11 @@ Reproduce the ticket in a test before fixing anything, so the test fails first.
 
 Follow the existing patterns in the file and package. Do not introduce a new style.
 
-One logical change per commit, ordered by cause and effect, subject lines short and imperative with no ticket prefix. A first commit may set up the failing test, a second one makes it pass.
+Do not commit while implementing. The work stays uncommitted in the working tree until it has been reviewed and the commits are asked for.
+
+Then split it into one logical change per commit, ordered by cause and effect, subject lines short and imperative with no ticket prefix. A first commit may set up the failing test, a second one makes it pass.
 
 Let the commit body flow as plain sentences without hard wrapping at 80 characters. The viewer reflows; wrapped text only looks ragged.
-
-Do not commit while implementing. The work stays uncommitted in the working tree until it has been reviewed and the commits are asked for. Then split it into the commits described above.
 
 ## Tests
 
