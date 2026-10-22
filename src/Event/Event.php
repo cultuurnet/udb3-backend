@@ -56,6 +56,8 @@ use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
+use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
@@ -80,6 +82,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ReservationLinks;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
@@ -231,6 +234,28 @@ final class Event extends Offer
     public function getAggregateRootId(): string
     {
         return $this->eventId;
+    }
+
+    /**
+     * Every new event passes through here, so a change of the reservation links on the subEvents is recorded
+     * whichever way the calendar was changed. Loading the aggregate doesn't call apply(), so nothing is derived twice.
+     */
+    public function apply($event): void
+    {
+        // A copy starts from the state of the original, but all its links are new for the copy.
+        $linksBefore = $event instanceof EventCopied ? new ReservationLinks() : ReservationLinks::fromCalendar($this->calendar);
+
+        parent::apply($event);
+
+        $linksAfter = ReservationLinks::fromCalendar($this->calendar);
+
+        foreach ($linksBefore->notIn($linksAfter) as $removedLink) {
+            parent::apply(new ReservationLinkRemoved($this->eventId, $removedLink));
+        }
+
+        foreach ($linksAfter->notIn($linksBefore) as $addedLink) {
+            parent::apply(new ReservationLinkAdded($this->eventId, $addedLink));
+        }
     }
 
     protected function applyEventCreated(EventCreated $eventCreated): void
