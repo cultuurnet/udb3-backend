@@ -146,3 +146,19 @@ Feature: Test event childrenOnly property
     And I get the event at "%{eventUrl}"
     Then the JSON response should not have "childrenOnly"
     And the JSON response should not have "departurePlaces"
+
+  Scenario: Disabling childrenOnly via PUT children-only removes the departure places
+    Given I create a minimal place and save the "url" as "departurePlaceUrl1"
+    And I create a minimal place and save the "url" as "departurePlaceUrl2"
+    When I create an event from "events/departure-places/event-with-2-departure-places.json" and save the "url" as "eventUrl"
+    And I set the JSON request payload to:
+    """
+    {
+      "childrenOnly": false
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/children-only"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response should not have "childrenOnly"
+    And the JSON response should not have "departurePlaces"
