@@ -11,18 +11,15 @@ final class TicketingRegistration
 {
     private Uuid $eventId;
     private Url $reservationLink;
-    private RegistrationSource $source;
     private ?string $identifier;
 
     public function __construct(
         Uuid $eventId,
         Url $reservationLink,
-        RegistrationSource $source,
         ?string $identifier = null
     ) {
         $this->eventId = $eventId;
         $this->reservationLink = $reservationLink;
-        $this->source = $source;
         $this->identifier = $identifier;
     }
 
@@ -34,11 +31,6 @@ final class TicketingRegistration
     public function getReservationLink(): Url
     {
         return $this->reservationLink;
-    }
-
-    public function getSource(): RegistrationSource
-    {
-        return $this->source;
     }
 
     public function getIdentifier(): ?string

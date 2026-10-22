@@ -28,23 +28,21 @@ final class DBALTicketingRegistrationRepository implements TicketingRegistration
                 [
                     'udb_event_id' => $registration->getEventId()->toString(),
                     'reservation_link' => $registration->getReservationLink()->toString(),
-                    'source' => $registration->getSource()->value,
                     'identifier' => $registration->getIdentifier(),
                 ]
             );
         } catch (UniqueConstraintViolationException) {
-            // The link is already stored for this event and source.
+            // The link is already stored for this event.
         }
     }
 
-    public function remove(Uuid $eventId, Url $reservationLink, RegistrationSource $source): void
+    public function remove(Uuid $eventId, Url $reservationLink): void
     {
         $this->connection->delete(
             self::TABLE,
             [
                 'udb_event_id' => $eventId->toString(),
                 'reservation_link' => $reservationLink->toString(),
-                'source' => $source->value,
             ]
         );
     }
@@ -54,15 +52,13 @@ final class DBALTicketingRegistrationRepository implements TicketingRegistration
         $this->connection->delete(self::TABLE, ['udb_event_id' => $eventId->toString()]);
     }
 
-    public function findByEvent(Uuid $eventId, RegistrationSource $source): TicketingRegistrations
+    public function findByEvent(Uuid $eventId): TicketingRegistrations
     {
         $rows = $this->connection->createQueryBuilder()
             ->select('*')
             ->from(self::TABLE)
             ->where('udb_event_id = :eventId')
-            ->andWhere('source = :source')
             ->setParameter(':eventId', $eventId->toString())
-            ->setParameter(':source', $source->value)
             ->execute()
             ->fetchAllAssociative();
 
@@ -118,7 +114,6 @@ final class DBALTicketingRegistrationRepository implements TicketingRegistration
         return new TicketingRegistration(
             new Uuid($row['udb_event_id']),
             new Url($row['reservation_link']),
-            RegistrationSource::from($row['source']),
             $row['identifier']
         );
     }
