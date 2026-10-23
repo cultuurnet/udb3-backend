@@ -117,6 +117,29 @@ Feature: Test SubEvent waiting list url
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/subEvent/0/bookingAvailability/waitingListUrl"
 
+  Scenario: A PATCH with a waiting list url but without type is rejected
+    Given I create an event from "events/sub-event-waiting-list/event-multiple.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    [{"id": 0, "bookingAvailability": {"waitingListUrl": "https://publiq.be/wachtlijst"}}]
+    """
+    And I send a PATCH request to "%{eventUrl}/sub-events"
+    Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/body/invalid-data",
+      "title": "Invalid body data",
+      "status": 400,
+      "schemaErrors": [
+        {
+          "jsonPointer": "/0/bookingAvailability",
+          "error": "The required properties (type) are missing"
+        }
+      ]
+    }
+    """
+
   Scenario: An invalid waiting list url is rejected
     Given I create an event from "events/sub-event-waiting-list/event-multiple.json" and save the "url" as "eventUrl"
     When I set the JSON request payload to:
