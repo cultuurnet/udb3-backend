@@ -30,6 +30,13 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\Serializer\Place\PlaceDenormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoDenormalizer;
+use CultuurNet\UDB3\DateTimeFactory;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\AdjustedDescription;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDays;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDay;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\ClosedDays;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Day;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Days;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Hour;
@@ -37,10 +44,12 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Minute;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHour;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedStatusReason;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
@@ -5302,6 +5311,304 @@ final class ImportPlaceRequestHandlerTest extends TestCase
 
         $this->assertEquals($expectedResponse->getBody()->getContents(), $response->getBody()->getContents());
         $this->assertEquals($expectedResponse->getStatusCode(), $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_an_existing_periodic_place_with_adjusted_opening_hours(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('load')
+            ->with($placeId);
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('placeId', $placeId)
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Plaats met aangepaste openingsuren'],
+                'terms' => [['id' => 'Yf4aZBfsUEu2NsQqsprngw']],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-01-01T00:00:00+00:00',
+                'endDate' => '2026-12-31T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']],
+                ],
+                'openingHoursAdjustedDays' => [
+                    [
+                        'startDate' => '2026-12-21',
+                        'endDate' => '2026-12-26',
+                        'openingHours' => [
+                            ['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday', 'saturday', 'sunday']],
+                        ],
+                    ],
+                ],
+            ])
+            ->build('PUT');
+
+        $this->importPlaceRequestHandler->handle($request);
+
+        $expectedCalendar = (new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2026-01-01T00:00:00+00:00'),
+                DateTimeFactory::fromAtom('2026-12-31T23:59:59+00:00')
+            ),
+            new OpeningHours(
+                new OpeningHour(
+                    new Days(Day::monday(), Day::tuesday(), Day::wednesday(), Day::thursday(), Day::friday()),
+                    new Time(new Hour(9), new Minute(0)),
+                    new Time(new Hour(17), new Minute(0))
+                )
+            )
+        ))->withAdjustedDays(
+            new AdjustedDays(
+                new AdjustedDay(
+                    DateTimeFactory::fromDateOrISO8601('2026-12-21'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-26'),
+                    new OpeningHours(
+                        new OpeningHour(
+                            new Days(Day::friday(), Day::saturday(), Day::sunday()),
+                            new Time(new Hour(13), new Minute(0)),
+                            new Time(new Hour(15), new Minute(0))
+                        )
+                    )
+                )
+            )
+        );
+
+        $updateCalendarCommand = current(array_filter(
+            $this->commandBus->getRecordedCommands(),
+            fn ($cmd) => $cmd instanceof UpdateCalendar
+        ));
+
+        $this->assertEquals(new UpdateCalendar($placeId, $expectedCalendar), $updateCalendarCommand);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_an_existing_periodic_place_with_closed_days(): void
+    {
+        $placeId = 'c4f1515a-7a73-4e18-a53a-9bf201d6fc9b';
+
+        $this->aggregateRepository->expects($this->once())
+            ->method('load')
+            ->with($placeId);
+
+        $this->imageCollectionFactory->expects($this->once())
+            ->method('fromImages')
+            ->willReturn(new ImageCollection());
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('placeId', $placeId)
+            ->withJsonBodyFromArray([
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Plaats met gesloten dagen'],
+                'terms' => [['id' => 'Yf4aZBfsUEu2NsQqsprngw']],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-01-01T00:00:00+00:00',
+                'endDate' => '2026-12-31T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']],
+                ],
+                'openingHoursClosedDays' => [
+                    ['startDate' => '2026-12-25', 'endDate' => '2026-12-26', 'description' => ['nl' => 'Kerstdagen', 'en' => 'Christmas']],
+                ],
+            ])
+            ->build('PUT');
+
+        $this->importPlaceRequestHandler->handle($request);
+
+        $expectedCalendar = (new PeriodicCalendar(
+            new DateRange(
+                DateTimeFactory::fromAtom('2026-01-01T00:00:00+00:00'),
+                DateTimeFactory::fromAtom('2026-12-31T23:59:59+00:00')
+            ),
+            new OpeningHours(
+                new OpeningHour(
+                    new Days(Day::monday(), Day::tuesday(), Day::wednesday(), Day::thursday(), Day::friday()),
+                    new Time(new Hour(9), new Minute(0)),
+                    new Time(new Hour(17), new Minute(0))
+                )
+            )
+        ))->withClosedDays(
+            new ClosedDays(
+                new ClosedDay(
+                    DateTimeFactory::fromDateOrISO8601('2026-12-25'),
+                    DateTimeFactory::fromDateOrISO8601('2026-12-26'),
+                    (new TranslatedAdjustedDescription(
+                        new Language('nl'),
+                        new AdjustedDescription('Kerstdagen')
+                    ))->withTranslation(
+                        new Language('en'),
+                        new AdjustedDescription('Christmas')
+                    )
+                )
+            )
+        );
+
+        $updateCalendarCommand = current(array_filter(
+            $this->commandBus->getRecordedCommands(),
+            fn ($cmd) => $cmd instanceof UpdateCalendar
+        ));
+
+        $this->assertEquals(new UpdateCalendar($placeId, $expectedCalendar), $updateCalendarCommand);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_adjusted_days_start_date_is_after_end_date(): void
+    {
+        $this->assertValidationErrors(
+            [
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Ongeldige plaats'],
+                'terms' => [['id' => 'Yf4aZBfsUEu2NsQqsprngw']],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-01-01T00:00:00+00:00',
+                'endDate' => '2026-12-31T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday']],
+                ],
+                'openingHoursAdjustedDays' => [
+                    [
+                        'startDate' => '2026-12-26',
+                        'endDate' => '2026-12-21',
+                        'openingHours' => [
+                            ['opens' => '13:00', 'closes' => '15:00', 'dayOfWeek' => ['friday']],
+                        ],
+                    ],
+                ],
+            ],
+            [new SchemaError('/openingHoursAdjustedDays/0/endDate', 'startDate should not be later than endDate')]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_closed_days_end_date_is_before_start_date(): void
+    {
+        $this->assertValidationErrors(
+            [
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Ongeldige plaats'],
+                'terms' => [['id' => 'Yf4aZBfsUEu2NsQqsprngw']],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-01-01T00:00:00+00:00',
+                'endDate' => '2026-12-31T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday']],
+                ],
+                'openingHoursClosedDays' => [
+                    ['startDate' => '2026-12-25', 'endDate' => '2026-12-24'],
+                ],
+            ],
+            [new SchemaError('/openingHoursClosedDays/0/endDate', 'endDate should not be before startDate')]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_closed_days_start_date_is_before_calendar_start_date(): void
+    {
+        $this->assertValidationErrors(
+            [
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Ongeldige plaats'],
+                'terms' => [['id' => 'Yf4aZBfsUEu2NsQqsprngw']],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-03-01T00:00:00+00:00',
+                'endDate' => '2026-12-31T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday']],
+                ],
+                'openingHoursClosedDays' => [
+                    ['startDate' => '2026-01-01', 'endDate' => '2026-01-01'],
+                ],
+            ],
+            [new SchemaError('/openingHoursClosedDays/0/startDate', 'the start date of a closed day should not be before the calendar start date')]
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_closed_days_end_date_is_after_calendar_end_date(): void
+    {
+        $this->assertValidationErrors(
+            [
+                'mainLanguage' => 'nl',
+                'name' => ['nl' => 'Ongeldige plaats'],
+                'terms' => [['id' => 'Yf4aZBfsUEu2NsQqsprngw']],
+                'address' => [
+                    'nl' => [
+                        'addressCountry' => 'BE',
+                        'addressLocality' => 'Leuven',
+                        'postalCode' => '3000',
+                        'streetAddress' => 'Martelarenplein 1',
+                    ],
+                ],
+                'calendarType' => 'periodic',
+                'startDate' => '2026-01-01T00:00:00+00:00',
+                'endDate' => '2026-11-30T23:59:59+00:00',
+                'openingHours' => [
+                    ['opens' => '09:00', 'closes' => '17:00', 'dayOfWeek' => ['monday']],
+                ],
+                'openingHoursClosedDays' => [
+                    ['startDate' => '2026-12-25', 'endDate' => '2026-12-25'],
+                ],
+            ],
+            [new SchemaError('/openingHoursClosedDays/0/endDate', 'the end date of a closed day should not be after the calendar end date')]
+        );
     }
 
     private function getRequestBodyParser(): CombinedRequestBodyParser
