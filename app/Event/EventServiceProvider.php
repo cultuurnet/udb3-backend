@@ -88,8 +88,9 @@ final class EventServiceProvider extends AbstractServiceProvider
             function () use ($container): TicketingProvider {
                 $config = $container->get('config')['ticketing']['ticketmatic'] ?? [];
 
+                // The lookup runs while a change is being saved, so a slow Ticketmatic must not block it for long.
                 return new HttpTicketmaticProvider(
-                    new Client(),
+                    new Client(['connect_timeout' => 2, 'timeout' => 5]),
                     $config['api_base_url'] ?? '',
                     $config['bearer_token'] ?? '',
                     LoggerFactory::create($container, LoggerName::forService('ticketing', 'ticketmatic'))
