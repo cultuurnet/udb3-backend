@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e9bc1f0d1a9efe34d12fd1c853734915",
+    "content-hash": "502e1a22df4bffd5b77c5a928417bf21",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6082,16 +6082,16 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-boa",
+            "version": "dev-III-7525/reject-top-level-waiting-list-url",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "7209e6258fdf37a994f904ece0111178d8140d2a"
+                "reference": "543406948590b770ca33e32b8179fe3577fc31d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/7209e6258fdf37a994f904ece0111178d8140d2a",
-                "reference": "7209e6258fdf37a994f904ece0111178d8140d2a",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/543406948590b770ca33e32b8179fe3577fc31d4",
+                "reference": "543406948590b770ca33e32b8179fe3577fc31d4",
                 "shasum": ""
             },
             "type": "library",
@@ -6108,9 +6108,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/boa"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7525/reject-top-level-waiting-list-url"
             },
-            "time": "2026-09-01T10:11:47+00:00"
+            "time": "2026-10-23T07:29:14+00:00"
         },
         {
             "name": "ralouphie/getallheaders",

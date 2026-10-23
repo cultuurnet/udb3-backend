@@ -14,7 +14,13 @@ final class BookingAvailabilityNormalizer implements NormalizerInterface
      */
     public function normalize($bookingAvailability, $format = null, array $context = []): array
     {
-        return ['type' => $bookingAvailability->getType()->toString()];
+        $normalized = ['type' => $bookingAvailability->getType()->toString()];
+
+        if ($bookingAvailability->getWaitingListUrl() !== null) {
+            $normalized['waitingListUrl'] = $bookingAvailability->getWaitingListUrl()->toString();
+        }
+
+        return $normalized;
     }
 
     public function supportsNormalization($data, $format = null): bool

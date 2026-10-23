@@ -75,6 +75,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
@@ -419,7 +420,6 @@ final class Event extends Offer
             $subEvent = $subEvents[$index];
 
             $subEventStatus = $subEventUpdate->getStatus() ?: null;
-            $subEventBookingAvailability = $subEventUpdate->getBookingAvailability() ?: null;
 
             $updatedSubEvent = new SubEvent(
                 new DateRange(
@@ -427,7 +427,7 @@ final class Event extends Offer
                     $subEventUpdate->getEndDate() ?: $subEvent->getDateRange()->getTo()
                 ),
                 $subEventStatus ?? $subEvent->getStatus(),
-                $subEventBookingAvailability ?? $subEvent->getBookingAvailability(),
+                self::applyBookingAvailabilityUpdate($subEvent->getBookingAvailability(), $subEventUpdate),
             );
 
             // For PATCH requests: use updated childcare if explicitly provided, otherwise preserve existing.
@@ -491,6 +491,25 @@ final class Event extends Offer
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
         }
+    }
+
+    /**
+     * The type and the waiting list url are patched independently, so updating only the type keeps the
+     * waiting list url of the sub event, and the waiting list url only changes when the update mentions it.
+     */
+    private static function applyBookingAvailabilityUpdate(
+        BookingAvailability $bookingAvailability,
+        SubEventUpdate $subEventUpdate
+    ): BookingAvailability {
+        if ($subEventUpdate->getBookingAvailability() !== null) {
+            $bookingAvailability = $bookingAvailability->withType($subEventUpdate->getBookingAvailability()->getType());
+        }
+
+        if ($subEventUpdate->updatesWaitingListUrl()) {
+            $bookingAvailability = $bookingAvailability->withWaitingListUrl($subEventUpdate->getWaitingListUrl());
+        }
+
+        return $bookingAvailability;
     }
 
     /**
