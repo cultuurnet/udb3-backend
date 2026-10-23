@@ -43,6 +43,7 @@ use CultuurNet\UDB3\Console\Command\RemoveFacilitiesFromPlace;
 use CultuurNet\UDB3\Console\Command\RemoveLabelOffer;
 use CultuurNet\UDB3\Console\Command\RemoveLabelOrganizer;
 use CultuurNet\UDB3\Console\Command\ReplaceNewsArticlePublisher;
+use CultuurNet\UDB3\Console\Command\RegisterReservationLinksCommand;
 use CultuurNet\UDB3\Console\Command\ReplayCommand;
 use CultuurNet\UDB3\Console\Command\UpdateBookingAvailabilityCommand;
 use CultuurNet\UDB3\Console\Command\UpdateEventsAttendanceMode;
@@ -68,6 +69,7 @@ use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
 use CultuurNet\UDB3\Ownership\Repositories\Search\OwnershipSearchRepository;
 use CultuurNet\UDB3\Place\Canonical\CanonicalService;
+use CultuurNet\UDB3\Ticketing\Repositories\TicketingRegistrationRepository;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRepository;
 use CultuurNet\UDB3\Place\Canonical\ImportDuplicatePlacesProcessor;
 use CultuurNet\UDB3\Place\Canonical\DuplicatePlaceRemovedFromClusterRepository;
@@ -94,6 +96,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.place:geocode',
         'console.place:delete',
         'console.event:geocode',
+        'console.event:register-reservation-links',
         'console.event:move',
         'console.organizer:geocode',
         'console.fire-projected-to-jsonld-for-relations',
@@ -219,6 +222,14 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('event_command_bus'),
                 $container->get(PlacesSapi3SearchService::class),
                 $container->get('place_jsonld_repository')
+            )
+        );
+
+        $container->addShared(
+            'console.event:register-reservation-links',
+            fn () => new RegisterReservationLinksCommand(
+                $container->get('event_command_bus'),
+                $container->get(TicketingRegistrationRepository::class)
             )
         );
 
