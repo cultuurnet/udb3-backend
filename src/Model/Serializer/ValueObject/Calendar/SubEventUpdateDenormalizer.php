@@ -53,12 +53,11 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
                 )
             );
 
-            // array_key_exists instead of isset, because an explicit null clears the waiting list url
-            // while an absent key leaves it unchanged.
-            if (array_key_exists('waitingListUrl', $data['bookingAvailability'])) {
-                $subEventUpdate = $data['bookingAvailability']['waitingListUrl'] === null
-                    ? $subEventUpdate->withoutWaitingListUrl()
-                    : $subEventUpdate->withWaitingListUrl(new Url($data['bookingAvailability']['waitingListUrl']));
+            $waitingListUrl = $data['bookingAvailability']['waitingListUrl'] ?? null;
+            if ($waitingListUrl === '') {
+                $subEventUpdate = $subEventUpdate->withoutWaitingListUrl();
+            } elseif ($waitingListUrl !== null) {
+                $subEventUpdate = $subEventUpdate->withWaitingListUrl(new Url($waitingListUrl));
             }
         }
         if (isset($data['childcare'])) {

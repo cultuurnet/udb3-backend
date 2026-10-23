@@ -84,6 +84,19 @@ final class BookingAvailabilityDenormalizerTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_denormalizes_an_empty_waiting_list_url_as_no_waiting_list_url(): void
+    {
+        $result = $this->denormalizer->denormalize(
+            ['type' => 'Unavailable', 'waitingListUrl' => ''],
+            BookingAvailability::class
+        );
+
+        $this->assertNull($result->getWaitingListUrl());
+    }
+
+    /**
      * The capacity and remainingCapacity properties were removed, so any value that is still sent
      * has to be ignored instead of validated.
      *

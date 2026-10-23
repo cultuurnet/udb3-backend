@@ -17,7 +17,8 @@ final class BookingAvailabilityDenormalizer implements DenormalizerInterface
             new BookingAvailabilityType($data['type'])
         );
 
-        if (isset($data['waitingListUrl'])) {
+        // An empty string is how a sub event PATCH clears the waiting list url, so it means no url here.
+        if (!empty($data['waitingListUrl'])) {
             $bookingAvailability = $bookingAvailability->withWaitingListUrl(new Url($data['waitingListUrl']));
         }
 

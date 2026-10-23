@@ -169,15 +169,28 @@ final class SubEventUpdateDenormalizerTest extends TestCase
     /**
      * @test
      */
-    public function it_clears_the_waiting_list_url_when_it_is_null(): void
+    public function it_clears_the_waiting_list_url_when_it_is_an_empty_string(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'bookingAvailability' => ['type' => 'Available', 'waitingListUrl' => '']],
+            SubEventUpdate::class
+        );
+
+        $this->assertTrue($update->updatesWaitingListUrl());
+        $this->assertNull($update->getWaitingListUrl());
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_the_waiting_list_url_when_it_is_null(): void
     {
         $update = $this->denormalizer->denormalize(
             ['id' => 0, 'bookingAvailability' => ['type' => 'Available', 'waitingListUrl' => null]],
             SubEventUpdate::class
         );
 
-        $this->assertTrue($update->updatesWaitingListUrl());
-        $this->assertNull($update->getWaitingListUrl());
+        $this->assertFalse($update->updatesWaitingListUrl());
     }
 
     /**
