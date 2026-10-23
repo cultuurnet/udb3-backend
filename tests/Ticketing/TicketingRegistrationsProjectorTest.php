@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRegistered;
 use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -130,6 +131,22 @@ final class TicketingRegistrationsProjectorTest extends TestCase
             ->with(new Uuid(self::EVENT_ID), $link);
 
         $this->projector->handle($this->domainMessage(new ReservationLinkRemoved(self::EVENT_ID, $link)));
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_the_identifier_of_a_registered_link(): void
+    {
+        $link = new Url('https://leuven-school-met-cultuur.ticketmatic.com/30cc/register/12345');
+
+        $this->repository->expects($this->once())
+            ->method('setIdentifier')
+            ->with(new Uuid(self::EVENT_ID), $link, 'ticketmatic:30cc:12345');
+
+        $this->projector->handle(
+            $this->domainMessage(new ReservationLinkRegistered(self::EVENT_ID, $link, 'ticketmatic:30cc:12345'))
+        );
     }
 
     private function domainMessage(object $payload): DomainMessage
