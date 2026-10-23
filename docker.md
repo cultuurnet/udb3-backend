@@ -86,12 +86,12 @@ Several stacks can run side by side, for example one per git worktree. Each stac
 With [worktrunk](https://worktrunk.dev) this is automated by `.config/wt.toml`. `wt switch --create <branch>`:
 - copies `.env`, the config files, the `.pem` keys and `vendor/` from the main checkout,
 - appends a block to `.env` with a stack name and ports derived from the branch name,
-- runs `make up && make init` in the background.
+- runs `make up && make init && make feature-init` in the background.
 
 `wt remove` stops the stack and deletes its volumes. Worktrunk asks once to approve these commands.
 
 All stacks share the PHP images, so a new stack starts without building. After a change to the Dockerfile, run `make build` once; every stack picks up the new image when its containers are recreated.
 
-A new stack starts with an empty database, so run `make feature-init` before running the acceptance tests.
+Without worktrunk, a new stack starts with an empty database, so run `make feature-init` before running the acceptance tests.
 The API is available on `http://io.uitdatabank.local:<FORWARD_HTTP_PORT>`.
 `UDB3_STACK` is also the network name, so a search service stack that sets the same value joins this stack.

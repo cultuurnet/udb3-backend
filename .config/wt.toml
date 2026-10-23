@@ -30,9 +30,9 @@ MAILPIT_SMTP_PORT={{ (branch ~ "-mailpit-smtp") | hash_port }}
 EOF
 """
 
-# Boots the stack in the background, installs composer packages and runs the migrations.
+# Boots the stack in the background, installs composer packages, runs the migrations and adds the acceptance test data.
 [post-start]
-docker = "make up && make init"
+docker = "make up && make init && make feature-init"
 
 # Removes this worktree's containers and volumes. Only when .env carries the worktrunk block,
 # so the shared default stack is never touched. Never blocks removing the worktree.
