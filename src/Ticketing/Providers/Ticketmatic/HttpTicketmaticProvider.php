@@ -11,6 +11,7 @@ use CultuurNet\UDB3\Ticketing\Providers\InvalidReservationLink;
 use CultuurNet\UDB3\Ticketing\Providers\ReservationLinkBookingInfo;
 use CultuurNet\UDB3\Ticketing\Providers\ReservationLinkNotFound;
 use CultuurNet\UDB3\Ticketing\Providers\TicketingProvider;
+use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 use Psr\Log\LoggerInterface;
@@ -45,15 +46,15 @@ final class HttpTicketmaticProvider implements TicketingProvider
             )
         );
 
-        if ($response->getStatusCode() === 404) {
+        if ($response->getStatusCode() === StatusCodeInterface::STATUS_NOT_FOUND) {
             throw ReservationLinkNotFound::forLink($reservationLink);
         }
 
-        if ($response->getStatusCode() === 422) {
+        if ($response->getStatusCode() === StatusCodeInterface::STATUS_UNPROCESSABLE_ENTITY) {
             throw InvalidReservationLink::forLink($reservationLink);
         }
 
-        if ($response->getStatusCode() !== 200) {
+        if ($response->getStatusCode() !== StatusCodeInterface::STATUS_OK) {
             $this->logger->error('Ticketmatic booking info request failed', [
                 'reservation_link' => $reservationLink->toString(),
                 'status_code' => $response->getStatusCode(),
