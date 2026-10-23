@@ -32,6 +32,7 @@ use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Place\ReadModel\History\HistoryProjector as PlaceHistoryProjector;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsProjector;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
+use CultuurNet\UDB3\Ticketing\RegisterAddedReservationLinks;
 use CultuurNet\UDB3\Ticketing\TicketingRegistrationsProjector;
 
 final class EventBusServiceProvider extends AbstractServiceProvider
@@ -108,6 +109,7 @@ final class EventBusServiceProvider extends AbstractServiceProvider
 
                         if ($this->container->get('config')['ticketing']['ticketmatic']['enabled'] ?? false) {
                             $eventBus->subscribe($container->get(TicketingRegistrationsProjector::class));
+                            $eventBus->subscribe($container->get(RegisterAddedReservationLinks::class));
                         }
                     }
                 );

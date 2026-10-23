@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Event\CommandHandlers\CopyEventHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\DeleteBirthdateRangeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateChildrenOnlyHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateDeparturePlacesHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\RegisterReservationLinkHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateFaqsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateBirthdateRangeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\DeleteOnlineUrlHandler;
@@ -21,6 +22,9 @@ use CultuurNet\UDB3\Event\CommandHandlers\UpdateThemeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateUiTPASPricesHandler;
 use CultuurNet\UDB3\Event\Productions\ProductionRepository;
 use CultuurNet\UDB3\Model\Import\Event\EventCategoryResolver;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
+use CultuurNet\UDB3\Ticketing\Providers\TicketingProvider;
 
 final class EventCommandHandlerProvider extends AbstractServiceProvider
 {
@@ -38,6 +42,7 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
             CopyEventHandler::class,
             UpdateFaqsHandler::class,
             UpdateDeparturePlacesHandler::class,
+            RegisterReservationLinkHandler::class,
             UpdateChildrenOnlyHandler::class,
             UpdateBirthdateRangeHandler::class,
             DeleteBirthdateRangeHandler::class,
@@ -126,6 +131,15 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
         $container->addShared(
             UpdateDeparturePlacesHandler::class,
             fn () => new UpdateDeparturePlacesHandler($container->get('event_repository'))
+        );
+
+        $container->addShared(
+            RegisterReservationLinkHandler::class,
+            fn () => new RegisterReservationLinkHandler(
+                $container->get('event_repository'),
+                $container->get(TicketingProvider::class),
+                LoggerFactory::create($container, LoggerName::forService('ticketing', 'registration'))
+            )
         );
 
         $container->addShared(
