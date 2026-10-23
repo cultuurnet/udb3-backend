@@ -64,6 +64,21 @@ final class HttpTicketmaticProviderTest extends TestCase
     /**
      * @test
      */
+    public function it_sends_the_reservation_link_in_lowercase(): void
+    {
+        $this->mockHandler->append($this->bookingInfoResponse(true, null));
+
+        $this->provider->getBookingInfo(new Url('https://Leuven-School-Met-Cultuur.test.ticketmatic.com/30CC/register/12345'));
+
+        $this->assertEquals(
+            'https://leuven-school-met-cultuur.test.ticketmatic.com/api/v1/booking-info?link=https%3A%2F%2Fleuven-school-met-cultuur.test.ticketmatic.com%2F30cc%2Fregister%2F12345',
+            (string) $this->mockHandler->getLastRequest()->getUri()
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_the_identifier_and_the_availability(): void
     {
         $this->mockHandler->append($this->bookingInfoResponse(true, null));

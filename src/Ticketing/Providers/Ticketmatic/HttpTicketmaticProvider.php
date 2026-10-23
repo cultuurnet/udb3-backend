@@ -32,8 +32,8 @@ final class HttpTicketmaticProvider implements TicketingProvider
 
     public function getBookingInfo(Url $reservationLink): ReservationLinkBookingInfo
     {
-        // Ticketmatic parses the link itself, so it is sent as-is.
-        $query = http_build_query(['link' => $reservationLink->toString()], '', '&', PHP_QUERY_RFC3986);
+        // Ticketmatic only generates lowercase links, so a link typed with capitals still finds its event.
+        $query = http_build_query(['link' => strtolower($reservationLink->toString())], '', '&', PHP_QUERY_RFC3986);
 
         $response = $this->client->sendRequest(
             new Request(
