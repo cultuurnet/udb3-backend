@@ -10,7 +10,6 @@ use CultuurNet\UDB3\Event\Events\ReservationLinkRegistered;
 use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Ticketing\Repositories\TicketingRegistration;
 use CultuurNet\UDB3\Ticketing\Repositories\TicketingRegistrationRepository;
 
@@ -21,9 +20,6 @@ use CultuurNet\UDB3\Ticketing\Repositories\TicketingRegistrationRepository;
 final class TicketingRegistrationsProjector implements EventListener
 {
     use DelegateEventHandlingToSpecificMethodTrait;
-
-    // The length of ticketing_registrations.reservation_link. Ticketmatic links are far shorter.
-    private const MAX_LINK_LENGTH = 512;
 
     /** @var string[] */
     private readonly array $reservationLinkHosts;
@@ -40,7 +36,8 @@ final class TicketingRegistrationsProjector implements EventListener
 
     protected function applyReservationLinkAdded(ReservationLinkAdded $reservationLinkAdded): void
     {
-        if (!$this->isTicketingLink($reservationLinkAdded->reservationLink)) {
+        $host = strtolower($reservationLinkAdded->reservationLink->getDomain());
+        if (!in_array($host, $this->reservationLinkHosts, true)) {
             return;
         }
 
@@ -76,9 +73,4 @@ final class TicketingRegistrationsProjector implements EventListener
         );
     }
 
-    private function isTicketingLink(Url $link): bool
-    {
-        return in_array(strtolower($link->getDomain()), $this->reservationLinkHosts, true)
-            && strlen($link->toString()) <= self::MAX_LINK_LENGTH;
-    }
 }
