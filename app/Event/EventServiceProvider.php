@@ -7,14 +7,19 @@ namespace CultuurNet\UDB3\Event;
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\AggregateType;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use CultuurNet\UDB3\Error\LoggerFactory;
+use CultuurNet\UDB3\Error\LoggerName;
 use CultuurNet\UDB3\Event\ReadModel\Calendar\CacheCalendarRepository;
 use CultuurNet\UDB3\Event\ReadModel\Calendar\EventCalendarProjector;
 use CultuurNet\UDB3\EventSourcing\CopyAwareEventStoreDecorator;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Offer\OfferLocator;
+use CultuurNet\UDB3\Ticketing\Providers\Ticketmatic\HttpTicketmaticProvider;
+use CultuurNet\UDB3\Ticketing\Providers\TicketingProvider;
 use CultuurNet\UDB3\Ticketing\Repositories\DBALTicketingRegistrationRepository;
 use CultuurNet\UDB3\Ticketing\Repositories\TicketingRegistrationRepository;
 use CultuurNet\UDB3\Ticketing\TicketingRegistrationsProjector;
+use GuzzleHttp\Client;
 
 final class EventServiceProvider extends AbstractServiceProvider
 {
@@ -27,6 +32,7 @@ final class EventServiceProvider extends AbstractServiceProvider
             'event_calendar_projector',
             TicketingRegistrationRepository::class,
             TicketingRegistrationsProjector::class,
+            TicketingProvider::class,
             'events_locator_event_stream_decorator',
             'event_repository',
         ];
@@ -75,6 +81,20 @@ final class EventServiceProvider extends AbstractServiceProvider
                 $container->get(TicketingRegistrationRepository::class),
                 $container->get('config')['ticketing']['ticketmatic']['reservation_link_hosts'] ?? []
             )
+        );
+
+        $container->addShared(
+            TicketingProvider::class,
+            function () use ($container): TicketingProvider {
+                $config = $container->get('config')['ticketing']['ticketmatic'] ?? [];
+
+                return new HttpTicketmaticProvider(
+                    new Client(),
+                    $config['api_base_url'] ?? '',
+                    $config['bearer_token'] ?? '',
+                    LoggerFactory::create($container, LoggerName::forService('ticketing', 'ticketmatic'))
+                );
+            }
         );
 
         $container->addShared(
