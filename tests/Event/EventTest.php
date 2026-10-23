@@ -105,6 +105,7 @@ use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
 use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 use RuntimeException;
 use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRegistered;
 use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
@@ -3767,6 +3768,89 @@ class EventTest extends AggregateRootScenarioTestCase
     private function getTheaterType(): Category
     {
         return new Category(new CategoryID('0.55.0.0.0'), new CategoryLabel('Theatervoorstelling'), CategoryDomain::eventType());
+    }
+
+    /**
+     * @test
+     */
+    public function it_registers_a_link_and_sets_the_availability_on_its_dates(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar(
+                    $this->getMultipleCalendarWithLinks(self::RESERVATION_LINK_A, self::RESERVATION_LINK_B, self::RESERVATION_LINK_A)
+                ),
+            ])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Unavailable()
+            ))
+            ->then([
+                new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK_A), 'ticketmatic:30cc:1001'),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-05')
+                                ->withBookingAvailability(BookingAvailability::Unavailable()),
+                            $this->getSubEventWithLink(self::RESERVATION_LINK_B, '2026-11-06'),
+                            $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-07')
+                                ->withBookingAvailability(BookingAvailability::Unavailable()),
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_only_records_the_registration_when_the_availability_stays_the_same(): void
+    {
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(self::RESERVATION_LINK_A))])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Available()
+            ))
+            ->then([
+                new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK_A), 'ticketmatic:30cc:1001'),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_the_registration_of_a_link_that_is_no_longer_on_the_event(): void
+    {
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(self::RESERVATION_LINK_A))])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_B),
+                'ticketmatic:30cc:1002',
+                BookingAvailability::Unavailable()
+            ))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_the_registration_of_a_link_of_a_deleted_event(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(self::RESERVATION_LINK_A)),
+                new EventDeleted(self::EVENT_ID),
+            ])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Unavailable()
+            ))
+            ->then([]);
     }
 
     private function getSingleCalendarWithLink(?string $link): SingleSubEventCalendar
