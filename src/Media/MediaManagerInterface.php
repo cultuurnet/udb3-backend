@@ -27,6 +27,7 @@ interface MediaManagerInterface extends CommandHandler
         Description $description,
         CopyrightHolder $copyrightHolder,
         Url $sourceLocation,
-        Language $language
+        Language $language,
+        ?bool $aiGenerated = null
     ): MediaObject;
 }

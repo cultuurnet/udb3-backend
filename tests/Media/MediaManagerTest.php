@@ -127,6 +127,41 @@ final class MediaManagerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_create_a_media_object_with_ai_generated_when_uploading(): void
+    {
+        $command = new UploadImage(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/png'),
+            new Description('description'),
+            new CopyrightHolder('copyright'),
+            '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+            new Language('en'),
+            true
+        );
+
+        $this->pathGenerator
+            ->method('path')
+            ->willReturn('de305d54-75b4-431b-adb2-eb6b9e546014.png');
+
+        $this->iriGenerator
+            ->method('iri')
+            ->willReturn('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
+
+        $this->repository
+            ->method('load')
+            ->willThrowException(new AggregateNotFoundException());
+
+        $this->repository
+            ->expects($this->once())
+            ->method('save')
+            ->with($this->callback(fn (MediaObject $mediaObject) => $mediaObject->getAiGenerated() === true));
+
+        $this->mediaManager->handleUploadImage($command);
+    }
+
+    /**
+     * @test
+     */
     public function it_can_retrieve_an_image_by_id(): void
     {
         $id = 'de305d54-75b4-431b-adb2-eb6b9e546014';

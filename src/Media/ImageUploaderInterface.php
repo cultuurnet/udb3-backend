@@ -16,7 +16,8 @@ interface ImageUploaderInterface
         UploadedFileInterface $file,
         Description $description,
         CopyrightHolder $copyrightHolder,
-        Language $language
+        Language $language,
+        ?bool $aiGenerated = null
     ): Uuid;
 
     public function getUploadDirectory(): string;
