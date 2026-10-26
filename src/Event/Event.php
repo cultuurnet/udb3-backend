@@ -501,8 +501,8 @@ final class Event extends Offer
         BookingAvailability $bookingAvailability,
         SubEventUpdate $subEventUpdate
     ): BookingAvailability {
-        if ($subEventUpdate->getBookingAvailability() !== null) {
-            $bookingAvailability = $bookingAvailability->withType($subEventUpdate->getBookingAvailability()->getType());
+        if ($subEventUpdate->getBookingAvailabilityType() !== null) {
+            $bookingAvailability = $bookingAvailability->withType($subEventUpdate->getBookingAvailabilityType());
         }
 
         if ($subEventUpdate->updatesWaitingListUrl()) {

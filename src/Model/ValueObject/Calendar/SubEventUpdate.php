@@ -14,14 +14,14 @@ final class SubEventUpdate
     private ?DateTimeImmutable $startDate = null;
     private ?DateTimeImmutable $endDate = null;
     private ?Status $status = null;
-    private ?BookingAvailability $bookingAvailability = null;
+    private ?BookingAvailabilityType $bookingAvailabilityType = null;
     private ?TimeImmutableRange $childcareTimeRange = null;
 
     private ?bool $hasOvernightStay = null;
 
     /**
-     * The waiting list url follows the PATCH convention independently of the booking availability type:
-     * not updated (left unchanged), updated with a url (set) or updated without a url (cleared).
+     * The waiting list url is updated independently of the booking availability type, as a PATCH can leave it
+     * unchanged, set it or clear it, which a BookingAvailability with or without a url can't express.
      */
     private bool $updatesWaitingListUrl = false;
     private ?Url $waitingListUrl = null;
@@ -72,15 +72,15 @@ final class SubEventUpdate
         return $c;
     }
 
-    public function getBookingAvailability(): ?BookingAvailability
+    public function getBookingAvailabilityType(): ?BookingAvailabilityType
     {
-        return $this->bookingAvailability;
+        return $this->bookingAvailabilityType;
     }
 
-    public function withBookingAvailability(?BookingAvailability $bookingAvailability): self
+    public function withBookingAvailabilityType(?BookingAvailabilityType $bookingAvailabilityType): self
     {
         $c = clone $this;
-        $c->bookingAvailability = $bookingAvailability;
+        $c->bookingAvailabilityType = $bookingAvailabilityType;
         return $c;
     }
 

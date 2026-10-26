@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
-use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
@@ -16,12 +16,10 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 final class SubEventUpdateDenormalizer implements DenormalizerInterface
 {
     private StatusDenormalizer $statusDenormalizer;
-    private BookingAvailabilityDenormalizer $bookingAvailabilityDenormalizer;
 
     public function __construct()
     {
         $this->statusDenormalizer = new StatusDenormalizer();
-        $this->bookingAvailabilityDenormalizer = new BookingAvailabilityDenormalizer();
     }
 
     public function denormalize($data, $class, $format = null, array $context = [])
@@ -46,11 +44,8 @@ final class SubEventUpdateDenormalizer implements DenormalizerInterface
             );
         }
         if (isset($data['bookingAvailability'])) {
-            $subEventUpdate = $subEventUpdate->withBookingAvailability(
-                $this->bookingAvailabilityDenormalizer->denormalize(
-                    $data['bookingAvailability'],
-                    BookingAvailability::class
-                )
+            $subEventUpdate = $subEventUpdate->withBookingAvailabilityType(
+                new BookingAvailabilityType($data['bookingAvailability']['type'])
             );
 
             $waitingListUrl = $data['bookingAvailability']['waitingListUrl'] ?? null;

@@ -145,7 +145,7 @@ final class SubEventUpdateTest extends TestCase
      */
     public function it_does_not_update_the_waiting_list_url_when_only_the_booking_availability_type_is_given(): void
     {
-        $update = (new SubEventUpdate(0))->withBookingAvailability(BookingAvailability::Unavailable());
+        $update = (new SubEventUpdate(0))->withBookingAvailabilityType(BookingAvailabilityType::Unavailable());
 
         $this->assertFalse($update->updatesWaitingListUrl());
     }

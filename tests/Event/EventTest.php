@@ -45,6 +45,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
@@ -2815,7 +2816,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 fn (Event $event) => $event->updateSubEvents(
                     (new SubEventUpdate(0))
-                        ->withBookingAvailability(BookingAvailability::Unavailable())
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
                         ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
                 )
             )
@@ -2910,7 +2911,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ])
             ->when(
                 fn (Event $event) => $event->updateSubEvents(
-                    (new SubEventUpdate(0))->withBookingAvailability(BookingAvailability::Available())
+                    (new SubEventUpdate(0))->withBookingAvailabilityType(BookingAvailabilityType::Available())
                 )
             )
             ->then([
@@ -2958,7 +2959,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 fn (Event $event) => $event->updateSubEvents(
                     (new SubEventUpdate(0))
-                        ->withBookingAvailability(BookingAvailability::Unavailable())
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
                         ->withoutWaitingListUrl()
                 )
             )
@@ -3003,7 +3004,7 @@ class EventTest extends AggregateRootScenarioTestCase
             ->when(
                 fn (Event $event) => $event->updateSubEvents(
                     (new SubEventUpdate(0))
-                        ->withBookingAvailability(BookingAvailability::Unavailable())
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
                         ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
                 )
             )
