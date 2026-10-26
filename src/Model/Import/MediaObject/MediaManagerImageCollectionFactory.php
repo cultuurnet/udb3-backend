@@ -51,7 +51,8 @@ class MediaManagerImageCollectionFactory implements ImageCollectionFactory
                     new Description($image->getDescription()->toString()),
                     $image->getCopyrightHolder(),
                     $mediaObjectAggregate->getSourceLocation(),
-                    $image->getLanguage()
+                    $image->getLanguage(),
+                    $image->getAiGenerated()
                 );
             },
             $images->toArray()

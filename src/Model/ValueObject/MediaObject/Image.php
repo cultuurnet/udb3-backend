@@ -18,16 +18,20 @@ final class Image
 
     private CopyrightHolder $copyrightHolder;
 
+    private ?bool $aiGenerated;
+
     public function __construct(
         Uuid $id,
         Language $language,
         Description $description,
-        CopyrightHolder $copyrightHolder
+        CopyrightHolder $copyrightHolder,
+        ?bool $aiGenerated = null
     ) {
         $this->id = $id;
         $this->language = $language;
         $this->description = $description;
         $this->copyrightHolder = $copyrightHolder;
+        $this->aiGenerated = $aiGenerated;
     }
 
     public function getId(): Uuid
@@ -50,6 +54,11 @@ final class Image
         return $this->copyrightHolder;
     }
 
+    public function getAiGenerated(): ?bool
+    {
+        return $this->aiGenerated;
+    }
+
     public function sameAs(Image $image): bool
     {
         if (!$this->id->sameAs($image->getId())) {
@@ -65,6 +74,10 @@ final class Image
         }
 
         if (!$this->copyrightHolder->sameAs($image->getCopyrightHolder())) {
+            return false;
+        }
+
+        if ($this->aiGenerated !== $image->getAiGenerated()) {
             return false;
         }
 

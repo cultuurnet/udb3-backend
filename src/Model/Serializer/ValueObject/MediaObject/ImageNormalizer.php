@@ -30,7 +30,7 @@ final class ImageNormalizer implements NormalizerInterface
         /** @var MediaObject $mediaObject */
         $mediaObject = $this->mediaRepository->load($image->getId()->toString());
 
-        return [
+        $normalized = [
             '@id' => $this->mediaIriGenerator->iri($image->getId()->toString()),
             '@type' => 'schema:ImageObject',
             'id' => $image->getId()->toString(),
@@ -40,6 +40,12 @@ final class ImageNormalizer implements NormalizerInterface
             'copyrightHolder' => $image->getCopyrightHolder()->toString(),
             'inLanguage' => $image->getLanguage()->toString(),
         ];
+
+        if ($image->getAiGenerated() !== null) {
+            $normalized['aiGenerated'] = $image->getAiGenerated();
+        }
+
+        return $normalized;
     }
 
     public function supportsNormalization($data, $format = null): bool

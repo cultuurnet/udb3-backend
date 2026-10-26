@@ -43,8 +43,9 @@ final class ImageDenormalizer implements DenormalizerInterface
         $description = new Description($data['description']);
         $copyrightHolder = new CopyrightHolder($data['copyrightHolder']);
         $language = new Language($data['inLanguage']);
+        $aiGenerated = $data['aiGenerated'] ?? null;
 
-        return new Image($id, $language, $description, $copyrightHolder);
+        return new Image($id, $language, $description, $copyrightHolder, $aiGenerated);
     }
 
     public function supportsDenormalization($data, $type, $format = null): bool
