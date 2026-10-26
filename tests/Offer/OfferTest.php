@@ -662,6 +662,115 @@ class OfferTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_can_set_and_change_ai_generated_when_updating_an_image(): void
+    {
+        $this->scenario
+            ->withAggregateId('someId')
+            ->given(
+                [
+                    new ItemCreated('someId'),
+                    new ImageAdded('someId', $this->image),
+                ]
+            )
+            ->when(
+                function (Item $item): void {
+                    $item->updateImage(
+                        $this->image->getMediaObjectId(),
+                        $this->image->getDescription(),
+                        $this->image->getCopyrightHolder(),
+                        true
+                    );
+                    $item->updateImage(
+                        $this->image->getMediaObjectId(),
+                        $this->image->getDescription(),
+                        $this->image->getCopyrightHolder(),
+                        false
+                    );
+                }
+            )
+            ->then(
+                [
+                    new ImageUpdated(
+                        'someId',
+                        $this->image->getMediaObjectId()->toString(),
+                        $this->image->getDescription()->toString(),
+                        $this->image->getCopyrightHolder()->toString(),
+                        null,
+                        true
+                    ),
+                    new ImageUpdated(
+                        'someId',
+                        $this->image->getMediaObjectId()->toString(),
+                        $this->image->getDescription()->toString(),
+                        $this->image->getCopyrightHolder()->toString(),
+                        null,
+                        false
+                    ),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_existing_ai_generated_when_updating_an_image_without_ai_generated(): void
+    {
+        $this->scenario
+            ->withAggregateId('someId')
+            ->given(
+                [
+                    new ItemCreated('someId'),
+                    new ImageAdded('someId', $this->image),
+                    new ImageUpdated(
+                        'someId',
+                        $this->image->getMediaObjectId()->toString(),
+                        $this->image->getDescription()->toString(),
+                        $this->image->getCopyrightHolder()->toString(),
+                        null,
+                        true
+                    ),
+                ]
+            )
+            ->when(
+                function (Item $item): void {
+                    // Same values and no isAiGenerated given, so nothing should change.
+                    $item->updateImage(
+                        $this->image->getMediaObjectId(),
+                        $this->image->getDescription(),
+                        $this->image->getCopyrightHolder()
+                    );
+                    // Same isAiGenerated given, so nothing should change.
+                    $item->updateImage(
+                        $this->image->getMediaObjectId(),
+                        $this->image->getDescription(),
+                        $this->image->getCopyrightHolder(),
+                        true
+                    );
+                    // Only the description changes, isAiGenerated keeps its existing value.
+                    $item->updateImage(
+                        $this->image->getMediaObjectId(),
+                        new MediaDescription('new description'),
+                        $this->image->getCopyrightHolder()
+                    );
+                }
+            )
+            ->then(
+                [
+                    new ImageUpdated(
+                        'someId',
+                        $this->image->getMediaObjectId()->toString(),
+                        'new description',
+                        $this->image->getCopyrightHolder()->toString(),
+                        null,
+                        true
+                    ),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
     public function it_checks_for_presence_of_image_when_updating(): void
     {
         $this->scenario
