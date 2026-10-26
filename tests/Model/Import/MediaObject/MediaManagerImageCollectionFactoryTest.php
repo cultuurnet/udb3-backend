@@ -73,7 +73,8 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new MediaDescription('PNG Afbeelding'),
                 new CopyrightHolder('Bob'),
                 new Url('https://io.uitdatabank.be/images/502c9436-02cd-4224-a690-04898b7c3a8d.png'),
-                new Language('nl')
+                new Language('nl'),
+                true
             ),
         ];
 
@@ -90,12 +91,13 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
             );
 
         $input = new Images(
-            // JPG image with updated description, copyright holder and language.
+            // JPG image with updated description, copyright holder, language and isAiGenerated.
             new Image(
                 new Uuid('b170224d-a5c6-40e3-a622-c4bac3a68f3a'),
                 new Language('nl'),
                 new Description('Voorbeeld beschrijving (aangepast)'),
-                new CopyrightHolder('Bobby')
+                new CopyrightHolder('Bobby'),
+                true
             ),
             // Does not exist.
             new Image(
@@ -119,6 +121,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new CopyrightHolder('Bob')
             ),
             // PNG image with original description, copyright holder and language.
+            // The isAiGenerated of the media object is not used, so an existing value on the offer is not overwritten.
             new Image(
                 new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
                 new Language('nl'),
@@ -135,7 +138,8 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                     new MediaDescription('Voorbeeld beschrijving (aangepast)'),
                     new CopyrightHolder('Bobby'),
                     new Url('https://io.uitdatabank.be/images/b170224d-a5c6-40e3-a622-c4bac3a68f3a.jpg'),
-                    new Language('nl')
+                    new Language('nl'),
+                    true
                 ),
                 new MediaImage(
                     new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
