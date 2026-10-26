@@ -465,3 +465,104 @@ Feature: Test event images property
       """
       And I get the event at "%{eventUrl}"
       And the JSON response should not have "image"
+
+  Scenario: I can add an AI generated image to an event
+    Given I set the form data properties to:
+      | description     | ai logo |
+      | copyrightHolder | me      |
+      | language        | nl      |
+      | aiGenerated     | true    |
+    When I upload "file" from path "images/udb.jpg" to "/images/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "imageId" as "aiImageId"
+    Given I create a minimal permanent event and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "mediaObjectId":"%{aiImageId}"
+    }
+    """
+    And I send a POST request to "%{eventUrl}/images"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject" should be:
+    """
+    [
+      {
+        "@id": "%{baseUrl}/images/%{aiImageId}",
+        "id": "%{aiImageId}",
+        "@type": "schema:ImageObject",
+        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "copyrightHolder": "me",
+        "description": "ai logo",
+        "inLanguage": "nl",
+        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "aiGenerated": true
+      }
+    ]
+    """
+
+  Scenario: I can update aiGenerated of an image on an event and it is kept when not given
+    Given I create an event from "events/event-with-images.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "logo",
+      "copyrightHolder": "me",
+      "aiGenerated": true
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject/0/aiGenerated" should be "true"
+    And the JSON response should not have "mediaObject/1/aiGenerated"
+
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "An updated logo",
+      "copyrightHolder": "me"
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject/0/description" should be "An updated logo"
+    And the JSON response at "mediaObject/0/aiGenerated" should be "true"
+
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "An updated logo",
+      "copyrightHolder": "me",
+      "aiGenerated": null
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject/0/aiGenerated" should be "true"
+
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "An updated logo",
+      "copyrightHolder": "me",
+      "aiGenerated": false
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject/0/aiGenerated" should be "false"
+
+  Scenario: aiGenerated of images is kept when updating an event without aiGenerated
+    Given I create an event from "events/event-with-ai-generated-images.json" and save the "url" as "eventUrl"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response at "mediaObject/0/aiGenerated" should be "true"
+    And the JSON response at "mediaObject/1/aiGenerated" should be "false"
+    When I update the event at "%{eventUrl}" from "events/event-with-images.json"
+    And I get the event at "%{eventUrl}"
+    Then the JSON response at "mediaObject/0/aiGenerated" should be "true"
+    And the JSON response at "mediaObject/1/aiGenerated" should be "false"

@@ -306,3 +306,89 @@ Feature: Test organizer images property
     When I get the organizer at "%{organizerUrl}"
     And the JSON response should not have "images"
     And the JSON response should not have "mainImage"
+
+  Scenario: Add an AI generated image to an organizer via images endpoint
+    Given I set the form data properties to:
+      | description     | ai logo |
+      | copyrightHolder | me      |
+      | language        | nl      |
+      | aiGenerated     | true    |
+    When I upload "file" from path "images/udb.jpg" to "/images/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "imageId" as "aiImageId"
+    Given I create a minimal organizer and save the "url" as "organizerUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "id":"%{aiImageId}"
+    }
+    """
+    And I send a POST request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images" should be:
+    """
+    [
+      {
+        "@id": "%{baseUrl}/images/%{aiImageId}",
+        "@type": "schema:ImageObject",
+        "id": "%{aiImageId}",
+        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "copyrightHolder": "me",
+        "description": "ai logo",
+        "inLanguage": "nl",
+        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "aiGenerated": true
+      }
+    ]
+    """
+
+  Scenario: Update aiGenerated of an organizer image via images endpoint and keep it when not given
+    Given I create an organizer from "organizers/organizer-with-images.json" and save the "url" as "organizerUrl"
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "aiGenerated": true
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/aiGenerated" should be "true"
+    And the JSON response should not have "images/1/aiGenerated"
+
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "description": "Aangepaste beschrijving"
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/description" should be "Aangepaste beschrijving"
+    And the JSON response at "images/0/aiGenerated" should be "true"
+
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "aiGenerated": false
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/aiGenerated" should be "false"
+
+  Scenario: aiGenerated of images is kept when updating an organizer without aiGenerated
+    Given I create an organizer from "organizers/organizer-with-ai-generated-images.json" and save the "url" as "organizerUrl"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/aiGenerated" should be "true"
+    And the JSON response at "images/1/aiGenerated" should be "false"
+    When I update the organizer at "%{organizerUrl}" from "organizers/organizer-with-images.json"
+    And I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/aiGenerated" should be "true"
+    And the JSON response at "images/1/aiGenerated" should be "false"
