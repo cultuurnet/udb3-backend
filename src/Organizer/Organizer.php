@@ -315,7 +315,8 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
                 $image->getId()->toString(),
                 $image->getLanguage()->toString(),
                 $image->getDescription()->toString(),
-                $image->getCopyrightHolder()->toString()
+                $image->getCopyrightHolder()->toString(),
+                $image->getAiGenerated()
             )
         );
     }
@@ -324,7 +325,8 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         Uuid $imageId,
         ?Language $language,
         ?Description $description,
-        ?CopyrightHolder $copyrightHolder
+        ?CopyrightHolder $copyrightHolder,
+        ?bool $aiGenerated = null
     ): void {
         if (!$this->hasImage($imageId)) {
             return;
@@ -345,7 +347,8 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
             $imageId,
             $language ?: $existingImage->getLanguage(),
             $description ?: $existingImage->getDescription(),
-            $copyrightHolder ?: $existingImage->getCopyrightHolder()
+            $copyrightHolder ?: $existingImage->getCopyrightHolder(),
+            $aiGenerated ?? $existingImage->getAiGenerated()
         );
 
         if ($updatedImage->sameAs($existingImage)) {
@@ -359,6 +362,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
                 $updatedImage->getLanguage()->toString(),
                 $updatedImage->getDescription()->toString(),
                 $updatedImage->getCopyrightHolder()->toString(),
+                $updatedImage->getAiGenerated()
             )
         );
     }
@@ -387,7 +391,8 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
                 $updatedImage->getId(),
                 $updatedImage->getLanguage(),
                 $updatedImage->getDescription(),
-                $updatedImage->getCopyrightHolder()
+                $updatedImage->getCopyrightHolder(),
+                $updatedImage->getAiGenerated()
             );
         }
         foreach ($removedImages as $removedImage) {

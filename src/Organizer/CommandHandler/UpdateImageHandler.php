@@ -29,7 +29,8 @@ final class UpdateImageHandler implements CommandHandler
             $command->getImageID(),
             $command->getLanguage(),
             $command->getDescription(),
-            $command->getCopyrightHolder()
+            $command->getCopyrightHolder(),
+            $command->getAiGenerated()
         );
 
         $this->organizerRepository->save($organizer);

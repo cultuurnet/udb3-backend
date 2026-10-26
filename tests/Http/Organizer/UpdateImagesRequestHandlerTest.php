@@ -67,6 +67,33 @@ final class UpdateImagesRequestHandlerTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_updating_ai_generated_of_an_image(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
+            ->withJsonBodyFromArray([
+                [
+                    'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                    'aiGenerated' => false,
+                ],
+            ])
+            ->build('PATCH');
+
+        $expectedCommand = (new UpdateImage(
+            'c269632a-a887-4f21-8455-1631c31e4df5',
+            new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92')
+        ))
+            ->withAiGenerated(false);
+
+        $response = $this->updateImagesRequestHandler->handle($request);
+
+        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_updating_multiple_images(): void
     {
         $request = (new Psr7RequestBuilder())

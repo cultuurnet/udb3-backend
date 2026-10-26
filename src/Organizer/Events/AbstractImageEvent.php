@@ -23,18 +23,22 @@ abstract class AbstractImageEvent implements Serializable
 
     private string $copyrightHolder;
 
+    private ?bool $aiGenerated;
+
     final public function __construct(
         string $organizerId,
         string $imageId,
         string $language,
         string $description,
-        string $copyrightHolder
+        string $copyrightHolder,
+        ?bool $aiGenerated = null
     ) {
         $this->organizerId = $organizerId;
         $this->imageId = $imageId;
         $this->language = $language;
         $this->description = $description;
         $this->copyrightHolder = $copyrightHolder;
+        $this->aiGenerated = $aiGenerated;
     }
 
     public function getOrganizerId(): string
@@ -62,25 +66,35 @@ abstract class AbstractImageEvent implements Serializable
         return $this->copyrightHolder;
     }
 
+    public function getAiGenerated(): ?bool
+    {
+        return $this->aiGenerated;
+    }
+
     public function getImage(): Image
     {
         return new Image(
             new Uuid($this->imageId),
             new Language($this->language),
             new Description($this->description),
-            new CopyrightHolder($this->copyrightHolder)
+            new CopyrightHolder($this->copyrightHolder),
+            $this->aiGenerated
         );
     }
 
     public function serialize(): array
     {
-        return [
+        $data = [
             'organizerId' => $this->organizerId,
             'imageId' => $this->imageId,
             'language' => $this->language,
             'description' => $this->description,
             'copyrightHolder' => $this->copyrightHolder,
         ];
+        if ($this->aiGenerated !== null) {
+            $data['aiGenerated'] = $this->aiGenerated;
+        }
+        return $data;
     }
 
     public static function deserialize(array $data): AbstractImageEvent
@@ -90,7 +104,8 @@ abstract class AbstractImageEvent implements Serializable
             $data['imageId'],
             $data['language'],
             $data['description'],
-            $data['copyrightHolder']
+            $data['copyrightHolder'],
+            $data['aiGenerated'] ?? null
         );
     }
 }

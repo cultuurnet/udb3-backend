@@ -149,6 +149,66 @@ final class AddImageRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider aiGeneratedDataProvider
+     */
+    public function it_handles_adding_an_image_with_ai_generated(array $body, bool $expectedAiGenerated): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('organizerId', 'c269632a-a887-4f21-8455-1631c31e4df5')
+            ->withJsonBodyFromArray($body)
+            ->build('POST');
+
+        $this->imageRepository->method('load')
+            ->with('03789a2f-5063-4062-b7cb-95a0a2280d92')
+            ->willReturn(
+                MediaObject::create(
+                    new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    MIMEType::fromSubtype('jpeg'),
+                    new ImageDescription('Uploaded image'),
+                    new CopyrightHolder('madewithlove'),
+                    new Url('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
+                    new Language('nl'),
+                    true
+                )
+            );
+
+        $expectedCommand = new AddImage(
+            'c269632a-a887-4f21-8455-1631c31e4df5',
+            new Image(
+                new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                new Language('nl'),
+                new Description('Uploaded image'),
+                new CopyrightHolder('madewithlove'),
+                $expectedAiGenerated
+            )
+        );
+
+        $this->addImageRequestHandler->handle($request);
+
+        $this->assertEquals([$expectedCommand], $this->commandBus->getRecordedCommands());
+    }
+
+    public function aiGeneratedDataProvider(): array
+    {
+        return [
+            'aiGenerated of the uploaded image is used when not provided' => [
+                [
+                    'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                ],
+                true,
+            ],
+            'aiGenerated provided' => [
+                [
+                    'id' => '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                    'aiGenerated' => false,
+                ],
+                false,
+            ],
+        ];
+    }
+
+    /**
+     * @test
      */
     public function it_throws_an_api_problem_when_image_not_found(): void
     {

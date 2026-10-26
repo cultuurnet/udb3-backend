@@ -1157,6 +1157,15 @@ class OrganizerTest extends AggregateRootScenarioTestCase
             'Rechtenhouder afbeelding'
         );
 
+        $imageAddedWithAiGenerated = new ImageAdded(
+            'ae3aab28-6351-489e-a61c-c48aec0a77df',
+            'cf539408-bba9-4e77-9f85-72019013db37',
+            'nl',
+            'Beschrijving afbeelding',
+            'Rechtenhouder afbeelding',
+            true
+        );
+
         return [
             'Update language' => [
                 [
@@ -1270,6 +1279,96 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                 [
                     $organizerCreated,
                     $imageAdded,
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->updateImage(
+                        new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                        new Language('nl'),
+                        new Description('Beschrijving afbeelding'),
+                        new CopyrightHolder('Rechtenhouder afbeelding')
+                    );
+                },
+                [
+                ],
+            ],
+            'Set aiGenerated' => [
+                [
+                    $organizerCreated,
+                    $imageAdded,
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->updateImage(
+                        new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                        null,
+                        null,
+                        null,
+                        true
+                    );
+                },
+                [
+                    new ImageUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving afbeelding',
+                        'Rechtenhouder afbeelding',
+                        true
+                    ),
+                ],
+            ],
+            'Change aiGenerated from true to false' => [
+                [
+                    $organizerCreated,
+                    $imageAddedWithAiGenerated,
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->updateImage(
+                        new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                        null,
+                        null,
+                        null,
+                        false
+                    );
+                },
+                [
+                    new ImageUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving afbeelding',
+                        'Rechtenhouder afbeelding',
+                        false
+                    ),
+                ],
+            ],
+            'Keep aiGenerated when it is not given' => [
+                [
+                    $organizerCreated,
+                    $imageAddedWithAiGenerated,
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->updateImage(
+                        new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                        null,
+                        new Description('Aangepaste beschrijving afbeelding'),
+                        null
+                    );
+                },
+                [
+                    new ImageUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Aangepaste beschrijving afbeelding',
+                        'Rechtenhouder afbeelding',
+                        true
+                    ),
+                ],
+            ],
+            'No change when aiGenerated is not given' => [
+                [
+                    $organizerCreated,
+                    $imageAddedWithAiGenerated,
                 ],
                 function (Organizer $organizer): void {
                     $organizer->updateImage(

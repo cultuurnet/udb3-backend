@@ -23,6 +23,8 @@ final class UpdateImage implements AuthorizableCommand
 
     private ?CopyrightHolder $copyrightHolder = null;
 
+    private ?bool $aiGenerated = null;
+
     public function __construct(string $organizerId, Uuid $imageId)
     {
         $this->organizerId = $organizerId;
@@ -67,6 +69,18 @@ final class UpdateImage implements AuthorizableCommand
     {
         $clone = clone $this;
         $clone->copyrightHolder = $copyrightHolder;
+        return $clone;
+    }
+
+    public function getAiGenerated(): ?bool
+    {
+        return $this->aiGenerated;
+    }
+
+    public function withAiGenerated(bool $aiGenerated): UpdateImage
+    {
+        $clone = clone $this;
+        $clone->aiGenerated = $aiGenerated;
         return $clone;
     }
 

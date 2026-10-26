@@ -96,4 +96,32 @@ final class ImageUpdatedTest extends TestCase
             )
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_serialize_and_deserialize_ai_generated(): void
+    {
+        $imageUpdated = new ImageUpdated(
+            'a98df644-da7e-407e-9cd9-3217ddc61f27',
+            '6da7230e-ce93-44d5-b76b-48a76140d8f7',
+            'en',
+            'Updated description',
+            'Updated copyright holder',
+            false
+        );
+
+        $serialized = [
+            'organizerId' => 'a98df644-da7e-407e-9cd9-3217ddc61f27',
+            'imageId' => '6da7230e-ce93-44d5-b76b-48a76140d8f7',
+            'language' => 'en',
+            'description' => 'Updated description',
+            'copyrightHolder' => 'Updated copyright holder',
+            'aiGenerated' => false,
+        ];
+
+        $this->assertEquals($serialized, $imageUpdated->serialize());
+        $this->assertEquals($imageUpdated, ImageUpdated::deserialize($serialized));
+        $this->assertFalse($imageUpdated->getImage()->getAiGenerated());
+    }
 }
