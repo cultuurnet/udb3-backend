@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
-use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
@@ -131,12 +130,6 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
         $copyrightHolder = new CopyrightHolder($data->copyrightHolder);
         $language = new Language($data->inLanguage);
         $isAiGenerated = $data->isAiGenerated ?? null;
-
-        if ($isAiGenerated !== null && !is_bool($isAiGenerated)) {
-            throw ApiProblem::bodyInvalidData(
-                new SchemaError('/isAiGenerated', 'The data (' . gettype($isAiGenerated) . ') must match the type: boolean')
-            );
-        }
 
         $uploadedFile = $this->imageDownloader->download($contentUrl);
 

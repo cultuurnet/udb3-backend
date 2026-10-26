@@ -344,7 +344,7 @@ final class UploadMediaRequestHandlerTest extends TestCase
                     'inLanguage' => 'nl',
                     'isAiGenerated' => 'yes',
                 ],
-                ApiProblem::bodyInvalidData(new SchemaError('/isAiGenerated', 'The data (string) must match the type: boolean')),
+                ApiProblem::bodyInvalidData(new SchemaError('/isAiGenerated', 'The data (string) must match the type: boolean, null')),
             ],
 
 
