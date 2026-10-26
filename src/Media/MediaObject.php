@@ -27,13 +27,16 @@ class MediaObject extends EventSourcedAggregateRoot
 
     protected Language $language;
 
+    protected ?bool $aiGenerated;
+
     public static function create(
         Uuid $id,
         MIMEType $mimeType,
         Description $description,
         CopyrightHolder $copyrightHolder,
         Url $sourceLocation,
-        Language $language
+        Language $language,
+        ?bool $aiGenerated = null
     ): MediaObject {
         $mediaObject = new self();
         $mediaObject->apply(
@@ -43,7 +46,8 @@ class MediaObject extends EventSourcedAggregateRoot
                 $description,
                 $copyrightHolder,
                 $sourceLocation,
-                $language
+                $language,
+                $aiGenerated
             )
         );
 
@@ -63,6 +67,7 @@ class MediaObject extends EventSourcedAggregateRoot
         $this->copyrightHolder = $mediaObjectCreated->getCopyrightHolder();
         $this->sourceLocation = $mediaObjectCreated->getSourceLocation();
         $this->language = $mediaObjectCreated->getLanguage();
+        $this->aiGenerated = $mediaObjectCreated->getAiGenerated();
     }
 
     public function getDescription(): Description
@@ -93,5 +98,10 @@ class MediaObject extends EventSourcedAggregateRoot
     public function getLanguage(): Language
     {
         return $this->language;
+    }
+
+    public function getAiGenerated(): ?bool
+    {
+        return $this->aiGenerated;
     }
 }

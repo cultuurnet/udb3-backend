@@ -71,7 +71,8 @@ final class MediaObjectTest extends AggregateRootScenarioTestCase
             new Description('The Gleaners'),
             new CopyrightHolder('Jean-François Millet'),
             new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
-            new Language('en')
+            new Language('en'),
+            true
         );
 
         $this->assertEquals(
@@ -98,5 +99,24 @@ final class MediaObjectTest extends AggregateRootScenarioTestCase
             new Language('en'),
             $mediaObject->getLanguage()
         );
+
+        $this->assertTrue($mediaObject->getAiGenerated());
+    }
+
+    /**
+     * @test
+     */
+    public function it_has_no_ai_generated_value_by_default(): void
+    {
+        $mediaObject = MediaObject::create(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/png'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Language('en')
+        );
+
+        $this->assertNull($mediaObject->getAiGenerated());
     }
 }

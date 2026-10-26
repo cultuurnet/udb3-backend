@@ -64,6 +64,46 @@ final class MediaObjectCreatedTest extends TestCase
                     new Language('en')
                 ),
             ],
+            'creationEventWithAiGenerated' => [
+                [
+                    'media_object_id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
+                    'mime_type' => 'image/png',
+                    'description' => 'The Gleaners',
+                    'copyright_holder' => 'Jean-François Millet',
+                    'source_location' => 'http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                    'language' => 'en',
+                    'ai_generated' => true,
+                ],
+                new MediaObjectCreated(
+                    new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+                    new MIMEType('image/png'),
+                    new Description('The Gleaners'),
+                    new CopyrightHolder('Jean-François Millet'),
+                    new Url('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+                    new Language('en'),
+                    true
+                ),
+            ],
+            'creationEventNotAiGenerated' => [
+                [
+                    'media_object_id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
+                    'mime_type' => 'image/png',
+                    'description' => 'The Gleaners',
+                    'copyright_holder' => 'Jean-François Millet',
+                    'source_location' => 'http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                    'language' => 'en',
+                    'ai_generated' => false,
+                ],
+                new MediaObjectCreated(
+                    new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+                    new MIMEType('image/png'),
+                    new Description('The Gleaners'),
+                    new CopyrightHolder('Jean-François Millet'),
+                    new Url('http://foo.be/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+                    new Language('en'),
+                    false
+                ),
+            ],
         ];
     }
 
