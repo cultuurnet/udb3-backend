@@ -1,0 +1,22 @@
+{
+  "calendarType": "multiple",
+  "subEvent": [
+    {
+      "startDate": "2026-11-17T08:00:00+00:00",
+      "endDate": "2026-11-17T22:00:00+00:00",
+      "bookingAvailability": {
+        "type": "Unavailable"
+      },
+      "bookingInfo": {
+        "url": "%{reservationLink}"
+      }
+    },
+    {
+      "startDate": "2026-11-18T08:00:00+00:00",
+      "endDate": "2026-11-18T22:00:00+00:00",
+      "bookingAvailability": {
+        "type": "Unavailable"
+      }
+    }
+  ]
+}

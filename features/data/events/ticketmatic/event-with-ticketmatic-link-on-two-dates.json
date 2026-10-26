@@ -1,0 +1,39 @@
+{
+  "mainLanguage": "nl",
+  "name": {
+    "nl": "Event with a Ticketmatic reservation link on two dates"
+  },
+  "terms": [
+    {
+      "id": "0.50.4.0.0",
+      "label": "Concert",
+      "domain": "eventtype"
+    }
+  ],
+  "location": {
+    "@id": "%{placeUrl}"
+  },
+  "calendarType": "multiple",
+  "subEvent": [
+    {
+      "startDate": "2026-11-17T08:00:00+00:00",
+      "endDate": "2026-11-17T22:00:00+00:00",
+      "bookingAvailability": {
+        "type": "Unavailable"
+      },
+      "bookingInfo": {
+        "url": "%{reservationLink}"
+      }
+    },
+    {
+      "startDate": "2026-11-18T08:00:00+00:00",
+      "endDate": "2026-11-18T22:00:00+00:00",
+      "bookingAvailability": {
+        "type": "Unavailable"
+      },
+      "bookingInfo": {
+        "url": "%{reservationLink}"
+      }
+    }
+  ]
+}
