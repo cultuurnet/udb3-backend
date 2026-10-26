@@ -85,6 +85,8 @@ final class JsonSchemaLocator
 
     public const IMAGE_POST = 'image-post.json';
 
+    public const TICKETING_BOOKING_AVAILABILITY = 'ticketing-bookingAvailability.json';
+
     public static function setSchemaDirectory(string $schemaDirectory): void
     {
         if (!is_dir($schemaDirectory)) {

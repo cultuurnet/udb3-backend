@@ -26,6 +26,9 @@ use CultuurNet\UDB3\Http\Event\UpdateMajorInfoRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
+use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
+use CultuurNet\UDB3\Http\Ticketing\UpdateBookingAvailabilityRequestHandler as UpdateTicketingBookingAvailabilityRequestHandler;
+use CultuurNet\UDB3\Ticketing\Repositories\TicketingRegistrationRepository;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\ImportTermRequestBodyParser;
 use CultuurNet\UDB3\Http\Import\RemoveEmptyArraysRequestBodyParser;
@@ -45,6 +48,7 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             ImportEventRequestHandler::class,
             UpdateLocationRequestHandler::class,
             UpdateSubEventsRequestHandler::class,
+            UpdateTicketingBookingAvailabilityRequestHandler::class,
             UpdateThemeRequestHandler::class,
             DeleteThemeRequestHandler::class,
             UpdateAttendanceModeRequestHandler::class,
@@ -108,6 +112,16 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             function () use ($container): UpdateSubEventsRequestHandler {
                 return new UpdateSubEventsRequestHandler($container->get('event_command_bus'));
             }
+        );
+
+        $container->addShared(
+            UpdateTicketingBookingAvailabilityRequestHandler::class,
+            fn () => new UpdateTicketingBookingAvailabilityRequestHandler(
+                $container->get('event_command_bus'),
+                $container->get(TicketingRegistrationRepository::class),
+                $container->get(JsonWebToken::class),
+                $container->get('config')['ticketing']['ticketmatic']['client_ids'] ?? []
+            )
         );
 
         $container->addShared(
