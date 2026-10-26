@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Media;
 
 use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
+use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaLocator;
 use CultuurNet\UDB3\Http\Request\Body\JsonSchemaValidatingRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
@@ -77,6 +78,7 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
         $description = $parsedBody['description'] ?? null;
         $copyrightHolder = $parsedBody['copyrightHolder'] ?? null;
         $language = $parsedBody['language'] ?? null;
+        $isAiGenerated = $parsedBody['isAiGenerated'] ?? null;
 
         if (!$description) {
             throw ApiProblem::bodyInvalidDataWithDetail('Form data field "description" is required.');
@@ -102,11 +104,16 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
             throw ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is must be exactly 2 lowercase letters long (for example "nl").');
         }
 
+        if ($isAiGenerated !== null && !in_array($isAiGenerated, ['true', 'false'], true)) {
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "isAiGenerated" must be "true" or "false".');
+        }
+
         return $this->imageUploader->upload(
             $uploadedFile,
             new Description($description),
             $copyrightHolder,
-            $language
+            $language,
+            $isAiGenerated === null ? null : $isAiGenerated === 'true'
         );
     }
 
@@ -123,6 +130,13 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
         $description = new Description($data->description);
         $copyrightHolder = new CopyrightHolder($data->copyrightHolder);
         $language = new Language($data->inLanguage);
+        $isAiGenerated = $data->isAiGenerated ?? null;
+
+        if ($isAiGenerated !== null && !is_bool($isAiGenerated)) {
+            throw ApiProblem::bodyInvalidData(
+                new SchemaError('/isAiGenerated', 'The data (' . gettype($isAiGenerated) . ') must match the type: boolean')
+            );
+        }
 
         $uploadedFile = $this->imageDownloader->download($contentUrl);
 
@@ -130,7 +144,8 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
             $uploadedFile,
             $description,
             $copyrightHolder,
-            $language
+            $language,
+            $isAiGenerated
         );
     }
 }
