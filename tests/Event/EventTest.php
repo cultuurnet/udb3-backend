@@ -3853,6 +3853,82 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([]);
     }
 
+    /**
+     * @test
+     */
+    public function it_updates_the_availability_of_the_dates_with_a_link(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar(
+                    $this->getMultipleCalendarWithLinks(self::RESERVATION_LINK_A, self::RESERVATION_LINK_B, self::RESERVATION_LINK_A)
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateBookingAvailabilityByReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                BookingAvailability::Unavailable()
+            ))
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-05')
+                                ->withBookingAvailability(BookingAvailability::Unavailable()),
+                            $this->getSubEventWithLink(self::RESERVATION_LINK_B, '2026-11-06'),
+                            $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-07')
+                                ->withBookingAvailability(BookingAvailability::Unavailable()),
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_records_nothing_when_the_availability_of_a_link_stays_the_same(): void
+    {
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(self::RESERVATION_LINK_A))])
+            ->when(fn (Event $event) => $event->updateBookingAvailabilityByReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                BookingAvailability::Available()
+            ))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_the_availability_of_a_link_that_is_no_longer_on_the_event(): void
+    {
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(self::RESERVATION_LINK_A))])
+            ->when(fn (Event $event) => $event->updateBookingAvailabilityByReservationLink(
+                new Url(self::RESERVATION_LINK_B),
+                BookingAvailability::Unavailable()
+            ))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_the_availability_of_a_link_of_a_deleted_event(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(self::RESERVATION_LINK_A)),
+                new EventDeleted(self::EVENT_ID),
+            ])
+            ->when(fn (Event $event) => $event->updateBookingAvailabilityByReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                BookingAvailability::Unavailable()
+            ))
+            ->then([]);
+    }
+
     private function getSingleCalendarWithLink(?string $link): SingleSubEventCalendar
     {
         return new SingleSubEventCalendar($this->getSubEventWithLink($link, '2026-11-05'));

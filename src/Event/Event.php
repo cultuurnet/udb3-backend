@@ -523,6 +523,26 @@ final class Event extends Offer
 
         $this->apply(new ReservationLinkRegistered($this->eventId, $reservationLink, $identifier));
 
+        $this->updateBookingAvailabilityOfSubEvents($calendar, $reservationLink, $bookingAvailability);
+    }
+
+    public function updateBookingAvailabilityByReservationLink(
+        Url $reservationLink,
+        BookingAvailability $bookingAvailability
+    ): void {
+        $calendar = $this->calendar;
+        if (!$calendar instanceof CalendarWithSubEvents || !$this->getReservationLinks()->contains($reservationLink)) {
+            return;
+        }
+
+        $this->updateBookingAvailabilityOfSubEvents($calendar, $reservationLink, $bookingAvailability);
+    }
+
+    private function updateBookingAvailabilityOfSubEvents(
+        CalendarWithSubEvents $calendar,
+        Url $reservationLink,
+        BookingAvailability $bookingAvailability
+    ): void {
         $subEvents = array_map(
             fn (SubEvent $subEvent) => $subEvent->getBookingInfo()?->getUrl()->sameAs($reservationLink)
                 ? $subEvent->withBookingAvailability($bookingAvailability)
