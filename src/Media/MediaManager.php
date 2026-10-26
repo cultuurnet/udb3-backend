@@ -135,7 +135,8 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $mediaObject->getDescription(),
             $mediaObject->getCopyrightHolder(),
             $mediaObject->getSourceLocation(),
-            $mediaObject->getLanguage()
+            $mediaObject->getLanguage(),
+            $mediaObject->getAiGenerated()
         );
     }
 }

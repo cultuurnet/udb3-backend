@@ -177,7 +177,8 @@ final class MediaManagerTest extends TestCase
             $description,
             $copyrightHolder,
             $location,
-            $language
+            $language,
+            true
         );
 
         $this->repository
@@ -194,7 +195,8 @@ final class MediaManagerTest extends TestCase
             $description,
             $copyrightHolder,
             $location,
-            $language
+            $language,
+            true
         );
 
         $this->assertEquals($expectedImage, $image);

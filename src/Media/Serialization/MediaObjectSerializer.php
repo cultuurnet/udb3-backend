@@ -33,7 +33,7 @@ class MediaObjectSerializer
             $type = $this->serializeMimeType($mediaObject->getMimeType());
         }
 
-        return  [
+        $serialized = [
             '@id' => $this->iriGenerator->iri($mediaObject->getMediaObjectId()->toString()),
             '@type' => $type,
             'id' => $mediaObject->getMediaObjectId()->toString(),
@@ -43,6 +43,12 @@ class MediaObjectSerializer
             'copyrightHolder' => $mediaObject->getCopyrightHolder()->toString(),
             'inLanguage' => $mediaObject->getLanguage()->toString(),
         ];
+
+        if ($mediaObject->getAiGenerated() !== null) {
+            $serialized['aiGenerated'] = $mediaObject->getAiGenerated();
+        }
+
+        return $serialized;
     }
 
     public function serializeMimeType(MIMEType $mimeType): string
