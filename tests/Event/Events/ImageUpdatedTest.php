@@ -53,6 +53,23 @@ class ImageUpdatedTest extends TestCase
                     'Dirk'
                 ),
             ],
+            'imageUpdatedWithAiGenerated' => [
+                [
+                    'item_id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
+                    'media_object_id' => 'ea305d54-75b4-431b-adb2-eb6b9e546019',
+                    'description' => 'some description',
+                    'copyright_holder' => 'Dirk',
+                    'ai_generated' => false,
+                ],
+                new ImageUpdated(
+                    'de305d54-75b4-431b-adb2-eb6b9e546014',
+                    'ea305d54-75b4-431b-adb2-eb6b9e546019',
+                    'some description',
+                    'Dirk',
+                    null,
+                    false
+                ),
+            ],
         ];
     }
 }

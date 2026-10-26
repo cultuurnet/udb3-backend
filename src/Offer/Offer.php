@@ -588,14 +588,17 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     public function updateImage(
         Uuid $mediaObjectId,
         ImageDescription $description,
-        CopyrightHolder $copyrightHolder
+        CopyrightHolder $copyrightHolder,
+        ?bool $aiGenerated = null
     ): void {
-        if ($this->updateImageAllowed($mediaObjectId, $description, $copyrightHolder)) {
+        if ($this->updateImageAllowed($mediaObjectId, $description, $copyrightHolder, $aiGenerated)) {
             $this->apply(
                 $this->createImageUpdatedEvent(
                     $mediaObjectId,
                     $description,
-                    $copyrightHolder
+                    $copyrightHolder,
+                    null,
+                    $this->resolveImageAiGenerated($mediaObjectId, $aiGenerated)
                 )
             );
         }
@@ -604,7 +607,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
     private function updateImageAllowed(
         Uuid $mediaObjectId,
         ImageDescription $description,
-        CopyrightHolder $copyrightHolder
+        CopyrightHolder $copyrightHolder,
+        ?bool $aiGenerated = null
     ): bool {
         $image = $this->images->findImageByUuid($mediaObjectId);
 
@@ -613,9 +617,16 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             return false;
         }
 
-        // Update when copyright or description is changed.
+        // Update when copyright, description or aiGenerated is changed.
+        // An aiGenerated of null means it was not given, so it can never revert an existing value to null.
         return !$copyrightHolder->sameAs($image->getCopyrightHolder()) ||
-            !$description->sameAs($image->getDescription());
+            !$description->sameAs($image->getDescription()) ||
+            ($aiGenerated !== null && $aiGenerated !== $image->getAiGenerated());
+    }
+
+    private function resolveImageAiGenerated(Uuid $mediaObjectId, ?bool $aiGenerated): ?bool
+    {
+        return $aiGenerated ?? $this->images->findImageByUuid($mediaObjectId)?->getAiGenerated();
     }
 
     public function removeImage(Image $image): void
@@ -992,7 +1003,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             new ImageDescription($imageUpdated->getDescription()),
             new CopyrightHolder($imageUpdated->getCopyrightHolder()),
             $image->getSourceLocation(),
-            $image->getLanguage()
+            $image->getLanguage(),
+            $imageUpdated->getAiGenerated() ?? $image->getAiGenerated()
         );
 
         // Currently no other option to update an item inside a collection.
@@ -1101,7 +1113,8 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         Uuid $uuid,
         ImageDescription $description,
         CopyrightHolder $copyrightHolder,
-        ?string $language = null
+        ?string $language = null,
+        ?bool $aiGenerated = null
     ): AbstractImageUpdated;
 
     abstract protected function createMainImageSelectedEvent(Image $image): AbstractMainImageSelected;

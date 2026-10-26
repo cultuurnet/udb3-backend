@@ -130,14 +130,16 @@ final class Item extends Offer
         Uuid $mediaObjectId,
         ImageDescription $description,
         CopyrightHolder $copyrightHolder,
-        ?string $language = null
+        ?string $language = null,
+        ?bool $aiGenerated = null
     ): ImageUpdated {
         return new ImageUpdated(
             $this->id,
             $mediaObjectId->toString(),
             $description->toString(),
             $copyrightHolder->toString(),
-            $language
+            $language,
+            $aiGenerated
         );
     }
 

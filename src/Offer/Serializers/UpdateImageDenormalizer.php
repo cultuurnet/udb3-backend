@@ -34,14 +34,16 @@ final class UpdateImageDenormalizer implements DenormalizerInterface
                 $this->offerId,
                 $this->mediaObjectId,
                 $data['description'],
-                new CopyrightHolder($data['copyrightHolder'])
+                new CopyrightHolder($data['copyrightHolder']),
+                $data['aiGenerated'] ?? null
             );
         } else {
             return new PlaceUpdateImage(
                 $this->offerId,
                 $this->mediaObjectId,
                 $data['description'],
-                new CopyrightHolder($data['copyrightHolder'])
+                new CopyrightHolder($data['copyrightHolder']),
+                $data['aiGenerated'] ?? null
             );
         }
     }
