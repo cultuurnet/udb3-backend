@@ -202,6 +202,28 @@ Feature: Test SubEvent waiting list url
     {"type": "Unavailable"}
     """
 
+  Scenario: Set a waiting list url on a subEvent via a full event update
+    Given I create an event from "events/sub-event-waiting-list/event-multiple.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload from "events/sub-event-waiting-list/event-multiple-with-waiting-list.json"
+    And I send a PUT request to "%{eventUrl}"
+    Then the response status should be "200"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "subEvent/0/bookingAvailability" should be:
+    """
+    {"type": "Unavailable", "waitingListUrl": "https://publiq.be/wachtlijst"}
+    """
+
+  Scenario: A full event update without waiting list url removes it
+    Given I create an event from "events/sub-event-waiting-list/event-multiple-with-waiting-list.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload from "events/sub-event-waiting-list/event-multiple.json"
+    And I send a PUT request to "%{eventUrl}"
+    Then the response status should be "200"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "subEvent/0/bookingAvailability" should be:
+    """
+    {"type": "Unavailable"}
+    """
+
   Scenario: Marking an event as sold out keeps the waiting list urls of its subEvents
     Given I create an event from "events/sub-event-waiting-list/event-multiple-with-waiting-list.json" and save the "url" as "eventUrl"
     When I set the JSON request payload to:
