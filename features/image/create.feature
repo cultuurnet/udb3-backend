@@ -221,3 +221,44 @@ Feature: Test the UDB3 image API
        "schemaErrors":[{"jsonPointer":"\/","error":"The required properties (description, copyrightHolder, inLanguage) are missing"}]
      }
      """
+
+  Scenario: Create an AI generated image via multiform
+    Given I set the form data properties to:
+      | description     | logo |
+      | copyrightHolder | me   |
+      | language        | nl   |
+      | isAiGenerated     | true |
+    When I upload "file" from path "images/udb.jpg" to "/images/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "imageId" as "imageId"
+
+    Given I send and accept "application/json"
+    When I send a GET request to "/images/%{imageId}"
+    Then the response status should be "200"
+    And the JSON response should be:
+    """
+    {
+     "@id": "%{baseUrl}/images/%{imageId}",
+     "@type":"schema:ImageObject",
+     "contentUrl":"https://images.uitdatabank.dev/%{imageId}.jpeg",
+     "thumbnailUrl":"https://images.uitdatabank.dev/%{imageId}.jpeg",
+     "description":"logo",
+     "copyrightHolder":"me",
+     "inLanguage":"nl",
+     "id": "%{imageId}",
+     "isAiGenerated": true
+    }
+    """
+
+  Scenario: Create an image via multiform with an invalid isAiGenerated value
+    Given I set the form data properties to:
+      | description     | logo |
+      | copyrightHolder | me   |
+      | language        | nl   |
+      | isAiGenerated     | yes  |
+    When I upload "file" from path "images/udb.jpg" to "/images/"
+    Then the response status should be "400"
+    And the JSON response at "detail" should be:
+    """
+    "Form data field \"isAiGenerated\" must be \"true\" or \"false\"."
+    """
