@@ -12,6 +12,7 @@ Start a skill with its slash command, the argument is optional.
 | `/review 1234` | Reviews a PR, a branch or the local work: functional (ticket, side effects, consistency, tests) and technical (design, guidelines, naming), with issues and nits apart |
 | `/pr III-1234` | Splits the work into small commits and opens a draft PR with the Why, Changed, Added and Removed chapters |
 | `/api-docs III-1234` | Documents a new or changed endpoint or property in the apidocs repo |
+| `/bulk-merge udb3-search-service` | Merges the open PRs one by one, oldest first: base branch merged in, CI green, approve, merge |
 
 They need:
 
