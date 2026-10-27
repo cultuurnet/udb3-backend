@@ -494,7 +494,7 @@ Feature: Test event images property
         "@type": "schema:ImageObject",
         "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
         "copyrightHolder": "me",
-        "description": "ai logo",
+        "description": "ai logo (Gegenereerd met AI)",
         "inLanguage": "nl",
         "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
         "isAiGenerated": true
@@ -528,7 +528,7 @@ Feature: Test event images property
     And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
     Then the response status should be "204"
     And I get the event at "%{eventUrl}"
-    And the JSON response at "mediaObject/0/description" should be "An updated logo"
+    And the JSON response at "mediaObject/0/description" should be "An updated logo (Gegenereerd met AI)"
     And the JSON response at "mediaObject/0/isAiGenerated" should be "true"
 
     When I set the JSON request payload to:
