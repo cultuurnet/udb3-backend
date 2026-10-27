@@ -553,3 +553,46 @@ Feature: Test event images property
     And I get the event at "%{eventUrl}"
     Then the JSON response at "mediaObject/0/isAiGenerated" should be "true"
     And the JSON response at "mediaObject/1/isAiGenerated" should be "false"
+
+  Scenario: The AI generated suffix is added to and removed from the image description when isAiGenerated changes
+    Given I create an event from "events/event-with-images.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "logo",
+      "copyrightHolder": "me",
+      "isAiGenerated": true
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject/0/description" should be "logo (Gegenereerd met AI)"
+    And the JSON response at "mediaObject/0/isAiGenerated" should be "true"
+
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "logo (Gegenereerd met AI)",
+      "copyrightHolder": "me",
+      "isAiGenerated": true
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject/0/description" should be "logo (Gegenereerd met AI)"
+
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "logo (Gegenereerd met AI)",
+      "copyrightHolder": "me",
+      "isAiGenerated": false
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject/0/description" should be "logo"
+    And the JSON response at "mediaObject/0/isAiGenerated" should be "false"
