@@ -18,7 +18,7 @@ Feature: Test place images property
     Given I set the form data properties to:
       | description     | logo2 |
       | copyrightHolder | me2   |
-      | language        | nl   |
+      | language        | nl    |
     When I upload "file" from path "images/udb.jpg" to "/images/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "imageId" as "imageId2"
@@ -471,7 +471,7 @@ Feature: Test place images property
       | description     | ai logo |
       | copyrightHolder | me      |
       | language        | nl      |
-      | isAiGenerated     | true    |
+      | isAiGenerated   | true    |
     When I upload "file" from path "images/udb.jpg" to "/images/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "imageId" as "aiImageId"
