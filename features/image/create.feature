@@ -242,7 +242,7 @@ Feature: Test the UDB3 image API
      "@type":"schema:ImageObject",
      "contentUrl":"https://images.uitdatabank.dev/%{imageId}.jpeg",
      "thumbnailUrl":"https://images.uitdatabank.dev/%{imageId}.jpeg",
-     "description":"logo",
+     "description":"logo (Gegenereerd met AI)",
      "copyrightHolder":"me",
      "inLanguage":"nl",
      "id": "%{imageId}",

@@ -86,7 +86,7 @@ final class MediaObjectTest extends AggregateRootScenarioTestCase
         );
 
         $this->assertEquals(
-            new Description('The Gleaners'),
+            new Description('The Gleaners (Generated with AI)'),
             $mediaObject->getDescription()
         );
 
@@ -101,6 +101,45 @@ final class MediaObjectTest extends AggregateRootScenarioTestCase
         );
 
         $this->assertTrue($mediaObject->isAiGenerated());
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_the_ai_generated_suffix_to_the_description_of_an_ai_generated_image(): void
+    {
+        $fileId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $fileType = new MIMEType('image/png');
+        $copyrightHolder = new CopyrightHolder('Jean-François Millet');
+        $location = new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
+        $language = new Language('nl');
+
+        $this->scenario
+            ->withAggregateId($fileId->toString())
+            ->when(
+                fn () => MediaObject::create(
+                    $fileId,
+                    $fileType,
+                    new Description('The Gleaners'),
+                    $copyrightHolder,
+                    $location,
+                    $language,
+                    true
+                )
+            )
+            ->then(
+                [
+                    new MediaObjectCreated(
+                        $fileId,
+                        $fileType,
+                        new Description('The Gleaners (Gegenereerd met AI)'),
+                        $copyrightHolder,
+                        $location,
+                        $language,
+                        true
+                    ),
+                ]
+            );
     }
 
     /**
