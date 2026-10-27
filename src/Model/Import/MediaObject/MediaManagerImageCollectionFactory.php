@@ -52,7 +52,7 @@ class MediaManagerImageCollectionFactory implements ImageCollectionFactory
                     $image->getCopyrightHolder(),
                     $mediaObjectAggregate->getSourceLocation(),
                     $image->getLanguage(),
-                    $image->isAiGenerated()
+                    $image->isAiGenerated() ?? $mediaObjectAggregate->isAiGenerated()
                 );
             },
             $images->toArray()

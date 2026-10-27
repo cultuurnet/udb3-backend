@@ -121,7 +121,7 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                 new CopyrightHolder('Bob')
             ),
             // PNG image with original description, copyright holder and language.
-            // The isAiGenerated of the media object is not used, so an existing value on the offer is not overwritten.
+            // No isAiGenerated given, so the isAiGenerated of the media object is used.
             new Image(
                 new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
                 new Language('nl'),
@@ -147,7 +147,56 @@ class MediaManagerImageCollectionFactoryTest extends TestCase
                     new MediaDescription('PNG Afbeelding'),
                     new CopyrightHolder('Bob'),
                     new Url('https://io.uitdatabank.be/images/502c9436-02cd-4224-a690-04898b7c3a8d.png'),
-                    new Language('nl')
+                    new Language('nl'),
+                    true
+                ),
+            ]
+        );
+
+        $actual = $this->factory->fromImages($input);
+
+        $this->assertEquals($expected, $actual);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_prefer_the_is_ai_generated_of_the_image_over_the_media_object(): void
+    {
+        $this->mediaManager->expects($this->once())
+            ->method('get')
+            ->willReturn(
+                Udb3MediaObjectAggregate::create(
+                    new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
+                    MIMEType::fromSubtype('png'),
+                    new MediaDescription('PNG Afbeelding'),
+                    new CopyrightHolder('Bob'),
+                    new Url('https://io.uitdatabank.be/images/502c9436-02cd-4224-a690-04898b7c3a8d.png'),
+                    new Language('nl'),
+                    true
+                )
+            );
+
+        $input = new Images(
+            new Image(
+                new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
+                new Language('nl'),
+                new Description('PNG Afbeelding'),
+                new CopyrightHolder('Bob'),
+                false
+            )
+        );
+
+        $expected = ImageCollection::fromArray(
+            [
+                new MediaImage(
+                    new Uuid('502c9436-02cd-4224-a690-04898b7c3a8d'),
+                    MIMEType::fromSubtype('png'),
+                    new MediaDescription('PNG Afbeelding'),
+                    new CopyrightHolder('Bob'),
+                    new Url('https://io.uitdatabank.be/images/502c9436-02cd-4224-a690-04898b7c3a8d.png'),
+                    new Language('nl'),
+                    false
                 ),
             ]
         );
