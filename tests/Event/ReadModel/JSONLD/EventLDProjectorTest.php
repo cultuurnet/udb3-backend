@@ -61,6 +61,8 @@ use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
+use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
@@ -2177,6 +2179,41 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $this->assertFalse(property_exists($body, 'departurePlaces'));
+    }
+
+    /**
+     * @test
+     * @dataProvider reservationLinkEventProvider
+     */
+    public function it_only_updates_the_playhead_on_reservation_link_events(object $reservationLinkEvent): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $this->documentRepository->save(
+            new JsonDocument(
+                $eventId,
+                Json::encode(['@id' => 'http://example.com/entity/' . $eventId, 'name' => ['nl' => 'Voorstelling'], 'playhead' => 4])
+            )
+        );
+
+        $this->projector->handle(
+            new DomainMessage($eventId, 5, new Metadata(), $reservationLinkEvent, $this->recordedOn->toBroadwayDateTime())
+        );
+
+        $body = $this->getBody($eventId);
+        $this->assertEquals(5, $body->playhead);
+        $this->assertEquals('Voorstelling', $body->name->nl);
+    }
+
+    public function reservationLinkEventProvider(): array
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $link = new Url('https://leuven-school-met-cultuur.ticketmatic.com/30cc/register/12345');
+
+        return [
+            'added' => [new ReservationLinkAdded($eventId, $link)],
+            'removed' => [new ReservationLinkRemoved($eventId, $link)],
+        ];
     }
 
     /**
