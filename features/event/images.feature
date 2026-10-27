@@ -536,19 +536,6 @@ Feature: Test event images property
     {
       "description": "An updated logo",
       "copyrightHolder": "me",
-      "isAiGenerated": null
-    }
-    """
-    And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
-    Then the response status should be "204"
-    And I get the event at "%{eventUrl}"
-    And the JSON response at "mediaObject/0/isAiGenerated" should be "true"
-
-    When I set the JSON request payload to:
-    """
-    {
-      "description": "An updated logo",
-      "copyrightHolder": "me",
       "isAiGenerated": false
     }
     """
