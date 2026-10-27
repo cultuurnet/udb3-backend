@@ -227,7 +227,7 @@ Feature: Test the UDB3 image API
       | description     | logo |
       | copyrightHolder | me   |
       | language        | nl   |
-      | isAiGenerated     | true |
+      | isAiGenerated   | true |
     When I upload "file" from path "images/udb.jpg" to "/images/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "imageId" as "imageId"
@@ -255,7 +255,7 @@ Feature: Test the UDB3 image API
       | description     | logo |
       | copyrightHolder | me   |
       | language        | nl   |
-      | isAiGenerated     | yes  |
+      | isAiGenerated   | yes  |
     When I upload "file" from path "images/udb.jpg" to "/images/"
     Then the response status should be "400"
     And the JSON response at "detail" should be:
