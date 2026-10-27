@@ -192,10 +192,10 @@ class OfferTest extends AggregateRootScenarioTestCase
     {
         $itemId = '77b4df58-b7e9-40cf-979f-ec741a072282';
 
-        $createImage = fn (?bool $isAiGenerated) => new Image(
+        $createImage = fn (?bool $isAiGenerated, string $description = 'my pic') => new Image(
             new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
             new MIMEType('image/jpg'),
-            new MediaDescription('my pic'),
+            new MediaDescription($description),
             new CopyrightHolder('Dirk Dirkington'),
             new Url('http://foo.bar/media/my_pic.jpg'),
             new Language('en'),
@@ -205,7 +205,7 @@ class OfferTest extends AggregateRootScenarioTestCase
         $this->scenario
             ->given([
                 new ItemCreated($itemId),
-                new ImageAdded($itemId, $createImage(true)),
+                new ImageAdded($itemId, $createImage(true, 'my pic (Generated with AI)')),
             ])
             ->when(
                 function (Item $item) use ($createImage): void {
@@ -735,7 +735,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new ImageUpdated(
                         'someId',
                         $this->image->getMediaObjectId()->toString(),
-                        $this->image->getDescription()->toString(),
+                        $this->image->getDescription()->toString() . ' (Generated with AI)',
                         $this->image->getCopyrightHolder()->toString(),
                         null,
                         true
@@ -766,7 +766,7 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new ImageUpdated(
                         'someId',
                         $this->image->getMediaObjectId()->toString(),
-                        $this->image->getDescription()->toString(),
+                        $this->image->getDescription()->toString() . ' (Generated with AI)',
                         $this->image->getCopyrightHolder()->toString(),
                         null,
                         true
@@ -801,10 +801,57 @@ class OfferTest extends AggregateRootScenarioTestCase
                     new ImageUpdated(
                         'someId',
                         $this->image->getMediaObjectId()->toString(),
-                        'new description',
+                        'new description (Generated with AI)',
                         $this->image->getCopyrightHolder()->toString(),
                         null,
                         true
+                    ),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_the_ai_generated_suffix_when_adding_or_importing_an_ai_generated_image(): void
+    {
+        $createImage = fn (string $id, string $description) => new Image(
+            new Uuid($id),
+            new MIMEType('image/gif'),
+            new MediaDescription($description),
+            new CopyrightHolder('Bert Ramakers'),
+            new Url('http://foo.bar/media/my_favorite_giphy_gif.gif'),
+            new Language('fr'),
+            true
+        );
+
+        $this->scenario
+            ->withAggregateId('someId')
+            ->given(
+                [
+                    new ItemCreated('someId'),
+                ]
+            )
+            ->when(
+                function (Item $item) use ($createImage): void {
+                    $item->addImage($createImage('de305d54-75b4-431b-adb2-eb6b9e546014', 'my gif'));
+                    $item->importImages(
+                        ImageCollection::fromArray([
+                            $createImage('de305d54-75b4-431b-adb2-eb6b9e546014', 'my gif (Généré par l\'IA)'),
+                            $createImage('837bd340-e939-4210-8af9-e4baedd0d44e', 'my second gif'),
+                        ])
+                    );
+                }
+            )
+            ->then(
+                [
+                    new ImageAdded(
+                        'someId',
+                        $createImage('de305d54-75b4-431b-adb2-eb6b9e546014', 'my gif (Généré par l\'IA)')
+                    ),
+                    new ImageAdded(
+                        'someId',
+                        $createImage('837bd340-e939-4210-8af9-e4baedd0d44e', 'my second gif (Généré par l\'IA)')
                     ),
                 ]
             );

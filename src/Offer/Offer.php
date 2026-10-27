@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Video;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\VideoCollection;
@@ -580,7 +581,7 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
 
         if ($existingImage === null) {
             $this->apply(
-                $this->createImageAddedEvent($image)
+                $this->createImageAddedEvent($this->withAiGeneratedDescription($image))
             );
         }
     }
@@ -597,6 +598,9 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
             return;
         }
 
+        $resolvedIsAiGenerated = $this->resolveImageAiGenerated($existingImage, $isAiGenerated);
+        $description = $this->applyAiGeneratedDescription($description, $existingImage->getLanguage(), $resolvedIsAiGenerated);
+
         if ($this->updateImageAllowed($existingImage, $description, $copyrightHolder, $isAiGenerated)) {
             $this->apply(
                 $this->createImageUpdatedEvent(
@@ -604,10 +608,39 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
                     $description,
                     $copyrightHolder,
                     null,
-                    $this->resolveImageAiGenerated($existingImage, $isAiGenerated)
+                    $resolvedIsAiGenerated
                 )
             );
         }
+    }
+
+    private function withAiGeneratedDescription(Image $image): Image
+    {
+        $description = $this->applyAiGeneratedDescription($image->getDescription(), $image->getLanguage(), $image->isAiGenerated());
+
+        if ($description->sameAs($image->getDescription())) {
+            return $image;
+        }
+
+        return new Image(
+            $image->getMediaObjectId(),
+            $image->getMimeType(),
+            $description,
+            $image->getCopyrightHolder(),
+            $image->getSourceLocation(),
+            $image->getLanguage(),
+            $image->isAiGenerated()
+        );
+    }
+
+    private function applyAiGeneratedDescription(
+        ImageDescription $description,
+        Language $language,
+        ?bool $isAiGenerated
+    ): ImageDescription {
+        return new ImageDescription(
+            AiGeneratedImageDescription::apply($description->toString(), $language, $isAiGenerated)
+        );
     }
 
     private function updateImageAllowed(
@@ -684,20 +717,27 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         $removedImages = array_udiff($currentImages, $importImages, $compareImages);
 
         foreach ($addedImages as $addedImage) {
-            $this->apply($this->createImageAddedEvent($addedImage));
+            $this->apply($this->createImageAddedEvent($this->withAiGeneratedDescription($addedImage)));
         }
 
         foreach ($updatedImages as $updatedImage) {
             $existingImage = $this->images->findImageByUuid($updatedImage->getMediaObjectId());
 
-            if ($existingImage && $this->updateImageAllowed($existingImage, $updatedImage->getDescription(), $updatedImage->getCopyrightHolder(), $updatedImage->isAiGenerated())) {
+            if (!$existingImage) {
+                continue;
+            }
+
+            $resolvedIsAiGenerated = $this->resolveImageAiGenerated($existingImage, $updatedImage->isAiGenerated());
+            $description = $this->applyAiGeneratedDescription($updatedImage->getDescription(), $updatedImage->getLanguage(), $resolvedIsAiGenerated);
+
+            if ($this->updateImageAllowed($existingImage, $description, $updatedImage->getCopyrightHolder(), $updatedImage->isAiGenerated())) {
                 $this->apply(
                     $this->createImageUpdatedEvent(
                         $updatedImage->getMediaObjectId(),
-                        $updatedImage->getDescription(),
+                        $description,
                         $updatedImage->getCopyrightHolder(),
                         $updatedImage->getLanguage()->getCode(),
-                        $this->resolveImageAiGenerated($existingImage, $updatedImage->isAiGenerated())
+                        $resolvedIsAiGenerated
                     )
                 );
             }
