@@ -315,7 +315,17 @@ trait ResponseSteps
     private function removeRandomness(string $value): string
     {
         $value = $this->removeDates($value);
+        $value = $this->removeGeocodedCoordinates($value);
         return $this->removeRuimteTijdIdentifier($value);
+    }
+
+    /**
+     * Google moves the point it returns for an address over time, and the geometry id is a hash of that point.
+     */
+    private function removeGeocodedCoordinates(string $value): string
+    {
+        $value = preg_replace('/#geometry-[0-9a-f]+/', '#geometry', $value);
+        return preg_replace('/<gml:coordinates>[^<]*<\/gml:coordinates>/', '<gml:coordinates></gml:coordinates>', $value);
     }
 
     private function removeDates(string $value): string
