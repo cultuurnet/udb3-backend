@@ -177,7 +177,8 @@ final class AddImageRequestHandlerTest extends TestCase
             new Image(
                 new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
                 new Language('nl'),
-                new Description('Uploaded image'),
+                // The suffix is added when uploading, the Organizer aggregate removes it again when not AI generated.
+                new Description('Uploaded image (Gegenereerd met AI)'),
                 new CopyrightHolder('madewithlove'),
                 $expectedAiGenerated
             )

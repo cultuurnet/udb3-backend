@@ -335,7 +335,7 @@ Feature: Test organizer images property
         "id": "%{aiImageId}",
         "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
         "copyrightHolder": "me",
-        "description": "ai logo",
+        "description": "ai logo (Gegenereerd met AI)",
         "inLanguage": "nl",
         "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
         "isAiGenerated": true
@@ -368,7 +368,7 @@ Feature: Test organizer images property
     And I send a PATCH request to "%{organizerUrl}/images"
     Then the response status should be "204"
     When I get the organizer at "%{organizerUrl}"
-    Then the JSON response at "images/0/description" should be "Aangepaste beschrijving"
+    Then the JSON response at "images/0/description" should be "Aangepaste beschrijving (Gegenereerd met AI)"
     And the JSON response at "images/0/isAiGenerated" should be "true"
 
     When I set the JSON request payload to:
