@@ -67,3 +67,31 @@ We created some dummy users that can be used in tests:
 | dummyuser4@publiq.be | c9f2a19f-3dd7-401c-ad4d-73db7a9d1748 |                                           |
 | dummyuser5@publiq.be | edf305f8-69b6-4553-914e-9ecedcba418e |                                           |
 | dummyuser6@publiq.be | 67aebd9b-3033-459c-818e-ca684b3a27b3 | Cannot be used to create extra Ownerships |
+
+## Working in parallel with worktrees
+
+This is optional: without the variables below, the setup above is unchanged.
+
+Several stacks can run side by side, for example one per git worktree. Each stack needs its own values in `.env`:
+
+| Variable | Default |
+| --- | --- |
+| `UDB3_STACK` (container name suffix and network name) | `uitdatabank` |
+| `COMPOSE_PROJECT_NAME` (prefix of the data volumes) | folder name |
+| `FORWARD_HTTP_PORT` / `FORWARD_XDEBUG_HTTP_PORT` | `8000` / `8001` |
+| `MYSQL_PORT` / `FORWARD_REDIS_PORT` | `3306` / `6379` |
+| `FORWARD_RABBITMQ_PORT` / `FORWARD_RABBITMQ_MANAGEMENT_PORT` | `5672` / `15672` |
+| `MAILPIT_GUI_PORT` / `MAILPIT_SMTP_PORT` | `8025` / `1025` |
+
+With [worktrunk](https://worktrunk.dev) this is automated by `.config/wt.toml`. `wt switch --create <branch>`:
+- copies `.env`, the config files, the `.pem` keys and `vendor/` from the main checkout,
+- appends a block to `.env` with a stack name and ports derived from the branch name,
+- runs `make up && make init && make feature-init` in the background.
+
+`wt remove` stops the stack and deletes its volumes. Worktrunk asks once to approve these commands.
+
+All stacks share the PHP images, so a new stack starts without building. After a change to the Dockerfile, run `make build` once; every stack picks up the new image when its containers are recreated.
+
+Without worktrunk, a new stack starts with an empty database, so run `make feature-init` before running the acceptance tests.
+The API is available on `http://io.uitdatabank.local:<FORWARD_HTTP_PORT>`.
+`UDB3_STACK` is also the network name, so a search service stack that sets the same value joins this stack.
