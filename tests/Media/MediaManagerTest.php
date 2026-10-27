@@ -192,7 +192,7 @@ final class MediaManagerTest extends TestCase
         $expectedImage = new Image(
             new Uuid($id),
             $fileType,
-            $description,
+            new Description('The Gleaners (Generated with AI)'),
             $copyrightHolder,
             $location,
             $language,
