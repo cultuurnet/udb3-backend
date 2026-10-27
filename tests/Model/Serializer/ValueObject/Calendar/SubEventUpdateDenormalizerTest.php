@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 final class SubEventUpdateDenormalizerTest extends TestCase
@@ -134,5 +136,28 @@ final class SubEventUpdateDenormalizerTest extends TestCase
     public function it_supports_denormalization_of_sub_event_update(): void
     {
         $this->assertTrue($this->denormalizer->supportsDenormalization([], SubEventUpdate::class));
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_set_booking_info_when_absent(): void
+    {
+        $update = $this->denormalizer->denormalize(['id' => 0], SubEventUpdate::class);
+
+        $this->assertNull($update->getBookingInfo());
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_the_booking_info(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'bookingInfo' => ['url' => 'https://www.example.com/reserve']],
+            SubEventUpdate::class
+        );
+
+        $this->assertEquals(new SubEventBookingInfo(new Url('https://www.example.com/reserve')), $update->getBookingInfo());
     }
 }

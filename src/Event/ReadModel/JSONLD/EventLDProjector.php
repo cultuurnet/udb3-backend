@@ -55,6 +55,8 @@ use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
+use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
@@ -604,6 +606,18 @@ final class EventLDProjector extends OfferLDProjector implements
         }
 
         return $document->withBody($jsonLD);
+    }
+
+    protected function applyReservationLinkAdded(ReservationLinkAdded $reservationLinkAdded): JsonDocument
+    {
+        // Just return the JSON body without any changes, but this triggers a playhead update.
+        return $this->loadDocumentFromRepository($reservationLinkAdded);
+    }
+
+    protected function applyReservationLinkRemoved(ReservationLinkRemoved $reservationLinkRemoved): JsonDocument
+    {
+        // Just return the JSON body without any changes, but this triggers a playhead update.
+        return $this->loadDocumentFromRepository($reservationLinkRemoved);
     }
 
     protected function applyChildrenOnlyUpdated(ChildrenOnlyUpdated $childrenOnlyUpdated): JsonDocument

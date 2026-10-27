@@ -12,6 +12,8 @@ use CultuurNet\UDB3\Event\Commands\UpdateSubEvents;
 use CultuurNet\UDB3\Event\EventRepository;
 use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
@@ -35,6 +37,8 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Event\ChildcareTimeInvalid;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
 use DateTimeImmutable;
@@ -1055,5 +1059,65 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
             ->given([$eventCreated])
             ->when(new UpdateSubEvents('1', (new SubEventUpdate(0))->withEndDate(new DateTimeImmutable('2020-01-01 23:00:00+01:00'))))
             ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_booking_info_when_it_is_not_updated(): void
+    {
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$this->eventCreatedWithBookingInfo()])
+            ->when(new UpdateSubEvents('1', new SubEventUpdate(0)))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_replaces_the_booking_info(): void
+    {
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$this->eventCreatedWithBookingInfo()])
+            ->when(new UpdateSubEvents(
+                '1',
+                (new SubEventUpdate(0))->withBookingInfo(new SubEventBookingInfo(new Url('https://www.example.com/second')))
+            ))
+            ->then([
+                new CalendarUpdated(
+                    '1',
+                    new SingleSubEventCalendar(
+                        SubEvent::createAvailable(
+                            new DateRange(
+                                new DateTimeImmutable('2020-01-01 10:00:00+01:00'),
+                                new DateTimeImmutable('2020-01-01 12:00:00+01:00')
+                            )
+                        )->withBookingInfo(new SubEventBookingInfo(new Url('https://www.example.com/second')))
+                    )
+                ),
+                new ReservationLinkRemoved('1', new Url('https://www.example.com/first')),
+                new ReservationLinkAdded('1', new Url('https://www.example.com/second')),
+            ]);
+    }
+
+    private function eventCreatedWithBookingInfo(): EventCreated
+    {
+        return new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new SingleSubEventCalendar(
+                SubEvent::createAvailable(
+                    new DateRange(
+                        new DateTimeImmutable('2020-01-01 10:00:00+01:00'),
+                        new DateTimeImmutable('2020-01-01 12:00:00+01:00')
+                    )
+                )->withBookingInfo(new SubEventBookingInfo(new Url('https://www.example.com/first')))
+            )
+        );
     }
 }
