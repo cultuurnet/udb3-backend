@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 final class SubEventDenormalizerTest extends TestCase
@@ -106,5 +108,41 @@ final class SubEventDenormalizerTest extends TestCase
     public function it_supports_denormalization_of_sub_event(): void
     {
         $this->assertTrue($this->denormalizer->supportsDenormalization([], SubEvent::class));
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_the_booking_info(): void
+    {
+        $subEvent = $this->denormalizer->denormalize(
+            [
+                'startDate' => '2026-07-01T09:00:00+02:00',
+                'endDate' => '2026-07-05T17:00:00+02:00',
+                'bookingInfo' => ['url' => 'https://www.example.com/reserve'],
+            ],
+            SubEvent::class
+        );
+
+        $this->assertEquals(new SubEventBookingInfo(new Url('https://www.example.com/reserve')), $subEvent->getBookingInfo());
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_a_stored_booking_info_without_url(): void
+    {
+        $subEvent = $this->denormalizer->denormalize(
+            [
+                'startDate' => '2026-05-01T09:00:00+02:00',
+                'endDate' => '2026-05-05T17:00:00+02:00',
+                'bookingInfo' => [
+                    'phone' => '0123456789',
+                ],
+            ],
+            SubEvent::class
+        );
+
+        $this->assertNull($subEvent->getBookingInfo());
     }
 }
