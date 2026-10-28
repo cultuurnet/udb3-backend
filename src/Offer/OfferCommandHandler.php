@@ -128,7 +128,8 @@ abstract class OfferCommandHandler extends Udb3CommandHandler
         $offer->updateImage(
             $updateImage->getMediaObjectId(),
             new Description($updateImage->getDescription()),
-            $updateImage->getCopyrightHolder()
+            $updateImage->getCopyrightHolder(),
+            $updateImage->isAiGenerated()
         );
         $this->offerRepository->save($offer);
     }
