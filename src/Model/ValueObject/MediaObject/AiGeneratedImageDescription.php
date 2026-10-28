@@ -23,7 +23,7 @@ final class AiGeneratedImageDescription
     {
         $suffix = self::SUFFIXES[$language->getCode()] ?? null;
 
-        if ($suffix === null || str_ends_with($description, $suffix)) {
+        if ($suffix === null || str_contains($description, $suffix)) {
             return $description;
         }
 
