@@ -8,6 +8,7 @@ use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageDescription;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class MediaObjectSerializer
@@ -46,6 +47,13 @@ class MediaObjectSerializer
 
         if ($mediaObject->isAiGenerated() !== null) {
             $serialized['isAiGenerated'] = $mediaObject->isAiGenerated();
+        }
+
+        if ($mediaObject->isAiGenerated() === true) {
+            $serialized['description'] = AiGeneratedImageDescription::addSuffix(
+                $serialized['description'],
+                $mediaObject->getLanguage()
+            );
         }
 
         return $serialized;

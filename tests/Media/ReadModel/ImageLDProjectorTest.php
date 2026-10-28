@@ -122,7 +122,7 @@ final class ImageLDProjectorTest extends TestCase
                         'id' => 'd1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d',
                         'contentUrl' => 'https://images.uitdatabank.local/d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d.jpeg',
                         'thumbnailUrl' => 'https://images.uitdatabank.local/d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d.jpeg',
-                        'description' => 'A description',
+                        'description' => 'A description (Generated with AI)',
                         'copyrightHolder' => 'John Doe',
                         'inLanguage' => 'en',
                         'isAiGenerated' => true,

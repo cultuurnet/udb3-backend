@@ -15,7 +15,6 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Locality;
 use CultuurNet\UDB3\Model\ValueObject\Geography\PostalCode;
 use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
@@ -315,11 +314,7 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
                 $this->actorId,
                 $image->getId()->toString(),
                 $image->getLanguage()->toString(),
-                AiGeneratedImageDescription::apply(
-                    $image->getDescription()->toString(),
-                    $image->getLanguage(),
-                    $image->isAiGenerated()
-                ),
+                $image->getDescription()->toString(),
                 $image->getCopyrightHolder()->toString(),
                 $image->isAiGenerated()
             )
@@ -348,21 +343,12 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         /** @var Image $existingImage */
         $existingImage = $images->getFirst();
 
-        $language = $language ?: $existingImage->getLanguage();
-        $isAiGenerated = $isAiGenerated ?? $existingImage->isAiGenerated();
-
         $updatedImage = new Image(
             $imageId,
-            $language,
-            new Description(
-                AiGeneratedImageDescription::apply(
-                    ($description ?: $existingImage->getDescription())->toString(),
-                    $language,
-                    $isAiGenerated
-                )
-            ),
+            $language ?: $existingImage->getLanguage(),
+            $description ?: $existingImage->getDescription(),
             $copyrightHolder ?: $existingImage->getCopyrightHolder(),
-            $isAiGenerated
+            $isAiGenerated ?? $existingImage->isAiGenerated()
         );
 
         if ($updatedImage->sameAs($existingImage)) {
