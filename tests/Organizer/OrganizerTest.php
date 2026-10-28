@@ -16,6 +16,7 @@ use CultuurNet\UDB3\Model\ValueObject\Geography\Street;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\Images;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Label;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\LabelName;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Label\Labels;
@@ -1354,6 +1355,60 @@ class OrganizerTest extends AggregateRootScenarioTestCase
                         null,
                         null,
                         false
+                    );
+                },
+                [
+                    new ImageUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving afbeelding',
+                        'Rechtenhouder afbeelding',
+                        false
+                    ),
+                ],
+            ],
+            'Remove the suffix from the given description when isAiGenerated changes to false' => [
+                [
+                    $organizerCreated,
+                    $imageAddedWithAiGenerated,
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->updateImage(
+                        new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                        new Language('nl'),
+                        new Description('Beschrijving afbeelding (Gegenereerd met AI)'),
+                        new CopyrightHolder('Rechtenhouder afbeelding'),
+                        false
+                    );
+                },
+                [
+                    new ImageUpdated(
+                        'ae3aab28-6351-489e-a61c-c48aec0a77df',
+                        'cf539408-bba9-4e77-9f85-72019013db37',
+                        'nl',
+                        'Beschrijving afbeelding',
+                        'Rechtenhouder afbeelding',
+                        false
+                    ),
+                ],
+            ],
+            'Remove the suffix when importing an image with isAiGenerated changed to false' => [
+                [
+                    $organizerCreated,
+                    $imageAddedWithAiGenerated,
+                ],
+                function (Organizer $organizer): void {
+                    $organizer->importImages(
+                        new Images(
+                            new Image(
+                                new Uuid('cf539408-bba9-4e77-9f85-72019013db37'),
+                                new Language('nl'),
+                                new Description('Beschrijving afbeelding (Gegenereerd met AI)'),
+                                new CopyrightHolder('Rechtenhouder afbeelding'),
+                                false
+                            )
+                        )
                     );
                 },
                 [
