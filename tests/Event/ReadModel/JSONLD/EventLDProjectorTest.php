@@ -52,6 +52,7 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Event\Events\ImageUpdated;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
@@ -689,6 +690,51 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $body = $this->project($imageUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
 
         $this->assertEquals($expectedBody, $body);
+    }
+
+    /**
+     * @test
+     * @dataProvider isAiGeneratedImageUpdateProvider
+     */
+    public function it_projects_ai_generated_when_editing_an_image(?bool $updatedAiGenerated, bool $expectedAiGenerated): void
+    {
+        $id = 'foo';
+        $imageUpdated = new ImageUpdated(
+            $id,
+            'de305d54-75b4-431b-adb2-eb6b9e546014',
+            'Some description.',
+            'Dirk Dirkington',
+            null,
+            $updatedAiGenerated
+        );
+
+        $this->documentRepository->save(new JsonDocument(
+            $id,
+            Json::encode([
+                'mediaObject' => [
+                    [
+                        '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                        '@type' => 'schema:ImageObject',
+                        'description' => 'olddescription',
+                        'copyrightHolder' => 'oldcopyrightHolder',
+                        'inLanguage' => 'en',
+                        'isAiGenerated' => true,
+                    ],
+                ],
+            ])
+        ));
+
+        $body = $this->project($imageUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
+
+        $this->assertSame($expectedAiGenerated, $body->mediaObject[0]->isAiGenerated);
+    }
+
+    public function isAiGeneratedImageUpdateProvider(): array
+    {
+        return [
+            'isAiGenerated not given keeps the existing value' => [null, true],
+            'isAiGenerated given overwrites the existing value' => [false, false],
+        ];
     }
 
     /**

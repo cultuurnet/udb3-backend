@@ -18,7 +18,7 @@ Feature: Test organizer images property
     Given I set the form data properties to:
       | description     | logo2 |
       | copyrightHolder | me2   |
-      | language        | nl   |
+      | language        | nl    |
     When I upload "file" from path "images/udb.jpg" to "/images/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "imageId" as "imageId2"
@@ -306,3 +306,89 @@ Feature: Test organizer images property
     When I get the organizer at "%{organizerUrl}"
     And the JSON response should not have "images"
     And the JSON response should not have "mainImage"
+
+  Scenario: Add an AI generated image to an organizer via images endpoint
+    Given I set the form data properties to:
+      | description     | ai logo |
+      | copyrightHolder | me      |
+      | language        | nl      |
+      | isAiGenerated   | true    |
+    When I upload "file" from path "images/udb.jpg" to "/images/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "imageId" as "aiImageId"
+    Given I create a minimal organizer and save the "url" as "organizerUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "id":"%{aiImageId}"
+    }
+    """
+    And I send a POST request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images" should be:
+    """
+    [
+      {
+        "@id": "%{baseUrl}/images/%{aiImageId}",
+        "@type": "schema:ImageObject",
+        "id": "%{aiImageId}",
+        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "copyrightHolder": "me",
+        "description": "ai logo",
+        "inLanguage": "nl",
+        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "isAiGenerated": true
+      }
+    ]
+    """
+
+  Scenario: Update isAiGenerated of an organizer image via images endpoint and keep it when not given
+    Given I create an organizer from "organizers/organizer-with-images.json" and save the "url" as "organizerUrl"
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "isAiGenerated": true
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/isAiGenerated" should be "true"
+    And the JSON response should not have "images/1/isAiGenerated"
+
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "description": "Aangepaste beschrijving"
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/description" should be "Aangepaste beschrijving"
+    And the JSON response at "images/0/isAiGenerated" should be "true"
+
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "isAiGenerated": false
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/isAiGenerated" should be "false"
+
+  Scenario: isAiGenerated of images is kept when updating an organizer without isAiGenerated
+    Given I create an organizer from "organizers/organizer-with-ai-generated-images.json" and save the "url" as "organizerUrl"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/isAiGenerated" should be "true"
+    And the JSON response at "images/1/isAiGenerated" should be "false"
+    When I update the organizer at "%{organizerUrl}" from "organizers/organizer-with-images.json"
+    And I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/isAiGenerated" should be "true"
+    And the JSON response at "images/1/isAiGenerated" should be "false"

@@ -83,6 +83,63 @@ class UpdateImageRequestHandlerTest extends TestCase
 
     /**
      * @test
+     * @dataProvider offerTypeWithAiGeneratedDataProvider
+     */
+    public function it_handles_updating_ai_generated_of_an_image_of_an_offer(
+        string $offerType,
+        AbstractUpdateImage $updateImage
+    ): void {
+        $updateImageRequest = $this->psr7RequestBuilder
+            ->withRouteParameter('offerType', $offerType)
+            ->withRouteParameter('offerId', self::OFFER_ID)
+            ->withRouteParameter('mediaId', self::MEDIA_ID)
+            ->withJsonBodyFromArray(
+                [
+                    'description' => 'A new picture of a picture',
+                    'copyrightHolder' => 'Public Domain',
+                    'isAiGenerated' => true,
+                ]
+            )
+            ->build('PUT');
+
+        $this->updateImageRequestHandler->handle($updateImageRequest);
+
+        $this->assertEquals(
+            [
+                $updateImage,
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    public function offerTypeWithAiGeneratedDataProvider(): array
+    {
+        return [
+            [
+                'offerType' => 'events',
+                'updateImage' => new EventUpdateImage(
+                    self::OFFER_ID,
+                    new Uuid(self::MEDIA_ID),
+                    'A new picture of a picture',
+                    new CopyrightHolder('Public Domain'),
+                    true
+                ),
+            ],
+            [
+                'offerType' => 'places',
+                'updateImage' => new PlaceUpdateImage(
+                    self::OFFER_ID,
+                    new Uuid(self::MEDIA_ID),
+                    'A new picture of a picture',
+                    new CopyrightHolder('Public Domain'),
+                    true
+                ),
+            ],
+        ];
+    }
+
+    /**
+     * @test
      * @dataProvider offerTypeDataProvider
      */
     public function it_throws_an_api_problem_when_the_image_is_not_a_uuid(string $offerType): void

@@ -25,13 +25,16 @@ final class MediaObjectCreated implements Serializable
 
     private Language $language;
 
+    private ?bool $isAiGenerated;
+
     public function __construct(
         Uuid $id,
         MIMEType $fileType,
         Description $description,
         CopyrightHolder $copyrightHolder,
         Url $sourceLocation,
-        Language $language
+        Language $language,
+        ?bool $isAiGenerated = null
     ) {
         $this->mediaObjectId = $id;
         $this->mimeType = $fileType;
@@ -39,6 +42,7 @@ final class MediaObjectCreated implements Serializable
         $this->copyrightHolder = $copyrightHolder;
         $this->sourceLocation = $sourceLocation;
         $this->language = $language;
+        $this->isAiGenerated = $isAiGenerated;
     }
 
     public function getLanguage(): Language
@@ -71,9 +75,14 @@ final class MediaObjectCreated implements Serializable
         return $this->sourceLocation;
     }
 
+    public function isAiGenerated(): ?bool
+    {
+        return $this->isAiGenerated;
+    }
+
     public function serialize(): array
     {
-        return [
+        $data = [
             'media_object_id' => $this->getMediaObjectId()->toString(),
             'mime_type' => $this->getMimeType()->toString(),
             'description' => $this->getDescription()->toString(),
@@ -81,6 +90,10 @@ final class MediaObjectCreated implements Serializable
             'source_location' => $this->getSourceLocation()->toString(),
             'language' => $this->getLanguage()->toString(),
         ];
+        if ($this->isAiGenerated !== null) {
+            $data['is_ai_generated'] = $this->isAiGenerated;
+        }
+        return $data;
     }
 
     public static function deserialize(array $data): MediaObjectCreated
@@ -103,7 +116,8 @@ final class MediaObjectCreated implements Serializable
             new Description($data['description']),
             new CopyrightHolder($copyrightHolderData),
             new Url($data['source_location']),
-            array_key_exists('language', $data) ? new Language($data['language']) : new Language('nl')
+            array_key_exists('language', $data) ? new Language($data['language']) : new Language('nl'),
+            $data['is_ai_generated'] ?? null
         );
     }
 }
