@@ -13,6 +13,7 @@ Start a skill with its slash command, the argument is optional.
 | `/pr III-1234` | Splits the work into small commits and opens a draft PR with the Why, Changed, Added and Removed chapters |
 | `/api-docs III-1234` | Documents a new or changed endpoint or property in the apidocs repo |
 | `/bulk-merge udb3-search-service` | Merges the open PRs one by one, oldest first: base branch merged in, CI green, approve, merge |
+| `/dependency-review 2433` | Reviews a Dependabot PR (the bump, usage in `src/`, test coverage, risk) and posts one summary comment. Also runs automatically on new Dependabot PRs through the `claude-dependency-review` workflow |
 
 They need:
 
