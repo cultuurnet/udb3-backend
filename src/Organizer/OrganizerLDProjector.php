@@ -462,8 +462,20 @@ class OrganizerLDProjector implements EventListener
         $jsonLD = $document->getBody();
 
         $jsonLD->images = array_values(array_map(
-            fn ($image) => strpos($image->{'@id'}, $imageUpdated->getImageId()) !== false ?
-                $this->imageNormalizer->normalize($imageUpdated->getImage()) : $image,
+            function ($image) use ($imageUpdated, $jsonLD) {
+                if (strpos($image->{'@id'}, $imageUpdated->getImageId()) === false) {
+                    return $image;
+                }
+
+                $updatedImage = $this->imageNormalizer->normalize($imageUpdated->getImage());
+
+                // The url of the image changes when the file is renamed because isAiGenerated changed.
+                if (isset($jsonLD->mainImage) && $jsonLD->mainImage === $image->contentUrl) {
+                    $jsonLD->mainImage = $updatedImage['contentUrl'];
+                }
+
+                return $updatedImage;
+            },
             $jsonLD->images
         ));
 

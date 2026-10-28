@@ -75,7 +75,13 @@ final class ImageNormalizerTest extends TestCase
 
         return [
             'no isAiGenerated' => [null, $normalized],
-            'isAiGenerated true' => [true, $normalized + ['isAiGenerated' => true]],
+            'isAiGenerated true' => [
+                true,
+                [
+                    'contentUrl' => 'https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.ai.jpg',
+                    'thumbnailUrl' => 'https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.ai.jpg',
+                ] + $normalized + ['isAiGenerated' => true],
+            ],
             'isAiGenerated false' => [false, $normalized + ['isAiGenerated' => false]],
         ];
     }
