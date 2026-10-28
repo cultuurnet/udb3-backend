@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7eacadc62aa38cd6d1d0fcdd51e3b903",
+    "content-hash": "023c03de41cc6fd132855e8e9780b0f4",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6082,18 +6082,19 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-7534-ai-generated-label",
+            "version": "dev-main",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "23c4cb6df92291dc0a412ae6f9eaac987305e761"
+                "reference": "805dc3ce25997d10e149269410f21f3ad049d658"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/23c4cb6df92291dc0a412ae6f9eaac987305e761",
-                "reference": "23c4cb6df92291dc0a412ae6f9eaac987305e761",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/805dc3ce25997d10e149269410f21f3ad049d658",
+                "reference": "805dc3ce25997d10e149269410f21f3ad049d658",
                 "shasum": ""
             },
+            "default-branch": true,
             "type": "library",
             "notification-url": "https://packagist.org/downloads/",
             "license": [
@@ -6110,7 +6111,7 @@
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
                 "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7534-ai-generated-label"
             },
-            "time": "2026-10-27T13:41:19+00:00"
+            "time": "2026-10-28T08:13:47+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
