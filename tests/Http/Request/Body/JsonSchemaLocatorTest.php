@@ -12,6 +12,12 @@ use RuntimeException;
 
 class JsonSchemaLocatorTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        // Restore the directory from tests/bootstrap.php, so the tests that run after this one find the schemas.
+        JsonSchemaLocator::setSchemaDirectory(__DIR__ . '/../../../../vendor/publiq/udb3-json-schemas');
+    }
+
     /**
      * @test
      */
