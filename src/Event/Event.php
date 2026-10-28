@@ -57,6 +57,7 @@ use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRegistered;
 use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
@@ -77,6 +78,7 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
@@ -502,6 +504,35 @@ final class Event extends Offer
             $this->apply(
                 new CalendarUpdated($this->eventId, $updatedCalendar)
             );
+        }
+    }
+
+    /**
+     * Stores what the ticket sales provider answered for a reservation link, and sets its availability on the dates
+     * with that link. Ignored when the link was removed, or the event deleted, while the provider was answering.
+     */
+    public function registerReservationLink(
+        Url $reservationLink,
+        string $identifier,
+        BookingAvailability $bookingAvailability
+    ): void {
+        $calendar = $this->calendar;
+        if (!$calendar instanceof CalendarWithSubEvents || !$this->getReservationLinks()->contains($reservationLink)) {
+            return;
+        }
+
+        $this->apply(new ReservationLinkRegistered($this->eventId, $reservationLink, $identifier));
+
+        $subEvents = array_map(
+            fn (SubEvent $subEvent) => $subEvent->getBookingInfo()?->getUrl()->sameAs($reservationLink)
+                ? $subEvent->withBookingAvailability($bookingAvailability)
+                : $subEvent,
+            $calendar->getSubEvents()->toArray()
+        );
+
+        $updatedCalendar = $this->rebuildCalendarFromSubEvents($subEvents);
+        if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
+            $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
         }
     }
 
