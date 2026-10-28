@@ -41,10 +41,29 @@ final class AiGeneratedImageDescription
             return $description;
         }
 
-        return $description . ' ' . $suffix;
+        // Suffixes of other languages are replaced, e.g. when the language of the image changes.
+        $withoutSuffixes = self::stripSuffixes($description);
+
+        if ($withoutSuffixes === '') {
+            return $suffix;
+        }
+
+        return $withoutSuffixes . ' ' . $suffix;
     }
 
     private static function removeSuffixes(string $description): string
+    {
+        $withoutSuffixes = self::stripSuffixes($description);
+
+        // A description that only consists of the suffix can not become empty.
+        if ($withoutSuffixes === '') {
+            return $description;
+        }
+
+        return $withoutSuffixes;
+    }
+
+    private static function stripSuffixes(string $description): string
     {
         // Remove each suffix together with the whitespace in front of it, so other whitespace is left alone.
         $pattern = '/\s*(?:' . implode('|', array_map(fn (string $suffix) => preg_quote($suffix, '/'), self::SUFFIXES)) . ')/u';
@@ -54,13 +73,6 @@ final class AiGeneratedImageDescription
             return $description;
         }
 
-        $withoutSuffixes = trim($withoutSuffixes);
-
-        // A description that only consists of the suffix can not become empty.
-        if ($withoutSuffixes === '') {
-            return $description;
-        }
-
-        return $withoutSuffixes;
+        return trim($withoutSuffixes);
     }
 }
