@@ -8,10 +8,12 @@ use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Media\Commands\RenameImage;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageFileName;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -86,9 +88,10 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         $fileName = array_pop($pathParts);
         $fileNameParts = explode('.', $fileName);
         $extension = array_pop($fileNameParts);
-        $destinationPath = $this->pathGenerator->path(
+        $destinationPath = AiGeneratedImageFileName::apply(
+            $this->pathGenerator->path($uploadImage->getFileId(), $extension),
             $uploadImage->getFileId(),
-            $extension
+            $uploadImage->isAiGenerated()
         );
 
         $destinationIri = $this->iriGenerator->iri($destinationPath);
@@ -107,6 +110,39 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
 
         $jobInfo = ['file_id' => $uploadImage->getFileId()->toString()];
         $this->logger->info('job_info', $jobInfo);
+    }
+
+    public function handleRenameImage(RenameImage $renameImage): void
+    {
+        try {
+            $mediaObject = $this->get($renameImage->getImageId());
+        } catch (MediaObjectNotFoundException $exception) {
+            $this->logger->warning('Could not rename media object with id: ' . $renameImage->getImageId()->toString() . ' because it was not found.');
+            return;
+        }
+
+        $sourceLocation = $mediaObject->getSourceLocation()->toString();
+        $sourcePath = basename($mediaObject->getSourceLocation()->getPath() ?? '');
+
+        // Only files that are stored by UDB3 itself can be renamed, legacy and external urls are left untouched.
+        if ($sourcePath === '' || $this->iriGenerator->iri($sourcePath) !== $sourceLocation) {
+            return;
+        }
+
+        $destinationPath = AiGeneratedImageFileName::apply(
+            $sourcePath,
+            $renameImage->getImageId(),
+            $renameImage->isAiGenerated()
+        );
+
+        if ($destinationPath === $sourcePath) {
+            return;
+        }
+
+        $this->imageStorage->move($sourcePath, $destinationPath);
+
+        $mediaObject->rename(new Url($this->iriGenerator->iri($destinationPath)));
+        $this->repository->save($mediaObject);
     }
 
     public function get(Uuid $fileId): MediaObject

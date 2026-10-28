@@ -333,11 +333,11 @@ Feature: Test organizer images property
         "@id": "%{baseUrl}/images/%{aiImageId}",
         "@type": "schema:ImageObject",
         "id": "%{aiImageId}",
-        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg",
         "copyrightHolder": "me",
         "description": "ai logo (Gegenereerd met AI)",
         "inLanguage": "nl",
-        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg",
         "isAiGenerated": true
       }
     ]
@@ -433,3 +433,37 @@ Feature: Test organizer images property
     When I get the organizer at "%{organizerUrl}"
     Then the JSON response at "images/0/description" should be "logo"
     And the JSON response at "images/0/isAiGenerated" should be "false"
+
+  Scenario: The image file is renamed when isAiGenerated of an organizer image changes
+    Given I create an organizer from "organizers/organizer-with-images.json" and save the "url" as "organizerUrl"
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "isAiGenerated": true
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/contentUrl" should be "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    And the JSON response at "images/0/thumbnailUrl" should be "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    And the JSON response at "mainImage" should be "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    When I send a GET request to "/images/%{imageId1}"
+    Then the JSON response at "contentUrl" should be "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "isAiGenerated": false
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/contentUrl" should be "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    And the JSON response at "images/0/thumbnailUrl" should be "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    And the JSON response at "mainImage" should be "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    When I send a GET request to "/images/%{imageId1}"
+    Then the JSON response at "contentUrl" should be "https://images.uitdatabank.dev/%{imageId1}.jpeg"

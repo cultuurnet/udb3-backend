@@ -49,6 +49,7 @@ use CultuurNet\UDB3\Offer\Item\Events\Image\ImagesImportedFromUDB2;
 use CultuurNet\UDB3\Offer\Item\Events\Image\ImagesUpdatedFromUDB2;
 use CultuurNet\UDB3\Offer\Item\Events\ImageAdded;
 use CultuurNet\UDB3\Offer\Item\Events\ImageRemoved;
+use CultuurNet\UDB3\Offer\Item\Events\ImageUpdated;
 use CultuurNet\UDB3\Offer\Item\Events\LabelAdded;
 use CultuurNet\UDB3\Offer\Item\Events\LabelRemoved;
 use CultuurNet\UDB3\Offer\Item\Events\LabelsImported;
@@ -1196,6 +1197,142 @@ class OfferLDProjectorTest extends TestCase
         $eventBody = $this->project($imageRemovedEvent, $eventId);
 
         $this->assertObjectNotHasProperty('image', $eventBody);
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_an_ai_file_name_to_the_media_object_of_an_added_ai_generated_image(): void
+    {
+        $eventId = 'event-1';
+        $image = new Image(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/png'),
+            new MediaDescription('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Language('en'),
+            true
+        );
+
+        $this->documentRepository->save(new JsonDocument($eventId, Json::encode([])));
+        $eventBody = $this->project(new ImageAdded($eventId, $image), $eventId);
+
+        $this->assertEquals('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png', $eventBody->image);
+        $this->assertEquals('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png', $eventBody->mediaObject[0]->contentUrl);
+        $this->assertEquals('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png', $eventBody->mediaObject[0]->thumbnailUrl);
+    }
+
+    /**
+     * @test
+     * @dataProvider aiGeneratedImageUrlProvider
+     */
+    public function it_renames_the_urls_of_an_image_when_ai_generated_is_updated(
+        string $currentUrl,
+        ?bool $isAiGenerated,
+        string $expectedUrl
+    ): void {
+        $eventId = 'event-1';
+
+        $this->documentRepository->save(new JsonDocument(
+            $eventId,
+            Json::encode([
+                'image' => $currentUrl,
+                'mediaObject' => [
+                    [
+                        '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => $currentUrl,
+                        'thumbnailUrl' => $currentUrl,
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
+                        'inLanguage' => 'en',
+                    ],
+                ],
+            ])
+        ));
+
+        $imageUpdated = new ImageUpdated(
+            $eventId,
+            'de305d54-75b4-431b-adb2-eb6b9e546014',
+            'The Gleaners',
+            'Jean-François Millet',
+            null,
+            $isAiGenerated
+        );
+        $eventBody = $this->project($imageUpdated, $eventId);
+
+        $this->assertEquals($expectedUrl, $eventBody->image);
+        $this->assertEquals($expectedUrl, $eventBody->mediaObject[0]->contentUrl);
+        $this->assertEquals($expectedUrl, $eventBody->mediaObject[0]->thumbnailUrl);
+    }
+
+    public function aiGeneratedImageUrlProvider(): array
+    {
+        return [
+            'marked as ai generated' => [
+                'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+                true,
+                'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
+            ],
+            'marked as not ai generated' => [
+                'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
+                false,
+                'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+            ],
+            'ai generated not given' => [
+                'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
+                null,
+                'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_replace_the_main_image_when_its_renamed_media_object_is_removed(): void
+    {
+        $eventId = 'event-1';
+        $image = new Image(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/png'),
+            new MediaDescription('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Language('en')
+        );
+
+        $this->documentRepository->save(new JsonDocument(
+            $eventId,
+            Json::encode([
+                'image' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
+                'mediaObject' => [
+                    [
+                        '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
+                        'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
+                        'description' => 'The Gleaners',
+                        'copyrightHolder' => 'Jean-François Millet',
+                        'inLanguage' => 'en',
+                    ],
+                    [
+                        '@id' => 'http://example.com/entity/9a1ae8b4-3b2d-4b8e-9f0a-1c2d3e4f5a6b',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'http://foo.bar/media/9a1ae8b4-3b2d-4b8e-9f0a-1c2d3e4f5a6b.png',
+                        'thumbnailUrl' => 'http://foo.bar/media/9a1ae8b4-3b2d-4b8e-9f0a-1c2d3e4f5a6b.png',
+                        'description' => 'The Sower',
+                        'copyrightHolder' => 'Jean-François Millet',
+                        'inLanguage' => 'en',
+                    ],
+                ],
+            ])
+        ));
+
+        $eventBody = $this->project(new ImageRemoved($eventId, $image), $eventId);
+
+        $this->assertEquals('http://foo.bar/media/9a1ae8b4-3b2d-4b8e-9f0a-1c2d3e4f5a6b.png', $eventBody->image);
     }
 
     /**

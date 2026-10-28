@@ -97,4 +97,49 @@ class ImageStorageTest extends TestCase
             'de305d54-75b4-431b-adb2-eb6b9e546014.png'
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_can_move_an_image_in_the_cloud(): void
+    {
+        $this->s3Filesystem
+            ->method('fileExists')
+            ->willReturnMap([
+                ['de305d54-75b4-431b-adb2-eb6b9e546014.png', true],
+                ['de305d54-75b4-431b-adb2-eb6b9e546014.ai.png', false],
+            ]);
+
+        $this->s3Filesystem
+            ->expects($this->once())
+            ->method('move')
+            ->with('de305d54-75b4-431b-adb2-eb6b9e546014.png', 'de305d54-75b4-431b-adb2-eb6b9e546014.ai.png');
+
+        $this->imageStorage->move(
+            'de305d54-75b4-431b-adb2-eb6b9e546014.png',
+            'de305d54-75b4-431b-adb2-eb6b9e546014.ai.png'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_move_an_image_that_was_already_moved(): void
+    {
+        $this->s3Filesystem
+            ->method('fileExists')
+            ->willReturnMap([
+                ['de305d54-75b4-431b-adb2-eb6b9e546014.png', false],
+                ['de305d54-75b4-431b-adb2-eb6b9e546014.ai.png', true],
+            ]);
+
+        $this->s3Filesystem
+            ->expects($this->never())
+            ->method('move');
+
+        $this->imageStorage->move(
+            'de305d54-75b4-431b-adb2-eb6b9e546014.png',
+            'de305d54-75b4-431b-adb2-eb6b9e546014.ai.png'
+        );
+    }
 }

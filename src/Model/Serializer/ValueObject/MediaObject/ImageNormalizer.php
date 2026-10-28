@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\MediaObject;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageFileName;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -30,12 +31,18 @@ final class ImageNormalizer implements NormalizerInterface
         /** @var MediaObject $mediaObject */
         $mediaObject = $this->mediaRepository->load($image->getId()->toString());
 
+        $url = AiGeneratedImageFileName::apply(
+            $mediaObject->getSourceLocation()->toString(),
+            $image->getId(),
+            $image->isAiGenerated()
+        );
+
         $normalized = [
             '@id' => $this->mediaIriGenerator->iri($image->getId()->toString()),
             '@type' => 'schema:ImageObject',
             'id' => $image->getId()->toString(),
-            'contentUrl' => $mediaObject->getSourceLocation()->toString(),
-            'thumbnailUrl' => $mediaObject->getSourceLocation()->toString(),
+            'contentUrl' => $url,
+            'thumbnailUrl' => $url,
             'description' => $image->getDescription()->toString(),
             'copyrightHolder' => $image->getCopyrightHolder()->toString(),
             'inLanguage' => $image->getLanguage()->toString(),
