@@ -36,10 +36,10 @@ final class AiGeneratedImageDescriptionTest extends TestCase
                 'nl',
                 'logo (Gegenereerd met AI)',
             ],
-            'suffix in the middle is left alone' => [
+            'suffix in the middle is not duplicated' => [
                 'logo (Gegenereerd met AI) van publiq',
                 'nl',
-                'logo (Gegenereerd met AI) van publiq (Gegenereerd met AI)',
+                'logo (Gegenereerd met AI) van publiq',
             ],
             'unknown language is not changed' => ['logo', 'es', 'logo'],
         ];
