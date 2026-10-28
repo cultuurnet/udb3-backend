@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Media;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
+use CultuurNet\UDB3\Media\Events\MediaObjectRenamed;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -57,6 +58,15 @@ class MediaObject extends EventSourcedAggregateRoot
         return $mediaObject;
     }
 
+    public function rename(Url $sourceLocation): void
+    {
+        if ($sourceLocation->sameAs($this->sourceLocation)) {
+            return;
+        }
+
+        $this->apply(new MediaObjectRenamed($this->mediaObjectId, $sourceLocation));
+    }
+
     public function getAggregateRootId(): string
     {
         return $this->mediaObjectId->toString();
@@ -71,6 +81,11 @@ class MediaObject extends EventSourcedAggregateRoot
         $this->sourceLocation = $mediaObjectCreated->getSourceLocation();
         $this->language = $mediaObjectCreated->getLanguage();
         $this->isAiGenerated = $mediaObjectCreated->isAiGenerated();
+    }
+
+    protected function applyMediaObjectRenamed(MediaObjectRenamed $mediaObjectRenamed): void
+    {
+        $this->sourceLocation = $mediaObjectRenamed->getSourceLocation();
     }
 
     public function getDescription(): Description

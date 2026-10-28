@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\AggregateType;
+use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -40,6 +41,7 @@ final class MediaServiceProvider extends AbstractServiceProvider
             GetMediaRequestHandler::class,
             UploadMediaRequestHandler::class,
             ImageNormalizer::class,
+            AiGeneratedImageRenamer::class,
         ];
     }
 
@@ -167,6 +169,13 @@ final class MediaServiceProvider extends AbstractServiceProvider
                     $container->get('content_url_generator')
                 );
             }
+        );
+
+        $container->addShared(
+            AiGeneratedImageRenamer::class,
+            fn () => new ReplayFilteringEventListener(
+                new AiGeneratedImageRenamer($container->get('event_command_bus'))
+            )
         );
 
         $container->addShared(

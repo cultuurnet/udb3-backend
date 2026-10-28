@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
+use CultuurNet\UDB3\Media\Events\MediaObjectRenamed;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageFileName;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -16,6 +17,7 @@ final class ImageLDProjector implements EventListener
 {
     /**
      * @uses applyMediaObjectCreated
+     * @uses applyMediaObjectRenamed
      */
     use DelegateEventHandlingToSpecificMethodTrait {
         DelegateEventHandlingToSpecificMethodTrait::handle as handleMethodSpecificEvents;
@@ -65,5 +67,17 @@ final class ImageLDProjector implements EventListener
         $jsonDocument = (new JsonDocument($id))->withAssocBody($body);
 
         $this->documentRepository->save($jsonDocument);
+    }
+
+    private function applyMediaObjectRenamed(MediaObjectRenamed $mediaObjectRenamed): void
+    {
+        $document = $this->documentRepository->fetch($mediaObjectRenamed->getMediaObjectId()->toString());
+        $fileName = basename($mediaObjectRenamed->getSourceLocation()->getPath() ?? '');
+
+        $body = $document->getAssocBody();
+        $body['contentUrl'] = $this->thumbnailIriGenerator->iri($fileName);
+        $body['thumbnailUrl'] = $this->thumbnailIriGenerator->iri($fileName);
+
+        $this->documentRepository->save($document->withAssocBody($body));
     }
 }

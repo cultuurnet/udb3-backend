@@ -46,4 +46,18 @@ class ImageStorage
             $this->localFilesystem->delete($source);
         }
     }
+
+    public function move(string $source, string $destination): void
+    {
+        // The file could already be moved, for example when retrying a command.
+        if (!$this->s3FileSystem->fileExists($source) || $this->s3FileSystem->fileExists($destination)) {
+            return;
+        }
+
+        $this->s3FileSystem->move(
+            $source,
+            $destination,
+            [Config::OPTION_VISIBILITY => Visibility::PUBLIC]
+        );
+    }
 }

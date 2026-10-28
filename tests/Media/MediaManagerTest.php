@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Media\Commands\RenameImage;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -262,5 +263,119 @@ final class MediaManagerTest extends TestCase
         $this->expectExceptionMessage("Media object with id '" . $id . "' not found");
 
         $this->mediaManager->get(new Uuid($id));
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_rename_an_image_when_it_is_marked_as_ai_generated(): void
+    {
+        $this->givenAMediaObjectWithSourceLocation('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png');
+
+        $this->imageStorage->expects($this->once())
+            ->method('move')
+            ->with('de305d54-75b4-431b-adb2-eb6b9e546014.png', 'de305d54-75b4-431b-adb2-eb6b9e546014.ai.png');
+
+        $this->repository
+            ->expects($this->once())
+            ->method('save')
+            ->with($this->callback(
+                fn (MediaObject $mediaObject) => $mediaObject->getSourceLocation()->toString() === 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png'
+            ));
+
+        $this->mediaManager->handleRenameImage(
+            new RenameImage(new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'), true)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_rename_an_image_when_it_is_marked_as_not_ai_generated(): void
+    {
+        $this->givenAMediaObjectWithSourceLocation('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png');
+
+        $this->imageStorage->expects($this->once())
+            ->method('move')
+            ->with('de305d54-75b4-431b-adb2-eb6b9e546014.ai.png', 'de305d54-75b4-431b-adb2-eb6b9e546014.png');
+
+        $this->repository
+            ->expects($this->once())
+            ->method('save')
+            ->with($this->callback(
+                fn (MediaObject $mediaObject) => $mediaObject->getSourceLocation()->toString() === 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'
+            ));
+
+        $this->mediaManager->handleRenameImage(
+            new RenameImage(new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'), false)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_rename_an_image_that_already_has_the_right_name(): void
+    {
+        $this->givenAMediaObjectWithSourceLocation('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png');
+
+        $this->imageStorage->expects($this->never())->method('move');
+        $this->repository->expects($this->never())->method('save');
+
+        $this->mediaManager->handleRenameImage(
+            new RenameImage(new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'), true)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_rename_an_image_with_a_legacy_url(): void
+    {
+        $this->givenAMediaObjectWithSourceLocation('https://media.uitdatabank.be/20160101/de305d54-75b4-431b-adb2-eb6b9e546014.png');
+
+        $this->imageStorage->expects($this->never())->method('move');
+        $this->repository->expects($this->never())->method('save');
+
+        $this->mediaManager->handleRenameImage(
+            new RenameImage(new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'), true)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_rename_an_image_that_does_not_exist(): void
+    {
+        $this->repository
+            ->method('load')
+            ->willThrowException(new AggregateNotFoundException());
+
+        $this->imageStorage->expects($this->never())->method('move');
+        $this->repository->expects($this->never())->method('save');
+
+        $this->mediaManager->handleRenameImage(
+            new RenameImage(new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'), true)
+        );
+    }
+
+    private function givenAMediaObjectWithSourceLocation(string $sourceLocation): void
+    {
+        $mediaObject = MediaObject::create(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/png'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
+            new Url($sourceLocation),
+            new Language('en')
+        );
+
+        $this->repository
+            ->method('load')
+            ->with('de305d54-75b4-431b-adb2-eb6b9e546014')
+            ->willReturn($mediaObject);
+
+        $this->iriGenerator
+            ->method('iri')
+            ->willReturnCallback(fn (string $path) => 'http://foo.bar/media/' . $path);
     }
 }

@@ -9,6 +9,7 @@ use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
+use CultuurNet\UDB3\Media\Events\MediaObjectRenamed;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
@@ -131,5 +132,44 @@ final class ImageLDProjectorTest extends TestCase
             ),
             $this->repository->fetch($mediaObjectCreated->getMediaObjectId()->toString()),
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_projects_media_object_renamed(): void
+    {
+        $mediaObjectId = new Uuid('d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d');
+
+        $this->projector->handle(new DomainMessage(
+            $mediaObjectId->toString(),
+            0,
+            new Metadata(),
+            new MediaObjectCreated(
+                $mediaObjectId,
+                new MIMEType('image/jpeg'),
+                new Description('A description'),
+                new CopyrightHolder('John Doe'),
+                new Url('https://images.uitdatabank.local/d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d.jpeg'),
+                new Language('en')
+            ),
+            DateTime::now()
+        ));
+
+        $this->projector->handle(new DomainMessage(
+            $mediaObjectId->toString(),
+            1,
+            new Metadata(),
+            new MediaObjectRenamed(
+                $mediaObjectId,
+                new Url('https://images.uitdatabank.local/d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d.ai.jpeg')
+            ),
+            DateTime::now()
+        ));
+
+        $body = $this->repository->fetch($mediaObjectId->toString())->getAssocBody();
+
+        $this->assertEquals('https://images.uitdatabank.local/d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d.ai.jpeg', $body['contentUrl']);
+        $this->assertEquals('https://images.uitdatabank.local/d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d.ai.jpeg', $body['thumbnailUrl']);
     }
 }
