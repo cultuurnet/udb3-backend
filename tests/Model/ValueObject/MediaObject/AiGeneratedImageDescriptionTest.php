@@ -44,6 +44,18 @@ final class AiGeneratedImageDescriptionTest extends TestCase
                 true,
                 'logo (Gegenereerd met AI) van publiq',
             ],
+            'suffix of another language is replaced' => [
+                'logo (Generated with AI)',
+                'nl',
+                true,
+                'logo (Gegenereerd met AI)',
+            ],
+            'description with only the suffix of another language is replaced' => [
+                '(Generated with AI)',
+                'nl',
+                true,
+                '(Gegenereerd met AI)',
+            ],
             'unknown language is not changed' => ['logo', 'es', true, 'logo'],
             'suffix at the end is removed' => ['logo (Gegenereerd met AI)', 'nl', false, 'logo'],
             'suffix in the middle is removed' => [
