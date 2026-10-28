@@ -12,7 +12,10 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\ImageDownloader;
 use CultuurNet\UDB3\Media\ImageUploaderInterface;
+use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use Laminas\Diactoros\UploadedFile;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -126,6 +129,73 @@ final class UploadMediaRequestHandlerTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_passes_ai_generated_when_uploading_an_image_via_form_data(): void
+    {
+        $uploadedFile = $this->createUploadedFile('ABC', UPLOAD_ERR_OK, 'test.txt', 'text/plain');
+
+        $request = (new Psr7RequestBuilder())
+            ->withHeader('Content-Type', 'multipart/form-data')
+            ->withParsedBody([
+                'description' => 'Lenna',
+                'copyrightHolder' => ' Dwight Hooker',
+                'language' => 'nl',
+                'isAiGenerated' => 'true',
+            ])
+            ->withFiles(['file' => $uploadedFile])
+            ->build('POST');
+
+        $this->imageUploader
+            ->expects($this->once())
+            ->method('upload')
+            ->with(
+                $this->anything(),
+                new Description('Lenna'),
+                new CopyrightHolder(' Dwight Hooker'),
+                new Language('nl'),
+                true
+            )
+            ->willReturn(new Uuid('08d9df2e-091d-4f65-930b-00f565a9158f'));
+
+        $response = $this->uploadMediaRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+    }
+
+    /**
+     * @test
+     */
+    public function it_passes_ai_generated_when_uploading_an_image_via_json_body(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromArray([
+                'contentUrl' => 'https://www.example.com/123',
+                'description' => 'Some random image',
+                'copyrightHolder' => 'Creative Commons',
+                'inLanguage' => 'nl',
+                'isAiGenerated' => false,
+            ])
+            ->build('POST');
+
+        $this->imageUploader
+            ->expects($this->once())
+            ->method('upload')
+            ->with(
+                $this->anything(),
+                new Description('Some random image'),
+                new CopyrightHolder('Creative Commons'),
+                new Language('nl'),
+                false
+            )
+            ->willReturn(new Uuid('08d9df2e-091d-4f65-930b-00f565a9158f'));
+
+        $response = $this->uploadMediaRequestHandler->handle($request);
+
+        $this->assertEquals(201, $response->getStatusCode());
+    }
+
+    /**
+     * @test
      * @dataProvider incompleteFormDataRequestProvider
      */
     public function it_throws_an_api_problem_if_a_field_is_missing_or_invalid(array $body, ApiProblem $apiProblem): void
@@ -197,6 +267,15 @@ final class UploadMediaRequestHandlerTest extends TestCase
                 ],
                 ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is must be exactly 2 lowercase letters long (for example "nl").'),
             ],
+            'invalid ai generated' => [
+                [
+                    'description' => 'Lenna',
+                    'copyrightHolder' => ' Dwight Hooker',
+                    'language' => 'nl',
+                    'isAiGenerated' => 'yes',
+                ],
+                ApiProblem::bodyInvalidDataWithDetail('Form data field "isAiGenerated" must be "true" or "false".'),
+            ],
         ];
     }
 
@@ -256,6 +335,16 @@ final class UploadMediaRequestHandlerTest extends TestCase
                     'copyrightHolder' => 'Creative Commons',
                 ],
                 ApiProblem::bodyInvalidData(new SchemaError('/', 'The required properties (inLanguage) are missing')),
+            ],
+            'invalid ai generated' => [
+                [
+                    'contentUrl' => 'https://example.com/123',
+                    'description' => 'Some random image',
+                    'copyrightHolder' => 'Creative Commons',
+                    'inLanguage' => 'nl',
+                    'isAiGenerated' => 'yes',
+                ],
+                ApiProblem::bodyInvalidData(new SchemaError('/isAiGenerated', 'The data (string) must match the type: boolean')),
             ],
 
 

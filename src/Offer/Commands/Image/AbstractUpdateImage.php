@@ -16,16 +16,20 @@ abstract class AbstractUpdateImage extends AbstractCommand
 
     protected CopyrightHolder $copyrightHolder;
 
+    protected ?bool $isAiGenerated;
+
     public function __construct(
         string $itemId,
         Uuid $mediaObjectId,
         string $description,
-        CopyrightHolder $copyrightHolder
+        CopyrightHolder $copyrightHolder,
+        ?bool $isAiGenerated = null
     ) {
         parent::__construct($itemId);
         $this->mediaObjectId = $mediaObjectId;
         $this->description = $description;
         $this->copyrightHolder = $copyrightHolder;
+        $this->isAiGenerated = $isAiGenerated;
     }
 
     public function getMediaObjectId(): Uuid
@@ -41,5 +45,10 @@ abstract class AbstractUpdateImage extends AbstractCommand
     public function getCopyrightHolder(): CopyrightHolder
     {
         return $this->copyrightHolder;
+    }
+
+    public function isAiGenerated(): ?bool
+    {
+        return $this->isAiGenerated;
     }
 }

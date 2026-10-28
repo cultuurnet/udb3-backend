@@ -137,6 +137,43 @@ final class MediaObjectSerializerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_serialize_ai_generated_when_it_is_set(): void
+    {
+        $mediaObject = new Image(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/jpg'),
+            new Description('my pic'),
+            new CopyrightHolder('Dirk Dirkington'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
+            new Language('en'),
+            true
+        );
+
+        $this->iriGenerator
+            ->expects($this->once())
+            ->method('iri')
+            ->willReturn('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014');
+
+        $expectedJsonld = [
+            '@id' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014',
+            '@type' => 'schema:ImageObject',
+            'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
+            'thumbnailUrl' => 'http://foo.bar/media/my_pic.jpg',
+            'contentUrl' => 'http://foo.bar/media/my_pic.jpg',
+            'description' => 'my pic',
+            'copyrightHolder' => 'Dirk Dirkington',
+            'inLanguage' => 'en',
+            'isAiGenerated' => true,
+        ];
+
+        $jsonld = $this->serializer->serialize($mediaObject);
+
+        $this->assertEquals($expectedJsonld, $jsonld);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_throw_an_exception_when_trying_to_serialize_unknown_media_types(): void
     {
         $mediaObject = MediaObject::create(

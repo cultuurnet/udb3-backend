@@ -29,7 +29,8 @@ final class AddImageDenormalizer implements DenormalizerInterface
                 new Uuid($data['id']),
                 new Language($data['language']),
                 new Description($data['description']),
-                new CopyrightHolder($data['copyrightHolder'])
+                new CopyrightHolder($data['copyrightHolder']),
+                $data['isAiGenerated'] ?? null
             )
         );
     }
