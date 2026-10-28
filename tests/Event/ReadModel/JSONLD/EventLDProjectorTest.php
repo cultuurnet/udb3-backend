@@ -63,6 +63,7 @@ use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRegistered;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
@@ -2213,6 +2214,7 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         return [
             'added' => [new ReservationLinkAdded($eventId, $link)],
             'removed' => [new ReservationLinkRemoved($eventId, $link)],
+            'registered' => [new ReservationLinkRegistered($eventId, $link, 'ticketmatic:30cc:12345')],
         ];
     }
 

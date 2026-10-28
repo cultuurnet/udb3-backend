@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Event;
 
 use Broadway\EventHandling\EventBus;
 use CultuurNet\UDB3\AggregateType;
+use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
@@ -18,6 +19,7 @@ use CultuurNet\UDB3\Ticketing\Providers\Ticketmatic\HttpTicketmaticProvider;
 use CultuurNet\UDB3\Ticketing\Providers\TicketingProvider;
 use CultuurNet\UDB3\Ticketing\Repositories\DBALTicketingRegistrationRepository;
 use CultuurNet\UDB3\Ticketing\Repositories\TicketingRegistrationRepository;
+use CultuurNet\UDB3\Ticketing\RegisterAddedReservationLinks;
 use CultuurNet\UDB3\Ticketing\TicketingRegistrationsProjector;
 use GuzzleHttp\Client;
 
@@ -33,6 +35,7 @@ final class EventServiceProvider extends AbstractServiceProvider
             TicketingRegistrationRepository::class,
             TicketingRegistrationsProjector::class,
             TicketingProvider::class,
+            RegisterAddedReservationLinks::class,
             'events_locator_event_stream_decorator',
             'event_repository',
         ];
@@ -80,6 +83,16 @@ final class EventServiceProvider extends AbstractServiceProvider
             fn () => new TicketingRegistrationsProjector(
                 $container->get(TicketingRegistrationRepository::class),
                 $container->get('config')['ticketing']['ticketmatic']['reservation_link_hosts'] ?? []
+            )
+        );
+
+        $container->addShared(
+            RegisterAddedReservationLinks::class,
+            fn () => new ReplayFilteringEventListener(
+                new RegisterAddedReservationLinks(
+                    $container->get('event_command_bus'),
+                    $container->get('config')['ticketing']['ticketmatic']['reservation_link_hosts'] ?? []
+                )
             )
         );
 
