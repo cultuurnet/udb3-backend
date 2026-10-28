@@ -8,6 +8,7 @@ use Broadway\CommandHandling\CommandBus;
 use Broadway\UuidGenerator\UuidGeneratorInterface;
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileSize;
 use CultuurNet\UDB3\Media\Exceptions\InvalidFileType;
+use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
@@ -121,6 +122,43 @@ final class ImageUploaderServiceTest extends TestCase
         $imageId = $this->uploader->upload($image, $description, $copyrightHolder, $language);
 
         $this->assertEquals($generatedUuid, $imageId->toString());
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_pass_ai_generated_to_the_upload_image_command(): void
+    {
+        $image = $this->createMock(UploadedFileInterface::class);
+
+        $image
+            ->method('getError')
+            ->willReturn(UPLOAD_ERR_OK);
+
+        $image
+            ->method('getStream')
+            ->willReturn(new Stream(fopen(__DIR__ . '/files/my-image.png', 'rb')));
+
+        $image
+            ->method('getSize')
+            ->willReturn(1000001);
+
+        $this->uuidGenerator
+            ->method('generate')
+            ->willReturn('de305d54-75b4-431b-adb2-eb6b9e546014');
+
+        $this->commandBus
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($this->callback(fn (UploadImage $command) => $command->isAiGenerated() === true));
+
+        $this->uploader->upload(
+            $image,
+            new Description('file description'),
+            new CopyrightHolder('Dude Man'),
+            new Language('en'),
+            true
+        );
     }
 
     /**

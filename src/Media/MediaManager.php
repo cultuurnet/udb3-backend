@@ -52,7 +52,8 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         Description $description,
         CopyrightHolder $copyrightHolder,
         Url $sourceLocation,
-        Language $language
+        Language $language,
+        ?bool $isAiGenerated = null
     ): MediaObject {
         try {
             /** @var MediaObject $existingMediaObject */
@@ -70,7 +71,8 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $description,
             $copyrightHolder,
             $sourceLocation,
-            $language
+            $language,
+            $isAiGenerated
         );
 
         $this->repository->save($mediaObject);
@@ -99,7 +101,8 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $uploadImage->getDescription(),
             $uploadImage->getCopyrightHolder(),
             new Url($destinationIri),
-            $uploadImage->getLanguage()
+            $uploadImage->getLanguage(),
+            $uploadImage->isAiGenerated()
         );
 
         $jobInfo = ['file_id' => $uploadImage->getFileId()->toString()];
@@ -132,7 +135,8 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
             $mediaObject->getDescription(),
             $mediaObject->getCopyrightHolder(),
             $mediaObject->getSourceLocation(),
-            $mediaObject->getLanguage()
+            $mediaObject->getLanguage(),
+            $mediaObject->isAiGenerated()
         );
     }
 }

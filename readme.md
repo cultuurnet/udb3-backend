@@ -5,6 +5,8 @@ This repository contains the PHP app that provides most of the backend of UiTdat
 ## Setup
 You can find a full guide on how to setup the project [here](docker.md)
 
+Working on several branches at once? See [Working in parallel with worktrees](docker.md#working-in-parallel-with-worktrees).
+
 ## Contributing
 
 Several CI checks have been provided to make sure any changes are compliant with our coding standards and to detect potential bugs.

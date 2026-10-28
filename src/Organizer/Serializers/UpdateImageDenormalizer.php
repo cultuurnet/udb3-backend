@@ -39,6 +39,10 @@ final class UpdateImageDenormalizer implements DenormalizerInterface
             $updateImage = $updateImage->withCopyrightHolder(new CopyrightHolder($data['copyrightHolder']));
         }
 
+        if (isset($data['isAiGenerated'])) {
+            $updateImage = $updateImage->withAiGenerated($data['isAiGenerated']);
+        }
+
         return $updateImage;
     }
 

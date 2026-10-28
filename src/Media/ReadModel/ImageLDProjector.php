@@ -41,7 +41,7 @@ final class ImageLDProjector implements EventListener
         $id = $mediaObjectCreated->getMediaObjectId()->toString();
         $fileName = $id . '.' . $mediaObjectCreated->getMimeType()->getFilenameExtension();
 
-        $jsonDocument = (new JsonDocument($id))->withAssocBody([
+        $body = [
             '@id' => $this->iriGenerator->iri($id),
             '@type' => 'schema:ImageObject',
             'encodingFormat' => $mediaObjectCreated->getMimeType()->toString(),
@@ -51,7 +51,13 @@ final class ImageLDProjector implements EventListener
             'description' => $mediaObjectCreated->getDescription()->toString(),
             'copyrightHolder' => $mediaObjectCreated->getCopyrightHolder()->toString(),
             'inLanguage' => $mediaObjectCreated->getLanguage()->toString(),
-        ]);
+        ];
+
+        if ($mediaObjectCreated->isAiGenerated() !== null) {
+            $body['isAiGenerated'] = $mediaObjectCreated->isAiGenerated();
+        }
+
+        $jsonDocument = (new JsonDocument($id))->withAssocBody($body);
 
         $this->documentRepository->save($jsonDocument);
     }
