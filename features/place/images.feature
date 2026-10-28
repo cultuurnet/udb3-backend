@@ -492,11 +492,11 @@ Feature: Test place images property
         "@id": "%{baseUrl}/images/%{aiImageId}",
         "id": "%{aiImageId}",
         "@type": "schema:ImageObject",
-        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg",
         "copyrightHolder": "me",
         "description": "ai logo (Gegenereerd met AI)",
         "inLanguage": "nl",
-        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg",
         "isAiGenerated": true
       }
     ]

@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageFileName;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -86,9 +87,10 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
         $fileName = array_pop($pathParts);
         $fileNameParts = explode('.', $fileName);
         $extension = array_pop($fileNameParts);
-        $destinationPath = $this->pathGenerator->path(
+        $destinationPath = AiGeneratedImageFileName::apply(
+            $this->pathGenerator->path($uploadImage->getFileId(), $extension),
             $uploadImage->getFileId(),
-            $extension
+            $uploadImage->isAiGenerated()
         );
 
         $destinationIri = $this->iriGenerator->iri($destinationPath);

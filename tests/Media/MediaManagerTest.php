@@ -127,6 +127,49 @@ final class MediaManagerTest extends TestCase
     /**
      * @test
      */
+    public function it_should_move_an_ai_generated_file_to_an_ai_file_name_when_uploading(): void
+    {
+        $command = new UploadImage(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/png'),
+            new Description('description'),
+            new CopyrightHolder('copyright'),
+            '/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+            new Language('en'),
+            true
+        );
+
+        $this->pathGenerator
+            ->method('path')
+            ->willReturn('de305d54-75b4-431b-adb2-eb6b9e546014.png');
+
+        $this->iriGenerator
+            ->expects($this->once())
+            ->method('iri')
+            ->with('de305d54-75b4-431b-adb2-eb6b9e546014.ai.png')
+            ->willReturn('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png');
+
+        $this->repository
+            ->method('load')
+            ->willThrowException(new AggregateNotFoundException());
+
+        $this->imageStorage->expects($this->once())
+            ->method('store')
+            ->with('/uploads/de305d54-75b4-431b-adb2-eb6b9e546014.png', 'de305d54-75b4-431b-adb2-eb6b9e546014.ai.png');
+
+        $this->repository
+            ->expects($this->once())
+            ->method('save')
+            ->with($this->callback(
+                fn (MediaObject $mediaObject) => $mediaObject->getSourceLocation()->toString() === 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png'
+            ));
+
+        $this->mediaManager->handleUploadImage($command);
+    }
+
+    /**
+     * @test
+     */
     public function it_should_create_a_media_object_with_ai_generated_when_uploading(): void
     {
         $command = new UploadImage(

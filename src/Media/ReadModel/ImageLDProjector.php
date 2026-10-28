@@ -8,6 +8,7 @@ use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageFileName;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
 
@@ -39,7 +40,11 @@ final class ImageLDProjector implements EventListener
     private function applyMediaObjectCreated(MediaObjectCreated $mediaObjectCreated): void
     {
         $id = $mediaObjectCreated->getMediaObjectId()->toString();
-        $fileName = $id . '.' . $mediaObjectCreated->getMimeType()->getFilenameExtension();
+        $fileName = AiGeneratedImageFileName::apply(
+            $id . '.' . $mediaObjectCreated->getMimeType()->getFilenameExtension(),
+            $mediaObjectCreated->getMediaObjectId(),
+            $mediaObjectCreated->isAiGenerated()
+        );
 
         $body = [
             '@id' => $this->iriGenerator->iri($id),
