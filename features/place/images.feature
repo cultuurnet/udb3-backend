@@ -553,3 +553,39 @@ Feature: Test place images property
     And I get the place at "%{placeUrl}"
     Then the JSON response at "mediaObject/0/isAiGenerated" should be "true"
     And the JSON response at "mediaObject/1/isAiGenerated" should be "false"
+
+  Scenario: The image file is renamed when isAiGenerated of an image on a place changes
+    Given I create a place from "places/place-with-images.json" and save the "url" as "placeUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "logo",
+      "copyrightHolder": "me",
+      "isAiGenerated": true
+    }
+    """
+    And I send a PUT request to "%{placeUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the place at "%{placeUrl}"
+    And the JSON response at "mediaObject/0/contentUrl" should be "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    And the JSON response at "mediaObject/0/thumbnailUrl" should be "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    And the JSON response at "image" should be "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    When I send a GET request to "/images/%{imageId1}"
+    Then the JSON response at "contentUrl" should be "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "logo",
+      "copyrightHolder": "me",
+      "isAiGenerated": false
+    }
+    """
+    And I send a PUT request to "%{placeUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the place at "%{placeUrl}"
+    And the JSON response at "mediaObject/0/contentUrl" should be "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    And the JSON response at "mediaObject/0/thumbnailUrl" should be "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    And the JSON response at "image" should be "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    When I send a GET request to "/images/%{imageId1}"
+    Then the JSON response at "contentUrl" should be "https://images.uitdatabank.dev/%{imageId1}.jpeg"
