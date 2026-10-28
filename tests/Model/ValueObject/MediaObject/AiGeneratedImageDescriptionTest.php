@@ -52,6 +52,13 @@ final class AiGeneratedImageDescriptionTest extends TestCase
                 false,
                 'logo van publiq',
             ],
+            'other whitespace is not changed when suffix is removed' => [
+                'logo  van  publiq (Gegenereerd met AI)',
+                'nl',
+                false,
+                'logo  van  publiq',
+            ],
+            'suffix at the start is removed' => ['(Gegenereerd met AI) logo', 'nl', false, 'logo'],
             'suffix of another language is removed' => ['logo (Generated with AI)', 'nl', false, 'logo'],
             'description without suffix is not changed when not ai generated' => ['logo', 'nl', false, 'logo'],
             'description with only the suffix is not emptied' => [

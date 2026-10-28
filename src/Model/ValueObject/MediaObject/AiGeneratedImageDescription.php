@@ -46,13 +46,15 @@ final class AiGeneratedImageDescription
 
     private static function removeSuffixes(string $description): string
     {
-        $withoutSuffixes = str_replace(self::SUFFIXES, '', $description, $count);
+        // Remove each suffix together with the whitespace in front of it, so other whitespace is left alone.
+        $pattern = '/\s*(?:' . implode('|', array_map(fn (string $suffix) => preg_quote($suffix, '/'), self::SUFFIXES)) . ')/u';
+        $withoutSuffixes = preg_replace($pattern, '', $description, -1, $count);
 
-        if ($count === 0) {
+        if ($withoutSuffixes === null || $count === 0) {
             return $description;
         }
 
-        $withoutSuffixes = trim(preg_replace('/ {2,}/', ' ', $withoutSuffixes));
+        $withoutSuffixes = trim($withoutSuffixes);
 
         // A description that only consists of the suffix can not become empty.
         if ($withoutSuffixes === '') {
