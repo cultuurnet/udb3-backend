@@ -20,6 +20,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageFileName;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -403,7 +404,10 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         $offerLd = $document->getBody();
         $offerLd->mediaObject = isset($offerLd->mediaObject) ? $offerLd->mediaObject : [];
 
-        $imageData = $this->mediaObjectSerializer->serialize($imageAdded->getImage());
+        $image = $imageAdded->getImage();
+        $imageData = $this->mediaObjectSerializer->serialize($image);
+        $imageData['contentUrl'] = AiGeneratedImageFileName::apply($imageData['contentUrl'], $image->getMediaObjectId(), $image->isAiGenerated());
+        $imageData['thumbnailUrl'] = AiGeneratedImageFileName::apply($imageData['thumbnailUrl'], $image->getMediaObjectId(), $image->isAiGenerated());
         $offerLd->mediaObject[] = $imageData;
 
         if (count($offerLd->mediaObject) === 1) {
@@ -441,6 +445,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 }
                 if ($imageUpdated->isAiGenerated() !== null) {
                     $mediaObject->isAiGenerated = $imageUpdated->isAiGenerated();
+                    $this->renameAiGeneratedImage($offerLd, $mediaObject, $imageUpdated);
                 }
 
                 $updatedMediaObjects[] = $mediaObject;
@@ -452,6 +457,25 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         }
 
         return $document->withBody($offerLd);
+    }
+
+    private function renameAiGeneratedImage(object $offerLd, object $mediaObject, AbstractImageUpdated $imageUpdated): void
+    {
+        $imageId = new Uuid($imageUpdated->getMediaObjectId());
+
+        if (isset($mediaObject->contentUrl)) {
+            $contentUrl = AiGeneratedImageFileName::apply($mediaObject->contentUrl, $imageId, $imageUpdated->isAiGenerated());
+
+            if (isset($offerLd->image) && $offerLd->image === $mediaObject->contentUrl) {
+                $offerLd->image = $contentUrl;
+            }
+
+            $mediaObject->contentUrl = $contentUrl;
+        }
+
+        if (isset($mediaObject->thumbnailUrl)) {
+            $mediaObject->thumbnailUrl = AiGeneratedImageFileName::apply($mediaObject->thumbnailUrl, $imageId, $imageUpdated->isAiGenerated());
+        }
     }
 
     protected function applyImageRemoved(AbstractImageRemoved $imageRemoved): ?JsonDocument
@@ -483,11 +507,21 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
             $shouldNotBeRemoved
         );
 
+        // The projected url can differ from the source location of the image when the file was renamed.
+        $imageUrls = [$imageUrl];
+        foreach ($offerLd->mediaObject as $mediaObject) {
+            if (!$shouldNotBeRemoved($mediaObject)) {
+                $imageUrls[] = $mediaObject->contentUrl;
+            }
+        }
+
         // Unset the main image if it matches the removed image
         // stripping the protocol before comparison is done for edge cases where an offer has multiple images
         // @see https://jira.uitdatabank.be/browse/III-4684
-        if (isset($offerLd->image) && stristr($offerLd->{'image'}, ':') === stristr($imageUrl, ':')) {
-            unset($offerLd->{'image'});
+        foreach ($imageUrls as $url) {
+            if (isset($offerLd->image) && stristr($offerLd->{'image'}, ':') === stristr($url, ':')) {
+                unset($offerLd->{'image'});
+            }
         }
 
         if (!isset($offerLd->image) && count($filteredMediaObjects) > 0) {
