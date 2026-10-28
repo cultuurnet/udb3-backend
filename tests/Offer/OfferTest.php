@@ -230,6 +230,45 @@ class OfferTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_removes_the_ai_generated_suffix_when_importing_an_image_that_is_no_longer_ai_generated(): void
+    {
+        $itemId = '77b4df58-b7e9-40cf-979f-ec741a072282';
+
+        $createImage = fn (?bool $isAiGenerated, string $description) => new Image(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/jpg'),
+            new MediaDescription($description),
+            new CopyrightHolder('Dirk Dirkington'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
+            new Language('en'),
+            $isAiGenerated
+        );
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+                new ImageAdded($itemId, $createImage(true, 'my pic (Generated with AI)')),
+            ])
+            ->when(
+                fn (Item $item) => $item->importImages(
+                    ImageCollection::fromArray([$createImage(false, 'my pic (Generated with AI)')])
+                )
+            )
+            ->then([
+                new ImageUpdated(
+                    $itemId,
+                    'de305d54-75b4-431b-adb2-eb6b9e546014',
+                    'my pic',
+                    'Dirk Dirkington',
+                    'en',
+                    false
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_updates_facilities_when_changed(): void
     {
         $itemId = '0fd9a1e5-1406-43b5-a641-4b4d77fe980d';
@@ -740,6 +779,51 @@ class OfferTest extends AggregateRootScenarioTestCase
                         null,
                         true
                     ),
+                    new ImageUpdated(
+                        'someId',
+                        $this->image->getMediaObjectId()->toString(),
+                        $this->image->getDescription()->toString(),
+                        $this->image->getCopyrightHolder()->toString(),
+                        null,
+                        false
+                    ),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_the_ai_generated_suffix_when_updating_an_image_to_not_ai_generated(): void
+    {
+        $this->scenario
+            ->withAggregateId('someId')
+            ->given(
+                [
+                    new ItemCreated('someId'),
+                    new ImageAdded('someId', $this->image),
+                    new ImageUpdated(
+                        'someId',
+                        $this->image->getMediaObjectId()->toString(),
+                        $this->image->getDescription()->toString() . ' (Generated with AI)',
+                        $this->image->getCopyrightHolder()->toString(),
+                        null,
+                        true
+                    ),
+                ]
+            )
+            ->when(
+                function (Item $item): void {
+                    $item->updateImage(
+                        $this->image->getMediaObjectId(),
+                        new MediaDescription($this->image->getDescription()->toString() . ' (Generated with AI)'),
+                        $this->image->getCopyrightHolder(),
+                        false
+                    );
+                }
+            )
+            ->then(
+                [
                     new ImageUpdated(
                         'someId',
                         $this->image->getMediaObjectId()->toString(),
