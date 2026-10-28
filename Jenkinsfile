@@ -102,8 +102,7 @@ pipeline {
             }
 
             steps {
-                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: 'focal'
-                triggerDeployment nodeName: 'uitdatabank-web-acc01'
+                publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
                 triggerDeployment nodeName: 'uitdatabank-web-acc02'
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     triggerDeployment nodeName: 'uitdatabank-rdf-acc02'
@@ -136,7 +135,6 @@ pipeline {
 
             steps {
                 publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
-                triggerDeployment nodeName: 'uitdatabank-web-test01'
                 triggerDeployment nodeName: 'uitdatabank-web-test02'
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     triggerDeployment nodeName: 'uitdatabank-rdf-test02'
@@ -159,7 +157,6 @@ pipeline {
 
             steps {
                 publishAptlySnapshot snapshotName: "${env.REPOSITORY_NAME}-${env.PIPELINE_VERSION}", publishTarget: "${env.REPOSITORY_NAME}-${env.APPLICATION_ENVIRONMENT}", distributions: ['focal', 'noble']
-                triggerDeployment nodeName: 'uitdatabank-web-prod01'
                 triggerDeployment nodeName: 'uitdatabank-web-prod02'
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     triggerDeployment nodeName: 'uitdatabank-rdf-prod02'
