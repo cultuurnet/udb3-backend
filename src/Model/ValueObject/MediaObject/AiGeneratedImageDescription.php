@@ -16,63 +16,17 @@ final class AiGeneratedImageDescription
     ];
 
     /**
-     * Adds the AI generated suffix in the language of the image when isAiGenerated is true,
-     * and removes it again when isAiGenerated is false.
-     * When isAiGenerated is null the description is returned unchanged.
+     * Adds the AI generated suffix in the language of the image.
+     * The suffix is only added when projecting, the stored description is never changed.
      */
-    public static function apply(string $description, Language $language, ?bool $isAiGenerated): string
-    {
-        if ($isAiGenerated === null) {
-            return $description;
-        }
-
-        if ($isAiGenerated) {
-            return self::addSuffix($description, $language);
-        }
-
-        return self::removeSuffixes($description);
-    }
-
-    private static function addSuffix(string $description, Language $language): string
+    public static function addSuffix(string $description, Language $language): string
     {
         $suffix = self::SUFFIXES[$language->getCode()] ?? null;
 
-        if ($suffix === null || str_contains($description, $suffix)) {
+        if ($suffix === null || str_ends_with($description, $suffix)) {
             return $description;
         }
 
-        // Suffixes of other languages are replaced, e.g. when the language of the image changes.
-        $withoutSuffixes = self::stripSuffixes($description);
-
-        if ($withoutSuffixes === '') {
-            return $suffix;
-        }
-
-        return $withoutSuffixes . ' ' . $suffix;
-    }
-
-    private static function removeSuffixes(string $description): string
-    {
-        $withoutSuffixes = self::stripSuffixes($description);
-
-        // A description that only consists of the suffix can not become empty.
-        if ($withoutSuffixes === '') {
-            return $description;
-        }
-
-        return $withoutSuffixes;
-    }
-
-    private static function stripSuffixes(string $description): string
-    {
-        // Remove each suffix together with the whitespace in front of it, so other whitespace is left alone.
-        $pattern = '/\s*(?:' . implode('|', array_map(fn (string $suffix) => preg_quote($suffix, '/'), self::SUFFIXES)) . ')/u';
-        $withoutSuffixes = preg_replace($pattern, '', $description, -1, $count);
-
-        if ($withoutSuffixes === null || $count === 0) {
-            return $description;
-        }
-
-        return trim($withoutSuffixes);
+        return $description . ' ' . $suffix;
     }
 }

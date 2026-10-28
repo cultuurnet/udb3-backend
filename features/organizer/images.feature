@@ -412,14 +412,13 @@ Feature: Test organizer images property
     """
     [{
       "id":"%{imageId1}",
-      "description": "logo (Gegenereerd met AI)",
-      "isAiGenerated": true
+      "language": "fr"
     }]
     """
     And I send a PATCH request to "%{organizerUrl}/images"
     Then the response status should be "204"
     When I get the organizer at "%{organizerUrl}"
-    Then the JSON response at "images/0/description" should be "logo (Gegenereerd met AI)"
+    Then the JSON response at "images/0/description" should be "logo (Généré par l'IA)"
 
     When I set the JSON request payload to:
     """

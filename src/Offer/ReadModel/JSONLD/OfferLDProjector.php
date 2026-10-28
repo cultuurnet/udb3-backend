@@ -20,10 +20,12 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\VideoNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameNormalizer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
@@ -441,6 +443,12 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 }
                 if ($imageUpdated->isAiGenerated() !== null) {
                     $mediaObject->isAiGenerated = $imageUpdated->isAiGenerated();
+                }
+                if (($mediaObject->isAiGenerated ?? null) === true) {
+                    $mediaObject->description = AiGeneratedImageDescription::addSuffix(
+                        $mediaObject->description,
+                        new Language($mediaObject->inLanguage)
+                    );
                 }
 
                 $updatedMediaObjects[] = $mediaObject;
