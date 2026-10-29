@@ -107,12 +107,24 @@ final class SubEventUpdateTest extends TestCase
     /**
      * @test
      */
-    public function it_does_not_update_the_waiting_list_url_by_default(): void
+    public function it_keeps_the_booking_availability_by_default(): void
     {
         $update = new SubEventUpdate(0);
 
-        $this->assertFalse($update->updatesWaitingListUrl());
-        $this->assertNull($update->getWaitingListUrl());
+        $this->assertEquals($this->getBookingAvailability(), $update->applyToBookingAvailability($this->getBookingAvailability()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_url_when_only_the_booking_availability_type_is_given(): void
+    {
+        $update = (new SubEventUpdate(0))->withBookingAvailabilityType(BookingAvailabilityType::Unavailable());
+
+        $this->assertEquals(
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst')),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
     }
 
     /**
@@ -120,11 +132,12 @@ final class SubEventUpdateTest extends TestCase
      */
     public function it_can_set_a_waiting_list_url(): void
     {
-        $url = new Url('https://publiq.be/wachtlijst');
-        $update = (new SubEventUpdate(0))->withWaitingListUrl($url);
+        $update = (new SubEventUpdate(0))->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst'));
 
-        $this->assertTrue($update->updatesWaitingListUrl());
-        $this->assertEquals($url, $update->getWaitingListUrl());
+        $this->assertEquals(
+            BookingAvailability::Available()->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst')),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
     }
 
     /**
@@ -133,21 +146,28 @@ final class SubEventUpdateTest extends TestCase
     public function it_can_clear_the_waiting_list_url(): void
     {
         $update = (new SubEventUpdate(0))
-            ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+            ->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst'))
             ->withoutWaitingListUrl();
 
-        $this->assertTrue($update->updatesWaitingListUrl());
-        $this->assertNull($update->getWaitingListUrl());
+        $this->assertEquals(
+            BookingAvailability::Available(),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
     }
 
     /**
      * @test
      */
-    public function it_does_not_update_the_waiting_list_url_when_only_the_booking_availability_type_is_given(): void
+    public function it_can_change_the_booking_availability_type_and_the_waiting_list_url_together(): void
     {
-        $update = (new SubEventUpdate(0))->withBookingAvailabilityType(BookingAvailabilityType::Unavailable());
+        $update = (new SubEventUpdate(0))
+            ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
+            ->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst'));
 
-        $this->assertFalse($update->updatesWaitingListUrl());
+        $this->assertEquals(
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst')),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
     }
 
     /**
@@ -157,8 +177,13 @@ final class SubEventUpdateTest extends TestCase
     {
         $original = new SubEventUpdate(0);
 
-        $this->assertNotSame($original, $original->withWaitingListUrl(new Url('https://publiq.be/wachtlijst')));
+        $this->assertNotSame($original, $original->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst')));
         $this->assertNotSame($original, $original->withoutWaitingListUrl());
-        $this->assertFalse($original->updatesWaitingListUrl());
+        $this->assertEquals($this->getBookingAvailability(), $original->applyToBookingAvailability($this->getBookingAvailability()));
+    }
+
+    private function getBookingAvailability(): BookingAvailability
+    {
+        return BookingAvailability::Available()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'));
     }
 }

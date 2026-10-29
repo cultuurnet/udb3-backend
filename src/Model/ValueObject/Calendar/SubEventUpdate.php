@@ -73,11 +73,6 @@ final class SubEventUpdate
         return $c;
     }
 
-    public function getBookingAvailabilityType(): ?BookingAvailabilityType
-    {
-        return $this->bookingAvailabilityType;
-    }
-
     public function withBookingAvailabilityType(?BookingAvailabilityType $bookingAvailabilityType): self
     {
         $c = clone $this;
@@ -129,16 +124,6 @@ final class SubEventUpdate
         return $c;
     }
 
-    public function updatesWaitingListUrl(): bool
-    {
-        return $this->updatesWaitingListUrl;
-    }
-
-    public function getWaitingListUrl(): ?Url
-    {
-        return $this->waitingListUrl;
-    }
-
     public function withWaitingListUrl(Url $waitingListUrl): self
     {
         $c = clone $this;
@@ -153,5 +138,22 @@ final class SubEventUpdate
         $c->updatesWaitingListUrl = true;
         $c->waitingListUrl = null;
         return $c;
+    }
+
+    /**
+     * The type and the waiting list url are patched independently, so updating only the type keeps the
+     * waiting list url of the sub event, and the waiting list url only changes when the update mentions it.
+     */
+    public function applyToBookingAvailability(BookingAvailability $bookingAvailability): BookingAvailability
+    {
+        if ($this->bookingAvailabilityType !== null) {
+            $bookingAvailability = $bookingAvailability->withType($this->bookingAvailabilityType);
+        }
+
+        if ($this->updatesWaitingListUrl) {
+            $bookingAvailability = $bookingAvailability->withWaitingListUrl($this->waitingListUrl);
+        }
+
+        return $bookingAvailability;
     }
 }

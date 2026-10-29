@@ -469,7 +469,7 @@ final class Event extends Offer
                     $subEventUpdate->getEndDate() ?: $subEvent->getDateRange()->getTo()
                 ),
                 $subEventStatus ?? $subEvent->getStatus(),
-                self::applyBookingAvailabilityUpdate($subEvent->getBookingAvailability(), $subEventUpdate),
+                $subEventUpdate->applyToBookingAvailability($subEvent->getBookingAvailability()),
             );
 
             // For PATCH requests: use updated childcare if explicitly provided, otherwise preserve existing.
@@ -569,25 +569,6 @@ final class Event extends Offer
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
         }
-    }
-
-    /**
-     * The type and the waiting list url are patched independently, so updating only the type keeps the
-     * waiting list url of the sub event, and the waiting list url only changes when the update mentions it.
-     */
-    private static function applyBookingAvailabilityUpdate(
-        BookingAvailability $bookingAvailability,
-        SubEventUpdate $subEventUpdate
-    ): BookingAvailability {
-        if ($subEventUpdate->getBookingAvailabilityType() !== null) {
-            $bookingAvailability = $bookingAvailability->withType($subEventUpdate->getBookingAvailabilityType());
-        }
-
-        if ($subEventUpdate->updatesWaitingListUrl()) {
-            $bookingAvailability = $bookingAvailability->withWaitingListUrl($subEventUpdate->getWaitingListUrl());
-        }
-
-        return $bookingAvailability;
     }
 
     /**

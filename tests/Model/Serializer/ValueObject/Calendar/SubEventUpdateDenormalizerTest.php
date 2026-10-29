@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
@@ -137,7 +138,7 @@ final class SubEventUpdateDenormalizerTest extends TestCase
     {
         $update = $this->denormalizer->denormalize(['id' => 0], SubEventUpdate::class);
 
-        $this->assertFalse($update->updatesWaitingListUrl());
+        $this->assertEquals($this->getBookingAvailability(), $update->applyToBookingAvailability($this->getBookingAvailability()));
     }
 
     /**
@@ -146,11 +147,14 @@ final class SubEventUpdateDenormalizerTest extends TestCase
     public function it_does_not_update_the_waiting_list_url_when_it_is_absent_from_booking_availability(): void
     {
         $update = $this->denormalizer->denormalize(
-            ['id' => 0, 'bookingAvailability' => ['type' => 'Available']],
+            ['id' => 0, 'bookingAvailability' => ['type' => 'Unavailable']],
             SubEventUpdate::class
         );
 
-        $this->assertFalse($update->updatesWaitingListUrl());
+        $this->assertEquals(
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst')),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
     }
 
     /**
@@ -159,12 +163,14 @@ final class SubEventUpdateDenormalizerTest extends TestCase
     public function it_sets_the_waiting_list_url(): void
     {
         $update = $this->denormalizer->denormalize(
-            ['id' => 0, 'bookingAvailability' => ['type' => 'Unavailable', 'waitingListUrl' => 'https://publiq.be/wachtlijst']],
+            ['id' => 0, 'bookingAvailability' => ['type' => 'Unavailable', 'waitingListUrl' => 'https://publiq.be/nieuwe-wachtlijst']],
             SubEventUpdate::class
         );
 
-        $this->assertTrue($update->updatesWaitingListUrl());
-        $this->assertEquals(new Url('https://publiq.be/wachtlijst'), $update->getWaitingListUrl());
+        $this->assertEquals(
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst')),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
     }
 
     /**
@@ -177,8 +183,10 @@ final class SubEventUpdateDenormalizerTest extends TestCase
             SubEventUpdate::class
         );
 
-        $this->assertTrue($update->updatesWaitingListUrl());
-        $this->assertNull($update->getWaitingListUrl());
+        $this->assertEquals(
+            BookingAvailability::Available(),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
     }
 
     /**
@@ -191,7 +199,7 @@ final class SubEventUpdateDenormalizerTest extends TestCase
             SubEventUpdate::class
         );
 
-        $this->assertFalse($update->updatesWaitingListUrl());
+        $this->assertEquals($this->getBookingAvailability(), $update->applyToBookingAvailability($this->getBookingAvailability()));
     }
 
     /**
@@ -223,5 +231,10 @@ final class SubEventUpdateDenormalizerTest extends TestCase
         );
 
         $this->assertEquals(new SubEventBookingInfo(new Url('https://www.example.com/reserve')), $update->getBookingInfo());
+    }
+
+    private function getBookingAvailability(): BookingAvailability
+    {
+        return BookingAvailability::Available()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'));
     }
 }
