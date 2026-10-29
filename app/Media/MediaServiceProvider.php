@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\AggregateType;
+use CultuurNet\UDB3\Broadway\EventHandling\ReplayFilteringEventListener;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Doctrine\ReadModel\CacheDocumentRepository;
 use CultuurNet\UDB3\Error\LoggerFactory;
@@ -15,6 +16,9 @@ use CultuurNet\UDB3\Http\Media\GetMediaRequestHandler;
 use CultuurNet\UDB3\Http\Media\UploadMediaRequestHandler;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Media\ReadModel\ImageLDProjector;
+use CultuurNet\UDB3\Media\ReadModel\Relations\DBALMediaObjectRelationsRepository;
+use CultuurNet\UDB3\Media\ReadModel\Relations\MediaObjectRelationsProjector;
+use CultuurNet\UDB3\Media\ReadModel\Relations\MediaObjectRelationsRepository;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject\ImageNormalizer;
 use GuzzleHttp\Client;
@@ -37,6 +41,9 @@ final class MediaServiceProvider extends AbstractServiceProvider
             'media_url_mapping',
             MediaServiceProvider::IMAGE_JSONLD_REPOSITORY,
             ImageLDProjector::class,
+            MediaObjectRelationsRepository::class,
+            MediaObjectRelationsProjector::class,
+            AiGeneratedImageProcessManager::class,
             GetMediaRequestHandler::class,
             UploadMediaRequestHandler::class,
             ImageNormalizer::class,
@@ -167,6 +174,26 @@ final class MediaServiceProvider extends AbstractServiceProvider
                     $container->get('content_url_generator')
                 );
             }
+        );
+
+        $container->addShared(
+            MediaObjectRelationsRepository::class,
+            fn () => new DBALMediaObjectRelationsRepository($container->get('dbal_connection'))
+        );
+
+        $container->addShared(
+            MediaObjectRelationsProjector::class,
+            fn () => new MediaObjectRelationsProjector($container->get(MediaObjectRelationsRepository::class))
+        );
+
+        $container->addShared(
+            AiGeneratedImageProcessManager::class,
+            fn () => new ReplayFilteringEventListener(
+                new AiGeneratedImageProcessManager(
+                    $container->get('event_command_bus'),
+                    $container->get(MediaObjectRelationsRepository::class)
+                )
+            )
         );
 
         $container->addShared(

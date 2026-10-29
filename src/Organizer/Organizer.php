@@ -367,6 +367,11 @@ class Organizer extends EventSourcedAggregateRoot implements LabelAwareAggregate
         );
     }
 
+    public function updateImageAiGenerated(Uuid $imageId, bool $isAiGenerated): void
+    {
+        $this->updateImage($imageId, null, null, null, $isAiGenerated);
+    }
+
     public function importImages(Images $images): void
     {
         $currentImages = $this->images->toArray();

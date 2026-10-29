@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\EventSourcing\EventSourcedAggregateRoot;
+use CultuurNet\UDB3\Media\Events\MediaObjectAiGeneratedUpdated;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -54,6 +55,22 @@ class MediaObject extends EventSourcedAggregateRoot
         return $mediaObject;
     }
 
+    public function updateAiGenerated(bool $isAiGenerated): void
+    {
+        if ($this->isAiGenerated === $isAiGenerated) {
+            return;
+        }
+
+        $this->apply(
+            new MediaObjectAiGeneratedUpdated(
+                $this->mediaObjectId,
+                $this->description,
+                $this->language,
+                $isAiGenerated
+            )
+        );
+    }
+
     public function getAggregateRootId(): string
     {
         return $this->mediaObjectId->toString();
@@ -68,6 +85,11 @@ class MediaObject extends EventSourcedAggregateRoot
         $this->sourceLocation = $mediaObjectCreated->getSourceLocation();
         $this->language = $mediaObjectCreated->getLanguage();
         $this->isAiGenerated = $mediaObjectCreated->isAiGenerated();
+    }
+
+    protected function applyMediaObjectAiGeneratedUpdated(MediaObjectAiGeneratedUpdated $aiGeneratedUpdated): void
+    {
+        $this->isAiGenerated = $aiGeneratedUpdated->isAiGenerated();
     }
 
     public function getDescription(): Description
