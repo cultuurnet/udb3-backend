@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Console;
 use Broadway\EventHandling\EventBus;
 use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Console\Command\AddLabelToItems;
+use CultuurNet\UDB3\Console\Command\BackfillMediaObjectRelations;
 use CultuurNet\UDB3\Console\Command\BulkRemoveFromProduction;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwner;
 use CultuurNet\UDB3\Console\Command\ChangeOfferOwnerInBulk;
@@ -64,6 +65,7 @@ use CultuurNet\UDB3\Kinepolis\Parser\KinepolisDateParser;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisMovieParser;
 use CultuurNet\UDB3\Kinepolis\Parser\KinepolisPriceParser;
 use CultuurNet\UDB3\Kinepolis\Trailer\YoutubeTrailerRepository;
+use CultuurNet\UDB3\Media\ReadModel\Relations\MediaObjectRelationsProjector;
 use CultuurNet\UDB3\Model\ValueObject\Identity\UuidFactory\GeneratedUuidFactory;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Organizer\WebsiteNormalizer;
@@ -135,6 +137,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.movies:fetch',
         'console.movies:add-trailers',
         'console.fix-multiple-event-bookinginfo',
+        'console.media-object:backfill-relations',
     ];
 
     protected function getProvidedServiceNames(): array
@@ -191,6 +194,15 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
                 $container->get('dbal_connection'),
                 $container->get('eventstore_payload_serializer'),
                 $container->get(EventBus::class)
+            )
+        );
+
+        $container->addShared(
+            'console.media-object:backfill-relations',
+            fn () => new BackfillMediaObjectRelations(
+                $container->get('dbal_connection'),
+                $container->get('eventstore_payload_serializer'),
+                $container->get(MediaObjectRelationsProjector::class)
             )
         );
 

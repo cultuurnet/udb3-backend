@@ -57,6 +57,14 @@ final class MediaObjectRelationsProjector implements EventListener
         $this->repository = $repository;
     }
 
+    /**
+     * @return string[]
+     */
+    public static function getHandledEventClasses(): array
+    {
+        return array_keys(self::ITEM_TYPES);
+    }
+
     public function handle(DomainMessage $domainMessage): void
     {
         $event = $domainMessage->getPayload();

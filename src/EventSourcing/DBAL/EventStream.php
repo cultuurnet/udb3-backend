@@ -37,6 +37,11 @@ class EventStream
 
     private string $aggregateType;
 
+    /**
+     * @var string[]
+     */
+    private array $eventTypes;
+
     public function __construct(
         Connection $connection,
         Serializer $payloadSerializer,
@@ -52,6 +57,7 @@ class EventStream
         $this->cdbids = [];
         $this->domainEventStreamDecorator = null;
         $this->aggregateType = '';
+        $this->eventTypes = [];
     }
 
     public function withStartId(int $startId): EventStream
@@ -84,6 +90,24 @@ class EventStream
 
         $c = clone $this;
         $c->cdbids = $cdbids;
+        return $c;
+    }
+
+    /**
+     * @param string[] $eventClassNames
+     */
+    public function withEventTypes(array $eventClassNames): EventStream
+    {
+        if (empty($eventClassNames)) {
+            throw new \InvalidArgumentException('Event types can\'t be empty.');
+        }
+
+        $c = clone $this;
+        // The event store keeps the class name of the payload with dots instead of backslashes as type.
+        $c->eventTypes = array_map(
+            fn (string $eventClassName) => str_replace('\\', '.', $eventClassName),
+            $eventClassNames
+        );
         return $c;
     }
 
@@ -163,6 +187,11 @@ class EventStream
         if (!empty($this->aggregateType)) {
             $queryBuilder->andWhere('aggregate_type = :aggregate_type');
             $queryBuilder->setParameter('aggregate_type', $this->aggregateType);
+        }
+
+        if ($this->eventTypes) {
+            $queryBuilder->andWhere('type IN (:types)')
+                ->setParameter('types', $this->eventTypes, Connection::PARAM_STR_ARRAY);
         }
 
         return $queryBuilder->execute();

@@ -228,6 +228,40 @@ class EventStreamTest extends TestCase
     /**
      * @test
      */
+    public function it_requires_non_empty_value_for_optional_event_types(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Event types can\'t be empty.');
+
+        $this->eventStream->withEventTypes([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_event_types(): void
+    {
+        $history = $this->fillHistory();
+
+        $expectedDomainEventStreams = array_map(
+            fn (DomainMessage $domainMessage) => new DomainEventStream([$domainMessage]),
+            $history
+        );
+
+        $this->assertEquals(
+            $expectedDomainEventStreams,
+            iterator_to_array(($this->eventStream->withEventTypes([DummyEvent::class]))())
+        );
+
+        $this->assertEquals(
+            [],
+            iterator_to_array(($this->eventStream->withEventTypes([DummyEventStreamDecorator::class]))())
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_returns_the_last_processed_id(): void
     {
         $this->fillHistory();
