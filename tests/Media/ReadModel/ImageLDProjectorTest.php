@@ -8,6 +8,7 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
+use CultuurNet\UDB3\Media\Events\MediaObjectAiGeneratedUpdated;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -131,5 +132,56 @@ final class ImageLDProjectorTest extends TestCase
             ),
             $this->repository->fetch($mediaObjectCreated->getMediaObjectId()->toString()),
         );
+    }
+
+    /**
+     * @test
+     * @dataProvider aiGeneratedUpdatedProvider
+     */
+    public function it_projects_media_object_ai_generated_updated(
+        bool $isAiGeneratedBefore,
+        bool $isAiGeneratedAfter,
+        string $expectedDescription
+    ): void {
+        $id = new Uuid('d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d');
+        $description = new Description('A description');
+        $language = new Language('en');
+
+        $this->projector->handle(new DomainMessage(
+            $id->toString(),
+            0,
+            new Metadata(),
+            new MediaObjectCreated(
+                $id,
+                new MIMEType('image/jpeg'),
+                $description,
+                new CopyrightHolder('John Doe'),
+                new Url('https://images.uitdatabank.local/d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d.jpeg'),
+                $language,
+                $isAiGeneratedBefore
+            ),
+            DateTime::now()
+        ));
+
+        $this->projector->handle(new DomainMessage(
+            $id->toString(),
+            1,
+            new Metadata(),
+            new MediaObjectAiGeneratedUpdated($id, $description, $language, $isAiGeneratedAfter),
+            DateTime::now()
+        ));
+
+        $body = $this->repository->fetch($id->toString())->getAssocBody();
+
+        $this->assertSame($isAiGeneratedAfter, $body['isAiGenerated']);
+        $this->assertSame($expectedDescription, $body['description']);
+    }
+
+    public function aiGeneratedUpdatedProvider(): array
+    {
+        return [
+            'marked as AI generated' => [false, true, 'A description (Generated with AI)'],
+            'no longer AI generated' => [true, false, 'A description'],
+        ];
     }
 }

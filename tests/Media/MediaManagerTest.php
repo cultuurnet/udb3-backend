@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Media\Commands\UpdateMediaObjectAiGenerated;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -200,6 +201,58 @@ final class MediaManagerTest extends TestCase
         );
 
         $this->assertEquals($expectedImage, $image);
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_ai_generated_of_a_media_object(): void
+    {
+        $id = 'de305d54-75b4-431b-adb2-eb6b9e546014';
+
+        $mediaObject = MediaObject::create(
+            new Uuid($id),
+            new MIMEType('image/png'),
+            new Description('The Gleaners'),
+            new CopyrightHolder('Jean-François Millet'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Language('en')
+        );
+
+        $this->repository
+            ->expects($this->once())
+            ->method('load')
+            ->with($id)
+            ->willReturn($mediaObject);
+
+        $this->repository
+            ->expects($this->once())
+            ->method('save')
+            ->with($mediaObject);
+
+        $this->mediaManager->handle(new UpdateMediaObjectAiGenerated(new Uuid($id), true));
+
+        $this->assertTrue($mediaObject->isAiGenerated());
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_updating_ai_generated_of_a_missing_media_object(): void
+    {
+        $id = 'de305d54-75b4-431b-adb2-eb6b9e546014';
+
+        $this->repository
+            ->expects($this->once())
+            ->method('load')
+            ->with($id)
+            ->willThrowException(new AggregateNotFoundException());
+
+        $this->repository
+            ->expects($this->never())
+            ->method('save');
+
+        $this->mediaManager->handle(new UpdateMediaObjectAiGenerated(new Uuid($id), true));
     }
 
     /**

@@ -8,6 +8,7 @@ use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\CommandHandling\Udb3CommandHandler;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Media\Commands\UpdateMediaObjectAiGenerated;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -107,6 +108,23 @@ class MediaManager extends Udb3CommandHandler implements LoggerAwareInterface, M
 
         $jobInfo = ['file_id' => $uploadImage->getFileId()->toString()];
         $this->logger->info('job_info', $jobInfo);
+    }
+
+    public function handleUpdateMediaObjectAiGenerated(UpdateMediaObjectAiGenerated $updateAiGenerated): void
+    {
+        $id = $updateAiGenerated->getMediaObjectId()->toString();
+
+        try {
+            /** @var MediaObject $mediaObject */
+            $mediaObject = $this->repository->load($id);
+        } catch (AggregateNotFoundException $exception) {
+            $this->logger->warning('Could not update isAiGenerated of media object with id: ' . $id . ' because it does not exist.');
+            return;
+        }
+
+        $mediaObject->updateAiGenerated($updateAiGenerated->isAiGenerated());
+
+        $this->repository->save($mediaObject);
     }
 
     public function get(Uuid $fileId): MediaObject

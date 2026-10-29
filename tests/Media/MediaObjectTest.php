@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
+use CultuurNet\UDB3\Media\Events\MediaObjectAiGeneratedUpdated;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -101,6 +102,57 @@ final class MediaObjectTest extends AggregateRootScenarioTestCase
         );
 
         $this->assertTrue($mediaObject->isAiGenerated());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_ai_generated(): void
+    {
+        $fileId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
+        $description = new Description('The Gleaners');
+        $language = new Language('en');
+
+        $this->scenario
+            ->withAggregateId($fileId->toString())
+            ->given([
+                new MediaObjectCreated(
+                    $fileId,
+                    new MIMEType('image/png'),
+                    $description,
+                    new CopyrightHolder('Jean-François Millet'),
+                    new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+                    $language
+                ),
+            ])
+            ->when(fn (MediaObject $mediaObject) => $mediaObject->updateAiGenerated(true))
+            ->then([
+                new MediaObjectAiGeneratedUpdated($fileId, $description, $language, true),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_ai_generated_when_unchanged(): void
+    {
+        $fileId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
+
+        $this->scenario
+            ->withAggregateId($fileId->toString())
+            ->given([
+                new MediaObjectCreated(
+                    $fileId,
+                    new MIMEType('image/png'),
+                    new Description('The Gleaners'),
+                    new CopyrightHolder('Jean-François Millet'),
+                    new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+                    new Language('en'),
+                    true
+                ),
+            ])
+            ->when(fn (MediaObject $mediaObject) => $mediaObject->updateAiGenerated(true))
+            ->then([]);
     }
 
     /**
