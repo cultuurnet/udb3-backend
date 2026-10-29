@@ -29,4 +29,18 @@ final class AiGeneratedImageDescription
 
         return $description . ' ' . $suffix;
     }
+
+    /**
+     * Removes the AI generated suffix in the language of the image, but only when it is at the end of the description.
+     */
+    public static function removeSuffix(string $description, Language $language): string
+    {
+        $suffix = self::SUFFIXES[$language->getCode()] ?? null;
+
+        if ($suffix === null || !str_ends_with($description, ' ' . $suffix)) {
+            return $description;
+        }
+
+        return substr($description, 0, -strlen(' ' . $suffix));
+    }
 }
