@@ -4043,6 +4043,76 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_replaces_the_waiting_list_url_of_the_dates_with_the_one_of_the_provider(): void
+    {
+        $subEvent = $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-05');
+
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar(
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Available()->withWaitingListUrl(new Url('https://www.example.com/waiting-list'))
+                        )
+                    )
+                ),
+            ])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/ticketmatic-waiting-list'))
+            ))
+            ->then([
+                new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK_A), 'ticketmatic:30cc:1001'),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/ticketmatic-waiting-list'))
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_url_of_the_dates_when_the_provider_has_none(): void
+    {
+        $subEvent = $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-05');
+
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar(
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Available()->withWaitingListUrl(new Url('https://www.example.com/waiting-list'))
+                        )
+                    )
+                ),
+            ])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Unavailable()
+            ))
+            ->then([
+                new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK_A), 'ticketmatic:30cc:1001'),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/waiting-list'))
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_ignores_the_registration_of_a_link_that_is_no_longer_on_the_event(): void
     {
         $this->scenario

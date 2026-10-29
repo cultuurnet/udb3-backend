@@ -509,6 +509,7 @@ final class Event extends Offer
     /**
      * Stores what the ticket sales provider answered for a reservation link, and sets its availability on the dates
      * with that link. Ignored when the link was removed, or the event deleted, while the provider was answering.
+     * A waiting list url on the booking availability replaces the one of those dates, without one they keep theirs.
      */
     public function registerReservationLink(
         Url $reservationLink,
@@ -524,7 +525,9 @@ final class Event extends Offer
 
         $subEvents = array_map(
             fn (SubEvent $subEvent) => $subEvent->getBookingInfo()?->getUrl()->sameAs($reservationLink)
-                ? $subEvent->withBookingAvailability($bookingAvailability)
+                ? $subEvent->withBookingAvailability(
+                    self::applyRegisteredBookingAvailability($subEvent->getBookingAvailability(), $bookingAvailability)
+                )
                 : $subEvent,
             $calendar->getSubEvents()->toArray()
         );
@@ -582,6 +585,25 @@ final class Event extends Offer
 
         if ($subEventUpdate->updatesWaitingListUrl()) {
             $bookingAvailability = $bookingAvailability->withWaitingListUrl($subEventUpdate->getWaitingListUrl());
+        }
+
+        return $bookingAvailability;
+    }
+
+    /**
+     * The waiting list url of the ticket sales provider wins, but a provider without a waiting list keeps the
+     * waiting list url that was set on the sub event.
+     */
+    private static function applyRegisteredBookingAvailability(
+        BookingAvailability $bookingAvailability,
+        BookingAvailability $registeredBookingAvailability
+    ): BookingAvailability {
+        $bookingAvailability = $bookingAvailability->withType($registeredBookingAvailability->getType());
+
+        if ($registeredBookingAvailability->getWaitingListUrl() !== null) {
+            $bookingAvailability = $bookingAvailability->withWaitingListUrl(
+                $registeredBookingAvailability->getWaitingListUrl()
+            );
         }
 
         return $bookingAvailability;
