@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use DateTimeImmutable;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
 use PHPUnit\Framework\TestCase;
 
 final class CalendarSerializerTest extends TestCase
@@ -664,5 +665,25 @@ final class CalendarSerializerTest extends TestCase
         // Date-only format creates DateTimeImmutable, check date part only
         $this->assertEquals('2024-01-01', $closedDays[0]->getStartDate()->format('Y-m-d'));
         $this->assertEquals('2024-12-25', $closedDays[1]->getStartDate()->format('Y-m-d'));
+    }
+
+    /**
+     * @test
+     */
+    public function it_serializes_and_deserializes_the_booking_info_of_a_sub_event(): void
+    {
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    new DateTimeImmutable('2021-01-01T00:00:00+01:00'),
+                    new DateTimeImmutable('2021-01-02T00:00:00+01:00')
+                )
+            )->withBookingInfo(new SubEventBookingInfo(new Url('https://www.example.com/reserve')))
+        );
+
+        $serialized = (new CalendarSerializer($calendar))->serialize();
+
+        $this->assertSame(['url' => 'https://www.example.com/reserve'], $serialized['timestamps'][0]['bookingInfo']);
+        $this->assertEquals($calendar, CalendarSerializer::deserialize($serialized));
     }
 }

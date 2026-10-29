@@ -24,6 +24,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
@@ -75,6 +76,8 @@ final class CalendarDenormalizer implements DenormalizerInterface
                 if (isset($data['subEvent'][0])) {
                     $subEvent = $this->denormalizeSubEvent($data['subEvent'][0], $topLevelStatus, $topLevelBookingAvailability);
                 } else {
+                    // The top-level bookingInfo belongs to the event, not to its single date.
+                    unset($data['bookingInfo']);
                     $subEvent = $this->denormalizeSubEvent($data, $topLevelStatus, $topLevelBookingAvailability);
                 }
                 $calendar = (new SingleSubEventCalendar($subEvent))
@@ -166,6 +169,12 @@ final class CalendarDenormalizer implements DenormalizerInterface
             $status,
             $bookingAvailability,
         );
+
+        if (isset($subEventData['bookingInfo'])) {
+            $subEvent = $subEvent->withBookingInfo(
+                (new SubEventBookingInfoDenormalizer())->denormalize($subEventData['bookingInfo'], SubEventBookingInfo::class)
+            );
+        }
 
         // Handle childcare: present key (even if empty) sets it, absent key preserves existing
         if (isset($subEventData['childcare'])) {

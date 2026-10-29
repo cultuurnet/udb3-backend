@@ -62,7 +62,8 @@ final class ImageUploaderService implements ImageUploaderInterface
         UploadedFileInterface $file,
         Description $description,
         CopyrightHolder $copyrightHolder,
-        Language $language
+        Language $language,
+        ?bool $isAiGenerated = null
     ): Uuid {
         if ($file->getError() !== UPLOAD_ERR_OK) {
             throw new InvalidFileType('The file did not upload correctly.');
@@ -87,7 +88,8 @@ final class ImageUploaderService implements ImageUploaderInterface
                 $description,
                 $copyrightHolder,
                 $destination,
-                $language
+                $language,
+                $isAiGenerated
             )
         );
 

@@ -77,6 +77,7 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
         $description = $parsedBody['description'] ?? null;
         $copyrightHolder = $parsedBody['copyrightHolder'] ?? null;
         $language = $parsedBody['language'] ?? null;
+        $isAiGenerated = $parsedBody['isAiGenerated'] ?? null;
 
         if (!$description) {
             throw ApiProblem::bodyInvalidDataWithDetail('Form data field "description" is required.');
@@ -102,11 +103,16 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
             throw ApiProblem::bodyInvalidDataWithDetail('Form data field "language" is must be exactly 2 lowercase letters long (for example "nl").');
         }
 
+        if ($isAiGenerated !== null && !in_array($isAiGenerated, ['true', 'false'], true)) {
+            throw ApiProblem::bodyInvalidDataWithDetail('Form data field "isAiGenerated" must be "true" or "false".');
+        }
+
         return $this->imageUploader->upload(
             $uploadedFile,
             new Description($description),
             $copyrightHolder,
-            $language
+            $language,
+            $isAiGenerated === null ? null : $isAiGenerated === 'true'
         );
     }
 
@@ -123,6 +129,7 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
         $description = new Description($data->description);
         $copyrightHolder = new CopyrightHolder($data->copyrightHolder);
         $language = new Language($data->inLanguage);
+        $isAiGenerated = $data->isAiGenerated ?? null;
 
         $uploadedFile = $this->imageDownloader->download($contentUrl);
 
@@ -130,7 +137,8 @@ final class UploadMediaRequestHandler implements RequestHandlerInterface
             $uploadedFile,
             $description,
             $copyrightHolder,
-            $language
+            $language,
+            $isAiGenerated
         );
     }
 }
