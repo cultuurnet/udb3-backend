@@ -335,7 +335,7 @@ Feature: Test organizer images property
         "id": "%{aiImageId}",
         "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
         "copyrightHolder": "me",
-        "description": "ai logo",
+        "description": "ai logo (Gegenereerd met AI)",
         "inLanguage": "nl",
         "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
         "isAiGenerated": true
@@ -368,7 +368,7 @@ Feature: Test organizer images property
     And I send a PATCH request to "%{organizerUrl}/images"
     Then the response status should be "204"
     When I get the organizer at "%{organizerUrl}"
-    Then the JSON response at "images/0/description" should be "Aangepaste beschrijving"
+    Then the JSON response at "images/0/description" should be "Aangepaste beschrijving (Gegenereerd met AI)"
     And the JSON response at "images/0/isAiGenerated" should be "true"
 
     When I set the JSON request payload to:
@@ -392,3 +392,43 @@ Feature: Test organizer images property
     And I get the organizer at "%{organizerUrl}"
     Then the JSON response at "images/0/isAiGenerated" should be "true"
     And the JSON response at "images/1/isAiGenerated" should be "false"
+
+  Scenario: The AI generated suffix is added to and removed from the organizer image description when isAiGenerated changes
+    Given I create an organizer from "organizers/organizer-with-images.json" and save the "url" as "organizerUrl"
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "isAiGenerated": true
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/description" should be "logo (Gegenereerd met AI)"
+    And the JSON response at "images/0/isAiGenerated" should be "true"
+
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "language": "fr"
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/description" should be "logo (Généré par l'IA)"
+
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "isAiGenerated": false
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/description" should be "logo"
+    And the JSON response at "images/0/isAiGenerated" should be "false"
