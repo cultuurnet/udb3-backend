@@ -20,6 +20,7 @@ use CultuurNet\UDB3\EventBus\Middleware\ReplayFlaggingMiddleware;
 use CultuurNet\UDB3\Label\ReadModels\JSON\LabelVisibilityOnRelatedDocumentsProjector;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Media\ReadModel\ImageLDProjector;
+use CultuurNet\UDB3\Media\ReadModel\Relations\MediaObjectRelationsProjector;
 use CultuurNet\UDB3\Mailer\Handler\SendMailsForOwnershipEventHandler;
 use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
@@ -91,6 +92,7 @@ final class EventBusServiceProvider extends AbstractServiceProvider
                             OwnershipSearchProjector::class,
                             OwnershipPermissionProjector::class,
                             ImageLDProjector::class,
+                            MediaObjectRelationsProjector::class,
                         ];
 
                         $initialSubscribersCount = count($subscribers);
