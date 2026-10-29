@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Media;
 use Broadway\Repository\AggregateNotFoundException;
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Media\Commands\UpdateMediaObjectAiGenerated;
 use CultuurNet\UDB3\Media\Commands\UploadImage;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -200,6 +201,53 @@ final class MediaManagerTest extends TestCase
         );
 
         $this->assertEquals($expectedImage, $image);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_update_ai_generated_of_a_media_object(): void
+    {
+        $mediaObject = MediaObject::create(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/png'),
+            new Description('description'),
+            new CopyrightHolder('copyright'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Language('en')
+        );
+
+        $this->repository
+            ->method('load')
+            ->with('de305d54-75b4-431b-adb2-eb6b9e546014')
+            ->willReturn($mediaObject);
+
+        $this->repository
+            ->expects($this->once())
+            ->method('save')
+            ->with($this->callback(fn (MediaObject $mediaObject) => $mediaObject->isAiGenerated() === true));
+
+        $this->mediaManager->handleUpdateMediaObjectAiGenerated(
+            new UpdateMediaObjectAiGenerated(new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'), true)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_ignore_updating_ai_generated_of_an_unknown_media_object(): void
+    {
+        $this->repository
+            ->method('load')
+            ->willThrowException(new AggregateNotFoundException());
+
+        $this->repository
+            ->expects($this->never())
+            ->method('save');
+
+        $this->mediaManager->handleUpdateMediaObjectAiGenerated(
+            new UpdateMediaObjectAiGenerated(new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'), true)
+        );
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media;
 
 use Broadway\EventSourcing\Testing\AggregateRootScenarioTestCase;
+use CultuurNet\UDB3\Media\Events\MediaObjectAiGeneratedUpdated;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\Media\Properties\Description;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -118,5 +119,44 @@ final class MediaObjectTest extends AggregateRootScenarioTestCase
         );
 
         $this->assertNull($mediaObject->isAiGenerated());
+    }
+
+    /**
+     * @test
+     * @dataProvider aiGeneratedUpdateProvider
+     */
+    public function it_can_update_ai_generated(?bool $initialValue, bool $newValue, array $expectedEvents): void
+    {
+        $fileId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
+
+        $this->scenario
+            ->withAggregateId($fileId->toString())
+            ->given([
+                new MediaObjectCreated(
+                    $fileId,
+                    new MIMEType('image/png'),
+                    new Description('The Gleaners'),
+                    new CopyrightHolder('Jean-François Millet'),
+                    new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+                    new Language('en'),
+                    $initialValue
+                ),
+            ])
+            ->when(fn (MediaObject $mediaObject) => $mediaObject->updateAiGenerated($newValue))
+            ->then($expectedEvents);
+    }
+
+    public function aiGeneratedUpdateProvider(): array
+    {
+        $fileId = new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014');
+
+        return [
+            'null to true' => [null, true, [new MediaObjectAiGeneratedUpdated($fileId, true)]],
+            'null to false' => [null, false, [new MediaObjectAiGeneratedUpdated($fileId, false)]],
+            'false to true' => [false, true, [new MediaObjectAiGeneratedUpdated($fileId, true)]],
+            'true to false' => [true, false, [new MediaObjectAiGeneratedUpdated($fileId, false)]],
+            'true to true' => [true, true, []],
+            'false to false' => [false, false, []],
+        ];
     }
 }
