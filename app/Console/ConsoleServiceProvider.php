@@ -51,6 +51,8 @@ use CultuurNet\UDB3\Console\Command\UpdateLocality;
 use CultuurNet\UDB3\Console\Command\UpdateOfferStatusCommand;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueLabels;
 use CultuurNet\UDB3\Console\Command\UpdateUniqueOrganizers;
+use CultuurNet\UDB3\Console\Command\FillMediaObjectRelations;
+use CultuurNet\UDB3\Media\ReadModel\Relations\MediaObjectRelationsProjector;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
@@ -123,6 +125,7 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         'console.keycloak:find-user',
         'console.label:update-unique',
         'console.organizer:update-unique',
+        'console.media:fill-relations',
         'console.place:facilities:remove',
         'console.update-locality',
         'console.offer:remove-label',
@@ -444,6 +447,15 @@ final class ConsoleServiceProvider extends AbstractServiceProvider
         $container->addShared(
             'console.organizer:update-unique',
             fn () => new UpdateUniqueOrganizers($container->get('dbal_connection'), new WebsiteNormalizer())
+        );
+
+        $container->addShared(
+            'console.media:fill-relations',
+            fn () => new FillMediaObjectRelations(
+                $container->get('dbal_connection'),
+                $container->get('eventstore_payload_serializer'),
+                $container->get(MediaObjectRelationsProjector::class)
+            )
         );
 
         $container->addShared(
