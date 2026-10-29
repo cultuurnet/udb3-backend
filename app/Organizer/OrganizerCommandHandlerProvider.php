@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Organizer\CommandHandler\UpdateContributorsHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateEducationalDescriptionHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageHandler;
+use CultuurNet\UDB3\Organizer\CommandHandler\UpdateImageAiGeneratedHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateMainImageHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateTitleHandler;
 use CultuurNet\UDB3\Organizer\CommandHandler\UpdateWebsiteHandler;
@@ -55,6 +56,7 @@ final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
             AddImageHandler::class,
             UpdateMainImageHandler::class,
             UpdateImageHandler::class,
+            UpdateImageAiGeneratedHandler::class,
             RemoveImageHandler::class,
             ImportImagesHandler::class,
             ChangeOwnerHandler::class,
@@ -203,6 +205,13 @@ final class OrganizerCommandHandlerProvider extends AbstractServiceProvider
             UpdateImageHandler::class,
             function () use ($container) {
                 return new UpdateImageHandler($container->get('organizer_repository'));
+            }
+        );
+
+        $container->addShared(
+            UpdateImageAiGeneratedHandler::class,
+            function () use ($container) {
+                return new UpdateImageAiGeneratedHandler($container->get('organizer_repository'));
             }
         );
 

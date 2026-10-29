@@ -610,6 +610,25 @@ abstract class Offer extends EventSourcedAggregateRoot implements LabelAwareAggr
         }
     }
 
+    public function updateImageAiGenerated(Uuid $mediaObjectId, bool $isAiGenerated): void
+    {
+        $existingImage = $this->images->findImageByUuid($mediaObjectId);
+
+        if (!$existingImage || $existingImage->isAiGenerated() === $isAiGenerated) {
+            return;
+        }
+
+        $this->apply(
+            $this->createImageUpdatedEvent(
+                $mediaObjectId,
+                $existingImage->getDescription(),
+                $existingImage->getCopyrightHolder(),
+                $existingImage->getLanguage()->getCode(),
+                $isAiGenerated
+            )
+        );
+    }
+
     private function updateImageAllowed(
         Image $existingImage,
         ImageDescription $description,

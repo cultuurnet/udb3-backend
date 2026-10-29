@@ -80,6 +80,7 @@ use CultuurNet\UDB3\Offer\CommandHandlers\UpdateStatusHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTitleHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateTypeHandler;
 use CultuurNet\UDB3\Offer\CommandHandlers\UpdateVideoHandler;
+use CultuurNet\UDB3\Offer\CommandHandlers\UpdateImageAiGeneratedHandler;
 use CultuurNet\UDB3\Offer\Popularity\DBALPopularityRepository;
 use CultuurNet\UDB3\Offer\Popularity\PopularityRepository;
 use CultuurNet\UDB3\Offer\ProcessManagers\RelatedDocumentProjectedToJSONLDDispatcher;
@@ -122,6 +123,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
             UpdateVideoHandler::class,
             DeleteVideoHandler::class,
             ImportVideosHandler::class,
+            UpdateImageAiGeneratedHandler::class,
             DeleteOfferHandler::class,
             UpdatePriceInfoHandler::class,
             UpdateOrganizerHandler::class,
@@ -331,6 +333,11 @@ final class OfferServiceProvider extends AbstractServiceProvider
         $container->addShared(
             UpdateVideoHandler::class,
             fn () => new UpdateVideoHandler($container->get(OfferRepository::class))
+        );
+
+        $container->addShared(
+            UpdateImageAiGeneratedHandler::class,
+            fn () => new UpdateImageAiGeneratedHandler($container->get(OfferRepository::class))
         );
 
         $container->addShared(

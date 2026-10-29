@@ -46,7 +46,14 @@ use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLabel;
 use CultuurNet\UDB3\Model\ValueObject\Web\WebsiteLink;
+use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\Properties\Description as ImageDescription;
+use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Place\Events\BookingInfoUpdated;
+use CultuurNet\UDB3\Place\Events\ImageAdded;
+use CultuurNet\UDB3\Place\Events\ImageUpdated;
 use CultuurNet\UDB3\Place\Events\PriceInfoUpdated;
 use CultuurNet\UDB3\Place\Events\TypicalAgeRangeDeleted;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
@@ -571,6 +578,39 @@ class PlaceTest extends AggregateRootScenarioTestCase
                 ),
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_update_ai_generated_of_an_image(): void
+    {
+        $placeId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $imageId = 'c263ce95-44b4-41b0-916f-ce72063b929b';
+
+        $this->scenario
+            ->withAggregateId($placeId)
+            ->given([
+                $this->createPlaceCreatedEvent(),
+                new ImageAdded(
+                    $placeId,
+                    new Image(
+                        new Uuid($imageId),
+                        new MIMEType('image/png'),
+                        new ImageDescription('Beschrijving'),
+                        new CopyrightHolder('Rechtenhouder'),
+                        new Url('https://images.uitdatabank.local/' . $imageId . '.png'),
+                        new Language('nl'),
+                        true
+                    )
+                ),
+            ])
+            ->when(
+                fn (Place $place) => $place->updateImageAiGenerated(new Uuid($imageId), false)
+            )
+            ->then([
+                new ImageUpdated($placeId, $imageId, 'Beschrijving', 'Rechtenhouder', 'nl', false),
+            ]);
     }
 
     /**
