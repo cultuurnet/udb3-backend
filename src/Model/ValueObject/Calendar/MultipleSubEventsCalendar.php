@@ -57,7 +57,9 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
 
         $clone->dateRanges = new SubEvents(...\array_map(
             function (SubEvent $subEvent) use ($bookingAvailability): SubEvent {
-                return $subEvent->withBookingAvailability($bookingAvailability);
+                return $subEvent->withBookingAvailability(
+                    $subEvent->getBookingAvailability()->withType($bookingAvailability->getType())
+                );
             },
             $clone->getSubEvents()->toArray()
         ));

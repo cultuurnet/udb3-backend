@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 use CultuurNet\UDB3\DateTimeFactory;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 class SingleSubEventCalendarTest extends TestCase
@@ -102,6 +103,31 @@ class SingleSubEventCalendarTest extends TestCase
             new BookingAvailability(BookingAvailabilityType::Unavailable()),
             $calendar->getSubEvents()->getFirst()->getBookingAvailability()
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_url_when_setting_a_booking_availability_on_sub_events(): void
+    {
+        $calendar = new SingleSubEventCalendar(
+            new SubEvent(
+                new DateRange(
+                    DateTimeFactory::fromFormat('d/m/Y', '10/12/2018'),
+                    DateTimeFactory::fromFormat('d/m/Y', '11/12/2018')
+                ),
+                new Status(StatusType::Available()),
+                BookingAvailability::Available()
+                    ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+            )
+        );
+
+        $bookingAvailability = $calendar
+            ->withBookingAvailabilityOnSubEvents(BookingAvailability::Unavailable())
+            ->getSubEvents()->getFirst()->getBookingAvailability();
+
+        $this->assertEquals(BookingAvailabilityType::Unavailable(), $bookingAvailability->getType());
+        $this->assertEquals(new Url('https://publiq.be/wachtlijst'), $bookingAvailability->getWaitingListUrl());
     }
 
     /**

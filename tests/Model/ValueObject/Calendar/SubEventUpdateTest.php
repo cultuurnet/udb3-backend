@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 final class SubEventUpdateTest extends TestCase
@@ -101,5 +102,88 @@ final class SubEventUpdateTest extends TestCase
 
         $this->assertNotSame($original, $updated);
         $this->assertNull($original->getHasOvernightStay());
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_booking_availability_by_default(): void
+    {
+        $update = new SubEventUpdate(0);
+
+        $this->assertEquals($this->getBookingAvailability(), $update->applyToBookingAvailability($this->getBookingAvailability()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_url_when_only_the_booking_availability_type_is_given(): void
+    {
+        $update = (new SubEventUpdate(0))->withBookingAvailabilityType(BookingAvailabilityType::Unavailable());
+
+        $this->assertEquals(
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst')),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_a_waiting_list_url(): void
+    {
+        $update = (new SubEventUpdate(0))->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst'));
+
+        $this->assertEquals(
+            BookingAvailability::Available()->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst')),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_clear_the_waiting_list_url(): void
+    {
+        $update = (new SubEventUpdate(0))
+            ->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst'))
+            ->withoutWaitingListUrl();
+
+        $this->assertEquals(
+            BookingAvailability::Available(),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_change_the_booking_availability_type_and_the_waiting_list_url_together(): void
+    {
+        $update = (new SubEventUpdate(0))
+            ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
+            ->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst'));
+
+        $this->assertEquals(
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst')),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_new_instance_when_updating_the_waiting_list_url(): void
+    {
+        $original = new SubEventUpdate(0);
+
+        $this->assertNotSame($original, $original->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst')));
+        $this->assertNotSame($original, $original->withoutWaitingListUrl());
+        $this->assertEquals($this->getBookingAvailability(), $original->applyToBookingAvailability($this->getBookingAvailability()));
+    }
+
+    private function getBookingAvailability(): BookingAvailability
+    {
+        return BookingAvailability::Available()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'));
     }
 }
