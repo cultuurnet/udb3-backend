@@ -488,6 +488,9 @@ final class Event extends Offer
 
             $updatedSubEvent = $updatedSubEvent->withHasOvernightStay($subEventUpdate->getHasOvernightStay() ?? $subEvent->getHasOvernightStay());
 
+            $capacity = $subEventUpdate->getCapacity() ?? $subEvent->getCapacity();
+            $updatedSubEvent = $updatedSubEvent->withCapacity($capacity?->isUnknown() ? null : $capacity);
+
             $subEvents[$index] = $updatedSubEvent;
         }
 
