@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7eacadc62aa38cd6d1d0fcdd51e3b903",
+    "content-hash": "03bedcbc25941db3c6f553fa6ac17158",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6083,16 +6083,16 @@
         },
         {
             "name": "publiq/udb3-json-schemas",
-            "version": "dev-III-7534-ai-generated-label",
+            "version": "dev-III-7558-subevent-capacity",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cultuurnet/udb3-json-schemas.git",
-                "reference": "23c4cb6df92291dc0a412ae6f9eaac987305e761"
+                "reference": "f611173e611b606c61d9db0675f4c69a0d18adaa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/23c4cb6df92291dc0a412ae6f9eaac987305e761",
-                "reference": "23c4cb6df92291dc0a412ae6f9eaac987305e761",
+                "url": "https://api.github.com/repos/cultuurnet/udb3-json-schemas/zipball/f611173e611b606c61d9db0675f4c69a0d18adaa",
+                "reference": "f611173e611b606c61d9db0675f4c69a0d18adaa",
                 "shasum": ""
             },
             "type": "library",
@@ -6109,9 +6109,9 @@
             "description": "UiTdatabank JSON schemas, useful for validating JSON request bodies.",
             "support": {
                 "issues": "https://github.com/cultuurnet/udb3-json-schemas/issues",
-                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7534-ai-generated-label"
+                "source": "https://github.com/cultuurnet/udb3-json-schemas/tree/III-7558-subevent-capacity"
             },
-            "time": "2026-10-27T13:41:19+00:00"
+            "time": "2026-11-09T15:43:39+00:00"
         },
         {
             "name": "ralouphie/getallheaders",
