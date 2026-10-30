@@ -21,6 +21,9 @@ final class SubEvent
     // Null means the API never mentioned it, which is not the same as an explicit false.
     private ?bool $hasOvernightStay = null;
 
+    // Null means the capacity is unknown.
+    private ?Capacity $capacity = null;
+
     public function __construct(
         DateRange $dateRange,
         Status $status,
@@ -75,6 +78,13 @@ final class SubEvent
         return $clone;
     }
 
+    public function withCapacity(?Capacity $capacity): self
+    {
+        $clone = clone $this;
+        $clone->capacity = $capacity;
+        return $clone;
+    }
+
     public function getDateRange(): DateRange
     {
         return $this->dateRange;
@@ -108,5 +118,10 @@ final class SubEvent
     public function getHasOvernightStay(): ?bool
     {
         return $this->hasOvernightStay;
+    }
+
+    public function getCapacity(): ?Capacity
+    {
+        return $this->capacity;
     }
 }

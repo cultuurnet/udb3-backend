@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Capacity;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
@@ -159,5 +160,38 @@ final class SubEventUpdateDenormalizerTest extends TestCase
         );
 
         $this->assertEquals(new SubEventBookingInfo(new Url('https://www.example.com/reserve')), $update->getBookingInfo());
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_set_capacity_when_absent(): void
+    {
+        $update = $this->denormalizer->denormalize(['id' => 0], SubEventUpdate::class);
+
+        $this->assertNull($update->getCapacity());
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_the_capacity(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'capacity' => ['type' => 'Unlimited', 'taken' => 140]],
+            SubEventUpdate::class
+        );
+
+        $this->assertEquals(Capacity::unlimited(140), $update->getCapacity());
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_an_unknown_capacity_to_clear_it_when_capacity_is_empty_object(): void
+    {
+        $update = $this->denormalizer->denormalize(['id' => 0, 'capacity' => []], SubEventUpdate::class);
+
+        $this->assertTrue($update->getCapacity()->isUnknown());
     }
 }

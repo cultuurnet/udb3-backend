@@ -35,6 +35,10 @@ final class SubEventNormalizer implements NormalizerInterface
             $normalized['hasOvernightStay'] = $subEvent->getHasOvernightStay();
         }
 
+        if ($subEvent->getCapacity() !== null && !$subEvent->getCapacity()->isUnknown()) {
+            $normalized['capacity'] = (new CapacityNormalizer())->normalize($subEvent->getCapacity());
+        }
+
         return $normalized;
     }
 

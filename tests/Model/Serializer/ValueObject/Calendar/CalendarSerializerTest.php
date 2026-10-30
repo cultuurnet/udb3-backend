@@ -30,6 +30,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\TranslatedAdjustedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use DateTimeImmutable;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Capacity;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
@@ -659,5 +660,71 @@ final class CalendarSerializerTest extends TestCase
 
         $this->assertSame(['url' => 'https://www.example.com/reserve'], $serialized['timestamps'][0]['bookingInfo']);
         $this->assertEquals($calendar, CalendarSerializer::deserialize($serialized));
+    }
+
+    /**
+     * @test
+     * @dataProvider capacityProvider
+     */
+    public function it_serializes_and_deserializes_the_capacity_of_a_sub_event(Capacity $capacity, array $expected): void
+    {
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    new DateTimeImmutable('2021-01-01T00:00:00+01:00'),
+                    new DateTimeImmutable('2021-01-02T00:00:00+01:00')
+                )
+            )->withCapacity($capacity)
+        );
+
+        $serialized = (new CalendarSerializer($calendar))->serialize();
+
+        $this->assertSame($expected, $serialized['timestamps'][0]['capacity']);
+        $this->assertEquals($calendar, CalendarSerializer::deserialize($serialized));
+    }
+
+    public function capacityProvider(): array
+    {
+        return [
+            'Limited' => [
+                Capacity::limited(30, 12),
+                ['type' => 'Limited', 'maximum' => 30, 'taken' => 12],
+            ],
+            'limited without taken' => [
+                Capacity::limited(30),
+                ['type' => 'Limited', 'maximum' => 30],
+            ],
+            'Unlimited' => [
+                Capacity::unlimited(140),
+                ['type' => 'Unlimited', 'taken' => 140],
+            ],
+            'unlimited without taken' => [
+                Capacity::unlimited(),
+                ['type' => 'Unlimited'],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_serialize_an_unknown_capacity_of_a_sub_event(): void
+    {
+        $calendar = new SingleSubEventCalendar(
+            SubEvent::createAvailable(
+                new DateRange(
+                    new DateTimeImmutable('2021-01-01T00:00:00+01:00'),
+                    new DateTimeImmutable('2021-01-02T00:00:00+01:00')
+                )
+            )->withCapacity(Capacity::unknown())
+        );
+
+        $serialized = (new CalendarSerializer($calendar))->serialize();
+
+        $this->assertArrayNotHasKey('capacity', $serialized['timestamps'][0]);
+
+        /** @var SingleSubEventCalendar $deserialized */
+        $deserialized = CalendarSerializer::deserialize($serialized);
+        $this->assertNull($deserialized->getSubEvents()->toArray()[0]->getCapacity());
     }
 }

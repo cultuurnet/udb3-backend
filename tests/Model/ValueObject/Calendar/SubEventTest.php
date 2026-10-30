@@ -145,4 +145,32 @@ final class SubEventTest extends TestCase
 
         $this->assertFalse($subEvent->hasChildcare());
     }
+
+    /**
+     * @test
+     */
+    public function it_has_an_unknown_capacity_by_default(): void
+    {
+        $this->assertNull($this->subEvent->getCapacity());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_the_capacity(): void
+    {
+        $subEvent = $this->subEvent->withCapacity(Capacity::limited(30, 12));
+
+        $this->assertEquals(Capacity::limited(30, 12), $subEvent->getCapacity());
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_clear_the_capacity(): void
+    {
+        $subEvent = $this->subEvent->withCapacity(Capacity::limited(30, 12))->withCapacity(null);
+
+        $this->assertNull($subEvent->getCapacity());
+    }
 }

@@ -19,6 +19,8 @@ final class SubEventUpdate
 
     private ?bool $hasOvernightStay = null;
 
+    private ?Capacity $capacity = null;
+
     public function __construct(int $subEventId)
     {
         $this->subEventId = $subEventId;
@@ -118,6 +120,18 @@ final class SubEventUpdate
     {
         $c = clone $this;
         $c->hasOvernightStay = $hasOvernightStay;
+        return $c;
+    }
+
+    public function getCapacity(): ?Capacity
+    {
+        return $this->capacity;
+    }
+
+    public function withCapacity(?Capacity $capacity): self
+    {
+        $c = clone $this;
+        $c->capacity = $capacity;
         return $c;
     }
 }

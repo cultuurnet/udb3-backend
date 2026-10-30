@@ -19,6 +19,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use DateTimeImmutable;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Capacity;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
@@ -444,5 +445,43 @@ final class CalendarDenormalizerTest extends TestCase
         $calendar = $this->denormalizer->denormalize($data, Calendar::class);
 
         $this->assertNull($calendar->getSubEvents()->toArray()[0]->getBookingInfo());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_the_capacity_of_sub_events(): void
+    {
+        $data = [
+            'calendarType' => 'multiple',
+            'subEvent' => [
+                [
+                    'startDate' => '2026-07-01T09:00:00+02:00',
+                    'endDate' => '2026-07-01T17:00:00+02:00',
+                    'capacity' => ['type' => 'Limited', 'maximum' => 30, 'taken' => 12],
+                ],
+                [
+                    'startDate' => '2026-07-02T09:00:00+02:00',
+                    'endDate' => '2026-07-02T17:00:00+02:00',
+                    'capacity' => ['type' => 'Unlimited', 'taken' => 140],
+                ],
+                [
+                    'startDate' => '2026-07-03T09:00:00+02:00',
+                    'endDate' => '2026-07-03T17:00:00+02:00',
+                    'capacity' => [],
+                ],
+                [
+                    'startDate' => '2026-07-04T09:00:00+02:00',
+                    'endDate' => '2026-07-04T17:00:00+02:00',
+                ],
+            ],
+        ];
+
+        $subEvents = $this->denormalizer->denormalize($data, Calendar::class)->getSubEvents()->toArray();
+
+        $this->assertEquals(Capacity::limited(30, 12), $subEvents[0]->getCapacity());
+        $this->assertEquals(Capacity::unlimited(140), $subEvents[1]->getCapacity());
+        $this->assertTrue($subEvents[2]->getCapacity()->isUnknown());
+        $this->assertNull($subEvents[3]->getCapacity());
     }
 }
