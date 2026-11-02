@@ -56,7 +56,7 @@ final class RegisterReservationLinkHandler implements CommandHandler
         $event->registerReservationLink(
             $command->reservationLink,
             $bookingInfo->identifier,
-            $bookingInfo->bookingAvailability
+            $bookingInfo->bookingAvailability->withWaitingListUrl($bookingInfo->waitingListUrl)
         );
 
         $this->eventRepository->save($event);
