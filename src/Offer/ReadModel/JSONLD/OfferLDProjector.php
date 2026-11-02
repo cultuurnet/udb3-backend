@@ -21,6 +21,7 @@ use CultuurNet\UDB3\Model\Serializer\ValueObject\Price\TranslatedTariffNameNorma
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Taxonomy\Category\CategoryNormalizer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageUrl;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -444,11 +445,20 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 if ($imageUpdated->isAiGenerated() !== null) {
                     $mediaObject->isAiGenerated = $imageUpdated->isAiGenerated();
                 }
+                $previousContentUrl = $mediaObject->contentUrl;
                 if (($mediaObject->isAiGenerated ?? null) === true) {
                     $mediaObject->description = AiGeneratedImageDescription::addSuffix(
                         $mediaObject->description,
                         new Language($mediaObject->inLanguage)
                     );
+                    $mediaObject->contentUrl = AiGeneratedImageUrl::addMarker($mediaObject->contentUrl);
+                    $mediaObject->thumbnailUrl = AiGeneratedImageUrl::addMarker($mediaObject->thumbnailUrl);
+                } else {
+                    $mediaObject->contentUrl = AiGeneratedImageUrl::removeMarker($mediaObject->contentUrl);
+                    $mediaObject->thumbnailUrl = AiGeneratedImageUrl::removeMarker($mediaObject->thumbnailUrl);
+                }
+                if (($offerLd->image ?? null) === $previousContentUrl) {
+                    $offerLd->image = $mediaObject->contentUrl;
                 }
 
                 $updatedMediaObjects[] = $mediaObject;

@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageDescription;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageUrl;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class MediaObjectSerializer
@@ -54,6 +55,8 @@ class MediaObjectSerializer
                 $serialized['description'],
                 $mediaObject->getLanguage()
             );
+            $serialized['contentUrl'] = AiGeneratedImageUrl::addMarker($serialized['contentUrl']);
+            $serialized['thumbnailUrl'] = AiGeneratedImageUrl::addMarker($serialized['thumbnailUrl']);
         }
 
         return $serialized;
