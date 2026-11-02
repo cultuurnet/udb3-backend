@@ -492,11 +492,11 @@ Feature: Test event images property
         "@id": "%{baseUrl}/images/%{aiImageId}",
         "id": "%{aiImageId}",
         "@type": "schema:ImageObject",
-        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg",
         "copyrightHolder": "me",
         "description": "ai logo (Gegenereerd met AI)",
         "inLanguage": "nl",
-        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg",
         "isAiGenerated": true
       }
     ]
@@ -569,6 +569,18 @@ Feature: Test event images property
     And I get the event at "%{eventUrl}"
     And the JSON response at "mediaObject/0/description" should be "logo (Gegenereerd met AI)"
     And the JSON response at "mediaObject/0/isAiGenerated" should be "true"
+    And the JSON response at "mediaObject/0/contentUrl" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    """
+    And the JSON response at "mediaObject/0/thumbnailUrl" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    """
+    And the JSON response at "image" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    """
 
     When I set the JSON request payload to:
     """
@@ -583,3 +595,15 @@ Feature: Test event images property
     And I get the event at "%{eventUrl}"
     And the JSON response at "mediaObject/0/description" should be "logo"
     And the JSON response at "mediaObject/0/isAiGenerated" should be "false"
+    And the JSON response at "mediaObject/0/contentUrl" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    """
+    And the JSON response at "mediaObject/0/thumbnailUrl" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    """
+    And the JSON response at "image" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    """
