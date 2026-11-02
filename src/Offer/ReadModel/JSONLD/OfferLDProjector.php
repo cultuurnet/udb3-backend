@@ -504,7 +504,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         // Unset the main image if it matches the removed image
         // stripping the protocol before comparison is done for edge cases where an offer has multiple images
         // @see https://jira.uitdatabank.be/browse/III-4684
-        if (isset($offerLd->image) && stristr($offerLd->{'image'}, ':') === stristr($imageUrl, ':')) {
+        // the marker is removed because the main image of an AI generated image has a marked url
+        if (isset($offerLd->image) &&
+            stristr(AiGeneratedImageUrl::removeMarker($offerLd->image), ':') === stristr($imageUrl, ':')) {
             unset($offerLd->{'image'});
         }
 
