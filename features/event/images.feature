@@ -607,3 +607,43 @@ Feature: Test event images property
     """
     "https://images.uitdatabank.dev/%{imageId1}.jpeg"
     """
+
+  Scenario: The next image becomes the main image when an AI generated main image is removed from an event
+    Given I set the form data properties to:
+      | description     | ai logo |
+      | copyrightHolder | me      |
+      | language        | nl      |
+      | isAiGenerated   | true    |
+    When I upload "file" from path "images/udb.jpg" to "/images/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "imageId" as "aiImageId"
+    Given I create a minimal permanent event and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "mediaObjectId":"%{aiImageId}"
+    }
+    """
+    And I send a POST request to "%{eventUrl}/images"
+    Then the response status should be "204"
+    When I set the JSON request payload to:
+    """
+    {
+      "mediaObjectId":"%{imageId1}"
+    }
+    """
+    And I send a POST request to "%{eventUrl}/images"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "image" should be:
+    """
+    "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg"
+    """
+    When I send a DELETE request to "%{eventUrl}/images/%{aiImageId}"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject" should have 1 entry
+    And the JSON response at "image" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    """
