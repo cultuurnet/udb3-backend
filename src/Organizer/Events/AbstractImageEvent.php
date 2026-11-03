@@ -23,18 +23,22 @@ abstract class AbstractImageEvent implements Serializable
 
     private string $copyrightHolder;
 
+    private ?bool $isAiGenerated;
+
     final public function __construct(
         string $organizerId,
         string $imageId,
         string $language,
         string $description,
-        string $copyrightHolder
+        string $copyrightHolder,
+        ?bool $isAiGenerated = null
     ) {
         $this->organizerId = $organizerId;
         $this->imageId = $imageId;
         $this->language = $language;
         $this->description = $description;
         $this->copyrightHolder = $copyrightHolder;
+        $this->isAiGenerated = $isAiGenerated;
     }
 
     public function getOrganizerId(): string
@@ -62,25 +66,35 @@ abstract class AbstractImageEvent implements Serializable
         return $this->copyrightHolder;
     }
 
+    public function isAiGenerated(): ?bool
+    {
+        return $this->isAiGenerated;
+    }
+
     public function getImage(): Image
     {
         return new Image(
             new Uuid($this->imageId),
             new Language($this->language),
             new Description($this->description),
-            new CopyrightHolder($this->copyrightHolder)
+            new CopyrightHolder($this->copyrightHolder),
+            $this->isAiGenerated
         );
     }
 
     public function serialize(): array
     {
-        return [
+        $data = [
             'organizerId' => $this->organizerId,
             'imageId' => $this->imageId,
             'language' => $this->language,
             'description' => $this->description,
             'copyrightHolder' => $this->copyrightHolder,
         ];
+        if ($this->isAiGenerated !== null) {
+            $data['isAiGenerated'] = $this->isAiGenerated;
+        }
+        return $data;
     }
 
     public static function deserialize(array $data): AbstractImageEvent
@@ -90,7 +104,8 @@ abstract class AbstractImageEvent implements Serializable
             $data['imageId'],
             $data['language'],
             $data['description'],
-            $data['copyrightHolder']
+            $data['copyrightHolder'],
+            $data['isAiGenerated'] ?? null
         );
     }
 }

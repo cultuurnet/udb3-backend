@@ -14,6 +14,8 @@ final class SubEvent
 
     private BookingAvailability $bookingAvailability;
 
+    private ?SubEventBookingInfo $bookingInfo = null;
+
     private ?TimeImmutableRange $childcareTimeRange = null;
 
     // Null means the API never mentioned it, which is not the same as an explicit false.
@@ -52,6 +54,13 @@ final class SubEvent
         return $clone;
     }
 
+    public function withBookingInfo(?SubEventBookingInfo $bookingInfo): self
+    {
+        $clone = clone $this;
+        $clone->bookingInfo = $bookingInfo;
+        return $clone;
+    }
+
     public function withChildcareTimeRange(?TimeImmutableRange $childcareTimeRange): self
     {
         $clone = clone $this;
@@ -79,6 +88,11 @@ final class SubEvent
     public function getBookingAvailability(): BookingAvailability
     {
         return $this->bookingAvailability;
+    }
+
+    public function getBookingInfo(): ?SubEventBookingInfo
+    {
+        return $this->bookingInfo;
     }
 
     public function getChildcareTimeRange(): ?TimeImmutableRange

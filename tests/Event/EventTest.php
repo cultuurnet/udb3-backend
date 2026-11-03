@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Event\Events\ContactPointUpdated;
 use CultuurNet\UDB3\Event\Events\DeparturePlacesUpdated;
 use CultuurNet\UDB3\Event\Events\EventCopied;
 use CultuurNet\UDB3\Event\Events\EventCreated;
+use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventImportedFromUDB2;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\FacilitiesUpdated;
@@ -44,6 +45,8 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
@@ -103,6 +106,13 @@ use CultuurNet\UDB3\SampleFiles;
 use CultuurNet\UDB3\Model\ValueObject\Price\Currency;
 use CultuurNet\UDB3\Model\ValueObject\Price\Money;
 use RuntimeException;
+use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRegistered;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
+use CultuurNet\UDB3\Event\Events\TitleUpdated;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use DateTimeImmutable;
 
 class EventTest extends AggregateRootScenarioTestCase
 {
@@ -111,6 +121,9 @@ class EventTest extends AggregateRootScenarioTestCase
 
     private const EVENT_ID = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
     private const LOCATION_ID = '322d67b6-e84d-4649-9384-12ecad74eab3';
+    private const COPY_EVENT_ID = 'e49430ca-5729-4768-8364-02ddb385517a';
+    private const RESERVATION_LINK_A = 'https://leuven-school-met-cultuur.ticketmatic.com/30cc/register/1001';
+    private const RESERVATION_LINK_B = 'https://leuven-school-met-cultuur.ticketmatic.com/30cc/register/1002';
 
     protected function getAggregateRootClass(): string
     {
@@ -2793,6 +2806,225 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_sets_a_waiting_list_url_on_a_sub_event(): void
+    {
+        $firstDate = new DateRange(new \DateTimeImmutable('2026-11-01T20:00:00+01:00'), new \DateTimeImmutable('2026-11-01T22:00:00+01:00'));
+        $secondDate = new DateRange(new \DateTimeImmutable('2026-11-02T20:00:00+01:00'), new \DateTimeImmutable('2026-11-02T22:00:00+01:00'));
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent($firstDate, new Status(StatusType::Available()), BookingAvailability::Unavailable()),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
+                        ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_url_when_a_sub_event_update_has_no_booking_availability(): void
+    {
+        $firstDate = new DateRange(new \DateTimeImmutable('2026-11-01T20:00:00+01:00'), new \DateTimeImmutable('2026-11-01T22:00:00+01:00'));
+        $secondDate = new DateRange(new \DateTimeImmutable('2026-11-02T20:00:00+01:00'), new \DateTimeImmutable('2026-11-02T22:00:00+01:00'));
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withStatus(new Status(StatusType::Unavailable()))
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Unavailable()),
+                                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_url_when_only_the_booking_availability_type_of_a_sub_event_is_updated(): void
+    {
+        $firstDate = new DateRange(new \DateTimeImmutable('2026-11-01T20:00:00+01:00'), new \DateTimeImmutable('2026-11-01T22:00:00+01:00'));
+        $secondDate = new DateRange(new \DateTimeImmutable('2026-11-02T20:00:00+01:00'), new \DateTimeImmutable('2026-11-02T22:00:00+01:00'));
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withBookingAvailabilityType(BookingAvailabilityType::Available())
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Available()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_the_waiting_list_url_of_a_sub_event(): void
+    {
+        $firstDate = new DateRange(new \DateTimeImmutable('2026-11-01T20:00:00+01:00'), new \DateTimeImmutable('2026-11-01T22:00:00+01:00'));
+        $secondDate = new DateRange(new \DateTimeImmutable('2026-11-02T20:00:00+01:00'), new \DateTimeImmutable('2026-11-02T22:00:00+01:00'));
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
+                        ->withoutWaitingListUrl()
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent($firstDate, new Status(StatusType::Available()), BookingAvailability::Unavailable()),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_the_calendar_when_the_same_waiting_list_url_is_set_again(): void
+    {
+        $firstDate = new DateRange(new \DateTimeImmutable('2026-11-01T20:00:00+01:00'), new \DateTimeImmutable('2026-11-01T22:00:00+01:00'));
+        $secondDate = new DateRange(new \DateTimeImmutable('2026-11-02T20:00:00+01:00'), new \DateTimeImmutable('2026-11-02T22:00:00+01:00'));
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
+                        ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                )
+            )
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_overnight_stay_is_set_without_kamp_of_vakantie_term_on_update_calendar(): void
     {
         $this->expectException(OvernightStayNotAllowed::class);
@@ -3535,5 +3767,406 @@ class EventTest extends AggregateRootScenarioTestCase
         return SampleFiles::read(
             __DIR__ . '/samples/' . $file
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_every_distinct_link_when_an_event_is_created(): void
+    {
+        $calendar = $this->getMultipleCalendarWithLinks(self::RESERVATION_LINK_A, self::RESERVATION_LINK_A, self::RESERVATION_LINK_B);
+
+        $this->scenario
+            ->when(fn () => Event::create(
+                self::EVENT_ID,
+                new Language('nl'),
+                new Title('Voorstelling'),
+                $this->getTheaterType(),
+                new LocationId(self::LOCATION_ID),
+                $calendar
+            ))
+            ->then([
+                $this->getCreationEventWithCalendar($calendar),
+                new ReservationLinkAdded(self::EVENT_ID, new Url(self::RESERVATION_LINK_A)),
+                new ReservationLinkAdded(self::EVENT_ID, new Url(self::RESERVATION_LINK_B)),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_a_link_when_the_calendar_gets_one(): void
+    {
+        $calendar = $this->getSingleCalendarWithLink(self::RESERVATION_LINK_A);
+
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(null))])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([
+                new CalendarUpdated(self::EVENT_ID, $calendar),
+                new ReservationLinkAdded(self::EVENT_ID, new Url(self::RESERVATION_LINK_A)),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_a_link_when_its_date_is_removed(): void
+    {
+        $calendar = $this->getSingleCalendarWithLink(self::RESERVATION_LINK_A);
+
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar($this->getMultipleCalendarWithLinks(self::RESERVATION_LINK_A, self::RESERVATION_LINK_B))])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([
+                new CalendarUpdated(self::EVENT_ID, $calendar),
+                new ReservationLinkRemoved(self::EVENT_ID, new Url(self::RESERVATION_LINK_B)),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_a_link_that_is_still_on_another_date(): void
+    {
+        $calendar = $this->getSingleCalendarWithLink(self::RESERVATION_LINK_A);
+
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar($this->getMultipleCalendarWithLinks(self::RESERVATION_LINK_A, self::RESERVATION_LINK_A))])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([new CalendarUpdated(self::EVENT_ID, $calendar)]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_all_links_when_the_calendar_no_longer_has_dates(): void
+    {
+        $calendar = new PermanentCalendar(new OpeningHours());
+
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar($this->getMultipleCalendarWithLinks(self::RESERVATION_LINK_A, self::RESERVATION_LINK_B))])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([
+                new CalendarUpdated(self::EVENT_ID, $calendar),
+                new ReservationLinkRemoved(self::EVENT_ID, new Url(self::RESERVATION_LINK_A)),
+                new ReservationLinkRemoved(self::EVENT_ID, new Url(self::RESERVATION_LINK_B)),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_a_link_when_the_major_info_changes_the_calendar(): void
+    {
+        $calendar = $this->getSingleCalendarWithLink(self::RESERVATION_LINK_A);
+
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar(new PermanentCalendar(new OpeningHours()))])
+            ->when(fn (Event $event) => $event->updateMajorInfo(
+                new Title('Voorstelling'),
+                $this->getTheaterType(),
+                new LocationId(self::LOCATION_ID),
+                $calendar
+            ))
+            ->then([
+                new MajorInfoUpdated(
+                    self::EVENT_ID,
+                    'Voorstelling',
+                    $this->getTheaterType(),
+                    new LocationId(self::LOCATION_ID),
+                    $calendar
+                ),
+                new ReservationLinkAdded(self::EVENT_ID, new Url(self::RESERVATION_LINK_A)),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_adds_every_link_of_a_copy_even_when_the_original_has_it(): void
+    {
+        $calendar = $this->getMultipleCalendarWithLinks(self::RESERVATION_LINK_A, self::RESERVATION_LINK_B);
+
+        $this->scenario
+            ->when(function () use ($calendar) {
+                $original = Event::create(
+                    self::EVENT_ID,
+                    new Language('nl'),
+                    new Title('Voorstelling'),
+                    $this->getTheaterType(),
+                    new LocationId(self::LOCATION_ID),
+                    $this->getSingleCalendarWithLink(self::RESERVATION_LINK_A)
+                );
+                $original->getUncommittedEvents();
+
+                return $original->copy(self::COPY_EVENT_ID, $calendar);
+            })
+            ->then([
+                new EventCopied(self::COPY_EVENT_ID, self::EVENT_ID, $calendar),
+                new ReservationLinkAdded(self::COPY_EVENT_ID, new Url(self::RESERVATION_LINK_A)),
+                new ReservationLinkAdded(self::COPY_EVENT_ID, new Url(self::RESERVATION_LINK_B)),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_record_link_events_when_only_the_availability_changes(): void
+    {
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(self::RESERVATION_LINK_A))])
+            ->when(fn (Event $event) => $event->updateBookingAvailability(BookingAvailability::Unavailable()))
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    $this->getSingleCalendarWithLink(self::RESERVATION_LINK_A)
+                        ->withBookingAvailabilityOnSubEvents(BookingAvailability::Unavailable())
+                        ->withBookingAvailability(BookingAvailability::Unavailable())
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_record_link_events_for_changes_outside_the_calendar(): void
+    {
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(self::RESERVATION_LINK_A))])
+            ->when(fn (Event $event) => $event->updateTitle(new Language('nl'), new Title('Andere titel')))
+            ->then([new TitleUpdated(self::EVENT_ID, 'Andere titel')]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_removes_all_links_when_the_event_is_deleted(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar(
+                    $this->getMultipleCalendarWithLinks(self::RESERVATION_LINK_A, self::RESERVATION_LINK_B)
+                ),
+            ])
+            ->when(fn (Event $event) => $event->delete())
+            ->then([
+                new EventDeleted(self::EVENT_ID),
+                new ReservationLinkRemoved(self::EVENT_ID, new Url(self::RESERVATION_LINK_A)),
+                new ReservationLinkRemoved(self::EVENT_ID, new Url(self::RESERVATION_LINK_B)),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_add_links_to_a_deleted_event(): void
+    {
+        $calendar = $this->getSingleCalendarWithLink(self::RESERVATION_LINK_A);
+
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(null)),
+                new EventDeleted(self::EVENT_ID),
+            ])
+            ->when(fn (Event $event) => $event->updateCalendar($calendar))
+            ->then([new CalendarUpdated(self::EVENT_ID, $calendar)]);
+    }
+
+    private function getCreationEventWithCalendar(Calendar $calendar): EventCreated
+    {
+        return new EventCreated(
+            self::EVENT_ID,
+            new Language('nl'),
+            'Voorstelling',
+            $this->getTheaterType(),
+            new LocationId(self::LOCATION_ID),
+            $calendar
+        );
+    }
+
+    private function getTheaterType(): Category
+    {
+        return new Category(new CategoryID('0.55.0.0.0'), new CategoryLabel('Theatervoorstelling'), CategoryDomain::eventType());
+    }
+
+    /**
+     * @test
+     */
+    public function it_registers_a_link_and_sets_the_availability_on_its_dates(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar(
+                    $this->getMultipleCalendarWithLinks(self::RESERVATION_LINK_A, self::RESERVATION_LINK_B, self::RESERVATION_LINK_A)
+                ),
+            ])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Unavailable()
+            ))
+            ->then([
+                new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK_A), 'ticketmatic:30cc:1001'),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-05')
+                                ->withBookingAvailability(BookingAvailability::Unavailable()),
+                            $this->getSubEventWithLink(self::RESERVATION_LINK_B, '2026-11-06'),
+                            $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-07')
+                                ->withBookingAvailability(BookingAvailability::Unavailable()),
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_only_records_the_registration_when_the_availability_stays_the_same(): void
+    {
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(self::RESERVATION_LINK_A))])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Available()
+            ))
+            ->then([
+                new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK_A), 'ticketmatic:30cc:1001'),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_replaces_the_waiting_list_url_of_the_dates_with_the_one_of_the_provider(): void
+    {
+        $subEvent = $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-05');
+
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar(
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Available()->withWaitingListUrl(new Url('https://www.example.com/waiting-list'))
+                        )
+                    )
+                ),
+            ])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/ticketmatic-waiting-list'))
+            ))
+            ->then([
+                new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK_A), 'ticketmatic:30cc:1001'),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/ticketmatic-waiting-list'))
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_url_of_the_dates_when_the_provider_has_none(): void
+    {
+        $subEvent = $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-05');
+
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar(
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Available()->withWaitingListUrl(new Url('https://www.example.com/waiting-list'))
+                        )
+                    )
+                ),
+            ])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Unavailable()
+            ))
+            ->then([
+                new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK_A), 'ticketmatic:30cc:1001'),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/waiting-list'))
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_the_registration_of_a_link_that_is_no_longer_on_the_event(): void
+    {
+        $this->scenario
+            ->given([$this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(self::RESERVATION_LINK_A))])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_B),
+                'ticketmatic:30cc:1002',
+                BookingAvailability::Unavailable()
+            ))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_ignores_the_registration_of_a_link_of_a_deleted_event(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar($this->getSingleCalendarWithLink(self::RESERVATION_LINK_A)),
+                new EventDeleted(self::EVENT_ID),
+            ])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Unavailable()
+            ))
+            ->then([]);
+    }
+
+    private function getSingleCalendarWithLink(?string $link): SingleSubEventCalendar
+    {
+        return new SingleSubEventCalendar($this->getSubEventWithLink($link, '2026-11-05'));
+    }
+
+    private function getMultipleCalendarWithLinks(?string ...$links): MultipleSubEventsCalendar
+    {
+        $subEvents = [];
+        foreach (array_values($links) as $index => $link) {
+            $subEvents[] = $this->getSubEventWithLink($link, sprintf('2026-11-%02d', 5 + $index));
+        }
+
+        return new MultipleSubEventsCalendar(new SubEvents(...$subEvents));
+    }
+
+    private function getSubEventWithLink(?string $link, string $date): SubEvent
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(
+                new DateTimeImmutable($date . 'T10:00:00+01:00'),
+                new DateTimeImmutable($date . 'T12:00:00+01:00')
+            )
+        );
+
+        return $link === null ? $subEvent : $subEvent->withBookingInfo(new SubEventBookingInfo(new Url($link)));
     }
 }

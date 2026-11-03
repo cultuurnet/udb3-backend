@@ -56,6 +56,9 @@ use CultuurNet\UDB3\Event\Events\OrganizerDeleted;
 use CultuurNet\UDB3\Event\Events\OrganizerUpdated;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Event\Events\PriceInfoUpdated;
+use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRegistered;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeRemoved;
 use CultuurNet\UDB3\Event\Events\ThemeUpdated;
 use CultuurNet\UDB3\Event\Events\TitleTranslated;
@@ -75,11 +78,13 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\CalendarWithSubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\ReservationLinks;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
@@ -231,6 +236,44 @@ final class Event extends Offer
     public function getAggregateRootId(): string
     {
         return $this->eventId;
+    }
+
+    /**
+     * Every new event passes through here, so a change of the reservation links on the subEvents is recorded
+     * whichever way the calendar was changed. Loading the aggregate doesn't call apply(), so nothing is derived twice.
+     */
+    public function apply($event): void
+    {
+        $calendarBefore = $this->calendar;
+        $wasDeleted = $this->isDeleted();
+        // A copy starts from the state of the original, but all its links are new for the copy.
+        $linksBefore = $event instanceof EventCopied ? new ReservationLinks() : $this->getReservationLinks();
+
+        parent::apply($event);
+
+        // Most events don't touch the calendar or the deleted status, so there is nothing to compare.
+        if (!$event instanceof EventCopied && $this->calendar === $calendarBefore && $this->isDeleted() === $wasDeleted) {
+            return;
+        }
+
+        $linksAfter = $this->getReservationLinks();
+
+        foreach ($linksBefore->notIn($linksAfter) as $removedLink) {
+            parent::apply(new ReservationLinkRemoved($this->eventId, $removedLink));
+        }
+
+        foreach ($linksAfter->notIn($linksBefore) as $addedLink) {
+            parent::apply(new ReservationLinkAdded($this->eventId, $addedLink));
+        }
+    }
+
+    /**
+     * A deleted event keeps its calendar, but its links no longer count: deleting the event removes them, and a
+     * calendar change on a deleted event adds none.
+     */
+    private function getReservationLinks(): ReservationLinks
+    {
+        return $this->isDeleted() ? new ReservationLinks() : ReservationLinks::fromCalendar($this->calendar);
     }
 
     protected function applyEventCreated(EventCreated $eventCreated): void
@@ -419,7 +462,6 @@ final class Event extends Offer
             $subEvent = $subEvents[$index];
 
             $subEventStatus = $subEventUpdate->getStatus() ?: null;
-            $subEventBookingAvailability = $subEventUpdate->getBookingAvailability() ?: null;
 
             $updatedSubEvent = new SubEvent(
                 new DateRange(
@@ -427,7 +469,7 @@ final class Event extends Offer
                     $subEventUpdate->getEndDate() ?: $subEvent->getDateRange()->getTo()
                 ),
                 $subEventStatus ?? $subEvent->getStatus(),
-                $subEventBookingAvailability ?? $subEvent->getBookingAvailability(),
+                $subEventUpdate->applyToBookingAvailability($subEvent->getBookingAvailability()),
             );
 
             // For PATCH requests: use updated childcare if explicitly provided, otherwise preserve existing.
@@ -438,6 +480,10 @@ final class Event extends Offer
                 $this->validateChildcareTimeRange($childcareToApply, $updatedSubEvent, $index);
                 $updatedSubEvent = $updatedSubEvent->withChildcareTimeRange($childcareToApply);
             }
+
+            $updatedSubEvent = $updatedSubEvent->withBookingInfo(
+                $subEventUpdate->getBookingInfo() ?? $subEvent->getBookingInfo()
+            );
 
             $updatedSubEvent = $updatedSubEvent->withHasOvernightStay($subEventUpdate->getHasOvernightStay() ?? $subEvent->getHasOvernightStay());
 
@@ -457,6 +503,38 @@ final class Event extends Offer
             $this->apply(
                 new CalendarUpdated($this->eventId, $updatedCalendar)
             );
+        }
+    }
+
+    /**
+     * Stores what the ticket sales provider answered for a reservation link, and sets its availability on the dates
+     * with that link. Ignored when the link was removed, or the event deleted, while the provider was answering.
+     * A waiting list url on the booking availability replaces the one of those dates, without one they keep theirs.
+     */
+    public function registerReservationLink(
+        Url $reservationLink,
+        string $identifier,
+        BookingAvailability $bookingAvailability
+    ): void {
+        $calendar = $this->calendar;
+        if (!$calendar instanceof CalendarWithSubEvents || !$this->getReservationLinks()->contains($reservationLink)) {
+            return;
+        }
+
+        $this->apply(new ReservationLinkRegistered($this->eventId, $reservationLink, $identifier));
+
+        $subEvents = array_map(
+            fn (SubEvent $subEvent) => $subEvent->getBookingInfo()?->getUrl()->sameAs($reservationLink)
+                ? $subEvent->withBookingAvailability(
+                    self::applyRegisteredBookingAvailability($subEvent->getBookingAvailability(), $bookingAvailability)
+                )
+                : $subEvent,
+            $calendar->getSubEvents()->toArray()
+        );
+
+        $updatedCalendar = $this->rebuildCalendarFromSubEvents($subEvents);
+        if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
+            $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
         }
     }
 
@@ -491,6 +569,25 @@ final class Event extends Offer
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
         }
+    }
+
+    /**
+     * The waiting list url of the ticket sales provider wins, but a provider without a waiting list keeps the
+     * waiting list url that was set on the sub event.
+     */
+    private static function applyRegisteredBookingAvailability(
+        BookingAvailability $bookingAvailability,
+        BookingAvailability $registeredBookingAvailability
+    ): BookingAvailability {
+        $bookingAvailability = $bookingAvailability->withType($registeredBookingAvailability->getType());
+
+        if ($registeredBookingAvailability->getWaitingListUrl() !== null) {
+            $bookingAvailability = $bookingAvailability->withWaitingListUrl(
+                $registeredBookingAvailability->getWaitingListUrl()
+            );
+        }
+
+        return $bookingAvailability;
     }
 
     /**
@@ -811,14 +908,16 @@ final class Event extends Offer
         Uuid $mediaObjectId,
         ImageDescription $description,
         CopyrightHolder $copyrightHolder,
-        ?string $language = null
+        ?string $language = null,
+        ?bool $isAiGenerated = null
     ): ImageUpdated {
         return new ImageUpdated(
             $this->eventId,
             $mediaObjectId->toString(),
             $description->toString(),
             $copyrightHolder->toString(),
-            $language
+            $language,
+            $isAiGenerated
         );
     }
 

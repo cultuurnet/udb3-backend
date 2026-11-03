@@ -18,6 +18,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use DateTimeImmutable;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 final class CalendarDenormalizerTest extends TestCase
@@ -393,5 +395,54 @@ final class CalendarDenormalizerTest extends TestCase
         $result = $this->denormalizer->denormalize($data, Calendar::class);
 
         $this->assertFalse($result->getSubEvents()->toArray()[0]->getHasOvernightStay());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_the_booking_info_of_a_sub_event(): void
+    {
+        $data = [
+            'calendarType' => 'multiple',
+            'subEvent' => [
+                [
+                    'startDate' => '2021-05-17T08:00:00+00:00',
+                    'endDate' => '2021-05-17T22:00:00+00:00',
+                    'bookingInfo' => ['url' => 'https://www.example.com/first'],
+                ],
+                [
+                    'startDate' => '2021-05-18T08:00:00+00:00',
+                    'endDate' => '2021-05-18T22:00:00+00:00',
+                ],
+            ],
+        ];
+
+        /** @var MultipleSubEventsCalendar $calendar */
+        $calendar = $this->denormalizer->denormalize($data, Calendar::class);
+        $subEvents = $calendar->getSubEvents()->toArray();
+
+        $this->assertEquals(new SubEventBookingInfo(new Url('https://www.example.com/first')), $subEvents[0]->getBookingInfo());
+        $this->assertNull($subEvents[1]->getBookingInfo());
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_use_the_top_level_booking_info_for_the_sub_event_of_a_single_calendar(): void
+    {
+        $data = [
+            'calendarType' => 'single',
+            'startDate' => '2021-05-17T08:00:00+00:00',
+            'endDate' => '2021-05-17T22:00:00+00:00',
+            'bookingInfo' => [
+                'phone' => '0123456789',
+                'url' => 'https://www.example.com',
+            ],
+        ];
+
+        /** @var SingleSubEventCalendar $calendar */
+        $calendar = $this->denormalizer->denormalize($data, Calendar::class);
+
+        $this->assertNull($calendar->getSubEvents()->toArray()[0]->getBookingInfo());
     }
 }

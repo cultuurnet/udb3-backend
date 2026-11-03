@@ -188,6 +188,48 @@ class OfferTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_keeps_the_existing_ai_generated_when_importing_images_without_ai_generated(): void
+    {
+        $itemId = '77b4df58-b7e9-40cf-979f-ec741a072282';
+
+        $createImage = fn (?bool $isAiGenerated) => new Image(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/jpg'),
+            new MediaDescription('my pic'),
+            new CopyrightHolder('Dirk Dirkington'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
+            new Language('en'),
+            $isAiGenerated
+        );
+
+        $this->scenario
+            ->given([
+                new ItemCreated($itemId),
+                new ImageAdded($itemId, $createImage(true)),
+            ])
+            ->when(
+                function (Item $item) use ($createImage): void {
+                    $item->importImages(ImageCollection::fromArray([$createImage(null)]));
+                    $item->importImages(ImageCollection::fromArray([$createImage(true)]));
+                    $item->importImages(ImageCollection::fromArray([$createImage(false)]));
+                    $item->importImages(ImageCollection::fromArray([$createImage(null)]));
+                }
+            )
+            ->then([
+                new ImageUpdated(
+                    $itemId,
+                    'de305d54-75b4-431b-adb2-eb6b9e546014',
+                    'my pic',
+                    'Dirk Dirkington',
+                    'en',
+                    false
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_updates_facilities_when_changed(): void
     {
         $itemId = '0fd9a1e5-1406-43b5-a641-4b4d77fe980d';
@@ -655,6 +697,115 @@ class OfferTest extends AggregateRootScenarioTestCase
                         'new copyright holder'
                     ),
                     new MainImageSelected('someId', $anotherImage),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_and_change_ai_generated_when_updating_an_image(): void
+    {
+        $this->scenario
+            ->withAggregateId('someId')
+            ->given(
+                [
+                    new ItemCreated('someId'),
+                    new ImageAdded('someId', $this->image),
+                ]
+            )
+            ->when(
+                function (Item $item): void {
+                    $item->updateImage(
+                        $this->image->getMediaObjectId(),
+                        $this->image->getDescription(),
+                        $this->image->getCopyrightHolder(),
+                        true
+                    );
+                    $item->updateImage(
+                        $this->image->getMediaObjectId(),
+                        $this->image->getDescription(),
+                        $this->image->getCopyrightHolder(),
+                        false
+                    );
+                }
+            )
+            ->then(
+                [
+                    new ImageUpdated(
+                        'someId',
+                        $this->image->getMediaObjectId()->toString(),
+                        $this->image->getDescription()->toString(),
+                        $this->image->getCopyrightHolder()->toString(),
+                        null,
+                        true
+                    ),
+                    new ImageUpdated(
+                        'someId',
+                        $this->image->getMediaObjectId()->toString(),
+                        $this->image->getDescription()->toString(),
+                        $this->image->getCopyrightHolder()->toString(),
+                        null,
+                        false
+                    ),
+                ]
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_existing_ai_generated_when_updating_an_image_without_ai_generated(): void
+    {
+        $this->scenario
+            ->withAggregateId('someId')
+            ->given(
+                [
+                    new ItemCreated('someId'),
+                    new ImageAdded('someId', $this->image),
+                    new ImageUpdated(
+                        'someId',
+                        $this->image->getMediaObjectId()->toString(),
+                        $this->image->getDescription()->toString(),
+                        $this->image->getCopyrightHolder()->toString(),
+                        null,
+                        true
+                    ),
+                ]
+            )
+            ->when(
+                function (Item $item): void {
+                    // Same values and no isAiGenerated given, so nothing should change.
+                    $item->updateImage(
+                        $this->image->getMediaObjectId(),
+                        $this->image->getDescription(),
+                        $this->image->getCopyrightHolder()
+                    );
+                    // Same isAiGenerated given, so nothing should change.
+                    $item->updateImage(
+                        $this->image->getMediaObjectId(),
+                        $this->image->getDescription(),
+                        $this->image->getCopyrightHolder(),
+                        true
+                    );
+                    // Only the description changes, isAiGenerated keeps its existing value.
+                    $item->updateImage(
+                        $this->image->getMediaObjectId(),
+                        new MediaDescription('new description'),
+                        $this->image->getCopyrightHolder()
+                    );
+                }
+            )
+            ->then(
+                [
+                    new ImageUpdated(
+                        'someId',
+                        $this->image->getMediaObjectId()->toString(),
+                        'new description',
+                        $this->image->getCopyrightHolder()->toString(),
+                        null,
+                        true
+                    ),
                 ]
             );
     }

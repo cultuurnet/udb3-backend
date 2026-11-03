@@ -14,6 +14,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use DateTimeZone;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 final class SubEventNormalizerTest extends TestCase
@@ -260,5 +262,31 @@ final class SubEventNormalizerTest extends TestCase
         $this->assertArrayHasKey('childcare', $normalized);
         $this->assertSame('18:00', $normalized['childcare']['end']);
         $this->assertArrayNotHasKey('start', $normalized['childcare']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_includes_the_booking_info(): void
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(new DateTimeImmutable('2025-03-15 10:00:00'), new DateTimeImmutable('2025-03-15 20:00:00'))
+        )->withBookingInfo(new SubEventBookingInfo(new Url('https://www.example.com/reserve')));
+
+        $normalized = $this->normalizer->normalize($subEvent);
+
+        $this->assertSame(['url' => 'https://www.example.com/reserve'], $normalized['bookingInfo']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_omits_booking_info_when_null(): void
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(new DateTimeImmutable('2025-03-15 10:00:00'), new DateTimeImmutable('2025-03-15 20:00:00'))
+        );
+
+        $this->assertArrayNotHasKey('bookingInfo', $this->normalizer->normalize($subEvent));
     }
 }

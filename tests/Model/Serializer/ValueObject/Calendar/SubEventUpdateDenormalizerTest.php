@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventUpdate;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
 final class SubEventUpdateDenormalizerTest extends TestCase
@@ -131,8 +134,107 @@ final class SubEventUpdateDenormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_does_not_update_the_waiting_list_url_without_booking_availability(): void
+    {
+        $update = $this->denormalizer->denormalize(['id' => 0], SubEventUpdate::class);
+
+        $this->assertEquals($this->getBookingAvailability(), $update->applyToBookingAvailability($this->getBookingAvailability()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_the_waiting_list_url_when_it_is_absent_from_booking_availability(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'bookingAvailability' => ['type' => 'Unavailable']],
+            SubEventUpdate::class
+        );
+
+        $this->assertEquals(
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst')),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_the_waiting_list_url(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'bookingAvailability' => ['type' => 'Unavailable', 'waitingListUrl' => 'https://publiq.be/nieuwe-wachtlijst']],
+            SubEventUpdate::class
+        );
+
+        $this->assertEquals(
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/nieuwe-wachtlijst')),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_the_waiting_list_url_when_it_is_an_empty_string(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'bookingAvailability' => ['type' => 'Available', 'waitingListUrl' => '']],
+            SubEventUpdate::class
+        );
+
+        $this->assertEquals(
+            BookingAvailability::Available(),
+            $update->applyToBookingAvailability($this->getBookingAvailability())
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_the_waiting_list_url_when_it_is_null(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'bookingAvailability' => ['type' => 'Available', 'waitingListUrl' => null]],
+            SubEventUpdate::class
+        );
+
+        $this->assertEquals($this->getBookingAvailability(), $update->applyToBookingAvailability($this->getBookingAvailability()));
+    }
+
+    /**
+     * @test
+     */
     public function it_supports_denormalization_of_sub_event_update(): void
     {
         $this->assertTrue($this->denormalizer->supportsDenormalization([], SubEventUpdate::class));
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_set_booking_info_when_absent(): void
+    {
+        $update = $this->denormalizer->denormalize(['id' => 0], SubEventUpdate::class);
+
+        $this->assertNull($update->getBookingInfo());
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_the_booking_info(): void
+    {
+        $update = $this->denormalizer->denormalize(
+            ['id' => 0, 'bookingInfo' => ['url' => 'https://www.example.com/reserve']],
+            SubEventUpdate::class
+        );
+
+        $this->assertEquals(new SubEventBookingInfo(new Url('https://www.example.com/reserve')), $update->getBookingInfo());
+    }
+
+    private function getBookingAvailability(): BookingAvailability
+    {
+        return BookingAvailability::Available()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'));
     }
 }

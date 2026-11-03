@@ -52,6 +52,7 @@ use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\EventDeleted;
 use CultuurNet\UDB3\Event\Events\EventUpdatedFromUDB2;
 use CultuurNet\UDB3\Event\Events\GeoCoordinatesUpdated;
+use CultuurNet\UDB3\Event\Events\ImageUpdated;
 use CultuurNet\UDB3\Event\Events\LabelAdded;
 use CultuurNet\UDB3\Event\Events\LabelRemoved;
 use CultuurNet\UDB3\Event\Events\LocationUpdated;
@@ -60,6 +61,9 @@ use CultuurNet\UDB3\Event\Events\Moderation\Published;
 use CultuurNet\UDB3\Event\Events\OwnerChanged;
 use CultuurNet\UDB3\Iri\CallableIriGenerator;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
+use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
+use CultuurNet\UDB3\Event\Events\ReservationLinkRegistered;
 use CultuurNet\UDB3\Label\ReadModels\JSON\Repository\ReadRepositoryInterface;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
@@ -686,6 +690,51 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $body = $this->project($imageUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
 
         $this->assertEquals($expectedBody, $body);
+    }
+
+    /**
+     * @test
+     * @dataProvider isAiGeneratedImageUpdateProvider
+     */
+    public function it_projects_ai_generated_when_editing_an_image(?bool $updatedAiGenerated, bool $expectedAiGenerated): void
+    {
+        $id = 'foo';
+        $imageUpdated = new ImageUpdated(
+            $id,
+            'de305d54-75b4-431b-adb2-eb6b9e546014',
+            'Some description.',
+            'Dirk Dirkington',
+            null,
+            $updatedAiGenerated
+        );
+
+        $this->documentRepository->save(new JsonDocument(
+            $id,
+            Json::encode([
+                'mediaObject' => [
+                    [
+                        '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                        '@type' => 'schema:ImageObject',
+                        'description' => 'olddescription',
+                        'copyrightHolder' => 'oldcopyrightHolder',
+                        'inLanguage' => 'en',
+                        'isAiGenerated' => true,
+                    ],
+                ],
+            ])
+        ));
+
+        $body = $this->project($imageUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
+
+        $this->assertSame($expectedAiGenerated, $body->mediaObject[0]->isAiGenerated);
+    }
+
+    public function isAiGeneratedImageUpdateProvider(): array
+    {
+        return [
+            'isAiGenerated not given keeps the existing value' => [null, true],
+            'isAiGenerated given overwrites the existing value' => [false, false],
+        ];
     }
 
     /**
@@ -2131,6 +2180,42 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         );
 
         $this->assertFalse(property_exists($body, 'departurePlaces'));
+    }
+
+    /**
+     * @test
+     * @dataProvider reservationLinkEventProvider
+     */
+    public function it_only_updates_the_playhead_on_reservation_link_events(object $reservationLinkEvent): void
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+
+        $this->documentRepository->save(
+            new JsonDocument(
+                $eventId,
+                Json::encode(['@id' => 'http://example.com/entity/' . $eventId, 'name' => ['nl' => 'Voorstelling'], 'playhead' => 4])
+            )
+        );
+
+        $this->projector->handle(
+            new DomainMessage($eventId, 5, new Metadata(), $reservationLinkEvent, $this->recordedOn->toBroadwayDateTime())
+        );
+
+        $body = $this->getBody($eventId);
+        $this->assertEquals(5, $body->playhead);
+        $this->assertEquals('Voorstelling', $body->name->nl);
+    }
+
+    public function reservationLinkEventProvider(): array
+    {
+        $eventId = 'd2b41f1d-598c-46af-a3a5-10e373faa6fe';
+        $link = new Url('https://leuven-school-met-cultuur.ticketmatic.com/30cc/register/12345');
+
+        return [
+            'added' => [new ReservationLinkAdded($eventId, $link)],
+            'removed' => [new ReservationLinkRemoved($eventId, $link)],
+            'registered' => [new ReservationLinkRegistered($eventId, $link, 'ticketmatic:30cc:12345')],
+        ];
     }
 
     /**

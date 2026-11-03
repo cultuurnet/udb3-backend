@@ -23,6 +23,7 @@ When working on this codebase, prefer:
 - Inline expressions over unnecessary local variables (if a variable is only used once and doesn't improve readability, inline it)
 - When one needs to serialize() or deserialize(), implement a new NormalizerInterface or DenormalizerInterface, this Normalizer can be called in the serialize method of Broadway\Serializer\Serializable
 - When making collections, try to extend from \CultuurNet\UDB3\Model\ValueObject\Collection\Collection.
+- Use the `Fig\Http\Message\StatusCodeInterface` constants for HTTP status codes, also when reading responses in HTTP clients, instead of numbers like `404`.
 - **Use `sameCalendars` as the guard before `apply(new CalendarUpdated(...))`**: do not manually inspect individual fields (e.g. looping to check if any sub-event has `hasOvernightStay = true`) to decide whether to call `apply()`. Build the updated calendar and let `sameCalendars` determine whether anything actually changed.
 
 ## Comments & Self-Documenting Code
