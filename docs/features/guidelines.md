@@ -68,6 +68,30 @@ In JSON test data files, reference places and events by their saved URL variable
 
 When a scenario creates or updates a resource with a new field or nested structure (e.g. `openingHoursAdjustedDays`), assert **all** fields of that structure in the response — not just the top-level ones. Forgetting to assert nested properties like `openingHours[0]/opens`, `openingHours[0]/closes`, or `openingHours[0]/dayOfWeek` inside an adjusted-days entry leaves the serialisation untested.
 
+### Assert the full error response
+
+A scenario that expects an error checks the whole problem body, not only the status code. The `detail` and `schemaErrors` tell the client what went wrong, so they are part of the API contract, and they prove the request failed for the reason the scenario is about.
+
+```gherkin
+When I send a POST request to "/ticketing/booking-availability/"
+Then the response status should be "403"
+And the JSON response should be:
+"""
+{
+  "type": "https://api.publiq.be/probs/auth/forbidden",
+  "title": "Forbidden",
+  "status": 403,
+  "detail": "Only ticket sales providers can update the availability of reservation links."
+}
+"""
+```
+
+For validation errors, include the `schemaErrors` with their `jsonPointer`, see `features/event/attendance-mode.feature`.
+
+### Use far future dates only when the test depends on them being upcoming
+
+Fixed dates keep scenarios deterministic, and past dates are fine when nothing compares them to today. When the behaviour does depend on the date being upcoming (search filters on `availableTo`, past events, status or calendar summaries), use a year far in the future such as 2126, so the test doesn't expire.
+
 ### Extract repeated payloads into data files
 
 Inline JSON payloads that appear in more than one scenario should be moved to a file under `features/data/`. Use `%{variable}` substitution for values that differ between scenarios:

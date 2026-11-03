@@ -20,7 +20,7 @@ The target is an argument: a PR number or URL, or a branch. Without one, review 
 1. **Requirements.** Every point of the ticket is implemented, nothing more, and the behaviour matches the API docs. List what is missing or added without being asked.
 2. **Side effects.** What else runs through the changed code: other endpoints, projectors, listeners, replays, places next to events, existing stored data.
 3. **Consistency.** It behaves like comparable features (the same validation, errors, PATCH semantics, naming in the API). Look the comparable feature up instead of assuming.
-4. **Tests.** Each behaviour change is covered, and the tests are good: edge cases, the unhappy path, fixtures that match reality, assertions on the result instead of on the mocks.
+4. **Tests.** Each behaviour change is covered, and the tests are good: edge cases, the unhappy path, fixtures that match reality, assertions on the result instead of on the mocks. An error scenario checks the full problem body, not only the status code (`docs/features/guidelines.md`).
 
 API changes also go through the backwards compatibility rules in `docs/review-guidelines.md`.
 
