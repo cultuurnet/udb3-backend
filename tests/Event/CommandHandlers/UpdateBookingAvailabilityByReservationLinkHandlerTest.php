@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -55,7 +56,7 @@ final class UpdateBookingAvailabilityByReservationLinkHandlerTest extends Comman
             ])
             ->when(
                 new UpdateBookingAvailabilityByReservationLink(
-                    self::EVENT_ID,
+                    new Uuid(self::EVENT_ID),
                     new Url(self::RESERVATION_LINK),
                     BookingAvailability::Unavailable()
                 )

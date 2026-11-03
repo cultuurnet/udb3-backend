@@ -57,7 +57,7 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandlerInt
         foreach ($registrations as $registration) {
             $this->commandBus->dispatch(
                 new UpdateBookingAvailabilityByReservationLink(
-                    $registration->getEventId()->toString(),
+                    $registration->getEventId(),
                     $registration->getReservationLink(),
                     $bookingAvailability
                 )

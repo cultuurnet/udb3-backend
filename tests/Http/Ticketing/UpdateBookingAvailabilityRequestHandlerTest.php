@@ -66,12 +66,12 @@ final class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateBookingAvailabilityByReservationLink(
-                    self::EVENT_ID,
+                    new Uuid(self::EVENT_ID),
                     new Url(self::RESERVATION_LINK),
                     BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/wachtlijst'))
                 ),
                 new UpdateBookingAvailabilityByReservationLink(
-                    self::OTHER_EVENT_ID,
+                    new Uuid(self::OTHER_EVENT_ID),
                     new Url(self::RESERVATION_LINK),
                     BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/wachtlijst'))
                 ),
@@ -101,7 +101,7 @@ final class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
         $this->assertEquals(
             [
                 new UpdateBookingAvailabilityByReservationLink(
-                    self::EVENT_ID,
+                    new Uuid(self::EVENT_ID),
                     new Url(self::RESERVATION_LINK),
                     BookingAvailability::Available()
                 ),

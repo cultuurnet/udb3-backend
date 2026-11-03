@@ -22,7 +22,7 @@ final class UpdateBookingAvailabilityByReservationLinkHandler implements Command
         }
 
         /** @var Event $event */
-        $event = $this->eventRepository->load($command->eventId);
+        $event = $this->eventRepository->load($command->eventId->toString());
 
         $event->updateBookingAvailabilityByReservationLink($command->reservationLink, $command->bookingAvailability);
 
