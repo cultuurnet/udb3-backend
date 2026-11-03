@@ -6,10 +6,10 @@ namespace CultuurNet\UDB3\Media\Serialization;
 
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\AiGeneratedImageDescription;
+use CultuurNet\UDB3\Media\AiGeneratedImageUrl;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
-use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageUrl;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class MediaObjectSerializer
