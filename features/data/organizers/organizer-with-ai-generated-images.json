@@ -1,0 +1,17 @@
+{
+  "mainLanguage":"nl",
+  "name": {
+    "nl": "%{name}"
+  },
+  "url": "https://www.%{name}.be",
+  "images": [
+    {
+      "@id": "%{baseUrl}/images/%{imageId1}",
+      "isAiGenerated": true
+    },
+    {
+      "id": "%{imageId2}",
+      "isAiGenerated": false
+    }
+  ]
+}

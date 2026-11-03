@@ -44,6 +44,35 @@ class ImageTest extends TestCase
     /**
      * @test
      */
+    public function it_can_be_serialized_and_deserialized_with_ai_generated(): void
+    {
+        $image = new Image(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/jpg'),
+            new Description('my pic'),
+            new CopyrightHolder('Dirk Dirkington'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
+            new Language('en'),
+            false
+        );
+
+        $expectedSerializedImage = [
+            'media_object_id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
+            'mime_type' => 'image/jpg',
+            'description' => 'my pic',
+            'copyright_holder' => 'Dirk Dirkington',
+            'source_location' => 'http://foo.bar/media/my_pic.jpg',
+            'language' => 'en',
+            'is_ai_generated' => false,
+        ];
+
+        $this->assertEquals($expectedSerializedImage, $image->serialize());
+        $this->assertEquals($image, Image::deserialize($expectedSerializedImage));
+    }
+
+    /**
+     * @test
+     */
     public function it_can_create_an_image_from_serialized_data(): void
     {
         $serializedData = [

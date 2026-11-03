@@ -57,6 +57,14 @@ final class ImageTest extends TestCase
 
     /**
      * @test
+     */
+    public function it_has_no_ai_generated_by_default(): void
+    {
+        $this->assertNull($this->image->isAiGenerated());
+    }
+
+    /**
+     * @test
      * @dataProvider imagesDataProvider
      */
     public function it_can_compare_images(Image $image1, Image $image2, bool $equal): void
@@ -116,6 +124,17 @@ final class ImageTest extends TestCase
                     new Language('en'),
                     new Description('Image description'),
                     new CopyrightHolder('Different image copyright holder')
+                ),
+                false,
+            ],
+            'Different isAiGenerated' => [
+                $image,
+                new Image(
+                    new Uuid('b40a7a77-49b7-495f-b2f2-62ebbeb818b9'),
+                    new Language('en'),
+                    new Description('Image description'),
+                    new CopyrightHolder('Image copyright holder'),
+                    false
                 ),
                 false,
             ],

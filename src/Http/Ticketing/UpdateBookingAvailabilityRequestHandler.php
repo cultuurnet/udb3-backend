@@ -14,6 +14,7 @@ use CultuurNet\UDB3\Http\Request\Body\RequestBodyParserFactory;
 use CultuurNet\UDB3\Http\Response\NoContentResponse;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Ticketing\Repositories\TicketingRegistrationRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -41,7 +42,7 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandlerInt
         $parser = RequestBodyParserFactory::createBaseParser(
             new JsonSchemaValidatingRequestBodyParser(JsonSchemaLocator::TICKETING_BOOKING_AVAILABILITY)
         );
-        /** @var object{identifier: string, type: string} $data */
+        /** @var object{identifier: string, type: string, waitingListUrl?: string} $data */
         $data = $parser->parse($request)->getParsedBody();
 
         $registrations = $this->ticketingRegistrationRepository->findByIdentifier($data->identifier);
@@ -51,12 +52,12 @@ final class UpdateBookingAvailabilityRequestHandler implements RequestHandlerInt
             );
         }
 
-        // The waitingListUrl in the body is ignored until bookingAvailability supports it (III-7525).
-        $bookingAvailability = new BookingAvailability(new BookingAvailabilityType($data->type));
+        $bookingAvailability = (new BookingAvailability(new BookingAvailabilityType($data->type)))
+            ->withWaitingListUrl(isset($data->waitingListUrl) ? new Url($data->waitingListUrl) : null);
         foreach ($registrations as $registration) {
             $this->commandBus->dispatch(
                 new UpdateBookingAvailabilityByReservationLink(
-                    $registration->getEventId()->toString(),
+                    $registration->getEventId(),
                     $registration->getReservationLink(),
                     $bookingAvailability
                 )

@@ -701,6 +701,80 @@ final class OrganizerLDProjectorTest extends TestCase
     /**
      * @test
      */
+    public function it_handles_adding_an_ai_generated_image(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+        $this->mockGet($organizerId, 'organizer.json');
+
+        $this->imageRepository->method('load')
+            ->with('03789a2f-5063-4062-b7cb-95a0a2280d92')
+            ->willReturn(
+                MediaObject::create(
+                    new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    MIMEType::fromSubtype('jpeg'),
+                    new Description('Uploaded image'),
+                    new CopyrightHolder('publiq'),
+                    new Url('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
+                    new Language('nl')
+                )
+            );
+
+        $domainMessage = $this->createDomainMessage(
+            new ImageAdded(
+                $organizerId,
+                '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                'nl',
+                'Beschrijving van de afbeelding',
+                'publiq',
+                true
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_one_ai_generated_image.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
+    public function it_handles_updating_the_ai_generated_flag_of_an_image(): void
+    {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+        $this->mockGet($organizerId, 'organizer_with_one_ai_generated_image.json');
+
+        $this->imageRepository->method('load')
+            ->with('03789a2f-5063-4062-b7cb-95a0a2280d92')
+            ->willReturn(
+                MediaObject::create(
+                    new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+                    MIMEType::fromSubtype('jpeg'),
+                    new Description('Image Description'),
+                    new CopyrightHolder('madewithlove'),
+                    new Url('https://images.uitdatabank.be/03789a2f-5063-4062-b7cb-95a0a2280d92.jpg'),
+                    new Language('en')
+                )
+            );
+
+        $domainMessage = $this->createDomainMessage(
+            new ImageUpdated(
+                $organizerId,
+                '03789a2f-5063-4062-b7cb-95a0a2280d92',
+                'en',
+                'Updated description',
+                'Updated copyright holder',
+                false
+            )
+        );
+
+        $this->expectSave($organizerId, 'organizer_with_updated_image_not_ai_generated.json');
+
+        $this->projector->handle($domainMessage);
+    }
+
+    /**
+     * @test
+     */
     public function it_handles_removing_an_image(): void
     {
         $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';

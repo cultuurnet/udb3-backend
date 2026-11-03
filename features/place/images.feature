@@ -18,7 +18,7 @@ Feature: Test place images property
     Given I set the form data properties to:
       | description     | logo2 |
       | copyrightHolder | me2   |
-      | language        | nl   |
+      | language        | nl    |
     When I upload "file" from path "images/udb.jpg" to "/images/"
     Then the response status should be "201"
     And I keep the value of the JSON response at "imageId" as "imageId2"
@@ -465,3 +465,91 @@ Feature: Test place images property
     """
     And I get the place at "%{placeUrl}"
     And the JSON response should not have "image"
+
+  Scenario: I can add an AI generated image to an place
+    Given I set the form data properties to:
+      | description     | ai logo |
+      | copyrightHolder | me      |
+      | language        | nl      |
+      | isAiGenerated   | true    |
+    When I upload "file" from path "images/udb.jpg" to "/images/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "imageId" as "aiImageId"
+    Given I create a minimal place and save the "url" as "placeUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "mediaObjectId":"%{aiImageId}"
+    }
+    """
+    And I send a POST request to "%{placeUrl}/images"
+    Then the response status should be "204"
+    And I get the place at "%{placeUrl}"
+    And the JSON response at "mediaObject" should be:
+    """
+    [
+      {
+        "@id": "%{baseUrl}/images/%{aiImageId}",
+        "id": "%{aiImageId}",
+        "@type": "schema:ImageObject",
+        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "copyrightHolder": "me",
+        "description": "ai logo",
+        "inLanguage": "nl",
+        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "isAiGenerated": true
+      }
+    ]
+    """
+
+  Scenario: I can update isAiGenerated of an image on an place and it is kept when not given
+    Given I create a place from "places/place-with-images.json" and save the "url" as "placeUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "logo",
+      "copyrightHolder": "me",
+      "isAiGenerated": true
+    }
+    """
+    And I send a PUT request to "%{placeUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the place at "%{placeUrl}"
+    And the JSON response at "mediaObject/0/isAiGenerated" should be "true"
+    And the JSON response should not have "mediaObject/1/isAiGenerated"
+
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "An updated logo",
+      "copyrightHolder": "me"
+    }
+    """
+    And I send a PUT request to "%{placeUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the place at "%{placeUrl}"
+    And the JSON response at "mediaObject/0/description" should be "An updated logo"
+    And the JSON response at "mediaObject/0/isAiGenerated" should be "true"
+
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "An updated logo",
+      "copyrightHolder": "me",
+      "isAiGenerated": false
+    }
+    """
+    And I send a PUT request to "%{placeUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the place at "%{placeUrl}"
+    And the JSON response at "mediaObject/0/isAiGenerated" should be "false"
+
+  Scenario: isAiGenerated of images is kept when updating an place without isAiGenerated
+    Given I create a place from "places/place-with-ai-generated-images.json" and save the "url" as "placeUrl"
+    And I get the place at "%{placeUrl}"
+    Then the JSON response at "mediaObject/0/isAiGenerated" should be "true"
+    And the JSON response at "mediaObject/1/isAiGenerated" should be "false"
+    When I update the place at "%{placeUrl}" from "places/place-with-images.json"
+    And I get the place at "%{placeUrl}"
+    Then the JSON response at "mediaObject/0/isAiGenerated" should be "true"
+    And the JSON response at "mediaObject/1/isAiGenerated" should be "false"

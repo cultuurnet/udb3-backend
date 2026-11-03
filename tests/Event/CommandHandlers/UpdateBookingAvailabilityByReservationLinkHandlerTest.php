@@ -18,6 +18,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
@@ -30,6 +31,7 @@ final class UpdateBookingAvailabilityByReservationLinkHandlerTest extends Comman
 {
     private const EVENT_ID = '40021958-0ad8-46bd-8528-3ac3686818a1';
     private const RESERVATION_LINK = 'https://leuven-school-met-cultuur.ticketmatic.com/30cc/register/12345';
+    private const WAITING_LIST_URL = 'https://www.example.com/wachtlijst';
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
@@ -55,7 +57,7 @@ final class UpdateBookingAvailabilityByReservationLinkHandlerTest extends Comman
             ])
             ->when(
                 new UpdateBookingAvailabilityByReservationLink(
-                    self::EVENT_ID,
+                    new Uuid(self::EVENT_ID),
                     new Url(self::RESERVATION_LINK),
                     BookingAvailability::Unavailable()
                 )
@@ -68,6 +70,78 @@ final class UpdateBookingAvailabilityByReservationLinkHandlerTest extends Comman
                     )
                 ),
             ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_url_when_the_provider_has_none(): void
+    {
+        $subEvent = $this->getSubEvent()->withBookingAvailability(
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url(self::WAITING_LIST_URL))
+        );
+
+        $this->scenario
+            ->withAggregateId(self::EVENT_ID)
+            ->given([$this->getEventCreated($subEvent)])
+            ->when(
+                new UpdateBookingAvailabilityByReservationLink(
+                    new Uuid(self::EVENT_ID),
+                    new Url(self::RESERVATION_LINK),
+                    BookingAvailability::Available()
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Available()->withWaitingListUrl(new Url(self::WAITING_LIST_URL))
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_replaces_the_waiting_list_url_with_the_one_of_the_provider(): void
+    {
+        $subEvent = $this->getSubEvent()->withBookingAvailability(
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url(self::WAITING_LIST_URL))
+        );
+        $providerAvailability = BookingAvailability::Unavailable()
+            ->withWaitingListUrl(new Url('https://leuven-school-met-cultuur.ticketmatic.com/30cc/waitinglist/12345'));
+
+        $this->scenario
+            ->withAggregateId(self::EVENT_ID)
+            ->given([$this->getEventCreated($subEvent)])
+            ->when(
+                new UpdateBookingAvailabilityByReservationLink(
+                    new Uuid(self::EVENT_ID),
+                    new Url(self::RESERVATION_LINK),
+                    $providerAvailability
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($subEvent->withBookingAvailability($providerAvailability))
+                ),
+            ]);
+    }
+
+    private function getEventCreated(SubEvent $subEvent): EventCreated
+    {
+        return new EventCreated(
+            self::EVENT_ID,
+            new Language('nl'),
+            'Voorstelling',
+            new Category(new CategoryID('0.55.0.0.0'), new CategoryLabel('Theatervoorstelling'), CategoryDomain::eventType()),
+            new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
+            new SingleSubEventCalendar($subEvent)
+        );
     }
 
     private function getSubEvent(): SubEvent
