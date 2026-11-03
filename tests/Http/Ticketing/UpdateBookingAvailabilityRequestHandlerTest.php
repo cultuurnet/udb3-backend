@@ -68,12 +68,42 @@ final class UpdateBookingAvailabilityRequestHandlerTest extends TestCase
                 new UpdateBookingAvailabilityByReservationLink(
                     self::EVENT_ID,
                     new Url(self::RESERVATION_LINK),
-                    BookingAvailability::Unavailable()
+                    BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/wachtlijst'))
                 ),
                 new UpdateBookingAvailabilityByReservationLink(
                     self::OTHER_EVENT_ID,
                     new Url(self::RESERVATION_LINK),
-                    BookingAvailability::Unavailable()
+                    BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/wachtlijst'))
+                ),
+            ],
+            $this->commandBus->getRecordedCommands()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_updates_the_availability_without_waiting_list_url(): void
+    {
+        $this->ticketingRegistrationRepository->method('findByIdentifier')
+            ->with(self::IDENTIFIER)
+            ->willReturn(
+                new TicketingRegistrations(
+                    new TicketingRegistration(new Uuid(self::EVENT_ID), new Url(self::RESERVATION_LINK), self::IDENTIFIER)
+                )
+            );
+
+        $response = $this->getRequestHandler(self::CLIENT_ID)->handle(
+            $this->getRequest('{"identifier":"' . self::IDENTIFIER . '","type":"Available"}')
+        );
+
+        $this->assertEquals(StatusCodeInterface::STATUS_NO_CONTENT, $response->getStatusCode());
+        $this->assertEquals(
+            [
+                new UpdateBookingAvailabilityByReservationLink(
+                    self::EVENT_ID,
+                    new Url(self::RESERVATION_LINK),
+                    BookingAvailability::Available()
                 ),
             ],
             $this->commandBus->getRecordedCommands()
