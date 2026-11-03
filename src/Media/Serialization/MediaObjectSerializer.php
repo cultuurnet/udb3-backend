@@ -9,6 +9,7 @@ use CultuurNet\UDB3\Media\AiGeneratedImageDescription;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageDescription;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
 
 class MediaObjectSerializer

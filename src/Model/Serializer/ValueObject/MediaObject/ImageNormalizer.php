@@ -8,6 +8,7 @@ use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\AiGeneratedImageDescription;
 use CultuurNet\UDB3\Media\MediaObject;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\AiGeneratedImageDescription;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
