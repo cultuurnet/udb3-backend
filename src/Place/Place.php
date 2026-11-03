@@ -364,14 +364,16 @@ class Place extends Offer
         Uuid $mediaObjectId,
         ImageDescription $description,
         CopyrightHolder $copyrightHolder,
-        ?string $language = null
+        ?string $language = null,
+        ?bool $isAiGenerated = null
     ): ImageUpdated {
         return new ImageUpdated(
             $this->placeId,
             $mediaObjectId->toString(),
             $description->toString(),
             $copyrightHolder->toString(),
-            $language
+            $language,
+            $isAiGenerated
         );
     }
 

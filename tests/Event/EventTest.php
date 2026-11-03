@@ -45,6 +45,8 @@ use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AudienceType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\BirthdateRange;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\DateRange;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\MultipleSubEventsCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\AdjustedDay;
@@ -108,7 +110,6 @@ use CultuurNet\UDB3\Event\Events\ReservationLinkAdded;
 use CultuurNet\UDB3\Event\Events\ReservationLinkRegistered;
 use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
 use DateTimeImmutable;
@@ -2805,6 +2806,225 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_sets_a_waiting_list_url_on_a_sub_event(): void
+    {
+        $firstDate = new DateRange(new \DateTimeImmutable('2026-11-01T20:00:00+01:00'), new \DateTimeImmutable('2026-11-01T22:00:00+01:00'));
+        $secondDate = new DateRange(new \DateTimeImmutable('2026-11-02T20:00:00+01:00'), new \DateTimeImmutable('2026-11-02T22:00:00+01:00'));
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent($firstDate, new Status(StatusType::Available()), BookingAvailability::Unavailable()),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
+                        ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_url_when_a_sub_event_update_has_no_booking_availability(): void
+    {
+        $firstDate = new DateRange(new \DateTimeImmutable('2026-11-01T20:00:00+01:00'), new \DateTimeImmutable('2026-11-01T22:00:00+01:00'));
+        $secondDate = new DateRange(new \DateTimeImmutable('2026-11-02T20:00:00+01:00'), new \DateTimeImmutable('2026-11-02T22:00:00+01:00'));
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withStatus(new Status(StatusType::Unavailable()))
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Unavailable()),
+                                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_url_when_only_the_booking_availability_type_of_a_sub_event_is_updated(): void
+    {
+        $firstDate = new DateRange(new \DateTimeImmutable('2026-11-01T20:00:00+01:00'), new \DateTimeImmutable('2026-11-01T22:00:00+01:00'));
+        $secondDate = new DateRange(new \DateTimeImmutable('2026-11-02T20:00:00+01:00'), new \DateTimeImmutable('2026-11-02T22:00:00+01:00'));
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))->withBookingAvailabilityType(BookingAvailabilityType::Available())
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Available()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_the_waiting_list_url_of_a_sub_event(): void
+    {
+        $firstDate = new DateRange(new \DateTimeImmutable('2026-11-01T20:00:00+01:00'), new \DateTimeImmutable('2026-11-01T22:00:00+01:00'));
+        $secondDate = new DateRange(new \DateTimeImmutable('2026-11-02T20:00:00+01:00'), new \DateTimeImmutable('2026-11-02T22:00:00+01:00'));
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
+                        ->withoutWaitingListUrl()
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent($firstDate, new Status(StatusType::Available()), BookingAvailability::Unavailable()),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_update_the_calendar_when_the_same_waiting_list_url_is_set_again(): void
+    {
+        $firstDate = new DateRange(new \DateTimeImmutable('2026-11-01T20:00:00+01:00'), new \DateTimeImmutable('2026-11-01T22:00:00+01:00'));
+        $secondDate = new DateRange(new \DateTimeImmutable('2026-11-02T20:00:00+01:00'), new \DateTimeImmutable('2026-11-02T22:00:00+01:00'));
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
+                        )
+                    )
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateSubEvents(
+                    (new SubEventUpdate(0))
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
+                        ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                )
+            )
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_when_overnight_stay_is_set_without_kamp_of_vakantie_term_on_update_calendar(): void
     {
         $this->expectException(OvernightStayNotAllowed::class);
@@ -3817,6 +4037,76 @@ class EventTest extends AggregateRootScenarioTestCase
             ))
             ->then([
                 new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK_A), 'ticketmatic:30cc:1001'),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_replaces_the_waiting_list_url_of_the_dates_with_the_one_of_the_provider(): void
+    {
+        $subEvent = $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-05');
+
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar(
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Available()->withWaitingListUrl(new Url('https://www.example.com/waiting-list'))
+                        )
+                    )
+                ),
+            ])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/ticketmatic-waiting-list'))
+            ))
+            ->then([
+                new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK_A), 'ticketmatic:30cc:1001'),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/ticketmatic-waiting-list'))
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_url_of_the_dates_when_the_provider_has_none(): void
+    {
+        $subEvent = $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-05');
+
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar(
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Available()->withWaitingListUrl(new Url('https://www.example.com/waiting-list'))
+                        )
+                    )
+                ),
+            ])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Unavailable()
+            ))
+            ->then([
+                new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK_A), 'ticketmatic:30cc:1001'),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/waiting-list'))
+                        )
+                    )
+                ),
             ]);
     }
 

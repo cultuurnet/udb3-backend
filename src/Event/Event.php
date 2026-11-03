@@ -462,7 +462,6 @@ final class Event extends Offer
             $subEvent = $subEvents[$index];
 
             $subEventStatus = $subEventUpdate->getStatus() ?: null;
-            $subEventBookingAvailability = $subEventUpdate->getBookingAvailability() ?: null;
 
             $updatedSubEvent = new SubEvent(
                 new DateRange(
@@ -470,7 +469,7 @@ final class Event extends Offer
                     $subEventUpdate->getEndDate() ?: $subEvent->getDateRange()->getTo()
                 ),
                 $subEventStatus ?? $subEvent->getStatus(),
-                $subEventBookingAvailability ?? $subEvent->getBookingAvailability(),
+                $subEventUpdate->applyToBookingAvailability($subEvent->getBookingAvailability()),
             );
 
             // For PATCH requests: use updated childcare if explicitly provided, otherwise preserve existing.
@@ -510,6 +509,7 @@ final class Event extends Offer
     /**
      * Stores what the ticket sales provider answered for a reservation link, and sets its availability on the dates
      * with that link. Ignored when the link was removed, or the event deleted, while the provider was answering.
+     * A waiting list url on the booking availability replaces the one of those dates, without one they keep theirs.
      */
     public function registerReservationLink(
         Url $reservationLink,
@@ -545,7 +545,9 @@ final class Event extends Offer
     ): void {
         $subEvents = array_map(
             fn (SubEvent $subEvent) => $subEvent->getBookingInfo()?->getUrl()->sameAs($reservationLink)
-                ? $subEvent->withBookingAvailability($bookingAvailability)
+                ? $subEvent->withBookingAvailability(
+                    self::applyRegisteredBookingAvailability($subEvent->getBookingAvailability(), $bookingAvailability)
+                )
                 : $subEvent,
             $calendar->getSubEvents()->toArray()
         );
@@ -587,6 +589,25 @@ final class Event extends Offer
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
         }
+    }
+
+    /**
+     * The waiting list url of the ticket sales provider wins, but a provider without a waiting list keeps the
+     * waiting list url that was set on the sub event.
+     */
+    private static function applyRegisteredBookingAvailability(
+        BookingAvailability $bookingAvailability,
+        BookingAvailability $registeredBookingAvailability
+    ): BookingAvailability {
+        $bookingAvailability = $bookingAvailability->withType($registeredBookingAvailability->getType());
+
+        if ($registeredBookingAvailability->getWaitingListUrl() !== null) {
+            $bookingAvailability = $bookingAvailability->withWaitingListUrl(
+                $registeredBookingAvailability->getWaitingListUrl()
+            );
+        }
+
+        return $bookingAvailability;
     }
 
     /**
@@ -907,14 +928,16 @@ final class Event extends Offer
         Uuid $mediaObjectId,
         ImageDescription $description,
         CopyrightHolder $copyrightHolder,
-        ?string $language = null
+        ?string $language = null,
+        ?bool $isAiGenerated = null
     ): ImageUpdated {
         return new ImageUpdated(
             $this->eventId,
             $mediaObjectId->toString(),
             $description->toString(),
             $copyrightHolder->toString(),
-            $language
+            $language,
+            $isAiGenerated
         );
     }
 

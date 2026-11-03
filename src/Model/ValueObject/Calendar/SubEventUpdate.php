@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Model\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use DateTimeImmutable;
 
 final class SubEventUpdate
@@ -13,11 +14,18 @@ final class SubEventUpdate
     private ?DateTimeImmutable $startDate = null;
     private ?DateTimeImmutable $endDate = null;
     private ?Status $status = null;
-    private ?BookingAvailability $bookingAvailability = null;
+    private ?BookingAvailabilityType $bookingAvailabilityType = null;
     private ?SubEventBookingInfo $bookingInfo = null;
     private ?TimeImmutableRange $childcareTimeRange = null;
 
     private ?bool $hasOvernightStay = null;
+
+    /**
+     * The waiting list url is updated independently of the booking availability type, as a PATCH can leave it
+     * unchanged, set it or clear it, which a BookingAvailability with or without a url can't express.
+     */
+    private bool $updatesWaitingListUrl = false;
+    private ?Url $waitingListUrl = null;
 
     public function __construct(int $subEventId)
     {
@@ -65,15 +73,10 @@ final class SubEventUpdate
         return $c;
     }
 
-    public function getBookingAvailability(): ?BookingAvailability
-    {
-        return $this->bookingAvailability;
-    }
-
-    public function withBookingAvailability(?BookingAvailability $bookingAvailability): self
+    public function withBookingAvailabilityType(?BookingAvailabilityType $bookingAvailabilityType): self
     {
         $c = clone $this;
-        $c->bookingAvailability = $bookingAvailability;
+        $c->bookingAvailabilityType = $bookingAvailabilityType;
         return $c;
     }
 
@@ -119,5 +122,38 @@ final class SubEventUpdate
         $c = clone $this;
         $c->hasOvernightStay = $hasOvernightStay;
         return $c;
+    }
+
+    public function withWaitingListUrl(Url $waitingListUrl): self
+    {
+        $c = clone $this;
+        $c->updatesWaitingListUrl = true;
+        $c->waitingListUrl = $waitingListUrl;
+        return $c;
+    }
+
+    public function withoutWaitingListUrl(): self
+    {
+        $c = clone $this;
+        $c->updatesWaitingListUrl = true;
+        $c->waitingListUrl = null;
+        return $c;
+    }
+
+    /**
+     * The type and the waiting list url are patched independently, so updating only the type keeps the
+     * waiting list url of the sub event, and the waiting list url only changes when the update mentions it.
+     */
+    public function applyToBookingAvailability(BookingAvailability $bookingAvailability): BookingAvailability
+    {
+        if ($this->bookingAvailabilityType !== null) {
+            $bookingAvailability = $bookingAvailability->withType($this->bookingAvailabilityType);
+        }
+
+        if ($this->updatesWaitingListUrl) {
+            $bookingAvailability = $bookingAvailability->withWaitingListUrl($this->waitingListUrl);
+        }
+
+        return $bookingAvailability;
     }
 }

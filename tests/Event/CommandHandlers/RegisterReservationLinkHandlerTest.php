@@ -10,6 +10,7 @@ use Broadway\EventHandling\EventBus;
 use Broadway\EventStore\EventStore;
 use CultuurNet\UDB3\Event\Commands\RegisterReservationLink;
 use CultuurNet\UDB3\Event\EventRepository;
+use CultuurNet\UDB3\Event\Events\CalendarUpdated;
 use CultuurNet\UDB3\Event\Events\EventCreated;
 use CultuurNet\UDB3\Event\Events\ReservationLinkRegistered;
 use CultuurNet\UDB3\Event\ValueObjects\LocationId;
@@ -77,6 +78,38 @@ final class RegisterReservationLinkHandlerTest extends CommandHandlerScenarioTes
     /**
      * @test
      */
+    public function it_sets_the_waiting_list_url_of_the_provider_on_the_dates_with_the_link(): void
+    {
+        $this->ticketingProvider->method('getBookingInfo')
+            ->with(new Url(self::RESERVATION_LINK))
+            ->willReturn(
+                new ReservationLinkBookingInfo(
+                    'ticketmatic:30cc:12345',
+                    BookingAvailability::Unavailable(),
+                    new Url('https://www.example.com/waiting-list')
+                )
+            );
+
+        $this->scenario
+            ->withAggregateId(self::EVENT_ID)
+            ->given([$this->getEventCreated()])
+            ->when(new RegisterReservationLink(self::EVENT_ID, new Url(self::RESERVATION_LINK)))
+            ->then([
+                new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK), 'ticketmatic:30cc:12345'),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar(
+                        $this->getSubEvent()->withBookingAvailability(
+                            BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/waiting-list'))
+                        )
+                    )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
     public function it_does_nothing_when_the_provider_has_no_open_event_behind_the_link(): void
     {
         $this->ticketingProvider->method('getBookingInfo')
@@ -130,14 +163,17 @@ final class RegisterReservationLinkHandlerTest extends CommandHandlerScenarioTes
             'Voorstelling',
             new Category(new CategoryID('0.55.0.0.0'), new CategoryLabel('Theatervoorstelling'), CategoryDomain::eventType()),
             new LocationId('322d67b6-e84d-4649-9384-12ecad74eab3'),
-            new SingleSubEventCalendar(
-                SubEvent::createAvailable(
-                    new DateRange(
-                        new DateTimeImmutable('2026-11-05T10:00:00+01:00'),
-                        new DateTimeImmutable('2026-11-05T12:00:00+01:00')
-                    )
-                )->withBookingInfo(new SubEventBookingInfo(new Url(self::RESERVATION_LINK)))
-            )
+            new SingleSubEventCalendar($this->getSubEvent())
         );
+    }
+
+    private function getSubEvent(): SubEvent
+    {
+        return SubEvent::createAvailable(
+            new DateRange(
+                new DateTimeImmutable('2026-11-05T10:00:00+01:00'),
+                new DateTimeImmutable('2026-11-05T12:00:00+01:00')
+            )
+        )->withBookingInfo(new SubEventBookingInfo(new Url(self::RESERVATION_LINK)));
     }
 }

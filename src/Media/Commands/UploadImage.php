@@ -24,13 +24,16 @@ final class UploadImage
 
     private string $filePath;
 
+    private ?bool $isAiGenerated;
+
     public function __construct(
         Uuid $fileId,
         MIMEType $mimeType,
         Description $description,
         CopyrightHolder $copyrightHolder,
         string $filePath,
-        Language $language
+        Language $language,
+        ?bool $isAiGenerated = null
     ) {
         $this->fileId = $fileId;
         $this->description = $description;
@@ -38,6 +41,7 @@ final class UploadImage
         $this->mimeType = $mimeType;
         $this->filePath = $filePath;
         $this->language = $language;
+        $this->isAiGenerated = $isAiGenerated;
     }
 
     public function getLanguage(): Language
@@ -68,5 +72,10 @@ final class UploadImage
     public function getFilePath(): string
     {
         return $this->filePath;
+    }
+
+    public function isAiGenerated(): ?bool
+    {
+        return $this->isAiGenerated;
     }
 }
