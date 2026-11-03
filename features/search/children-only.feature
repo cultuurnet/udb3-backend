@@ -125,6 +125,40 @@ Feature: Test the Search API v3 boa feature
     %{basicEventId}
     """
 
+  # boa scope: yes (resolved from the client access token), childrenOnly param: not given
+  # -> I see the children only event created by someone else, without sending a x-client-id header
+  Scenario: With boa scope from a client access token I find children only events of others
+    When I am authorized with an OAuth client access token for "boa_client"
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:(%{otherChildrenOnlyEventId} OR %{basicEventId}) |
+    Then the response status should be "200"
+    And the JSON response should include:
+    """
+    %{otherChildrenOnlyEventId}
+    """
+    And the JSON response should include:
+    """
+    %{basicEventId}
+    """
+
+  # boa scope: yes (resolved from the client of a user access token), childrenOnly param: not given
+  # -> I see the children only event created by someone else, without sending a x-client-id header
+  Scenario: With boa scope from a user access token I find children only events of others
+    When I am authorized with an OAuth user access token for "invoerder" via client "boa_client"
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | q | id:(%{otherChildrenOnlyEventId} OR %{basicEventId}) |
+    Then the response status should be "200"
+    And the JSON response should include:
+    """
+    %{otherChildrenOnlyEventId}
+    """
+    And the JSON response should include:
+    """
+    %{basicEventId}
+    """
+
   # boa scope: yes, childrenOnly param: true
   # -> I see every children only event, mine and the one created by someone else
   #    The normal event is filtered out by childrenOnly=true.

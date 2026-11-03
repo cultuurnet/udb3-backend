@@ -32,6 +32,32 @@ Feature: Test the Search API v3 default queries from the config file when using 
       | q                     | id:%{eventId} |
     Then the JSON response at "totalItems" should be 0
 
+  Scenario: Search with a client access token for an event that will be filtered out by the default query
+    Given I create a place from "places/hemmekes.json" and save the "url" as "placeUrl"
+    And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
+    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am not using an UiTID v1 API key
+    And I am authorized with an OAuth client access token for "test_client_with_default_search_query"
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true          |
+      | q                     | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 0
+
+  Scenario: Search with a user access token for an event that will be filtered out by the default query
+    Given I create a place from "places/hemmekes.json" and save the "url" as "placeUrl"
+    And I create an event from "events/event-minimal-permanent.json" and save the "id" as "eventId"
+    And I wait for the place with url "%{placeUrl}" to be indexed
+    And I wait for the event with url "/events/%{eventId}" to be indexed
+    And I am not using an UiTID v1 API key
+    And I am authorized with an OAuth user access token for "invoerder" via client "test_client_with_default_search_query"
+    And I am using the Search API v3 base URL
+    When I send a GET request to "/events" with parameters:
+      | disableDefaultFilters | true          |
+      | q                     | id:%{eventId} |
+    Then the JSON response at "totalItems" should be 0
+
   Scenario: Search for a place within by the default query
     Given I create a place from "places/citadel.json" and save the "id" as "placeId"
     And I wait for the place with url "/places/%{placeId}" to be indexed
