@@ -271,10 +271,6 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
     private function registerMiddlewares(ContainerInterface $container, Router $router): void
     {
-        if (!($container->get('config')['enable_ai_generated_images'] ?? false)) {
-            $router->middleware(new HideAiGeneratedMiddleware());
-        }
-
         // Intercepts all "ProjectedToJSONLD" messages during request handling, and publishes the unique ones on the
         // event bus afterwards. See class docblock for more info.
         $router->middleware(new ProjectedToJSONLDInterceptingMiddleware($container->get(EventBus::class)));
