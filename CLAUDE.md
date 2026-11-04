@@ -12,6 +12,7 @@ UiTdatabank 3 core application - an event-sourced backend built with Broadway.
 - [Commands](docs/commands.md) - All available make commands
 - [Review Guidelines](docs/review-guidelines.md) - PR review process and focus areas
 - [Guidelines for Feature tests](docs/features/guidelines.md) - General guidelines for writing feature tests
+- [Claude Code](docs/claude-code.md) - Shared skills and output style
 
 ## Acceptance Tests
  
