@@ -113,6 +113,15 @@ Feature: Test the Ticketmatic integration
     And I set the JSON request payload from "ticketing/booking-availability.json"
     When I send a POST request to "/ticketing/booking-availability/"
     Then the response status should be "403"
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/auth/forbidden",
+      "title": "Forbidden",
+      "status": 403,
+      "detail": "Only ticket sales providers can update the availability of reservation links."
+    }
+    """
 
   Scenario: An unknown identifier is not found
     Given I am authorized with an OAuth client access token for "ticketmatic"
@@ -125,6 +134,15 @@ Feature: Test the Ticketmatic integration
     """
     When I send a POST request to "/ticketing/booking-availability/"
     Then the response status should be "404"
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/url/not-found",
+      "title": "Not Found",
+      "status": 404,
+      "detail": "No reservation link is registered with identifier \"ticketmatic:30cc_testticketmaticcom:0\"."
+    }
+    """
 
   Scenario: An update without availability type is rejected
     Given I am authorized with an OAuth client access token for "ticketmatic"
@@ -136,3 +154,17 @@ Feature: Test the Ticketmatic integration
     """
     When I send a POST request to "/ticketing/booking-availability/"
     Then the response status should be "400"
+    And the JSON response should be:
+    """
+    {
+      "schemaErrors": [
+        {
+          "error": "The required properties (type) are missing",
+          "jsonPointer": "/"
+        }
+      ],
+      "status": 400,
+      "title": "Invalid body data",
+      "type": "https://api.publiq.be/probs/body/invalid-data"
+    }
+    """
