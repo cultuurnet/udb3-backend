@@ -25,8 +25,14 @@ final class VerenigingsloketServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 $config = $container->get('config');
 
+                // A single page can trigger two calls to this API, so a slow or unreachable
+                // Verenigingsloket must fail fast instead of blocking the request for minutes.
                 return new VerenigingsloketApiRepository(
-                    new Client(['base_uri' => $config['verenigingsloket']['apiUrl']]),
+                    new Client([
+                        'base_uri' => $config['verenigingsloket']['apiUrl'],
+                        'connect_timeout' => $config['verenigingsloket']['connect_timeout'] ?? 2,
+                        'timeout' => $config['verenigingsloket']['timeout'] ?? 5,
+                    ]),
                     $config['verenigingsloket']['websiteUrl'],
                     $config['verenigingsloket']['apiKey'],
                 );
