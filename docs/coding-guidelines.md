@@ -59,6 +59,15 @@ Comments are acceptable when explaining **why** something is done (not **what**)
 
 See `src/Doctrine/DatabaseConnectionChecker.php` and `src/Doctrine/DBALDatabaseConnectionChecker.php` for an example of interface + implementation pattern.
 
+## External APIs
+
+- **Always** set an explicit `connect_timeout` and `timeout` when constructing a Guzzle `Client` for an external API. Without them Guzzle waits indefinitely and the real limit becomes the PHP-FPM timeout, which blocks a worker for a minute or more per request.
+- Start from `'connect_timeout' => 2, 'timeout' => 5` and only raise it when the call is genuinely slow (file downloads, exports).
+- Make the values configurable via `config.php` with a safe default in code (`$config['foo']['timeout'] ?? 5`), so they can be tuned without a deploy.
+- Count the calls a single request makes: two sequential calls to the same API double the worst-case wait.
+
+See `app/Event/EventServiceProvider.php` (fixed values) and `app/Media/MediaServiceProvider.php` (configurable) for examples.
+
 ## Testing
 
 - Use `@test` annotation style for test methods

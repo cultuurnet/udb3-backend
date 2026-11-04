@@ -155,6 +155,7 @@ use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\UpdateSavedSearchRequestHandler;
+use CultuurNet\UDB3\Http\Ticketing\UpdateBookingAvailabilityRequestHandler as UpdateTicketingBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByIdRequestHandler;
@@ -252,6 +253,10 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
                 $this->bindAddresses($router);
 
                 $this->bindHolidays($router);
+
+                if ($container->get('config')['ticketing']['ticketmatic']['enabled'] ?? false) {
+                    $this->bindTicketing($router);
+                }
 
                 // Proxy GET requests to /events, /places, /offers and /organizers to SAPI3.
                 // This proxy does not support the POST requests feature of SAPI 3
@@ -686,5 +691,10 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
     private function bindHolidays(Router $router): void
     {
         $router->get('/holidays/', GetHolidaysRequestHandler::class);
+    }
+
+    private function bindTicketing(Router $router): void
+    {
+        $router->post('/ticketing/booking-availability/', UpdateTicketingBookingAvailabilityRequestHandler::class);
     }
 }
