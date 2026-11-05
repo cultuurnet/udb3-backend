@@ -38,7 +38,6 @@ use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedDescription;
 use CultuurNet\UDB3\Model\ValueObject\Text\TranslatedTitle;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
-use Symfony\Component\Serializer\Exception\UnsupportedException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 abstract class OfferDenormalizer implements DenormalizerInterface
@@ -68,8 +67,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
     private DenormalizerInterface $imagesDenormalizer;
 
     private DenormalizerInterface $videoDenormalizer;
-
-    private bool $handlesDummyOrganizers = false;
 
     public function __construct(
         UuidParser $idParser,
@@ -149,13 +146,6 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $this->videoDenormalizer = $videoDenormalizer;
     }
 
-    public function handlesDummyOrganizers(): self
-    {
-        $clone = clone $this;
-        $clone->handlesDummyOrganizers = true;
-        return $clone;
-    }
-
     abstract protected function createOffer(
         array $originalData,
         Uuid $id,
@@ -189,13 +179,7 @@ abstract class OfferDenormalizer implements DenormalizerInterface
         $offer = $this->denormalizeDescription($data, $offer);
         $offer = $this->denormalizeLabels($data, $offer);
 
-        try {
-            $offer = $this->denormalizeOrganizerReference($data, $offer);
-        } catch (UnsupportedException $unsupportedException) {
-            if (!$this->handlesDummyOrganizers) {
-                throw $unsupportedException;
-            }
-        }
+        $offer = $this->denormalizeOrganizerReference($data, $offer);
 
         $offer = $this->denormalizeAgeRange($data, $offer);
         $offer = $this->denormalizePriceInfo($data, $offer);

@@ -99,6 +99,30 @@ class AbstractContactPointUpdatedTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_leaves_out_invalid_emails_and_urls_when_deserializing(): void
+    {
+        $this->assertEquals(
+            new ContactPointUpdated(
+                'madId',
+                new ContactPoint(
+                    null,
+                    new EmailAddresses(new EmailAddress('foo@bar.com')),
+                    new Urls(new Url('http://foo.bar'))
+                )
+            ),
+            ContactPointUpdated::deserialize([
+                'item_id' => 'madId',
+                'contactPoint' => [
+                    'email' => ['foo@bar.com', 'not an email address'],
+                    'url' => ['http://foo.bar', 'https://www.arboretumkalmthout.be%20'],
+                ],
+            ])
+        );
+    }
+
     public function serializationDataProvider(): array
     {
         return [
