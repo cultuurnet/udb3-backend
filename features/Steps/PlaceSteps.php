@@ -176,18 +176,6 @@ trait PlaceSteps
     }
 
     /**
-     * @When I get the RDF of place with id :id
-     */
-    public function iGetTheRdfOfPlaceWithId(string $id): void
-    {
-        $this->responseState->setResponse(
-            $this->getHttpClient()->getWithTimeout('/places/' . $id)
-        );
-
-        $this->theResponseStatusShouldBe(200);
-    }
-
-    /**
      * @When I delete the place at :url
      */
     public function iDeleteThePlaceAt(string $url): void
