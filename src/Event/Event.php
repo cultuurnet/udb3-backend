@@ -172,7 +172,7 @@ final class Event extends Offer
             )
         );
 
-        self::assertChildcareAllowed($eventType->getId()->toString(), $calendar);
+        $event->assertChildcareAllowed($eventType->getId()->toString(), $calendar);
 
         if ($location->isDummyPlaceForEducation()) {
             // Bookable education events should get education as their audience type. We record this explicitly so we
@@ -211,7 +211,7 @@ final class Event extends Offer
             )
         );
 
-        self::assertChildcareAllowed($this->typeId, $calendar);
+        $copy->assertChildcareAllowed($copy->typeId, $calendar);
 
         return $copy;
     }
@@ -389,7 +389,7 @@ final class Event extends Offer
             $calendar = self::clearOvernightStayWhenNotAllowed($typeId, $calendar);
         }
 
-        self::assertChildcareAllowed($typeId, $calendar);
+        $this->assertChildcareAllowed($typeId, $calendar);
 
         $this->apply(new MajorInfoUpdated($this->eventId, $title->toString(), $eventType, $location, $calendar, $theme));
 
@@ -507,7 +507,7 @@ final class Event extends Offer
             $this->rebuildCalendarFromSubEvents($subEvents)
         );
 
-        self::assertChildcareAllowed($this->typeId, $updatedCalendar);
+        $this->assertChildcareAllowed($this->typeId, $updatedCalendar);
 
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(
@@ -575,7 +575,7 @@ final class Event extends Offer
             $calendar = self::clearOvernightStayWhenNotAllowed($this->typeId, $calendar);
         }
 
-        self::assertChildcareAllowed($this->typeId, $calendar);
+        $this->assertChildcareAllowed($this->typeId, $calendar);
 
         parent::updateCalendar($calendar);
     }
@@ -676,7 +676,7 @@ final class Event extends Offer
         }
     }
 
-    private static function assertChildcareAllowed(?string $typeId, Calendar $calendar): void
+    private function assertChildcareAllowed(?string $typeId, Calendar $calendar): void
     {
         if (EventTypeResolver::isChildcareAllowed($typeId)) {
             return;
