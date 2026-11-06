@@ -457,7 +457,7 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                     $mediaObject->contentUrl = AiGeneratedImageUrl::removeMarker($mediaObject->contentUrl);
                     $mediaObject->thumbnailUrl = AiGeneratedImageUrl::removeMarker($mediaObject->thumbnailUrl);
                 }
-                if (($offerLd->image ?? null) === $previousContentUrl) {
+                if (isset($offerLd->image) && stristr($offerLd->image, ':') === stristr($previousContentUrl, ':')) {
                     $offerLd->image = $mediaObject->contentUrl;
                 }
 
