@@ -75,7 +75,10 @@ final class ImageNormalizerTest extends TestCase
 
         return [
             'no isAiGenerated' => [null, $normalized],
-            'isAiGenerated true' => [true, $normalized + ['isAiGenerated' => true]],
+            'isAiGenerated true' => [
+                true,
+                ['description' => 'Beschrijving (Gegenereerd met AI)'] + $normalized + ['isAiGenerated' => true],
+            ],
             'isAiGenerated false' => [false, $normalized + ['isAiGenerated' => false]],
         ];
     }

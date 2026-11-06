@@ -12,6 +12,7 @@ use CultuurNet\UDB3\Event\ReadModel\JSONLD\OrganizerServiceInterface;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Json;
+use CultuurNet\UDB3\Media\AiGeneratedImageDescription;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
@@ -24,6 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Moderation\AvailableTo;
 use CultuurNet\UDB3\Model\ValueObject\Moderation\WorkflowStatus;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
+use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Offer\Events\AbstractAvailableFromUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractBookingInfoUpdated;
 use CultuurNet\UDB3\Offer\Events\AbstractCalendarUpdated;
@@ -441,6 +443,12 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 }
                 if ($imageUpdated->isAiGenerated() !== null) {
                     $mediaObject->isAiGenerated = $imageUpdated->isAiGenerated();
+                }
+                if (($mediaObject->isAiGenerated ?? null) === true) {
+                    $mediaObject->description = AiGeneratedImageDescription::addSuffix(
+                        $mediaObject->description,
+                        new Language($mediaObject->inLanguage)
+                    );
                 }
 
                 $updatedMediaObjects[] = $mediaObject;
