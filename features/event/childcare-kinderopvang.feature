@@ -177,3 +177,34 @@ Feature: Test that events with the Kinderopvang term cannot have childcare times
     Then the JSON response at "terms/0/id" should be "0.50.4.0.0"
     And the JSON response at "subEvent/0/childcare/start" should be "08:00"
     And the JSON response at "subEvent/0/childcare/end" should be "18:00"
+
+  Scenario: Cannot change the type to Kinderopvang and keep the childcare via the legacy major-info endpoint
+    Given I create a place from "places/place.json" and save the "id" as "placeId"
+    And I set the variable "termId" to "0.50.4.0.0"
+    And I create an event from "events/childcare-kinderopvang/event-single-with-childcare.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "name": "Kinderopvang De Speelboom",
+      "location": "%{placeId}",
+      "type": {"id": "K7mPx3nQrT9bWfH2zL5cYv", "label": "Kinderopvang"},
+      "calendar": {
+        "type": "single",
+        "startDate": "2026-07-01T09:00:00+02:00",
+        "endDate": "2026-07-05T17:00:00+02:00",
+        "timestamps": [
+          {
+            "startDate": "2026-07-01T09:00:00+02:00",
+            "endDate": "2026-07-05T17:00:00+02:00",
+            "childcare": {
+              "start": "08:00",
+              "end": "18:00"
+            }
+          }
+        ]
+      }
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/major-info"
+    Then the response status should be "400"
+    And the JSON response at "detail" should be "childcare is not allowed when the event has term K7mPx3nQrT9bWfH2zL5cYv"
