@@ -6,13 +6,41 @@ namespace CultuurNet\UDB3\Media;
 
 final class AiGeneratedImageUrl
 {
+    private const string MARKER = '.ai';
+
     public static function addMarker(string $url): string
     {
-        return preg_replace('/(?<!\.ai)(\.[A-Za-z0-9]+)$/', '.ai$1', $url) ?? $url;
+        [$base, $extension] = self::split($url);
+
+        if ($extension === null || str_ends_with($base, self::MARKER)) {
+            return $url;
+        }
+
+        return $base . self::MARKER . '.' . $extension;
     }
 
     public static function removeMarker(string $url): string
     {
-        return preg_replace('/\.ai(\.[A-Za-z0-9]+)$/', '$1', $url) ?? $url;
+        [$base, $extension] = self::split($url);
+
+        if ($extension === null || !str_ends_with($base, self::MARKER)) {
+            return $url;
+        }
+
+        return substr($base, 0, -strlen(self::MARKER)) . '.' . $extension;
+    }
+
+    /**
+     * @return array{string, string|null}
+     */
+    private static function split(string $url): array
+    {
+        $extension = pathinfo($url, PATHINFO_EXTENSION);
+
+        if ($extension === '') {
+            return [$url, null];
+        }
+
+        return [substr($url, 0, -(strlen($extension) + 1)), $extension];
     }
 }
