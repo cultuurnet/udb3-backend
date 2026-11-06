@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Event\CommandHandlers\DeleteBirthdateRangeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateChildrenOnlyHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateDeparturePlacesHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\RegisterReservationLinkHandler;
+use CultuurNet\UDB3\Event\CommandHandlers\UpdateBookingAvailabilityByReservationLinkHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateFaqsHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\UpdateBirthdateRangeHandler;
 use CultuurNet\UDB3\Event\CommandHandlers\DeleteOnlineUrlHandler;
@@ -43,6 +44,7 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
             UpdateFaqsHandler::class,
             UpdateDeparturePlacesHandler::class,
             RegisterReservationLinkHandler::class,
+            UpdateBookingAvailabilityByReservationLinkHandler::class,
             UpdateChildrenOnlyHandler::class,
             UpdateBirthdateRangeHandler::class,
             DeleteBirthdateRangeHandler::class,
@@ -140,6 +142,11 @@ final class EventCommandHandlerProvider extends AbstractServiceProvider
                 $container->get(TicketingProvider::class),
                 LoggerFactory::create($container, LoggerName::forService('ticketing', 'registration'))
             )
+        );
+
+        $container->addShared(
+            UpdateBookingAvailabilityByReservationLinkHandler::class,
+            fn () => new UpdateBookingAvailabilityByReservationLinkHandler($container->get('event_repository'))
         );
 
         $container->addShared(

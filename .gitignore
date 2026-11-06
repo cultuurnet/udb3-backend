@@ -4,7 +4,11 @@
 /web/media/
 /web/images
 *.pem
-.claude
+
+# Claude Code: share the skills and output styles, keep personal settings and plans local
+/.claude/*
+!/.claude/skills/
+!/.claude/output-styles/
 
 # Ignore configuration files
 config.php
