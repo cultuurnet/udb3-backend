@@ -172,7 +172,7 @@ final class Event extends Offer
             )
         );
 
-        $event->assertChildcareAllowed($calendar);
+        $event->assertChildcareAllowed($eventType->getId()->toString(), $calendar);
 
         if ($location->isDummyPlaceForEducation()) {
             // Bookable education events should get education as their audience type. We record this explicitly so we
@@ -211,7 +211,7 @@ final class Event extends Offer
             )
         );
 
-        $copy->assertChildcareAllowed($calendar);
+        $copy->assertChildcareAllowed($copy->typeId, $calendar);
 
         return $copy;
     }
@@ -382,6 +382,15 @@ final class Event extends Offer
         Calendar $calendar,
         Category $theme = null
     ): void {
+        $typeId = $eventType->getId()->toString();
+
+        if ($calendar instanceof CalendarWithSubEvents) {
+            self::assertOvernightStayAllowed($typeId, $calendar->getSubEvents()->toArray());
+            $calendar = self::clearOvernightStayWhenNotAllowed($typeId, $calendar);
+        }
+
+        $this->assertChildcareAllowed($typeId, $calendar);
+
         $this->apply(new MajorInfoUpdated($this->eventId, $title->toString(), $eventType, $location, $calendar, $theme));
 
         if ($location->isDummyPlaceForEducation()) {
@@ -395,6 +404,7 @@ final class Event extends Offer
 
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
     {
+        $this->typeId = $majorInfoUpdated->getEventType()->getId()->toString();
         $this->locationId = $majorInfoUpdated->getLocation();
         $this->calendar = $majorInfoUpdated->getCalendar();
 
@@ -497,7 +507,7 @@ final class Event extends Offer
             $this->rebuildCalendarFromSubEvents($subEvents)
         );
 
-        $this->assertChildcareAllowed($updatedCalendar);
+        $this->assertChildcareAllowed($this->typeId, $updatedCalendar);
 
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(
@@ -569,7 +579,7 @@ final class Event extends Offer
             $calendar = self::clearOvernightStayWhenNotAllowed($this->typeId, $calendar);
         }
 
-        $this->assertChildcareAllowed($calendar);
+        $this->assertChildcareAllowed($this->typeId, $calendar);
 
         parent::updateCalendar($calendar);
     }
@@ -676,9 +686,9 @@ final class Event extends Offer
         }
     }
 
-    private function assertChildcareAllowed(Calendar $calendar): void
+    private function assertChildcareAllowed(?string $typeId, Calendar $calendar): void
     {
-        if (EventTypeResolver::isChildcareAllowed($this->typeId)) {
+        if (EventTypeResolver::isChildcareAllowed($typeId)) {
             return;
         }
 

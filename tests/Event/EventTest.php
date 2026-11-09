@@ -3367,6 +3367,155 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
+    public function it_throws_when_overnight_stay_is_set_on_update_major_info_without_kamp_of_vakantie_term(): void
+    {
+        $this->expectException(OvernightStayNotAllowed::class);
+        $this->expectExceptionMessage(OvernightStayNotAllowed::MESSAGE);
+
+        $this->scenario
+            ->given([$this->getKampOrVakantieCreationEvent()])
+            ->when(
+                fn (Event $event) => $event->updateMajorInfo(
+                    new Title('Concert'),
+                    $this->getConcertType(),
+                    new LocationId(self::LOCATION_ID),
+                    new SingleSubEventCalendar($this->getSubEventWithOvernightStay(true))
+                )
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_an_explicit_false_overnight_stay_on_update_major_info_without_kamp_of_vakantie_term(): void
+    {
+        $event = Event::create(
+            self::EVENT_ID,
+            new Language('nl'),
+            new Title('Concert'),
+            $this->getConcertType(),
+            new LocationId(self::LOCATION_ID),
+            new PermanentCalendar(new OpeningHours())
+        );
+        $event->getUncommittedEvents();
+
+        $event->updateMajorInfo(
+            new Title('Concert'),
+            $this->getConcertType(),
+            new LocationId(self::LOCATION_ID),
+            new SingleSubEventCalendar($this->getSubEventWithOvernightStay(false))
+        );
+
+        /** @var MajorInfoUpdated $majorInfoUpdated */
+        $majorInfoUpdated = iterator_to_array($event->getUncommittedEvents())[0]->getPayload();
+        /** @var SingleSubEventCalendar $calendar */
+        $calendar = $majorInfoUpdated->getCalendar();
+
+        // assertEquals() does not tell false and null apart, so the overnight stay is asserted explicitly.
+        $this->assertNull($calendar->getSubEvents()->toArray()[0]->getHasOvernightStay());
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_overnight_stay_on_update_major_info_when_the_type_changes_to_kamp_of_vakantie(): void
+    {
+        $calendar = new SingleSubEventCalendar($this->getSubEventWithOvernightStay(true));
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(
+                fn (Event $event) => $event->updateMajorInfo(
+                    new Title('Zomerkamp'),
+                    $this->getKampOrVakantieType(),
+                    new LocationId(self::LOCATION_ID),
+                    $calendar
+                )
+            )
+            ->then([
+                new MajorInfoUpdated(
+                    self::EVENT_ID,
+                    'Zomerkamp',
+                    $this->getKampOrVakantieType(),
+                    new LocationId(self::LOCATION_ID),
+                    $calendar
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_childcare_is_set_on_update_major_info_with_the_kinderopvang_type(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $this->scenario
+            ->given([$this->getCreationEvent()])
+            ->when(
+                fn (Event $event) => $event->updateMajorInfo(
+                    new Title('Kinderopvang De Speelboom'),
+                    $this->getKinderopvangType(),
+                    new LocationId(self::LOCATION_ID),
+                    new SingleSubEventCalendar($this->getSubEventWithChildcare())
+                )
+            );
+    }
+
+    /**
+     * @test
+     */
+    public function it_validates_a_calendar_update_against_the_type_of_the_last_major_info_update(): void
+    {
+        $this->expectException(ChildcareNotAllowed::class);
+        $this->expectExceptionMessage(ChildcareNotAllowed::MESSAGE);
+
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new MajorInfoUpdated(
+                    self::EVENT_ID,
+                    'Kinderopvang De Speelboom',
+                    $this->getKinderopvangType(),
+                    new LocationId(self::LOCATION_ID),
+                    new PermanentCalendar(new OpeningHours())
+                ),
+            ])
+            ->when(
+                fn (Event $event) => $event->updateCalendar(
+                    new SingleSubEventCalendar($this->getSubEventWithChildcare())
+                )
+            );
+    }
+
+    private function getConcertType(): Category
+    {
+        return new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType());
+    }
+
+    private function getKampOrVakantieType(): Category
+    {
+        return new Category(
+            new CategoryID(EventTypeResolver::CAMP_OR_VACATION_TERM_ID),
+            new CategoryLabel('Kamp of vakantie'),
+            CategoryDomain::eventType()
+        );
+    }
+
+    private function getSubEventWithOvernightStay(?bool $hasOvernightStay): SubEvent
+    {
+        return SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable('2026-07-01T09:00:00+02:00'),
+                new \DateTimeImmutable('2026-07-05T17:00:00+02:00')
+            )
+        )->withHasOvernightStay($hasOvernightStay);
+    }
+
+    /**
+     * @test
+     */
     public function it_allows_childcare_on_an_event_without_the_kinderopvang_term(): void
     {
         $calendar = new SingleSubEventCalendar($this->getSubEventWithChildcare());

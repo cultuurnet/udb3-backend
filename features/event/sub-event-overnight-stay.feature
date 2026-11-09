@@ -376,3 +376,30 @@ Feature: Test SubEvent hasOvernightStay
     Then the response status should be "400"
     And the JSON response at "schemaErrors/0/jsonPointer" should be "/0/hasOvernightStay"
     And the JSON response at "schemaErrors/0/error" should be "The data (string) must match the type: boolean"
+
+  Scenario: Cannot keep hasOvernightStay when changing the type away from Kamp of vakantie via the legacy major-info endpoint
+    Given I create a place from "places/place.json" and save the "id" as "placeId"
+    And I create an event from "events/sub-event-overnight-stay/event-single-with-overnight-stay.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "name": "Concert",
+      "location": "%{placeId}",
+      "type": {"id": "0.50.4.0.0", "label": "Concert"},
+      "calendar": {
+        "type": "single",
+        "startDate": "2026-07-01T09:00:00+02:00",
+        "endDate": "2026-07-05T17:00:00+02:00",
+        "timestamps": [
+          {
+            "startDate": "2026-07-01T09:00:00+02:00",
+            "endDate": "2026-07-05T17:00:00+02:00",
+            "hasOvernightStay": true
+          }
+        ]
+      }
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/major-info"
+    Then the response status should be "400"
+    And the JSON response at "detail" should be "hasOvernightStay is only allowed when the event has term 0.57.0.0.0"
