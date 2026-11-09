@@ -45,15 +45,16 @@ abstract class AbstractContactPointUpdated extends AbstractEvent
         );
     }
 
-    /**
-     * The event store can hold emails or urls that are no longer valid, so leave those out instead of failing.
-     */
     private static function withoutInvalidEmailsAndUrls(array $contactPoint): array
     {
         if (isset($contactPoint['email'])) {
             $contactPoint['email'] = array_values(array_filter(
                 $contactPoint['email'],
-                static function ($email): bool {
+                function ($email): bool {
+                    if (!is_string($email)) {
+                        return false;
+                    }
+
                     try {
                         new EmailAddress($email);
                         return true;
@@ -67,7 +68,11 @@ abstract class AbstractContactPointUpdated extends AbstractEvent
         if (isset($contactPoint['url'])) {
             $contactPoint['url'] = array_values(array_filter(
                 $contactPoint['url'],
-                static function ($url): bool {
+                function ($url): bool {
+                    if (!is_string($url)) {
+                        return false;
+                    }
+
                     try {
                         new Url($url);
                         return true;

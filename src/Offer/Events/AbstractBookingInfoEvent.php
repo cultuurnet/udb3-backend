@@ -45,9 +45,6 @@ abstract class AbstractBookingInfoEvent extends AbstractEvent
         );
     }
 
-    /**
-     * The event store can hold an email or url that is no longer valid, so leave those out instead of failing.
-     */
     private static function withoutInvalidEmailAndUrl(array $bookingInfo): array
     {
         if (!empty($bookingInfo['email'])) {

@@ -116,8 +116,8 @@ class AbstractContactPointUpdatedTest extends TestCase
             ContactPointUpdated::deserialize([
                 'item_id' => 'madId',
                 'contactPoint' => [
-                    'email' => ['foo@bar.com', 'not an email address'],
-                    'url' => ['http://foo.bar', 'https://www.arboretumkalmthout.be%20'],
+                    'email' => ['foo@bar.com', 'not an email address', null],
+                    'url' => ['http://foo.bar', 'https://www.arboretumkalmthout.be%20', null],
                 ],
             ])
         );
