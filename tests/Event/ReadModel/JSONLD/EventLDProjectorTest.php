@@ -700,7 +700,8 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         ?bool $updatedAiGenerated,
         ?string $updatedLanguage,
         bool $expectedAiGenerated,
-        string $expectedDescription
+        string $expectedDescription,
+        string $expectedUrl
     ): void {
         $id = 'foo';
         $imageUpdated = new ImageUpdated(
@@ -719,12 +720,15 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                     [
                         '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
                         '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
+                        'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
                         'description' => 'olddescription',
                         'copyrightHolder' => 'oldcopyrightHolder',
                         'inLanguage' => 'en',
                         'isAiGenerated' => true,
                     ],
                 ],
+                'image' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
             ])
         ));
 
@@ -732,6 +736,9 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
 
         $this->assertSame($expectedAiGenerated, $body->mediaObject[0]->isAiGenerated);
         $this->assertSame($expectedDescription, $body->mediaObject[0]->description);
+        $this->assertSame($expectedUrl, $body->mediaObject[0]->contentUrl);
+        $this->assertSame($expectedUrl, $body->mediaObject[0]->thumbnailUrl);
+        $this->assertSame($expectedUrl, $body->image);
     }
 
     public function isAiGeneratedImageUpdateProvider(): array
@@ -742,10 +749,29 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
                 null,
                 true,
                 'Some description. (Generated with AI)',
+                'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
             ],
-            'isAiGenerated true adds the suffix' => [true, null, true, 'Some description. (Generated with AI)'],
-            'isAiGenerated false does not add the suffix' => [false, null, false, 'Some description.'],
-            'suffix is added in the updated language' => [true, 'nl', true, 'Some description. (Gegenereerd met AI)'],
+            'isAiGenerated true adds the suffix' => [
+                true,
+                null,
+                true,
+                'Some description. (Generated with AI)',
+                'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
+            ],
+            'isAiGenerated false does not add the suffix and removes the url marker' => [
+                false,
+                null,
+                false,
+                'Some description.',
+                'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png',
+            ],
+            'suffix is added in the updated language' => [
+                true,
+                'nl',
+                true,
+                'Some description. (Gegenereerd met AI)',
+                'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
+            ],
         ];
     }
 

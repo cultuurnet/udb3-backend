@@ -8,6 +8,9 @@ use Broadway\Domain\DateTime;
 use Broadway\Domain\DomainMessage;
 use Broadway\Domain\Metadata;
 use Broadway\EventHandling\EventListener;
+use CultuurNet\UDB3\Media\Image;
+use CultuurNet\UDB3\Media\Properties\Description as MediaDescription;
+use CultuurNet\UDB3\Media\Properties\MIMEType;
 use CultuurNet\UDB3\Model\ValueObject\Audience\Age;
 use CultuurNet\UDB3\Model\ValueObject\Audience\AgeRange;
 use CultuurNet\UDB3\Model\ValueObject\Contact\BookingDateRange;
@@ -15,6 +18,8 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\BookingInfo;
 use CultuurNet\UDB3\Model\ValueObject\Contact\ContactPoint as Udb3ContactPoint;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
+use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
+use CultuurNet\UDB3\Model\ValueObject\MediaObject\CopyrightHolder;
 use CultuurNet\UDB3\Model\ValueObject\Text\Description;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
@@ -104,6 +109,45 @@ abstract class OfferLDProjectorTestBase extends TestCase
     {
         $document = $this->documentRepository->fetch($id);
         return $document->getBody();
+    }
+
+    /**
+     * @test
+     */
+    public function it_selects_the_next_main_image_when_an_ai_generated_main_image_is_removed(): void
+    {
+        $id = 'foo';
+        $this->documentRepository->save(new JsonDocument($id));
+
+        $aiImage = new Image(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/png'),
+            new MediaDescription('AI image'),
+            new CopyrightHolder('Dirk Dirkington'),
+            new Url('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.png'),
+            new Language('en'),
+            true
+        );
+        $otherImage = new Image(
+            new Uuid('6a3e1d6b-0f1c-4a4e-9a8f-1b2c3d4e5f60'),
+            new MIMEType('image/png'),
+            new MediaDescription('Other image'),
+            new CopyrightHolder('Dirk Dirkington'),
+            new Url('http://foo.bar/media/6a3e1d6b-0f1c-4a4e-9a8f-1b2c3d4e5f60.png'),
+            new Language('en')
+        );
+
+        $imageAdded = $this->getEventClass('ImageAdded');
+        $imageRemoved = $this->getEventClass('ImageRemoved');
+
+        $body = $this->project(new $imageAdded($id, $aiImage), $id, null, null, 1);
+        $this->assertEquals('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png', $body->image);
+
+        $this->project(new $imageAdded($id, $otherImage), $id, null, null, 2);
+        $body = $this->project(new $imageRemoved($id, $aiImage), $id, null, null, 3);
+
+        $this->assertCount(1, $body->mediaObject);
+        $this->assertEquals('http://foo.bar/media/6a3e1d6b-0f1c-4a4e-9a8f-1b2c3d4e5f60.png', $body->image);
     }
 
     /**
