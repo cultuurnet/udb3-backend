@@ -186,4 +186,99 @@ final class UpdateCalendarValidatingRequestBodyParserTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @test
+     * @dataProvider calendarTypesWithoutCapacityProvider
+     */
+    public function it_rejects_capacity_on_calendar_types_without_capacity(object $data): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromObject($data)
+            ->build('PUT')
+            ->withParsedBody($data);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/subEvent/0/capacity', 'capacity is only allowed when calendarType is single or multiple')
+            ),
+            fn () => $this->parser->parse($request)
+        );
+    }
+
+    public function calendarTypesWithoutCapacityProvider(): array
+    {
+        $subEvent = (object)[
+            'startDate' => '2026-11-05T10:00:00+01:00',
+            'endDate' => '2026-11-05T12:00:00+01:00',
+            'capacity' => (object)['type' => 'Limited', 'maximum' => 30],
+        ];
+
+        return [
+            'periodic' => [
+                (object)[
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-11-01T00:00:00+01:00',
+                    'endDate' => '2026-11-30T23:59:59+01:00',
+                    'subEvent' => [$subEvent],
+                ],
+            ],
+            'permanent' => [
+                (object)[
+                    'calendarType' => 'permanent',
+                    'subEvent' => [$subEvent],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider calendarTypesWithCapacityProvider
+     */
+    public function it_accepts_capacity_on_calendar_types_with_capacity(object $data): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromObject($data)
+            ->build('PUT')
+            ->withParsedBody($data);
+
+        $this->expectNotToPerformAssertions();
+        $this->parser->parse($request);
+    }
+
+    public function calendarTypesWithCapacityProvider(): array
+    {
+        return [
+            'single' => [
+                (object)[
+                    'calendarType' => 'single',
+                    'subEvent' => [
+                        (object)[
+                            'startDate' => '2026-11-05T10:00:00+01:00',
+                            'endDate' => '2026-11-05T12:00:00+01:00',
+                            'capacity' => (object)['type' => 'Limited', 'maximum' => 30, 'taken' => 12],
+                        ],
+                    ],
+                ],
+            ],
+            'multiple' => [
+                (object)[
+                    'calendarType' => 'multiple',
+                    'subEvent' => [
+                        (object)[
+                            'startDate' => '2026-11-05T10:00:00+01:00',
+                            'endDate' => '2026-11-05T12:00:00+01:00',
+                            'capacity' => (object)['type' => 'Unlimited', 'taken' => 140],
+                        ],
+                        (object)[
+                            'startDate' => '2026-11-06T10:00:00+01:00',
+                            'endDate' => '2026-11-06T12:00:00+01:00',
+                            'capacity' => (object)[],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
 }
