@@ -240,8 +240,8 @@ Feature: Test the UDB3 image API
     {
      "@id": "%{baseUrl}/images/%{imageId}",
      "@type":"schema:ImageObject",
-     "contentUrl":"https://images.uitdatabank.dev/%{imageId}.jpeg",
-     "thumbnailUrl":"https://images.uitdatabank.dev/%{imageId}.jpeg",
+     "contentUrl":"https://images.uitdatabank.dev/%{imageId}.ai.jpeg",
+     "thumbnailUrl":"https://images.uitdatabank.dev/%{imageId}.ai.jpeg",
      "description":"logo (Gegenereerd met AI)",
      "copyrightHolder":"me",
      "inLanguage":"nl",

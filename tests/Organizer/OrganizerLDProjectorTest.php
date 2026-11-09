@@ -774,6 +774,117 @@ final class OrganizerLDProjectorTest extends TestCase
 
     /**
      * @test
+     * @dataProvider aiGeneratedImageUpdateProvider
+     */
+    public function it_updates_the_main_image_when_the_ai_generated_flag_of_an_image_changes(
+        bool $mainImageIsAiGenerated,
+        string $updatedImageId,
+        bool $updatedIsAiGenerated,
+        string $expectedMainImage,
+        int $expectedImageIndex,
+        string $expectedContentUrl
+    ): void {
+        $organizerId = '586f596d-7e43-4ab9-b062-04db9436fca4';
+        $mainImageId = '03789a2f-5063-4062-b7cb-95a0a2280d92';
+        $otherImageId = 'b4f2c7a1-9d3e-4f6b-8a2c-5e1d7f9b3c40';
+
+        $mainImageUrl = 'https://images.uitdatabank.be/' . $mainImageId . ($mainImageIsAiGenerated ? '.ai' : '') . '.jpg';
+        $otherImageUrl = 'https://images.uitdatabank.be/' . $otherImageId . '.jpg';
+
+        $organizer = Json::decodeAssociatively(SampleFiles::read(__DIR__ . '/Samples/organizer.json'));
+        $organizer['images'] = [
+            [
+                '@id' => 'http://example.com/entity/' . $mainImageId,
+                'contentUrl' => $mainImageUrl,
+                'thumbnailUrl' => $mainImageUrl,
+                'isAiGenerated' => $mainImageIsAiGenerated,
+            ],
+            [
+                '@id' => 'http://example.com/entity/' . $otherImageId,
+                'contentUrl' => $otherImageUrl,
+                'thumbnailUrl' => $otherImageUrl,
+            ],
+        ];
+        $organizer['mainImage'] = $mainImageUrl;
+
+        $this->documentRepository->method('fetch')
+            ->with($organizerId)
+            ->willReturn(new JsonDocument($organizerId, Json::encode($organizer)));
+
+        $this->imageRepository->method('load')
+            ->with($updatedImageId)
+            ->willReturn(
+                MediaObject::create(
+                    new Uuid($updatedImageId),
+                    MIMEType::fromSubtype('jpeg'),
+                    new Description('Image Description'),
+                    new CopyrightHolder('publiq'),
+                    new Url('https://images.uitdatabank.be/' . $updatedImageId . '.jpg'),
+                    new Language('nl')
+                )
+            );
+
+        $savedDocument = null;
+        $this->documentRepository->expects($this->once())
+            ->method('save')
+            ->willReturnCallback(function (JsonDocument $document) use (&$savedDocument): void {
+                $savedDocument = $document;
+            });
+
+        $this->projector->handle(
+            $this->createDomainMessage(
+                new ImageUpdated(
+                    $organizerId,
+                    $updatedImageId,
+                    'nl',
+                    'Beschrijving',
+                    'publiq',
+                    $updatedIsAiGenerated
+                )
+            )
+        );
+
+        $body = $savedDocument->getBody();
+        $this->assertEquals($expectedContentUrl, $body->images[$expectedImageIndex]->contentUrl);
+        $this->assertEquals($expectedContentUrl, $body->images[$expectedImageIndex]->thumbnailUrl);
+        $this->assertEquals($expectedMainImage, $body->mainImage);
+    }
+
+    public function aiGeneratedImageUpdateProvider(): array
+    {
+        $mainImageId = '03789a2f-5063-4062-b7cb-95a0a2280d92';
+        $otherImageId = 'b4f2c7a1-9d3e-4f6b-8a2c-5e1d7f9b3c40';
+
+        return [
+            'main image switches from AI generated to not AI generated' => [
+                true,
+                $mainImageId,
+                false,
+                'https://images.uitdatabank.be/' . $mainImageId . '.jpg',
+                0,
+                'https://images.uitdatabank.be/' . $mainImageId . '.jpg',
+            ],
+            'main image switches from not AI generated to AI generated' => [
+                false,
+                $mainImageId,
+                true,
+                'https://images.uitdatabank.be/' . $mainImageId . '.ai.jpg',
+                0,
+                'https://images.uitdatabank.be/' . $mainImageId . '.ai.jpg',
+            ],
+            'other image switches to AI generated and the main image stays the same' => [
+                false,
+                $otherImageId,
+                true,
+                'https://images.uitdatabank.be/' . $mainImageId . '.jpg',
+                1,
+                'https://images.uitdatabank.be/' . $otherImageId . '.ai.jpg',
+            ],
+        ];
+    }
+
+    /**
+     * @test
      */
     public function it_handles_removing_an_image(): void
     {

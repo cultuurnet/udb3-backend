@@ -13,6 +13,7 @@ use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Media\AiGeneratedImageDescription;
+use CultuurNet\UDB3\Media\AiGeneratedImageUrl;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\Serialization\MediaObjectSerializer;
 use CultuurNet\UDB3\Model\Serializer\ValueObject\Contact\BookingInfoNormalizer;
@@ -444,11 +445,20 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                 if ($imageUpdated->isAiGenerated() !== null) {
                     $mediaObject->isAiGenerated = $imageUpdated->isAiGenerated();
                 }
+                $previousContentUrl = $mediaObject->contentUrl;
                 if (($mediaObject->isAiGenerated ?? null) === true) {
                     $mediaObject->description = AiGeneratedImageDescription::addSuffix(
                         $mediaObject->description,
                         new Language($mediaObject->inLanguage)
                     );
+                    $mediaObject->contentUrl = AiGeneratedImageUrl::addMarker($mediaObject->contentUrl);
+                    $mediaObject->thumbnailUrl = AiGeneratedImageUrl::addMarker($mediaObject->thumbnailUrl);
+                } else {
+                    $mediaObject->contentUrl = AiGeneratedImageUrl::removeMarker($mediaObject->contentUrl);
+                    $mediaObject->thumbnailUrl = AiGeneratedImageUrl::removeMarker($mediaObject->thumbnailUrl);
+                }
+                if (isset($offerLd->image) && stristr($offerLd->image, ':') === stristr($previousContentUrl, ':')) {
+                    $offerLd->image = $mediaObject->contentUrl;
                 }
 
                 $updatedMediaObjects[] = $mediaObject;
@@ -494,7 +504,9 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
         // Unset the main image if it matches the removed image
         // stripping the protocol before comparison is done for edge cases where an offer has multiple images
         // @see https://jira.uitdatabank.be/browse/III-4684
-        if (isset($offerLd->image) && stristr($offerLd->{'image'}, ':') === stristr($imageUrl, ':')) {
+        // the marker is removed because the main image of an AI generated image has a marked url
+        if (isset($offerLd->image) &&
+            stristr(AiGeneratedImageUrl::removeMarker($offerLd->image), ':') === stristr($imageUrl, ':')) {
             unset($offerLd->{'image'});
         }
 

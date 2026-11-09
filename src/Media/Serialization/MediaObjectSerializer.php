@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Media\Serialization;
 
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
 use CultuurNet\UDB3\Media\AiGeneratedImageDescription;
+use CultuurNet\UDB3\Media\AiGeneratedImageUrl;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -54,6 +55,8 @@ class MediaObjectSerializer
                 $serialized['description'],
                 $mediaObject->getLanguage()
             );
+            $serialized['contentUrl'] = AiGeneratedImageUrl::addMarker($serialized['contentUrl']);
+            $serialized['thumbnailUrl'] = AiGeneratedImageUrl::addMarker($serialized['thumbnailUrl']);
         }
 
         return $serialized;
