@@ -55,12 +55,13 @@ class GetDetailRequestHandlerTest extends TestCase
      */
     public function it_returns_json_ld_when_turtle_is_requested(): void
     {
-        $this->mockEventDocument('c09b7a51-b17c-4121-b278-eef71ef04e47');
+        $eventId = 'c09b7a51-b17c-4121-b278-eef71ef04e47';
+        $this->mockEventDocument($eventId);
 
         $request = (new Psr7RequestBuilder())
-            ->withUriFromString('/events/c09b7a51-b17c-4121-b278-eef71ef04e47')
+            ->withUriFromString('/events/' . $eventId)
             ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', 'c09b7a51-b17c-4121-b278-eef71ef04e47')
+            ->withRouteParameter('offerId', $eventId)
             ->withHeader('Accept', 'text/turtle')
             ->build('GET');
 
