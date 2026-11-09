@@ -42,6 +42,7 @@ use CultuurNet\UDB3\Http\Label\GetLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\PatchLabelRequestHandler;
 use CultuurNet\UDB3\Http\Label\SearchLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Media\GetMediaRequestHandler;
+use CultuurNet\UDB3\Http\Media\IgnoreIsAiGeneratedMiddleware;
 use CultuurNet\UDB3\Http\Media\UploadMediaRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddImageRequestHandler;
 use CultuurNet\UDB3\Http\Offer\AddLabelFromJsonBodyRequestHandler;
@@ -286,6 +287,11 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
 
         $router->middleware($container->get(CheckTypeOfOfferMiddleware::class));
         $router->middleware($container->get(CheckOrganizerMiddleware::class));
+
+        // Images can only be marked as AI generated when the feature flag is enabled.
+        if (!($container->get('config')['enable_ai_generated_images'] ?? false)) {
+            $router->middleware(new IgnoreIsAiGeneratedMiddleware());
+        }
     }
 
     private function bindNewsArticles(Router $router): void
