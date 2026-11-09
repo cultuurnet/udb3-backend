@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Media\Serialization;
 
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Media\AiGeneratedImageDescription;
 use CultuurNet\UDB3\Media\Image;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Media\Properties\MIMEType;
@@ -46,6 +47,13 @@ class MediaObjectSerializer
 
         if ($mediaObject->isAiGenerated() !== null) {
             $serialized['isAiGenerated'] = $mediaObject->isAiGenerated();
+        }
+
+        if ($mediaObject->isAiGenerated() === true) {
+            $serialized['description'] = AiGeneratedImageDescription::addSuffix(
+                $serialized['description'],
+                $mediaObject->getLanguage()
+            );
         }
 
         return $serialized;

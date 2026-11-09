@@ -696,15 +696,19 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
      * @test
      * @dataProvider isAiGeneratedImageUpdateProvider
      */
-    public function it_projects_ai_generated_when_editing_an_image(?bool $updatedAiGenerated, bool $expectedAiGenerated): void
-    {
+    public function it_projects_ai_generated_when_editing_an_image(
+        ?bool $updatedAiGenerated,
+        ?string $updatedLanguage,
+        bool $expectedAiGenerated,
+        string $expectedDescription
+    ): void {
         $id = 'foo';
         $imageUpdated = new ImageUpdated(
             $id,
             'de305d54-75b4-431b-adb2-eb6b9e546014',
             'Some description.',
             'Dirk Dirkington',
-            null,
+            $updatedLanguage,
             $updatedAiGenerated
         );
 
@@ -727,13 +731,21 @@ class EventLDProjectorTest extends OfferLDProjectorTestBase
         $body = $this->project($imageUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
 
         $this->assertSame($expectedAiGenerated, $body->mediaObject[0]->isAiGenerated);
+        $this->assertSame($expectedDescription, $body->mediaObject[0]->description);
     }
 
     public function isAiGeneratedImageUpdateProvider(): array
     {
         return [
-            'isAiGenerated not given keeps the existing value' => [null, true],
-            'isAiGenerated given overwrites the existing value' => [false, false],
+            'isAiGenerated not given keeps the existing value' => [
+                null,
+                null,
+                true,
+                'Some description. (Generated with AI)',
+            ],
+            'isAiGenerated true adds the suffix' => [true, null, true, 'Some description. (Generated with AI)'],
+            'isAiGenerated false does not add the suffix' => [false, null, false, 'Some description.'],
+            'suffix is added in the updated language' => [true, 'nl', true, 'Some description. (Gegenereerd met AI)'],
         ];
     }
 
