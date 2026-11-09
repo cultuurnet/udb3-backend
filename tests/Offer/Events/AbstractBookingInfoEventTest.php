@@ -156,6 +156,28 @@ class AbstractBookingInfoEventTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
+    public function it_only_leaves_out_the_invalid_url_when_deserializing(): void
+    {
+        $this->assertEquals(
+            new MockAbstractBookingInfoEvent(
+                'madId',
+                new BookingInfo(null, new TelephoneNumber('0123456789'), new EmailAddress('foo@bar.com'))
+            ),
+            MockAbstractBookingInfoEvent::deserialize([
+                'item_id' => 'madId',
+                'bookingInfo' => [
+                    'phone' => '0123456789',
+                    'email' => 'foo@bar.com',
+                    'url' => 'https://www.arboretumkalmthout.be%20',
+                    'urlLabel' => ['nl' => 'Koop tickets'],
+                ],
+            ])
+        );
+    }
+
     public function serializationDataProvider(): array
     {
         return [
