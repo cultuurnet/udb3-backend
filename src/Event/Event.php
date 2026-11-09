@@ -543,6 +543,9 @@ final class Event extends Offer
     {
         if ($calendar instanceof CalendarWithSubEvents) {
             self::assertOvernightStayAllowed($this->typeId, $calendar->getSubEvents()->toArray());
+            $calendar = $calendar->withCapacitiesFrom(
+                ...($this->calendar instanceof CalendarWithSubEvents ? $this->calendar->getSubEvents()->toArray() : [])
+            );
             $calendar = self::clearOvernightStayWhenNotAllowed($this->typeId, $calendar);
         }
 

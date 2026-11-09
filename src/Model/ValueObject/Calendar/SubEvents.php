@@ -55,6 +55,11 @@ class SubEvents extends Collection
         return new self(...array_map(fn (SubEvent $se) => $se->withHasOvernightStay($hasOvernightStay), $this->toArray()));
     }
 
+    public function withCapacitiesFrom(SubEvent ...$currentSubEvents): self
+    {
+        return new self(...array_map(fn (SubEvent $se) => $se->withCapacityFrom(...$currentSubEvents), $this->toArray()));
+    }
+
     public function withoutChildcare(): self
     {
         return new self(...array_map(fn (SubEvent $se) => $se->withChildcareTimeRange(null), $this->toArray()));

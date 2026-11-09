@@ -75,4 +75,112 @@ class DateRangesTest extends TestCase
             $ranges->getEndDate()
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_capacity_of_the_current_sub_event_with_the_same_dates(): void
+    {
+        $sent = new SubEvents(
+            $this->getSubEvent('2026-11-05'),
+            $this->getSubEvent('2026-11-07'),
+        );
+        $current = [
+            $this->getSubEvent('2026-11-05')->withCapacity(Capacity::limited(30, 12)),
+            $this->getSubEvent('2026-11-06')->withCapacity(Capacity::unlimited(140)),
+        ];
+
+        $result = $sent->withCapacitiesFrom(...$current)->toArray();
+
+        $this->assertEquals(Capacity::limited(30, 12), $result[0]->getCapacity());
+        $this->assertNull($result[1]->getCapacity());
+    }
+
+    /**
+     * @test
+     * @dataProvider differentDatesProvider
+     */
+    public function it_does_not_keep_the_capacity_when_the_dates_differ(SubEvent $sentSubEvent): void
+    {
+        $sent = new SubEvents($sentSubEvent);
+        $current = $this->getSubEvent('2026-11-05')->withCapacity(Capacity::limited(30, 12));
+
+        $result = $sent->withCapacitiesFrom($current)->toArray();
+
+        $this->assertNull($result[0]->getCapacity());
+    }
+
+    public function differentDatesProvider(): array
+    {
+        return [
+            'different end date' => [$this->getSubEvent('2026-11-05', '10:00', '14:00')],
+            'different start date' => [$this->getSubEvent('2026-11-05', '09:00', '12:00')],
+            'different start and end date' => [$this->getSubEvent('2026-11-06')],
+        ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_keep_the_capacity_when_several_current_sub_events_have_the_same_dates(): void
+    {
+        $sent = new SubEvents($this->getSubEvent('2026-11-05'));
+        $current = [
+            $this->getSubEvent('2026-11-05')->withCapacity(Capacity::limited(10)),
+            $this->getSubEvent('2026-11-05')->withCapacity(Capacity::limited(20)),
+        ];
+
+        $result = $sent->withCapacitiesFrom(...$current)->toArray();
+
+        $this->assertNull($result[0]->getCapacity());
+    }
+
+    /**
+     * @test
+     */
+    public function it_uses_the_sent_capacity_over_the_current_one(): void
+    {
+        $sent = new SubEvents($this->getSubEvent('2026-11-05')->withCapacity(Capacity::limited(40)));
+        $current = $this->getSubEvent('2026-11-05')->withCapacity(Capacity::limited(30, 12));
+
+        $result = $sent->withCapacitiesFrom($current)->toArray();
+
+        $this->assertEquals(Capacity::limited(40), $result[0]->getCapacity());
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_current_capacity_when_no_capacity_is_sent(): void
+    {
+        $sent = new SubEvents($this->getSubEvent('2026-11-05'));
+        $current = $this->getSubEvent('2026-11-05')->withCapacity(Capacity::limited(30, 12));
+
+        $result = $sent->withCapacitiesFrom($current)->toArray();
+
+        $this->assertEquals(Capacity::limited(30, 12), $result[0]->getCapacity());
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_the_current_capacity_when_an_unknown_capacity_is_sent(): void
+    {
+        $sent = new SubEvents($this->getSubEvent('2026-11-05')->withCapacity(Capacity::unknown()));
+        $current = $this->getSubEvent('2026-11-05')->withCapacity(Capacity::limited(30, 12));
+
+        $result = $sent->withCapacitiesFrom($current)->toArray();
+
+        $this->assertNull($result[0]->getCapacity());
+    }
+
+    private function getSubEvent(string $date, string $startTime = '10:00', string $endTime = '12:00'): SubEvent
+    {
+        return SubEvent::createAvailable(
+            new DateRange(
+                new \DateTimeImmutable($date . 'T' . $startTime . ':00+01:00'),
+                new \DateTimeImmutable($date . 'T' . $endTime . ':00+01:00')
+            )
+        );
+    }
 }

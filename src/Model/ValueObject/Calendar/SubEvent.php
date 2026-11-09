@@ -85,6 +85,24 @@ final class SubEvent
         return $clone;
     }
 
+    /**
+     * Without capacity, this subEvent keeps the capacity of the current subEvent with the same dates, but only when
+     * there is exactly one such subEvent. An unknown capacity clears it.
+     */
+    public function withCapacityFrom(SubEvent ...$currentSubEvents): self
+    {
+        if ($this->capacity !== null) {
+            return $this->withCapacity($this->capacity->isUnknown() ? null : $this->capacity);
+        }
+
+        $matches = array_values(array_filter(
+            $currentSubEvents,
+            fn (SubEvent $current) => $current->getDateRange()->compare($this->dateRange) === 0
+        ));
+
+        return $this->withCapacity(count($matches) === 1 ? $matches[0]->getCapacity() : null);
+    }
+
     public function getDateRange(): DateRange
     {
         return $this->dateRange;
