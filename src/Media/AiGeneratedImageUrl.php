@@ -8,8 +8,24 @@ final class AiGeneratedImageUrl
 {
     private const string MARKER = '.ai';
 
+    private static bool $markerEnabled = true;
+
+    public static function enableMarker(): void
+    {
+        self::$markerEnabled = true;
+    }
+
+    public static function disableMarker(): void
+    {
+        self::$markerEnabled = false;
+    }
+
     public static function addMarker(string $url): string
     {
+        if (!self::$markerEnabled) {
+            return $url;
+        }
+
         [$base, $extension] = self::split($url);
 
         if ($extension === null || str_ends_with($base, self::MARKER)) {

@@ -8,6 +8,11 @@ use PHPUnit\Framework\TestCase;
 
 final class AiGeneratedImageUrlTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        AiGeneratedImageUrl::enableMarker();
+    }
+
     /**
      * @test
      * @dataProvider addMarkerProvider
@@ -41,6 +46,32 @@ final class AiGeneratedImageUrlTest extends TestCase
                 'https://images.uitdatabank.be/a1b2c3/',
             ],
         ];
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_add_the_marker_when_disabled(): void
+    {
+        AiGeneratedImageUrl::disableMarker();
+
+        $this->assertEquals(
+            'https://images.uitdatabank.be/a1b2c3.jpeg',
+            AiGeneratedImageUrl::addMarker('https://images.uitdatabank.be/a1b2c3.jpeg')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_still_removes_the_marker_when_disabled(): void
+    {
+        AiGeneratedImageUrl::disableMarker();
+
+        $this->assertEquals(
+            'https://images.uitdatabank.be/a1b2c3.jpeg',
+            AiGeneratedImageUrl::removeMarker('https://images.uitdatabank.be/a1b2c3.ai.jpeg')
+        );
     }
 
     /**
