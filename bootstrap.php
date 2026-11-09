@@ -38,6 +38,7 @@ use CultuurNet\UDB3\Keycloak\KeycloakServiceProvider;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Mailer\MailerServiceProvider;
 use CultuurNet\UDB3\Mailinglist\MailinglistServiceProvider;
+use CultuurNet\UDB3\Media\AiGeneratedImageUrl;
 use CultuurNet\UDB3\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Media\MediaImportServiceProvider;
 use CultuurNet\UDB3\Media\MediaServiceProvider;
@@ -232,6 +233,10 @@ $container->addServiceProvider(new MailerServiceProvider());
 $container->addServiceProvider(new VerenigingsloketServiceProvider());
 $container->addServiceProvider(new AddressServiceProvider());
 $container->addServiceProvider(new HolidaysServiceProvider());
+
+if (!($container->get('config')['enable_ai_generated_images'] ?? false)) {
+    AiGeneratedImageUrl::disableMarker();
+}
 
 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);
