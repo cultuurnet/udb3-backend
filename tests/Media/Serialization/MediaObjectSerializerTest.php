@@ -160,10 +160,47 @@ final class MediaObjectSerializerTest extends TestCase
             'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
             'thumbnailUrl' => 'http://foo.bar/media/my_pic.jpg',
             'contentUrl' => 'http://foo.bar/media/my_pic.jpg',
-            'description' => 'my pic',
+            'description' => 'my pic (Generated with AI)',
             'copyrightHolder' => 'Dirk Dirkington',
             'inLanguage' => 'en',
             'isAiGenerated' => true,
+        ];
+
+        $jsonld = $this->serializer->serialize($mediaObject);
+
+        $this->assertEquals($expectedJsonld, $jsonld);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_not_add_the_ai_generated_suffix_when_not_ai_generated(): void
+    {
+        $mediaObject = new Image(
+            new Uuid('de305d54-75b4-431b-adb2-eb6b9e546014'),
+            new MIMEType('image/jpg'),
+            new Description('my pic'),
+            new CopyrightHolder('Dirk Dirkington'),
+            new Url('http://foo.bar/media/my_pic.jpg'),
+            new Language('en'),
+            false
+        );
+
+        $this->iriGenerator
+            ->expects($this->once())
+            ->method('iri')
+            ->willReturn('http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014');
+
+        $expectedJsonld = [
+            '@id' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014',
+            '@type' => 'schema:ImageObject',
+            'id' => 'de305d54-75b4-431b-adb2-eb6b9e546014',
+            'thumbnailUrl' => 'http://foo.bar/media/my_pic.jpg',
+            'contentUrl' => 'http://foo.bar/media/my_pic.jpg',
+            'description' => 'my pic',
+            'copyrightHolder' => 'Dirk Dirkington',
+            'inLanguage' => 'en',
+            'isAiGenerated' => false,
         ];
 
         $jsonld = $this->serializer->serialize($mediaObject);
