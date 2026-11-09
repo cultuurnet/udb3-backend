@@ -73,9 +73,12 @@ final class RequestAuthenticatorMiddleware implements MiddlewareInterface
         $this->logger = $logger;
     }
 
-    public function addPublicRoute(string $pathPattern, array $methods = [], ?string $excludeQueryParam = null): void
+    /**
+     * @param string[] $excludeQueryParams
+     */
+    public function addPublicRoute(string $pathPattern, array $methods = [], array $excludeQueryParams = []): void
     {
-        $this->publicRoutes[] = new PublicRouteRule($pathPattern, $methods, $excludeQueryParam);
+        $this->publicRoutes[] = new PublicRouteRule($pathPattern, $methods, $excludeQueryParams);
     }
 
     public function addPermissionRestrictedRoute(string $pathPattern, array $methods, Permission $permission): void

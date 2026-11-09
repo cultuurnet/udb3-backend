@@ -11,6 +11,8 @@ use CultuurNet\UDB3\Http\Response\JsonLdResponse;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -20,15 +22,21 @@ final class GetDetailRequestHandler implements RequestHandlerInterface
     private OfferJsonDocumentReadRepository $offerJsonDocumentReadRepository;
     private TurtleResponseFactory $placeTurtleResponseFactory;
     private TurtleResponseFactory $eventTurtleResponseFactory;
+    private PermissionVoter $permissionVoter;
+    private ?string $currentUserId;
 
     public function __construct(
         OfferJsonDocumentReadRepository $offerJsonDocumentReadRepository,
         TurtleResponseFactory $placeTurtleResponseFactory,
-        TurtleResponseFactory $eventTurtleResponseFactory
+        TurtleResponseFactory $eventTurtleResponseFactory,
+        PermissionVoter $permissionVoter,
+        ?string $currentUserId
     ) {
         $this->offerJsonDocumentReadRepository = $offerJsonDocumentReadRepository;
         $this->placeTurtleResponseFactory = $placeTurtleResponseFactory;
         $this->eventTurtleResponseFactory = $eventTurtleResponseFactory;
+        $this->permissionVoter = $permissionVoter;
+        $this->currentUserId = $currentUserId;
     }
 
     public function handle(ServerRequestInterface $request): ResponseInterface
@@ -48,11 +56,16 @@ final class GetDetailRequestHandler implements RequestHandlerInterface
         $queryParameters = new QueryParameters($request);
         $includeMetadata = $queryParameters->getAsBoolean('includeMetadata');
         $embedUiTPASPrices = $queryParameters->getAsBoolean('embedUitpasPrices');
+        $embedCapacities = $queryParameters->getAsBoolean('embedCapacities');
 
         $jsonDocument = $this->offerJsonDocumentReadRepository->fetch($offerType, $offerId, $includeMetadata);
 
         if (!$embedUiTPASPrices) {
             $jsonDocument = $this->removeUiTPASPrices($jsonDocument);
+        }
+
+        if (!$embedCapacities || !$this->canEdit($offerId)) {
+            $jsonDocument = $this->removeCapacities($jsonDocument);
         }
 
         return new JsonLdResponse($jsonDocument->getAssocBody());
@@ -68,6 +81,31 @@ final class GetDetailRequestHandler implements RequestHandlerInterface
                 $json['priceInfo'] = array_filter(
                     $json['priceInfo'],
                     static fn (array $price) => $price['category'] !== 'uitpas'
+                );
+                return $json;
+            }
+        );
+    }
+
+    private function canEdit(string $offerId): bool
+    {
+        return $this->currentUserId !== null &&
+            $this->permissionVoter->isAllowed(Permission::aanbodBewerken(), $offerId, $this->currentUserId);
+    }
+
+    private function removeCapacities(JsonDocument $jsonDocument): JsonDocument
+    {
+        return $jsonDocument->applyAssoc(
+            function (array $json) {
+                if (!isset($json['subEvent'])) {
+                    return $json;
+                }
+                $json['subEvent'] = array_map(
+                    static function (array $subEvent) {
+                        unset($subEvent['capacity']);
+                        return $subEvent;
+                    },
+                    $json['subEvent']
                 );
                 return $json;
             }

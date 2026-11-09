@@ -11,6 +11,8 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepositoryMockFactory;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use CultuurNet\UDB3\SampleFiles;
 use EasyRdf\Graph;
 use EasyRdf\Serialiser\Turtle;
@@ -29,16 +31,21 @@ class GetDetailRequestHandlerTest extends TestCase
 
     private JsonToTurtleConverter&MockObject $eventJsonToTurtleConverter;
 
+    private PermissionVoter&MockObject $permissionVoter;
+
     protected function setUp(): void
     {
         $this->mockRepositoryFactory = new OfferJsonDocumentReadRepositoryMockFactory();
         $this->placeJsonToTurtleConverter = $this->createMock(JsonToTurtleConverter::class);
         $this->eventJsonToTurtleConverter = $this->createMock(JsonToTurtleConverter::class);
+        $this->permissionVoter = $this->createMock(PermissionVoter::class);
 
         $this->getDetailRequestHandler = new GetDetailRequestHandler(
             $this->mockRepositoryFactory->create(),
             new TurtleResponseFactory($this->placeJsonToTurtleConverter),
             new TurtleResponseFactory($this->eventJsonToTurtleConverter),
+            $this->permissionVoter,
+            'c1f8a1b0-6f2e-4b0e-9d3c-2a7f5e8b9c01',
         );
     }
 
@@ -324,6 +331,93 @@ class GetDetailRequestHandlerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertArrayHasKey('@id', $decodedResponseBody);
         $this->assertArrayNotHasKey('metadata', $decodedResponseBody);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_include_capacities_by_default(): void
+    {
+        $this->mockEventDocumentWithCapacities('c09b7a51-b17c-4121-b278-eef71ef04e47');
+
+        $this->permissionVoter->expects($this->never())->method('isAllowed');
+
+        $decodedResponseBody = $this->getEvent('/events/c09b7a51-b17c-4121-b278-eef71ef04e47');
+
+        $this->assertArrayNotHasKey('capacity', $decodedResponseBody['subEvent'][0]);
+        $this->assertArrayNotHasKey('capacity', $decodedResponseBody['subEvent'][1]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_include_capacities_when_requested_without_the_right_to_edit(): void
+    {
+        $this->mockEventDocumentWithCapacities('c09b7a51-b17c-4121-b278-eef71ef04e47');
+
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(Permission::aanbodBewerken(), 'c09b7a51-b17c-4121-b278-eef71ef04e47', 'c1f8a1b0-6f2e-4b0e-9d3c-2a7f5e8b9c01')
+            ->willReturn(false);
+
+        $decodedResponseBody = $this->getEvent('/events/c09b7a51-b17c-4121-b278-eef71ef04e47?embedCapacities=true');
+
+        $this->assertArrayNotHasKey('capacity', $decodedResponseBody['subEvent'][0]);
+        $this->assertArrayNotHasKey('capacity', $decodedResponseBody['subEvent'][1]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_includes_capacities_when_requested_with_the_right_to_edit(): void
+    {
+        $this->mockEventDocumentWithCapacities('c09b7a51-b17c-4121-b278-eef71ef04e47');
+
+        $this->permissionVoter->expects($this->once())
+            ->method('isAllowed')
+            ->with(Permission::aanbodBewerken(), 'c09b7a51-b17c-4121-b278-eef71ef04e47', 'c1f8a1b0-6f2e-4b0e-9d3c-2a7f5e8b9c01')
+            ->willReturn(true);
+
+        $decodedResponseBody = $this->getEvent('/events/c09b7a51-b17c-4121-b278-eef71ef04e47?embedCapacities=true');
+
+        $this->assertEquals(['type' => 'Limited', 'maximum' => 30, 'taken' => 12], $decodedResponseBody['subEvent'][0]['capacity']);
+        $this->assertArrayNotHasKey('capacity', $decodedResponseBody['subEvent'][1]);
+    }
+
+    private function getEvent(string $uri): array
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString($uri)
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', 'c09b7a51-b17c-4121-b278-eef71ef04e47')
+            ->build('GET');
+
+        $response = $this->getDetailRequestHandler->handle($request);
+        $this->assertEquals(200, $response->getStatusCode());
+
+        return Json::decodeAssociatively($response->getBody()->getContents());
+    }
+
+    private function mockEventDocumentWithCapacities(string $eventId): void
+    {
+        $jsonLd = Json::encode(
+            [
+                '@id' => '/events/' . $eventId,
+                'subEvent' => [
+                    [
+                        'startDate' => '2026-11-05T10:00:00+01:00',
+                        'endDate' => '2026-11-05T12:00:00+01:00',
+                        'capacity' => ['type' => 'Limited', 'maximum' => 30, 'taken' => 12],
+                    ],
+                    [
+                        'startDate' => '2026-11-06T10:00:00+01:00',
+                        'endDate' => '2026-11-06T12:00:00+01:00',
+                    ],
+                ],
+            ]
+        );
+        $document = new JsonDocument($eventId, $jsonLd);
+        $this->mockRepositoryFactory->expectEventDocument($document);
     }
 
     private function mockEventDocument(string $eventId): void
