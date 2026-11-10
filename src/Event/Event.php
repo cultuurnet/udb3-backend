@@ -556,7 +556,11 @@ final class Event extends Offer
         $subEvents = array_map(
             fn (SubEvent $subEvent) => $subEvent->getBookingInfo()?->getUrl()->sameAs($reservationLink)
                 ? $subEvent->withBookingAvailability(
-                    self::applyRegisteredBookingAvailability($subEvent->getBookingAvailability(), $bookingAvailability)
+                    self::applyRegisteredBookingAvailability(
+                        $subEvent->getBookingAvailability(),
+                        $bookingAvailability,
+                        $reservationLink
+                    )
                 )
                 : $subEvent,
             $calendar->getSubEvents()->toArray()
@@ -602,19 +606,25 @@ final class Event extends Offer
     }
 
     /**
-     * The waiting list url of the ticket sales provider wins, but a provider without a waiting list keeps the
-     * waiting list url that was set on the sub event.
+     * The waiting list url of the ticket sales provider wins. A provider without a waiting list clears a waiting list
+     * url on the host of the reservation link, since that one came from the provider, but keeps one a user entered.
      */
     private static function applyRegisteredBookingAvailability(
         BookingAvailability $bookingAvailability,
-        BookingAvailability $registeredBookingAvailability
+        BookingAvailability $registeredBookingAvailability,
+        Url $reservationLink
     ): BookingAvailability {
         $bookingAvailability = $bookingAvailability->withType($registeredBookingAvailability->getType());
 
         if ($registeredBookingAvailability->getWaitingListUrl() !== null) {
-            $bookingAvailability = $bookingAvailability->withWaitingListUrl(
-                $registeredBookingAvailability->getWaitingListUrl()
-            );
+            return $bookingAvailability->withWaitingListUrl($registeredBookingAvailability->getWaitingListUrl());
+        }
+
+        $waitingListUrl = $bookingAvailability->getWaitingListUrl();
+        if ($waitingListUrl !== null
+            && strcasecmp($waitingListUrl->getDomain(), $reservationLink->getDomain()) === 0
+        ) {
+            return $bookingAvailability->withWaitingListUrl(null);
         }
 
         return $bookingAvailability;

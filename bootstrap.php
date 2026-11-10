@@ -22,7 +22,6 @@ use CultuurNet\UDB3\Event\EventGeoCoordinatesServiceProvider;
 use CultuurNet\UDB3\Event\EventHistoryServiceProvider;
 use CultuurNet\UDB3\Event\EventJSONLDServiceProvider;
 use CultuurNet\UDB3\Event\EventPermissionServiceProvider;
-use CultuurNet\UDB3\Event\EventRdfServiceProvider;
 use CultuurNet\UDB3\Event\EventReadServiceProvider;
 use CultuurNet\UDB3\Event\EventRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Event\EventServiceProvider;
@@ -38,6 +37,7 @@ use CultuurNet\UDB3\Keycloak\KeycloakServiceProvider;
 use CultuurNet\UDB3\Labels\LabelServiceProvider;
 use CultuurNet\UDB3\Mailer\MailerServiceProvider;
 use CultuurNet\UDB3\Mailinglist\MailinglistServiceProvider;
+use CultuurNet\UDB3\Media\AiGeneratedImageUrl;
 use CultuurNet\UDB3\Media\ImageStorageProvider;
 use CultuurNet\UDB3\Media\MediaImportServiceProvider;
 use CultuurNet\UDB3\Media\MediaServiceProvider;
@@ -48,7 +48,6 @@ use CultuurNet\UDB3\Organizer\OrganizerCommandHandlerProvider;
 use CultuurNet\UDB3\Organizer\OrganizerGeoCoordinatesServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerJSONLDServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerPermissionServiceProvider;
-use CultuurNet\UDB3\Organizer\OrganizerRdfServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Organizer\OrganizerServiceProvider;
 use CultuurNet\UDB3\Ownership\OwnershipCommandHandlerProvider;
@@ -59,12 +58,9 @@ use CultuurNet\UDB3\Place\PlaceGeoCoordinatesServiceProvider;
 use CultuurNet\UDB3\Place\PlaceHistoryServiceProvider;
 use CultuurNet\UDB3\Place\PlaceJSONLDServiceProvider;
 use CultuurNet\UDB3\Place\PlacePermissionServiceProvider;
-use CultuurNet\UDB3\Place\PlaceRdfServiceProvider;
 use CultuurNet\UDB3\Place\PlaceReadServiceProvider;
 use CultuurNet\UDB3\Place\PlaceRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Place\PlaceServiceProvider;
-use CultuurNet\UDB3\RDF\RdfNamespaces;
-use CultuurNet\UDB3\RDF\RdfServiceProvider;
 use CultuurNet\UDB3\Role\RoleRequestHandlerServiceProvider;
 use CultuurNet\UDB3\Role\RoleServiceProvider;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
@@ -212,13 +208,6 @@ $container->addServiceProvider(new TermServiceProvider());
 /** Jobs */
 $container->addServiceProvider(new JobsServiceProvider());
 
-/** RDF */
-RdfNamespaces::register();
-$container->addServiceProvider(new RdfServiceProvider());
-$container->addServiceProvider(new PlaceRdfServiceProvider());
-$container->addServiceProvider(new EventRdfServiceProvider());
-$container->addServiceProvider(new OrganizerRdfServiceProvider());
-
 /** Ownership */
 $container->addServiceProvider(new OwnershipServiceProvider());
 $container->addServiceProvider(new OwnershipCommandHandlerProvider());
@@ -232,6 +221,10 @@ $container->addServiceProvider(new MailerServiceProvider());
 $container->addServiceProvider(new VerenigingsloketServiceProvider());
 $container->addServiceProvider(new AddressServiceProvider());
 $container->addServiceProvider(new HolidaysServiceProvider());
+
+if (!($container->get('config')['enable_ai_generated_images'] ?? false)) {
+    AiGeneratedImageUrl::disableMarker();
+}
 
 if (isset($container->get('config')['bookable_event']['dummy_place_ids'])) {
     LocationId::setDummyPlaceForEducationIds($container->get('config')['bookable_event']['dummy_place_ids']);
