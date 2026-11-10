@@ -492,11 +492,11 @@ Feature: Test place images property
         "@id": "%{baseUrl}/images/%{aiImageId}",
         "id": "%{aiImageId}",
         "@type": "schema:ImageObject",
-        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg",
         "copyrightHolder": "me",
         "description": "ai logo (Gegenereerd met AI)",
         "inLanguage": "nl",
-        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg",
         "isAiGenerated": true
       }
     ]
@@ -569,6 +569,18 @@ Feature: Test place images property
     And I get the place at "%{placeUrl}"
     And the JSON response at "mediaObject/0/description" should be "logo (Gegenereerd met AI)"
     And the JSON response at "mediaObject/0/isAiGenerated" should be "true"
+    And the JSON response at "mediaObject/0/contentUrl" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    """
+    And the JSON response at "mediaObject/0/thumbnailUrl" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    """
+    And the JSON response at "image" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    """
 
     When I set the JSON request payload to:
     """
@@ -583,3 +595,55 @@ Feature: Test place images property
     And I get the place at "%{placeUrl}"
     And the JSON response at "mediaObject/0/description" should be "logo"
     And the JSON response at "mediaObject/0/isAiGenerated" should be "false"
+    And the JSON response at "mediaObject/0/contentUrl" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    """
+    And the JSON response at "mediaObject/0/thumbnailUrl" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    """
+    And the JSON response at "image" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    """
+
+  Scenario: The next image becomes the main image when an AI generated main image is removed from a place
+    Given I set the form data properties to:
+      | description     | ai logo |
+      | copyrightHolder | me      |
+      | language        | nl      |
+      | isAiGenerated   | true    |
+    When I upload "file" from path "images/udb.jpg" to "/images/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "imageId" as "aiImageId"
+    Given I create a minimal place and save the "url" as "placeUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "mediaObjectId":"%{aiImageId}"
+    }
+    """
+    And I send a POST request to "%{placeUrl}/images"
+    Then the response status should be "204"
+    When I set the JSON request payload to:
+    """
+    {
+      "mediaObjectId":"%{imageId1}"
+    }
+    """
+    And I send a POST request to "%{placeUrl}/images"
+    Then the response status should be "204"
+    And I get the place at "%{placeUrl}"
+    And the JSON response at "image" should be:
+    """
+    "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg"
+    """
+    When I send a DELETE request to "%{placeUrl}/images/%{aiImageId}"
+    Then the response status should be "204"
+    And I get the place at "%{placeUrl}"
+    And the JSON response at "mediaObject" should have 1 entry
+    And the JSON response at "image" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    """

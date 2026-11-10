@@ -31,6 +31,14 @@ final class SetCardSystemsOnEventRequestHandler implements RequestHandlerInterfa
             throw ApiProblem::bodyInvalidDataWithDetail('Payload should be an array of card system ids');
         }
 
+        // Some clients send card system names instead of ids. Reject those with a clear 400 here,
+        // so they don't end up as an error from UiTPAS.
+        foreach ($cardSystemIds as $cardSystemId) {
+            if (!is_int($cardSystemId) && !(is_string($cardSystemId) && ctype_digit($cardSystemId))) {
+                throw ApiProblem::bodyInvalidDataWithDetail('Payload should be an array of card system ids');
+            }
+        }
+
         $this->uitpasClient->setCardSystemsForEvent(
             (new RouteParameters($request))->getEventId(),
             array_map('intval', $cardSystemIds)
