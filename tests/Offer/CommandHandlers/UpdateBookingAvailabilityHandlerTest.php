@@ -19,6 +19,8 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\OpeningHours;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PeriodicCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\PermanentCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\StatusType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\Category;
@@ -26,6 +28,7 @@ use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryDomain;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryID;
 use CultuurNet\UDB3\Model\ValueObject\Taxonomy\Category\CategoryLabel;
 use CultuurNet\UDB3\Model\ValueObject\Translation\Language;
+use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Offer\Commands\UpdateBookingAvailability;
 use CultuurNet\UDB3\Offer\OfferRepository;
 use CultuurNet\UDB3\Offer\CalendarTypeNotSupported;
@@ -190,6 +193,106 @@ final class UpdateBookingAvailabilityHandlerTest extends CommandHandlerScenarioT
                                     new DateTimeImmutable('2020-01-03 12:00:00')
                                 )
                             )->withBookingAvailability(BookingAvailability::Unavailable())
+                        )
+                    ))->withBookingAvailability(BookingAvailability::Unavailable())
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_url_of_a_single_sub_event(): void
+    {
+        $dateRange = new DateRange(
+            new DateTimeImmutable('2020-01-01 10:00:00'),
+            new DateTimeImmutable('2020-01-01 12:00:00')
+        );
+
+        $singleEventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Single Event',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new SingleSubEventCalendar(
+                new SubEvent(
+                    $dateRange,
+                    new Status(StatusType::Available()),
+                    BookingAvailability::Available()
+                        ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                )
+            )
+        );
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$singleEventCreated])
+            ->when(new UpdateBookingAvailability('1', BookingAvailability::Unavailable()))
+            ->then([
+                new CalendarUpdated(
+                    '1',
+                    (new SingleSubEventCalendar(
+                        new SubEvent(
+                            $dateRange,
+                            new Status(StatusType::Available()),
+                            BookingAvailability::Unavailable()
+                                ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                        )
+                    ))->withBookingAvailability(BookingAvailability::Unavailable())
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_waiting_list_urls_of_multiple_sub_events(): void
+    {
+        $firstDate = new DateRange(
+            new DateTimeImmutable('2020-01-01 10:00:00'),
+            new DateTimeImmutable('2020-01-01 12:00:00')
+        );
+        $secondDate = new DateRange(
+            new DateTimeImmutable('2020-01-03 10:00:00'),
+            new DateTimeImmutable('2020-01-03 12:00:00')
+        );
+
+        $multipleEventCreated = new EventCreated(
+            '1',
+            new Language('nl'),
+            'Multiple Event',
+            new Category(new CategoryID('0.50.4.0.0'), new CategoryLabel('Concert'), CategoryDomain::eventType()),
+            new LocationId('d0cd4e9d-3cf1-4324-9835-2bfba63ac015'),
+            new MultipleSubEventsCalendar(
+                new SubEvents(
+                    new SubEvent(
+                        $firstDate,
+                        new Status(StatusType::Available()),
+                        BookingAvailability::Unavailable()
+                            ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                    ),
+                    new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Available())
+                )
+            )
+        );
+
+        $this->scenario
+            ->withAggregateId('1')
+            ->given([$multipleEventCreated])
+            ->when(new UpdateBookingAvailability('1', BookingAvailability::Unavailable()))
+            ->then([
+                new CalendarUpdated(
+                    '1',
+                    (new MultipleSubEventsCalendar(
+                        new SubEvents(
+                            new SubEvent(
+                                $firstDate,
+                                new Status(StatusType::Available()),
+                                BookingAvailability::Unavailable()
+                                    ->withWaitingListUrl(new Url('https://publiq.be/wachtlijst'))
+                            ),
+                            new SubEvent($secondDate, new Status(StatusType::Available()), BookingAvailability::Unavailable())
                         )
                     ))->withBookingAvailability(BookingAvailability::Unavailable())
                 ),

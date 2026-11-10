@@ -13,7 +13,6 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\ApiProblem\SchemaError;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
-use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailability;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\BookingAvailabilityType;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\OpeningHours\Time;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
@@ -220,7 +219,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                 'expected_command' => new UpdateSubEvents(
                     self::EVENT_ID,
                     (new SubEventUpdate(1))
-                        ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable())),
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable()),
                 ),
             ],
             'one_subEvent_with_id_and_status_type_and_bookingAvailability_type' => [
@@ -239,7 +238,7 @@ final class UpdateSubEventsRequestHandlerTest extends TestCase
                     self::EVENT_ID,
                     (new SubEventUpdate(1))
                         ->withStatus(new Status(StatusType::Available()))
-                        ->withBookingAvailability(new BookingAvailability(BookingAvailabilityType::Unavailable())),
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable()),
                 ),
             ],
             'one_subEvent_with_childcare_start_and_end' => [

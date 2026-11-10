@@ -333,11 +333,11 @@ Feature: Test organizer images property
         "@id": "%{baseUrl}/images/%{aiImageId}",
         "@type": "schema:ImageObject",
         "id": "%{aiImageId}",
-        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "contentUrl": "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg",
         "copyrightHolder": "me",
-        "description": "ai logo",
+        "description": "ai logo (Gegenereerd met AI)",
         "inLanguage": "nl",
-        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.jpeg",
+        "thumbnailUrl": "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg",
         "isAiGenerated": true
       }
     ]
@@ -368,7 +368,7 @@ Feature: Test organizer images property
     And I send a PATCH request to "%{organizerUrl}/images"
     Then the response status should be "204"
     When I get the organizer at "%{organizerUrl}"
-    Then the JSON response at "images/0/description" should be "Aangepaste beschrijving"
+    Then the JSON response at "images/0/description" should be "Aangepaste beschrijving (Gegenereerd met AI)"
     And the JSON response at "images/0/isAiGenerated" should be "true"
 
     When I set the JSON request payload to:
@@ -392,3 +392,107 @@ Feature: Test organizer images property
     And I get the organizer at "%{organizerUrl}"
     Then the JSON response at "images/0/isAiGenerated" should be "true"
     And the JSON response at "images/1/isAiGenerated" should be "false"
+
+  Scenario: The AI generated suffix is added to and removed from the organizer image description when isAiGenerated changes
+    Given I create an organizer from "organizers/organizer-with-images.json" and save the "url" as "organizerUrl"
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "isAiGenerated": true
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/description" should be "logo (Gegenereerd met AI)"
+    And the JSON response at "images/0/isAiGenerated" should be "true"
+    And the JSON response at "images/0/contentUrl" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    """
+    And the JSON response at "images/0/thumbnailUrl" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    """
+    And the JSON response at "mainImage" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.ai.jpeg"
+    """
+
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "language": "fr"
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/description" should be "logo (Généré par l'IA)"
+
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "isAiGenerated": false
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/description" should be "logo"
+    And the JSON response at "images/0/isAiGenerated" should be "false"
+    And the JSON response at "images/0/contentUrl" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    """
+    And the JSON response at "images/0/thumbnailUrl" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    """
+    And the JSON response at "mainImage" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    """
+
+  Scenario: The next image becomes the main image when an AI generated main image is removed from an organizer
+    Given I set the form data properties to:
+      | description     | ai logo |
+      | copyrightHolder | me      |
+      | language        | nl      |
+      | isAiGenerated   | true    |
+    When I upload "file" from path "images/udb.jpg" to "/images/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "imageId" as "aiImageId"
+    Given I create a minimal organizer and save the "url" as "organizerUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "id":"%{aiImageId}"
+    }
+    """
+    And I send a POST request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I set the JSON request payload to:
+    """
+    {
+      "id":"%{imageId1}"
+    }
+    """
+    And I send a POST request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "mainImage" should be:
+    """
+    "https://images.uitdatabank.dev/%{aiImageId}.ai.jpeg"
+    """
+    When I send a DELETE request to "%{organizerUrl}/images/%{aiImageId}"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images" should have 1 entry
+    And the JSON response at "mainImage" should be:
+    """
+    "https://images.uitdatabank.dev/%{imageId1}.jpeg"
+    """

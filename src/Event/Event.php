@@ -172,7 +172,7 @@ final class Event extends Offer
             )
         );
 
-        $event->assertChildcareAllowed($calendar);
+        $event->assertChildcareAllowed($eventType->getId()->toString(), $calendar);
 
         if ($location->isDummyPlaceForEducation()) {
             // Bookable education events should get education as their audience type. We record this explicitly so we
@@ -215,7 +215,7 @@ final class Event extends Offer
             )
         );
 
-        $copy->assertChildcareAllowed($calendar);
+        $copy->assertChildcareAllowed($copy->typeId, $calendar);
 
         return $copy;
     }
@@ -386,6 +386,15 @@ final class Event extends Offer
         Calendar $calendar,
         Category $theme = null
     ): void {
+        $typeId = $eventType->getId()->toString();
+
+        if ($calendar instanceof CalendarWithSubEvents) {
+            self::assertOvernightStayAllowed($typeId, $calendar->getSubEvents()->toArray());
+            $calendar = self::clearOvernightStayWhenNotAllowed($typeId, $calendar);
+        }
+
+        $this->assertChildcareAllowed($typeId, $calendar);
+
         $this->apply(new MajorInfoUpdated($this->eventId, $title->toString(), $eventType, $location, $calendar, $theme));
 
         if ($location->isDummyPlaceForEducation()) {
@@ -399,6 +408,7 @@ final class Event extends Offer
 
     protected function applyMajorInfoUpdated(MajorInfoUpdated $majorInfoUpdated): void
     {
+        $this->typeId = $majorInfoUpdated->getEventType()->getId()->toString();
         $this->locationId = $majorInfoUpdated->getLocation();
         $this->calendar = $majorInfoUpdated->getCalendar();
 
@@ -466,7 +476,6 @@ final class Event extends Offer
             $subEvent = $subEvents[$index];
 
             $subEventStatus = $subEventUpdate->getStatus() ?: null;
-            $subEventBookingAvailability = $subEventUpdate->getBookingAvailability() ?: null;
 
             $updatedSubEvent = new SubEvent(
                 new DateRange(
@@ -474,7 +483,7 @@ final class Event extends Offer
                     $subEventUpdate->getEndDate() ?: $subEvent->getDateRange()->getTo()
                 ),
                 $subEventStatus ?? $subEvent->getStatus(),
-                $subEventBookingAvailability ?? $subEvent->getBookingAvailability(),
+                $subEventUpdate->applyToBookingAvailability($subEvent->getBookingAvailability()),
             );
 
             // For PATCH requests: use updated childcare if explicitly provided, otherwise preserve existing.
@@ -505,7 +514,7 @@ final class Event extends Offer
             $this->rebuildCalendarFromSubEvents($subEvents)
         );
 
-        $this->assertChildcareAllowed($updatedCalendar);
+        $this->assertChildcareAllowed($this->typeId, $updatedCalendar);
 
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(
@@ -517,6 +526,7 @@ final class Event extends Offer
     /**
      * Stores what the ticket sales provider answered for a reservation link, and sets its availability on the dates
      * with that link. Ignored when the link was removed, or the event deleted, while the provider was answering.
+     * A waiting list url on the booking availability replaces the one of those dates, without one they keep theirs.
      */
     public function registerReservationLink(
         Url $reservationLink,
@@ -530,9 +540,35 @@ final class Event extends Offer
 
         $this->apply(new ReservationLinkRegistered($this->eventId, $reservationLink, $identifier));
 
+        $this->updateBookingAvailabilityOfSubEvents($calendar, $reservationLink, $bookingAvailability);
+    }
+
+    public function updateBookingAvailabilityByReservationLink(
+        Url $reservationLink,
+        BookingAvailability $bookingAvailability
+    ): void {
+        $calendar = $this->calendar;
+        if (!$calendar instanceof CalendarWithSubEvents || !$this->getReservationLinks()->contains($reservationLink)) {
+            return;
+        }
+
+        $this->updateBookingAvailabilityOfSubEvents($calendar, $reservationLink, $bookingAvailability);
+    }
+
+    private function updateBookingAvailabilityOfSubEvents(
+        CalendarWithSubEvents $calendar,
+        Url $reservationLink,
+        BookingAvailability $bookingAvailability
+    ): void {
         $subEvents = array_map(
             fn (SubEvent $subEvent) => $subEvent->getBookingInfo()?->getUrl()->sameAs($reservationLink)
-                ? $subEvent->withBookingAvailability($bookingAvailability)
+                ? $subEvent->withBookingAvailability(
+                    self::applyRegisteredBookingAvailability(
+                        $subEvent->getBookingAvailability(),
+                        $bookingAvailability,
+                        $reservationLink
+                    )
+                )
                 : $subEvent,
             $calendar->getSubEvents()->toArray()
         );
@@ -553,7 +589,7 @@ final class Event extends Offer
             $calendar = self::clearOvernightStayWhenNotAllowed($this->typeId, $calendar);
         }
 
-        $this->assertChildcareAllowed($calendar);
+        $this->assertChildcareAllowed($this->typeId, $calendar);
 
         parent::updateCalendar($calendar);
     }
@@ -577,6 +613,31 @@ final class Event extends Offer
         if (!$this->sameCalendars($this->calendar, $updatedCalendar)) {
             $this->apply(new CalendarUpdated($this->eventId, $updatedCalendar));
         }
+    }
+
+    /**
+     * The waiting list url of the ticket sales provider wins. A provider without a waiting list clears a waiting list
+     * url on the host of the reservation link, since that one came from the provider, but keeps one a user entered.
+     */
+    private static function applyRegisteredBookingAvailability(
+        BookingAvailability $bookingAvailability,
+        BookingAvailability $registeredBookingAvailability,
+        Url $reservationLink
+    ): BookingAvailability {
+        $bookingAvailability = $bookingAvailability->withType($registeredBookingAvailability->getType());
+
+        if ($registeredBookingAvailability->getWaitingListUrl() !== null) {
+            return $bookingAvailability->withWaitingListUrl($registeredBookingAvailability->getWaitingListUrl());
+        }
+
+        $waitingListUrl = $bookingAvailability->getWaitingListUrl();
+        if ($waitingListUrl !== null
+            && strcasecmp($waitingListUrl->getDomain(), $reservationLink->getDomain()) === 0
+        ) {
+            return $bookingAvailability->withWaitingListUrl(null);
+        }
+
+        return $bookingAvailability;
     }
 
     /**
@@ -635,9 +696,9 @@ final class Event extends Offer
         }
     }
 
-    private function assertChildcareAllowed(Calendar $calendar): void
+    private function assertChildcareAllowed(?string $typeId, Calendar $calendar): void
     {
-        if (EventTypeResolver::isChildcareAllowed($this->typeId)) {
+        if (EventTypeResolver::isChildcareAllowed($typeId)) {
             return;
         }
 

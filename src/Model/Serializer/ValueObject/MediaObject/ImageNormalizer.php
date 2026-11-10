@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\MediaObject;
 
 use Broadway\Repository\Repository;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Media\AiGeneratedImageDescription;
+use CultuurNet\UDB3\Media\AiGeneratedImageUrl;
 use CultuurNet\UDB3\Media\MediaObject;
 use CultuurNet\UDB3\Model\ValueObject\MediaObject\Image;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -43,6 +45,15 @@ final class ImageNormalizer implements NormalizerInterface
 
         if ($image->isAiGenerated() !== null) {
             $normalized['isAiGenerated'] = $image->isAiGenerated();
+        }
+
+        if ($image->isAiGenerated() === true) {
+            $normalized['description'] = AiGeneratedImageDescription::addSuffix(
+                $normalized['description'],
+                $image->getLanguage()
+            );
+            $normalized['contentUrl'] = AiGeneratedImageUrl::addMarker($normalized['contentUrl']);
+            $normalized['thumbnailUrl'] = AiGeneratedImageUrl::addMarker($normalized['thumbnailUrl']);
         }
 
         return $normalized;

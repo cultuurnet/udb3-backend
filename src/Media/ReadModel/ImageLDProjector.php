@@ -7,6 +7,8 @@ namespace CultuurNet\UDB3\Media\ReadModel;
 use Broadway\EventHandling\EventListener;
 use CultuurNet\UDB3\EventHandling\DelegateEventHandlingToSpecificMethodTrait;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
+use CultuurNet\UDB3\Media\AiGeneratedImageDescription;
+use CultuurNet\UDB3\Media\AiGeneratedImageUrl;
 use CultuurNet\UDB3\Media\Events\MediaObjectCreated;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
@@ -55,6 +57,15 @@ final class ImageLDProjector implements EventListener
 
         if ($mediaObjectCreated->isAiGenerated() !== null) {
             $body['isAiGenerated'] = $mediaObjectCreated->isAiGenerated();
+        }
+
+        if ($mediaObjectCreated->isAiGenerated() === true) {
+            $body['description'] = AiGeneratedImageDescription::addSuffix(
+                $body['description'],
+                $mediaObjectCreated->getLanguage()
+            );
+            $body['contentUrl'] = AiGeneratedImageUrl::addMarker($body['contentUrl']);
+            $body['thumbnailUrl'] = AiGeneratedImageUrl::addMarker($body['thumbnailUrl']);
         }
 
         $jsonDocument = (new JsonDocument($id))->withAssocBody($body);

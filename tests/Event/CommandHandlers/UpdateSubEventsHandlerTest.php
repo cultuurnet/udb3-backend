@@ -520,11 +520,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new UpdateSubEvents(
                     '1',
-                    (new SubEventUpdate(1))->withBookingAvailability(
-                        new BookingAvailability(
-                            BookingAvailabilityType::Unavailable()
-                        )
-                    )
+                    (new SubEventUpdate(1))->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
                 ),
                 new CalendarUpdated(
                     '1',
@@ -572,16 +568,8 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                 ),
                 new UpdateSubEvents(
                     '1',
-                    (new SubEventUpdate(0))->withBookingAvailability(
-                        new BookingAvailability(
-                            BookingAvailabilityType::Unavailable()
-                        )
-                    ),
-                    (new SubEventUpdate(1))->withBookingAvailability(
-                        new BookingAvailability(
-                            BookingAvailabilityType::Unavailable()
-                        )
-                    )
+                    (new SubEventUpdate(0))->withBookingAvailabilityType(BookingAvailabilityType::Unavailable()),
+                    (new SubEventUpdate(1))->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
                 ),
                 new CalendarUpdated(
                     '1',
@@ -639,11 +627,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                 )
                             )
                         )
-                        ->withBookingAvailability(
-                            new BookingAvailability(
-                                BookingAvailabilityType::Unavailable()
-                            )
-                        )
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
                 ),
                 new CalendarUpdated(
                     '1',
@@ -709,11 +693,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                 )
                             )
                         )
-                        ->withBookingAvailability(
-                            new BookingAvailability(
-                                BookingAvailabilityType::Unavailable()
-                            )
-                        ),
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable()),
                     (new SubEventUpdate(1))
                         ->withStatus(
                             new Status(
@@ -724,11 +704,7 @@ final class UpdateSubEventsHandlerTest extends CommandHandlerScenarioTestCase
                                 )
                             )
                         )
-                        ->withBookingAvailability(
-                            new BookingAvailability(
-                                BookingAvailabilityType::Unavailable()
-                            )
-                        )
+                        ->withBookingAvailabilityType(BookingAvailabilityType::Unavailable())
                 ),
                 new CalendarUpdated(
                     '1',
