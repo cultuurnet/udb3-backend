@@ -88,9 +88,12 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataProjector;
 use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Place\ReadModel\RDF\PlaceJsonToTurtleConverter;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
+use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
 use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
+use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\DeleteUiTPASPlaceVoter;
+use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\UiTPAS\Validation\EventHasTicketSalesGuard;
 use CultuurNet\UDB3\User\CurrentUser;
 
@@ -472,7 +475,11 @@ final class OfferServiceProvider extends AbstractServiceProvider
             fn () => new GetHistoryRequestHandler(
                 $container->get('event_history_repository'),
                 $container->get('places_history_repository'),
-                $container->get(CurrentUser::class)->isGodUser()
+                new AnyOfVoter(
+                    $container->get('god_user_voter'),
+                    new UserPermissionVoter($container->get(UserPermissionsServiceProvider::USER_PERMISSIONS_READ_REPOSITORY))
+                ),
+                $container->get(CurrentUser::class)->getId()
             )
         );
 
