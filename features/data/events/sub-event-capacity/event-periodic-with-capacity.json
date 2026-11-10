@@ -1,0 +1,16 @@
+{
+  "mainLanguage": "nl",
+  "name": {"nl": "Tentoonstelling"},
+  "terms": [{"id": "0.0.0.0.0", "label": "Tentoonstelling", "domain": "eventtype"}],
+  "location": {"@id": "%{placeUrl}"},
+  "calendarType": "periodic",
+  "startDate": "2027-07-01T00:00:00+02:00",
+  "endDate": "2027-07-31T23:59:59+02:00",
+  "subEvent": [
+    {
+      "startDate": "2027-07-01T10:00:00+02:00",
+      "endDate": "2027-07-01T12:00:00+02:00",
+      "capacity": {"type": "Limited", "maximum": 30}
+    }
+  ]
+}
