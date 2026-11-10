@@ -5,16 +5,10 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Http\Offer;
 
 use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
-use CultuurNet\UDB3\Http\RDF\JsonToTurtleConverter;
-use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepositoryMockFactory;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
-use CultuurNet\UDB3\SampleFiles;
-use EasyRdf\Graph;
-use EasyRdf\Serialiser\Turtle;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class GetDetailRequestHandlerTest extends TestCase
@@ -25,20 +19,12 @@ class GetDetailRequestHandlerTest extends TestCase
 
     private GetDetailRequestHandler $getDetailRequestHandler;
 
-    private JsonToTurtleConverter&MockObject $placeJsonToTurtleConverter;
-
-    private JsonToTurtleConverter&MockObject $eventJsonToTurtleConverter;
-
     protected function setUp(): void
     {
         $this->mockRepositoryFactory = new OfferJsonDocumentReadRepositoryMockFactory();
-        $this->placeJsonToTurtleConverter = $this->createMock(JsonToTurtleConverter::class);
-        $this->eventJsonToTurtleConverter = $this->createMock(JsonToTurtleConverter::class);
 
         $this->getDetailRequestHandler = new GetDetailRequestHandler(
-            $this->mockRepositoryFactory->create(),
-            new TurtleResponseFactory($this->placeJsonToTurtleConverter),
-            new TurtleResponseFactory($this->eventJsonToTurtleConverter),
+            $this->mockRepositoryFactory->create()
         );
     }
 
@@ -67,10 +53,10 @@ class GetDetailRequestHandlerTest extends TestCase
     /**
      * @test
      */
-    public function it_returns_the_requested_event_turtle_if_found(): void
+    public function it_returns_json_ld_when_turtle_is_requested(): void
     {
         $eventId = 'c09b7a51-b17c-4121-b278-eef71ef04e47';
-        $uri = 'https://io.uitdatabank.dev/events/' . $eventId;
+        $this->mockEventDocument($eventId);
 
         $request = (new Psr7RequestBuilder())
             ->withUriFromString('/events/' . $eventId)
@@ -79,23 +65,12 @@ class GetDetailRequestHandlerTest extends TestCase
             ->withHeader('Accept', 'text/turtle')
             ->build('GET');
 
-        $graph = new Graph($uri);
-        $resource = $graph->resource($uri);
-        $resource->setType('cidoc:E7_Activity');
-        $resource->addLiteral('dcterms:title', ['OSLO release party']);
-        $turtle = trim((new Turtle())->serialise($graph, 'turtle'));
-
-        $this->eventJsonToTurtleConverter->expects($this->once())
-            ->method('convert')
-            ->with($eventId)
-            ->willReturn($turtle);
-
         $response = $this->getDetailRequestHandler->handle($request);
+        $decodedResponseBody = Json::decodeAssociatively($response->getBody()->getContents());
 
-        $this->assertEquals(
-            SampleFiles::read(__DIR__ . '/samples/event.ttl'),
-            $response->getBody()->getContents()
-        );
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertEquals('application/ld+json', $response->getHeaderLine('Content-Type'));
+        $this->assertArrayHasKey('@id', $decodedResponseBody);
     }
 
     /**
@@ -118,40 +93,6 @@ class GetDetailRequestHandlerTest extends TestCase
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertArrayHasKey('@id', $decodedResponseBody);
         $this->assertArrayNotHasKey('metadata', $decodedResponseBody);
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_the_requested_place_turtle_if_found(): void
-    {
-        $placeId = 'fced66fb-72e9-47c3-bde0-7494d299962b';
-        $uri = 'https://io.uitdatabank.dev/places/' . $placeId;
-
-        $request = (new Psr7RequestBuilder())
-            ->withUriFromString('/places/' . $placeId)
-            ->withRouteParameter('offerType', 'places')
-            ->withRouteParameter('offerId', $placeId)
-            ->withHeader('Accept', 'text/turtle')
-            ->build('GET');
-
-        $graph = new Graph($uri);
-        $resource = $graph->resource($uri);
-        $resource->setType('dcterms:Location');
-        $resource->addLiteral('locn:locatorName', ['Het Depot']);
-        $turtle = trim((new Turtle())->serialise($graph, 'turtle'));
-
-        $this->placeJsonToTurtleConverter->expects($this->once())
-            ->method('convert')
-            ->with($placeId)
-            ->willReturn($turtle);
-
-        $response = $this->getDetailRequestHandler->handle($request);
-
-        $this->assertEquals(
-            SampleFiles::read(__DIR__ . '/samples/place.ttl'),
-            $response->getBody()->getContents()
-        );
     }
 
     /**
