@@ -132,6 +132,34 @@ Feature: Test SubEvent capacity
     And the JSON response should not have "subEvent/1/capacity"
     And the JSON response should not have "subEvent/2/capacity"
 
+  Scenario: A copy does not take over capacities
+    Given I create an event from "events/sub-event-capacity/event-multiple-with-capacities.json" and save the "id" as "eventId"
+    When I set the JSON request payload to:
+    """
+    {
+      "calendarType": "multiple",
+      "subEvent": [
+        {
+          "startDate": "2027-08-01T10:00:00+02:00",
+          "endDate": "2027-08-01T12:00:00+02:00",
+          "capacity": {"type": "Limited", "maximum": 30, "taken": 12}
+        },
+        {
+          "startDate": "2027-08-08T10:00:00+02:00",
+          "endDate": "2027-08-08T12:00:00+02:00"
+        }
+      ]
+    }
+    """
+    And I send a POST request to "/events/%{eventId}/copies"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "url" as "copyUrl"
+    When I send a GET request to "%{copyUrl}" with parameters:
+      | embedCapacities | true |
+    Then the response status should be "200"
+    And the JSON response should not have "subEvent/0/capacity"
+    And the JSON response should not have "subEvent/1/capacity"
+
   Scenario: Cannot create a periodic event with a capacity
     When I set the JSON request payload from "events/sub-event-capacity/event-periodic-with-capacity.json"
     And I send a POST request to "/events/"

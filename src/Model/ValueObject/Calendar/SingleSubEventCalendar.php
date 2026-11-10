@@ -61,6 +61,13 @@ class SingleSubEventCalendar implements CalendarWithDateRange, CalendarWithSubEv
         return $clone;
     }
 
+    public function withoutCapacities(): CalendarWithSubEvents
+    {
+        $clone = clone $this;
+        $clone->subEvent = $this->subEvent->withCapacity(null);
+        return $clone;
+    }
+
     public function hasChildcare(): bool
     {
         return $this->subEvent->hasChildcare();

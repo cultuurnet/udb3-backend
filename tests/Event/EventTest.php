@@ -4079,6 +4079,46 @@ class EventTest extends AggregateRootScenarioTestCase
             ->then([]);
     }
 
+    /**
+     * @test
+     */
+    public function it_does_not_take_over_capacities_on_copy(): void
+    {
+        $this->scenario
+            ->when(function () {
+                $original = Event::create(
+                    self::EVENT_ID,
+                    new Language('nl'),
+                    new Title('Voorstelling'),
+                    $this->getTheaterType(),
+                    new LocationId(self::LOCATION_ID),
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-05'),
+                        $this->getSubEventWithCapacity(Capacity::unlimited(140), '2026-11-06'),
+                    ))
+                );
+                $original->getUncommittedEvents();
+
+                return $original->copy(
+                    self::COPY_EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-12'),
+                        $this->getSubEventWithCapacity(Capacity::unlimited(140), '2026-11-13'),
+                    ))
+                );
+            })
+            ->then([
+                new EventCopied(
+                    self::COPY_EVENT_ID,
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $this->getSubEventWithCapacity(null, '2026-11-12'),
+                        $this->getSubEventWithCapacity(null, '2026-11-13'),
+                    ))
+                ),
+            ]);
+    }
+
     private function getSubEventWithCapacity(?Capacity $capacity, string $date): SubEvent
     {
         return SubEvent::createAvailable(

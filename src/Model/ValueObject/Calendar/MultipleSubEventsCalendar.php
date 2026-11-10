@@ -79,6 +79,13 @@ class MultipleSubEventsCalendar implements CalendarWithDateRange, CalendarWithSu
         return $clone;
     }
 
+    public function withoutCapacities(): CalendarWithSubEvents
+    {
+        $clone = clone $this;
+        $clone->dateRanges = $this->dateRanges->withoutCapacities();
+        return $clone;
+    }
+
     public function hasChildcare(): bool
     {
         return $this->dateRanges->hasChildcare();

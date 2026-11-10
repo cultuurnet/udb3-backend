@@ -200,6 +200,10 @@ final class Event extends Offer
             throw new \RuntimeException('I refuse to copy, there are uncommitted events present.');
         }
 
+        if ($calendar instanceof CalendarWithSubEvents) {
+            $calendar = $calendar->withoutCapacities();
+        }
+
         // The copied event will have a playhead of the original event + 1
         $copy = clone $this;
 
