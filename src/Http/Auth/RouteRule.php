@@ -11,13 +11,17 @@ abstract class RouteRule
 {
     private string $pathPattern;
     private array $methods;
-    private ?string $excludeQueryParam;
+    /** @var string[] */
+    private array $excludeQueryParams;
 
-    public function __construct(string $pathPattern, array $methods, ?string $excludeGetParams = null)
+    /**
+     * @param string[] $excludeQueryParams
+     */
+    public function __construct(string $pathPattern, array $methods, array $excludeQueryParams = [])
     {
         $this->pathPattern = $pathPattern;
         $this->methods = $methods;
-        $this->excludeQueryParam = $excludeGetParams;
+        $this->excludeQueryParams = $excludeQueryParams;
     }
 
     public function matchesRequest(ServerRequestInterface $request): bool
@@ -31,10 +35,13 @@ abstract class RouteRule
             return false;
         }
 
-        if ($this->excludeQueryParam === null) {
-            return true;
+        $queryParameters = new QueryParameters($request);
+        foreach ($this->excludeQueryParams as $excludeQueryParam) {
+            if ($queryParameters->getAsBoolean($excludeQueryParam, false)) {
+                return false;
+            }
         }
 
-        return ! (new QueryParameters($request))->getAsBoolean($this->excludeQueryParam, false);
+        return true;
     }
 }

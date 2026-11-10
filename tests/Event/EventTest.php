@@ -112,6 +112,7 @@ use CultuurNet\UDB3\Event\Events\ReservationLinkRemoved;
 use CultuurNet\UDB3\Event\Events\TitleUpdated;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Calendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Capacity;
 use DateTimeImmutable;
 
 class EventTest extends AggregateRootScenarioTestCase
@@ -4425,5 +4426,253 @@ class EventTest extends AggregateRootScenarioTestCase
         );
 
         return $link === null ? $subEvent : $subEvent->withBookingInfo(new SubEventBookingInfo(new Url($link)));
+    }
+
+    /**
+     * @test
+     */
+    public function it_sets_the_capacity_via_update_sub_events(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($this->getSubEventWithCapacity(null, '2026-11-05'))),
+            ])
+            ->when(fn (Event $event) => $event->updateSubEvents(
+                (new SubEventUpdate(0))->withCapacity(Capacity::limited(30, 12))
+            ))
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-05'))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_capacity_when_a_sub_event_update_omits_it_and_changes_the_dates(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-05'))
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateSubEvents(
+                (new SubEventUpdate(0))
+                    ->withStartDate(new DateTimeImmutable('2026-11-06T10:00:00+01:00'))
+                    ->withEndDate(new DateTimeImmutable('2026-11-06T12:00:00+01:00'))
+            ))
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-06'))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_the_capacity_via_update_sub_events_with_an_unknown_capacity(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-05'))
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateSubEvents(
+                (new SubEventUpdate(0))->withCapacity(Capacity::unknown())
+            ))
+            ->then([
+                new CalendarUpdated(self::EVENT_ID, new SingleSubEventCalendar($this->getSubEventWithCapacity(null, '2026-11-05'))),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_emits_calendar_updated_when_only_the_taken_capacity_changes(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-05'))
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateSubEvents(
+                (new SubEventUpdate(0))->withCapacity(Capacity::limited(30, 13))
+            ))
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($this->getSubEventWithCapacity(Capacity::limited(30, 13), '2026-11-05'))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_emit_calendar_updated_when_the_capacity_is_unchanged(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-05'))
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateSubEvents(
+                (new SubEventUpdate(0))->withCapacity(Capacity::limited(30, 12))
+            ))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_replaces_and_clears_the_capacities_on_update_calendar(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-05'),
+                        $this->getSubEventWithCapacity(Capacity::unlimited(140), '2026-11-06'),
+                    ))
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateCalendar(
+                new MultipleSubEventsCalendar(new SubEvents(
+                    $this->getSubEventWithCapacity(Capacity::limited(40), '2026-11-05'),
+                    $this->getSubEventWithCapacity(Capacity::unknown(), '2026-11-06'),
+                ))
+            ))
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $this->getSubEventWithCapacity(Capacity::limited(40), '2026-11-05'),
+                        $this->getSubEventWithCapacity(null, '2026-11-06'),
+                    ))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_keeps_the_capacity_of_the_sub_event_with_the_same_dates_on_update_calendar(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-05'),
+                        $this->getSubEventWithCapacity(Capacity::unlimited(140), '2026-11-06'),
+                    ))
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateCalendar(
+                new MultipleSubEventsCalendar(new SubEvents(
+                    $this->getSubEventWithCapacity(null, '2026-11-05'),
+                    $this->getSubEventWithCapacity(null, '2026-11-06'),
+                    $this->getSubEventWithCapacity(null, '2026-11-07'),
+                ))
+            ))
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-05'),
+                        $this->getSubEventWithCapacity(Capacity::unlimited(140), '2026-11-06'),
+                        $this->getSubEventWithCapacity(null, '2026-11-07'),
+                    ))
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_emit_calendar_updated_when_update_calendar_omits_an_existing_capacity(): void
+    {
+        $this->scenario
+            ->given([
+                $this->getCreationEvent(),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-05'))
+                ),
+            ])
+            ->when(fn (Event $event) => $event->updateCalendar(
+                new SingleSubEventCalendar($this->getSubEventWithCapacity(null, '2026-11-05'))
+            ))
+            ->then([]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_take_over_capacities_on_copy(): void
+    {
+        $this->scenario
+            ->when(function () {
+                $original = Event::create(
+                    self::EVENT_ID,
+                    new Language('nl'),
+                    new Title('Voorstelling'),
+                    $this->getTheaterType(),
+                    new LocationId(self::LOCATION_ID),
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-05'),
+                        $this->getSubEventWithCapacity(Capacity::unlimited(140), '2026-11-06'),
+                    ))
+                );
+                $original->getUncommittedEvents();
+
+                return $original->copy(
+                    self::COPY_EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $this->getSubEventWithCapacity(Capacity::limited(30, 12), '2026-11-12'),
+                        $this->getSubEventWithCapacity(Capacity::unlimited(140), '2026-11-13'),
+                    ))
+                );
+            })
+            ->then([
+                new EventCopied(
+                    self::COPY_EVENT_ID,
+                    self::EVENT_ID,
+                    new MultipleSubEventsCalendar(new SubEvents(
+                        $this->getSubEventWithCapacity(null, '2026-11-12'),
+                        $this->getSubEventWithCapacity(null, '2026-11-13'),
+                    ))
+                ),
+            ]);
+    }
+
+    private function getSubEventWithCapacity(?Capacity $capacity, string $date): SubEvent
+    {
+        return SubEvent::createAvailable(
+            new DateRange(
+                new DateTimeImmutable($date . 'T10:00:00+01:00'),
+                new DateTimeImmutable($date . 'T12:00:00+01:00')
+            )
+        )->withCapacity($capacity);
     }
 }

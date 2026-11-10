@@ -25,6 +25,7 @@ use CultuurNet\UDB3\Model\ValueObject\Calendar\SingleSubEventCalendar;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\Status;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Capacity;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvents;
 use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
@@ -190,6 +191,12 @@ final class CalendarDenormalizer implements DenormalizerInterface
 
         if (array_key_exists('hasOvernightStay', $subEventData)) {
             $subEvent = $subEvent->withHasOvernightStay($subEventData['hasOvernightStay']);
+        }
+
+        if (isset($subEventData['capacity'])) {
+            $subEvent = $subEvent->withCapacity(
+                (new CapacityDenormalizer())->denormalize($subEventData['capacity'], Capacity::class)
+            );
         }
 
         return $subEvent;

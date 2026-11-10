@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Model\Serializer\ValueObject\Calendar;
 
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEvent;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Capacity;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
@@ -144,5 +145,72 @@ final class SubEventDenormalizerTest extends TestCase
         );
 
         $this->assertNull($subEvent->getBookingInfo());
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_the_capacity_unknown_when_absent(): void
+    {
+        $subEvent = $this->denormalizer->denormalize(
+            [
+                'startDate' => '2026-07-01T09:00:00+02:00',
+                'endDate' => '2026-07-05T17:00:00+02:00',
+            ],
+            SubEvent::class
+        );
+
+        $this->assertNull($subEvent->getCapacity());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_a_limited_capacity(): void
+    {
+        $subEvent = $this->denormalizer->denormalize(
+            [
+                'startDate' => '2026-07-01T09:00:00+02:00',
+                'endDate' => '2026-07-05T17:00:00+02:00',
+                'capacity' => ['type' => 'Limited', 'maximum' => 30, 'taken' => 12],
+            ],
+            SubEvent::class
+        );
+
+        $this->assertEquals(Capacity::limited(30, 12), $subEvent->getCapacity());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_an_unlimited_capacity(): void
+    {
+        $subEvent = $this->denormalizer->denormalize(
+            [
+                'startDate' => '2026-07-01T09:00:00+02:00',
+                'endDate' => '2026-07-05T17:00:00+02:00',
+                'capacity' => ['type' => 'Unlimited', 'taken' => 140],
+            ],
+            SubEvent::class
+        );
+
+        $this->assertEquals(Capacity::unlimited(140), $subEvent->getCapacity());
+    }
+
+    /**
+     * @test
+     */
+    public function it_denormalizes_an_empty_capacity_object_to_an_unknown_capacity(): void
+    {
+        $subEvent = $this->denormalizer->denormalize(
+            [
+                'startDate' => '2026-07-01T09:00:00+02:00',
+                'endDate' => '2026-07-05T17:00:00+02:00',
+                'capacity' => [],
+            ],
+            SubEvent::class
+        );
+
+        $this->assertTrue($subEvent->getCapacity()->isUnknown());
     }
 }

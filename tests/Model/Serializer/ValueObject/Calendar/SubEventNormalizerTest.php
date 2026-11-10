@@ -15,6 +15,7 @@ use CultuurNet\UDB3\Model\ValueObject\TimeImmutableRange;
 use DateTimeImmutable;
 use DateTimeZone;
 use CultuurNet\UDB3\Model\ValueObject\Calendar\SubEventBookingInfo;
+use CultuurNet\UDB3\Model\ValueObject\Calendar\Capacity;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use PHPUnit\Framework\TestCase;
 
@@ -288,5 +289,57 @@ final class SubEventNormalizerTest extends TestCase
         );
 
         $this->assertArrayNotHasKey('bookingInfo', $this->normalizer->normalize($subEvent));
+    }
+
+    /**
+     * @test
+     */
+    public function it_includes_a_limited_capacity(): void
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(new DateTimeImmutable('2025-03-15 10:00:00'), new DateTimeImmutable('2025-03-15 20:00:00'))
+        )->withCapacity(Capacity::limited(30, 12));
+
+        $normalized = $this->normalizer->normalize($subEvent);
+
+        $this->assertSame(['type' => 'Limited', 'maximum' => 30, 'taken' => 12], $normalized['capacity']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_includes_an_unlimited_capacity(): void
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(new DateTimeImmutable('2025-03-15 10:00:00'), new DateTimeImmutable('2025-03-15 20:00:00'))
+        )->withCapacity(Capacity::unlimited(140));
+
+        $normalized = $this->normalizer->normalize($subEvent);
+
+        $this->assertSame(['type' => 'Unlimited', 'taken' => 140], $normalized['capacity']);
+    }
+
+    /**
+     * @test
+     */
+    public function it_omits_the_capacity_when_unknown(): void
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(new DateTimeImmutable('2025-03-15 10:00:00'), new DateTimeImmutable('2025-03-15 20:00:00'))
+        );
+
+        $this->assertArrayNotHasKey('capacity', $this->normalizer->normalize($subEvent));
+    }
+
+    /**
+     * @test
+     */
+    public function it_omits_an_unknown_capacity(): void
+    {
+        $subEvent = SubEvent::createAvailable(
+            new DateRange(new DateTimeImmutable('2025-03-15 10:00:00'), new DateTimeImmutable('2025-03-15 20:00:00'))
+        )->withCapacity(Capacity::unknown());
+
+        $this->assertArrayNotHasKey('capacity', $this->normalizer->normalize($subEvent));
     }
 }

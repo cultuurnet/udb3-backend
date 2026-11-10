@@ -16,4 +16,8 @@ interface CalendarWithSubEvents extends Calendar
     public function withBookingAvailabilityOnSubEvents(BookingAvailability $bookingAvailability): CalendarWithSubEvents;
 
     public function withHasOvernightStayOnSubEvents(?bool $hasOvernightStay): CalendarWithSubEvents;
+
+    public function withCapacitiesFrom(SubEvent ...$currentSubEvents): CalendarWithSubEvents;
+
+    public function withoutCapacities(): CalendarWithSubEvents;
 }

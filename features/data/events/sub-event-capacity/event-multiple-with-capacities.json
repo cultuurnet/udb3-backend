@@ -1,0 +1,23 @@
+{
+  "mainLanguage": "nl",
+  "name": {"nl": "Workshop met beperkte plaatsen"},
+  "terms": [{"id": "0.3.1.0.0", "label": "Cursus of workshop", "domain": "eventtype"}],
+  "location": {"@id": "%{placeUrl}"},
+  "calendarType": "multiple",
+  "subEvent": [
+    {
+      "startDate": "2027-07-01T10:00:00+02:00",
+      "endDate": "2027-07-01T12:00:00+02:00",
+      "capacity": {"type": "Limited", "maximum": 30, "taken": 12}
+    },
+    {
+      "startDate": "2027-07-08T10:00:00+02:00",
+      "endDate": "2027-07-08T12:00:00+02:00",
+      "capacity": {"type": "Unlimited", "taken": 140}
+    },
+    {
+      "startDate": "2027-07-15T10:00:00+02:00",
+      "endDate": "2027-07-15T12:00:00+02:00"
+    }
+  ]
+}

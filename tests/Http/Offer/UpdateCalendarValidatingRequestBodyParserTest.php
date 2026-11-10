@@ -186,4 +186,170 @@ final class UpdateCalendarValidatingRequestBodyParserTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @test
+     * @dataProvider calendarTypesWithoutCapacityProvider
+     */
+    public function it_rejects_capacity_on_calendar_types_without_capacity(object $data): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromObject($data)
+            ->build('PUT')
+            ->withParsedBody($data);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(
+                new SchemaError('/subEvent/0/capacity', 'capacity is only allowed when calendarType is single or multiple')
+            ),
+            fn () => $this->parser->parse($request)
+        );
+    }
+
+    public function calendarTypesWithoutCapacityProvider(): array
+    {
+        $subEvent = (object)[
+            'startDate' => '2026-11-05T10:00:00+01:00',
+            'endDate' => '2026-11-05T12:00:00+01:00',
+            'capacity' => (object)['type' => 'Limited', 'maximum' => 30],
+        ];
+
+        return [
+            'periodic' => [
+                (object)[
+                    'calendarType' => 'periodic',
+                    'startDate' => '2026-11-01T00:00:00+01:00',
+                    'endDate' => '2026-11-30T23:59:59+01:00',
+                    'subEvent' => [$subEvent],
+                ],
+            ],
+            'permanent' => [
+                (object)[
+                    'calendarType' => 'permanent',
+                    'subEvent' => [$subEvent],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider calendarTypesWithCapacityProvider
+     */
+    public function it_accepts_capacity_on_calendar_types_with_capacity(object $data): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromObject($data)
+            ->build('PUT')
+            ->withParsedBody($data);
+
+        $this->expectNotToPerformAssertions();
+        $this->parser->parse($request);
+    }
+
+    public function calendarTypesWithCapacityProvider(): array
+    {
+        return [
+            'single' => [
+                (object)[
+                    'calendarType' => 'single',
+                    'subEvent' => [
+                        (object)[
+                            'startDate' => '2026-11-05T10:00:00+01:00',
+                            'endDate' => '2026-11-05T12:00:00+01:00',
+                            'capacity' => (object)['type' => 'Limited', 'maximum' => 30, 'taken' => 12],
+                        ],
+                    ],
+                ],
+            ],
+            'multiple' => [
+                (object)[
+                    'calendarType' => 'multiple',
+                    'subEvent' => [
+                        (object)[
+                            'startDate' => '2026-11-05T10:00:00+01:00',
+                            'endDate' => '2026-11-05T12:00:00+01:00',
+                            'capacity' => (object)['type' => 'Unlimited', 'taken' => 140],
+                        ],
+                        (object)[
+                            'startDate' => '2026-11-06T10:00:00+01:00',
+                            'endDate' => '2026-11-06T12:00:00+01:00',
+                            'capacity' => (object)[],
+                        ],
+                        (object)[
+                            'startDate' => '2026-11-07T10:00:00+01:00',
+                            'endDate' => '2026-11-07T12:00:00+01:00',
+                            'capacity' => (object)['type' => 'Limited', 'maximum' => 30],
+                        ],
+                        (object)[
+                            'startDate' => '2026-11-08T10:00:00+01:00',
+                            'endDate' => '2026-11-08T12:00:00+01:00',
+                            'capacity' => (object)['type' => 'Unlimited'],
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider invalidCapacityProvider
+     */
+    public function it_rejects_an_invalid_capacity(object $capacity, array $expectedErrors): void
+    {
+        $data = (object)[
+            'calendarType' => 'single',
+            'subEvent' => [
+                (object)[
+                    'startDate' => '2026-11-05T10:00:00+01:00',
+                    'endDate' => '2026-11-05T12:00:00+01:00',
+                    'capacity' => $capacity,
+                ],
+            ],
+        ];
+
+        $request = (new Psr7RequestBuilder())
+            ->withJsonBodyFromObject($data)
+            ->build('PUT')
+            ->withParsedBody($data);
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::bodyInvalidData(...$expectedErrors),
+            fn () => $this->parser->parse($request)
+        );
+    }
+
+    public function invalidCapacityProvider(): array
+    {
+        return [
+            'limited without maximum' => [
+                (object)['type' => 'Limited', 'taken' => 12],
+                [new SchemaError('/subEvent/0/capacity', 'The required properties (maximum) are missing')],
+            ],
+            'unlimited with maximum' => [
+                (object)['type' => 'Unlimited', 'maximum' => 30],
+                [new SchemaError('/subEvent/0/capacity', 'Property \'maximum\' is not allowed')],
+            ],
+            'maximum below 1' => [
+                (object)['type' => 'Limited', 'maximum' => 0],
+                [new SchemaError('/subEvent/0/capacity/maximum', 'Number must be greater than or equal to 1')],
+            ],
+            'negative taken' => [
+                (object)['type' => 'Unlimited', 'taken' => -1],
+                [new SchemaError('/subEvent/0/capacity/taken', 'Number must be greater than or equal to 0')],
+            ],
+            'unknown type' => [
+                (object)['type' => 'limited', 'maximum' => 30],
+                [new SchemaError('/subEvent/0/capacity/type', 'The data should match one item from enum')],
+            ],
+            'without type' => [
+                (object)['maximum' => 30],
+                [
+                    new SchemaError('/subEvent/0/capacity', 'The required properties (type) are missing'),
+                    new SchemaError('/subEvent/0/capacity', 'Object must have at most 0 properties, 1 found'),
+                ],
+            ],
+        ];
+    }
 }

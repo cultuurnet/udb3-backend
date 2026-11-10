@@ -782,4 +782,26 @@ class HTMLEventFormatterTest extends TestCase
 
         $this->assertEquals($expectedMediaObject, $formattedEvent['mediaObject']);
     }
+
+    /**
+     * @test
+     */
+    public function it_never_exports_the_capacity_of_the_occurrences(): void
+    {
+        $eventWithCapacity = $this->getJSONEventFromFile('event_with_capacity.json');
+
+        $this->assertEquals(
+            $this->eventFormatter->formatEvent('d1f0e71d-a9a8-4069-81fb-530134502c58', $this->withoutCapacity($eventWithCapacity)),
+            $this->eventFormatter->formatEvent('d1f0e71d-a9a8-4069-81fb-530134502c58', $eventWithCapacity)
+        );
+    }
+
+    private function withoutCapacity(string $event): string
+    {
+        $event = Json::decode($event);
+        foreach ($event->subEvent as $subEvent) {
+            unset($subEvent->capacity);
+        }
+        return Json::encode($event);
+    }
 }

@@ -40,7 +40,7 @@ class PublicRouteRuleTest extends TestCase
             ->build('GET');
 
         // Create a RouteRule instance with an excluded query parameter
-        $routeRule = new PublicRouteRule('/\/places/', ['GET'], 'embedContributors');
+        $routeRule = new PublicRouteRule('/\/places/', ['GET'], ['embedContributors']);
 
         // Test if the route matches the request considering the excluded query parameter
         $this->assertFalse($routeRule->matchesRequest($request));
@@ -53,9 +53,20 @@ class PublicRouteRuleTest extends TestCase
             ->build('GET');
 
         // Create a RouteRule instance with an excluded query parameter
-        $routeRule = new PublicRouteRule('/\/places/', ['GET'], 'embedContributors');
+        $routeRule = new PublicRouteRule('/\/places/', ['GET'], ['embedContributors']);
 
         // Test if the route matches the request considering the excluded query parameter
         $this->assertTrue($routeRule->matchesRequest($request));
+    }
+
+    public function testMatchesRequestWithAnyOfTheExcludedQueryParamsOnTrue(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('/places?embedCapacities=true')
+            ->build('GET');
+
+        $routeRule = new PublicRouteRule('/\/places/', ['GET'], ['embedContributors', 'embedCapacities']);
+
+        $this->assertFalse($routeRule->matchesRequest($request));
     }
 }

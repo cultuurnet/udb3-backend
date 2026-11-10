@@ -386,7 +386,9 @@ final class OfferServiceProvider extends AbstractServiceProvider
             fn () => new GetDetailRequestHandler(
                 $container->get(OfferJsonDocumentReadRepository::class),
                 new TurtleResponseFactory($container->get(PlaceJsonToTurtleConverter::class)),
-                new TurtleResponseFactory($container->get(EventJsonToTurtleConverter::class))
+                new TurtleResponseFactory($container->get(EventJsonToTurtleConverter::class)),
+                $container->get('offer_permission_voter'),
+                $container->get(CurrentUser::class)->getId()
             )
         );
 

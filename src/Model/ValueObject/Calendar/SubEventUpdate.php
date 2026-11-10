@@ -20,6 +20,8 @@ final class SubEventUpdate
 
     private ?bool $hasOvernightStay = null;
 
+    private ?Capacity $capacity = null;
+
     /**
      * The waiting list url is updated independently of the booking availability type, as a PATCH can leave it
      * unchanged, set it or clear it, which a BookingAvailability with or without a url can't express.
@@ -121,6 +123,18 @@ final class SubEventUpdate
     {
         $c = clone $this;
         $c->hasOvernightStay = $hasOvernightStay;
+        return $c;
+    }
+
+    public function getCapacity(): ?Capacity
+    {
+        return $this->capacity;
+    }
+
+    public function withCapacity(?Capacity $capacity): self
+    {
+        $c = clone $this;
+        $c->capacity = $capacity;
         return $c;
     }
 

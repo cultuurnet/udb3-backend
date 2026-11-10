@@ -21,6 +21,9 @@ final class SubEvent
     // Null means the API never mentioned it, which is not the same as an explicit false.
     private ?bool $hasOvernightStay = null;
 
+    // Null means the capacity is unknown.
+    private ?Capacity $capacity = null;
+
     public function __construct(
         DateRange $dateRange,
         Status $status,
@@ -75,6 +78,31 @@ final class SubEvent
         return $clone;
     }
 
+    public function withCapacity(?Capacity $capacity): self
+    {
+        $clone = clone $this;
+        $clone->capacity = $capacity;
+        return $clone;
+    }
+
+    /**
+     * Without capacity, this subEvent keeps the capacity of the current subEvent with the same dates, but only when
+     * there is exactly one such subEvent. An unknown capacity clears it.
+     */
+    public function withCapacityFrom(SubEvent ...$currentSubEvents): self
+    {
+        if ($this->capacity !== null) {
+            return $this->withCapacity($this->capacity->isUnknown() ? null : $this->capacity);
+        }
+
+        $matches = array_values(array_filter(
+            $currentSubEvents,
+            fn (SubEvent $current) => $current->getDateRange()->compare($this->dateRange) === 0
+        ));
+
+        return $this->withCapacity(count($matches) === 1 ? $matches[0]->getCapacity() : null);
+    }
+
     public function getDateRange(): DateRange
     {
         return $this->dateRange;
@@ -108,5 +136,10 @@ final class SubEvent
     public function getHasOvernightStay(): ?bool
     {
         return $this->hasOvernightStay;
+    }
+
+    public function getCapacity(): ?Capacity
+    {
+        return $this->capacity;
     }
 }

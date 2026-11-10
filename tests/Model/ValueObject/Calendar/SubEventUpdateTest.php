@@ -107,11 +107,29 @@ final class SubEventUpdateTest extends TestCase
     /**
      * @test
      */
+    public function it_has_no_capacity_by_default(): void
+    {
+        $this->assertNull((new SubEventUpdate(0))->getCapacity());
+    }
+
+    /**
+     * @test
+     */
     public function it_keeps_the_booking_availability_by_default(): void
     {
         $update = new SubEventUpdate(0);
 
         $this->assertEquals($this->getBookingAvailability(), $update->applyToBookingAvailability($this->getBookingAvailability()));
+    }
+
+    /**
+     * @test
+     */
+    public function it_can_set_the_capacity(): void
+    {
+        $update = (new SubEventUpdate(0))->withCapacity(Capacity::unlimited(140));
+
+        $this->assertEquals(Capacity::unlimited(140), $update->getCapacity());
     }
 
     /**

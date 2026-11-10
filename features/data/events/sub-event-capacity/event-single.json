@@ -1,0 +1,13 @@
+{
+  "mainLanguage": "nl",
+  "name": {"nl": "Workshop"},
+  "terms": [{"id": "0.3.1.0.0", "label": "Cursus of workshop", "domain": "eventtype"}],
+  "location": {"@id": "%{placeUrl}"},
+  "calendarType": "single",
+  "subEvent": [
+    {
+      "startDate": "2027-07-01T10:00:00+02:00",
+      "endDate": "2027-07-01T12:00:00+02:00"
+    }
+  ]
+}

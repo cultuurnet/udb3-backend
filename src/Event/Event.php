@@ -200,6 +200,10 @@ final class Event extends Offer
             throw new \RuntimeException('I refuse to copy, there are uncommitted events present.');
         }
 
+        if ($calendar instanceof CalendarWithSubEvents) {
+            $calendar = $calendar->withoutCapacities();
+        }
+
         // The copied event will have a playhead of the original event + 1
         $copy = clone $this;
 
@@ -497,6 +501,9 @@ final class Event extends Offer
 
             $updatedSubEvent = $updatedSubEvent->withHasOvernightStay($subEventUpdate->getHasOvernightStay() ?? $subEvent->getHasOvernightStay());
 
+            $capacity = $subEventUpdate->getCapacity() ?? $subEvent->getCapacity();
+            $updatedSubEvent = $updatedSubEvent->withCapacity($capacity?->isUnknown() ? null : $capacity);
+
             $subEvents[$index] = $updatedSubEvent;
         }
 
@@ -576,6 +583,9 @@ final class Event extends Offer
     {
         if ($calendar instanceof CalendarWithSubEvents) {
             self::assertOvernightStayAllowed($this->typeId, $calendar->getSubEvents()->toArray());
+            $calendar = $calendar->withCapacitiesFrom(
+                ...($this->calendar instanceof CalendarWithSubEvents ? $this->calendar->getSubEvents()->toArray() : [])
+            );
             $calendar = self::clearOvernightStayWhenNotAllowed($this->typeId, $calendar);
         }
 

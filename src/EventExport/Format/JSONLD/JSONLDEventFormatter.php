@@ -113,6 +113,8 @@ final class JSONLDEventFormatter
                 $this->addOvernightStay($eventObject);
             }
 
+            $this->removeCapacities($eventObject);
+
             // filter out base properties
             foreach ($eventObject as $propertyName => $value) {
                 if (!in_array($propertyName, $includedProperties)) {
@@ -137,6 +139,20 @@ final class JSONLDEventFormatter
 
         if ($hasOvernightStay !== null) {
             $event->hasOvernightStay = $hasOvernightStay;
+        }
+    }
+
+    /**
+     * Capacity is commercially sensitive, and an export covers events the caller is not necessarily allowed to edit.
+     */
+    private function removeCapacities(\stdClass $event): void
+    {
+        if (!isset($event->subEvent) || !is_array($event->subEvent)) {
+            return;
+        }
+
+        foreach ($event->subEvent as $subEvent) {
+            unset($subEvent->capacity);
         }
     }
 
