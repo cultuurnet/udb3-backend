@@ -18,21 +18,12 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 final class GetHistoryRequestHandler implements RequestHandlerInterface
 {
-    private DocumentRepository $eventHistoryDocumentRepository;
-    private DocumentRepository $placeHistoryDocumentRepository;
-    private PermissionVoter $permissionVoter;
-    private ?string $currentUserId;
-
     public function __construct(
-        DocumentRepository $eventHistoryDocumentRepository,
-        DocumentRepository $placeHistoryDocumentRepository,
-        PermissionVoter $permissionVoter,
-        ?string $currentUserId
+        private readonly DocumentRepository $eventHistoryDocumentRepository,
+        private readonly DocumentRepository $placeHistoryDocumentRepository,
+        private readonly PermissionVoter $permissionVoter,
+        private readonly ?string $currentUserId
     ) {
-        $this->eventHistoryDocumentRepository = $eventHistoryDocumentRepository;
-        $this->placeHistoryDocumentRepository = $placeHistoryDocumentRepository;
-        $this->permissionVoter = $permissionVoter;
-        $this->currentUserId = $currentUserId;
     }
 
     /**
