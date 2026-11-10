@@ -352,6 +352,38 @@ class EventJsonToTurtleConverterTest extends TestCase
     /**
      * @test
      */
+    public function it_does_not_convert_the_capacity_of_sub_events(): void
+    {
+        $subEvents = [
+            [
+                'startDate' => '2023-05-06T20:00:00+01:00',
+                'endDate' => '2023-05-06T23:00:00+01:00',
+            ],
+            [
+                'startDate' => '2023-05-07T20:00:00+01:00',
+                'endDate' => '2023-05-07T23:00:00+01:00',
+            ],
+        ];
+        $calendar = [
+            'calendarType' => 'multiple',
+            'startDate' => '2023-05-06T20:00:00+01:00',
+            'endDate' => '2023-05-07T23:00:00+01:00',
+        ];
+
+        $this->givenThereIsAnEvent($calendar + ['subEvent' => $subEvents]);
+        $expectedTurtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $subEvents[0]['capacity'] = ['type' => 'Limited', 'maximum' => 30, 'taken' => 12];
+        $subEvents[1]['capacity'] = ['type' => 'Unlimited', 'taken' => 140];
+        $this->givenThereIsAnEvent($calendar + ['subEvent' => $subEvents]);
+        $actualTurtle = $this->eventJsonToTurtleConverter->convert($this->eventId);
+
+        $this->assertEquals($expectedTurtle, $actualTurtle);
+    }
+
+    /**
+     * @test
+     */
     public function it_throws_on_multiple_calendar_with_missing_sub_events(): void
     {
         $this->givenThereIsAnEvent([

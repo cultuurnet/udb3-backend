@@ -1399,4 +1399,31 @@ class TabularDataEventFormatterTest extends TestCase
             ],
         ];
     }
+
+    /**
+     * @test
+     */
+    public function it_never_exports_the_capacity_of_the_occurrences(): void
+    {
+        $formatter = new TabularDataEventFormatter(
+            [],
+            $this->createMock(EventInfoServiceInterface::class),
+            $this->createMock(CalendarSummaryRepositoryInterface::class)
+        );
+        $eventWithCapacity = $this->getJSONEventFromFile('event_with_capacity.json');
+
+        $this->assertEquals(
+            $formatter->formatEvent($this->withoutCapacity($eventWithCapacity)),
+            $formatter->formatEvent($eventWithCapacity)
+        );
+    }
+
+    private function withoutCapacity(string $event): string
+    {
+        $event = Json::decode($event);
+        foreach ($event->subEvent as $subEvent) {
+            unset($subEvent->capacity);
+        }
+        return Json::encode($event);
+    }
 }

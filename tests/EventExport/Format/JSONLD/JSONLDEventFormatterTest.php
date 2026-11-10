@@ -321,4 +321,40 @@ class JSONLDEventFormatterTest extends TestCase
             $event
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_never_exports_the_capacity_of_the_occurrences(): void
+    {
+        $includedProperties = [
+            'id',
+            'subEvent',
+        ];
+        $eventWithCapacity = $this->getJSONEventFromFile('event_with_capacity.json');
+        $formatter = new JSONLDEventFormatter($includedProperties, $this->calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($eventWithCapacity);
+
+        $this->assertEquals(
+            Json::encode([
+                '@id' => 'http://culudb-silex.dev:8080/event/d1f0e71d-a9a8-4069-81fb-530134502c58',
+                'subEvent' => [
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2015-03-02T13:30:00+01:00',
+                        'endDate' => '2015-03-02T16:30:00+01:00',
+                        'status' => ['type' => 'Available'],
+                    ],
+                    [
+                        '@type' => 'Event',
+                        'startDate' => '2015-03-09T13:30:00+01:00',
+                        'endDate' => '2015-03-09T16:30:00+01:00',
+                        'status' => ['type' => 'Available'],
+                    ],
+                ],
+            ]),
+            $event
+        );
+    }
 }
