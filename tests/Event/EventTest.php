@@ -4227,7 +4227,7 @@ class EventTest extends AggregateRootScenarioTestCase
     /**
      * @test
      */
-    public function it_keeps_the_waiting_list_url_of_the_dates_when_the_provider_has_none(): void
+    public function it_keeps_a_waiting_list_url_entered_by_a_user_when_the_provider_has_none(): void
     {
         $subEvent = $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-05');
 
@@ -4255,6 +4255,38 @@ class EventTest extends AggregateRootScenarioTestCase
                             BookingAvailability::Unavailable()->withWaitingListUrl(new Url('https://www.example.com/waiting-list'))
                         )
                     )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_a_waiting_list_url_of_the_provider_when_the_provider_has_none(): void
+    {
+        $subEvent = $this->getSubEventWithLink(self::RESERVATION_LINK_A, '2026-11-05');
+        $providerWaitingListUrl = new Url('https://leuven-school-met-cultuur.ticketmatic.com/30cc/waitinglist/1001');
+
+        $this->scenario
+            ->given([
+                $this->getCreationEventWithCalendar(
+                    new SingleSubEventCalendar(
+                        $subEvent->withBookingAvailability(
+                            BookingAvailability::Available()->withWaitingListUrl($providerWaitingListUrl)
+                        )
+                    )
+                ),
+            ])
+            ->when(fn (Event $event) => $event->registerReservationLink(
+                new Url(self::RESERVATION_LINK_A),
+                'ticketmatic:30cc:1001',
+                BookingAvailability::Unavailable()
+            ))
+            ->then([
+                new ReservationLinkRegistered(self::EVENT_ID, new Url(self::RESERVATION_LINK_A), 'ticketmatic:30cc:1001'),
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($subEvent->withBookingAvailability(BookingAvailability::Unavailable()))
                 ),
             ]);
     }

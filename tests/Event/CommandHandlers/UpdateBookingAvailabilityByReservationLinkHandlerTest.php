@@ -31,7 +31,8 @@ final class UpdateBookingAvailabilityByReservationLinkHandlerTest extends Comman
 {
     private const EVENT_ID = '40021958-0ad8-46bd-8528-3ac3686818a1';
     private const RESERVATION_LINK = 'https://leuven-school-met-cultuur.ticketmatic.com/30cc/register/12345';
-    private const WAITING_LIST_URL = 'https://www.example.com/wachtlijst';
+    private const USER_WAITING_LIST_URL = 'https://www.example.com/wachtlijst';
+    private const PROVIDER_WAITING_LIST_URL = 'https://leuven-school-met-cultuur.ticketmatic.com/30cc/waitinglist/12345';
 
     protected function createCommandHandler(EventStore $eventStore, EventBus $eventBus): CommandHandler
     {
@@ -75,10 +76,10 @@ final class UpdateBookingAvailabilityByReservationLinkHandlerTest extends Comman
     /**
      * @test
      */
-    public function it_keeps_the_waiting_list_url_when_the_provider_has_none(): void
+    public function it_keeps_a_waiting_list_url_entered_by_a_user_when_the_provider_has_none(): void
     {
         $subEvent = $this->getSubEvent()->withBookingAvailability(
-            BookingAvailability::Unavailable()->withWaitingListUrl(new Url(self::WAITING_LIST_URL))
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url(self::USER_WAITING_LIST_URL))
         );
 
         $this->scenario
@@ -96,9 +97,36 @@ final class UpdateBookingAvailabilityByReservationLinkHandlerTest extends Comman
                     self::EVENT_ID,
                     new SingleSubEventCalendar(
                         $subEvent->withBookingAvailability(
-                            BookingAvailability::Available()->withWaitingListUrl(new Url(self::WAITING_LIST_URL))
+                            BookingAvailability::Available()->withWaitingListUrl(new Url(self::USER_WAITING_LIST_URL))
                         )
                     )
+                ),
+            ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_clears_a_waiting_list_url_of_the_provider_when_the_provider_has_none(): void
+    {
+        $subEvent = $this->getSubEvent()->withBookingAvailability(
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url(self::PROVIDER_WAITING_LIST_URL))
+        );
+
+        $this->scenario
+            ->withAggregateId(self::EVENT_ID)
+            ->given([$this->getEventCreated($subEvent)])
+            ->when(
+                new UpdateBookingAvailabilityByReservationLink(
+                    new Uuid(self::EVENT_ID),
+                    new Url(self::RESERVATION_LINK),
+                    BookingAvailability::Available()
+                )
+            )
+            ->then([
+                new CalendarUpdated(
+                    self::EVENT_ID,
+                    new SingleSubEventCalendar($subEvent->withBookingAvailability(BookingAvailability::Available()))
                 ),
             ]);
     }
@@ -109,10 +137,10 @@ final class UpdateBookingAvailabilityByReservationLinkHandlerTest extends Comman
     public function it_replaces_the_waiting_list_url_with_the_one_of_the_provider(): void
     {
         $subEvent = $this->getSubEvent()->withBookingAvailability(
-            BookingAvailability::Unavailable()->withWaitingListUrl(new Url(self::WAITING_LIST_URL))
+            BookingAvailability::Unavailable()->withWaitingListUrl(new Url(self::USER_WAITING_LIST_URL))
         );
         $providerAvailability = BookingAvailability::Unavailable()
-            ->withWaitingListUrl(new Url('https://leuven-school-met-cultuur.ticketmatic.com/30cc/waitinglist/12345'));
+            ->withWaitingListUrl(new Url(self::PROVIDER_WAITING_LIST_URL));
 
         $this->scenario
             ->withAggregateId(self::EVENT_ID)
