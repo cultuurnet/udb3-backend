@@ -10,6 +10,9 @@ use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\ReadModel\InMemoryDocumentRepository;
 use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\Permission\PermissionVoter;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class GetHistoryRequestHandlerTest extends TestCase
@@ -18,8 +21,14 @@ final class GetHistoryRequestHandlerTest extends TestCase
 
     private const EVENT_ID = '905dd0b7-57e2-4d0f-ad98-98070b8184a8';
     private const PLACE_ID = '09a917f5-c829-4af4-97cf-857d53c2cf0f';
+    private const USER_ID = 'c9f6ec3c-5b4e-4b1e-9d0a-3e0f3a2c1b7d';
 
     private GetHistoryRequestHandler $getHistoryRequestHandler;
+
+    /**
+     * @var PermissionVoter&MockObject
+     */
+    private $permissionVoter;
 
     protected function setUp(): void
     {
@@ -33,10 +42,16 @@ final class GetHistoryRequestHandlerTest extends TestCase
             new JsonDocument(self::PLACE_ID, Json::encode(self::getStoredHistoryData()))
         );
 
+        $this->permissionVoter = $this->createMock(PermissionVoter::class);
+        $this->permissionVoter->method('isAllowed')
+            ->with(Permission::aanbodHistoriek(), $this->anything(), self::USER_ID)
+            ->willReturn(true);
+
         $this->getHistoryRequestHandler = new GetHistoryRequestHandler(
             $eventHistoryDocumentRepository,
             $placeHistoryDocumentRepository,
-            true
+            $this->permissionVoter,
+            self::USER_ID
         );
     }
 
@@ -50,10 +65,14 @@ final class GetHistoryRequestHandlerTest extends TestCase
             ->withRouteParameter('offerId', self::EVENT_ID)
             ->build('GET');
 
+        $permissionVoter = $this->createMock(PermissionVoter::class);
+        $permissionVoter->method('isAllowed')->willReturn(false);
+
         $requestHandler = new GetHistoryRequestHandler(
             new InMemoryDocumentRepository(),
             new InMemoryDocumentRepository(),
-            false
+            $permissionVoter,
+            self::USER_ID
         );
 
         $this->assertCallableThrowsApiProblem(
@@ -72,14 +91,43 @@ final class GetHistoryRequestHandlerTest extends TestCase
             ->withRouteParameter('offerId', self::PLACE_ID)
             ->build('GET');
 
+        $permissionVoter = $this->createMock(PermissionVoter::class);
+        $permissionVoter->method('isAllowed')->willReturn(false);
+
         $requestHandler = new GetHistoryRequestHandler(
             new InMemoryDocumentRepository(),
             new InMemoryDocumentRepository(),
-            false
+            $permissionVoter,
+            self::USER_ID
         );
 
         $this->assertCallableThrowsApiProblem(
             ApiProblem::forbidden('Current user/client does not have enough permissions to access place history.'),
+            fn () => $requestHandler->handle($request)
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_an_api_problem_if_there_is_no_current_user(): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', self::EVENT_ID)
+            ->build('GET');
+
+        $this->permissionVoter->expects($this->never())->method('isAllowed');
+
+        $requestHandler = new GetHistoryRequestHandler(
+            new InMemoryDocumentRepository(),
+            new InMemoryDocumentRepository(),
+            $this->permissionVoter,
+            null
+        );
+
+        $this->assertCallableThrowsApiProblem(
+            ApiProblem::forbidden('Current user/client does not have enough permissions to access event history.'),
             fn () => $requestHandler->handle($request)
         );
     }
