@@ -18,8 +18,7 @@ Feature: Test the permissions of the history API
     Then the response status should be "403"
 
   Scenario: As a user with the AANBOD_HISTORIEK permission I can get the history of an event or a place
-    Given I remove all roles for user with id "2eaab859-fd3d-425f-9796-80eddaa2b0a6"
-    And I create a role with a random name of 10 characters
+    Given I create a role with a random name of 10 characters
     And I keep the value of the JSON response at "roleId" as "roleId"
     And I send a PUT request to "/roles/%{roleId}/permissions/AANBOD_HISTORIEK"
     And I send a PUT request to "/roles/%{roleId}/users/2eaab859-fd3d-425f-9796-80eddaa2b0a6"
@@ -29,4 +28,4 @@ Feature: Test the permissions of the history API
     When I send a GET request to "%{placeUrl}/history"
     Then the response status should be "200"
     And I am authorized as JWT provider user "centraal_beheerder"
-    And I remove all roles for user with id "2eaab859-fd3d-425f-9796-80eddaa2b0a6"
+    And I send a DELETE request to "/roles/%{roleId}"
