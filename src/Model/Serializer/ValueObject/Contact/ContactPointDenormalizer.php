@@ -9,8 +9,6 @@ use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumber;
 use CultuurNet\UDB3\Model\ValueObject\Contact\TelephoneNumbers;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddress;
 use CultuurNet\UDB3\Model\ValueObject\Web\EmailAddresses;
-use CultuurNet\UDB3\Model\ValueObject\Web\InvalidEmailAddress;
-use CultuurNet\UDB3\Model\ValueObject\Web\InvalidUrl;
 use CultuurNet\UDB3\Model\ValueObject\Web\Url;
 use CultuurNet\UDB3\Model\ValueObject\Web\Urls;
 use Symfony\Component\Serializer\Exception\UnsupportedException;
@@ -18,21 +16,6 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 class ContactPointDenormalizer implements DenormalizerInterface
 {
-    private bool $skipsInvalidEmailAndUrl = false;
-
-    /**
-     * For data from the event store or a read model, which can hold an email or url that is no longer valid.
-     * Requests and imports stay strict, because the JSON schema accepts urls that Url does not.
-     * Once the RDF read side is gone, this can move into the events that deserialize the stored data.
-     */
-    public static function forStoredData(): self
-    {
-        $denormalizer = new self();
-        $denormalizer->skipsInvalidEmailAndUrl = true;
-
-        return $denormalizer;
-    }
-
     /**
      * @inheritdoc
      */
@@ -63,38 +46,20 @@ class ContactPointDenormalizer implements DenormalizerInterface
         if (isset($data['email'])) {
             $emails = array_map(
                 function ($value) {
-                    try {
-                        return new EmailAddress($value);
-                    } catch (InvalidEmailAddress $invalidEmailAddress) {
-                        if (!$this->skipsInvalidEmailAndUrl) {
-                            throw $invalidEmailAddress;
-                        }
-
-                        return null;
-                    }
+                    return new EmailAddress($value);
                 },
                 array_filter($data['email'])
             );
-            $emails = array_filter($emails);
             $emails = count($emails) > 0 ? new EmailAddresses(...$emails) : null;
         }
 
         if (isset($data['url'])) {
             $urls = array_map(
                 function ($value) {
-                    try {
-                        return new Url($value);
-                    } catch (InvalidUrl $invalidUrl) {
-                        if (!$this->skipsInvalidEmailAndUrl) {
-                            throw $invalidUrl;
-                        }
-
-                        return null;
-                    }
+                    return new Url($value);
                 },
                 array_filter($data['url'])
             );
-            $urls = array_filter($urls);
             $urls = count($urls) > 0 ? new Urls(...$urls) : null;
         }
 

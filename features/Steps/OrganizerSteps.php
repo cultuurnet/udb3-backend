@@ -95,18 +95,6 @@ trait OrganizerSteps
     }
 
     /**
-     * @When I get the RDF of organizer with id :id
-     */
-    public function iGetTheRdfOfOrganizerWithId(string $id): void
-    {
-        $this->responseState->setResponse(
-            $this->getHttpClient()->getWithTimeout('/organizers/' . $id)
-        );
-
-        $this->theResponseStatusShouldBe(200);
-    }
-
-    /**
      * @When I delete the organizer at :url
      */
     public function iDeleteTheOrganizerAt(string $url): void

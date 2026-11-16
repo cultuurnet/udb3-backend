@@ -35,10 +35,8 @@ use CultuurNet\UDB3\Http\Organizer\UpdateLabelsRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateMainImageRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateTitleRequestHandler;
 use CultuurNet\UDB3\Http\Organizer\UpdateUrlRequestHandler;
-use CultuurNet\UDB3\Http\RDF\TurtleResponseFactory;
 use CultuurNet\UDB3\Http\Request\Body\CombinedRequestBodyParser;
 use CultuurNet\UDB3\Http\Request\Body\ImagesPropertyPolyfillRequestBodyParser;
-use CultuurNet\UDB3\Organizer\ReadModel\RDF\OrganizerJsonToTurtleConverter;
 use CultuurNet\UDB3\Security\OrganizerSecurityServiceProvider;
 use CultuurNet\UDB3\User\CurrentUser;
 use CultuurNet\UDB3\User\UserIdentityResolver;
@@ -106,10 +104,7 @@ final class OrganizerRequestHandlerServiceProvider extends AbstractServiceProvid
             GetOrganizerRequestHandler::class,
             function () use ($container) {
                 return new GetOrganizerRequestHandler(
-                    $container->get('organizer_jsonld_repository'),
-                    new TurtleResponseFactory(
-                        $container->get(OrganizerJsonToTurtleConverter::class)
-                    )
+                    $container->get('organizer_jsonld_repository')
                 );
             }
         );

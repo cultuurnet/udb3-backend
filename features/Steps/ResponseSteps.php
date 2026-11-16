@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Steps;
 use Behat\Gherkin\Node\PyStringNode;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
-use CultuurNet\UDB3\RDF\NodeUri\CRC32HashGenerator;
 
 use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
@@ -248,50 +247,6 @@ trait ResponseSteps
         );
     }
 
-    private function calculateIdentifier(string $namespace, string $localIdentifier): void
-    {
-        $this->variableState->setVariable('identifier', (new CRC32HashGenerator())->generate([
-            'generiek:naamruimte' => $namespace,
-            'generiek:lokaleIdentificator' => $this->variableState->getVariable($localIdentifier),
-        ]));
-    }
-
-    /**
-     * @Then the RDF response should match organizer projection :fileName
-     */
-    public function theRdfResponseShouldMatchOrganisationProjection(string $fileName): void
-    {
-        $this->calculateIdentifier('http://data.uitdatabank.local:80/organizers/', 'organizerId');
-        assertEquals(
-            $this->removeRandomness($this->fixtures->loadTurtle($fileName, $this->variableState)),
-            $this->removeRandomness($this->responseState->getContent())
-        );
-    }
-
-    /**
-     * @Then the RDF response should match event projection :fileName
-     */
-    public function theRdfResponseShouldMatchEventProjection(string $fileName): void
-    {
-        $this->calculateIdentifier('http://data.uitdatabank.local:80/events/', 'eventId');
-        assertEquals(
-            $this->removeRandomness($this->fixtures->loadTurtle($fileName, $this->variableState)),
-            $this->removeRandomness($this->responseState->getContent())
-        );
-    }
-
-    /**
-     * @Then the RDF response should match place projection :fileName
-     */
-    public function theRdfResponseShouldMatchPlaceProjection(string $fileName): void
-    {
-        $this->calculateIdentifier('http://data.uitdatabank.local:80/places/', 'placeId');
-        assertEquals(
-            $this->removeRandomness($this->fixtures->loadTurtle($fileName, $this->variableState)),
-            $this->removeRandomness($this->responseState->getContent())
-        );
-    }
-
     /**
      * @Then the JSON response at :jsonPath is an online location
      */
@@ -310,59 +265,5 @@ trait ResponseSteps
     public function showMeTheUnparsedResponse(): void
     {
         echo $this->responseState->getContent();
-    }
-
-    private function removeRandomness(string $value): string
-    {
-        $value = $this->removeDates($value);
-        $value = $this->removeGeocodedCoordinates($value);
-        return $this->removeRuimteTijdIdentifier($value);
-    }
-
-    /**
-     * Google moves the point it returns for an address over time, and the geometry id is a hash of that point.
-     */
-    private function removeGeocodedCoordinates(string $value): string
-    {
-        $value = preg_replace('/#geometry-[0-9a-f]+/', '#geometry', $value);
-        return preg_replace('/<gml:coordinates>[^<]*<\/gml:coordinates>/', '<gml:coordinates></gml:coordinates>', $value);
-    }
-
-    private function removeDates(string $value): string
-    {
-        $datePattern = '/(?<=dcterms:created\s|dcterms:modified\s)"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\+\d{2}:\d{2}"/';
-        return preg_replace($datePattern, '""', $value);
-    }
-
-    private function removeRuimteTijdIdentifier(string $value): string
-    {
-        $identifierPattern = '/e92_Spacetime_Volume-[^>]+/';
-        return preg_replace($identifierPattern, 'e92_Spacetime_Volume>', $value);
-    }
-
-    /**
-     * @Then I calculate the image hash with description :description, copyright :copyrightHolder and language :language for :imageId as :hashKey
-     */
-    public function iCalculateTheImageHashWith(
-        string $description,
-        string $copyrightHolder,
-        string $language,
-        string $imageId,
-        string $hashKey
-    ): void {
-        $imageId = $imageId;
-
-        $data = [
-            '@id' => 'http://io.uitdatabank.local:80/images/' . $imageId,
-            '@type' => 'schema:ImageObject',
-            'id' => $imageId,
-            'contentUrl' => 'https://images.uitdatabank.dev/' . $imageId . '.jpeg',
-            'thumbnailUrl' => 'https://images.uitdatabank.dev/' . $imageId . '.jpeg',
-            'description' => $description,
-            'copyrightHolder' => $copyrightHolder,
-            'inLanguage' => $language,
-        ];
-
-        $this->variableState->setVariable($hashKey, (new CRC32HashGenerator())->generate($data));
     }
 }

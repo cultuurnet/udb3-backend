@@ -3,7 +3,7 @@ Feature: Test departure places in search results
 
   Background:
     Given I am using the UDB3 base URL
-    And I am authorized with an OAuth client access token for "boa_client"
+    And I am authorized with an OAuth client access token for "test_client"
     And I send and accept "application/json"
     And I create a minimal place and save the "url" as "placeUrl"
 
@@ -13,7 +13,7 @@ Feature: Test departure places in search results
     And I create a minimal place and save the "url" as "departurePlaceUrl2"
     And I create an event from "events/departure-places/event-with-2-departure-places.json" and save the "id" as "eventId"
     And I publish the event at "/events/%{eventId}"
-    And I am using a x-client-id header for client "boa_client"
+    And I am using a x-client-id header for client "test_client"
     And I wait for the place with url "%{departurePlaceUrl1}" to be indexed
     And I wait for the place with url "%{departurePlaceUrl2}" to be indexed
     And I wait for the place with url "%{placeUrl}" to be indexed
@@ -49,7 +49,7 @@ Feature: Test departure places in search results
     ["%{departurePlaceUrl2}", "%{departurePlaceUrl4}"]
     """
     And I send a PUT request to "/events/%{eventId2}/departure-places/"
-    And I am using a x-client-id header for client "boa_client"
+    And I am using a x-client-id header for client "test_client"
     And I wait for the place with url "%{departurePlaceUrl1}" to be indexed
     And I wait for the place with url "%{departurePlaceUrl2}" to be indexed
     And I wait for the place with url "%{departurePlaceUrl3}" to be indexed
@@ -106,7 +106,7 @@ Feature: Test departure places in search results
     ["%{departurePlaceUrl2}"]
     """
     And I send a PUT request to "/events/%{eventId2}/departure-places/"
-    And I am using a x-client-id header for client "boa_client"
+    And I am using a x-client-id header for client "test_client"
     And I wait for the place with url "%{departurePlaceUrl1}" to be indexed
     And I wait for the place with url "%{departurePlaceUrl2}" to be indexed
     And I wait for the place with url "%{placeUrl}" to be indexed
@@ -138,7 +138,7 @@ Feature: Test departure places in search results
     ["%{departurePlaceUrl1}"]
     """
     And I send a PUT request to "/events/%{eventId2}/departure-places/"
-    And I am using a x-client-id header for client "boa_client"
+    And I am using a x-client-id header for client "test_client"
     And I wait for the place with url "%{departurePlaceUrl1}" to be indexed
     And I wait for the place with url "%{departurePlaceUrl2}" to be indexed
     And I wait for the place with url "%{placeUrl}" to be indexed

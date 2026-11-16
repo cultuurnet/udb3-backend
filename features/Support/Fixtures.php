@@ -20,12 +20,6 @@ final class Fixtures
         return $this->loadJson($filename, $variableState);
     }
 
-    public function loadTurtle(string $filename, VariableState $variableState): string
-    {
-        $turtle = file_get_contents(__DIR__ . '/../data/' . $filename);
-        return $variableState->replaceVariables($turtle);
-    }
-
     public function loadMail(string $mailType, VariableState $variableState): string
     {
         $mail = file_get_contents(__DIR__ . '/../data/mails/' . $mailType . '.txt');
