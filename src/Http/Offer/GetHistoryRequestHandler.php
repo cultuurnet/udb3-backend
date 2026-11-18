@@ -10,24 +10,20 @@ use CultuurNet\UDB3\Http\Response\JsonResponse;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\ReadModel\DocumentRepository;
+use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Security\Permission\PermissionVoter;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class GetHistoryRequestHandler implements RequestHandlerInterface
 {
-    private DocumentRepository $eventHistoryDocumentRepository;
-    private DocumentRepository $placeHistoryDocumentRepository;
-    private bool $currentUserIsGodUser;
-
     public function __construct(
-        DocumentRepository $eventHistoryDocumentRepository,
-        DocumentRepository $placeHistoryDocumentRepository,
-        bool $currentUserIsGodUser
+        private readonly DocumentRepository $eventHistoryDocumentRepository,
+        private readonly DocumentRepository $placeHistoryDocumentRepository,
+        private readonly PermissionVoter $permissionVoter,
+        private readonly ?string $currentUserId
     ) {
-        $this->eventHistoryDocumentRepository = $eventHistoryDocumentRepository;
-        $this->placeHistoryDocumentRepository = $placeHistoryDocumentRepository;
-        $this->currentUserIsGodUser = $currentUserIsGodUser;
     }
 
     /**
@@ -39,7 +35,7 @@ final class GetHistoryRequestHandler implements RequestHandlerInterface
         $offerType = $routeParameters->getOfferType();
         $offerId = $routeParameters->getOfferId();
 
-        if (!$this->currentUserIsGodUser) {
+        if (!$this->currentUserHasAccess($offerId)) {
             throw ApiProblem::forbidden(
                 sprintf(
                     'Current user/client does not have enough permissions to access %s history.',
@@ -74,6 +70,15 @@ final class GetHistoryRequestHandler implements RequestHandlerInterface
         );
 
         return new JsonResponse($history, 200);
+    }
+
+    private function currentUserHasAccess(string $offerId): bool
+    {
+        if ($this->currentUserId === null) {
+            return false;
+        }
+
+        return $this->permissionVoter->isAllowed(Permission::aanbodHistoriek(), $offerId, $this->currentUserId);
     }
 
     private function getDocumentRepository(OfferType $offerType): DocumentRepository
