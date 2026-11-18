@@ -73,11 +73,11 @@ class Sapi3RoleConstraintVoterTest extends TestCase
             ->expects($this->once())
             ->method('sendRequest')
             ->with($this->callback(function (RequestInterface $request) use ($query): bool {
-                $this->assertEquals('POST', $request->getMethod());
-                $this->assertEquals('http://udb-search.dev/offers/', (string) $request->getUri());
-                $this->assertEquals('text/plain', $request->getHeaderLine('Content-Type'));
-                $this->assertEquals('cf462083-7bbd-46fc-95c3-6a0bc95918a5', $request->getHeaderLine('X-Api-Key'));
-                $this->assertEquals(
+                $this->assertSame('POST', $request->getMethod());
+                $this->assertSame('http://udb-search.dev/offers/', (string) $request->getUri());
+                $this->assertSame('text/plain', $request->getHeaderLine('Content-Type'));
+                $this->assertSame('cf462083-7bbd-46fc-95c3-6a0bc95918a5', $request->getHeaderLine('X-Api-Key'));
+                $this->assertSame(
                     'q=' . urlencode($query) . '&start=0&limit=1&disableDefaultFilters=1',
                     (string) $request->getBody()
                 );
@@ -85,7 +85,7 @@ class Sapi3RoleConstraintVoterTest extends TestCase
             }))
             ->willReturn($response);
 
-        $this->assertEquals(
+        $this->assertSame(
             $expected,
             $this->roleConstraintVoter->isAllowed(
                 $permission,
