@@ -98,7 +98,7 @@ final class Sapi3RoleConstraintVoter implements PermissionVoter
 
         $queryParameters += $this->queryParameters;
 
-        $queryParameters = http_build_query($queryParameters);
+        $body = http_build_query($queryParameters);
 
         $headers = ['Content-Type' => 'text/plain'];
 
@@ -110,7 +110,7 @@ final class Sapi3RoleConstraintVoter implements PermissionVoter
             'POST',
             (string) $this->searchLocation,
             $headers,
-            $queryParameters
+            $body
         );
 
         $response = $this->httpClient->sendRequest($request);
