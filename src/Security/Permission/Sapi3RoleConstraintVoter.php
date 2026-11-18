@@ -100,18 +100,17 @@ final class Sapi3RoleConstraintVoter implements PermissionVoter
 
         $queryParameters = http_build_query($queryParameters);
 
-        $headers = [];
+        $headers = ['Content-Type' => 'text/plain'];
 
         if ($this->apiKey) {
             $headers['X-Api-Key'] = $this->apiKey;
         }
 
-        $url = $this->searchLocation->withQuery($queryParameters);
-
         $request = new Request(
-            'GET',
-            (string) $url,
-            $headers
+            'POST',
+            (string) $this->searchLocation,
+            $headers,
+            $queryParameters
         );
 
         $response = $this->httpClient->sendRequest($request);
