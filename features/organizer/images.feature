@@ -457,6 +457,34 @@ Feature: Test organizer images property
     "https://images.uitdatabank.dev/%{imageId1}.jpeg"
     """
 
+  Scenario: The AI generated suffix is removed from the organizer image description when it is sent back with isAiGenerated false
+    Given I create an organizer from "organizers/organizer-with-images.json" and save the "url" as "organizerUrl"
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "isAiGenerated": true
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/description" should be "logo (Gegenereerd met AI)"
+
+    When I set the JSON request payload to:
+    """
+    [{
+      "id":"%{imageId1}",
+      "description": "logo (Gegenereerd met AI)",
+      "isAiGenerated": false
+    }]
+    """
+    And I send a PATCH request to "%{organizerUrl}/images"
+    Then the response status should be "204"
+    When I get the organizer at "%{organizerUrl}"
+    Then the JSON response at "images/0/description" should be "logo"
+    And the JSON response at "images/0/isAiGenerated" should be "false"
+
   Scenario: The next image becomes the main image when an AI generated main image is removed from an organizer
     Given I set the form data properties to:
       | description     | ai logo |

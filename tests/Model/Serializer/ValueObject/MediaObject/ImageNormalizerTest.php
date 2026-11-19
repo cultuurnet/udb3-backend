@@ -90,6 +90,22 @@ final class ImageNormalizerTest extends TestCase
     /**
      * @test
      */
+    public function it_removes_the_ai_generated_suffix_when_the_image_is_not_ai_generated(): void
+    {
+        $image = new Image(
+            new Uuid('03789a2f-5063-4062-b7cb-95a0a2280d92'),
+            new Language('nl'),
+            new Description('Beschrijving (Gegenereerd met AI)'),
+            new CopyrightHolder('publiq'),
+            false
+        );
+
+        $this->assertSame('Beschrijving', $this->imageNormalizer->normalize($image)['description']);
+    }
+
+    /**
+     * @test
+     */
     public function it_denormalizes_ai_generated(): void
     {
         $data = [

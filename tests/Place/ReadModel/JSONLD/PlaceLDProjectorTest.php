@@ -754,6 +754,46 @@ class PlaceLDProjectorTest extends OfferLDProjectorTestBase
     /**
      * @test
      */
+    public function it_removes_the_ai_generated_suffix_when_editing_an_image_to_not_ai_generated(): void
+    {
+        $id = 'foo';
+        $eventClass = $this->getEventClass('ImageUpdated');
+        $imageUpdated = new $eventClass(
+            $id,
+            'de305d54-75b4-431b-adb2-eb6b9e546014',
+            'Some description. (Generated with AI)',
+            'Dirk Dirkington',
+            null,
+            false
+        );
+
+        $this->documentRepository->save(new JsonDocument(
+            $id,
+            Json::encode([
+                'mediaObject' => [
+                    [
+                        '@id' => 'http://example.com/entity/de305d54-75b4-431b-adb2-eb6b9e546014',
+                        '@type' => 'schema:ImageObject',
+                        'contentUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
+                        'thumbnailUrl' => 'http://foo.bar/media/de305d54-75b4-431b-adb2-eb6b9e546014.ai.png',
+                        'description' => 'Some description. (Generated with AI)',
+                        'copyrightHolder' => 'Dirk Dirkington',
+                        'inLanguage' => 'en',
+                        'isAiGenerated' => true,
+                    ],
+                ],
+            ])
+        ));
+
+        $body = $this->project($imageUpdated, $id, null, $this->recordedOn->toBroadwayDateTime());
+
+        $this->assertFalse($body->mediaObject[0]->isAiGenerated);
+        $this->assertSame('Some description.', $body->mediaObject[0]->description);
+    }
+
+    /**
+     * @test
+     */
     public function it_projects_the_updating_of_major_info(): void
     {
         $id = 'foo';
