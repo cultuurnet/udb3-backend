@@ -608,6 +608,35 @@ Feature: Test event images property
     "https://images.uitdatabank.dev/%{imageId1}.jpeg"
     """
 
+  Scenario: The AI generated suffix is removed from the image description when it is sent back with isAiGenerated false
+    Given I create an event from "events/event-with-images.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "logo",
+      "copyrightHolder": "me",
+      "isAiGenerated": true
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject/0/description" should be "logo (Gegenereerd met AI)"
+
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "logo (Gegenereerd met AI)",
+      "copyrightHolder": "me",
+      "isAiGenerated": false
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject/0/description" should be "logo"
+    And the JSON response at "mediaObject/0/isAiGenerated" should be "false"
+
   Scenario: The next image becomes the main image when an AI generated main image is removed from an event
     Given I set the form data properties to:
       | description     | ai logo |
