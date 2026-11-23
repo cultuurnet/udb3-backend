@@ -9,7 +9,7 @@ use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use CultuurNet\UDB3\Search\CalendarSummaryService;
 use RuntimeException;
 
-final readonly class Sapi3CalendarSummaryRepository implements CalendarSummaryRepositoryInterface
+final readonly class CalendarSummaryServiceRepository implements CalendarSummaryRepositoryInterface
 {
     public function __construct(private CalendarSummaryService $calendarSummaryService)
     {

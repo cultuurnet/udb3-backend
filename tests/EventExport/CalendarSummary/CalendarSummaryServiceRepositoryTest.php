@@ -12,19 +12,19 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
-final class Sapi3CalendarSummaryRepositoryTest extends TestCase
+final class CalendarSummaryServiceRepositoryTest extends TestCase
 {
     private const EVENT_ID = '24b87f88-d380-4746-ad40-044a007ec4c9';
 
     private CalendarSummaryService&MockObject $calendarSummaryService;
 
-    private Sapi3CalendarSummaryRepository $repository;
+    private CalendarSummaryServiceRepository $repository;
 
     protected function setUp(): void
     {
         $this->calendarSummaryService = $this->createMock(CalendarSummaryService::class);
 
-        $this->repository = new Sapi3CalendarSummaryRepository($this->calendarSummaryService);
+        $this->repository = new CalendarSummaryServiceRepository($this->calendarSummaryService);
     }
 
     /**

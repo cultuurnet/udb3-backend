@@ -8,7 +8,7 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\EventExport\CalendarSummary\Sapi3CalendarSummaryRepository;
+use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryServiceRepository;
 use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\EventExport\EventExportCommandHandler;
 use CultuurNet\UDB3\EventExport\EventExportService;
@@ -120,7 +120,7 @@ final class ExportServiceProvider extends AbstractServiceProvider
                 $eventExportCommandHandler = new EventExportCommandHandler(
                     $container->get('event_export_service'),
                     $container->get('config')['prince']['binary'],
-                    new Sapi3CalendarSummaryRepository($container->get(CalendarSummaryService::class)),
+                    new CalendarSummaryServiceRepository($container->get(CalendarSummaryService::class)),
                     $eventInfoService,
                     $container->get('event_export_twig_environment'),
                     new DeparturePlaceResolver($container->get('place_jsonld_cache')),
