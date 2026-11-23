@@ -66,7 +66,7 @@ final class Sapi3CalendarSummaryRepositoryTest extends TestCase
 
     /**
      * @test
-     * @dataProvider unavailableResponseProvider
+     * @dataProvider unavailableResponse
      */
     public function it_throws_summary_unavailable_when_the_search_api_has_no_summary(int $statusCode): void
     {
@@ -77,7 +77,7 @@ final class Sapi3CalendarSummaryRepositoryTest extends TestCase
         $this->repository->get(self::EVENT_ID, ContentType::plain(), Format::md());
     }
 
-    public function unavailableResponseProvider(): array
+    public function unavailableResponse(): array
     {
         return [
             'not found' => [404],
