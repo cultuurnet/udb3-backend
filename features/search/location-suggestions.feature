@@ -46,6 +46,15 @@ Feature: Test the location suggestions for search on route
       | typed                    | first suggestion                         |
       | lentedreef               | Lentedreef, 8930 Menen                   |
 
+    Scenarios: A municipality whose name is typed comes first, in any of its languages
+      | typed                    | first suggestion                         |
+      | leuven                   | Leuven                                   |
+      | gand                     | Gent                                     |
+
+    Scenarios: Of the municipalities and streets that start with what is typed, the one with the most addresses comes first
+      | typed                    | first suggestion                         |
+      | ant                      | Antwerpen                                |
+
   Scenario: Without a number no house numbers are suggested
     When I send a GET request to "/location-suggestions" with parameters:
       | q | lentedreef |
@@ -71,6 +80,16 @@ Feature: Test the location suggestions for search on route
     And the JSON response at "member/0/searchFilter" should be:
     """
     { "coordinates": "50.88154,4.71359" }
+    """
+
+  Scenario: A municipality has its region as search filter
+    When I send a GET request to "/location-suggestions" with parameters:
+      | q | leuven |
+    Then the response status should be "200"
+    And the JSON response at "member/0/type" should be "municipality"
+    And the JSON response at "member/0/searchFilter" should be:
+    """
+    { "regions": ["nis-24062"] }
     """
 
   Scenario: Typed text is required
