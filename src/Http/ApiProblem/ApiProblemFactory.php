@@ -7,7 +7,6 @@ namespace CultuurNet\UDB3\Http\ApiProblem;
 use Broadway\Repository\AggregateNotFoundException;
 use CultureFeed_Exception;
 use CultureFeed_HttpException;
-use CultuurNet\CalendarSummaryV3\FormatterException;
 use CultuurNet\UDB3\ApiGuard\Request\RequestAuthenticationException;
 use CultuurNet\UDB3\Calendar\EndDateCanNotBeEarlierThanStartDate;
 use CultuurNet\UDB3\Deserializer\DataValidationException;
@@ -117,7 +116,6 @@ final class ApiProblemFactory
             case $e instanceof MissingValueException:
             case $e instanceof ChangeNotAllowedByTicketSales:
             case $e instanceof JsonException:
-            case $e instanceof FormatterException:
             case $e instanceof EventCannotBeAddedToProduction:
             case $e instanceof EventCannotBeRemovedFromProduction:
             case $e instanceof EndDateCanNotBeEarlierThanStartDate:
