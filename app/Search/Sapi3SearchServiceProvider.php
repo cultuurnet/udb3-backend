@@ -17,7 +17,7 @@ final class Sapi3SearchServiceProvider extends AbstractServiceProvider
             EventsSapi3SearchService::class,
             PlacesSapi3SearchService::class,
             OrganizersSapi3SearchService::class,
-            Sapi3CalendarSummaryService::class,
+            CalendarSummaryService::class,
         ];
     }
 
@@ -54,8 +54,8 @@ final class Sapi3SearchServiceProvider extends AbstractServiceProvider
         );
 
         $container->addShared(
-            Sapi3CalendarSummaryService::class,
-            fn () => new Sapi3CalendarSummaryService(
+            CalendarSummaryService::class,
+            fn (): CalendarSummaryService => new Sapi3CalendarSummaryService(
                 new Uri($container->get('config')['search']['v3']['base_url']),
                 new Client([
                     'connect_timeout' => $container->get('config')['search']['v3']['connect_timeout'] ?? 2,

@@ -6,6 +6,8 @@ namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use GuzzleHttp\Exception\ConnectException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -123,6 +125,20 @@ final class Sapi3CalendarSummaryServiceTest extends TestCase
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage('Search API returned HTTP status 500');
+
+        $this->service->get(OfferType::event(), self::OFFER_ID, []);
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_search_api_cannot_be_reached(): void
+    {
+        $this->httpClient->method('sendRequest')
+            ->willThrowException(new ConnectException('Connection refused', new Request('GET', '/')));
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Could not reach the Search API');
 
         $this->service->get(OfferType::event(), self::OFFER_ID, []);
     }

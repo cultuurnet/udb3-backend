@@ -8,18 +8,15 @@ use CultuurNet\UDB3\Http\ApiProblem\ApiProblem;
 use CultuurNet\UDB3\Http\Request\RouteParameters;
 use CultuurNet\UDB3\Http\Response\HtmlResponse;
 use CultuurNet\UDB3\Http\Response\PlainTextResponse;
-use CultuurNet\UDB3\Search\Sapi3CalendarSummaryService;
+use CultuurNet\UDB3\Search\CalendarSummaryService;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 
 final class GetCalendarSummaryRequestHandler implements RequestHandlerInterface
 {
-    private Sapi3CalendarSummaryService $calendarSummaryService;
-
-    public function __construct(Sapi3CalendarSummaryService $calendarSummaryService)
+    public function __construct(private readonly CalendarSummaryService $calendarSummaryService)
     {
-        $this->calendarSummaryService = $calendarSummaryService;
     }
 
     /**

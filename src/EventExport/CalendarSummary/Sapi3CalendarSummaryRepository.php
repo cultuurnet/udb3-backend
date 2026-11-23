@@ -6,13 +6,12 @@ namespace CultuurNet\UDB3\EventExport\CalendarSummary;
 
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
-use CultuurNet\UDB3\Search\Sapi3CalendarSummaryService;
-use Psr\Http\Client\ClientExceptionInterface;
+use CultuurNet\UDB3\Search\CalendarSummaryService;
 use RuntimeException;
 
 final readonly class Sapi3CalendarSummaryRepository implements CalendarSummaryRepositoryInterface
 {
-    public function __construct(private Sapi3CalendarSummaryService $calendarSummaryService)
+    public function __construct(private CalendarSummaryService $calendarSummaryService)
     {
     }
 
@@ -33,7 +32,7 @@ final readonly class Sapi3CalendarSummaryRepository implements CalendarSummaryRe
                     'timezone' => 'Europe/Brussels',
                 ]
             );
-        } catch (DocumentDoesNotExist|RuntimeException|ClientExceptionInterface $exception) {
+        } catch (DocumentDoesNotExist|RuntimeException $exception) {
             throw new SummaryUnavailableException(
                 'No calendar summary available for event ' . $eventId . ': ' . $exception->getMessage(),
                 0,
