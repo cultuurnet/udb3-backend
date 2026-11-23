@@ -55,6 +55,16 @@ Feature: Test the location suggestions for search on route
     And the JSON response should have "member/0/geo/latitude"
     And the JSON response should have "member/0/geo/longitude"
 
+  Scenario: A suggestion has a search filter to pass to Search API 3, without the distance
+    When I send a GET request to "/location-suggestions" with parameters:
+      | q | martelarenplein 12 |
+    Then the response status should be "200"
+    And the JSON response at "member/0/label" should be "Martelarenplein 12, 3000 Leuven"
+    And the JSON response at "member/0/searchFilter" should be:
+    """
+    { "coordinates": "50.88154,4.71359" }
+    """
+
   Scenario: Typed text is required
     When I send a GET request to "/location-suggestions"
     Then the response status should be "404"
