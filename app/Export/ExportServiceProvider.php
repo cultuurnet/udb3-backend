@@ -40,6 +40,7 @@ final class ExportServiceProvider extends AbstractServiceProvider
             'event_export_twig_environment',
             'event_export_service',
             'event_export_command_handler',
+            CalendarSummaryServiceRepository::class,
             ExportEventsAsJsonLdRequestHandler::class,
             ExportEventsAsOoXmlRequestHandler::class,
             ExportEventsAsPdfRequestHandler::class,
@@ -100,9 +101,18 @@ final class ExportServiceProvider extends AbstractServiceProvider
                         null,
                         (int) ($container->get('config')['export']['page_size'] ?? 100)
                     ),
-                    $container->get('config')['export']['max_items']
+                    $container->get('config')['export']['max_items'],
+                    $container->get(CalendarSummaryServiceRepository::class)
                 );
             }
+        );
+
+        // Shared, so the export service prefetches the summaries the command handler's file formats use.
+        $container->addShared(
+            CalendarSummaryServiceRepository::class,
+            fn (): CalendarSummaryServiceRepository => new CalendarSummaryServiceRepository(
+                $container->get(CalendarSummaryService::class)
+            )
         );
 
         $container->addShared(
@@ -120,7 +130,7 @@ final class ExportServiceProvider extends AbstractServiceProvider
                 $eventExportCommandHandler = new EventExportCommandHandler(
                     $container->get('event_export_service'),
                     $container->get('config')['prince']['binary'],
-                    new CalendarSummaryServiceRepository($container->get(CalendarSummaryService::class)),
+                    $container->get(CalendarSummaryServiceRepository::class),
                     $eventInfoService,
                     $container->get('event_export_twig_environment'),
                     new DeparturePlaceResolver($container->get('place_jsonld_cache')),

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryPrefetcher;
 use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -25,6 +26,9 @@ use Psr\Log\NullLogger;
 
 final class EventExportService implements EventExportServiceInterface
 {
+    // Small enough to keep the id query of one Search API request well below URL length limits.
+    private const CALENDAR_SUMMARY_BATCH_SIZE = 100;
+
     private DocumentRepository $eventRepository;
 
     private ItemIdentifierFactory $itemIdentifierFactory;
@@ -52,7 +56,8 @@ final class EventExportService implements EventExportServiceInterface
         IriGeneratorInterface $iriGenerator,
         NotificationMailerInterface $mailer,
         ResultsGeneratorInterface $resultsGenerator,
-        int $maxAmountOfItems
+        int $maxAmountOfItems,
+        private readonly ?CalendarSummaryPrefetcher $calendarSummaryPrefetcher = null
     ) {
         $this->eventRepository = $eventRepository;
         $this->itemIdentifierFactory = $itemIdentifierFactory;
@@ -166,7 +171,7 @@ final class EventExportService implements EventExportServiceInterface
             $tmpPath = "{$tmpDir}/{$tmpFileName}";
 
             $fileWriter = $fileFormat->getWriter();
-            $fileWriter->write($tmpPath, $events);
+            $fileWriter->write($tmpPath, $this->prefetchCalendarSummaries($events));
 
             $finalPath = $this->getFinalFilePath($fileFormat, $tmpPath);
 
@@ -202,6 +207,43 @@ final class EventExportService implements EventExportServiceInterface
 
             throw $e;
         }
+    }
+
+    /**
+     * Announces every batch of events before they are written, so their calendar summaries are fetched together.
+     */
+    private function prefetchCalendarSummaries(Generator $events): Generator
+    {
+        if ($this->calendarSummaryPrefetcher === null) {
+            yield from $events;
+            return;
+        }
+
+        $batch = [];
+        foreach ($events as $key => $event) {
+            $batch[$key] = $event;
+            if (count($batch) === self::CALENDAR_SUMMARY_BATCH_SIZE) {
+                yield from $this->prefetchBatch($batch);
+                $batch = [];
+            }
+        }
+        yield from $this->prefetchBatch($batch);
+    }
+
+    /**
+     * @param array<string, string> $batch events by id or IRI
+     */
+    private function prefetchBatch(array $batch): Generator
+    {
+        if ($batch === [] || $this->calendarSummaryPrefetcher === null) {
+            return;
+        }
+
+        $this->calendarSummaryPrefetcher->prefetch(
+            array_map(static fn ($key): string => basename((string) $key), array_keys($batch))
+        );
+
+        yield from $batch;
     }
 
     private function getEventsAsJSONLD(array $eventIris, LoggerInterface $logger): Generator
