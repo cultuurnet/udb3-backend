@@ -1,4 +1,4 @@
-@api @events
+@api @events @sapi3
 Feature: Test calendar summary on events
 
   Background:
@@ -8,6 +8,7 @@ Feature: Test calendar summary on events
     And I send and accept "application/json"
     And I create a place from "places/place.json" and save the "url" as "placeUrl"
     And I create an event from "events/event-with-eventtype-lessenreeks.json" and save the "url" as "eventUrl"
+    And I wait for the event with url "%{eventUrl}" to be indexed
 
   Scenario: Get the calendar summary of an event
     Given I am not authorized

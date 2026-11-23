@@ -1,3 +1,4 @@
+@sapi3
 Feature: Test calendar summary on places
 
   Background:
@@ -6,6 +7,7 @@ Feature: Test calendar summary on places
     And I am authorized as JWT provider user "centraal_beheerder"
     And I send and accept "application/json"
     And I create a place from "places/legacy/create-periodic-place.json" and save the "url" as "placeUrl"
+    And I wait for the place with url "%{placeUrl}" to be indexed
 
   Scenario: Get the calendar summary of a place
     Given I am not authorized
