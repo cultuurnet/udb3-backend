@@ -8,12 +8,12 @@ use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Security\Permission\Sapi3RoleConstraintVoter;
 use CultuurNet\UDB3\Role\ReadModel\Constraints\UserConstraintsReadRepositoryInterface;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
-use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Uri;
 use Http\Client\HttpClient;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
 
 class Sapi3RoleConstraintVoterTest extends TestCase
 {
@@ -67,21 +67,25 @@ class Sapi3RoleConstraintVoterTest extends TestCase
             )
             ->willReturn($constraints);
 
-        $expectedRequest = new Request(
-            'GET',
-            'http://udb-search.dev/offers/?q=' . urlencode($query) . '&start=0&limit=1&disableDefaultFilters=1',
-            ['X-Api-Key' => 'cf462083-7bbd-46fc-95c3-6a0bc95918a5']
-        );
-
         $response = new Response(200, [], Json::encode(['totalItems' => $totalItems]));
 
         $this->httpClient
             ->expects($this->once())
             ->method('sendRequest')
-            ->with($expectedRequest)
+            ->with($this->callback(function (RequestInterface $request) use ($query): bool {
+                $this->assertSame('POST', $request->getMethod());
+                $this->assertSame('http://udb-search.dev/offers/', (string) $request->getUri());
+                $this->assertSame('text/plain', $request->getHeaderLine('Content-Type'));
+                $this->assertSame('cf462083-7bbd-46fc-95c3-6a0bc95918a5', $request->getHeaderLine('X-Api-Key'));
+                $this->assertSame(
+                    'q=' . urlencode($query) . '&start=0&limit=1&disableDefaultFilters=1',
+                    (string) $request->getBody()
+                );
+                return true;
+            }))
             ->willReturn($response);
 
-        $this->assertEquals(
+        $this->assertSame(
             $expected,
             $this->roleConstraintVoter->isAllowed(
                 $permission,
