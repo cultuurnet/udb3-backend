@@ -54,6 +54,11 @@ final class ImageNormalizer implements NormalizerInterface
             );
             $normalized['contentUrl'] = AiGeneratedImageUrl::addMarker($normalized['contentUrl']);
             $normalized['thumbnailUrl'] = AiGeneratedImageUrl::addMarker($normalized['thumbnailUrl']);
+        } else {
+            $normalized['description'] = AiGeneratedImageDescription::removeSuffix(
+                $normalized['description'],
+                $image->getLanguage()
+            );
         }
 
         return $normalized;

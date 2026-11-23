@@ -454,6 +454,10 @@ abstract class OfferLDProjector implements OrganizerServiceInterface
                     $mediaObject->contentUrl = AiGeneratedImageUrl::addMarker($mediaObject->contentUrl);
                     $mediaObject->thumbnailUrl = AiGeneratedImageUrl::addMarker($mediaObject->thumbnailUrl);
                 } else {
+                    $mediaObject->description = AiGeneratedImageDescription::removeSuffix(
+                        $mediaObject->description,
+                        new Language($mediaObject->inLanguage)
+                    );
                     $mediaObject->contentUrl = AiGeneratedImageUrl::removeMarker($mediaObject->contentUrl);
                     $mediaObject->thumbnailUrl = AiGeneratedImageUrl::removeMarker($mediaObject->thumbnailUrl);
                 }

@@ -57,6 +57,11 @@ class MediaObjectSerializer
             );
             $serialized['contentUrl'] = AiGeneratedImageUrl::addMarker($serialized['contentUrl']);
             $serialized['thumbnailUrl'] = AiGeneratedImageUrl::addMarker($serialized['thumbnailUrl']);
+        } else {
+            $serialized['description'] = AiGeneratedImageDescription::removeSuffix(
+                $serialized['description'],
+                $mediaObject->getLanguage()
+            );
         }
 
         return $serialized;

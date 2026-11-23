@@ -502,6 +502,31 @@ Feature: Test event images property
     ]
     """
 
+  Scenario: The AI generated suffix is removed from the description of an image that is not AI generated when it is added to an event
+    Given I set the form data properties to:
+      | description     | logo (Gegenereerd met AI) |
+      | copyrightHolder | me                        |
+      | language        | nl                        |
+      | isAiGenerated   | false                     |
+    When I upload "file" from path "images/udb.jpg" to "/images/"
+    Then the response status should be "201"
+    And I keep the value of the JSON response at "imageId" as "imageId"
+    When I send a GET request to "/images/%{imageId}"
+    Then the response status should be "200"
+    And the JSON response at "description" should be "logo"
+    Given I create a minimal permanent event and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "mediaObjectId":"%{imageId}"
+    }
+    """
+    And I send a POST request to "%{eventUrl}/images"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject/0/description" should be "logo"
+    And the JSON response at "mediaObject/0/isAiGenerated" should be "false"
+
   Scenario: I can update isAiGenerated of an image on an event and it is kept when not given
     Given I create an event from "events/event-with-images.json" and save the "url" as "eventUrl"
     When I set the JSON request payload to:
@@ -607,6 +632,35 @@ Feature: Test event images property
     """
     "https://images.uitdatabank.dev/%{imageId1}.jpeg"
     """
+
+  Scenario: The AI generated suffix is removed from the image description when it is sent back with isAiGenerated false
+    Given I create an event from "events/event-with-images.json" and save the "url" as "eventUrl"
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "logo",
+      "copyrightHolder": "me",
+      "isAiGenerated": true
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject/0/description" should be "logo (Gegenereerd met AI)"
+
+    When I set the JSON request payload to:
+    """
+    {
+      "description": "logo (Gegenereerd met AI)",
+      "copyrightHolder": "me",
+      "isAiGenerated": false
+    }
+    """
+    And I send a PUT request to "%{eventUrl}/images/%{imageId1}"
+    Then the response status should be "204"
+    And I get the event at "%{eventUrl}"
+    And the JSON response at "mediaObject/0/description" should be "logo"
+    And the JSON response at "mediaObject/0/isAiGenerated" should be "false"
 
   Scenario: The next image becomes the main image when an AI generated main image is removed from an event
     Given I set the form data properties to:
