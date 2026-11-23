@@ -89,6 +89,25 @@ Feature: Test the Search API v3 via POST requests
     %{eventId}
     """
 
+  Scenario: I can search organizers via a POST body
+    Given I am using the UDB3 base URL
+    And I send and accept "application/json"
+    And I create a minimal organizer and save the "id" as "organizerId"
+    And I wait for the organizer with url "/organizers/%{organizerId}" to be indexed
+    And I am using the Search API v3 base URL
+    And I send "text/plain"
+    When I set the plain text request payload to:
+    """
+    q=id:%{organizerId}&start=0&limit=1
+    """
+    And I send a POST request to "/organizers/"
+    Then the response status should be "200"
+    And the JSON response at "totalItems" should be 1
+    And the JSON response should include:
+    """
+    %{organizerId}
+    """
+
   Scenario: When using a POST Body, url parameters are not allowed.
     When I set the plain text request payload to:
     """

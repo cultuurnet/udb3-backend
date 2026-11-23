@@ -66,6 +66,11 @@ final class ImageLDProjector implements EventListener
             );
             $body['contentUrl'] = AiGeneratedImageUrl::addMarker($body['contentUrl']);
             $body['thumbnailUrl'] = AiGeneratedImageUrl::addMarker($body['thumbnailUrl']);
+        } else {
+            $body['description'] = AiGeneratedImageDescription::removeSuffix(
+                $body['description'],
+                $mediaObjectCreated->getLanguage()
+            );
         }
 
         $jsonDocument = (new JsonDocument($id))->withAssocBody($body);
