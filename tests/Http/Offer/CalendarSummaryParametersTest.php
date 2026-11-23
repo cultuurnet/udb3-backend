@@ -204,7 +204,7 @@ class CalendarSummaryParametersTest extends TestCase
 
         $parameters = new CalendarSummaryParameters($request);
 
-        $this->assertEquals('fr_BE', $parameters->getLanguage());
+        $this->assertEquals('fr', $parameters->getLanguage());
     }
 
     /**
@@ -289,5 +289,55 @@ class CalendarSummaryParametersTest extends TestCase
         $parameters = new CalendarSummaryParameters($request);
 
         $this->assertEquals('Europe/Amsterdam', $parameters->getTimezone());
+    }
+
+    /**
+     * @test
+     */
+    public function it_maps_the_default_values_onto_search_api_query_parameters(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString('/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary')
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals(
+            [
+                'language' => 'nl',
+                'style' => 'text',
+                'size' => 'lg',
+                'hidePast' => 'false',
+                'timezone' => 'Europe/Brussels',
+            ],
+            $parameters->toSearchApiQueryParameters()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_maps_the_deprecated_parameters_onto_search_api_query_parameters(): void
+    {
+        $request = $this->requestBuilder
+            ->withUriFromString(
+                '/events/663048bb-33d1-4a92-bfa8-407e43ebd621/calendar-summary'
+                . '?langCode=de_BE&format=sm&hidePast=true&timeZone=Europe/Amsterdam'
+            )
+            ->withHeader('Accept', 'text/html')
+            ->build('GET');
+
+        $parameters = new CalendarSummaryParameters($request);
+
+        $this->assertEquals(
+            [
+                'language' => 'de',
+                'style' => 'html',
+                'size' => 'sm',
+                'hidePast' => 'true',
+                'timezone' => 'Europe/Amsterdam',
+            ],
+            $parameters->toSearchApiQueryParameters()
+        );
     }
 }
