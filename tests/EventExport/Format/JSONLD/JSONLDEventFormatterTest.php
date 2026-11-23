@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
+use CultuurNet\UDB3\EventExport\CalendarSummary\SummaryUnavailableException;
 use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\SampleFiles;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -143,6 +144,24 @@ class JSONLDEventFormatterTest extends TestCase
 
         $this->assertEquals(
             '{"@id":"http:\/\/culudb-silex.dev:8080\/event\/d1f0e71d-a9a8-4069-81fb-530134502c58","calendarSummary":"Vrijdag"}',
+            $event
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_exports_an_empty_calendar_summary_when_it_is_unavailable(): void
+    {
+        $calendarSummaryRepository = $this->createMock(CalendarSummaryRepositoryInterface::class);
+        $calendarSummaryRepository->method('get')->willThrowException(new SummaryUnavailableException());
+
+        $formatter = new JSONLDEventFormatter(['id', 'calendarSummary'], $calendarSummaryRepository);
+
+        $event = $formatter->formatEvent($this->getJSONEventFromFile('event_with_booking_availability.json'));
+
+        $this->assertEquals(
+            '{"@id":"http:\/\/culudb-silex.dev:8080\/event\/d1f0e71d-a9a8-4069-81fb-530134502c58","calendarSummary":""}',
             $event
         );
     }
