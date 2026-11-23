@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use Fig\Http\Message\StatusCodeInterface;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\UriInterface;
