@@ -38,6 +38,10 @@ Feature: Test the location suggestions for search on route
       | kessel-lo lentedreef 2   | Lentedreef 2, 3010 Kessel-Lo             |
       | zelzate kerkstraat 90    | Kerkstraat 90, 9060 Zelzate              |
 
+    Scenarios: A street named exactly what is typed comes before streets that only start with it
+      | typed                    | first suggestion                         |
+      | bisschoppenhof           | Bisschoppenhof, 3150 Haacht              |
+
   Scenario: Without a number no house numbers are suggested
     When I send a GET request to "/location-suggestions" with parameters:
       | q | lentedreef |
