@@ -14,6 +14,7 @@ Feature: Test the UDB3 events export API
     And the response status should be "201"
     And the response body should be valid JSON
     And I keep the value of the JSON response at "eventId" as "eventId"
+    And I wait for the event with url "/events/%{eventId}" to be indexed
 
   @mails
   Scenario: Export events to OOXML - basic

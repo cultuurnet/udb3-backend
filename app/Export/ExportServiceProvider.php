@@ -8,7 +8,7 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryWithFormatterRepository;
+use CultuurNet\UDB3\EventExport\CalendarSummary\Sapi3CalendarSummaryRepository;
 use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\EventExport\EventExportCommandHandler;
 use CultuurNet\UDB3\EventExport\EventExportService;
@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
+use CultuurNet\UDB3\Search\Sapi3CalendarSummaryService;
 use Psr\Log\LoggerAwareInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -119,7 +120,7 @@ final class ExportServiceProvider extends AbstractServiceProvider
                 $eventExportCommandHandler = new EventExportCommandHandler(
                     $container->get('event_export_service'),
                     $container->get('config')['prince']['binary'],
-                    new CalendarSummaryWithFormatterRepository($container->get('event_jsonld_repository')),
+                    new Sapi3CalendarSummaryRepository($container->get(Sapi3CalendarSummaryService::class)),
                     $eventInfoService,
                     $container->get('event_export_twig_environment'),
                     new DeparturePlaceResolver($container->get('place_jsonld_cache')),
