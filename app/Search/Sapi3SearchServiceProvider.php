@@ -57,7 +57,10 @@ final class Sapi3SearchServiceProvider extends AbstractServiceProvider
             Sapi3CalendarSummaryService::class,
             fn () => new Sapi3CalendarSummaryService(
                 new Uri($container->get('config')['search']['v3']['base_url']),
-                new Client(),
+                new Client([
+                    'connect_timeout' => $container->get('config')['search']['v3']['connect_timeout'] ?? 2,
+                    'timeout' => $container->get('config')['search']['v3']['timeout'] ?? 5,
+                ]),
                 $container->get('config')['search']['v3']['api_key'] ?? null
             )
         );
