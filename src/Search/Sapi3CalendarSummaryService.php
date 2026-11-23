@@ -14,15 +14,11 @@ use RuntimeException;
 
 final class Sapi3CalendarSummaryService
 {
-    private UriInterface $searchLocation;
-    private ClientInterface $httpClient;
-    private ?string $apiKey;
-
-    public function __construct(UriInterface $searchLocation, ClientInterface $httpClient, ?string $apiKey)
-    {
-        $this->searchLocation = $searchLocation;
-        $this->httpClient = $httpClient;
-        $this->apiKey = $apiKey;
+    public function __construct(
+        private readonly UriInterface $searchLocation,
+        private readonly ClientInterface $httpClient,
+        private readonly ?string $apiKey
+    ) {
     }
 
     /**
