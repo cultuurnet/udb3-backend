@@ -12,12 +12,12 @@ use Psr\Http\Client\ClientInterface;
 use Psr\Http\Message\UriInterface;
 use RuntimeException;
 
-final class Sapi3CalendarSummaryService
+final readonly class Sapi3CalendarSummaryService
 {
     public function __construct(
-        private readonly UriInterface $searchLocation,
-        private readonly ClientInterface $httpClient,
-        private readonly ?string $apiKey
+        private UriInterface $searchLocation,
+        private ClientInterface $httpClient,
+        private ?string $apiKey
     ) {
     }
 

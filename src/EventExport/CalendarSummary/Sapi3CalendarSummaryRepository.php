@@ -10,13 +10,10 @@ use CultuurNet\UDB3\Search\Sapi3CalendarSummaryService;
 use Psr\Http\Client\ClientExceptionInterface;
 use RuntimeException;
 
-final class Sapi3CalendarSummaryRepository implements CalendarSummaryRepositoryInterface
+final readonly class Sapi3CalendarSummaryRepository implements CalendarSummaryRepositoryInterface
 {
-    private Sapi3CalendarSummaryService $calendarSummaryService;
-
-    public function __construct(Sapi3CalendarSummaryService $calendarSummaryService)
+    public function __construct(private Sapi3CalendarSummaryService $calendarSummaryService)
     {
-        $this->calendarSummaryService = $calendarSummaryService;
     }
 
     /**
