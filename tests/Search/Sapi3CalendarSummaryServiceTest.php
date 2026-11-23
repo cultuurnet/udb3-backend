@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Search;
 
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\Offer\OfferType;
 use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
 use GuzzleHttp\Exception\ConnectException;
@@ -141,5 +142,94 @@ final class Sapi3CalendarSummaryServiceTest extends TestCase
         $this->expectExceptionMessage('Could not reach the Search API');
 
         $this->service->get(OfferType::event(), self::OFFER_ID, []);
+    }
+
+    /**
+     * @test
+     */
+    public function it_gets_the_summaries_of_several_offers_with_one_search(): void
+    {
+        $otherId = '2b27aaf5-8856-4ce5-96c6-6c000aaaaaaa';
+
+        $this->httpClient->expects($this->once())
+            ->method('sendRequest')
+            ->with($this->callback(function (RequestInterface $request) use ($otherId): bool {
+                $this->assertSame('/events', $request->getUri()->getPath());
+                parse_str($request->getUri()->getQuery(), $query);
+                $this->assertSame(
+                    [
+                        'q' => 'id:(' . self::OFFER_ID . ' OR ' . $otherId . ')',
+                        'limit' => '2',
+                        'disableDefaultFilters' => 'true',
+                        'embedCalendarSummaries' => ['md-text'],
+                        'embedCalendarSummariesHidePast' => 'false',
+                    ],
+                    $query
+                );
+                $this->assertSame('my-api-key', $request->getHeaderLine('X-Api-Key'));
+                return true;
+            }))
+            ->willReturn(new Response(200, [], Json::encode([
+                'member' => [
+                    [
+                        '@id' => 'https://io.uitdatabank.be/events/' . self::OFFER_ID,
+                        'calendarSummary' => [
+                            'nl' => ['text' => ['md' => 'Di 5 mei 2020']],
+                            'fr' => ['text' => ['md' => 'Mar. 5 mai 2020']],
+                        ],
+                    ],
+                    [
+                        '@id' => 'https://io.uitdatabank.be/events/' . $otherId,
+                        'calendarSummary' => ['nl' => ['text' => ['md' => 'Alle dagen open']]],
+                    ],
+                ],
+            ])));
+
+        $summaries = $this->service->getMany(
+            OfferType::event(),
+            [self::OFFER_ID, $otherId],
+            ['language' => 'nl', 'style' => 'text', 'size' => 'md', 'hidePast' => 'false']
+        );
+
+        $this->assertSame(
+            [self::OFFER_ID => 'Di 5 mei 2020', $otherId => 'Alle dagen open'],
+            $summaries
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_leaves_out_offers_that_the_search_did_not_find(): void
+    {
+        $this->httpClient->method('sendRequest')->willReturn(new Response(200, [], Json::encode(['member' => []])));
+
+        $this->assertSame(
+            [],
+            $this->service->getMany(OfferType::place(), [self::OFFER_ID], ['style' => 'html', 'size' => 'lg'])
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_does_not_search_without_offers(): void
+    {
+        $this->httpClient->expects($this->never())->method('sendRequest');
+
+        $this->assertSame([], $this->service->getMany(OfferType::event(), [], []));
+    }
+
+    /**
+     * @test
+     */
+    public function it_throws_when_the_search_for_several_summaries_fails(): void
+    {
+        $this->httpClient->method('sendRequest')->willReturn(new Response(500));
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage('Search API returned HTTP status 500 for the calendar summaries of 1 events');
+
+        $this->service->getMany(OfferType::event(), [self::OFFER_ID], []);
     }
 }

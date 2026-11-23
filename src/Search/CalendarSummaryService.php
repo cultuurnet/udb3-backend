@@ -16,4 +16,14 @@ interface CalendarSummaryService
      * @throws RuntimeException when the calendar summary could not be fetched
      */
     public function get(OfferType $offerType, string $offerId, array $parameters): string;
+
+    /**
+     * Gets the summaries of several offers at once, always in the Europe/Brussels timezone.
+     *
+     * @param string[] $offerIds
+     * @param array<string, string> $parameters language, style, size and hidePast
+     * @return array<string, string> the summaries by offer id, without the offers that were not found
+     * @throws RuntimeException when the calendar summaries could not be fetched
+     */
+    public function getMany(OfferType $offerType, array $offerIds, array $parameters): array;
 }
