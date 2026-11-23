@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\Search;
 
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Uri;
 
 final class Sapi3SearchServiceProvider extends AbstractServiceProvider
 {
@@ -15,6 +17,7 @@ final class Sapi3SearchServiceProvider extends AbstractServiceProvider
             EventsSapi3SearchService::class,
             PlacesSapi3SearchService::class,
             OrganizersSapi3SearchService::class,
+            Sapi3CalendarSummaryService::class,
         ];
     }
 
@@ -48,6 +51,15 @@ final class Sapi3SearchServiceProvider extends AbstractServiceProvider
             function () use ($container) {
                 return SearchSapi3ServiceFactory::createOrganizerSearchService($container);
             }
+        );
+
+        $container->addShared(
+            Sapi3CalendarSummaryService::class,
+            fn () => new Sapi3CalendarSummaryService(
+                new Uri($container->get('config')['search']['v3']['base_url']),
+                new Client(),
+                $container->get('config')['search']['v3']['api_key'] ?? null
+            )
         );
     }
 }
