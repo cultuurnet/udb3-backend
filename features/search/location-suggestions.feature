@@ -42,6 +42,10 @@ Feature: Test the location suggestions for search on route
       | typed                    | first suggestion                         |
       | bisschoppenhof           | Bisschoppenhof, 3150 Haacht              |
 
+    Scenarios: Of streets with the same name, the one with the most addresses comes first
+      | typed                    | first suggestion                         |
+      | lentedreef               | Lentedreef, 8930 Menen                   |
+
   Scenario: Without a number no house numbers are suggested
     When I send a GET request to "/location-suggestions" with parameters:
       | q | lentedreef |
