@@ -87,12 +87,15 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Search\Sapi3CalendarSummaryService;
 use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\DeleteUiTPASPlaceVoter;
 use CultuurNet\UDB3\Security\Permission\UserPermissionVoter;
 use CultuurNet\UDB3\UiTPAS\Validation\EventHasTicketSalesGuard;
 use CultuurNet\UDB3\User\CurrentUser;
+use GuzzleHttp\Client;
+use GuzzleHttp\Psr7\Uri;
 
 final class OfferServiceProvider extends AbstractServiceProvider
 {
@@ -536,7 +539,13 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             GetCalendarSummaryRequestHandler::class,
-            fn () => new GetCalendarSummaryRequestHandler($container->get(OfferJsonDocumentReadRepository::class))
+            fn () => new GetCalendarSummaryRequestHandler(
+                new Sapi3CalendarSummaryService(
+                    new Uri($container->get('config')['search']['v3']['base_url']),
+                    new Client(),
+                    $container->get('config')['search']['v3']['api_key'] ?? null
+                )
+            )
         );
 
         $container->addShared(
