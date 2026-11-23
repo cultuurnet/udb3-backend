@@ -41,11 +41,11 @@ final class Sapi3CalendarSummaryService
 
         $response = $this->httpClient->sendRequest(new Request('GET', $uri, $headers));
 
-        if ($response->getStatusCode() === 404) {
+        if ($response->getStatusCode() === StatusCodeInterface::STATUS_NOT_FOUND) {
             throw DocumentDoesNotExist::withId($offerId);
         }
 
-        if ($response->getStatusCode() !== 200) {
+        if ($response->getStatusCode() !== StatusCodeInterface::STATUS_OK) {
             throw new RuntimeException(
                 'Search API returned HTTP status ' . $response->getStatusCode() . ' for the calendar summary of ' . $offerId
             );
