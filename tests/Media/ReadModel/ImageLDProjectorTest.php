@@ -132,4 +132,49 @@ final class ImageLDProjectorTest extends TestCase
             $this->repository->fetch($mediaObjectCreated->getMediaObjectId()->toString()),
         );
     }
+
+    /**
+     * @test
+     */
+    public function it_removes_the_ai_generated_suffix_of_media_object_created_when_not_ai_generated(): void
+    {
+        $mediaObjectCreated = new MediaObjectCreated(
+            new Uuid('d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d'),
+            new MIMEType('image/jpeg'),
+            new Description('A description (Generated with AI)'),
+            new CopyrightHolder('John Doe'),
+            new Url('https://images.uitdatabank.local/d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d.jpeg'),
+            new Language('en'),
+            false
+        );
+
+        $this->projector->handle(new DomainMessage(
+            $mediaObjectCreated->getMediaObjectId()->toString(),
+            0,
+            new Metadata(),
+            $mediaObjectCreated,
+            DateTime::now()
+        ));
+
+        $this->assertEquals(
+            new JsonDocument(
+                'd1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d',
+                json_encode(
+                    [
+                        '@id' => 'https://io.uitdatabank.local/images/d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d',
+                        '@type' => 'schema:ImageObject',
+                        'encodingFormat' => 'image/jpeg',
+                        'id' => 'd1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d',
+                        'contentUrl' => 'https://images.uitdatabank.local/d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d.jpeg',
+                        'thumbnailUrl' => 'https://images.uitdatabank.local/d1b3d1f4-1b4d-4e5e-8b8d-6b7d1d7d1d7d.jpeg',
+                        'description' => 'A description',
+                        'copyrightHolder' => 'John Doe',
+                        'inLanguage' => 'en',
+                        'isAiGenerated' => false,
+                    ]
+                )
+            ),
+            $this->repository->fetch($mediaObjectCreated->getMediaObjectId()->toString()),
+        );
+    }
 }
