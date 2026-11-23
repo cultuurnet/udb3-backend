@@ -12,16 +12,40 @@ Feature: Test the location suggestions for search on route
     Then the response status should be "200"
     And the JSON response at "member/0/label" should be "<first suggestion>"
 
-    Scenarios:
+    Scenarios: Every typed word must match, the last one may be the beginning of a word
       | typed                    | first suggestion                         |
       | lentedreef leuven        | Lentedreef, 3010 Kessel-Lo               |
       | lentedreef leuv          | Lentedreef, 3010 Kessel-Lo               |
-      | LENTEDREEF KESSEL-LO     | Lentedreef, 3010 Kessel-Lo               |
       | kerkstraat gent          | Kerkstraat, 9050 Gent                    |
-      | rue des brasseurs liege  | Rue des Brasseurs, 4000 Liège            |
       | henegouwenkaai molenbeek | Henegouwenkaai, 1080 Sint-Jans-Molenbeek |
+
+    Scenarios: Capitals, accents and punctuation do not matter
+      | typed                    | first suggestion                         |
+      | LENTEDREEF KESSEL-LO     | Lentedreef, 3010 Kessel-Lo               |
+      | rue des brasseurs liege  | Rue des Brasseurs, 4000 Liège            |
       | o l v ten steenstraat    | O.L.V. ten Steenstraat, 3300 Tienen      |
+
+    Scenarios: Without a number the street is suggested, not its house numbers
+      | typed                    | first suggestion                         |
+      | martelarenplein          | Martelarenplein, 3000 Leuven             |
+
+    Scenarios: With a number the address is suggested
+      | typed                    | first suggestion                         |
       | martelarenplein 12       | Martelarenplein 12, 3000 Leuven          |
+
+    Scenarios: A number at the end matches a whole house number, not the beginning of a number or postcode
+      | typed                    | first suggestion                         |
+      | kessel-lo lentedreef 2   | Lentedreef 2, 3010 Kessel-Lo             |
+      | zelzate kerkstraat 90    | Kerkstraat 90, 9060 Zelzate              |
+
+  Scenario: Without a number no house numbers are suggested
+    When I send a GET request to "/location-suggestions" with parameters:
+      | q | lentedreef |
+    Then the response status should be "200"
+    And the JSON response should not include:
+    """
+    "type":"address"
+    """
 
   Scenario: A suggestion has a type and coordinates
     When I send a GET request to "/location-suggestions" with parameters:
