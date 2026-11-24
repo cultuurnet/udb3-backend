@@ -54,6 +54,7 @@ Feature: Test the location suggestions for search on route
     Scenarios: Of the municipalities and streets that start with what is typed, the one with the most addresses comes first
       | typed                    | first suggestion                         |
       | ant                      | Antwerpen                                |
+      | sint                     | Sint-Niklaas                             |
 
   Scenario: Without a number no house numbers are suggested
     When I send a GET request to "/location-suggestions" with parameters:
