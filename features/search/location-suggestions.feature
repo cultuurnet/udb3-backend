@@ -33,7 +33,7 @@ Feature: Test the location suggestions for search on route
       | typed                    | first suggestion                         |
       | martelarenplein 12       | Martelarenplein 12, 3000 Leuven          |
 
-    Scenarios: A number at the end matches a whole house number, not the beginning of a number or postcode
+    Scenarios: A number at the end matches a whole house number, not the beginning of a number or postal code
       | typed                    | first suggestion                         |
       | kessel-lo lentedreef 2   | Lentedreef 2, 3010 Kessel-Lo             |
       | zelzate kerkstraat 90    | Kerkstraat 90, 9060 Zelzate              |
@@ -56,6 +56,17 @@ Feature: Test the location suggestions for search on route
       | ant                      | Antwerpen                                |
       | sint                     | Sint-Niklaas                             |
 
+    Scenarios: A sub-municipality whose name or postal code is typed comes first
+      | typed                    | first suggestion                         |
+      | kessel-lo                | Kessel-Lo (3010)                         |
+      | 3010                     | Kessel-Lo (3010)                         |
+      | 3000                     | Leuven (3000)                            |
+
+    Scenarios: Only numbers is a postal code being typed, and the sub-municipality with the most addresses comes first
+      | typed                    | first suggestion                         |
+      | 30                       | Kessel-Lo (3010)                         |
+      | 300                      | Leuven (3000)                            |
+
   Scenario: Without a number no house numbers are suggested
     When I send a GET request to "/location-suggestions" with parameters:
       | q | lentedreef |
@@ -65,13 +76,12 @@ Feature: Test the location suggestions for search on route
     "type":"address"
     """
 
-  Scenario: A suggestion has a type and coordinates
+  Scenario: A suggestion has a type, but no coordinates of its own besides its search filter
     When I send a GET request to "/location-suggestions" with parameters:
       | q | lentedreef leuven |
     Then the response status should be "200"
     And the JSON response at "member/0/type" should be "street"
-    And the JSON response should have "member/0/geo/latitude"
-    And the JSON response should have "member/0/geo/longitude"
+    And the JSON response should not have "member/0/geo"
 
   Scenario: A suggestion has a search filter to pass to Search API 3, without the distance
     When I send a GET request to "/location-suggestions" with parameters:
@@ -91,6 +101,42 @@ Feature: Test the location suggestions for search on route
     And the JSON response at "member/0/searchFilter" should be:
     """
     { "regions": ["nis-24062"] }
+    """
+
+  Scenario: A sub-municipality is suggested as a municipality with its region as search filter
+    When I send a GET request to "/location-suggestions" with parameters:
+      | q | 3010 |
+    Then the response status should be "200"
+    And the JSON response at "member/0/type" should be "municipality"
+    And the JSON response at "member/0/searchFilter" should be:
+    """
+    { "regions": ["nis-24062C"] }
+    """
+
+  Scenario: A postal code of several sub-municipalities suggests each of them
+    When I send a GET request to "/location-suggestions" with parameters:
+      | q | 3271 |
+    Then the response status should be "200"
+    And the JSON response should include:
+    """
+    "label":"Averbode (3271)"
+    """
+    And the JSON response should include:
+    """
+    "label":"Zichem (3271)"
+    """
+
+  Scenario: Only a postal code suggests no streets and no house numbers
+    When I send a GET request to "/location-suggestions" with parameters:
+      | q | 3010 |
+    Then the response status should be "200"
+    And the JSON response should not include:
+    """
+    "type":"street"
+    """
+    And the JSON response should not include:
+    """
+    "type":"address"
     """
 
   Scenario: Typed text is required
