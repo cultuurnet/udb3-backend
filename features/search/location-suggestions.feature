@@ -33,7 +33,7 @@ Feature: Test the location suggestions for search on route
       | typed                    | first suggestion                         |
       | martelarenplein 12       | Martelarenplein 12, 3000 Leuven          |
 
-    Scenarios: A number at the end matches a whole house number, not the beginning of a number or postcode
+    Scenarios: A number at the end matches a whole house number, not the beginning of a number or postal code
       | typed                    | first suggestion                         |
       | kessel-lo lentedreef 2   | Lentedreef 2, 3010 Kessel-Lo             |
       | zelzate kerkstraat 90    | Kerkstraat 90, 9060 Zelzate              |
@@ -56,13 +56,13 @@ Feature: Test the location suggestions for search on route
       | ant                      | Antwerpen                                |
       | sint                     | Sint-Niklaas                             |
 
-    Scenarios: A sub-municipality whose name or postcode is typed comes first
+    Scenarios: A sub-municipality whose name or postal code is typed comes first
       | typed                    | first suggestion                         |
       | kessel-lo                | Kessel-Lo (3010)                         |
       | 3010                     | Kessel-Lo (3010)                         |
       | 3000                     | Leuven (3000)                            |
 
-    Scenarios: Only numbers is a postcode being typed, and the sub-municipality with the most addresses comes first
+    Scenarios: Only numbers is a postal code being typed, and the sub-municipality with the most addresses comes first
       | typed                    | first suggestion                         |
       | 30                       | Kessel-Lo (3010)                         |
       | 300                      | Leuven (3000)                            |
@@ -113,7 +113,7 @@ Feature: Test the location suggestions for search on route
     { "regions": ["nis-24062C"] }
     """
 
-  Scenario: A postcode of several sub-municipalities suggests each of them
+  Scenario: A postal code of several sub-municipalities suggests each of them
     When I send a GET request to "/location-suggestions" with parameters:
       | q | 3271 |
     Then the response status should be "200"
@@ -126,7 +126,7 @@ Feature: Test the location suggestions for search on route
     "label":"Zichem (3271)"
     """
 
-  Scenario: Only a postcode suggests no streets and no house numbers
+  Scenario: Only a postal code suggests no streets and no house numbers
     When I send a GET request to "/location-suggestions" with parameters:
       | q | 3010 |
     Then the response status should be "200"
