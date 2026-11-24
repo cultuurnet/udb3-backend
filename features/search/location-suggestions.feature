@@ -56,6 +56,17 @@ Feature: Test the location suggestions for search on route
       | ant                      | Antwerpen                                |
       | sint                     | Sint-Niklaas                             |
 
+    Scenarios: A sub-municipality whose name or postcode is typed comes first
+      | typed                    | first suggestion                         |
+      | kessel-lo                | Kessel-Lo (3010)                         |
+      | 3010                     | Kessel-Lo (3010)                         |
+      | 3000                     | Leuven (3000)                            |
+
+    Scenarios: Only numbers is a postcode being typed, and the sub-municipality with the most addresses comes first
+      | typed                    | first suggestion                         |
+      | 30                       | Kessel-Lo (3010)                         |
+      | 300                      | Leuven (3000)                            |
+
   Scenario: Without a number no house numbers are suggested
     When I send a GET request to "/location-suggestions" with parameters:
       | q | lentedreef |
@@ -91,6 +102,42 @@ Feature: Test the location suggestions for search on route
     And the JSON response at "member/0/searchFilter" should be:
     """
     { "regions": ["nis-24062"] }
+    """
+
+  Scenario: A sub-municipality is suggested as a municipality with its region as search filter
+    When I send a GET request to "/location-suggestions" with parameters:
+      | q | 3010 |
+    Then the response status should be "200"
+    And the JSON response at "member/0/type" should be "municipality"
+    And the JSON response at "member/0/searchFilter" should be:
+    """
+    { "regions": ["nis-24062C"] }
+    """
+
+  Scenario: A postcode of several sub-municipalities suggests each of them
+    When I send a GET request to "/location-suggestions" with parameters:
+      | q | 3271 |
+    Then the response status should be "200"
+    And the JSON response should include:
+    """
+    "label":"Averbode (3271)"
+    """
+    And the JSON response should include:
+    """
+    "label":"Zichem (3271)"
+    """
+
+  Scenario: Only a postcode suggests no streets and no house numbers
+    When I send a GET request to "/location-suggestions" with parameters:
+      | q | 3010 |
+    Then the response status should be "200"
+    And the JSON response should not include:
+    """
+    "type":"street"
+    """
+    And the JSON response should not include:
+    """
+    "type":"address"
     """
 
   Scenario: Typed text is required
