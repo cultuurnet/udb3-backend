@@ -76,13 +76,12 @@ Feature: Test the location suggestions for search on route
     "type":"address"
     """
 
-  Scenario: A suggestion has a type and coordinates
+  Scenario: A suggestion has a type, but no coordinates of its own besides its search filter
     When I send a GET request to "/location-suggestions" with parameters:
       | q | lentedreef leuven |
     Then the response status should be "200"
     And the JSON response at "member/0/type" should be "street"
-    And the JSON response should have "member/0/geo/latitude"
-    And the JSON response should have "member/0/geo/longitude"
+    And the JSON response should not have "member/0/geo"
 
   Scenario: A suggestion has a search filter to pass to Search API 3, without the distance
     When I send a GET request to "/location-suggestions" with parameters:
