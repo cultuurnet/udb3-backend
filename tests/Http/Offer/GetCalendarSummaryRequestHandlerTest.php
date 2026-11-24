@@ -4,31 +4,59 @@ declare(strict_types=1);
 
 namespace CultuurNet\UDB3\Http\Offer;
 
-use CultuurNet\CalendarSummaryV3\CalendarSummaryTester;
-use CultuurNet\UDB3\Http\ApiProblem\AssertApiProblemTrait;
 use CultuurNet\UDB3\Http\Request\Psr7RequestBuilder;
 use CultuurNet\UDB3\Http\Response\HtmlResponse;
 use CultuurNet\UDB3\Http\Response\PlainTextResponse;
-use CultuurNet\UDB3\Json;
-use CultuurNet\UDB3\Offer\ReadModel\JSONLD\OfferJsonDocumentReadRepositoryMockFactory;
-use CultuurNet\UDB3\ReadModel\JsonDocument;
+use CultuurNet\UDB3\Offer\OfferType;
+use CultuurNet\UDB3\ReadModel\DocumentDoesNotExist;
+use CultuurNet\UDB3\Search\CalendarSummaryService;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 class GetCalendarSummaryRequestHandlerTest extends TestCase
 {
-    use AssertApiProblemTrait;
+    private const OFFER_ID = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
 
-    private OfferJsonDocumentReadRepositoryMockFactory $repositoryMockFactory;
+    private CalendarSummaryService&MockObject $calendarSummaryService;
+
     private GetCalendarSummaryRequestHandler $getCalendarSummaryRequestHandler;
 
     protected function setUp(): void
     {
-        $this->repositoryMockFactory = new OfferJsonDocumentReadRepositoryMockFactory();
+        $this->calendarSummaryService = $this->createMock(CalendarSummaryService::class);
 
-        $this->getCalendarSummaryRequestHandler = new GetCalendarSummaryRequestHandler(
-            $this->repositoryMockFactory->create()
-        );
-        CalendarSummaryTester::setTestNow(2022, 5, 3);
+        $this->getCalendarSummaryRequestHandler = new GetCalendarSummaryRequestHandler($this->calendarSummaryService);
+    }
+
+    /**
+     * @test
+     */
+    public function it_returns_a_text_calendar_summary_by_default(): void
+    {
+        $this->calendarSummaryService->expects($this->once())
+            ->method('get')
+            ->with(
+                OfferType::event(),
+                self::OFFER_ID,
+                [
+                    'language' => 'nl',
+                    'style' => 'text',
+                    'size' => 'lg',
+                    'hidePast' => 'false',
+                    'timezone' => 'Europe/Brussels',
+                ]
+            )
+            ->willReturn('Vrijdag 1 januari 2021');
+
+        $request = (new Psr7RequestBuilder())
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', self::OFFER_ID)
+            ->build('GET');
+
+        $response = $this->getCalendarSummaryRequestHandler->handle($request);
+
+        $this->assertInstanceOf(PlainTextResponse::class, $response);
+        $this->assertEquals('Vrijdag 1 januari 2021', $response->getBody()->getContents());
     }
 
     /**
@@ -36,371 +64,74 @@ class GetCalendarSummaryRequestHandlerTest extends TestCase
      */
     public function it_returns_a_html_calendar_summary_based_on_the_accept_header(): void
     {
-        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
-        $eventJson = Json::encode(
-            [
-                '@context' => '/contexts/event',
-                'calendarType' => 'single',
-                'startDate' => '2021-01-01T00:00:00+01:00',
-                'endDate' => '2021-01-10T00:00:00+01:00',
-                'status' => ['type' => 'Available'],
-                'bookingAvailability' => ['type' => 'Available'],
-            ]
-        );
-        $eventDocument = new JsonDocument($eventId, $eventJson);
-        $this->repositoryMockFactory->expectEventDocument($eventDocument);
+        $this->calendarSummaryService->expects($this->once())
+            ->method('get')
+            ->with(
+                OfferType::place(),
+                self::OFFER_ID,
+                $this->callback(fn (array $parameters): bool => $parameters['style'] === 'html')
+            )
+            ->willReturn('<span>Alle dagen open</span>');
 
         $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', $eventId)
+            ->withRouteParameter('offerType', 'places')
+            ->withRouteParameter('offerId', self::OFFER_ID)
             ->withHeader('accept', 'text/html')
             ->build('GET');
 
-        $expectedContent = '<time itemprop="startDate" datetime="2021-01-01T00:00:00+01:00">' .
-            '<span class="cf-from cf-meta">Van</span> ' .
-            '<span class="cf-weekday cf-meta">vrijdag</span> ' .
-            '<span class="cf-date">1 januari 2021</span> ' .
-            '<span class="cf-at cf-meta">om</span> ' .
-            '<span class="cf-time">00:00</span></time> ' .
-            '<span class="cf-to cf-meta">tot en met</span> ' .
-            '<time itemprop="endDate" datetime="2021-01-10T00:00:00+01:00">' .
-            '<span class="cf-weekday cf-meta">zondag</span> ' .
-            '<span class="cf-date">10 januari 2021</span> ' .
-            '<span class="cf-at cf-meta">om</span> ' .
-            '<span class="cf-time">00:00</span></time>';
+        $response = $this->getCalendarSummaryRequestHandler->handle($request);
+
+        $this->assertInstanceOf(HtmlResponse::class, $response);
+        $this->assertEquals('<span>Alle dagen open</span>', $response->getBody()->getContents());
+    }
+
+    /**
+     * @test
+     */
+    public function it_passes_the_deprecated_query_parameters_as_their_current_names(): void
+    {
+        $this->calendarSummaryService->expects($this->once())
+            ->method('get')
+            ->with(
+                OfferType::event(),
+                self::OFFER_ID,
+                [
+                    'language' => 'fr',
+                    'style' => 'html',
+                    'size' => 'sm',
+                    'hidePast' => 'true',
+                    'timezone' => 'Europe/Amsterdam',
+                ]
+            )
+            ->willReturn('<span>Ven 1 jan</span>');
+
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('?langCode=fr_BE&style=html&format=sm&hidePast=true&timeZone=Europe/Amsterdam')
+            ->withRouteParameter('offerType', 'events')
+            ->withRouteParameter('offerId', self::OFFER_ID)
+            ->build('GET');
 
         $response = $this->getCalendarSummaryRequestHandler->handle($request);
 
         $this->assertInstanceOf(HtmlResponse::class, $response);
-        $this->assertEquals($expectedContent, $response->getBody()->getContents());
+        $this->assertEquals('<span>Ven 1 jan</span>', $response->getBody()->getContents());
     }
 
     /**
      * @test
      */
-    public function it_returns_a_html_calendar_summary_based_on_the_style_query_parameter(): void
+    public function it_lets_a_missing_offer_through_as_document_does_not_exist(): void
     {
-        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
-        $eventJson = Json::encode(
-            [
-                '@context' => '/contexts/event',
-                'calendarType' => 'single',
-                'startDate' => '2021-01-01T00:00:00+01:00',
-                'endDate' => '2021-01-10T00:00:00+01:00',
-                'status' => ['type' => 'Available'],
-                'bookingAvailability' => ['type' => 'Available'],
-            ]
-        );
-        $eventDocument = new JsonDocument($eventId, $eventJson);
-        $this->repositoryMockFactory->expectEventDocument($eventDocument);
+        $this->calendarSummaryService->method('get')
+            ->willThrowException(DocumentDoesNotExist::withId(self::OFFER_ID));
 
         $request = (new Psr7RequestBuilder())
             ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', $eventId)
-            ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?style=html')
+            ->withRouteParameter('offerId', self::OFFER_ID)
             ->build('GET');
 
-        $expectedContent = '<time itemprop="startDate" datetime="2021-01-01T00:00:00+01:00">' .
-            '<span class="cf-from cf-meta">Van</span> ' .
-            '<span class="cf-weekday cf-meta">vrijdag</span> ' .
-            '<span class="cf-date">1 januari 2021</span> ' .
-            '<span class="cf-at cf-meta">om</span> ' .
-            '<span class="cf-time">00:00</span></time> ' .
-            '<span class="cf-to cf-meta">tot en met</span> ' .
-            '<time itemprop="endDate" datetime="2021-01-10T00:00:00+01:00">' .
-            '<span class="cf-weekday cf-meta">zondag</span> ' .
-            '<span class="cf-date">10 januari 2021</span> ' .
-            '<span class="cf-at cf-meta">om</span> ' .
-            '<span class="cf-time">00:00</span></time>';
+        $this->expectException(DocumentDoesNotExist::class);
 
-        $response = $this->getCalendarSummaryRequestHandler->handle($request);
-
-        $this->assertInstanceOf(HtmlResponse::class, $response);
-        $this->assertEquals($expectedContent, $response->getBody()->getContents());
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_a_text_calendar_summary_based_on_the_accept_header(): void
-    {
-        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
-        $eventJson = Json::encode(
-            [
-                '@context' => '/contexts/event',
-                'calendarType' => 'single',
-                'startDate' => '2021-01-01T00:00:00+01:00',
-                'endDate' => '2021-01-10T00:00:00+01:00',
-                'status' => ['type' => 'Available'],
-                'bookingAvailability' => ['type' => 'Available'],
-            ]
-        );
-        $eventDocument = new JsonDocument($eventId, $eventJson);
-        $this->repositoryMockFactory->expectEventDocument($eventDocument);
-
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', $eventId)
-            ->withHeader('accept', 'text/plain')
-            ->build('GET');
-
-        $expectedContent = 'Van vrijdag 1 januari 2021 om 00:00 tot en met zondag 10 januari 2021 om 00:00';
-
-        $response = $this->getCalendarSummaryRequestHandler->handle($request);
-
-        $this->assertInstanceOf(PlainTextResponse::class, $response);
-        $this->assertEquals($expectedContent, $response->getBody()->getContents());
-    }
-
-    /**
-     * @test
-     */
-    public function it_returns_a_text_calendar_summary_based_on_the_style_query_parameter(): void
-    {
-        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
-        $eventJson = Json::encode(
-            [
-                '@context' => '/contexts/event',
-                'calendarType' => 'single',
-                'startDate' => '2021-01-01T00:00:00+01:00',
-                'endDate' => '2021-01-10T00:00:00+01:00',
-                'status' => ['type' => 'Available'],
-                'bookingAvailability' => ['type' => 'Available'],
-            ]
-        );
-        $eventDocument = new JsonDocument($eventId, $eventJson);
-        $this->repositoryMockFactory->expectEventDocument($eventDocument);
-
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', $eventId)
-            ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?style=text')
-            ->build('GET');
-
-        $expectedContent = 'Van vrijdag 1 januari 2021 om 00:00 tot en met zondag 10 januari 2021 om 00:00';
-
-        $response = $this->getCalendarSummaryRequestHandler->handle($request);
-
-        $this->assertInstanceOf(PlainTextResponse::class, $response);
-        $this->assertEquals($expectedContent, $response->getBody()->getContents());
-    }
-
-    /**
-     * @test
-     */
-    public function it_uses_a_different_language_based_on_the_language_query_parameter(): void
-    {
-        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
-        $eventJson = Json::encode(
-            [
-                '@context' => '/contexts/event',
-                'calendarType' => 'single',
-                'startDate' => '2021-01-01T00:00:00+01:00',
-                'endDate' => '2021-01-10T00:00:00+01:00',
-                'status' => ['type' => 'Available'],
-                'bookingAvailability' => ['type' => 'Available'],
-            ]
-        );
-        $eventDocument = new JsonDocument($eventId, $eventJson);
-        $this->repositoryMockFactory->expectEventDocument($eventDocument);
-
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', $eventId)
-            ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?language=fr')
-            ->build('GET');
-
-        $expectedContent = 'Du vendredi 1 janvier 2021 à 00:00 au dimanche 10 janvier 2021 à 00:00';
-
-        $response = $this->getCalendarSummaryRequestHandler->handle($request);
-
-        $this->assertInstanceOf(PlainTextResponse::class, $response);
-        $this->assertEquals($expectedContent, $response->getBody()->getContents());
-    }
-
-    /**
-     * @test
-     */
-    public function it_uses_a_different_language_based_on_the_langCode_query_parameter(): void
-    {
-        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
-        $eventJson = Json::encode(
-            [
-                '@context' => '/contexts/event',
-                'calendarType' => 'single',
-                'startDate' => '2021-01-01T00:00:00+01:00',
-                'endDate' => '2021-01-10T00:00:00+01:00',
-                'status' => ['type' => 'Available'],
-                'bookingAvailability' => ['type' => 'Available'],
-            ]
-        );
-        $eventDocument = new JsonDocument($eventId, $eventJson);
-        $this->repositoryMockFactory->expectEventDocument($eventDocument);
-
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', $eventId)
-            ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?langCode=fr_BE')
-            ->build('GET');
-
-        $expectedContent = 'Du vendredi 1 janvier 2021 à 00:00 au dimanche 10 janvier 2021 à 00:00';
-
-        $response = $this->getCalendarSummaryRequestHandler->handle($request);
-
-        $this->assertInstanceOf(PlainTextResponse::class, $response);
-        $this->assertEquals($expectedContent, $response->getBody()->getContents());
-    }
-
-    /**
-     * @test
-     */
-    public function it_uses_a_different_format_based_on_the_format_query_parameter(): void
-    {
-        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
-        $eventJson = Json::encode(
-            [
-                '@context' => '/contexts/event',
-                'calendarType' => 'single',
-                'startDate' => '2021-01-01T00:00:00+01:00',
-                'endDate' => '2021-01-10T00:00:00+01:00',
-                'status' => ['type' => 'Available'],
-                'bookingAvailability' => ['type' => 'Available'],
-            ]
-        );
-        $eventDocument = new JsonDocument($eventId, $eventJson);
-        $this->repositoryMockFactory->expectEventDocument($eventDocument);
-
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', $eventId)
-            ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?format=xs')
-            ->build('GET');
-
-        $expectedContent = '1 jan 2021 - 10 jan 2021';
-
-        $response = $this->getCalendarSummaryRequestHandler->handle($request);
-
-        $this->assertInstanceOf(PlainTextResponse::class, $response);
-        $this->assertEquals($expectedContent, $response->getBody()->getContents());
-    }
-
-    /**
-     * @test
-     */
-    public function it_omits_the_current_year(): void
-    {
-        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
-        $eventJson = Json::encode(
-            [
-                '@context' => '/contexts/event',
-                'calendarType' => 'single',
-                'startDate' => '2022-01-01T00:00:00+01:00',
-                'endDate' => '2022-01-10T00:00:00+01:00',
-                'status' => ['type' => 'Available'],
-                'bookingAvailability' => ['type' => 'Available'],
-            ]
-        );
-        $eventDocument = new JsonDocument($eventId, $eventJson);
-        $this->repositoryMockFactory->expectEventDocument($eventDocument);
-
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', $eventId)
-            ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?format=xs')
-            ->build('GET');
-
-        $expectedContent = '1 jan - 10 jan';
-
-        $response = $this->getCalendarSummaryRequestHandler->handle($request);
-
-        $this->assertInstanceOf(PlainTextResponse::class, $response);
-        $this->assertEquals($expectedContent, $response->getBody()->getContents());
-    }
-
-    /**
-     * @test
-     */
-    public function it_uses_a_different_timezone_based_on_the_timezone_query_parameter(): void
-    {
-        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
-        $eventJson = Json::encode(
-            [
-                '@context' => '/contexts/event',
-                'calendarType' => 'single',
-                'startDate' => '2021-01-01T10:00:00+01:00',
-                'endDate' => '2021-01-10T10:00:00+01:00',
-                'status' => ['type' => 'Available'],
-                'bookingAvailability' => ['type' => 'Available'],
-            ]
-        );
-        $eventDocument = new JsonDocument($eventId, $eventJson);
-        $this->repositoryMockFactory->expectEventDocument($eventDocument);
-
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', $eventId)
-            ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?timezone=Europe/Moscow')
-            ->build('GET');
-
-        // 2 hours later than the time info in the event JSON
-        $expectedContent = 'Van vrijdag 1 januari 2021 om 12:00 tot en met zondag 10 januari 2021 om 12:00';
-
-        $response = $this->getCalendarSummaryRequestHandler->handle($request);
-
-        // Reset timezone to initial value so other tests don't start failing.
-        date_default_timezone_set('Europe/Brussels');
-
-        $this->assertInstanceOf(PlainTextResponse::class, $response);
-        $this->assertEquals($expectedContent, $response->getBody()->getContents());
-    }
-
-    /**
-     * @test
-     */
-    public function it_hides_past_dates_if_hidePast_query_parameter_is_true(): void
-    {
-        $eventId = '1a16eff4-7745-4bd6-85b8-5bbbfffe3c96';
-        $eventJson = Json::encode(
-            [
-                '@context' => '/contexts/event',
-                'calendarType' => 'multiple',
-                'startDate' => '2021-01-01T10:00:00+01:00',
-                'endDate' => '2121-01-10T10:00:00+01:00',
-                'subEvent' => [
-                    0 => [
-                        'id' => 0,
-                        'startDate' => '2021-01-01T10:00:00+01:00',
-                        'endDate' => '2021-01-10T10:00:00+01:00',
-                        'status' => ['type' => 'Available'],
-                        'bookingAvailability' => ['type' => 'Available'],
-                    ],
-                    1 => [
-                        'id' => 1,
-                        'startDate' => '2121-01-01T10:00:00+01:00',
-                        'endDate' => '2121-01-10T10:00:00+01:00',
-                        'status' => ['type' => 'Available'],
-                        'bookingAvailability' => ['type' => 'Available'],
-                    ],
-                ],
-                'status' => ['type' => 'Available'],
-                'bookingAvailability' => ['type' => 'Available'],
-            ]
-        );
-        $eventDocument = new JsonDocument($eventId, $eventJson);
-        $this->repositoryMockFactory->expectEventDocument($eventDocument);
-
-        $request = (new Psr7RequestBuilder())
-            ->withRouteParameter('offerType', 'events')
-            ->withRouteParameter('offerId', $eventId)
-            ->withUriFromString('/events/1a16eff4-7745-4bd6-85b8-5bbbfffe3c96/calendar-summary?hidePast=true')
-            ->build('GET');
-
-        // Only includes the dates from 2121 (100 years in the future), because the others are in the past.
-        $expectedContent = 'Van woensdag 1 januari 2121 om 10:00 tot en met vrijdag 10 januari 2121 om 10:00';
-
-        $response = $this->getCalendarSummaryRequestHandler->handle($request);
-
-        $this->assertInstanceOf(PlainTextResponse::class, $response);
-        $this->assertEquals($expectedContent, $response->getBody()->getContents());
+        $this->getCalendarSummaryRequestHandler->handle($request);
     }
 }

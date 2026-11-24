@@ -8,7 +8,7 @@ use Broadway\UuidGenerator\Rfc4122\Version4Generator;
 use CultuurNet\UDB3\Container\AbstractServiceProvider;
 use CultuurNet\UDB3\Error\LoggerFactory;
 use CultuurNet\UDB3\Error\LoggerName;
-use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryWithFormatterRepository;
+use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryServiceRepository;
 use CultuurNet\UDB3\EventExport\DeparturePlaces\DeparturePlaceResolver;
 use CultuurNet\UDB3\EventExport\EventExportCommandHandler;
 use CultuurNet\UDB3\EventExport\EventExportService;
@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Mailer\Mailer;
 use CultuurNet\UDB3\Model\ValueObject\Identity\ItemIdentifierFactory;
 use CultuurNet\UDB3\Search\ResultsGenerator;
 use CultuurNet\UDB3\Search\EventsSapi3SearchService;
+use CultuurNet\UDB3\Search\CalendarSummaryService;
 use Psr\Log\LoggerAwareInterface;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -39,6 +40,7 @@ final class ExportServiceProvider extends AbstractServiceProvider
             'event_export_twig_environment',
             'event_export_service',
             'event_export_command_handler',
+            CalendarSummaryServiceRepository::class,
             ExportEventsAsJsonLdRequestHandler::class,
             ExportEventsAsOoXmlRequestHandler::class,
             ExportEventsAsPdfRequestHandler::class,
@@ -99,9 +101,18 @@ final class ExportServiceProvider extends AbstractServiceProvider
                         null,
                         (int) ($container->get('config')['export']['page_size'] ?? 100)
                     ),
-                    $container->get('config')['export']['max_items']
+                    $container->get('config')['export']['max_items'],
+                    $container->get(CalendarSummaryServiceRepository::class)
                 );
             }
+        );
+
+        // Shared, so the export service prefetches the summaries the command handler's file formats use.
+        $container->addShared(
+            CalendarSummaryServiceRepository::class,
+            fn (): CalendarSummaryServiceRepository => new CalendarSummaryServiceRepository(
+                $container->get(CalendarSummaryService::class)
+            )
         );
 
         $container->addShared(
@@ -119,7 +130,7 @@ final class ExportServiceProvider extends AbstractServiceProvider
                 $eventExportCommandHandler = new EventExportCommandHandler(
                     $container->get('event_export_service'),
                     $container->get('config')['prince']['binary'],
-                    new CalendarSummaryWithFormatterRepository($container->get('event_jsonld_repository')),
+                    $container->get(CalendarSummaryServiceRepository::class),
                     $eventInfoService,
                     $container->get('event_export_twig_environment'),
                     new DeparturePlaceResolver($container->get('place_jsonld_cache')),

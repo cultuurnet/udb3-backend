@@ -65,8 +65,9 @@ final class CalendarSummaryParameters
 
     public function getLanguage(): string
     {
+        // The deprecated langCode parameter is a locale like nl_BE, of which only the language is needed.
         $langCode = $this->queryParameters->get('langCode');
-        return $langCode ?? $this->queryParameters->get('language', 'nl');
+        return $langCode !== null ? substr($langCode, 0, 2) : $this->queryParameters->get('language', 'nl');
     }
 
     public function getSize(): string
@@ -84,5 +85,21 @@ final class CalendarSummaryParameters
     {
         $timeZoneOldName = $this->queryParameters->get('timeZone');
         return $timeZoneOldName ?? $this->queryParameters->get('timezone', 'Europe/Brussels');
+    }
+
+    /**
+     * Maps the parameters, including the deprecated aliases, onto the parameters of the Search API calendar summary.
+     *
+     * @return array<string, string>
+     */
+    public function toSearchApiQueryParameters(): array
+    {
+        return [
+            'language' => $this->getLanguage(),
+            'style' => $this->getContentType() === self::HTML ? 'html' : 'text',
+            'size' => $this->getSize(),
+            'hidePast' => $this->shouldHidePastDates() ? 'true' : 'false',
+            'timezone' => $this->getTimezone(),
+        ];
     }
 }

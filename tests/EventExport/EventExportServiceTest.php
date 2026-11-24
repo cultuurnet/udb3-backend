@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace CultuurNet\UDB3\EventExport;
 
 use Broadway\UuidGenerator\UuidGeneratorInterface;
+use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryPrefetcher;
 use CultuurNet\UDB3\EventExport\Exception\MaximumNumberOfExportItemsExceeded;
 use CultuurNet\UDB3\EventExport\Notification\NotificationMailerInterface;
 use CultuurNet\UDB3\Iri\IriGeneratorInterface;
@@ -508,6 +509,59 @@ final class EventExportServiceTest extends TestCase
             $logger,
             $selection
         );
+    }
+
+    /**
+     * @test
+     */
+    public function it_prefetches_the_calendar_summaries_of_each_batch_before_writing_it(): void
+    {
+        $this->setUpEventService();
+        $this->forceUuidGeneratorToReturn('abc');
+
+        $prefetcher = new class () implements CalendarSummaryPrefetcher {
+            public array $batches = [];
+
+            public function prefetch(array $eventIds): void
+            {
+                $this->batches[] = $eventIds;
+            }
+        };
+
+        $eventExportService = new EventExportService(
+            $this->eventRepository,
+            $this->itemIdentifierFactory,
+            $this->searchService,
+            $this->uuidGenerator,
+            $this->publicDirectory->url(),
+            $this->iriGenerator,
+            $this->mailer,
+            $this->resultsGenerator,
+            250,
+            $prefetcher
+        );
+
+        $selection = array_map(fn (int $i): string => 'http://example.com/event/' . $i, range(1, 250));
+
+        $fileWriter = $this->createMock(FileWriterInterface::class);
+        $fileWriter->expects($this->once())
+            ->method('write')
+            ->willReturnCallback(function (string $tmpPath, Traversable $events) use ($prefetcher): void {
+                foreach ($events as $event) {
+                    $eventId = basename(Json::decodeAssociatively($event)['@id']);
+                    $this->assertContains($eventId, end($prefetcher->batches));
+                }
+                file_put_contents($tmpPath, '');
+            });
+
+        $fileFormat = $this->createMock(FileFormatInterface::class);
+        $fileFormat->method('getFileNameExtension')->willReturn('txt');
+        $fileFormat->method('getWriter')->willReturn($fileWriter);
+
+        $eventExportService->exportEvents($fileFormat, new EventExportQuery('*'), null, null, $selection);
+
+        $this->assertSame([100, 100, 50], array_map('count', $prefetcher->batches));
+        $this->assertSame(['1', '2', '3'], array_slice($prefetcher->batches[0], 0, 3));
     }
 
     public function exportParametersDataProvider(): array

@@ -87,6 +87,7 @@ use CultuurNet\UDB3\Offer\ReadModel\Metadata\OfferMetadataRepository;
 use CultuurNet\UDB3\Place\ReadModel\Relations\PlaceRelationsRepository;
 use CultuurNet\UDB3\Role\UserPermissionsServiceProvider;
 use CultuurNet\UDB3\Role\ValueObjects\Permission;
+use CultuurNet\UDB3\Search\CalendarSummaryService;
 use CultuurNet\UDB3\Security\OfferSecurityServiceProvider;
 use CultuurNet\UDB3\Security\Permission\AnyOfVoter;
 use CultuurNet\UDB3\Security\Permission\DeleteUiTPASPlaceVoter;
@@ -536,7 +537,7 @@ final class OfferServiceProvider extends AbstractServiceProvider
 
         $container->addShared(
             GetCalendarSummaryRequestHandler::class,
-            fn () => new GetCalendarSummaryRequestHandler($container->get(OfferJsonDocumentReadRepository::class))
+            fn () => new GetCalendarSummaryRequestHandler($container->get(CalendarSummaryService::class))
         );
 
         $container->addShared(

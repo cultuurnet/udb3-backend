@@ -7,6 +7,7 @@ namespace CultuurNet\UDB3\EventExport\Format\JSONLD;
 use CultuurNet\UDB3\EventExport\CalendarSummary\CalendarSummaryRepositoryInterface;
 use CultuurNet\UDB3\EventExport\CalendarSummary\ContentType;
 use CultuurNet\UDB3\EventExport\CalendarSummary\Format;
+use CultuurNet\UDB3\EventExport\CalendarSummary\SummaryUnavailableException;
 use CultuurNet\UDB3\EventExport\OvernightStayResolver;
 use CultuurNet\UDB3\Json;
 
@@ -106,7 +107,12 @@ final class JSONLDEventFormatter
 
             if (in_array('calendarSummary', $includedProperties)) {
                 $eventId = $this->parseEventIdFromUrl($eventObject);
-                $eventObject->calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::plain(), Format::md());
+                try {
+                    $eventObject->calendarSummary = $this->calendarSummaryRepository->get($eventId, ContentType::plain(), Format::md());
+                } catch (SummaryUnavailableException $exception) {
+                    // Like the other export formats, a missing summary should not fail the whole export.
+                    $eventObject->calendarSummary = '';
+                }
             }
 
             if (in_array('hasOvernightStay', $includedProperties)) {
