@@ -33,6 +33,7 @@ services:
           service: php-base-8-3
       ports:
           - '${FORWARD_HTTP_PORT:-8000}:80'
+      stop_grace_period: 30s
 
   php-xdebug:
       container_name: php-xdebug.${UDB3_STACK:-uitdatabank}
@@ -50,6 +51,7 @@ services:
           XDEBUG_CONFIG: client_host=host.docker.internal
       ports:
           - '${FORWARD_XDEBUG_HTTP_PORT:-8001}:80'
+      stop_grace_period: 30s
 
   mysql:
     image: 'mysql:8.4'
