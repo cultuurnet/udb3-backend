@@ -26,9 +26,17 @@ final readonly class Sapi3CalendarSummaryService implements CalendarSummaryServi
 
     public function get(OfferType $offerType, string $offerId, array $parameters): string
     {
-        $path = '/calendar-summary/' . $this->pluralType($offerType) . '/' . rawurlencode($offerId);
+        $path = '/' . $this->pluralType($offerType) . '/' . rawurlencode($offerId) . '/calendar-summary';
 
-        $response = $this->send($path, http_build_query($parameters), 'the calendar summary of ' . $offerId);
+        $accept = ($parameters['style'] ?? 'text') === 'html' ? 'text/html' : 'text/plain';
+        unset($parameters['style']);
+
+        $response = $this->send(
+            $path,
+            http_build_query($parameters),
+            'the calendar summary of ' . $offerId,
+            ['Accept' => $accept]
+        );
 
         if ($response->getStatusCode() === StatusCodeInterface::STATUS_NOT_FOUND) {
             throw DocumentDoesNotExist::withId($offerId);
@@ -72,13 +80,18 @@ final readonly class Sapi3CalendarSummaryService implements CalendarSummaryServi
         return $summaries;
     }
 
-    private function send(string $path, string $query, string $context): ResponseInterface
+    /**
+     * @param array<string, string> $headers
+     */
+    private function send(string $path, string $query, string $context, array $headers = []): ResponseInterface
     {
         $uri = $this->searchLocation
             ->withPath(rtrim($this->searchLocation->getPath(), '/') . $path)
             ->withQuery($query);
 
-        $headers = $this->apiKey ? ['X-Api-Key' => $this->apiKey] : [];
+        if ($this->apiKey) {
+            $headers['X-Api-Key'] = $this->apiKey;
+        }
 
         try {
             return $this->httpClient->sendRequest(new Request('GET', $uri, $headers));

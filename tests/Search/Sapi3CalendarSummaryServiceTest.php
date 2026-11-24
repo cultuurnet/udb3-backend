@@ -47,10 +47,11 @@ final class Sapi3CalendarSummaryServiceTest extends TestCase
             ->with($this->callback(function (RequestInterface $request): bool {
                 $this->assertSame('GET', $request->getMethod());
                 $this->assertSame(
-                    'https://search.uitdatabank.be/calendar-summary/events/' . self::OFFER_ID
-                    . '?language=fr&style=html&size=md&hidePast=true&timezone=Europe%2FParis',
+                    'https://search.uitdatabank.be/events/' . self::OFFER_ID
+                    . '/calendar-summary?language=fr&size=md&hidePast=true&timezone=Europe%2FParis',
                     (string) $request->getUri()
                 );
+                $this->assertSame('text/html', $request->getHeaderLine('Accept'));
                 $this->assertSame('my-api-key', $request->getHeaderLine('X-Api-Key'));
                 return true;
             }))
@@ -80,9 +81,10 @@ final class Sapi3CalendarSummaryServiceTest extends TestCase
             ->method('sendRequest')
             ->with($this->callback(function (RequestInterface $request): bool {
                 $this->assertSame(
-                    'https://search.uitdatabank.be/calendar-summary/places/' . self::OFFER_ID,
+                    'https://search.uitdatabank.be/places/' . self::OFFER_ID . '/calendar-summary',
                     (string) $request->getUri()
                 );
+                $this->assertSame('text/plain', $request->getHeaderLine('Accept'));
                 return true;
             }))
             ->willReturn(new Response(200, [], 'Alle dagen open'));
