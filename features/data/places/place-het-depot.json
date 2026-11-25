@@ -1,0 +1,20 @@
+{
+  "name": {
+    "nl": "Het Depot %{name}"
+  },
+  "terms": [
+    {
+      "id": "Yf4aZBfsUEu2NsQqsprngw"
+    }
+  ],
+  "address": {
+    "nl" : {
+      "addressCountry": "BE",
+      "addressLocality": "Leuven",
+      "postalCode": "3000",
+      "streetAddress": "Martelarenplein 12"
+    }
+  },
+  "calendarType": "permanent",
+  "mainLanguage": "nl"
+}

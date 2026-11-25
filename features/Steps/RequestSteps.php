@@ -6,6 +6,7 @@ namespace CultuurNet\UDB3\Steps;
 
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
+use CultuurNet\UDB3\Json;
 use CultuurNet\UDB3\State\VariableState;
 use CultuurNet\UDB3\Support\Poll;
 
@@ -243,6 +244,35 @@ trait RequestSteps
 
             return $this->responseState->getTotalItems() === $count;
         }, 60, 'the response to contain ' . $count . ' result(s)');
+    }
+
+    /**
+     * @Then I wait until the location suggestions for :text contain :label
+     */
+    public function iWaitUntilTheLocationSuggestionsForContain(string $text, string $label): void
+    {
+        $this->waitForLocationSuggestions($text, $label, true);
+    }
+
+    /**
+     * @Then I wait until the location suggestions for :text no longer contain :label
+     */
+    public function iWaitUntilTheLocationSuggestionsForNoLongerContain(string $text, string $label): void
+    {
+        $this->waitForLocationSuggestions($text, $label, false);
+    }
+
+    private function waitForLocationSuggestions(string $text, string $label, bool $contains): void
+    {
+        // A place reaches the location suggestions asynchronously, after its change in UiTdatabank.
+        Poll::until(function () use ($text, $label, $contains): bool {
+            $response = $this->getHttpClient()->getWithParameters('/location-suggestions', [['q', $text]], $this->variableState);
+            $this->responseState->setResponse($response);
+
+            $labels = array_column(Json::decodeAssociatively($this->responseState->getContent())['member'] ?? [], 'label');
+
+            return in_array($label, $labels, true) === $contains;
+        }, 60, 'the location suggestions for "' . $text . '" to ' . ($contains ? '' : 'no longer ') . 'contain "' . $label . '"');
     }
 
     private function waitForItemWithUrlToBeIndex(string $url): void
