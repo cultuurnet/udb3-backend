@@ -1,0 +1,20 @@
+{
+  "name": {
+    "nl": "Café %{name}"
+  },
+  "terms": [
+    {
+      "id": "Yf4aZBfsUEu2NsQqsprngw"
+    }
+  ],
+  "address": {
+    "nl" : {
+      "addressCountry": "BE",
+      "addressLocality": "Kessel-Lo",
+      "postalCode": "3010",
+      "streetAddress": "Tiensesteenweg 2"
+    }
+  },
+  "calendarType": "permanent",
+  "mainLanguage": "nl"
+}
