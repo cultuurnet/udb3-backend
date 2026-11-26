@@ -43,6 +43,23 @@ final class QueryParameters
         return (int) filter_var($valueAsString, FILTER_VALIDATE_INT);
     }
 
+    /**
+     * Reads a comma-separated list, without whitespace around the values and without empty values.
+     *
+     * @return string[]
+     */
+    public function getAsList(string $parameterName): array
+    {
+        $value = $this->get($parameterName) ?? '';
+
+        return array_values(
+            array_filter(
+                array_map('trim', explode(',', $value)),
+                fn (string $item): bool => $item !== ''
+            )
+        );
+    }
+
     public function guardEnum(string $parameterName, array $allowedValues): void
     {
         $value = $this->get($parameterName);

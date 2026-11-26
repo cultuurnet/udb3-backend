@@ -61,6 +61,32 @@ class QueryParametersTest extends TestCase
         $this->assertSame($expectedResult, $queryParameters->getAsBoolean('foo'));
     }
 
+    /**
+     * @test
+     * @dataProvider listDataProvider
+     */
+    public function it_parses_a_comma_separated_parameter_as_a_list(string $query, array $expectedList): void
+    {
+        $request = (new Psr7RequestBuilder())
+            ->withUriFromString('/example' . $query)
+            ->build('GET');
+
+        $queryParameters = new QueryParameters($request);
+        $this->assertSame($expectedList, $queryParameters->getAsList('foo'));
+    }
+
+    public function listDataProvider(): array
+    {
+        return [
+            'one value' => ['?foo=a', ['a']],
+            'several values' => ['?foo=a,b,c', ['a', 'b', 'c']],
+            'whitespace around the commas' => ['?foo=a%20,%20b', ['a', 'b']],
+            'empty values' => ['?foo=a,,b,', ['a', 'b']],
+            'empty parameter' => ['?foo=', []],
+            'missing parameter' => ['', []],
+        ];
+    }
+
     public function booleanDataProvider(): array
     {
         return [
