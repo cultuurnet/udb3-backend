@@ -76,6 +76,21 @@ final class DBALTicketingRegistrationRepository implements TicketingRegistration
         return $this->createRegistrations($rows);
     }
 
+    public function findByIdentifiers(array $identifiers): TicketingRegistrations
+    {
+        $rows = $this->connection->createQueryBuilder()
+            ->select('*')
+            ->from(self::TABLE)
+            ->where('identifier IN (:identifiers)')
+            ->setParameter(':identifiers', $identifiers, Connection::PARAM_STR_ARRAY)
+            ->orderBy('udb_event_id')
+            ->addOrderBy('reservation_link')
+            ->execute()
+            ->fetchAllAssociative();
+
+        return $this->createRegistrations($rows);
+    }
+
     public function findWithoutIdentifier(): TicketingRegistrations
     {
         $rows = $this->connection->createQueryBuilder()
