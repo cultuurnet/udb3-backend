@@ -216,3 +216,75 @@ Feature: Test the Ticketmatic integration
       "type": "https://api.publiq.be/probs/body/invalid-data"
     }
     """
+
+  Scenario: Cultuurkuur looks up the events of a Ticketmatic identifier
+    Given I create an event from "events/ticketmatic/event-with-ticketmatic-link.json" and save the "url" as "eventUrl"
+    And I create an event from "events/ticketmatic/event-with-ticketmatic-link.json" and save the "url" as "otherEventUrl"
+    And I am authorized with an OAuth client access token for "cultuurkuur"
+    When I send a GET request to "/ticketing/registrations/?identifiers=ticketmatic:30cc_testticketmaticcom:15960"
+    Then the response status should be "200"
+    And the JSON response at "registrations/0/identifier" should be "ticketmatic:30cc_testticketmaticcom:15960"
+    And the JSON response at "registrations/0/events" should include "%{eventUrl}"
+    And the JSON response at "registrations/0/events" should include "%{otherEventUrl}"
+    And I am authorized as JWT provider user "centraal_beheerder"
+    And I delete the event at "%{eventUrl}"
+    And I delete the event at "%{otherEventUrl}"
+
+  Scenario: Cultuurkuur no longer gets an event after its Ticketmatic link was removed or the event was deleted
+    Given I create an event from "events/ticketmatic/event-with-ticketmatic-link.json" and save the "url" as "eventWithoutLinkUrl"
+    And I create an event from "events/ticketmatic/event-with-ticketmatic-link.json" and save the "url" as "deletedEventUrl"
+    And I set the JSON request payload from "events/ticketmatic/calendar-without-ticketmatic-link.json"
+    And I send a PUT request to "%{eventWithoutLinkUrl}/calendar"
+    And the response status should be "204"
+    And I delete the event at "%{deletedEventUrl}"
+    And I am authorized with an OAuth client access token for "cultuurkuur"
+    When I send a GET request to "/ticketing/registrations/?identifiers=ticketmatic:30cc_testticketmaticcom:15960"
+    Then the response status should be "200"
+    And the JSON response at "registrations/0/events" should not include "%{eventWithoutLinkUrl}"
+    And the JSON response at "registrations/0/events" should not include "%{deletedEventUrl}"
+    And I am authorized as JWT provider user "centraal_beheerder"
+    And I delete the event at "%{eventWithoutLinkUrl}"
+
+  Scenario: An unknown Ticketmatic identifier gets no events
+    Given I am authorized with an OAuth client access token for "cultuurkuur"
+    When I send a GET request to "/ticketing/registrations/?identifiers=ticketmatic:30cc_testticketmaticcom:0"
+    Then the response status should be "200"
+    And the JSON response should be:
+    """
+    {
+      "registrations": [
+        {
+          "identifier": "ticketmatic:30cc_testticketmaticcom:0",
+          "events": []
+        }
+      ]
+    }
+    """
+
+  Scenario: A lookup without identifiers is not found
+    Given I am authorized with an OAuth client access token for "cultuurkuur"
+    When I send a GET request to "/ticketing/registrations/"
+    Then the response status should be "404"
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/url/not-found",
+      "title": "Not Found",
+      "status": 404,
+      "detail": "Query parameter identifiers is missing."
+    }
+    """
+
+  Scenario: Other clients can not look up the events of Ticketmatic identifiers
+    Given I am authorized with an OAuth client access token for "ticketmatic"
+    When I send a GET request to "/ticketing/registrations/?identifiers=ticketmatic:30cc_testticketmaticcom:15960"
+    Then the response status should be "403"
+    And the JSON response should be:
+    """
+    {
+      "type": "https://api.publiq.be/probs/auth/forbidden",
+      "title": "Forbidden",
+      "status": 403,
+      "detail": "Only ticketing partners can look up the events of registrations."
+    }
+    """

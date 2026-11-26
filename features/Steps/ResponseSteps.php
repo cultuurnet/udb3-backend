@@ -10,6 +10,7 @@ use CultuurNet\UDB3\Model\ValueObject\Identity\Uuid;
 
 use function PHPUnit\Framework\assertContains;
 use function PHPUnit\Framework\assertEquals;
+use function PHPUnit\Framework\assertNotContains;
 use function PHPUnit\Framework\assertNotEquals;
 use function PHPUnit\Framework\assertNull;
 use function PHPUnit\Framework\assertSame;
@@ -132,6 +133,14 @@ trait ResponseSteps
                 $actual
             );
         }
+    }
+
+    /**
+     * @Then the JSON response at :jsonPath should not include :value
+     */
+    public function theJsonResponseAtShouldNotInclude(string $jsonPath, string $value): void
+    {
+        assertNotContains($value, $this->responseState->getValueOnPath($jsonPath));
     }
 
     /**
