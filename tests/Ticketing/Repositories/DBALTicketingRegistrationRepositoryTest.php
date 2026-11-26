@@ -117,6 +117,24 @@ final class DBALTicketingRegistrationRepositoryTest extends TestCase
     /**
      * @test
      */
+    public function it_finds_the_registrations_of_several_identifiers_at_once(): void
+    {
+        $first = new TicketingRegistration($this->eventId, new Url(self::LINK_A), 'ticketmatic:cultuurhuis:1001');
+        $second = new TicketingRegistration($this->otherEventId, new Url(self::LINK_B), 'ticketmatic:cultuurhuis:2002');
+        $this->repository->add($first);
+        $this->repository->add($second);
+        $this->repository->add(new TicketingRegistration($this->otherEventId, new Url(self::LINK_A), 'ticketmatic:cultuurhuis:3003'));
+
+        $found = $this->repository->findByIdentifiers(['ticketmatic:cultuurhuis:1001', 'ticketmatic:cultuurhuis:2002', 'unknown']);
+
+        $this->assertCount(2, $found);
+        $this->assertContainsEquals($first, $found->toArray());
+        $this->assertContainsEquals($second, $found->toArray());
+    }
+
+    /**
+     * @test
+     */
     public function it_finds_the_registrations_without_identifier(): void
     {
         $this->repository->add(new TicketingRegistration($this->eventId, new Url(self::LINK_A), 'ticketmatic:cultuurhuis:1001'));

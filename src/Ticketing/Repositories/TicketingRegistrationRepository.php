@@ -20,6 +20,11 @@ interface TicketingRegistrationRepository
 
     public function findByIdentifier(string $identifier): TicketingRegistrations;
 
+    /**
+     * @param string[] $identifiers
+     */
+    public function findByIdentifiers(array $identifiers): TicketingRegistrations;
+
     public function findWithoutIdentifier(): TicketingRegistrations;
 
     /**

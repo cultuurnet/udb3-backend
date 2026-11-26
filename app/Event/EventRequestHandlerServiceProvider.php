@@ -27,6 +27,7 @@ use CultuurNet\UDB3\Http\Event\UpdateOnlineUrlRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateSubEventsRequestHandler;
 use CultuurNet\UDB3\Http\Event\UpdateThemeRequestHandler;
 use CultuurNet\UDB3\Http\Auth\Jwt\JsonWebToken;
+use CultuurNet\UDB3\Http\Ticketing\GetRegistrationsRequestHandler as GetTicketingRegistrationsRequestHandler;
 use CultuurNet\UDB3\Http\Ticketing\UpdateBookingAvailabilityRequestHandler as UpdateTicketingBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Ticketing\Repositories\TicketingRegistrationRepository;
 use CultuurNet\UDB3\Http\Import\ImportPriceInfoRequestBodyParser;
@@ -49,6 +50,7 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
             UpdateLocationRequestHandler::class,
             UpdateSubEventsRequestHandler::class,
             UpdateTicketingBookingAvailabilityRequestHandler::class,
+            GetTicketingRegistrationsRequestHandler::class,
             UpdateThemeRequestHandler::class,
             DeleteThemeRequestHandler::class,
             UpdateAttendanceModeRequestHandler::class,
@@ -121,6 +123,16 @@ final class EventRequestHandlerServiceProvider extends AbstractServiceProvider
                 $container->get(TicketingRegistrationRepository::class),
                 $container->get(JsonWebToken::class),
                 $container->get('config')['ticketing']['ticketmatic']['client_ids'] ?? []
+            )
+        );
+
+        $container->addShared(
+            GetTicketingRegistrationsRequestHandler::class,
+            fn () => new GetTicketingRegistrationsRequestHandler(
+                $container->get(TicketingRegistrationRepository::class),
+                $container->get('event_iri_generator'),
+                $container->get(JsonWebToken::class),
+                $container->get('config')['ticketing']['ticketmatic']['lookup_client_ids'] ?? []
             )
         );
 
