@@ -155,6 +155,7 @@ use CultuurNet\UDB3\Http\SavedSearches\CreateSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\DeleteSavedSearchRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\ReadSavedSearchesRequestHandler;
 use CultuurNet\UDB3\Http\SavedSearches\UpdateSavedSearchRequestHandler;
+use CultuurNet\UDB3\Http\Ticketing\GetRegistrationsRequestHandler as GetTicketingRegistrationsRequestHandler;
 use CultuurNet\UDB3\Http\Ticketing\UpdateBookingAvailabilityRequestHandler as UpdateTicketingBookingAvailabilityRequestHandler;
 use CultuurNet\UDB3\Http\User\GetCurrentUserRequestHandler;
 use CultuurNet\UDB3\Http\User\GetUserByEmailRequestHandler;
@@ -696,5 +697,6 @@ final class PsrRouterServiceProvider extends AbstractServiceProvider
     private function bindTicketing(Router $router): void
     {
         $router->post('/ticketing/booking-availability/', UpdateTicketingBookingAvailabilityRequestHandler::class);
+        $router->get('/ticketing/registrations/', GetTicketingRegistrationsRequestHandler::class);
     }
 }
